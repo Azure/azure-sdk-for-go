@@ -18,8 +18,6 @@ import (
 
 // FeatureSupportClient contains the methods for the FeatureSupport group.
 // Don't use this type directly, use NewFeatureSupportClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type FeatureSupportClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewFeatureSupportClient(subscriptionID string, credential azcore.TokenCrede
 //
 // It will validate if given feature with resource properties is supported in service
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Feature support request object
 //   - options - FeatureSupportClientValidateOptions contains the optional parameters for the FeatureSupportClient.Validate method.
@@ -86,8 +86,8 @@ func (client *FeatureSupportClient) validateCreateRequest(ctx context.Context, a
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

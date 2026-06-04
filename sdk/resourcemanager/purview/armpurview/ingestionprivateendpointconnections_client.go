@@ -7,19 +7,18 @@ package armpurview
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // IngestionPrivateEndpointConnectionsClient contains the methods for the IngestionPrivateEndpointConnections group.
 // Don't use this type directly, use NewIngestionPrivateEndpointConnectionsClient() instead.
-//
-// Generated from API version 2024-04-01-preview
 type IngestionPrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,7 +42,9 @@ func NewIngestionPrivateEndpointConnectionsClient(subscriptionID string, credent
 
 // NewListPager - Lists all ingestion private endpoint connections.
 //
-// Lists all ingestion private endpoint connections
+// # Lists all ingestion private endpoint connections
+//
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the account.
 //   - options - IngestionPrivateEndpointConnectionsClientListOptions contains the optional parameters for the IngestionPrivateEndpointConnectionsClient.NewListPager
@@ -91,8 +92,8 @@ func (client *IngestionPrivateEndpointConnectionsClient) listCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,6 +111,8 @@ func (client *IngestionPrivateEndpointConnectionsClient) listHandleResponse(resp
 //
 // Update ingestion private endpoint connection status
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the account.
 //   - request - The ingestion private endpoint connection status update request.
@@ -157,8 +160,8 @@ func (client *IngestionPrivateEndpointConnectionsClient) updateStatusCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {

@@ -18,8 +18,6 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
-//
-// Generated from API version 2025-02-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //
 // API to get details about capabilities provided by Microsoft.RecoveryServices RP
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 //   - location - The location of the resource.
 //   - input - The request body
 //   - options - ClientCapabilitiesOptions contains the optional parameters for the Client.Capabilities method.
@@ -86,8 +86,8 @@ func (client *Client) capabilitiesCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -113,6 +113,8 @@ func (client *Client) capabilitiesHandleResponse(resp *http.Response) (ClientCap
 // A name is available if no other resource exists that has the same SubscriptionId, Resource Name and Type
 // or if one or more such resources exist, each of these must be GC'd and their time of deletion be more than 24 Hours Ago
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of the Azure region.
 //   - input - Contains information about Resource type and Resource name
@@ -159,8 +161,8 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {

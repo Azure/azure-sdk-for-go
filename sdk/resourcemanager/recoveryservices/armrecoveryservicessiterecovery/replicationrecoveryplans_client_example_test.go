@@ -6,10 +6,11 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
+	"log"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
-	"log"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
 )
 
 // Generated from example definition: 2025-08-01/ReplicationRecoveryPlans_Create.json
@@ -48,13 +49,13 @@ func ExampleReplicationRecoveryPlansClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientCreateResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -128,7 +129,7 @@ func ExampleReplicationRecoveryPlansClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
@@ -149,13 +150,13 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCancel() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientFailoverCancelResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -205,13 +206,13 @@ func ExampleReplicationRecoveryPlansClient_BeginFailoverCommit() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientFailoverCommitResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -309,7 +310,7 @@ func ExampleReplicationRecoveryPlansClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientGetResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -459,13 +460,13 @@ func ExampleReplicationRecoveryPlansClient_BeginPlannedFailover() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientPlannedFailoverResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -562,13 +563,13 @@ func ExampleReplicationRecoveryPlansClient_BeginReprotect() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientReprotectResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -675,13 +676,13 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailover() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientTestFailoverResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -777,13 +778,13 @@ func ExampleReplicationRecoveryPlansClient_BeginTestFailoverCleanup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientTestFailoverCleanupResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -889,13 +890,13 @@ func ExampleReplicationRecoveryPlansClient_BeginUnplannedFailover() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientUnplannedFailoverResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),
@@ -1031,13 +1032,13 @@ func ExampleReplicationRecoveryPlansClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationRecoveryPlansClientUpdateResponse{
-	// 	RecoveryPlan: armrecoveryservicessiterecovery.RecoveryPlan{
+	// 	RecoveryPlan: &armrecoveryservicessiterecovery.RecoveryPlan{
 	// 		Name: to.Ptr("RPtest1"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationRecoveryPlans"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationRecoveryPlans/RPtest1"),

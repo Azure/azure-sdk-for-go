@@ -242,26 +242,26 @@ func unmarshalProtectionContainerClassification(rawMsg json.RawMessage) (Protect
 	switch m["containerType"] {
 	case string(ProtectableContainerTypeAzureBackupServerContainer):
 		b = &AzureBackupServerContainer{}
-	case string(ProtectableContainerTypeAzureSQLContainer):
-		b = &AzureSQLContainer{}
-	case string(ProtectableContainerTypeAzureWorkloadContainer):
-		b = &AzureWorkloadContainer{}
 	case string(ProtectableContainerTypeDPMContainer):
 		b = &DpmContainer{}
-	case string(ProtectableContainerTypeGenericContainer):
-		b = &GenericContainer{}
-	case string(ProtectableContainerTypeIaasVMContainer):
-		b = &IaaSVMContainer{}
 	case string(ProtectableContainerTypeMicrosoftClassicComputeVirtualMachines):
 		b = &AzureIaaSClassicComputeVMContainer{}
+	case string(ProtectableContainerTypeIaasVMContainer):
+		b = &IaaSVMContainer{}
 	case string(ProtectableContainerTypeMicrosoftComputeVirtualMachines):
 		b = &AzureIaaSComputeVMContainer{}
 	case string(ProtectableContainerTypeSQLAGWorkLoadContainer):
 		b = &AzureSQLAGWorkloadContainerProtectionContainer{}
+	case string(ProtectableContainerTypeAzureWorkloadContainer):
+		b = &AzureWorkloadContainer{}
+	case string(ProtectableContainerTypeAzureSQLContainer):
+		b = &AzureSQLContainer{}
 	case string(ProtectableContainerTypeStorageContainer):
 		b = &AzureStorageContainer{}
 	case string(ProtectableContainerTypeVMAppContainer):
 		b = &AzureVMAppContainerProtectionContainer{}
+	case string(ProtectableContainerTypeGenericContainer):
+		b = &GenericContainer{}
 	case string(ProtectableContainerTypeWindows):
 		b = &MabContainer{}
 	default:
@@ -283,16 +283,16 @@ func unmarshalProtectionIntentClassification(rawMsg json.RawMessage) (Protection
 	}
 	var b ProtectionIntentClassification
 	switch m["protectionIntentItemType"] {
-	case string(ProtectionIntentItemTypeAzureResourceItem):
-		b = &AzureResourceProtectionIntent{}
-	case string(ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent):
-		b = &AzureWorkloadAutoProtectionIntent{}
-	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
-		b = &AzureWorkloadContainerAutoProtectionIntent{}
-	case string(ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent):
-		b = &AzureWorkloadSQLAutoProtectionIntent{}
 	case string(ProtectionIntentItemTypeRecoveryServiceVaultItem):
 		b = &AzureRecoveryServiceVaultProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureResourceItem):
+		b = &AzureResourceProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureWorkloadContainerAutoProtectionIntent):
+		b = &AzureWorkloadContainerAutoProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureWorkloadAutoProtectionIntent):
+		b = &AzureWorkloadAutoProtectionIntent{}
+	case string(ProtectionIntentItemTypeAzureWorkloadSQLAutoProtectionIntent):
+		b = &AzureWorkloadSQLAutoProtectionIntent{}
 	default:
 		b = &ProtectionIntent{}
 	}

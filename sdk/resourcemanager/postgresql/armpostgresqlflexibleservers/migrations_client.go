@@ -18,8 +18,6 @@ import (
 
 // MigrationsClient contains the methods for the Migrations group.
 // Don't use this type directly, use NewMigrationsClient() instead.
-//
-// Generated from API version 2026-01-01-preview
 type MigrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewMigrationsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Cancel - Cancels an active migration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - migrationName - Name of migration.
@@ -93,8 +93,8 @@ func (client *MigrationsClient) cancelCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -112,6 +112,8 @@ func (client *MigrationsClient) cancelHandleResponse(resp *http.Response) (Migra
 //
 // Checks if a proposed migration name is valid and available.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Parameters required to check if a migration name is valid and available.
@@ -159,8 +161,8 @@ func (client *MigrationsClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -180,6 +182,8 @@ func (client *MigrationsClient) checkNameAvailabilityHandleResponse(resp *http.R
 
 // Create - Creates a new migration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - migrationName - Name of migration.
@@ -231,8 +235,8 @@ func (client *MigrationsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -252,6 +256,8 @@ func (client *MigrationsClient) createHandleResponse(resp *http.Response) (Migra
 
 // Get - Gets information about a migration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - migrationName - Name of migration.
@@ -302,8 +308,8 @@ func (client *MigrationsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -318,6 +324,8 @@ func (client *MigrationsClient) getHandleResponse(resp *http.Response) (Migratio
 }
 
 // NewListByTargetServerPager - Lists all migrations of a target flexible server.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - MigrationsClientListByTargetServerOptions contains the optional parameters for the MigrationsClient.NewListByTargetServerPager
@@ -365,11 +373,11 @@ func (client *MigrationsClient) listByTargetServerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", "2026-01-01-preview")
 	if options != nil && options.MigrationListFilter != nil {
 		reqQP.Set("migrationListFilter", string(*options.MigrationListFilter))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -386,6 +394,8 @@ func (client *MigrationsClient) listByTargetServerHandleResponse(resp *http.Resp
 // Update - Updates an existing migration. The request body can contain one to many of the mutable properties present in the
 // migration definition. Certain property updates initiate migration state transitions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - migrationName - Name of migration.
@@ -437,8 +447,8 @@ func (client *MigrationsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

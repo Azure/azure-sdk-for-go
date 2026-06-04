@@ -4,10 +4,6 @@
 
 package armpostgresqlflexibleservers
 
-const (
-	version20260101Preview string = "2026-01-01-preview"
-)
-
 // AzureManagedDiskPerformanceTier - Storage tier of a server.
 type AzureManagedDiskPerformanceTier string
 

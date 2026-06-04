@@ -6,9 +6,10 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 	"log"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
 )
 
 // Generated from example definition: 2025-08-01/ReplicationEligibilityResults_Get.json
@@ -30,7 +31,7 @@ func ExampleReplicationEligibilityResultsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationEligibilityResultsClientGetResponse{
-	// 	ReplicationEligibilityResults: armrecoveryservicessiterecovery.ReplicationEligibilityResults{
+	// 	ReplicationEligibilityResults: &armrecoveryservicessiterecovery.ReplicationEligibilityResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/replicationEligibilityResults"),
 	// 		ID: to.Ptr("/subscriptions/d90d145a-4cdd-45a3-b2c4-971d69775278/resourceGroups/testRg1/providers/Microsoft.Compute/virtualMachines/testVm1/providers/Microsoft.RecoveryServices/replicationEligibilityResults/default"),
@@ -69,7 +70,7 @@ func ExampleReplicationEligibilityResultsClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationEligibilityResultsClientListResponse{
-	// 	ReplicationEligibilityResultsCollection: armrecoveryservicessiterecovery.ReplicationEligibilityResultsCollection{
+	// 	ReplicationEligibilityResultsCollection: &armrecoveryservicessiterecovery.ReplicationEligibilityResultsCollection{
 	// 		Value: []*armrecoveryservicessiterecovery.ReplicationEligibilityResults{
 	// 			{
 	// 				Name: to.Ptr("default"),

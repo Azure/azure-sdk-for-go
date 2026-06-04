@@ -18,8 +18,6 @@ import (
 
 // RecoveryServicesClient - Open API 2.0 Specs for Azure RecoveryServices Backup service
 // Don't use this type directly, use NewRecoveryServicesClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type RecoveryServicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +39,425 @@ func NewRecoveryServicesClient(subscriptionID string, credential azcore.TokenCre
 	return client, nil
 }
 
+// NewBMSPrepareDataMoveOperationResultClient creates a new instance of [BMSPrepareDataMoveOperationResultClient].
+func (client *RecoveryServicesClient) NewBMSPrepareDataMoveOperationResultClient() *BMSPrepareDataMoveOperationResultClient {
+	return &BMSPrepareDataMoveOperationResultClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupEnginesClient creates a new instance of [BackupEnginesClient].
+func (client *RecoveryServicesClient) NewBackupEnginesClient() *BackupEnginesClient {
+	return &BackupEnginesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupJobsClient creates a new instance of [BackupJobsClient].
+func (client *RecoveryServicesClient) NewBackupJobsClient() *BackupJobsClient {
+	return &BackupJobsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupOperationResultsClient creates a new instance of [BackupOperationResultsClient].
+func (client *RecoveryServicesClient) NewBackupOperationResultsClient() *BackupOperationResultsClient {
+	return &BackupOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupOperationStatusesClient creates a new instance of [BackupOperationStatusesClient].
+func (client *RecoveryServicesClient) NewBackupOperationStatusesClient() *BackupOperationStatusesClient {
+	return &BackupOperationStatusesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupPoliciesClient creates a new instance of [BackupPoliciesClient].
+func (client *RecoveryServicesClient) NewBackupPoliciesClient() *BackupPoliciesClient {
+	return &BackupPoliciesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupProtectableItemsClient creates a new instance of [BackupProtectableItemsClient].
+func (client *RecoveryServicesClient) NewBackupProtectableItemsClient() *BackupProtectableItemsClient {
+	return &BackupProtectableItemsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupProtectedItemsClient creates a new instance of [BackupProtectedItemsClient].
+func (client *RecoveryServicesClient) NewBackupProtectedItemsClient() *BackupProtectedItemsClient {
+	return &BackupProtectedItemsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupProtectionContainersClient creates a new instance of [BackupProtectionContainersClient].
+func (client *RecoveryServicesClient) NewBackupProtectionContainersClient() *BackupProtectionContainersClient {
+	return &BackupProtectionContainersClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupProtectionIntentClient creates a new instance of [BackupProtectionIntentClient].
+func (client *RecoveryServicesClient) NewBackupProtectionIntentClient() *BackupProtectionIntentClient {
+	return &BackupProtectionIntentClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupResourceEncryptionConfigsClient creates a new instance of [BackupResourceEncryptionConfigsClient].
+func (client *RecoveryServicesClient) NewBackupResourceEncryptionConfigsClient() *BackupResourceEncryptionConfigsClient {
+	return &BackupResourceEncryptionConfigsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupResourceStorageConfigsNonCRRClient creates a new instance of [BackupResourceStorageConfigsNonCRRClient].
+func (client *RecoveryServicesClient) NewBackupResourceStorageConfigsNonCRRClient() *BackupResourceStorageConfigsNonCRRClient {
+	return &BackupResourceStorageConfigsNonCRRClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupResourceVaultConfigsClient creates a new instance of [BackupResourceVaultConfigsClient].
+func (client *RecoveryServicesClient) NewBackupResourceVaultConfigsClient() *BackupResourceVaultConfigsClient {
+	return &BackupResourceVaultConfigsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupStatusClient creates a new instance of [BackupStatusClient].
+func (client *RecoveryServicesClient) NewBackupStatusClient() *BackupStatusClient {
+	return &BackupStatusClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupUsageSummariesClient creates a new instance of [BackupUsageSummariesClient].
+func (client *RecoveryServicesClient) NewBackupUsageSummariesClient() *BackupUsageSummariesClient {
+	return &BackupUsageSummariesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupWorkloadItemsClient creates a new instance of [BackupWorkloadItemsClient].
+func (client *RecoveryServicesClient) NewBackupWorkloadItemsClient() *BackupWorkloadItemsClient {
+	return &BackupWorkloadItemsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewBackupsClient creates a new instance of [BackupsClient].
+func (client *RecoveryServicesClient) NewBackupsClient() *BackupsClient {
+	return &BackupsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewDeletedProtectionContainersClient creates a new instance of [DeletedProtectionContainersClient].
+func (client *RecoveryServicesClient) NewDeletedProtectionContainersClient() *DeletedProtectionContainersClient {
+	return &DeletedProtectionContainersClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewExportJobsOperationResultsClient creates a new instance of [ExportJobsOperationResultsClient].
+func (client *RecoveryServicesClient) NewExportJobsOperationResultsClient() *ExportJobsOperationResultsClient {
+	return &ExportJobsOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewFeatureSupportClient creates a new instance of [FeatureSupportClient].
+func (client *RecoveryServicesClient) NewFeatureSupportClient() *FeatureSupportClient {
+	return &FeatureSupportClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewFetchTieringCostClient creates a new instance of [FetchTieringCostClient].
+func (client *RecoveryServicesClient) NewFetchTieringCostClient() *FetchTieringCostClient {
+	return &FetchTieringCostClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewGetTieringCostOperationResultClient creates a new instance of [GetTieringCostOperationResultClient].
+func (client *RecoveryServicesClient) NewGetTieringCostOperationResultClient() *GetTieringCostOperationResultClient {
+	return &GetTieringCostOperationResultClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewItemLevelRecoveryConnectionsClient creates a new instance of [ItemLevelRecoveryConnectionsClient].
+func (client *RecoveryServicesClient) NewItemLevelRecoveryConnectionsClient() *ItemLevelRecoveryConnectionsClient {
+	return &ItemLevelRecoveryConnectionsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewJobCancellationsClient creates a new instance of [JobCancellationsClient].
+func (client *RecoveryServicesClient) NewJobCancellationsClient() *JobCancellationsClient {
+	return &JobCancellationsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewJobDetailsClient creates a new instance of [JobDetailsClient].
+func (client *RecoveryServicesClient) NewJobDetailsClient() *JobDetailsClient {
+	return &JobDetailsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewJobOperationResultsClient creates a new instance of [JobOperationResultsClient].
+func (client *RecoveryServicesClient) NewJobOperationResultsClient() *JobOperationResultsClient {
+	return &JobOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewJobsClient creates a new instance of [JobsClient].
+func (client *RecoveryServicesClient) NewJobsClient() *JobsClient {
+	return &JobsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewOperationClient creates a new instance of [OperationClient].
+func (client *RecoveryServicesClient) NewOperationClient() *OperationClient {
+	return &OperationClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewOperationsClient creates a new instance of [OperationsClient].
+func (client *RecoveryServicesClient) NewOperationsClient() *OperationsClient {
+	return &OperationsClient{
+		internal: client.internal,
+	}
+}
+
+// NewPrivateEndpointClient creates a new instance of [PrivateEndpointClient].
+func (client *RecoveryServicesClient) NewPrivateEndpointClient() *PrivateEndpointClient {
+	return &PrivateEndpointClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewPrivateEndpointConnectionClient creates a new instance of [PrivateEndpointConnectionClient].
+func (client *RecoveryServicesClient) NewPrivateEndpointConnectionClient() *PrivateEndpointConnectionClient {
+	return &PrivateEndpointConnectionClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectableContainersClient creates a new instance of [ProtectableContainersClient].
+func (client *RecoveryServicesClient) NewProtectableContainersClient() *ProtectableContainersClient {
+	return &ProtectableContainersClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectedItemOperationResultsClient creates a new instance of [ProtectedItemOperationResultsClient].
+func (client *RecoveryServicesClient) NewProtectedItemOperationResultsClient() *ProtectedItemOperationResultsClient {
+	return &ProtectedItemOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectedItemOperationStatusesClient creates a new instance of [ProtectedItemOperationStatusesClient].
+func (client *RecoveryServicesClient) NewProtectedItemOperationStatusesClient() *ProtectedItemOperationStatusesClient {
+	return &ProtectedItemOperationStatusesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectedItemsClient creates a new instance of [ProtectedItemsClient].
+func (client *RecoveryServicesClient) NewProtectedItemsClient() *ProtectedItemsClient {
+	return &ProtectedItemsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectionContainerOperationResultsClient creates a new instance of [ProtectionContainerOperationResultsClient].
+func (client *RecoveryServicesClient) NewProtectionContainerOperationResultsClient() *ProtectionContainerOperationResultsClient {
+	return &ProtectionContainerOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectionContainerRefreshOperationResultsClient creates a new instance of [ProtectionContainerRefreshOperationResultsClient].
+func (client *RecoveryServicesClient) NewProtectionContainerRefreshOperationResultsClient() *ProtectionContainerRefreshOperationResultsClient {
+	return &ProtectionContainerRefreshOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectionContainersClient creates a new instance of [ProtectionContainersClient].
+func (client *RecoveryServicesClient) NewProtectionContainersClient() *ProtectionContainersClient {
+	return &ProtectionContainersClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectionIntentClient creates a new instance of [ProtectionIntentClient].
+func (client *RecoveryServicesClient) NewProtectionIntentClient() *ProtectionIntentClient {
+	return &ProtectionIntentClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectionPoliciesClient creates a new instance of [ProtectionPoliciesClient].
+func (client *RecoveryServicesClient) NewProtectionPoliciesClient() *ProtectionPoliciesClient {
+	return &ProtectionPoliciesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectionPolicyOperationResultsClient creates a new instance of [ProtectionPolicyOperationResultsClient].
+func (client *RecoveryServicesClient) NewProtectionPolicyOperationResultsClient() *ProtectionPolicyOperationResultsClient {
+	return &ProtectionPolicyOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewProtectionPolicyOperationStatusesClient creates a new instance of [ProtectionPolicyOperationStatusesClient].
+func (client *RecoveryServicesClient) NewProtectionPolicyOperationStatusesClient() *ProtectionPolicyOperationStatusesClient {
+	return &ProtectionPolicyOperationStatusesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewRecoveryPointsClient creates a new instance of [RecoveryPointsClient].
+func (client *RecoveryServicesClient) NewRecoveryPointsClient() *RecoveryPointsClient {
+	return &RecoveryPointsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewRecoveryPointsRecommendedForMoveClient creates a new instance of [RecoveryPointsRecommendedForMoveClient].
+func (client *RecoveryServicesClient) NewRecoveryPointsRecommendedForMoveClient() *RecoveryPointsRecommendedForMoveClient {
+	return &RecoveryPointsRecommendedForMoveClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewResourceGuardProxiesClient creates a new instance of [ResourceGuardProxiesClient].
+func (client *RecoveryServicesClient) NewResourceGuardProxiesClient() *ResourceGuardProxiesClient {
+	return &ResourceGuardProxiesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewResourceGuardProxyClient creates a new instance of [ResourceGuardProxyClient].
+func (client *RecoveryServicesClient) NewResourceGuardProxyClient() *ResourceGuardProxyClient {
+	return &ResourceGuardProxyClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewRestoresClient creates a new instance of [RestoresClient].
+func (client *RecoveryServicesClient) NewRestoresClient() *RestoresClient {
+	return &RestoresClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewSecurityPINsClient creates a new instance of [SecurityPINsClient].
+func (client *RecoveryServicesClient) NewSecurityPINsClient() *SecurityPINsClient {
+	return &SecurityPINsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewTieringCostOperationStatusClient creates a new instance of [TieringCostOperationStatusClient].
+func (client *RecoveryServicesClient) NewTieringCostOperationStatusClient() *TieringCostOperationStatusClient {
+	return &TieringCostOperationStatusClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewValidateOperationClient creates a new instance of [ValidateOperationClient].
+func (client *RecoveryServicesClient) NewValidateOperationClient() *ValidateOperationClient {
+	return &ValidateOperationClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewValidateOperationResultsClient creates a new instance of [ValidateOperationResultsClient].
+func (client *RecoveryServicesClient) NewValidateOperationResultsClient() *ValidateOperationResultsClient {
+	return &ValidateOperationResultsClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
+// NewValidateOperationStatusesClient creates a new instance of [ValidateOperationStatusesClient].
+func (client *RecoveryServicesClient) NewValidateOperationStatusesClient() *ValidateOperationStatusesClient {
+	return &ValidateOperationStatusesClient{
+		internal:       client.internal,
+		subscriptionID: client.subscriptionID,
+	}
+}
+
 // BeginBMSPrepareDataMove - Prepares source vault for Data Move operation
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RecoveryServicesClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the RecoveryServicesClient.BeginBMSPrepareDataMove
 //     method.
@@ -65,6 +480,8 @@ func (client *RecoveryServicesClient) BeginBMSPrepareDataMove(ctx context.Contex
 
 // BMSPrepareDataMove - Prepares source vault for Data Move operation
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 func (client *RecoveryServicesClient) bMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *RecoveryServicesClientBeginBMSPrepareDataMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RecoveryServicesClient.BeginBMSPrepareDataMove"
@@ -106,8 +523,8 @@ func (client *RecoveryServicesClient) bmsPrepareDataMoveCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -117,6 +534,8 @@ func (client *RecoveryServicesClient) bmsPrepareDataMoveCreateRequest(ctx contex
 
 // BeginBMSTriggerDataMove - Triggers Data Move Operation on target vault
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RecoveryServicesClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the RecoveryServicesClient.BeginBMSTriggerDataMove
 //     method.
@@ -139,6 +558,8 @@ func (client *RecoveryServicesClient) BeginBMSTriggerDataMove(ctx context.Contex
 
 // BMSTriggerDataMove - Triggers Data Move Operation on target vault
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 func (client *RecoveryServicesClient) bMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *RecoveryServicesClientBeginBMSTriggerDataMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RecoveryServicesClient.BeginBMSTriggerDataMove"
@@ -180,8 +601,8 @@ func (client *RecoveryServicesClient) bmsTriggerDataMoveCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -191,6 +612,8 @@ func (client *RecoveryServicesClient) bmsTriggerDataMoveCreateRequest(ctx contex
 
 // GetOperationStatus - Fetches Operation Result for Prepare Data Move
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RecoveryServicesClientGetOperationStatusOptions contains the optional parameters for the RecoveryServicesClient.GetOperationStatus
 //     method.
@@ -240,8 +663,8 @@ func (client *RecoveryServicesClient) getOperationStatusCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -257,6 +680,8 @@ func (client *RecoveryServicesClient) getOperationStatusHandleResponse(resp *htt
 
 // BeginMoveRecoveryPoint - Move recovery point from one datastore to another store.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RecoveryServicesClientBeginMoveRecoveryPointOptions contains the optional parameters for the RecoveryServicesClient.BeginMoveRecoveryPoint
 //     method.
@@ -279,6 +704,8 @@ func (client *RecoveryServicesClient) BeginMoveRecoveryPoint(ctx context.Context
 
 // MoveRecoveryPoint - Move recovery point from one datastore to another store.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 func (client *RecoveryServicesClient) moveRecoveryPoint(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, options *RecoveryServicesClientBeginMoveRecoveryPointOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RecoveryServicesClient.BeginMoveRecoveryPoint"
@@ -336,8 +763,8 @@ func (client *RecoveryServicesClient) moveRecoveryPointCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

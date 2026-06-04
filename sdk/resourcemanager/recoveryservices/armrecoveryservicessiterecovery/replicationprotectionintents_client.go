@@ -7,19 +7,18 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ReplicationProtectionIntentsClient contains the methods for the ReplicationProtectionIntents group.
 // Don't use this type directly, use NewReplicationProtectionIntentsClient() instead.
-//
-// Generated from API version 2025-08-01
 type ReplicationProtectionIntentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewReplicationProtectionIntentsClient(subscriptionID string, credential azc
 //
 // The operation to create an ASR replication protection intent item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - intentObjectName - Replication protection intent name.
@@ -97,8 +98,8 @@ func (client *ReplicationProtectionIntentsClient) createCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -120,6 +121,8 @@ func (client *ReplicationProtectionIntentsClient) createHandleResponse(resp *htt
 //
 // Gets the details of an ASR replication protection intent.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - intentObjectName - Replication protection intent name.
@@ -171,8 +174,8 @@ func (client *ReplicationProtectionIntentsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -189,6 +192,8 @@ func (client *ReplicationProtectionIntentsClient) getHandleResponse(resp *http.R
 // NewListPager - Gets the list of replication protection intent objects.
 //
 // Gets the list of ASR replication protection intent objects in the vault.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - options - ReplicationProtectionIntentsClientListOptions contains the optional parameters for the ReplicationProtectionIntentsClient.NewListPager
@@ -236,14 +241,14 @@ func (client *ReplicationProtectionIntentsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
 	if options != nil && options.TakeToken != nil {
 		reqQP.Set("takeToken", *options.TakeToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

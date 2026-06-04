@@ -8,15 +8,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
-	"net/http"
-	"net/url"
-	"regexp"
-	"slices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
 )
 
 // IngestionPrivateEndpointConnectionsServer is a fake server for instances of the armpurview.IngestionPrivateEndpointConnectionsClient type.
@@ -59,7 +59,9 @@ func (i *IngestionPrivateEndpointConnectionsServerTransport) Do(req *http.Reques
 }
 
 func (i *IngestionPrivateEndpointConnectionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -77,7 +79,10 @@ func (i *IngestionPrivateEndpointConnectionsServerTransport) dispatchToMethodFak
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -119,7 +124,7 @@ func (i *IngestionPrivateEndpointConnectionsServerTransport) dispatchNewListPage
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		i.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -156,7 +161,7 @@ func (i *IngestionPrivateEndpointConnectionsServerTransport) dispatchUpdateStatu
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateEndpointConnectionStatusUpdateResponse, req)

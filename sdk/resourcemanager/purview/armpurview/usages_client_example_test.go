@@ -6,9 +6,10 @@ package armpurview_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
 	"log"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
 )
 
 // Generated from example definition: 2024-04-01-preview/Usages_Get.json
@@ -30,7 +31,7 @@ func ExampleUsagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurview.UsagesClientGetResponse{
-	// 	UsageList: armpurview.UsageList{
+	// 	UsageList: &armpurview.UsageList{
 	// 		Value: []*armpurview.Usage{
 	// 			{
 	// 				Name: &armpurview.UsageName{

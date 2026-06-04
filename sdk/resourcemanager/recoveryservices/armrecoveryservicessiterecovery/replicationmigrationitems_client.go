@@ -7,19 +7,18 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ReplicationMigrationItemsClient contains the methods for the ReplicationMigrationItems group.
 // Don't use this type directly, use NewReplicationMigrationItemsClient() instead.
-//
-// Generated from API version 2025-08-01
 type ReplicationMigrationItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewReplicationMigrationItemsClient(subscriptionID string, credential azcore
 //
 // The operation to create an ASR migration item (enable migration).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -74,6 +75,8 @@ func (client *ReplicationMigrationItemsClient) BeginCreate(ctx context.Context, 
 //
 // The operation to create an ASR migration item (enable migration).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) create(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, input EnableMigrationInput, options *ReplicationMigrationItemsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginCreate"
@@ -127,8 +130,8 @@ func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -141,6 +144,8 @@ func (client *ReplicationMigrationItemsClient) createCreateRequest(ctx context.C
 //
 // The operation to delete an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -169,6 +174,8 @@ func (client *ReplicationMigrationItemsClient) BeginDelete(ctx context.Context, 
 //
 // The operation to delete an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, options *ReplicationMigrationItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginDelete"
@@ -222,11 +229,11 @@ func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.DeleteOption != nil {
 		reqQP.Set("deleteOption", *options.DeleteOption)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -234,6 +241,8 @@ func (client *ReplicationMigrationItemsClient) deleteCreateRequest(ctx context.C
 //
 // Gets the details of a migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -295,8 +304,8 @@ func (client *ReplicationMigrationItemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -313,6 +322,8 @@ func (client *ReplicationMigrationItemsClient) getHandleResponse(resp *http.Resp
 // NewListPager - Gets the list of migration items in the vault.
 //
 // Gets the list of migration items in the vault.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - options - ReplicationMigrationItemsClientListOptions contains the optional parameters for the ReplicationMigrationItemsClient.NewListPager
@@ -363,14 +374,14 @@ func (client *ReplicationMigrationItemsClient) listCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
 	if options != nil && options.TakeToken != nil {
 		reqQP.Set("takeToken", *options.TakeToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -387,6 +398,8 @@ func (client *ReplicationMigrationItemsClient) listHandleResponse(resp *http.Res
 // NewListByReplicationProtectionContainersPager - Gets the list of migration items in the protection container.
 //
 // Gets the list of ASR migration items in the protection container.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -447,14 +460,14 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
 	if options != nil && options.TakeToken != nil {
 		reqQP.Set("takeToken", *options.TakeToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -472,6 +485,8 @@ func (client *ReplicationMigrationItemsClient) listByReplicationProtectionContai
 //
 // The operation to initiate migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -501,6 +516,8 @@ func (client *ReplicationMigrationItemsClient) BeginMigrate(ctx context.Context,
 //
 // The operation to initiate migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) migrate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, migrateInput MigrateInput, options *ReplicationMigrationItemsClientBeginMigrateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginMigrate"
@@ -554,8 +571,8 @@ func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, migrateInput); err != nil {
@@ -568,6 +585,8 @@ func (client *ReplicationMigrationItemsClient) migrateCreateRequest(ctx context.
 //
 // The operation to initiate pause replication of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -597,6 +616,8 @@ func (client *ReplicationMigrationItemsClient) BeginPauseReplication(ctx context
 //
 // The operation to initiate pause replication of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) pauseReplication(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, pauseReplicationInput PauseReplicationInput, options *ReplicationMigrationItemsClientBeginPauseReplicationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginPauseReplication"
@@ -650,8 +671,8 @@ func (client *ReplicationMigrationItemsClient) pauseReplicationCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, pauseReplicationInput); err != nil {
@@ -664,6 +685,8 @@ func (client *ReplicationMigrationItemsClient) pauseReplicationCreateRequest(ctx
 //
 // The operation to initiate resume replication of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -693,6 +716,8 @@ func (client *ReplicationMigrationItemsClient) BeginResumeReplication(ctx contex
 //
 // The operation to initiate resume replication of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) resumeReplication(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, resumeReplicationInput ResumeReplicationInput, options *ReplicationMigrationItemsClientBeginResumeReplicationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginResumeReplication"
@@ -746,8 +771,8 @@ func (client *ReplicationMigrationItemsClient) resumeReplicationCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resumeReplicationInput); err != nil {
@@ -760,6 +785,8 @@ func (client *ReplicationMigrationItemsClient) resumeReplicationCreateRequest(ct
 //
 // The operation to resynchronize replication of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -789,6 +816,8 @@ func (client *ReplicationMigrationItemsClient) BeginResync(ctx context.Context, 
 //
 // The operation to resynchronize replication of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) resync(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, input ResyncInput, options *ReplicationMigrationItemsClientBeginResyncOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginResync"
@@ -842,8 +871,8 @@ func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -856,6 +885,8 @@ func (client *ReplicationMigrationItemsClient) resyncCreateRequest(ctx context.C
 //
 // The operation to initiate test migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -885,6 +916,8 @@ func (client *ReplicationMigrationItemsClient) BeginTestMigrate(ctx context.Cont
 //
 // The operation to initiate test migration of the item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) testMigrate(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, testMigrateInput TestMigrateInput, options *ReplicationMigrationItemsClientBeginTestMigrateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginTestMigrate"
@@ -938,8 +971,8 @@ func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, testMigrateInput); err != nil {
@@ -952,6 +985,8 @@ func (client *ReplicationMigrationItemsClient) testMigrateCreateRequest(ctx cont
 //
 // The operation to initiate test migrate cleanup.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -981,6 +1016,8 @@ func (client *ReplicationMigrationItemsClient) BeginTestMigrateCleanup(ctx conte
 //
 // The operation to initiate test migrate cleanup.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) testMigrateCleanup(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, testMigrateCleanupInput TestMigrateCleanupInput, options *ReplicationMigrationItemsClientBeginTestMigrateCleanupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginTestMigrateCleanup"
@@ -1034,8 +1071,8 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, testMigrateCleanupInput); err != nil {
@@ -1048,6 +1085,8 @@ func (client *ReplicationMigrationItemsClient) testMigrateCleanupCreateRequest(c
 //
 // The operation to update the recovery settings of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -1077,6 +1116,8 @@ func (client *ReplicationMigrationItemsClient) BeginUpdate(ctx context.Context, 
 //
 // The operation to update the recovery settings of an ASR migration item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationMigrationItemsClient) update(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, migrationItemName string, input UpdateMigrationItemInput, options *ReplicationMigrationItemsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationMigrationItemsClient.BeginUpdate"
@@ -1130,8 +1171,8 @@ func (client *ReplicationMigrationItemsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {

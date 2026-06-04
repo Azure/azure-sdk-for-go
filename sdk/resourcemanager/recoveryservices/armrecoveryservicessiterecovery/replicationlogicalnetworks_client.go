@@ -7,19 +7,18 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ReplicationLogicalNetworksClient contains the methods for the ReplicationLogicalNetworks group.
 // Don't use this type directly, use NewReplicationLogicalNetworksClient() instead.
-//
-// Generated from API version 2025-08-01
 type ReplicationLogicalNetworksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewReplicationLogicalNetworksClient(subscriptionID string, credential azcor
 //
 // Gets the details of a logical network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -101,8 +102,8 @@ func (client *ReplicationLogicalNetworksClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -119,6 +120,8 @@ func (client *ReplicationLogicalNetworksClient) getHandleResponse(resp *http.Res
 // NewListByReplicationFabricsPager - Gets the list of logical networks under a fabric.
 //
 // Lists all the logical networks of the Azure Site Recovery fabric.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -171,8 +174,8 @@ func (client *ReplicationLogicalNetworksClient) listByReplicationFabricsCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

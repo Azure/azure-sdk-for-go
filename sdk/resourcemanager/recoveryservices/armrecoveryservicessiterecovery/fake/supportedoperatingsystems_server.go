@@ -8,14 +8,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
+
+	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
 )
 
 // SupportedOperatingSystemsServer is a fake server for instances of the armrecoveryservicessiterecovery.SupportedOperatingSystemsClient type.
@@ -50,7 +50,9 @@ func (s *SupportedOperatingSystemsServerTransport) Do(req *http.Request) (*http.
 }
 
 func (s *SupportedOperatingSystemsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -66,7 +68,10 @@ func (s *SupportedOperatingSystemsServerTransport) dispatchToMethodFake(req *htt
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -96,7 +101,11 @@ func (s *SupportedOperatingSystemsServerTransport) dispatchGet(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	instanceTypeParam := getOptional(qp.Get("instanceType"))
+	instanceTypeUnescaped, err := url.QueryUnescape(qp.Get("instanceType"))
+	if err != nil {
+		return nil, err
+	}
+	instanceTypeParam := getOptional(instanceTypeUnescaped)
 	var options *armrecoveryservicessiterecovery.SupportedOperatingSystemsClientGetOptions
 	if instanceTypeParam != nil {
 		options = &armrecoveryservicessiterecovery.SupportedOperatingSystemsClientGetOptions{
@@ -108,7 +117,7 @@ func (s *SupportedOperatingSystemsServerTransport) dispatchGet(req *http.Request
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SupportedOperatingSystems, req)

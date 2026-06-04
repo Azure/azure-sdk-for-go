@@ -18,8 +18,6 @@ import (
 
 // BackupJobsClient contains the methods for the BackupJobs group.
 // Don't use this type directly, use NewBackupJobsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type BackupJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewBackupJobsClient(subscriptionID string, credential azcore.TokenCredentia
 }
 
 // NewListPager - Provides a pageable list of jobs.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupJobsClientListOptions contains the optional parameters for the BackupJobsClient.NewListPager method.
 func (client *BackupJobsClient) NewListPager(vaultName string, resourceGroupName string, options *BackupJobsClientListOptions) *runtime.Pager[BackupJobsClientListResponse] {
@@ -93,8 +93,8 @@ func (client *BackupJobsClient) listCreateRequest(ctx context.Context, vaultName
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

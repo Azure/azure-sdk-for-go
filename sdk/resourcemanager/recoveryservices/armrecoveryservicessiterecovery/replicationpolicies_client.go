@@ -7,19 +7,18 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ReplicationPoliciesClient contains the methods for the ReplicationPolicies group.
 // Don't use this type directly, use NewReplicationPoliciesClient() instead.
-//
-// Generated from API version 2025-08-01
 type ReplicationPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewReplicationPoliciesClient(subscriptionID string, credential azcore.Token
 //
 // The operation to create a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - policyName - Replication policy name.
@@ -72,6 +73,8 @@ func (client *ReplicationPoliciesClient) BeginCreate(ctx context.Context, resour
 //
 // The operation to create a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationPoliciesClient) create(ctx context.Context, resourceGroupName string, resourceName string, policyName string, input CreatePolicyInput, options *ReplicationPoliciesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationPoliciesClient.BeginCreate"
@@ -117,8 +120,8 @@ func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {
@@ -131,6 +134,8 @@ func (client *ReplicationPoliciesClient) createCreateRequest(ctx context.Context
 //
 // The operation to delete a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - policyName - Replication policy name.
@@ -157,6 +162,8 @@ func (client *ReplicationPoliciesClient) BeginDelete(ctx context.Context, resour
 //
 // The operation to delete a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, policyName string, options *ReplicationPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationPoliciesClient.BeginDelete"
@@ -202,8 +209,8 @@ func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -211,6 +218,8 @@ func (client *ReplicationPoliciesClient) deleteCreateRequest(ctx context.Context
 //
 // Gets the details of a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - policyName - Replication policy name.
@@ -261,8 +270,8 @@ func (client *ReplicationPoliciesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -279,6 +288,8 @@ func (client *ReplicationPoliciesClient) getHandleResponse(resp *http.Response) 
 // NewListPager - Gets the list of replication policies.
 //
 // Lists the replication policies for a vault.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - options - ReplicationPoliciesClientListOptions contains the optional parameters for the ReplicationPoliciesClient.NewListPager
@@ -326,8 +337,8 @@ func (client *ReplicationPoliciesClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -345,6 +356,8 @@ func (client *ReplicationPoliciesClient) listHandleResponse(resp *http.Response)
 //
 // The operation to update a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - policyName - Replication policy name.
@@ -372,6 +385,8 @@ func (client *ReplicationPoliciesClient) BeginUpdate(ctx context.Context, resour
 //
 // The operation to update a replication policy.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationPoliciesClient) update(ctx context.Context, resourceGroupName string, resourceName string, policyName string, input UpdatePolicyInput, options *ReplicationPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationPoliciesClient.BeginUpdate"
@@ -417,8 +432,8 @@ func (client *ReplicationPoliciesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, input); err != nil {

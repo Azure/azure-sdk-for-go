@@ -7,19 +7,18 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ReplicationEventsClient contains the methods for the ReplicationEvents group.
 // Don't use this type directly, use NewReplicationEventsClient() instead.
-//
-// Generated from API version 2025-08-01
 type ReplicationEventsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewReplicationEventsClient(subscriptionID string, credential azcore.TokenCr
 //
 // The operation to get the details of an Azure Site recovery event.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - eventName - The name of the Azure Site Recovery event.
@@ -95,8 +96,8 @@ func (client *ReplicationEventsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -113,6 +114,8 @@ func (client *ReplicationEventsClient) getHandleResponse(resp *http.Response) (R
 // NewListPager - Gets the list of Azure Site Recovery events.
 //
 // Gets the list of Azure Site Recovery events for the vault.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - options - ReplicationEventsClientListOptions contains the optional parameters for the ReplicationEventsClient.NewListPager
@@ -163,8 +166,8 @@ func (client *ReplicationEventsClient) listCreateRequest(ctx context.Context, re
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

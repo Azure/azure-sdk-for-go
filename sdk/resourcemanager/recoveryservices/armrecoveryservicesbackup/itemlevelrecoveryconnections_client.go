@@ -18,8 +18,6 @@ import (
 
 // ItemLevelRecoveryConnectionsClient contains the methods for the ItemLevelRecoveryConnections group.
 // Don't use this type directly, use NewItemLevelRecoveryConnectionsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type ItemLevelRecoveryConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +43,8 @@ func NewItemLevelRecoveryConnectionsClient(subscriptionID string, credential azc
 // explorer displaying all the recoverable files and folders. This is an asynchronous operation. To know the status of
 // provisioning, call GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ItemLevelRecoveryConnectionsClientProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Provision
 //     method.
@@ -105,8 +105,8 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -117,6 +117,8 @@ func (client *ItemLevelRecoveryConnectionsClient) provisionCreateRequest(ctx con
 // Revoke - Revokes an iSCSI connection which can be used to download a script. Executing this script opens a file explorer
 // displaying all recoverable files and folders. This is an asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ItemLevelRecoveryConnectionsClientRevokeOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Revoke
 //     method.
@@ -177,7 +179,7 @@ func (client *ItemLevelRecoveryConnectionsClient) revokeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

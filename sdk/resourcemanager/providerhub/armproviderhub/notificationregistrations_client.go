@@ -18,8 +18,6 @@ import (
 
 // NotificationRegistrationsClient contains the methods for the NotificationRegistrations group.
 // Don't use this type directly, use NewNotificationRegistrationsClient() instead.
-//
-// Generated from API version 2024-09-01
 type NotificationRegistrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewNotificationRegistrationsClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Creates or updates a notification registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - notificationRegistrationName - The notification registration.
 //   - properties - The required body parameters supplied to the notification registration operation.
@@ -90,8 +90,8 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -111,6 +111,8 @@ func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp
 
 // Delete - Deletes a notification registration.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - notificationRegistrationName - The notification registration.
 //   - options - NotificationRegistrationsClientDeleteOptions contains the optional parameters for the NotificationRegistrationsClient.Delete
@@ -156,13 +158,15 @@ func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the notification registration details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - notificationRegistrationName - The notification registration.
 //   - options - NotificationRegistrationsClientGetOptions contains the optional parameters for the NotificationRegistrationsClient.Get
@@ -209,8 +213,8 @@ func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -225,6 +229,8 @@ func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByProviderRegistrationPager - Gets the list of the notification registrations for the given provider.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - NotificationRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the NotificationRegistrationsClient.NewListByProviderRegistrationPager
 //     method.
@@ -267,8 +273,8 @@ func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

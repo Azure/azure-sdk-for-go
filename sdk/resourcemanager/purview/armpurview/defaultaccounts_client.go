@@ -6,18 +6,16 @@ package armpurview
 
 import (
 	"context"
+	"net/http"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"strings"
 )
 
 // DefaultAccountsClient contains the methods for the DefaultAccounts group.
 // Don't use this type directly, use NewDefaultAccountsClient() instead.
-//
-// Generated from API version 2024-04-01-preview
 type DefaultAccountsClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewDefaultAccountsClient(credential azcore.TokenCredential, options *arm.Cl
 //
 // Get the default account for the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - scopeTenantID - The tenant ID.
 //   - scopeType - The scope for the default account.
 //   - options - DefaultAccountsClientGetOptions contains the optional parameters for the DefaultAccountsClient.Get method.
@@ -73,13 +73,13 @@ func (client *DefaultAccountsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
+	reqQP.Set("api-version", "2024-04-01-preview")
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", *options.Scope)
 	}
 	reqQP.Set("scopeTenantId", scopeTenantID)
 	reqQP.Set("scopeType", string(scopeType))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -97,6 +97,8 @@ func (client *DefaultAccountsClient) getHandleResponse(resp *http.Response) (Def
 //
 // Removes the default account from the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - scopeTenantID - The tenant ID.
 //   - scopeType - The scope for the default account.
 //   - options - DefaultAccountsClientRemoveOptions contains the optional parameters for the DefaultAccountsClient.Remove method.
@@ -129,13 +131,13 @@ func (client *DefaultAccountsClient) removeCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
+	reqQP.Set("api-version", "2024-04-01-preview")
 	if options != nil && options.Scope != nil {
 		reqQP.Set("scope", *options.Scope)
 	}
 	reqQP.Set("scopeTenantId", scopeTenantID)
 	reqQP.Set("scopeType", string(scopeType))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -143,6 +145,8 @@ func (client *DefaultAccountsClient) removeCreateRequest(ctx context.Context, sc
 //
 // Sets the default account for the scope.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01-preview
 //   - defaultAccountPayload - The request body
 //   - options - DefaultAccountsClientSetOptions contains the optional parameters for the DefaultAccountsClient.Set method.
 func (client *DefaultAccountsClient) Set(ctx context.Context, defaultAccountPayload DefaultAccountPayload, options *DefaultAccountsClientSetOptions) (DefaultAccountsClientSetResponse, error) {
@@ -175,8 +179,8 @@ func (client *DefaultAccountsClient) setCreateRequest(ctx context.Context, defau
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, defaultAccountPayload); err != nil {

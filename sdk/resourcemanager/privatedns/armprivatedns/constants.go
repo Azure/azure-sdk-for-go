@@ -4,10 +4,6 @@
 
 package armprivatedns
 
-const (
-	version20240601 string = "2024-06-01"
-)
-
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

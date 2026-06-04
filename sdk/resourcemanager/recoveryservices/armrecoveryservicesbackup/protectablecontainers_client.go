@@ -18,8 +18,6 @@ import (
 
 // ProtectableContainersClient contains the methods for the ProtectableContainers group.
 // Don't use this type directly, use NewProtectableContainersClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type ProtectableContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewProtectableContainersClient(subscriptionID string, credential azcore.Tok
 }
 
 // NewListPager - Lists the containers that can be registered to Recovery Services Vault.
+//
+// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectableContainersClientListOptions contains the optional parameters for the ProtectableContainersClient.NewListPager
@@ -96,8 +96,8 @@ func (client *ProtectableContainersClient) listCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

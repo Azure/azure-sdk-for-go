@@ -18,8 +18,6 @@ import (
 
 // VaultCertificatesClient contains the methods for the VaultCertificates group.
 // Don't use this type directly, use NewVaultCertificatesClient() instead.
-//
-// Generated from API version 2025-02-01
 type VaultCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewVaultCertificatesClient(subscriptionID string, credential azcore.TokenCr
 
 // Create - Uploads a certificate for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - certificateName - Certificate friendly name.
@@ -95,8 +95,8 @@ func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, certificateRequest); err != nil {

@@ -18,8 +18,6 @@ import (
 
 // CapabilitiesByServerClient contains the methods for the CapabilitiesByServer group.
 // Don't use this type directly, use NewCapabilitiesByServerClient() instead.
-//
-// Generated from API version 2026-01-01-preview
 type CapabilitiesByServerClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewCapabilitiesByServerClient(subscriptionID string, credential azcore.Toke
 }
 
 // NewListPager - Lists the capabilities available for a given server.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - CapabilitiesByServerClientListOptions contains the optional parameters for the CapabilitiesByServerClient.NewListPager
@@ -89,8 +89,8 @@ func (client *CapabilitiesByServerClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

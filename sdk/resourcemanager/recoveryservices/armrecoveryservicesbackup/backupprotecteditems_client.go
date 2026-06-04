@@ -18,8 +18,6 @@ import (
 
 // BackupProtectedItemsClient contains the methods for the BackupProtectedItems group.
 // Don't use this type directly, use NewBackupProtectedItemsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type BackupProtectedItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewBackupProtectedItemsClient(subscriptionID string, credential azcore.Toke
 }
 
 // NewListPager - Provides a pageable list of all items that are backed up within a vault.
+//
+// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupProtectedItemsClientListOptions contains the optional parameters for the BackupProtectedItemsClient.NewListPager
@@ -95,8 +95,8 @@ func (client *BackupProtectedItemsClient) listCreateRequest(ctx context.Context,
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

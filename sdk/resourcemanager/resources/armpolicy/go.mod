@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy/v2
 
 go 1.25.0
 
@@ -7,7 +7,6 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3 v3.2.0
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy/v2 v2.0.0-beta.1
 	github.com/stretchr/testify v1.11.1
 )
 

@@ -19,8 +19,6 @@ import (
 
 // VirtualNetworkLinksClient contains the methods for the VirtualNetworkLinks group.
 // Don't use this type directly, use NewVirtualNetworkLinksClient() instead.
-//
-// Generated from API version 2024-06-01
 type VirtualNetworkLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewVirtualNetworkLinksClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates or updates a virtual network link to the specified Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateZoneName - The name of the Private DNS zone (without a terminating dot).
 //   - virtualNetworkLinkName - The name of the virtual network link.
@@ -69,6 +69,8 @@ func (client *VirtualNetworkLinksClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Creates or updates a virtual network link to the specified Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01
 func (client *VirtualNetworkLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkLinksClient.BeginCreateOrUpdate"
@@ -114,8 +116,8 @@ func (client *VirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -134,6 +136,8 @@ func (client *VirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx context
 // network, all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation cannot
 // be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateZoneName - The name of the Private DNS zone (without a terminating dot).
 //   - virtualNetworkLinkName - The name of the virtual network link.
@@ -159,6 +163,8 @@ func (client *VirtualNetworkLinksClient) BeginDelete(ctx context.Context, resour
 // Delete - Deletes a virtual network link to the specified Private DNS zone. WARNING: In case of a registration virtual network,
 // all auto-registered DNS records in the zone for the virtual network will also be deleted. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01
 func (client *VirtualNetworkLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, options *VirtualNetworkLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkLinksClient.BeginDelete"
@@ -204,8 +210,8 @@ func (client *VirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -214,6 +220,8 @@ func (client *VirtualNetworkLinksClient) deleteCreateRequest(ctx context.Context
 
 // Get - Gets a virtual network link to the specified Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateZoneName - The name of the Private DNS zone (without a terminating dot).
 //   - virtualNetworkLinkName - The name of the virtual network link.
@@ -264,8 +272,8 @@ func (client *VirtualNetworkLinksClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -280,6 +288,8 @@ func (client *VirtualNetworkLinksClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Lists the virtual network links to the specified Private DNS zone.
+//
+// Generated from API version 2024-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateZoneName - The name of the Private DNS zone (without a terminating dot).
 //   - options - VirtualNetworkLinksClientListOptions contains the optional parameters for the VirtualNetworkLinksClient.NewListPager
@@ -330,8 +340,8 @@ func (client *VirtualNetworkLinksClient) listCreateRequest(ctx context.Context, 
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20240601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -347,6 +357,8 @@ func (client *VirtualNetworkLinksClient) listHandleResponse(resp *http.Response)
 
 // BeginUpdate - Updates a virtual network link to the specified Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateZoneName - The name of the Private DNS zone (without a terminating dot).
 //   - virtualNetworkLinkName - The name of the virtual network link.
@@ -372,6 +384,8 @@ func (client *VirtualNetworkLinksClient) BeginUpdate(ctx context.Context, resour
 
 // Update - Updates a virtual network link to the specified Private DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-06-01
 func (client *VirtualNetworkLinksClient) update(ctx context.Context, resourceGroupName string, privateZoneName string, virtualNetworkLinkName string, parameters VirtualNetworkLink, options *VirtualNetworkLinksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkLinksClient.BeginUpdate"
@@ -417,8 +431,8 @@ func (client *VirtualNetworkLinksClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

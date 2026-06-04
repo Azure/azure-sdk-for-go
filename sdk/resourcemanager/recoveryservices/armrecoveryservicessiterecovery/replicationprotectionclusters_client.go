@@ -7,19 +7,18 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // ReplicationProtectionClustersClient contains the methods for the ReplicationProtectionClusters group.
 // Don't use this type directly, use NewReplicationProtectionClustersClient() instead.
-//
-// Generated from API version 2025-08-01
 type ReplicationProtectionClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,6 +44,8 @@ func NewReplicationProtectionClustersClient(subscriptionID string, credential az
 //
 // Operation to apply a new cluster recovery point on the Protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -74,6 +75,8 @@ func (client *ReplicationProtectionClustersClient) BeginApplyRecoveryPoint(ctx c
 //
 // Operation to apply a new cluster recovery point on the Protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) applyRecoveryPoint(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, applyClusterRecoveryPointInput ApplyClusterRecoveryPointInput, options *ReplicationProtectionClustersClientBeginApplyRecoveryPointOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginApplyRecoveryPoint"
@@ -127,8 +130,8 @@ func (client *ReplicationProtectionClustersClient) applyRecoveryPointCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, applyClusterRecoveryPointInput); err != nil {
@@ -141,6 +144,8 @@ func (client *ReplicationProtectionClustersClient) applyRecoveryPointCreateReque
 //
 // The operation to create an ASR replication protection cluster item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -170,6 +175,8 @@ func (client *ReplicationProtectionClustersClient) BeginCreate(ctx context.Conte
 //
 // The operation to create an ASR replication protection cluster item.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) create(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, replicationProtectionCluster ReplicationProtectionCluster, options *ReplicationProtectionClustersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginCreate"
@@ -223,8 +230,8 @@ func (client *ReplicationProtectionClustersClient) createCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, replicationProtectionCluster); err != nil {
@@ -237,6 +244,8 @@ func (client *ReplicationProtectionClustersClient) createCreateRequest(ctx conte
 //
 // Operation to initiate commit failover of the replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -265,6 +274,8 @@ func (client *ReplicationProtectionClustersClient) BeginFailoverCommit(ctx conte
 //
 // Operation to initiate commit failover of the replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) failoverCommit(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, options *ReplicationProtectionClustersClientBeginFailoverCommitOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginFailoverCommit"
@@ -318,8 +329,8 @@ func (client *ReplicationProtectionClustersClient) failoverCommitCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -328,6 +339,8 @@ func (client *ReplicationProtectionClustersClient) failoverCommitCreateRequest(c
 //
 // Gets the details of an ASR replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -389,8 +402,8 @@ func (client *ReplicationProtectionClustersClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -408,6 +421,8 @@ func (client *ReplicationProtectionClustersClient) getHandleResponse(resp *http.
 //
 // Track the results of an asynchronous operation on the replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -474,8 +489,8 @@ func (client *ReplicationProtectionClustersClient) getOperationResultsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -492,6 +507,8 @@ func (client *ReplicationProtectionClustersClient) getOperationResultsHandleResp
 // NewListPager - Gets the list of Replication protection clusters in vault.
 //
 // Gets the list of ASR replication protected clusters in the vault.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - options - ReplicationProtectionClustersClientListOptions contains the optional parameters for the ReplicationProtectionClustersClient.NewListPager
@@ -542,11 +559,11 @@ func (client *ReplicationProtectionClustersClient) listCreateRequest(ctx context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", "2025-08-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("skipToken", *options.SkipToken)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -563,6 +580,8 @@ func (client *ReplicationProtectionClustersClient) listHandleResponse(resp *http
 // NewListByReplicationProtectionContainersPager - Gets the list of Replication protection clusters in fabric, container.
 //
 // Gets the list of ASR replication protected clusters in the protection container.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -620,8 +639,8 @@ func (client *ReplicationProtectionClustersClient) listByReplicationProtectionCo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -640,6 +659,8 @@ func (client *ReplicationProtectionClustersClient) listByReplicationProtectionCo
 // The operation to purge the replication protection cluster. This operation will force delete the replication protection
 // cluster. Use the remove operation on replication protection cluster to perform a clean disable replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -669,6 +690,8 @@ func (client *ReplicationProtectionClustersClient) BeginPurge(ctx context.Contex
 // The operation to purge the replication protection cluster. This operation will force delete the replication protection
 // cluster. Use the remove operation on replication protection cluster to perform a clean disable replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) purge(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, options *ReplicationProtectionClustersClientBeginPurgeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginPurge"
@@ -722,8 +745,8 @@ func (client *ReplicationProtectionClustersClient) purgeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
@@ -731,6 +754,8 @@ func (client *ReplicationProtectionClustersClient) purgeCreateRequest(ctx contex
 //
 // The operation to repair replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -759,6 +784,8 @@ func (client *ReplicationProtectionClustersClient) BeginRepairReplication(ctx co
 //
 // The operation to repair replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) repairReplication(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, options *ReplicationProtectionClustersClientBeginRepairReplicationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginRepairReplication"
@@ -812,8 +839,8 @@ func (client *ReplicationProtectionClustersClient) repairReplicationCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -822,6 +849,8 @@ func (client *ReplicationProtectionClustersClient) repairReplicationCreateReques
 //
 // Operation to initiate a failover of the replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -851,6 +880,8 @@ func (client *ReplicationProtectionClustersClient) BeginTestFailover(ctx context
 //
 // Operation to initiate a failover of the replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) testFailover(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, failoverInput ClusterTestFailoverInput, options *ReplicationProtectionClustersClientBeginTestFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginTestFailover"
@@ -904,8 +935,8 @@ func (client *ReplicationProtectionClustersClient) testFailoverCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, failoverInput); err != nil {
@@ -918,6 +949,8 @@ func (client *ReplicationProtectionClustersClient) testFailoverCreateRequest(ctx
 //
 // Operation to clean up the test failover of a replication protected cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -947,6 +980,8 @@ func (client *ReplicationProtectionClustersClient) BeginTestFailoverCleanup(ctx 
 //
 // Operation to clean up the test failover of a replication protected cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) testFailoverCleanup(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, cleanupInput ClusterTestFailoverCleanupInput, options *ReplicationProtectionClustersClientBeginTestFailoverCleanupOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginTestFailoverCleanup"
@@ -1000,8 +1035,8 @@ func (client *ReplicationProtectionClustersClient) testFailoverCleanupCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cleanupInput); err != nil {
@@ -1014,6 +1049,8 @@ func (client *ReplicationProtectionClustersClient) testFailoverCleanupCreateRequ
 //
 // Operation to initiate a failover of the replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -1043,6 +1080,8 @@ func (client *ReplicationProtectionClustersClient) BeginUnplannedFailover(ctx co
 //
 // Operation to initiate a failover of the replication protection cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01
 func (client *ReplicationProtectionClustersClient) unplannedFailover(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, replicationProtectionClusterName string, failoverInput ClusterUnplannedFailoverInput, options *ReplicationProtectionClustersClientBeginUnplannedFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationProtectionClustersClient.BeginUnplannedFailover"
@@ -1096,8 +1135,8 @@ func (client *ReplicationProtectionClustersClient) unplannedFailoverCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, failoverInput); err != nil {

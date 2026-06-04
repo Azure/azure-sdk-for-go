@@ -18,8 +18,6 @@ import (
 
 // PrivateEndpointClient contains the methods for the PrivateEndpoint group.
 // Don't use this type directly, use NewPrivateEndpointClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type PrivateEndpointClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewPrivateEndpointClient(subscriptionID string, credential azcore.TokenCred
 
 // GetOperationStatus - Gets the operation status for a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateEndpointClientGetOperationStatusOptions contains the optional parameters for the PrivateEndpointClient.GetOperationStatus
 //     method.
@@ -96,8 +96,8 @@ func (client *PrivateEndpointClient) getOperationStatusCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

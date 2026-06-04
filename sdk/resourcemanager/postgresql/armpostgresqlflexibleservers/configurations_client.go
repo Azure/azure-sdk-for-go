@@ -18,8 +18,6 @@ import (
 
 // ConfigurationsClient contains the methods for the Configurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
-//
-// Generated from API version 2026-01-01-preview
 type ConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets information about a specific configuration (also known as server parameter) of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - configurationName - Name of the configuration (also known as server parameter).
@@ -93,8 +93,8 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,6 +109,8 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 }
 
 // NewListByServerPager - Lists all configurations (also known as server parameters) of a server.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ConfigurationsClientListByServerOptions contains the optional parameters for the ConfigurationsClient.NewListByServerPager
@@ -156,8 +158,8 @@ func (client *ConfigurationsClient) listByServerCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -174,6 +176,8 @@ func (client *ConfigurationsClient) listByServerHandleResponse(resp *http.Respon
 // BeginPut - Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server parameter)
 // of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - configurationName - Name of the configuration (also known as server parameter).
@@ -200,6 +204,8 @@ func (client *ConfigurationsClient) BeginPut(ctx context.Context, resourceGroupN
 // Put - Updates, using Put verb, the value assigned to a specific modifiable configuration (also known as server parameter)
 // of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 func (client *ConfigurationsClient) put(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters ConfigurationForUpdate, options *ConfigurationsClientBeginPutOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationsClient.BeginPut"
@@ -245,8 +251,8 @@ func (client *ConfigurationsClient) putCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -256,6 +262,8 @@ func (client *ConfigurationsClient) putCreateRequest(ctx context.Context, resour
 
 // BeginUpdate - Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - configurationName - Name of the configuration (also known as server parameter).
@@ -282,6 +290,8 @@ func (client *ConfigurationsClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Updates the value assigned to a specific modifiable configuration (also known as server parameter) of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 func (client *ConfigurationsClient) update(ctx context.Context, resourceGroupName string, serverName string, configurationName string, parameters ConfigurationForUpdate, options *ConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigurationsClient.BeginUpdate"
@@ -327,8 +337,8 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

@@ -4,10 +4,6 @@
 
 package armpowerbidedicated
 
-const (
-	version20210101 string = "2021-01-01"
-)
-
 // CapacityProvisioningState - The current deployment state of PowerBI Dedicated resource. The provisioningState is to indicate
 // states for resource provisioning.
 type CapacityProvisioningState string

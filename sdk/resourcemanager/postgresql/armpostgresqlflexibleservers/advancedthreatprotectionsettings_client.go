@@ -18,8 +18,6 @@ import (
 
 // AdvancedThreatProtectionSettingsClient contains the methods for the AdvancedThreatProtectionSettings group.
 // Don't use this type directly, use NewAdvancedThreatProtectionSettingsClient() instead.
-//
-// Generated from API version 2026-01-01-preview
 type AdvancedThreatProtectionSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAdvancedThreatProtectionSettingsClient(subscriptionID string, credential
 
 // Get - Gets state of advanced threat protection settings for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - threatProtectionName - Name of the advanced threat protection settings.
@@ -94,8 +94,8 @@ func (client *AdvancedThreatProtectionSettingsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,6 +110,8 @@ func (client *AdvancedThreatProtectionSettingsClient) getHandleResponse(resp *ht
 }
 
 // NewListByServerPager - Lists state of advanced threat protection settings for a server.
+//
+// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - AdvancedThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the AdvancedThreatProtectionSettingsClient.NewListByServerPager
@@ -157,8 +159,8 @@ func (client *AdvancedThreatProtectionSettingsClient) listByServerCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

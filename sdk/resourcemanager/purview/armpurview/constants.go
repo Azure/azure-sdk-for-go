@@ -4,10 +4,6 @@
 
 package armpurview
 
-const (
-	version20240401Preview string = "2024-04-01-preview"
-)
-
 // AccountProvisioningState - Gets the account status code.
 type AccountProvisioningState string
 

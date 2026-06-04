@@ -8,12 +8,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
-	"net/http"
-	"slices"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
 )
 
 // DefaultAccountsServer is a fake server for instances of the armpurview.DefaultAccountsClient type.
@@ -56,7 +57,9 @@ func (d *DefaultAccountsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (d *DefaultAccountsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -76,7 +79,10 @@ func (d *DefaultAccountsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -92,19 +98,37 @@ func (d *DefaultAccountsServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
 	qp := req.URL.Query()
-	scopeParam := getOptional(qp.Get("scope"))
+	scopeTenantIDParam, err := url.QueryUnescape(qp.Get("scopeTenantId"))
+	if err != nil {
+		return nil, err
+	}
+	scopeTypeParam, err := parseWithCast(qp.Get("scopeType"), func(v string) (armpurview.ScopeType, error) {
+		p, unescapeErr := url.QueryUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpurview.ScopeType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	scopeUnescaped, err := url.QueryUnescape(qp.Get("scope"))
+	if err != nil {
+		return nil, err
+	}
+	scopeParam := getOptional(scopeUnescaped)
 	var options *armpurview.DefaultAccountsClientGetOptions
 	if scopeParam != nil {
 		options = &armpurview.DefaultAccountsClientGetOptions{
 			Scope: scopeParam,
 		}
 	}
-	respr, errRespr := d.srv.Get(req.Context(), qp.Get("scopeTenantId"), armpurview.ScopeType(qp.Get("scopeType")), options)
+	respr, errRespr := d.srv.Get(req.Context(), scopeTenantIDParam, scopeTypeParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DefaultAccountPayload, req)
@@ -119,19 +143,37 @@ func (d *DefaultAccountsServerTransport) dispatchRemove(req *http.Request) (*htt
 		return nil, &nonRetriableError{errors.New("fake for method Remove not implemented")}
 	}
 	qp := req.URL.Query()
-	scopeParam := getOptional(qp.Get("scope"))
+	scopeTenantIDParam, err := url.QueryUnescape(qp.Get("scopeTenantId"))
+	if err != nil {
+		return nil, err
+	}
+	scopeTypeParam, err := parseWithCast(qp.Get("scopeType"), func(v string) (armpurview.ScopeType, error) {
+		p, unescapeErr := url.QueryUnescape(v)
+		if unescapeErr != nil {
+			return "", unescapeErr
+		}
+		return armpurview.ScopeType(p), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	scopeUnescaped, err := url.QueryUnescape(qp.Get("scope"))
+	if err != nil {
+		return nil, err
+	}
+	scopeParam := getOptional(scopeUnescaped)
 	var options *armpurview.DefaultAccountsClientRemoveOptions
 	if scopeParam != nil {
 		options = &armpurview.DefaultAccountsClientRemoveOptions{
 			Scope: scopeParam,
 		}
 	}
-	respr, errRespr := d.srv.Remove(req.Context(), qp.Get("scopeTenantId"), armpurview.ScopeType(qp.Get("scopeType")), options)
+	respr, errRespr := d.srv.Remove(req.Context(), scopeTenantIDParam, scopeTypeParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -154,7 +196,7 @@ func (d *DefaultAccountsServerTransport) dispatchSet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DefaultAccountPayload, req)

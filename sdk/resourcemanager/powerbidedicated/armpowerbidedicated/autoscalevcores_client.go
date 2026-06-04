@@ -18,8 +18,6 @@ import (
 
 // AutoScaleVCoresClient contains the methods for the AutoScaleVCores group.
 // Don't use this type directly, use NewAutoScaleVCoresClient() instead.
-//
-// Generated from API version 2021-01-01
 type AutoScaleVCoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewAutoScaleVCoresClient(subscriptionID string, credential azcore.TokenCred
 
 // Create - Provisions the specified auto scale v-core based on the configuration specified in the request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
 //   - vCoreParameters - Contains the information used to provision the auto scale v-core.
@@ -89,8 +89,8 @@ func (client *AutoScaleVCoresClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vCoreParameters); err != nil {
@@ -110,6 +110,8 @@ func (client *AutoScaleVCoresClient) createHandleResponse(resp *http.Response) (
 
 // Delete - Deletes the specified auto scale v-core.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - AutoScaleVCoresClientDeleteOptions contains the optional parameters for the AutoScaleVCoresClient.Delete method.
@@ -154,13 +156,15 @@ func (client *AutoScaleVCoresClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets details about the specified auto scale v-core.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - AutoScaleVCoresClientGetOptions contains the optional parameters for the AutoScaleVCoresClient.Get method.
@@ -206,8 +210,8 @@ func (client *AutoScaleVCoresClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -222,6 +226,8 @@ func (client *AutoScaleVCoresClient) getHandleResponse(resp *http.Response) (Aut
 }
 
 // NewListByResourceGroupPager - Gets all the auto scale v-cores for the given resource group.
+//
+// Generated from API version 2021-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AutoScaleVCoresClientListByResourceGroupOptions contains the optional parameters for the AutoScaleVCoresClient.NewListByResourceGroupPager
 //     method.
@@ -264,8 +270,8 @@ func (client *AutoScaleVCoresClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -280,6 +286,8 @@ func (client *AutoScaleVCoresClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Lists all the auto scale v-cores for the given subscription.
+//
+// Generated from API version 2021-01-01
 //   - options - AutoScaleVCoresClientListBySubscriptionOptions contains the optional parameters for the AutoScaleVCoresClient.NewListBySubscriptionPager
 //     method.
 func (client *AutoScaleVCoresClient) NewListBySubscriptionPager(options *AutoScaleVCoresClientListBySubscriptionOptions) *runtime.Pager[AutoScaleVCoresClientListBySubscriptionResponse] {
@@ -317,8 +325,8 @@ func (client *AutoScaleVCoresClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -334,6 +342,8 @@ func (client *AutoScaleVCoresClient) listBySubscriptionHandleResponse(resp *http
 
 // Update - Updates the current state of the specified auto scale v-core.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2021-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vcoreName - The name of the auto scale v-core. It must be a minimum of 3 characters, and a maximum of 63.
 //   - vCoreUpdateParameters - Request object that contains the updated information for the auto scale v-core.
@@ -380,8 +390,8 @@ func (client *AutoScaleVCoresClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2021-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, vCoreUpdateParameters); err != nil {

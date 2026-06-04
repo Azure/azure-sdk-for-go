@@ -18,8 +18,6 @@ import (
 
 // VaultsClient contains the methods for the Vaults group.
 // Don't use this type directly, use NewVaultsClient() instead.
-//
-// Generated from API version 2025-02-01
 type VaultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewVaultsClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreateOrUpdate - Creates or updates a Recovery Services vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the Vault
 //   - vault - Recovery Services Vault to be created.
@@ -67,6 +67,8 @@ func (client *VaultsClient) BeginCreateOrUpdate(ctx context.Context, resourceGro
 
 // CreateOrUpdate - Creates or updates a Recovery Services vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 func (client *VaultsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, vault Vault, options *VaultsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VaultsClient.BeginCreateOrUpdate"
@@ -108,8 +110,8 @@ func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -123,6 +125,8 @@ func (client *VaultsClient) createOrUpdateCreateRequest(ctx context.Context, res
 
 // BeginDelete - Deletes a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the Vault
 //   - options - VaultsClientBeginDeleteOptions contains the optional parameters for the VaultsClient.BeginDelete method.
@@ -145,6 +149,8 @@ func (client *VaultsClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Deletes a vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 func (client *VaultsClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, options *VaultsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VaultsClient.BeginDelete"
@@ -186,13 +192,15 @@ func (client *VaultsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the Vault details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the Vault
 //   - options - VaultsClientGetOptions contains the optional parameters for the VaultsClient.Get method.
@@ -238,8 +246,8 @@ func (client *VaultsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -254,6 +262,8 @@ func (client *VaultsClient) getHandleResponse(resp *http.Response) (VaultsClient
 }
 
 // NewListByResourceGroupPager - Retrieve a list of Vaults.
+//
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - VaultsClientListByResourceGroupOptions contains the optional parameters for the VaultsClient.NewListByResourceGroupPager
 //     method.
@@ -296,8 +306,8 @@ func (client *VaultsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -312,6 +322,8 @@ func (client *VaultsClient) listByResourceGroupHandleResponse(resp *http.Respons
 }
 
 // NewListBySubscriptionIDPager - Fetches all the resources of the specified type in the subscription.
+//
+// Generated from API version 2025-02-01
 //   - options - VaultsClientListBySubscriptionIDOptions contains the optional parameters for the VaultsClient.NewListBySubscriptionIDPager
 //     method.
 func (client *VaultsClient) NewListBySubscriptionIDPager(options *VaultsClientListBySubscriptionIDOptions) *runtime.Pager[VaultsClientListBySubscriptionIDResponse] {
@@ -349,8 +361,8 @@ func (client *VaultsClient) listBySubscriptionIDCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -366,6 +378,8 @@ func (client *VaultsClient) listBySubscriptionIDHandleResponse(resp *http.Respon
 
 // BeginUpdate - Updates the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the Vault
 //   - vault - Recovery Services Vault to be created.
@@ -389,6 +403,8 @@ func (client *VaultsClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Updates the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-02-01
 func (client *VaultsClient) update(ctx context.Context, resourceGroupName string, vaultName string, vault PatchVault, options *VaultsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VaultsClient.BeginUpdate"
@@ -430,8 +446,8 @@ func (client *VaultsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-02-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}

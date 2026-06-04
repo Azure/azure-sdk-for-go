@@ -4,10 +4,6 @@
 
 package armrecoveryservicessiterecovery
 
-const (
-	version20250801 string = "2025-08-01"
-)
-
 // A2ARecoveryAvailabilityType - The recovery availability type of the virtual machine.
 type A2ARecoveryAvailabilityType string
 

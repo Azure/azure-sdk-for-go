@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v5"
 	"log"
 )
 
@@ -40,7 +40,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForPoli
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostSavingInfo{
+	// 	TieringCostSavingInfo: &armrecoveryservicesbackup.TieringCostSavingInfo{
 	// 		ObjectType: to.Ptr("TieringCostSavingInfo"),
 	// 		RetailSourceTierCostPerGBPerMonth: to.Ptr[float64](0.02),
 	// 		RetailTargetTierCostPerGBPerMonth: to.Ptr[float64](0.003),
@@ -79,7 +79,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForProt
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostSavingInfo{
+	// 	TieringCostSavingInfo: &armrecoveryservicesbackup.TieringCostSavingInfo{
 	// 		ObjectType: to.Ptr("TieringCostSavingInfo"),
 	// 		RetailSourceTierCostPerGBPerMonth: to.Ptr[float64](0.02),
 	// 		RetailTargetTierCostPerGBPerMonth: to.Ptr[float64](0.003),
@@ -120,7 +120,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheRehydrationCostForRecoveryPoi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostRehydrationInfo{
+	// 	TieringCostRehydrationInfo: &armrecoveryservicesbackup.TieringCostRehydrationInfo{
 	// 		ObjectType: to.Ptr("TieringCostRehydrationInfo"),
 	// 		RehydrationSizeInBytes: to.Ptr[int64](1204000),
 	// 		RetailRehydrationCostPerGBPerMonth: to.Ptr[float64](0.02),
@@ -155,7 +155,7 @@ func ExampleFetchTieringCostClient_BeginPost_getTheTieringSavingsCostInfoForVaul
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.FetchTieringCostClientPostResponse{
-	// 	TieringCostInfoClassification: &armrecoveryservicesbackup.TieringCostSavingInfo{
+	// 	TieringCostSavingInfo: &armrecoveryservicesbackup.TieringCostSavingInfo{
 	// 		ObjectType: to.Ptr("TieringCostSavingInfo"),
 	// 		RetailSourceTierCostPerGBPerMonth: to.Ptr[float64](0.02),
 	// 		RetailTargetTierCostPerGBPerMonth: to.Ptr[float64](0.003),

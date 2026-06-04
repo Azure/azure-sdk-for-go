@@ -18,8 +18,6 @@ import (
 
 // NewRegionFrontloadReleaseClient contains the methods for the NewRegionFrontloadRelease group.
 // Don't use this type directly, use NewNewRegionFrontloadReleaseClient() instead.
-//
-// Generated from API version 2024-09-01
 type NewRegionFrontloadReleaseClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewNewRegionFrontloadReleaseClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Creates or updates a new region frontload release.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - releaseName - The name of the release.
 //   - options - NewRegionFrontloadReleaseClientCreateOrUpdateOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.CreateOrUpdate
@@ -89,8 +89,8 @@ func (client *NewRegionFrontloadReleaseClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -110,6 +110,8 @@ func (client *NewRegionFrontloadReleaseClient) createOrUpdateHandleResponse(resp
 
 // GenerateManifest - Generates the new region frontload manifest.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - NewRegionFrontloadReleaseClientGenerateManifestOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.GenerateManifest
 //     method.
@@ -151,8 +153,8 @@ func (client *NewRegionFrontloadReleaseClient) generateManifestCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -172,6 +174,8 @@ func (client *NewRegionFrontloadReleaseClient) generateManifestHandleResponse(re
 
 // Get - Gets a new region frontload release.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - releaseName - The name of the release.
 //   - options - NewRegionFrontloadReleaseClientGetOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Get
@@ -218,8 +222,8 @@ func (client *NewRegionFrontloadReleaseClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -235,6 +239,8 @@ func (client *NewRegionFrontloadReleaseClient) getHandleResponse(resp *http.Resp
 
 // Stop - Stops a new region frontload release.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - releaseName - The name of the release.
 //   - options - NewRegionFrontloadReleaseClientStopOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Stop
@@ -280,7 +286,7 @@ func (client *NewRegionFrontloadReleaseClient) stopCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

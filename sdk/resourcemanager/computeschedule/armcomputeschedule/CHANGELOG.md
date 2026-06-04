@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-06-01)
+## 2.0.0-beta.1 (2026-06-04)
 ### Breaking Changes
 
 - Function `*ScheduledActionsClient.VirtualMachinesCancelOperations` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions)` to `(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions)`
@@ -67,6 +67,7 @@
 - New enum type `WindowsVMGuestPatchAutomaticByPlatformRebootSetting` with values `WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown`
 - New enum type `WindowsVMGuestPatchMode` with values `WindowsVMGuestPatchModeAutomaticByOS`, `WindowsVMGuestPatchModeAutomaticByPlatform`, `WindowsVMGuestPatchModeManual`
 - New enum type `ZonePlacementPolicyType` with values `ZonePlacementPolicyTypeAny`, `ZonePlacementPolicyTypeAuto`
+- New function `PossibleModeValues() []Mode`
 - New function `*ScheduledActionsClient.VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error)`
 - New struct `APIEntityReference`
 - New struct `AdditionalCapabilities`

@@ -29,7 +29,7 @@ func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMaximumSetGen
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -50,7 +50,7 @@ func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMinimumSetGen
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -104,13 +104,13 @@ func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientCreateOrUpdateResponse{
-	// 	GlobalRulestackResource: &armpanngfw.GlobalRulestackResource{
+	// 	GlobalRulestackResource: armpanngfw.GlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("globalRulestacks"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1"),
@@ -180,13 +180,13 @@ func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientCreateOrUpdateResponse{
-	// 	GlobalRulestackResource: &armpanngfw.GlobalRulestackResource{
+	// 	GlobalRulestackResource: armpanngfw.GlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.RulestackProperties{
@@ -212,7 +212,7 @@ func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMaximumSetGen
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -238,7 +238,7 @@ func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMinimumSetGen
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -266,7 +266,7 @@ func ExampleGlobalRulestackClient_Get_globalRulestackGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientGetResponse{
-	// 	GlobalRulestackResource: &armpanngfw.GlobalRulestackResource{
+	// 	GlobalRulestackResource: armpanngfw.GlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("globalRulestacks"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1"),
@@ -335,7 +335,7 @@ func ExampleGlobalRulestackClient_Get_globalRulestackGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientGetResponse{
-	// 	GlobalRulestackResource: &armpanngfw.GlobalRulestackResource{
+	// 	GlobalRulestackResource: armpanngfw.GlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.RulestackProperties{
@@ -363,7 +363,7 @@ func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMaximu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientGetChangeLogResponse{
-	// 	Changelog: &armpanngfw.Changelog{
+	// 	Changelog: armpanngfw.Changelog{
 	// 		Changes: []*string{
 	// 			to.Ptr("aaaa"),
 	// 		},
@@ -392,7 +392,7 @@ func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMinimu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientGetChangeLogResponse{
-	// 	Changelog: &armpanngfw.Changelog{
+	// 	Changelog: armpanngfw.Changelog{
 	// 		Changes: []*string{
 	// 			to.Ptr("aaaa"),
 	// 		},
@@ -537,7 +537,7 @@ func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackLis
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsResponse{
-	// 	AdvSecurityObjectListResponse: &armpanngfw.AdvSecurityObjectListResponse{
+	// 	AdvSecurityObjectListResponse: armpanngfw.AdvSecurityObjectListResponse{
 	// 		NextLink: to.Ptr("a5324fa34"),
 	// 		Value: &armpanngfw.AdvSecurityObjectModel{
 	// 			Type: to.Ptr("globalRulestacks"),
@@ -571,7 +571,7 @@ func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackLis
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListAdvancedSecurityObjectsResponse{
-	// 	AdvSecurityObjectListResponse: &armpanngfw.AdvSecurityObjectListResponse{
+	// 	AdvSecurityObjectListResponse: armpanngfw.AdvSecurityObjectListResponse{
 	// 		Value: &armpanngfw.AdvSecurityObjectModel{
 	// 			Entry: []*armpanngfw.NameDescriptionObject{
 	// 				{
@@ -606,7 +606,7 @@ func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMaximumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListAppIDsResponse{
-	// 	ListAppIDResponse: &armpanngfw.ListAppIDResponse{
+	// 	ListAppIDResponse: armpanngfw.ListAppIDResponse{
 	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listAppIds?api-version=2025-10-08&$skiptoken=xyz"),
 	// 		Value: []*string{
 	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
@@ -634,7 +634,7 @@ func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMinimumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListAppIDsResponse{
-	// 	ListAppIDResponse: &armpanngfw.ListAppIDResponse{
+	// 	ListAppIDResponse: armpanngfw.ListAppIDResponse{
 	// 		Value: []*string{
 	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		},
@@ -663,7 +663,7 @@ func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMaxi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListCountriesResponse{
-	// 	CountriesResponse: &armpanngfw.CountriesResponse{
+	// 	CountriesResponse: armpanngfw.CountriesResponse{
 	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listCountries?api-version=2025-10-08&$skiptoken=xyz"),
 	// 		Value: []*armpanngfw.Country{
 	// 			{
@@ -694,7 +694,7 @@ func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMini
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListCountriesResponse{
-	// 	CountriesResponse: &armpanngfw.CountriesResponse{
+	// 	CountriesResponse: armpanngfw.CountriesResponse{
 	// 		Value: []*armpanngfw.Country{
 	// 			{
 	// 				Code: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -723,7 +723,7 @@ func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMaxi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListFirewallsResponse{
-	// 	ListFirewallsResponse: &armpanngfw.ListFirewallsResponse{
+	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
 	// 		NextLink: to.Ptr("a5324fa34"),
 	// 		Value: []*string{
 	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -751,7 +751,7 @@ func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMini
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListFirewallsResponse{
-	// 	ListFirewallsResponse: &armpanngfw.ListFirewallsResponse{
+	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
 	// 		Value: []*string{
 	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		},
@@ -780,7 +780,7 @@ func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackLis
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesResponse{
-	// 	PredefinedURLCategoriesResponse: &armpanngfw.PredefinedURLCategoriesResponse{
+	// 	PredefinedURLCategoriesResponse: armpanngfw.PredefinedURLCategoriesResponse{
 	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listPredefinedUrlCategories?api-version=2025-10-08&$skiptoken=xyz"),
 	// 		Value: []*armpanngfw.PredefinedURLCategory{
 	// 			{
@@ -811,7 +811,7 @@ func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackLis
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesResponse{
-	// 	PredefinedURLCategoriesResponse: &armpanngfw.PredefinedURLCategoriesResponse{
+	// 	PredefinedURLCategoriesResponse: armpanngfw.PredefinedURLCategoriesResponse{
 	// 		Value: []*armpanngfw.PredefinedURLCategory{
 	// 			{
 	// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -843,7 +843,7 @@ func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecuri
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListSecurityServicesResponse{
-	// 	SecurityServicesResponse: &armpanngfw.SecurityServicesResponse{
+	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
 	// 		NextLink: to.Ptr("a5324fa34"),
 	// 		Value: &armpanngfw.SecurityServicesTypeList{
 	// 			Type: to.Ptr("globalRulestacks"),
@@ -877,7 +877,7 @@ func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecuri
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListSecurityServicesResponse{
-	// 	SecurityServicesResponse: &armpanngfw.SecurityServicesResponse{
+	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
 	// 		Value: &armpanngfw.SecurityServicesTypeList{
 	// 			Entry: []*armpanngfw.NameDescriptionObject{
 	// 				{
@@ -974,7 +974,7 @@ func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientUpdateResponse{
-	// 	GlobalRulestackResource: &armpanngfw.GlobalRulestackResource{
+	// 	GlobalRulestackResource: armpanngfw.GlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("globalRulestacks"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1"),
@@ -1043,7 +1043,7 @@ func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientUpdateResponse{
-	// 	GlobalRulestackResource: &armpanngfw.GlobalRulestackResource{
+	// 	GlobalRulestackResource: armpanngfw.GlobalRulestackResource{
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.RulestackProperties{
 	// 		},

@@ -18,6 +18,8 @@ import (
 
 // EdgeActionVersionsClient contains the methods for the EdgeActionVersions group.
 // Don't use this type directly, use NewEdgeActionVersionsClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type EdgeActionVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEdgeActionVersionsClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCreate - Create a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -68,8 +68,6 @@ func (client *EdgeActionVersionsClient) BeginCreate(ctx context.Context, resourc
 
 // Create - Create a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionVersionsClient) create(ctx context.Context, resourceGroupName string, edgeActionName string, version string, resource EdgeActionVersion, options *EdgeActionVersionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context,
 
 // BeginDelete - Delete a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -153,8 +149,6 @@ func (client *EdgeActionVersionsClient) BeginDelete(ctx context.Context, resourc
 
 // Delete - Delete a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *EdgeActionVersionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDeployVersionCode - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -234,8 +226,6 @@ func (client *EdgeActionVersionsClient) BeginDeployVersionCode(ctx context.Conte
 
 // DeployVersionCode - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionVersionsClient) deployVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, body VersionCode, options *EdgeActionVersionsClientBeginDeployVersionCodeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginDeployVersionCode"
@@ -281,8 +271,8 @@ func (client *EdgeActionVersionsClient) deployVersionCodeCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -293,8 +283,6 @@ func (client *EdgeActionVersionsClient) deployVersionCodeCreateRequest(ctx conte
 
 // Get - Get a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -345,8 +333,8 @@ func (client *EdgeActionVersionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -362,8 +350,6 @@ func (client *EdgeActionVersionsClient) getHandleResponse(resp *http.Response) (
 
 // BeginGetVersionCode - Get the version code for the edge action version.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -388,8 +374,6 @@ func (client *EdgeActionVersionsClient) BeginGetVersionCode(ctx context.Context,
 
 // GetVersionCode - Get the version code for the edge action version.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionVersionsClient) getVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginGetVersionCode"
@@ -435,15 +419,13 @@ func (client *EdgeActionVersionsClient) getVersionCodeCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByEdgeActionPager - List EdgeActionVersion resources by EdgeAction
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - options - EdgeActionVersionsClientListByEdgeActionOptions contains the optional parameters for the EdgeActionVersionsClient.NewListByEdgeActionPager
@@ -491,8 +473,8 @@ func (client *EdgeActionVersionsClient) listByEdgeActionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -508,8 +490,6 @@ func (client *EdgeActionVersionsClient) listByEdgeActionHandleResponse(resp *htt
 
 // BeginSwapDefault - Swap the default version for the edge action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -534,8 +514,6 @@ func (client *EdgeActionVersionsClient) BeginSwapDefault(ctx context.Context, re
 
 // SwapDefault - Swap the default version for the edge action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionVersionsClient) swapDefault(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginSwapDefaultOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginSwapDefault"
@@ -581,15 +559,13 @@ func (client *EdgeActionVersionsClient) swapDefaultCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Update a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -615,8 +591,6 @@ func (client *EdgeActionVersionsClient) BeginUpdate(ctx context.Context, resourc
 
 // Update - Update a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, options *EdgeActionVersionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginUpdate"
@@ -662,8 +636,8 @@ func (client *EdgeActionVersionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

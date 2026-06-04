@@ -19,7 +19,7 @@ import (
 // TrustedAccessRolesClient contains the methods for the TrustedAccessRoles group.
 // Don't use this type directly, use NewTrustedAccessRolesClient() instead.
 //
-// Generated from API version 2026-03-02-preview
+// Generated from API version 2026-04-01
 type TrustedAccessRolesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,7 +84,7 @@ func (client *TrustedAccessRolesClient) listCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

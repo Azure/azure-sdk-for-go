@@ -31,7 +31,7 @@ func ExamplePoliciesClient_BeginActivateBringYourOwnRoot() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -66,13 +66,13 @@ func ExamplePoliciesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.PoliciesClientCreateOrUpdateResponse{
-	// 	Policy: &armdeviceregistry.Policy{
+	// 	Policy: armdeviceregistry.Policy{
 	// 		Properties: &armdeviceregistry.PolicyProperties{
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 			Certificate: &armdeviceregistry.CertificateConfiguration{
@@ -125,7 +125,7 @@ func ExamplePoliciesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -148,7 +148,7 @@ func ExamplePoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.PoliciesClientGetResponse{
-	// 	Policy: &armdeviceregistry.Policy{
+	// 	Policy: armdeviceregistry.Policy{
 	// 		Properties: &armdeviceregistry.PolicyProperties{
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 			Certificate: &armdeviceregistry.CertificateConfiguration{
@@ -253,7 +253,7 @@ func ExamplePoliciesClient_BeginRevokeIssuer() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -283,13 +283,13 @@ func ExamplePoliciesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.PoliciesClientUpdateResponse{
-	// 	Policy: &armdeviceregistry.Policy{
+	// 	Policy: armdeviceregistry.Policy{
 	// 		Properties: &armdeviceregistry.PolicyProperties{
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 			Certificate: &armdeviceregistry.CertificateConfiguration{

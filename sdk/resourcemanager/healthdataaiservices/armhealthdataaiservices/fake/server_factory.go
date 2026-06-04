@@ -62,18 +62,18 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "DeidServicesClient":
-		initServer(s, &s.trDeidServicesServer, func() *DeidServicesServerTransport { return NewDeidServicesServerTransport(&s.srv.DeidServicesServer) })
+		initServer(&s.trMu, &s.trDeidServicesServer, func() *DeidServicesServerTransport { return NewDeidServicesServerTransport(&s.srv.DeidServicesServer) })
 		resp, err = s.trDeidServicesServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "PrivateLinksClient":
-		initServer(s, &s.trPrivateLinksServer, func() *PrivateLinksServerTransport { return NewPrivateLinksServerTransport(&s.srv.PrivateLinksServer) })
+		initServer(&s.trMu, &s.trPrivateLinksServer, func() *PrivateLinksServerTransport { return NewPrivateLinksServerTransport(&s.srv.PrivateLinksServer) })
 		resp, err = s.trPrivateLinksServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -84,12 +84,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

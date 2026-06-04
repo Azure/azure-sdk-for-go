@@ -18,6 +18,8 @@ import (
 
 // DnssecConfigsClient contains the methods for the DnssecConfigs group.
 // Don't use this type directly, use NewDnssecConfigsClient() instead.
+//
+// Generated from API version 2023-07-01-preview
 type DnssecConfigsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDnssecConfigsClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Creates or updates the DNSSEC configuration on a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - options - DnssecConfigsClientBeginCreateOrUpdateOptions contains the optional parameters for the DnssecConfigsClient.BeginCreateOrUpdate
@@ -66,8 +66,6 @@ func (client *DnssecConfigsClient) BeginCreateOrUpdate(ctx context.Context, reso
 
 // CreateOrUpdate - Creates or updates the DNSSEC configuration on a DNS zone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 func (client *DnssecConfigsClient) createOrUpdate(ctx context.Context, resourceGroupName string, zoneName string, options *DnssecConfigsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DnssecConfigsClient.BeginCreateOrUpdate"
@@ -109,8 +107,8 @@ func (client *DnssecConfigsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -123,8 +121,6 @@ func (client *DnssecConfigsClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // BeginDelete - Deletes the DNSSEC configuration on a DNS zone. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - options - DnssecConfigsClientBeginDeleteOptions contains the optional parameters for the DnssecConfigsClient.BeginDelete
@@ -148,8 +144,6 @@ func (client *DnssecConfigsClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Deletes the DNSSEC configuration on a DNS zone. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 func (client *DnssecConfigsClient) deleteOperation(ctx context.Context, resourceGroupName string, zoneName string, options *DnssecConfigsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DnssecConfigsClient.BeginDelete"
@@ -191,8 +185,8 @@ func (client *DnssecConfigsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -201,8 +195,6 @@ func (client *DnssecConfigsClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Gets the DNSSEC configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - options - DnssecConfigsClientGetOptions contains the optional parameters for the DnssecConfigsClient.Get method.
@@ -248,8 +240,8 @@ func (client *DnssecConfigsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,8 +256,6 @@ func (client *DnssecConfigsClient) getHandleResponse(resp *http.Response) (Dnsse
 }
 
 // NewListByDNSZonePager - Lists the DNSSEC configurations in a DNS zone.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - options - DnssecConfigsClientListByDNSZoneOptions contains the optional parameters for the DnssecConfigsClient.NewListByDNSZonePager
@@ -313,8 +303,8 @@ func (client *DnssecConfigsClient) listByDNSZoneCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

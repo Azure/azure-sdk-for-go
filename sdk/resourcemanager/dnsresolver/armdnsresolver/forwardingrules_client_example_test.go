@@ -49,7 +49,7 @@ func ExampleForwardingRulesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.ForwardingRulesClientCreateOrUpdateResponse{
-	// 	ForwardingRule: &armdnsresolver.ForwardingRule{
+	// 	ForwardingRule: armdnsresolver.ForwardingRule{
 	// 		Name: to.Ptr("sampleForwardingRule"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -123,7 +123,7 @@ func ExampleForwardingRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.ForwardingRulesClientGetResponse{
-	// 	ForwardingRule: &armdnsresolver.ForwardingRule{
+	// 	ForwardingRule: armdnsresolver.ForwardingRule{
 	// 		Name: to.Ptr("sampleForwardingRule"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -274,7 +274,7 @@ func ExampleForwardingRulesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.ForwardingRulesClientUpdateResponse{
-	// 	ForwardingRule: &armdnsresolver.ForwardingRule{
+	// 	ForwardingRule: armdnsresolver.ForwardingRule{
 	// 		Name: to.Ptr("sampleForwardingRule"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsForwardingRulesets/forwardingRules"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),

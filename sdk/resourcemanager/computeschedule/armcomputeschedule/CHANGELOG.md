@@ -1,5 +1,170 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-06-01)
+### Breaking Changes
+
+- Function `*ScheduledActionsClient.VirtualMachinesCancelOperations` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions)` to `(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteCreate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteDeallocate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteDelete` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteHibernate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesExecuteStart` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions)` to `(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesGetOperationErrors` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions)` to `(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesGetOperationStatus` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions)` to `(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesSubmitDeallocate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions)` to `(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesSubmitHibernate` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions)` to `(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions)`
+- Function `*ScheduledActionsClient.VirtualMachinesSubmitStart` parameter(s) have been changed from `(ctx context.Context, locationparameter string, requestBody SubmitStartContent, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions)` to `(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions)`
+- Struct `CancelOperationsContent` has been removed
+- Struct `ExecuteCreateContent` has been removed
+- Struct `ExecuteDeallocateContent` has been removed
+- Struct `ExecuteDeleteContent` has been removed
+- Struct `ExecuteHibernateContent` has been removed
+- Struct `ExecuteStartContent` has been removed
+- Struct `GetOperationErrorsContent` has been removed
+- Struct `GetOperationStatusContent` has been removed
+- Struct `SubmitDeallocateContent` has been removed
+- Struct `SubmitHibernateContent` has been removed
+- Struct `SubmitStartContent` has been removed
+- Field `BaseProfile`, `ResourceOverrides` of struct `ResourceProvisionPayload` has been removed
+
+### Features Added
+
+- New value `ResourceOperationTypeCreate`, `ResourceOperationTypeDelete` added to enum type `ResourceOperationType`
+- New enum type `AllocationStrategy` with values `AllocationStrategyCapacityOptimized`, `AllocationStrategyLowestPrice`, `AllocationStrategyPrioritized`
+- New enum type `CachingTypes` with values `CachingTypesNone`, `CachingTypesReadOnly`, `CachingTypesReadWrite`
+- New enum type `DeleteOptions` with values `DeleteOptionsDelete`, `DeleteOptionsDetach`
+- New enum type `DiffDiskOptions` with values `DiffDiskOptionsLocal`
+- New enum type `DiffDiskPlacement` with values `DiffDiskPlacementCacheDisk`, `DiffDiskPlacementNvmeDisk`, `DiffDiskPlacementResourceDisk`
+- New enum type `DiskControllerTypes` with values `DiskControllerTypesNVMe`, `DiskControllerTypesSCSI`
+- New enum type `DiskCreateOptionTypes` with values `DiskCreateOptionTypesAttach`, `DiskCreateOptionTypesCopy`, `DiskCreateOptionTypesEmpty`, `DiskCreateOptionTypesFromImage`, `DiskCreateOptionTypesRestore`
+- New enum type `DiskDeleteOptionTypes` with values `DiskDeleteOptionTypesDelete`, `DiskDeleteOptionTypesDetach`
+- New enum type `DiskDetachOptionTypes` with values `DiskDetachOptionTypesForceDetach`
+- New enum type `DistributionStrategy` with values `DistributionStrategyBestEffortBalanced`, `DistributionStrategyBestEffortSingleZone`, `DistributionStrategyPrioritized`, `DistributionStrategyStrictBalanced`
+- New enum type `DomainNameLabelScopeTypes` with values `DomainNameLabelScopeTypesNoReuse`, `DomainNameLabelScopeTypesResourceGroupReuse`, `DomainNameLabelScopeTypesSubscriptionReuse`, `DomainNameLabelScopeTypesTenantReuse`
+- New enum type `ExtendedLocationType` with values `ExtendedLocationTypeCustomLocation`, `ExtendedLocationTypeEdgeZone`
+- New enum type `IPVersions` with values `IPVersionsIPv4`, `IPVersionsIPv6`
+- New enum type `LinuxPatchAssessmentMode` with values `LinuxPatchAssessmentModeAutomaticByPlatform`, `LinuxPatchAssessmentModeImageDefault`
+- New enum type `LinuxVMGuestPatchAutomaticByPlatformRebootSetting` with values `LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways`, `LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired`, `LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever`, `LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown`
+- New enum type `LinuxVMGuestPatchMode` with values `LinuxVMGuestPatchModeAutomaticByPlatform`, `LinuxVMGuestPatchModeImageDefault`
+- New enum type `Mode` with values `ModeAudit`, `ModeEnforce`
+- New enum type `Modes` with values `ModesAudit`, `ModesDisabled`, `ModesEnforce`
+- New enum type `NetworkAPIVersion` with values `NetworkAPIVersion20201101`, `NetworkAPIVersion20221101`
+- New enum type `NetworkInterfaceAuxiliaryMode` with values `NetworkInterfaceAuxiliaryModeAcceleratedConnections`, `NetworkInterfaceAuxiliaryModeFloating`, `NetworkInterfaceAuxiliaryModeNone`
+- New enum type `NetworkInterfaceAuxiliarySKU` with values `NetworkInterfaceAuxiliarySKUA1`, `NetworkInterfaceAuxiliarySKUA2`, `NetworkInterfaceAuxiliarySKUA4`, `NetworkInterfaceAuxiliarySKUA8`, `NetworkInterfaceAuxiliarySKUNone`
+- New enum type `OperatingSystemTypes` with values `OperatingSystemTypesLinux`, `OperatingSystemTypesWindows`
+- New enum type `OsType` with values `OsTypeLinux`, `OsTypeWindows`
+- New enum type `PriorityType` with values `PriorityTypeRegular`, `PriorityTypeSpot`
+- New enum type `ProtocolTypes` with values `ProtocolTypesHTTP`, `ProtocolTypesHTTPS`
+- New enum type `PublicIPAddressSKUName` with values `PublicIPAddressSKUNameBasic`, `PublicIPAddressSKUNameStandard`
+- New enum type `PublicIPAddressSKUTier` with values `PublicIPAddressSKUTierGlobal`, `PublicIPAddressSKUTierRegional`
+- New enum type `PublicIPAllocationMethod` with values `PublicIPAllocationMethodDynamic`, `PublicIPAllocationMethodStatic`
+- New enum type `ResourceIdentityType` with values `ResourceIdentityTypeNone`, `ResourceIdentityTypeSystemAssigned`, `ResourceIdentityTypeSystemAssignedUserAssigned`, `ResourceIdentityTypeUserAssigned`
+- New enum type `SecurityEncryptionTypes` with values `SecurityEncryptionTypesDiskWithVMGuestState`, `SecurityEncryptionTypesNonPersistedTPM`, `SecurityEncryptionTypesVMGuestStateOnly`
+- New enum type `SecurityTypes` with values `SecurityTypesConfidentialVM`, `SecurityTypesTrustedLaunch`
+- New enum type `SettingNames` with values `SettingNamesAutoLogon`, `SettingNamesFirstLogonCommands`
+- New enum type `StorageAccountTypes` with values `StorageAccountTypesPremiumLRS`, `StorageAccountTypesPremiumV2LRS`, `StorageAccountTypesPremiumZRS`, `StorageAccountTypesStandardLRS`, `StorageAccountTypesStandardSSDLRS`, `StorageAccountTypesStandardSSDZRS`, `StorageAccountTypesUltraSSDLRS`
+- New enum type `WindowsPatchAssessmentMode` with values `WindowsPatchAssessmentModeAutomaticByPlatform`, `WindowsPatchAssessmentModeImageDefault`
+- New enum type `WindowsVMGuestPatchAutomaticByPlatformRebootSetting` with values `WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown`
+- New enum type `WindowsVMGuestPatchMode` with values `WindowsVMGuestPatchModeAutomaticByOS`, `WindowsVMGuestPatchModeAutomaticByPlatform`, `WindowsVMGuestPatchModeManual`
+- New enum type `ZonePlacementPolicyType` with values `ZonePlacementPolicyTypeAny`, `ZonePlacementPolicyTypeAuto`
+- New function `*ScheduledActionsClient.VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error)`
+- New struct `APIEntityReference`
+- New struct `AdditionalCapabilities`
+- New struct `AdditionalUnattendContent`
+- New struct `AllInstancesDown`
+- New struct `ApplicationProfile`
+- New struct `BootDiagnostics`
+- New struct `BulkActionVMExtension`
+- New struct `BulkActionVMExtensionProperties`
+- New struct `BulkActionVMProperties`
+- New struct `BulkVMConfiguration`
+- New struct `CancelOperationsRequest`
+- New struct `CapacityReservationProfile`
+- New struct `CreateFlexResourceOperationResponse`
+- New struct `DataDisk`
+- New struct `DiagnosticsProfile`
+- New struct `DiffDiskSettings`
+- New struct `DiskEncryptionSetParameters`
+- New struct `DiskEncryptionSettings`
+- New struct `EncryptionIdentity`
+- New struct `EventGridAndResourceGraph`
+- New struct `ExecuteCreateFlexRequest`
+- New struct `ExecuteCreateRequest`
+- New struct `ExecuteDeallocateRequest`
+- New struct `ExecuteDeleteRequest`
+- New struct `ExecuteHibernateRequest`
+- New struct `ExecuteStartRequest`
+- New struct `ExtendedLocation`
+- New struct `FallbackOperationInfo`
+- New struct `FlexProperties`
+- New struct `GetOperationErrorsRequest`
+- New struct `GetOperationStatusRequest`
+- New struct `HardwareProfile`
+- New struct `HostEndpointSettings`
+- New struct `ImageReference`
+- New struct `KeyVaultKeyReference`
+- New struct `KeyVaultSecretReference`
+- New struct `LinuxConfiguration`
+- New struct `LinuxPatchSettings`
+- New struct `LinuxVMGuestPatchAutomaticByPlatformSettings`
+- New struct `ManagedDiskParameters`
+- New struct `NetworkInterfaceReference`
+- New struct `NetworkInterfaceReferenceProperties`
+- New struct `NetworkProfile`
+- New struct `OSDisk`
+- New struct `OSImageNotificationProfile`
+- New struct `OSProfile`
+- New struct `PatchSettings`
+- New struct `Placement`
+- New struct `Plan`
+- New struct `PriorityProfile`
+- New struct `ProxyAgentSettings`
+- New struct `PublicIPAddressSKU`
+- New struct `ResourceProvisionFlexPayload`
+- New struct `SSHConfiguration`
+- New struct `SSHPublicKey`
+- New struct `ScheduledEventsAdditionalPublishingTargets`
+- New struct `ScheduledEventsPolicy`
+- New struct `ScheduledEventsProfile`
+- New struct `SecurityProfile`
+- New struct `StorageProfile`
+- New struct `SubResource`
+- New struct `SubmitDeallocateRequest`
+- New struct `SubmitHibernateRequest`
+- New struct `SubmitStartRequest`
+- New struct `TerminateNotificationProfile`
+- New struct `UefiSettings`
+- New struct `UserAssignedIdentitiesValue`
+- New struct `UserInitiatedReboot`
+- New struct `UserInitiatedRedeploy`
+- New struct `VMDiskSecurityProfile`
+- New struct `VMGalleryApplication`
+- New struct `VMSizeProfile`
+- New struct `VMSizeProperties`
+- New struct `VaultCertificate`
+- New struct `VaultSecretGroup`
+- New struct `VirtualHardDisk`
+- New struct `VirtualMachineIPTag`
+- New struct `VirtualMachineIdentity`
+- New struct `VirtualMachineNetworkInterfaceConfiguration`
+- New struct `VirtualMachineNetworkInterfaceConfigurationProperties`
+- New struct `VirtualMachineNetworkInterfaceDNSSettingsConfiguration`
+- New struct `VirtualMachineNetworkInterfaceIPConfiguration`
+- New struct `VirtualMachineNetworkInterfaceIPConfigurationProperties`
+- New struct `VirtualMachinePublicIPAddressConfiguration`
+- New struct `VirtualMachinePublicIPAddressConfigurationProperties`
+- New struct `VirtualMachinePublicIPAddressDNSSettingsConfiguration`
+- New struct `WinRMConfiguration`
+- New struct `WinRMListener`
+- New struct `WindowsConfiguration`
+- New struct `WindowsVMGuestPatchAutomaticByPlatformSettings`
+- New struct `ZoneAllocationPolicy`
+- New struct `ZonePreference`
+- New field `FallbackOperationInfo` in struct `ResourceOperationDetails`
+- New field `VirtualMachineBaseProfile`, `VirtualMachineOverrides` in struct `ResourceProvisionPayload`
+- New field `OnFailureAction` in struct `RetryPolicy`
+
+
 ## 1.2.0-beta.1 (2025-07-24)
 ### Features Added
 

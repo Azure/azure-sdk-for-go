@@ -18,6 +18,8 @@ import (
 
 // GiMinorVersionsClient contains the methods for the GiMinorVersions group.
 // Don't use this type directly, use NewGiMinorVersionsClient() instead.
+//
+// Generated from API version 2025-09-01
 type GiMinorVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewGiMinorVersionsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get a GiMinorVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - giversionname - GiVersion name
 //   - giMinorVersionName - The name of the GiMinorVersion
@@ -93,8 +93,8 @@ func (client *GiMinorVersionsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *GiMinorVersionsClient) getHandleResponse(resp *http.Response) (GiM
 }
 
 // NewListByParentPager - List GiMinorVersion resources by GiVersion
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - giversionname - GiVersion name
 //   - options - GiMinorVersionsClientListByParentOptions contains the optional parameters for the GiMinorVersionsClient.NewListByParentPager
@@ -158,14 +156,14 @@ func (client *GiMinorVersionsClient) listByParentCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", version20250901)
 	if options != nil && options.ShapeFamily != nil {
 		reqQP.Set("shapeFamily", string(*options.ShapeFamily))
 	}
 	if options != nil && options.Zone != nil {
 		reqQP.Set("zone", *options.Zone)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

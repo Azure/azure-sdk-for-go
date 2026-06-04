@@ -18,6 +18,23 @@ type AlertConfiguration struct {
 	Description *string
 }
 
+// ApplicationInsightsTopologySpecification - Discovery rule specification for an Application Insights topology query
+type ApplicationInsightsTopologySpecification struct {
+	// REQUIRED; Application Insights resource ID
+	ApplicationInsightsResourceID *string
+
+	// CONSTANT; Kind of the discovery rule specification
+	// Field has constant value DiscoveryRuleKindApplicationInsightsTopology, any specified value is ignored.
+	Kind *DiscoveryRuleKind
+}
+
+// GetDiscoveryRuleSpecification implements the DiscoveryRuleSpecificationClassification interface for type ApplicationInsightsTopologySpecification.
+func (a *ApplicationInsightsTopologySpecification) GetDiscoveryRuleSpecification() *DiscoveryRuleSpecification {
+	return &DiscoveryRuleSpecification{
+		Kind: a.Kind,
+	}
+}
+
 // AuthenticationSetting - An authentication setting in a health model
 type AuthenticationSetting struct {
 	// The resource-specific properties for this resource.
@@ -62,46 +79,118 @@ func (a *AuthenticationSettingProperties) GetAuthenticationSettingProperties() *
 	return a
 }
 
-// AzureMonitorWorkspaceSignalGroup - A grouping of signal assignments for a Azure Monitor Workspace
-type AzureMonitorWorkspaceSignalGroup struct {
-	// REQUIRED; Reference to the name of the authentication setting which is used for querying the data source
+// AzureMonitorWorkspaceSignals - A grouping of Azure Monitor workspace signals.
+type AzureMonitorWorkspaceSignals struct {
+	// REQUIRED; Reference to the name of the authentication setting which is used for querying the data source.
 	AuthenticationSetting *string
 
-	// REQUIRED; Azure Monitor workspace resource ID
+	// REQUIRED; Azure Monitor workspace resource ID.
 	AzureMonitorWorkspaceResourceID *string
 
-	// Signal definitions which are assigned to this signal group. All assignments are combined with an OR operator.
-	SignalAssignments []*SignalAssignment
+	// Signals assigned to this signal group.
+	Signals []*PrometheusMetricsSignal
 }
 
-// AzureResourceSignalGroup - A grouping of signal assignments for an Azure resource
-type AzureResourceSignalGroup struct {
-	// REQUIRED; Reference to the name of the authentication setting which is used for querying the data source
+// AzureResourceSignal - An Azure Resource Metric signal instance assigned to an entity.
+type AzureResourceSignal struct {
+	// REQUIRED; Unique name of the signal within the entity.
+	Name *string
+
+	// CONSTANT; Kind of the signal instance
+	// Field has constant value SignalKindAzureResourceMetric, any specified value is ignored.
+	SignalKind *SignalKind
+
+	// Type of aggregation to apply to the metric
+	AggregationType *MetricAggregationType
+
+	// Unit of the signal result (e.g. Bytes, MilliSeconds, Percent, Count))
+	DataUnit *string
+
+	// Optional: Dimension to split by
+	Dimension *string
+
+	// Optional: Dimension filter to apply to the dimension. Must only be set if also Dimension is set.
+	DimensionFilter *string
+
+	// Display name
+	DisplayName *string
+
+	// Evaluation rules for the signal definition
+	EvaluationRules *EvaluationRule
+
+	// Name of the metric
+	MetricName *string
+
+	// Metric namespace
+	MetricNamespace *string
+
+	// Interval in which the signal is being evaluated. Defaults to PT1M (1 minute).
+	RefreshInterval *RefreshInterval
+
+	// Optional reference to a signal definition that provides default values.
+	SignalDefinitionName *string
+
+	// Time range of signal. ISO duration format like PT10M.
+	TimeGrain *string
+
+	// READ-ONLY; Current status of the signal.
+	Status *SignalStatus
+}
+
+// GetSignalInstanceProperties implements the SignalInstancePropertiesClassification interface for type AzureResourceSignal.
+func (a *AzureResourceSignal) GetSignalInstanceProperties() *SignalInstanceProperties {
+	return &SignalInstanceProperties{
+		Name:                 a.Name,
+		SignalDefinitionName: a.SignalDefinitionName,
+		SignalKind:           a.SignalKind,
+		Status:               a.Status,
+	}
+}
+
+// AzureResourceSignals - A grouping of Azure resource signals
+type AzureResourceSignals struct {
+	// REQUIRED; Reference to the name of the authentication setting which is used for querying the data source.
 	AuthenticationSetting *string
 
 	// REQUIRED; Azure resource ID
 	AzureResourceID *string
 
-	// Signal definitions which are assigned to this signal group. All assignments are combined with an OR operator.
-	SignalAssignments []*SignalAssignment
+	// Azure resource kind (e.g., 'functionapp'). Populated by the UI for icon rendering. Can be null if not populated.
+	AzureResourceKind *string
+
+	// Signals assigned to this group.
+	Signals []*AzureResourceSignal
 }
 
-// DependenciesSignalGroup - Properties for dependent entities, i.e. child entities
-type DependenciesSignalGroup struct {
+// DependenciesSignalGroupV2 - Properties for dependent entities, i.e. child entities
+type DependenciesSignalGroupV2 struct {
 	// REQUIRED; Aggregation type for child dependencies.
 	AggregationType *DependenciesAggregationType
 
-	// Degraded threshold for aggregating the propagated health state of child dependencies. Can be either an absolute number
-	// that is greater than 0, or a percentage between 1-100%. The entity will be considered degraded when the number of not healthy
-	// child dependents (unhealthy, degraded, unknown) is equal to or above the threshold value. Must only be set when AggregationType
-	// is 'Thresholds'.
-	DegradedThreshold *string
+	// Degraded threshold for aggregation. For MinHealthy: parent is degraded when healthy count/percentage falls to or below
+	// this value. For MaxNotHealthy: parent is degraded when not-healthy count/percentage reaches or exceeds this value. Optional
+	// — if not set, there is no degraded state (transitions directly from Healthy to Unhealthy).
+	DegradedThreshold *float64
 
-	// Unhealthy threshold for aggregating the propagated health state of child dependencies. Can be either an absolute number
-	// that is greater than 0, or a percentage between 1-100%. The entity will be considered unhealthy when the number of not
-	// healthy child dependents (unhealthy, degraded, unknown) is equal to or above the threshold value. Must only be set when
-	// AggregationType is 'Thresholds'.
-	UnhealthyThreshold *string
+	// If true, children with Unknown health state are excluded from aggregation calculations. Defaults to true.
+	IgnoreUnknown *bool
+
+	// Unhealthy threshold for aggregation. For MinHealthy: parent is unhealthy when healthy count/percentage falls to or below
+	// this value. For MaxNotHealthy: parent is unhealthy when not-healthy count/percentage reaches or exceeds this value. Required
+	// when aggregationType is MinHealthy or MaxNotHealthy.
+	UnhealthyThreshold *float64
+
+	// Unit type for the aggregation thresholds. Required when aggregationType is MinHealthy or MaxNotHealthy.
+	Unit *DependenciesAggregationUnit
+}
+
+// DiscoveryError - Error details for a failed discovery operation
+type DiscoveryError struct {
+	// READ-ONLY; Error message
+	Message *string
+
+	// READ-ONLY; Additional context information, like resource IDs or query details
+	Context []*string
 }
 
 // DiscoveryRule - A discovery rule which automatically finds entities and relationships in a health model based on an Azure
@@ -145,9 +234,8 @@ type DiscoveryRuleProperties struct {
 	// cannot be manually deleted.
 	DiscoverRelationships *DiscoveryRuleRelationshipDiscoveryBehavior
 
-	// REQUIRED; Azure Resource Graph query text in KQL syntax. The query must return at least a column named 'id' which contains
-	// the resource ID of the discovered resources.
-	ResourceGraphQuery *string
+	// REQUIRED; Specification of the discovery rule defining how entities are discovered.
+	Specification DiscoveryRuleSpecificationClassification
 
 	// READ-ONLY; Name of the entity which represents the discovery rule. Note: It might take a few minutes after creating the
 	// discovery rule until the entity is created.
@@ -156,32 +244,22 @@ type DiscoveryRuleProperties struct {
 	// Display name
 	DisplayName *string
 
-	// READ-ONLY; Date when the discovery rule was (soft-)deleted.
-	DeletionDate *time.Time
-
-	// READ-ONLY; Error message if the last discovery operation failed.
-	ErrorMessage *string
-
-	// READ-ONLY; Number of discovered entities in the last discovery operation.
-	NumberOfDiscoveredEntities *int32
+	// READ-ONLY; Error details if the last discovery operation failed.
+	Error *DiscoveryError
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *HealthModelProvisioningState
 }
 
-// DynamicDetectionRule - ML-based evaluation rule for a signal definition
-type DynamicDetectionRule struct {
-	// REQUIRED; Threshold direction
-	DynamicThresholdDirection *DynamicThresholdDirection
+// DiscoveryRuleSpecification - Base model for discovery rule specifications
+type DiscoveryRuleSpecification struct {
+	// REQUIRED; Kind of the discovery rule specification
+	Kind *DiscoveryRuleKind
+}
 
-	// REQUIRED; ML model to use for dynamic thresholds
-	DynamicThresholdModel *DynamicThresholdModel
-
-	// REQUIRED; ML model sensitivity. Lowest value = high sensitivity. Supported step size = 0.5
-	ModelSensitivity *float32
-
-	// Start time of the training in UTC.
-	TrainingStartTime *time.Time
+// GetDiscoveryRuleSpecification implements the DiscoveryRuleSpecificationClassification interface for type DiscoveryRuleSpecification.
+func (d *DiscoveryRuleSpecification) GetDiscoveryRuleSpecification() *DiscoveryRuleSpecification {
+	return d
 }
 
 // Entity - An entity (aka node) of a health model
@@ -220,6 +298,24 @@ type EntityCoordinates struct {
 	Y *float32
 }
 
+// EntityHistoryRequest - Request body for getting entity health history
+type EntityHistoryRequest struct {
+	// End time for the history query. Defaults to now if not specified.
+	EndAt *time.Time
+
+	// Start time for the history query. Defaults to 24 hours ago if not specified.
+	StartAt *time.Time
+}
+
+// EntityHistoryResponse - Response containing entity health state transitions
+type EntityHistoryResponse struct {
+	// REQUIRED; Name of the entity
+	EntityName *string
+
+	// REQUIRED; List of health state transitions
+	History []*HealthStateTransition
+}
+
 // EntityListResult - The response of a Entity list operation.
 type EntityListResult struct {
 	// REQUIRED; The Entity items on this page
@@ -249,17 +345,11 @@ type EntityProperties struct {
 	// Impact of the entity in health state propagation
 	Impact *EntityImpact
 
-	// Entity kind
-	Kind *string
-
-	// Optional set of labels (key-value pairs)
-	Labels map[string]*string
-
 	// Signal groups which are assigned to this entity
-	Signals *SignalGroup
+	SignalGroups *SignalGroups
 
-	// READ-ONLY; Date when the entity was (soft-)deleted
-	DeletionDate *time.Time
+	// Optional set of tags (key-value pairs)
+	Tags map[string]*string
 
 	// READ-ONLY; Discovered by which discovery rule. If set, the entity cannot be deleted manually.
 	DiscoveredBy *string
@@ -273,14 +363,45 @@ type EntityProperties struct {
 
 // EvaluationRule - Evaluation rule for a signal definition
 type EvaluationRule struct {
-	// Degraded rule with static threshold. When used, dynamicDetectionRule must not be set.
-	DegradedRule *ThresholdRule
+	// REQUIRED; Unhealthy rule with static threshold.
+	UnhealthyRule *ThresholdRuleV2
 
-	// Configure to use ML-based dynamic thresholds. When used, degradedRule and unhealthyRule must not be set.
-	DynamicDetectionRule *DynamicDetectionRule
+	// Degraded rule with static threshold.
+	DegradedRule *ThresholdRuleV2
+}
 
-	// Unhealthy rule with static threshold. When used, dynamicDetectionRule must not be set.
-	UnhealthyRule *ThresholdRule
+// ExternalSignal - An externally submitted signal instance assigned to an entity.
+type ExternalSignal struct {
+	// REQUIRED; Unique name of the signal within the entity.
+	Name *string
+
+	// REQUIRED; Kind of the signal instance
+	SignalKind *SignalKind
+
+	// Evaluation rules for the external signal as submitted.
+	EvaluationRules *EvaluationRule
+
+	// Optional reference to a signal definition that provides default values.
+	SignalDefinitionName *string
+
+	// READ-ONLY; Current status of the signal.
+	Status *SignalStatus
+}
+
+// GetSignalInstanceProperties implements the SignalInstancePropertiesClassification interface for type ExternalSignal.
+func (e *ExternalSignal) GetSignalInstanceProperties() *SignalInstanceProperties {
+	return &SignalInstanceProperties{
+		Name:                 e.Name,
+		SignalDefinitionName: e.SignalDefinitionName,
+		SignalKind:           e.SignalKind,
+		Status:               e.Status,
+	}
+}
+
+// ExternalSignalGroup - A grouping of externally submitted signals.
+type ExternalSignalGroup struct {
+	// READ-ONLY; Signals assigned to this signal group.
+	Signals []*ExternalSignal
 }
 
 // HealthModel - A HealthModel resource
@@ -321,13 +442,6 @@ type HealthModelListResult struct {
 
 // HealthModelProperties - HealthModel properties
 type HealthModelProperties struct {
-	// Configure to automatically discover entities from a given scope, such as a Service Group. The discovered entities will
-	// be linked to the root entity of the health model.
-	Discovery *ModelDiscoverySettings
-
-	// READ-ONLY; The data plane endpoint for interacting with health data
-	DataplaneEndpoint *string
-
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *HealthModelProvisioningState
 }
@@ -337,18 +451,53 @@ type HealthModelUpdate struct {
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
-	// The resource-specific properties for this resource.
-	Properties *HealthModelUpdateProperties
-
 	// Resource tags.
 	Tags map[string]*string
 }
 
-// HealthModelUpdateProperties - The updatable properties of the HealthModel.
-type HealthModelUpdateProperties struct {
-	// Configure to automatically discover entities from a given scope, such as a Service Group. The discovered entities will
-	// be linked to the root entity of the health model.
-	Discovery *ModelDiscoverySettings
+// HealthReportEvaluationRule - Evaluation rules for the health report
+type HealthReportEvaluationRule struct {
+	// REQUIRED; Unhealthy rule with static threshold.
+	UnhealthyRule *ThresholdRuleV2
+
+	// Degraded rule with static threshold.
+	DegradedRule *ThresholdRuleV2
+}
+
+// HealthReportRequest - Health report that's submitted for a specific signal
+type HealthReportRequest struct {
+	// REQUIRED; Health state to report for the signal
+	HealthState *HealthState
+
+	// REQUIRED; Name of the entity signal to report health for
+	SignalName *string
+
+	// Optional additional context or description for the health report
+	AdditionalContext *string
+
+	// Evaluation rules that were used to determine the reported health state
+	EvaluationRules *HealthReportEvaluationRule
+
+	// Number of minutes until the health report expires. Defaults to 60 (1 hour) if not specified.
+	ExpiresInMinutes *int32
+
+	// Reported value of the signal
+	Value *float64
+}
+
+// HealthStateTransition - A health state transition record
+type HealthStateTransition struct {
+	// REQUIRED; New health state after the transition
+	NewState *HealthState
+
+	// REQUIRED; Timestamp when the transition occurred
+	OccurredAt *time.Time
+
+	// REQUIRED; Previous health state before the transition
+	PreviousState *HealthState
+
+	// Reason of the transition
+	Reason *string
 }
 
 // IconDefinition - Visual icon definition of an entity
@@ -378,11 +527,11 @@ type LogAnalyticsQuerySignalDefinitionProperties struct {
 	// Display name
 	DisplayName *string
 
-	// Optional set of labels (key-value pairs)
-	Labels map[string]*string
-
 	// Interval in which the signal is being evaluated. Defaults to PT1M (1 minute).
 	RefreshInterval *RefreshInterval
+
+	// Optional set of tags (key-value pairs)
+	Tags map[string]*string
 
 	// Time range of signal. ISO duration format like PT10M. If not specified, the KQL query must define a time range.
 	TimeGrain *string
@@ -390,9 +539,6 @@ type LogAnalyticsQuerySignalDefinitionProperties struct {
 	// Name of the column in the result set to evaluate against the thresholds. Defaults to the first column in the result set
 	// if not specified. The column must be numeric.
 	ValueColumnName *string
-
-	// READ-ONLY; Date when the signal definition was (soft-)deleted
-	DeletionDate *time.Time
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *HealthModelProvisioningState
@@ -402,26 +548,73 @@ type LogAnalyticsQuerySignalDefinitionProperties struct {
 func (l *LogAnalyticsQuerySignalDefinitionProperties) GetSignalDefinitionProperties() *SignalDefinitionProperties {
 	return &SignalDefinitionProperties{
 		DataUnit:          l.DataUnit,
-		DeletionDate:      l.DeletionDate,
 		DisplayName:       l.DisplayName,
 		EvaluationRules:   l.EvaluationRules,
-		Labels:            l.Labels,
 		ProvisioningState: l.ProvisioningState,
 		RefreshInterval:   l.RefreshInterval,
 		SignalKind:        l.SignalKind,
+		Tags:              l.Tags,
 	}
 }
 
-// LogAnalyticsSignalGroup - A grouping of signal assignments for a Log Analytics Workspace
-type LogAnalyticsSignalGroup struct {
-	// REQUIRED; Reference to the name of the authentication setting which is used for querying the data source
+// LogAnalyticsSignal - A Log Analytics Query signal instance assigned to an entity.
+type LogAnalyticsSignal struct {
+	// REQUIRED; Unique name of the signal within the entity.
+	Name *string
+
+	// CONSTANT; Kind of the signal instance
+	// Field has constant value SignalKindLogAnalyticsQuery, any specified value is ignored.
+	SignalKind *SignalKind
+
+	// Unit of the signal result (e.g. Bytes, MilliSeconds, Percent, Count))
+	DataUnit *string
+
+	// Display name
+	DisplayName *string
+
+	// Evaluation rules for the signal definition
+	EvaluationRules *EvaluationRule
+
+	// Query text in KQL syntax
+	QueryText *string
+
+	// Interval in which the signal is being evaluated. Defaults to PT1M (1 minute).
+	RefreshInterval *RefreshInterval
+
+	// Optional reference to a signal definition that provides default values.
+	SignalDefinitionName *string
+
+	// Time range of signal. ISO duration format like PT10M. If not specified, the KQL query must define a time range.
+	TimeGrain *string
+
+	// Name of the column in the result set to evaluate against the thresholds. Defaults to the first column in the result set
+	// if not specified. The column must be numeric.
+	ValueColumnName *string
+
+	// READ-ONLY; Current status of the signal.
+	Status *SignalStatus
+}
+
+// GetSignalInstanceProperties implements the SignalInstancePropertiesClassification interface for type LogAnalyticsSignal.
+func (l *LogAnalyticsSignal) GetSignalInstanceProperties() *SignalInstanceProperties {
+	return &SignalInstanceProperties{
+		Name:                 l.Name,
+		SignalDefinitionName: l.SignalDefinitionName,
+		SignalKind:           l.SignalKind,
+		Status:               l.Status,
+	}
+}
+
+// LogAnalyticsSignals - A grouping of Log Analytics workspace signals.
+type LogAnalyticsSignals struct {
+	// REQUIRED; Reference to the name of the authentication setting which is used for querying the data source.
 	AuthenticationSetting *string
 
-	// REQUIRED; Log Analytics Workspace resource ID
+	// REQUIRED; Log Analytics workspace resource ID.
 	LogAnalyticsWorkspaceResourceID *string
 
-	// Signal definitions which are assigned to this signal group. All assignments are combined with an OR operator.
-	SignalAssignments []*SignalAssignment
+	// Signals assigned to this group.
+	Signals []*LogAnalyticsSignal
 }
 
 // ManagedIdentityAuthenticationSettingProperties - Authentication setting properties for Azure Managed Identity
@@ -463,19 +656,6 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
-}
-
-// ModelDiscoverySettings - Settings for automatically discovering entities for the health model.
-type ModelDiscoverySettings struct {
-	// REQUIRED; Whether to add all recommended signals to the discovered entities.
-	AddRecommendedSignals *DiscoveryRuleRecommendedSignalsBehavior
-
-	// REQUIRED; The scope from which entities should be automatically discovered. For example, the resource id of a Service Group.
-	Scope *string
-
-	// Which Managed Identity of the health model to use for discovery. Defaults to SystemAssigned, if not set. Can be set to
-	// 'SystemAssigned' or to the resource id of a user-assigned managed identity which is linked to the health model.
-	Identity *string
 }
 
 // Operation - REST API Operation
@@ -529,6 +709,50 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// PrometheusMetricsSignal - A Prometheus Metrics Query signal instance assigned to an entity.
+type PrometheusMetricsSignal struct {
+	// REQUIRED; Unique name of the signal within the entity.
+	Name *string
+
+	// CONSTANT; Kind of the signal instance
+	// Field has constant value SignalKindPrometheusMetricsQuery, any specified value is ignored.
+	SignalKind *SignalKind
+
+	// Unit of the signal result (e.g. Bytes, MilliSeconds, Percent, Count))
+	DataUnit *string
+
+	// Display name
+	DisplayName *string
+
+	// Evaluation rules for the signal definition
+	EvaluationRules *EvaluationRule
+
+	// Query text in PromQL syntax
+	QueryText *string
+
+	// Interval in which the signal is being evaluated. Defaults to PT1M (1 minute).
+	RefreshInterval *RefreshInterval
+
+	// Optional reference to a signal definition that provides default values.
+	SignalDefinitionName *string
+
+	// Time range of signal. ISO duration format like PT10M.
+	TimeGrain *string
+
+	// READ-ONLY; Current status of the signal.
+	Status *SignalStatus
+}
+
+// GetSignalInstanceProperties implements the SignalInstancePropertiesClassification interface for type PrometheusMetricsSignal.
+func (p *PrometheusMetricsSignal) GetSignalInstanceProperties() *SignalInstanceProperties {
+	return &SignalInstanceProperties{
+		Name:                 p.Name,
+		SignalDefinitionName: p.SignalDefinitionName,
+		SignalKind:           p.SignalKind,
+		Status:               p.Status,
+	}
+}
+
 // PrometheusMetricsSignalDefinitionProperties - Prometheus Metrics Signal Definition properties
 type PrometheusMetricsSignalDefinitionProperties struct {
 	// REQUIRED; Evaluation rules for the signal definition
@@ -547,17 +771,14 @@ type PrometheusMetricsSignalDefinitionProperties struct {
 	// Display name
 	DisplayName *string
 
-	// Optional set of labels (key-value pairs)
-	Labels map[string]*string
-
 	// Interval in which the signal is being evaluated. Defaults to PT1M (1 minute).
 	RefreshInterval *RefreshInterval
 
+	// Optional set of tags (key-value pairs)
+	Tags map[string]*string
+
 	// Time range of signal. ISO duration format like PT10M.
 	TimeGrain *string
-
-	// READ-ONLY; Date when the signal definition was (soft-)deleted
-	DeletionDate *time.Time
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *HealthModelProvisioningState
@@ -567,13 +788,12 @@ type PrometheusMetricsSignalDefinitionProperties struct {
 func (p *PrometheusMetricsSignalDefinitionProperties) GetSignalDefinitionProperties() *SignalDefinitionProperties {
 	return &SignalDefinitionProperties{
 		DataUnit:          p.DataUnit,
-		DeletionDate:      p.DeletionDate,
 		DisplayName:       p.DisplayName,
 		EvaluationRules:   p.EvaluationRules,
-		Labels:            p.Labels,
 		ProvisioningState: p.ProvisioningState,
 		RefreshInterval:   p.RefreshInterval,
 		SignalKind:        p.SignalKind,
+		Tags:              p.Tags,
 	}
 }
 
@@ -615,17 +835,32 @@ type RelationshipProperties struct {
 	// Display name
 	DisplayName *string
 
-	// Optional set of labels (key-value pairs)
-	Labels map[string]*string
-
-	// READ-ONLY; Date when the relationship was (soft-)deleted
-	DeletionDate *time.Time
+	// Optional set of tags (key-value pairs)
+	Tags map[string]*string
 
 	// READ-ONLY; Discovered by which discovery rule. If set, the relationship cannot be deleted manually.
 	DiscoveredBy *string
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *HealthModelProvisioningState
+}
+
+// ResourceGraphQuerySpecification - Discovery rule specification for an Azure Resource Graph query
+type ResourceGraphQuerySpecification struct {
+	// CONSTANT; Kind of the discovery rule specification
+	// Field has constant value DiscoveryRuleKindResourceGraphQuery, any specified value is ignored.
+	Kind *DiscoveryRuleKind
+
+	// REQUIRED; Azure Resource Graph query text in KQL syntax. The query must return at least a column named 'id' which contains
+	// the resource ID of the discovered resources.
+	ResourceGraphQuery *string
+}
+
+// GetDiscoveryRuleSpecification implements the DiscoveryRuleSpecificationClassification interface for type ResourceGraphQuerySpecification.
+func (r *ResourceGraphQuerySpecification) GetDiscoveryRuleSpecification() *DiscoveryRuleSpecification {
+	return &DiscoveryRuleSpecification{
+		Kind: r.Kind,
+	}
 }
 
 // ResourceMetricSignalDefinitionProperties - Azure Resource Metric Signal Definition properties
@@ -661,14 +896,11 @@ type ResourceMetricSignalDefinitionProperties struct {
 	// Display name
 	DisplayName *string
 
-	// Optional set of labels (key-value pairs)
-	Labels map[string]*string
-
 	// Interval in which the signal is being evaluated. Defaults to PT1M (1 minute).
 	RefreshInterval *RefreshInterval
 
-	// READ-ONLY; Date when the signal definition was (soft-)deleted
-	DeletionDate *time.Time
+	// Optional set of tags (key-value pairs)
+	Tags map[string]*string
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *HealthModelProvisioningState
@@ -678,20 +910,13 @@ type ResourceMetricSignalDefinitionProperties struct {
 func (r *ResourceMetricSignalDefinitionProperties) GetSignalDefinitionProperties() *SignalDefinitionProperties {
 	return &SignalDefinitionProperties{
 		DataUnit:          r.DataUnit,
-		DeletionDate:      r.DeletionDate,
 		DisplayName:       r.DisplayName,
 		EvaluationRules:   r.EvaluationRules,
-		Labels:            r.Labels,
 		ProvisioningState: r.ProvisioningState,
 		RefreshInterval:   r.RefreshInterval,
 		SignalKind:        r.SignalKind,
+		Tags:              r.Tags,
 	}
-}
-
-// SignalAssignment - Group of signal definition assignments
-type SignalAssignment struct {
-	// REQUIRED; Signal definitions referenced by their names. All definitions are combined with an AND operator.
-	SignalDefinitions []*string
 }
 
 // SignalDefinition - A signal definition in a health model
@@ -735,14 +960,11 @@ type SignalDefinitionProperties struct {
 	// Display name
 	DisplayName *string
 
-	// Optional set of labels (key-value pairs)
-	Labels map[string]*string
-
 	// Interval in which the signal is being evaluated. Defaults to PT1M (1 minute).
 	RefreshInterval *RefreshInterval
 
-	// READ-ONLY; Date when the signal definition was (soft-)deleted
-	DeletionDate *time.Time
+	// Optional set of tags (key-value pairs)
+	Tags map[string]*string
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *HealthModelProvisioningState
@@ -753,20 +975,95 @@ func (s *SignalDefinitionProperties) GetSignalDefinitionProperties() *SignalDefi
 	return s
 }
 
-// SignalGroup - Contains various signal groups that can be assigned to an entity
-type SignalGroup struct {
+// SignalGroups - Contains various signal groups that can be assigned to an entity
+type SignalGroups struct {
 	// Log Analytics Signal Group
-	AzureLogAnalytics *LogAnalyticsSignalGroup
+	AzureLogAnalytics *LogAnalyticsSignals
 
 	// Azure Monitor Workspace Signal Group
-	AzureMonitorWorkspace *AzureMonitorWorkspaceSignalGroup
+	AzureMonitorWorkspace *AzureMonitorWorkspaceSignals
 
 	// Azure Resource Signal Group
-	AzureResource *AzureResourceSignalGroup
+	AzureResource *AzureResourceSignals
 
 	// Settings for dependency signals to control how the health state of child entities influences the health state of the parent
 	// entity.
-	Dependencies *DependenciesSignalGroup
+	Dependencies *DependenciesSignalGroupV2
+
+	// READ-ONLY; List of signals which have been externally submitted for this entity.
+	External *ExternalSignalGroup
+}
+
+// SignalHistoryDataPoint - A data point in the signal time series
+type SignalHistoryDataPoint struct {
+	// REQUIRED; Health state at this point in time
+	HealthState *HealthState
+
+	// REQUIRED; Timestamp of the data point
+	OccurredAt *time.Time
+
+	// Additional context as provided by the submitter
+	AdditionalContext *string
+
+	// Signal value at this point in time
+	Value *float64
+}
+
+// SignalHistoryRequest - Request body for getting signal history
+type SignalHistoryRequest struct {
+	// REQUIRED; Name of the signal to get history for
+	SignalName *string
+
+	// End time for the history query. Defaults to now if not specified.
+	EndAt *time.Time
+
+	// Start time for the history query. Defaults to 24 hours ago if not specified.
+	StartAt *time.Time
+}
+
+// SignalHistoryResponse - Response containing signal history
+type SignalHistoryResponse struct {
+	// REQUIRED; Name of the entity
+	EntityName *string
+
+	// REQUIRED; Signal history data points
+	History []*SignalHistoryDataPoint
+
+	// REQUIRED; Name of the signal
+	SignalName *string
+}
+
+// SignalInstanceProperties - Additional properties for signal instances assigned to an entity
+type SignalInstanceProperties struct {
+	// REQUIRED; Unique name of the signal within the entity.
+	Name *string
+
+	// REQUIRED; Kind of the signal instance
+	SignalKind *SignalKind
+
+	// Optional reference to a signal definition that provides default values.
+	SignalDefinitionName *string
+
+	// READ-ONLY; Current status of the signal.
+	Status *SignalStatus
+}
+
+// GetSignalInstanceProperties implements the SignalInstancePropertiesClassification interface for type SignalInstanceProperties.
+func (s *SignalInstanceProperties) GetSignalInstanceProperties() *SignalInstanceProperties { return s }
+
+// SignalStatus - Status of a signal
+type SignalStatus struct {
+	// READ-ONLY; Error message if the signal status cannot be retrieved
+	Error *string
+
+	// READ-ONLY; Health state of this signal
+	HealthState *HealthState
+
+	// READ-ONLY; Timestamp when the value was reported
+	ReportedAt *time.Time
+
+	// READ-ONLY; Reported value of the signal
+	Value *float64
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
@@ -790,13 +1087,13 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
-// ThresholdRule - Threshold-based evaluation rule for a signal definition
-type ThresholdRule struct {
+// ThresholdRuleV2 - Threshold-based evaluation rule for a signal definition
+type ThresholdRuleV2 struct {
 	// REQUIRED; Operator how to compare the signal value with the threshold
 	Operator *SignalOperator
 
 	// REQUIRED; Threshold value
-	Threshold *string
+	Threshold *float64
 }
 
 // UserAssignedIdentity - User assigned identity properties

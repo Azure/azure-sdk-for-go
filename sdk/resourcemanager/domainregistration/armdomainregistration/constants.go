@@ -4,6 +4,10 @@
 
 package armdomainregistration
 
+const (
+	version20241101 string = "2024-11-01"
+)
+
 // AzureResourceType - Type of the Azure resource the hostname is assigned to.
 type AzureResourceType string
 

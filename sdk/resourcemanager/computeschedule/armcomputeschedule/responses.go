@@ -139,6 +139,12 @@ type ScheduledActionsClientVirtualMachinesCancelOperationsResponse struct {
 	CancelOperationsResponse
 }
 
+// ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse contains the response from method ScheduledActionsClient.VirtualMachinesExecuteCreateFlex.
+type ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse struct {
+	// The response from a create flex request
+	CreateFlexResourceOperationResponse
+}
+
 // ScheduledActionsClientVirtualMachinesExecuteCreateResponse contains the response from method ScheduledActionsClient.VirtualMachinesExecuteCreate.
 type ScheduledActionsClientVirtualMachinesExecuteCreateResponse struct {
 	// The response from a create request

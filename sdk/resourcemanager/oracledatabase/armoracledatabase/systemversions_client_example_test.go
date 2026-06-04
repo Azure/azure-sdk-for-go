@@ -30,7 +30,7 @@ func ExampleSystemVersionsClient_Get_getExadataSystemVersionGeneratedByMaximumSe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.SystemVersionsClientGetResponse{
-	// 	SystemVersion: &armoracledatabase.SystemVersion{
+	// 	SystemVersion: armoracledatabase.SystemVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/systemVersion/22.1.7.0.0.230113"),
 	// 		Properties: &armoracledatabase.SystemVersionProperties{
 	// 			SystemVersion: to.Ptr("22.1.7.0.0.230113"),
@@ -68,7 +68,7 @@ func ExampleSystemVersionsClient_Get_getExadataSystemVersionGeneratedByMinimumSe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.SystemVersionsClientGetResponse{
-	// 	SystemVersion: &armoracledatabase.SystemVersion{
+	// 	SystemVersion: armoracledatabase.SystemVersion{
 	// 	},
 	// }
 }
@@ -92,7 +92,7 @@ func ExampleSystemVersionsClient_Get_systemVersionsListSystemVersions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.SystemVersionsClientGetResponse{
-	// 	SystemVersion: &armoracledatabase.SystemVersion{
+	// 	SystemVersion: armoracledatabase.SystemVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/systemVersion/22.1.7.0.0.230113"),
 	// 		Properties: &armoracledatabase.SystemVersionProperties{
 	// 			SystemVersion: to.Ptr("22.1.7.0.0.230113"),

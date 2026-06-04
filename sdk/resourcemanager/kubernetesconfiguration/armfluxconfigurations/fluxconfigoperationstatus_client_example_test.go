@@ -6,10 +6,9 @@ package armfluxconfigurations_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armfluxconfigurations"
+	"log"
 )
 
 // Generated from example definition: 2025-04-01/GetFluxConfigurationAsyncOperationStatus.json
@@ -31,7 +30,7 @@ func ExampleFluxConfigOperationStatusClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfluxconfigurations.FluxConfigOperationStatusClientGetResponse{
-	// 	OperationStatusResult: &armfluxconfigurations.OperationStatusResult{
+	// 	OperationStatusResult: armfluxconfigurations.OperationStatusResult{
 	// 		Name: to.Ptr("99999999-9999-9999-9999-999999999999"),
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/fluxConfigurations/srs-fluxconfig/operations/99999999-9999-9999-9999-999999999999"),
 	// 		Properties: map[string]*string{

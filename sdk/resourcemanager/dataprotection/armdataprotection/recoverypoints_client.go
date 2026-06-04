@@ -18,6 +18,8 @@ import (
 
 // RecoveryPointsClient contains the methods for the RecoveryPoints group.
 // Don't use this type directly, use NewRecoveryPointsClient() instead.
+//
+// Generated from API version 2026-03-01
 type RecoveryPointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets a Recovery Point using recoveryPointId for a Datasource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - backupInstanceName - The name of the backup instance.
@@ -97,8 +97,8 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -113,8 +113,6 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 }
 
 // NewListPager - Returns a list of Recovery Points for a DataSource in a vault.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - backupInstanceName - The name of the backup instance.
@@ -172,8 +170,8 @@ func (client *RecoveryPointsClient) listCreateRequest(ctx context.Context, resou
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

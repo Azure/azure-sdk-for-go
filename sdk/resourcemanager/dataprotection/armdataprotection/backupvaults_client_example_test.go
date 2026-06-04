@@ -34,7 +34,7 @@ func ExampleBackupVaultsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armdataprotection.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armdataprotection.CheckNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
@@ -93,13 +93,13 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_restoreASoftDeletedBackupVaul
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientCreateOrUpdateResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Location: to.Ptr("WestUS"),
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("val1"),
@@ -195,13 +195,13 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVault() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientCreateOrUpdateResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
@@ -294,13 +294,13 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithCmk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientCreateOrUpdateResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
@@ -372,13 +372,13 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate_createBackupVaultWithMsi() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientCreateOrUpdateResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
@@ -433,7 +433,7 @@ func ExampleBackupVaultsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -461,7 +461,7 @@ func ExampleBackupVaultsClient_Get_getBackupVault() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientGetResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
@@ -519,7 +519,7 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithCmk() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientGetResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
@@ -579,7 +579,7 @@ func ExampleBackupVaultsClient_Get_getBackupVaultWithMsi() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientGetResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
@@ -832,13 +832,13 @@ func ExampleBackupVaultsClient_BeginUpdate_patchBackupVault() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientUpdateResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),
@@ -911,13 +911,13 @@ func ExampleBackupVaultsClient_BeginUpdate_patchBackupVaultWithCmk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupVaultsClientUpdateResponse{
-	// 	BackupVaultResource: &armdataprotection.BackupVaultResource{
+	// 	BackupVaultResource: armdataprotection.BackupVaultResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults"),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/Backupvaults/swaggerExample"),

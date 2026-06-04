@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // FetchSecondaryRecoveryPointsServer is a fake server for instances of the armdataprotection.FetchSecondaryRecoveryPointsClient type.
@@ -53,9 +54,7 @@ func (f *FetchSecondaryRecoveryPointsServerTransport) Do(req *http.Request) (*ht
 }
 
 func (f *FetchSecondaryRecoveryPointsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (f *FetchSecondaryRecoveryPointsServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -110,16 +106,8 @@ func (f *FetchSecondaryRecoveryPointsServerTransport) dispatchNewListPager(req *
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armdataprotection.FetchSecondaryRecoveryPointsClientListOptions
 		if filterParam != nil || skipTokenParam != nil {
 			options = &armdataprotection.FetchSecondaryRecoveryPointsClientListOptions{
@@ -138,7 +126,7 @@ func (f *FetchSecondaryRecoveryPointsServerTransport) dispatchNewListPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

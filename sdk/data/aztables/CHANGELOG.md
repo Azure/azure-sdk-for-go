@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Regenerated code with the latest emitter.
+* Updated dependencies.
 
 ## 1.4.1 (2025-11-13)
 

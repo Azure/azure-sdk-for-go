@@ -19,6 +19,8 @@ import (
 
 // SetDefinitionsClient contains the methods for the SetDefinitions group.
 // Don't use this type directly, use NewSetDefinitionsClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type SetDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewSetDefinitionsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - This operation creates or updates a policy set definition in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policySetDefinitionName - The name of the policy set definition to get.
 //   - parameters - The policy set definition properties.
 //   - options - SetDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the SetDefinitionsClient.CreateOrUpdate
@@ -86,8 +86,8 @@ func (client *SetDefinitionsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -108,8 +108,6 @@ func (client *SetDefinitionsClient) createOrUpdateHandleResponse(resp *http.Resp
 // CreateOrUpdateAtManagementGroup - This operation creates or updates a policy set definition in the given management group
 // with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - managementGroupID - The ID of the management group.
 //   - policySetDefinitionName - The name of the policy set definition to get.
 //   - parameters - The policy set definition properties.
@@ -153,8 +151,8 @@ func (client *SetDefinitionsClient) createOrUpdateAtManagementGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -174,8 +172,6 @@ func (client *SetDefinitionsClient) createOrUpdateAtManagementGroupHandleRespons
 
 // Delete - This operation deletes the policy set definition in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policySetDefinitionName - The name of the policy set definition to get.
 //   - options - SetDefinitionsClientDeleteOptions contains the optional parameters for the SetDefinitionsClient.Delete method.
 func (client *SetDefinitionsClient) Delete(ctx context.Context, policySetDefinitionName string, options *SetDefinitionsClientDeleteOptions) (SetDefinitionsClientDeleteResponse, error) {
@@ -215,16 +211,14 @@ func (client *SetDefinitionsClient) deleteCreateRequest(ctx context.Context, pol
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteAtManagementGroup - This operation deletes the policy set definition in the given management group with the given
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - managementGroupID - The ID of the management group.
 //   - policySetDefinitionName - The name of the policy set definition to get.
 //   - options - SetDefinitionsClientDeleteAtManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.DeleteAtManagementGroup
@@ -266,15 +260,13 @@ func (client *SetDefinitionsClient) deleteAtManagementGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - This operation retrieves the policy set definition in the given subscription with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policySetDefinitionName - The name of the policy set definition to get.
 //   - options - SetDefinitionsClientGetOptions contains the optional parameters for the SetDefinitionsClient.Get method.
 func (client *SetDefinitionsClient) Get(ctx context.Context, policySetDefinitionName string, options *SetDefinitionsClientGetOptions) (SetDefinitionsClientGetResponse, error) {
@@ -318,8 +310,8 @@ func (client *SetDefinitionsClient) getCreateRequest(ctx context.Context, policy
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -336,8 +328,6 @@ func (client *SetDefinitionsClient) getHandleResponse(resp *http.Response) (SetD
 // GetAtManagementGroup - This operation retrieves the policy set definition in the given management group with the given
 // name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - managementGroupID - The ID of the management group.
 //   - policySetDefinitionName - The name of the policy set definition to get.
 //   - options - SetDefinitionsClientGetAtManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.GetAtManagementGroup
@@ -383,8 +373,8 @@ func (client *SetDefinitionsClient) getAtManagementGroupCreateRequest(ctx contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -400,8 +390,6 @@ func (client *SetDefinitionsClient) getAtManagementGroupHandleResponse(resp *htt
 
 // GetBuiltIn - This operation retrieves the built-in policy set definition with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policySetDefinitionName - The name of the policy set definition to get.
 //   - options - SetDefinitionsClientGetBuiltInOptions contains the optional parameters for the SetDefinitionsClient.GetBuiltIn
 //     method.
@@ -442,8 +430,8 @@ func (client *SetDefinitionsClient) getBuiltInCreateRequest(ctx context.Context,
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -465,8 +453,6 @@ func (client *SetDefinitionsClient) getBuiltInHandleResponse(resp *http.Response
 // is provided, the returned list only includes all policy set definitions whose type match the {value}. Possible policyType
 // values are NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
 // all policy set definitions whose category match the {value}.
-//
-// Generated from API version 2025-03-01
 //   - options - SetDefinitionsClientListOptions contains the optional parameters for the SetDefinitionsClient.NewListPager method.
 func (client *SetDefinitionsClient) NewListPager(options *SetDefinitionsClientListOptions) *runtime.Pager[SetDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SetDefinitionsClientListResponse]{
@@ -512,8 +498,8 @@ func (client *SetDefinitionsClient) listCreateRequest(ctx context.Context, optio
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -530,8 +516,6 @@ func (client *SetDefinitionsClient) listHandleResponse(resp *http.Response) (Set
 // NewListBuiltInPager - This operation retrieves a list of all the built-in policy set definitions that match the optional
 // given $filter. If $filter='category -eq {value}' is provided, the returned list only includes all built-in policy set definitions
 // whose category match the {value}.
-//
-// Generated from API version 2025-03-01
 //   - options - SetDefinitionsClientListBuiltInOptions contains the optional parameters for the SetDefinitionsClient.NewListBuiltInPager
 //     method.
 func (client *SetDefinitionsClient) NewListBuiltInPager(options *SetDefinitionsClientListBuiltInOptions) *runtime.Pager[SetDefinitionsClientListBuiltInResponse] {
@@ -574,8 +558,8 @@ func (client *SetDefinitionsClient) listBuiltInCreateRequest(ctx context.Context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -597,8 +581,6 @@ func (client *SetDefinitionsClient) listBuiltInHandleResponse(resp *http.Respons
 // management group. If $filter='policyType -eq {value}' is provided, the returned list only includes all policy set definitions
 // whose type match the {value}. Possible policyType values are NotSpecified, BuiltIn and Custom. If $filter='category -eq
 // {value}' is provided, the returned list only includes all policy set definitions whose category match the {value}.
-//
-// Generated from API version 2025-03-01
 //   - managementGroupID - The ID of the management group.
 //   - options - SetDefinitionsClientListByManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.NewListByManagementGroupPager
 //     method.
@@ -646,8 +628,8 @@ func (client *SetDefinitionsClient) listByManagementGroupCreateRequest(ctx conte
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

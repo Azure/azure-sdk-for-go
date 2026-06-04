@@ -18,6 +18,8 @@ import (
 
 // ConfigurationsClient contains the methods for the Configurations group.
 // Don't use this type directly, use NewConfigurationsClient() instead.
+//
+// Generated from API version 2023-10-01-preview
 type ConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Create or Update configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the MaintenanceConfiguration
 //   - configuration - The configuration
@@ -90,8 +90,8 @@ func (client *ConfigurationsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configuration); err != nil {
@@ -111,8 +111,6 @@ func (client *ConfigurationsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the MaintenanceConfiguration
 //   - options - ConfigurationsClientDeleteOptions contains the optional parameters for the ConfigurationsClient.Delete method.
@@ -158,8 +156,8 @@ func (client *ConfigurationsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -175,8 +173,6 @@ func (client *ConfigurationsClient) deleteHandleResponse(resp *http.Response) (C
 
 // Get - Get Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the MaintenanceConfiguration
 //   - options - ConfigurationsClientGetOptions contains the optional parameters for the ConfigurationsClient.Get method.
@@ -222,8 +218,8 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -238,8 +234,6 @@ func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (Conf
 }
 
 // NewListPager - Get Configuration records within a subscription
-//
-// Generated from API version 2023-10-01-preview
 //   - options - ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.NewListPager method.
 func (client *ConfigurationsClient) NewListPager(options *ConfigurationsClientListOptions) *runtime.Pager[ConfigurationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConfigurationsClientListResponse]{
@@ -276,8 +270,8 @@ func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, _ *Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -293,8 +287,6 @@ func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (Con
 
 // Update - Patch configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the MaintenanceConfiguration
 //   - configuration - The configuration
@@ -341,8 +333,8 @@ func (client *ConfigurationsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configuration); err != nil {

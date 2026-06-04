@@ -41,13 +41,13 @@ func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterAgentlessKi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientCreateOrReplaceResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
@@ -112,13 +112,13 @@ func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterExample() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientCreateOrReplaceResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
@@ -181,13 +181,13 @@ func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterPrivateLink
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientCreateOrReplaceResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
@@ -272,13 +272,13 @@ func ExampleConnectedClusterClient_BeginCreateOrReplace_createClusterKindExample
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientCreateOrReplaceResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
@@ -368,13 +368,13 @@ func ExampleConnectedClusterClient_BeginCreateOrReplace_updateClusterByPutExampl
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientCreateOrReplaceResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
@@ -427,7 +427,7 @@ func ExampleConnectedClusterClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -455,7 +455,7 @@ func ExampleConnectedClusterClient_Get_getClusterExample() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientGetResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
@@ -542,7 +542,7 @@ func ExampleConnectedClusterClient_Get_getProvisionedClusterExample() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientGetResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),
@@ -834,7 +834,7 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialResponse{
-	// 	CredentialResults: &armhybridkubernetes.CredentialResults{
+	// 	CredentialResults: armhybridkubernetes.CredentialResults{
 	// 		HybridConnectionConfig: &armhybridkubernetes.HybridConnectionConfig{
 	// 			ExpirationTime: to.Ptr[int64](1631196183),
 	// 			HybridConnectionName: to.Ptr("microsoft.kubernetes/connectedclusters/229dc73f7b07196c79a93d4362d9c7fc4ed34df3e95290d27c56cec2dbb82865/1631185383340987904"),
@@ -875,7 +875,7 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialResponse{
-	// 	CredentialResults: &armhybridkubernetes.CredentialResults{
+	// 	CredentialResults: armhybridkubernetes.CredentialResults{
 	// 		HybridConnectionConfig: &armhybridkubernetes.HybridConnectionConfig{
 	// 			ExpirationTime: to.Ptr[int64](1631196183),
 	// 			HybridConnectionName: to.Ptr("microsoft.kubernetes/connectedclusters/229dc73f7b07196c79a93d4362d9c7fc4ed34df3e95290d27c56cec2dbb82865/1631185383340987904"),
@@ -916,7 +916,7 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialResponse{
-	// 	CredentialResults: &armhybridkubernetes.CredentialResults{
+	// 	CredentialResults: armhybridkubernetes.CredentialResults{
 	// 		Kubeconfigs: []*armhybridkubernetes.CredentialResult{
 	// 			{
 	// 				Name: to.Ptr("credentialName1"),
@@ -949,7 +949,7 @@ func ExampleConnectedClusterClient_ListClusterUserCredential_listClusterUserCred
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientListClusterUserCredentialResponse{
-	// 	CredentialResults: &armhybridkubernetes.CredentialResults{
+	// 	CredentialResults: armhybridkubernetes.CredentialResults{
 	// 		Kubeconfigs: []*armhybridkubernetes.CredentialResult{
 	// 			{
 	// 				Name: to.Ptr("credentialName1"),
@@ -989,7 +989,7 @@ func ExampleConnectedClusterClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridkubernetes.ConnectedClusterClientUpdateResponse{
-	// 	ConnectedCluster: &armhybridkubernetes.ConnectedCluster{
+	// 	ConnectedCluster: armhybridkubernetes.ConnectedCluster{
 	// 		Name: to.Ptr("connectedCluster1"),
 	// 		Type: to.Ptr("Microsoft.Kubernetes/connectedClusters"),
 	// 		ID: to.Ptr("/subscriptions/1bfbb5d0-917e-4346-9026-1d3b344417f5/resourceGroups/akkeshar/providers/Microsoft.Kubernetes/connectedClusters/connectedCluster1"),

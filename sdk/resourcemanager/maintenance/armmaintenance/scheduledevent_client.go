@@ -18,6 +18,8 @@ import (
 
 // ScheduledEventClient contains the methods for the ScheduledEvent group.
 // Don't use this type directly, use NewScheduledEventClient() instead.
+//
+// Generated from API version 2023-10-01-preview
 type ScheduledEventClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewScheduledEventClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Post Scheduled Event Acknowledgement
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceType - Resource type
 //   - resourceName - Resource Name
@@ -101,8 +101,8 @@ func (client *ScheduledEventClient) acknowledgeCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

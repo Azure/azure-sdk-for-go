@@ -30,7 +30,7 @@ func ExampleDNSPrivateViewsClient_Get_getADnsPrivateViewByNameGeneratedByMaximum
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DNSPrivateViewsClientGetResponse{
-	// 	DNSPrivateView: &armoracledatabase.DNSPrivateView{
+	// 	DNSPrivateView: armoracledatabase.DNSPrivateView{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dnsPrivateViews/ocid1....aaaaaa"),
 	// 		Type: to.Ptr("Oracle.Database/locations/dnsPrivateViews"),
 	// 		Properties: &armoracledatabase.DNSPrivateViewProperties{
@@ -75,7 +75,7 @@ func ExampleDNSPrivateViewsClient_Get_getADnsPrivateViewByNameGeneratedByMinimum
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DNSPrivateViewsClientGetResponse{
-	// 	DNSPrivateView: &armoracledatabase.DNSPrivateView{
+	// 	DNSPrivateView: armoracledatabase.DNSPrivateView{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dnsPrivateViews/ocid1....aaaaaa"),
 	// 	},
 	// }
@@ -100,7 +100,7 @@ func ExampleDNSPrivateViewsClient_Get_dnsPrivateViewsGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DNSPrivateViewsClientGetResponse{
-	// 	DNSPrivateView: &armoracledatabase.DNSPrivateView{
+	// 	DNSPrivateView: armoracledatabase.DNSPrivateView{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dnsPrivateViews/ocid1....aaaaaa"),
 	// 		Type: to.Ptr("Oracle.Database/locations/dnsPrivateViews"),
 	// 		Properties: &armoracledatabase.DNSPrivateViewProperties{

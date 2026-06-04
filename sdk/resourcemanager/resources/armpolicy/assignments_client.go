@@ -19,6 +19,8 @@ import (
 
 // AssignmentsClient contains the methods for the Assignments group.
 // Don't use this type directly, use NewAssignmentsClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type AssignmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +46,6 @@ func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredenti
 // to all resources contained within their scope. For example, when you assign a policy at resource group scope, that policy
 // applies to all resources in the group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - policyAssignmentName - The name of the policy assignment to get.
 //   - parameters - Parameters for the policy assignment.
@@ -88,8 +88,8 @@ func (client *AssignmentsClient) createCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -116,8 +116,6 @@ func (client *AssignmentsClient) createHandleResponse(resp *http.Response) (Assi
 // (format: '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
 // or resource (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 //   - parameters - Parameters for policy assignment.
 //   - options - AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
@@ -155,8 +153,8 @@ func (client *AssignmentsClient) createByIDCreateRequest(ctx context.Context, po
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -177,8 +175,6 @@ func (client *AssignmentsClient) createByIDHandleResponse(resp *http.Response) (
 // Delete - This operation deletes a policy assignment, given its name and the scope it was created in. The scope of a policy
 // assignment is the part of its ID preceding '/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - policyAssignmentName - The name of the policy assignment to get.
 //   - options - AssignmentsClientDeleteOptions contains the optional parameters for the AssignmentsClient.Delete method.
@@ -220,8 +216,8 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -243,8 +239,6 @@ func (client *AssignmentsClient) deleteHandleResponse(resp *http.Response) (Assi
 // (resource group), or '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'
 // (resource).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 //   - options - AssignmentsClientDeleteByIDOptions contains the optional parameters for the AssignmentsClient.DeleteByID method.
 func (client *AssignmentsClient) DeleteByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientDeleteByIDOptions) (AssignmentsClientDeleteByIDResponse, error) {
@@ -281,8 +275,8 @@ func (client *AssignmentsClient) deleteByIDCreateRequest(ctx context.Context, po
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -298,8 +292,6 @@ func (client *AssignmentsClient) deleteByIDHandleResponse(resp *http.Response) (
 
 // Get - This operation retrieves a single policy assignment, given its name and the scope it was created at.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - policyAssignmentName - The name of the policy assignment to get.
 //   - options - AssignmentsClientGetOptions contains the optional parameters for the AssignmentsClient.Get method.
@@ -344,8 +336,8 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, scope str
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -366,8 +358,6 @@ func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (Assignm
 // (format: '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
 // or resource (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 //   - options - AssignmentsClientGetByIDOptions contains the optional parameters for the AssignmentsClient.GetByID method.
 func (client *AssignmentsClient) GetByID(ctx context.Context, policyAssignmentID string, options *AssignmentsClientGetByIDOptions) (AssignmentsClientGetByIDResponse, error) {
@@ -404,8 +394,8 @@ func (client *AssignmentsClient) getByIDCreateRequest(ctx context.Context, polic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -430,8 +420,6 @@ func (client *AssignmentsClient) getByIDHandleResponse(resp *http.Response) (Ass
 // If $filter=atExactScope() is provided, the returned list only includes all policy assignments that at the subscription.
 // If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments of the policy
 // definition whose id is {value}.
-//
-// Generated from API version 2025-03-01
 //   - options - AssignmentsClientListOptions contains the optional parameters for the AssignmentsClient.NewListPager method.
 func (client *AssignmentsClient) NewListPager(options *AssignmentsClientListOptions) *runtime.Pager[AssignmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AssignmentsClientListResponse]{
@@ -477,8 +465,8 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, options 
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -500,8 +488,6 @@ func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (Assign
 // group's ancestors. If $filter=atExactScope() is provided, the returned list only includes all policy assignments that at
 // the management group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes all policy assignments
 // of the policy definition whose id is {value} that apply to the management group.
-//
-// Generated from API version 2025-03-01
 //   - managementGroupID - The management group ID.
 //   - options - AssignmentsClientListForManagementGroupOptions contains the optional parameters for the AssignmentsClient.NewListForManagementGroupPager
 //     method.
@@ -549,8 +535,8 @@ func (client *AssignmentsClient) listForManagementGroupCreateRequest(ctx context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -583,8 +569,6 @@ func (client *AssignmentsClient) listForManagementGroupHandleResponse(resp *http
 // == 'domainNames', {resourceName} == 'MyComputerName'). A convenient alternative to providing the namespace and type name
 // separately is to provide both in the {resourceType} parameter, format: ({resourceProviderNamespace} == ”, {parentResourcePath}
 // == ”, {resourceType} == 'Microsoft.Web/sites', {resourceName} == 'MyWebApp').
-//
-// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider. For example, the namespace of a virtual machine is
 //     Microsoft.Compute (from Microsoft.Compute/virtualMachines)
@@ -657,8 +641,8 @@ func (client *AssignmentsClient) listForResourceCreateRequest(ctx context.Contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -681,8 +665,6 @@ func (client *AssignmentsClient) listForResourceHandleResponse(resp *http.Respon
 // contained within the resource group. If $filter=atExactScope() is provided, the returned list only includes all policy
 // assignments that at the resource group. If $filter=policyDefinitionId eq '{value}' is provided, the returned list includes
 // all policy assignments of the policy definition whose id is {value} that apply to the resource group.
-//
-// Generated from API version 2025-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AssignmentsClientListForResourceGroupOptions contains the optional parameters for the AssignmentsClient.NewListForResourceGroupPager
 //     method.
@@ -734,8 +716,8 @@ func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.C
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -753,8 +735,6 @@ func (client *AssignmentsClient) listForResourceGroupHandleResponse(resp *http.R
 // contained within their scope. For example, when you assign a policy at resource group scope, that policy applies to all
 // resources in the group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - policyAssignmentName - The name of the policy assignment to get.
 //   - parameters - Parameters for policy assignment patch request.
@@ -797,8 +777,8 @@ func (client *AssignmentsClient) updateCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -825,8 +805,6 @@ func (client *AssignmentsClient) updateHandleResponse(resp *http.Response) (Assi
 // (format: '/subscriptions/{subscriptionId}'), resource group (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}',
 // or resource (format: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/[{parentResourcePath}/]{resourceType}/{resourceName}'.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - policyAssignmentID - The ID of the policy assignment to get. Use the format '{scope}/providers/Microsoft.Authorization/policyAssignments/{policyAssignmentName}'.
 //   - parameters - Parameters for policy assignment patch request.
 //   - options - AssignmentsClientUpdateByIDOptions contains the optional parameters for the AssignmentsClient.UpdateByID method.
@@ -864,8 +842,8 @@ func (client *AssignmentsClient) updateByIDCreateRequest(ctx context.Context, po
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

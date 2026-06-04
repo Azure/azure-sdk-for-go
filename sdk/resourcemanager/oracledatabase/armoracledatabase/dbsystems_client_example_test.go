@@ -65,13 +65,13 @@ func ExampleDbSystemsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbSystemsClientCreateOrUpdateResponse{
-	// 	DbSystem: &armoracledatabase.DbSystem{
+	// 	DbSystem: armoracledatabase.DbSystem{
 	// 		Properties: &armoracledatabase.DbSystemProperties{
 	// 			DatabaseEdition: to.Ptr(armoracledatabase.DbSystemDatabaseEditionTypeStandardEdition),
 	// 			DbVersion: to.Ptr("nuzcyzulicdscaxxleansibdtqxhf"),
@@ -150,7 +150,7 @@ func ExampleDbSystemsClient_BeginDelete_dbSystemsDeleteMaximumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -171,7 +171,7 @@ func ExampleDbSystemsClient_BeginDelete_dbSystemsDeleteMinimumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -194,7 +194,7 @@ func ExampleDbSystemsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbSystemsClientGetResponse{
-	// 	DbSystem: &armoracledatabase.DbSystem{
+	// 	DbSystem: armoracledatabase.DbSystem{
 	// 		Properties: &armoracledatabase.DbSystemProperties{
 	// 			DatabaseEdition: to.Ptr(armoracledatabase.DbSystemDatabaseEditionTypeStandardEdition),
 	// 			DbVersion: to.Ptr("nuzcyzulicdscaxxleansibdtqxhf"),
@@ -527,13 +527,13 @@ func ExampleDbSystemsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbSystemsClientUpdateResponse{
-	// 	DbSystem: &armoracledatabase.DbSystem{
+	// 	DbSystem: armoracledatabase.DbSystem{
 	// 		Properties: &armoracledatabase.DbSystemProperties{
 	// 			DatabaseEdition: to.Ptr(armoracledatabase.DbSystemDatabaseEditionTypeStandardEdition),
 	// 			DbVersion: to.Ptr("23.0.0.0.0"),

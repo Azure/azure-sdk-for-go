@@ -1,5 +1,16 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-03-12)
+### Breaking Changes
+
+- Operation `*CloudHsmClusterBackupStatusClient.BeginGet` has been changed to non-LRO, use `*CloudHsmClusterBackupStatusClient.Get` instead.
+- Operation `*CloudHsmClusterRestoreStatusClient.BeginGet` has been changed to non-LRO, use `*CloudHsmClusterRestoreStatusClient.Get` instead.
+- Field `XMSRequestID` of struct `CloudHsmClustersClientBackupResponse` has been removed
+- Field `XMSRequestID` of struct `CloudHsmClustersClientRestoreResponse` has been removed
+- Field `XMSRequestID` of struct `CloudHsmClustersClientValidateBackupPropertiesResponse` has been removed
+- Field `XMSRequestID` of struct `CloudHsmClustersClientValidateRestorePropertiesResponse` has been removed
+
+
 ## 2.0.0 (2025-07-01)
 ### Breaking Changes
 

@@ -1,29 +1,23 @@
 # Release History
 
-## 1.5.0-beta.1 (2026-05-18)
+## 1.5.1-beta.1 (Unreleased)
 ### Features Added
 
-- New enum type `JSONWebKeyWrapAlgorithm` with values `JSONWebKeyWrapAlgorithmA128KW`, `JSONWebKeyWrapAlgorithmA128KWPAD`, `JSONWebKeyWrapAlgorithmA192KW`, `JSONWebKeyWrapAlgorithmA192KWPAD`, `JSONWebKeyWrapAlgorithmA256KW`, `JSONWebKeyWrapAlgorithmA256KWPAD`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAP`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD`, `JSONWebKeyWrapAlgorithmRSAOAEP256`
-- New function `*Client.SecureUnwrapKey(ctx context.Context, name string, version string, parameters SecureKeyUnWrapOperationParameters, options *SecureUnwrapKeyOptions) (SecureUnwrapKeyResponse, error)`
-- New function `*Client.SecureWrapKey(ctx context.Context, name string, version string, parameters SecureKeyWrapOperationParameters, options *SecureWrapKeyOptions) (SecureWrapKeyResponse, error)`
-- New function `NewSecureUnwrapKeyParameters(algorithm JSONWebKeyWrapAlgorithm, value []byte, targetAttestationToken string) SecureUnwrapKeyParameters`
-- New function `NewSecureWrapKeyParameters(algorithm JSONWebKeyWrapAlgorithm) SecureWrapKeyParameters`
-- New struct `ExternalKey`
-- New type alias `SecureUnwrapKeyParameters` for `SecureKeyUnWrapOperationParameters`
-- New type alias `SecureWrapKeyParameters` for `SecureKeyWrapOperationParameters`
-- New struct `SecureKeyOperationResult`
-- New struct `SecureKeyUnWrapOperationParameters`
-- New struct `SecureKeyWrapOperationParameters`
-- New field `ExternalKey`, `KeySize` in struct `KeyAttributes`
-
-
-## 1.5.0 (Unreleased)
-
-### Features Added
+* Added support for API version `2026-03-01-preview` (now the default).
+* New `SecureWrapKey` and `SecureUnwrapKey` operations on `*Client` for securely wrapping/unwrapping keys (HSM).
+* New enum type `JSONWebKeyWrapAlgorithm` with values `JSONWebKeyWrapAlgorithmA128KW`, `JSONWebKeyWrapAlgorithmA128KWPAD`, `JSONWebKeyWrapAlgorithmA192KW`, `JSONWebKeyWrapAlgorithmA192KWPAD`, `JSONWebKeyWrapAlgorithmA256KW`, `JSONWebKeyWrapAlgorithmA256KWPAD`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAP`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD`, `JSONWebKeyWrapAlgorithmRSAOAEP256`.
+* New helpers `NewSecureWrapKeyParameters` and `NewSecureUnwrapKeyParameters`.
+* New type aliases `SecureWrapKeyParameters` and `SecureUnwrapKeyParameters`.
+* New structs `ExternalKey`, `SecureKeyOperationResult`, `SecureKeyWrapOperationParameters`, `SecureKeyUnWrapOperationParameters`.
+* New fields `ExternalKey`, `KeySize` on `KeyAttributes`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.5.0 (2026-05-25)
 
 ### Other Changes
 * Upgraded to API service version `2025-07-01`

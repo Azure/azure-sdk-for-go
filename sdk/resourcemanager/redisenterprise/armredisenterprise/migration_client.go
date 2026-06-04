@@ -18,8 +18,6 @@ import (
 
 // MigrationClient contains the methods for the Migration group.
 // Don't use this type directly, use NewMigrationClient() instead.
-//
-// Generated from API version 2025-08-01-preview
 type MigrationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewMigrationClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCancel - Cancel or rollback the migration operation in a Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -66,6 +66,8 @@ func (client *MigrationClient) BeginCancel(ctx context.Context, resourceGroupNam
 
 // Cancel - Cancel or rollback the migration operation in a Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 func (client *MigrationClient) cancel(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MigrationClient.BeginCancel"
@@ -107,13 +109,15 @@ func (client *MigrationClient) cancelCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets information about a migration in a Redis Enterprise cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -160,8 +164,8 @@ func (client *MigrationClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -176,6 +180,8 @@ func (client *MigrationClient) getHandleResponse(resp *http.Response) (Migration
 }
 
 // NewListPager - Gets information about all migrations attempts in a Redis Enterprise cluster.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -223,8 +229,8 @@ func (client *MigrationClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -240,6 +246,8 @@ func (client *MigrationClient) listHandleResponse(resp *http.Response) (Migratio
 
 // BeginStart - Starts a new migration
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed characters(A-Z, a-z,
 //     0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens
@@ -265,6 +273,8 @@ func (client *MigrationClient) BeginStart(ctx context.Context, resourceGroupName
 
 // Start - Starts a new migration
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-08-01-preview
 func (client *MigrationClient) start(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationClientBeginStartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MigrationClient.BeginStart"
@@ -306,8 +316,8 @@ func (client *MigrationClient) startCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-08-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

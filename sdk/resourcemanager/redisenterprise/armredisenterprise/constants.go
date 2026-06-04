@@ -4,10 +4,6 @@
 
 package armredisenterprise
 
-const (
-	version20250801Preview string = "2025-08-01-preview"
-)
-
 // AccessKeyType - Which access key to regenerate.
 type AccessKeyType string
 

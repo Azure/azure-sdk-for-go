@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v4"
 	"log"
 )
 
@@ -90,13 +90,13 @@ func ExampleClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.ClientCreateResponse{
-	// 	Cluster: armredisenterprise.Cluster{
+	// 	Cluster: &armredisenterprise.Cluster{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
@@ -180,7 +180,7 @@ func ExampleClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -208,7 +208,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.ClientGetResponse{
-	// 	Cluster: armredisenterprise.Cluster{
+	// 	Cluster: &armredisenterprise.Cluster{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
@@ -408,7 +408,7 @@ func ExampleClient_ListSKUsForScaling() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.ClientListSKUsForScalingResponse{
-	// 	SKUDetailsList: armredisenterprise.SKUDetailsList{
+	// 	SKUDetailsList: &armredisenterprise.SKUDetailsList{
 	// 		SKUs: []*armredisenterprise.SKUDetails{
 	// 			{
 	// 				Name: to.Ptr("MemoryOptimized_M100"),
@@ -484,13 +484,13 @@ func ExampleClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.ClientUpdateResponse{
-	// 	Cluster: armredisenterprise.Cluster{
+	// 	Cluster: &armredisenterprise.Cluster{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),

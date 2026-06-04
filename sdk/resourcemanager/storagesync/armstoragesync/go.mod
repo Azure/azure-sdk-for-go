@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync/v2
 
 go 1.25.0
 

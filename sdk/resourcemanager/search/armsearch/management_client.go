@@ -18,8 +18,6 @@ import (
 
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
-//
-// Generated from API version 2026-03-01-preview
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // UsageBySubscriptionSKU - Gets the quota usage for a search SKU in the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-03-01-preview
 //   - location - The name of the Azure region.
 //   - skuName - The unique SKU name that identifies a billable tier.
 //   - options - ManagementClientUsageBySubscriptionSKUOptions contains the optional parameters for the ManagementClient.UsageBySubscriptionSKU
@@ -89,8 +89,8 @@ func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-03-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}

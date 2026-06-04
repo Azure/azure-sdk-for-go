@@ -4,6 +4,10 @@
 
 package armprometheusrulegroups
 
+const (
+	version20230301 string = "2023-03-01"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

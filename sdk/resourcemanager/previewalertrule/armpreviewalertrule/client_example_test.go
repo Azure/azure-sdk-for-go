@@ -69,7 +69,7 @@ func ExampleClient_PreviewAlertRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpreviewalertrule.ClientPreviewAlertRuleResponse{
-	// 	Response: &armpreviewalertrule.Response{
+	// 	Response: armpreviewalertrule.Response{
 	// 		RulePreviewResults: []*armpreviewalertrule.RulePreviewResult{
 	// 			{
 	// 				DimensionCombination: []*armpreviewalertrule.DimensionNameAndValue{

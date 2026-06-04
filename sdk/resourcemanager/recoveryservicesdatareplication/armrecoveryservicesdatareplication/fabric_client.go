@@ -18,6 +18,8 @@ import (
 
 // FabricClient contains the methods for the Fabric group.
 // Don't use this type directly, use NewFabricClient() instead.
+//
+// Generated from API version 2024-09-01
 type FabricClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFabricClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreate - Creates the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - resource - Fabric properties.
@@ -66,8 +66,6 @@ func (client *FabricClient) BeginCreate(ctx context.Context, resourceGroupName s
 
 // Create - Creates the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *FabricClient) create(ctx context.Context, resourceGroupName string, fabricName string, resource FabricModel, options *FabricClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FabricClient.BeginCreate"
@@ -109,8 +107,8 @@ func (client *FabricClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -121,8 +119,6 @@ func (client *FabricClient) createCreateRequest(ctx context.Context, resourceGro
 
 // BeginDelete - Removes the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - options - FabricClientBeginDeleteOptions contains the optional parameters for the FabricClient.BeginDelete method.
@@ -145,8 +141,6 @@ func (client *FabricClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Removes the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *FabricClient) deleteOperation(ctx context.Context, resourceGroupName string, fabricName string, options *FabricClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FabricClient.BeginDelete"
@@ -188,15 +182,13 @@ func (client *FabricClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the details of the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - options - FabricClientGetOptions contains the optional parameters for the FabricClient.Get method.
@@ -242,8 +234,8 @@ func (client *FabricClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -258,8 +250,6 @@ func (client *FabricClient) getHandleResponse(resp *http.Response) (FabricClient
 }
 
 // NewListPager - Gets the list of fabrics in the given subscription and resource group.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FabricClientListOptions contains the optional parameters for the FabricClient.NewListPager method.
 func (client *FabricClient) NewListPager(resourceGroupName string, options *FabricClientListOptions) *runtime.Pager[FabricClientListResponse] {
@@ -301,11 +291,11 @@ func (client *FabricClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", version20240901)
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *FabricClient) listHandleResponse(resp *http.Response) (FabricClien
 }
 
 // NewListBySubscriptionPager - Gets the list of fabrics in the given subscription.
-//
-// Generated from API version 2024-09-01
 //   - options - FabricClientListBySubscriptionOptions contains the optional parameters for the FabricClient.NewListBySubscriptionPager
 //     method.
 func (client *FabricClient) NewListBySubscriptionPager(options *FabricClientListBySubscriptionOptions) *runtime.Pager[FabricClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *FabricClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *FabricClient) listBySubscriptionHandleResponse(resp *http.Response
 
 // BeginUpdate - Performs update on the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - properties - Fabric properties.
@@ -401,8 +387,6 @@ func (client *FabricClient) BeginUpdate(ctx context.Context, resourceGroupName s
 
 // Update - Performs update on the fabric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *FabricClient) update(ctx context.Context, resourceGroupName string, fabricName string, properties FabricModelUpdate, options *FabricClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FabricClient.BeginUpdate"
@@ -444,8 +428,8 @@ func (client *FabricClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

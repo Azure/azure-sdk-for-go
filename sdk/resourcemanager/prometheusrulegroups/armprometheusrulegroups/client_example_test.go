@@ -62,7 +62,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateAClusterCentricPrometheusRuleGro
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprometheusrulegroups.ClientCreateOrUpdateResponse{
-	// 	PrometheusRuleGroupResource: &armprometheusrulegroups.PrometheusRuleGroupResource{
+	// 	PrometheusRuleGroupResource: armprometheusrulegroups.PrometheusRuleGroupResource{
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/prometheusRuleGroups"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/promResourceGroup/providers/Microsoft.AlertsManagement/prometheusRuleGroups/myPrometheusRuleGroup"),
 	// 		Location: to.Ptr("East US"),
@@ -172,7 +172,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateAPrometheusRuleGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprometheusrulegroups.ClientCreateOrUpdateResponse{
-	// 	PrometheusRuleGroupResource: &armprometheusrulegroups.PrometheusRuleGroupResource{
+	// 	PrometheusRuleGroupResource: armprometheusrulegroups.PrometheusRuleGroupResource{
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/prometheusRuleGroups"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/promResourceGroup/providers/Microsoft.AlertsManagement/prometheusRuleGroups/myPrometheusRuleGroup"),
 	// 		Location: to.Ptr("East US"),
@@ -272,7 +272,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprometheusrulegroups.ClientGetResponse{
-	// 	PrometheusRuleGroupResource: &armprometheusrulegroups.PrometheusRuleGroupResource{
+	// 	PrometheusRuleGroupResource: armprometheusrulegroups.PrometheusRuleGroupResource{
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/prometheusRuleGroups"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/promResourceGroup/providers/Microsoft.AlertsManagement/prometheusRuleGroups/myPrometheusRuleGroup"),
 	// 		Location: to.Ptr("East US"),
@@ -643,7 +643,7 @@ func ExampleClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprometheusrulegroups.ClientUpdateResponse{
-	// 	PrometheusRuleGroupResource: &armprometheusrulegroups.PrometheusRuleGroupResource{
+	// 	PrometheusRuleGroupResource: armprometheusrulegroups.PrometheusRuleGroupResource{
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/prometheusRuleGroups"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/promResourceGroup/providers/Microsoft.AlertsManagement/prometheusRuleGroups/myPrometheusRuleGroup"),
 	// 		Location: to.Ptr("East US"),

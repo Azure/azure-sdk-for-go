@@ -39,7 +39,7 @@ func ExampleEmailConfigurationClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.EmailConfigurationClientCreateResponse{
-	// 	EmailConfigurationModel: &armrecoveryservicesdatareplication.EmailConfigurationModel{
+	// 	EmailConfigurationModel: armrecoveryservicesdatareplication.EmailConfigurationModel{
 	// 		Properties: &armrecoveryservicesdatareplication.EmailConfigurationModelProperties{
 	// 			SendToOwners: to.Ptr(true),
 	// 			CustomEmailAddresses: []*string{
@@ -82,7 +82,7 @@ func ExampleEmailConfigurationClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.EmailConfigurationClientGetResponse{
-	// 	EmailConfigurationModel: &armrecoveryservicesdatareplication.EmailConfigurationModel{
+	// 	EmailConfigurationModel: armrecoveryservicesdatareplication.EmailConfigurationModel{
 	// 		Properties: &armrecoveryservicesdatareplication.EmailConfigurationModelProperties{
 	// 			SendToOwners: to.Ptr(true),
 	// 			CustomEmailAddresses: []*string{

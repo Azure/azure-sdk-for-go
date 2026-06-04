@@ -34,7 +34,7 @@ func ExampleWorkspacesClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplaywright.WorkspacesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: &armplaywright.CheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armplaywright.CheckNameAvailabilityResponse{
 	// 		NameAvailable: to.Ptr(true),
 	// 		Message: to.Ptr("Test message."),
 	// 	},
@@ -69,13 +69,13 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplaywright.WorkspacesClientCreateOrUpdateResponse{
-	// 	Workspace: &armplaywright.Workspace{
+	// 	Workspace: armplaywright.Workspace{
 	// 		Location: to.Ptr("westus3"),
 	// 		Properties: &armplaywright.WorkspaceProperties{
 	// 			DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
@@ -121,7 +121,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -144,7 +144,7 @@ func ExampleWorkspacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplaywright.WorkspacesClientGetResponse{
-	// 	Workspace: &armplaywright.Workspace{
+	// 	Workspace: armplaywright.Workspace{
 	// 		Location: to.Ptr("westus3"),
 	// 		Properties: &armplaywright.WorkspaceProperties{
 	// 			DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),
@@ -315,7 +315,7 @@ func ExampleWorkspacesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplaywright.WorkspacesClientUpdateResponse{
-	// 	Workspace: &armplaywright.Workspace{
+	// 	Workspace: armplaywright.Workspace{
 	// 		Location: to.Ptr("westus3"),
 	// 		Properties: &armplaywright.WorkspaceProperties{
 	// 			DataplaneURI: to.Ptr("https://api.dataplane.00000000-0000-0000-0000-000000000000.domain.com"),

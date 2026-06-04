@@ -6,10 +6,9 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/ReplicationLogicalNetworks_Get.json
@@ -31,7 +30,7 @@ func ExampleReplicationLogicalNetworksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationLogicalNetworksClientGetResponse{
-	// 	LogicalNetwork: &armrecoveryservicessiterecovery.LogicalNetwork{
+	// 	LogicalNetwork: armrecoveryservicessiterecovery.LogicalNetwork{
 	// 		Name: to.Ptr("87ab394f-165f-4aa9-bd84-b018500b4509"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationLogicalNetworks"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationLogicalNetworks/53f5a278-ae85-4001-bd5f-f6a02e1f579d"),

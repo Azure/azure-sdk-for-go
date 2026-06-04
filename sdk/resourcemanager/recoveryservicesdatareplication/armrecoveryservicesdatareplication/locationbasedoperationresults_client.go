@@ -18,6 +18,8 @@ import (
 
 // LocationBasedOperationResultsClient contains the methods for the LocationBasedOperationResults group.
 // Don't use this type directly, use NewLocationBasedOperationResultsClient() instead.
+//
+// Generated from API version 2024-09-01
 type LocationBasedOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewLocationBasedOperationResultsClient(subscriptionID string, credential az
 //
 // Gets the location based operation result.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of the Azure region.
 //   - operationID - The ID of an ongoing async operation.
@@ -96,8 +96,8 @@ func (client *LocationBasedOperationResultsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

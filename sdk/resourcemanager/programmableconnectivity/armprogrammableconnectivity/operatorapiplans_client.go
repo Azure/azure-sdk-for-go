@@ -19,6 +19,8 @@ import (
 
 // OperatorAPIPlansClient contains the methods for the OperatorAPIPlans group.
 // Don't use this type directly, use NewOperatorAPIPlansClient() instead.
+//
+// Generated from API version 2024-01-15-preview
 type OperatorAPIPlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewOperatorAPIPlansClient(subscriptionID string, credential azcore.TokenCre
 
 // Get - Get an OperatorApiPlan resource by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 //   - operatorAPIPlanName - APC Gateway Plan Name.
 //   - options - OperatorAPIPlansClientGetOptions contains the optional parameters for the OperatorAPIPlansClient.Get method.
 func (client *OperatorAPIPlansClient) Get(ctx context.Context, operatorAPIPlanName string, options *OperatorAPIPlansClientGetOptions) (OperatorAPIPlansClientGetResponse, error) {
@@ -84,8 +84,8 @@ func (client *OperatorAPIPlansClient) getCreateRequest(ctx context.Context, oper
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -100,8 +100,6 @@ func (client *OperatorAPIPlansClient) getHandleResponse(resp *http.Response) (Op
 }
 
 // NewListBySubscriptionPager - List OperatorApiPlan resources by subscription ID.
-//
-// Generated from API version 2024-01-15-preview
 //   - options - OperatorAPIPlansClientListBySubscriptionOptions contains the optional parameters for the OperatorAPIPlansClient.NewListBySubscriptionPager
 //     method.
 func (client *OperatorAPIPlansClient) NewListBySubscriptionPager(options *OperatorAPIPlansClientListBySubscriptionOptions) *runtime.Pager[OperatorAPIPlansClientListBySubscriptionResponse] {
@@ -148,8 +146,8 @@ func (client *OperatorAPIPlansClient) listBySubscriptionCreateRequest(ctx contex
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

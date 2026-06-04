@@ -18,6 +18,8 @@ import (
 
 // OperatorAPIConnectionsClient contains the methods for the OperatorAPIConnections group.
 // Don't use this type directly, use NewOperatorAPIConnectionsClient() instead.
+//
+// Generated from API version 2024-01-15-preview
 type OperatorAPIConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewOperatorAPIConnectionsClient(subscriptionID string, credential azcore.To
 
 // BeginCreate - Create an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - operatorAPIConnectionName - Azure Programmable Connectivity (APC) Operator API Connection Name.
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *OperatorAPIConnectionsClient) BeginCreate(ctx context.Context, res
 
 // Create - Create an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 func (client *OperatorAPIConnectionsClient) create(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, resource OperatorAPIConnection, options *OperatorAPIConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OperatorAPIConnectionsClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *OperatorAPIConnectionsClient) createCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *OperatorAPIConnectionsClient) createCreateRequest(ctx context.Cont
 
 // BeginDelete - Delete an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - operatorAPIConnectionName - Azure Programmable Connectivity (APC) Operator API Connection Name.
 //   - options - OperatorAPIConnectionsClientBeginDeleteOptions contains the optional parameters for the OperatorAPIConnectionsClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *OperatorAPIConnectionsClient) BeginDelete(ctx context.Context, res
 
 // Delete - Delete an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 func (client *OperatorAPIConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, options *OperatorAPIConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OperatorAPIConnectionsClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *OperatorAPIConnectionsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - operatorAPIConnectionName - Azure Programmable Connectivity (APC) Operator API Connection Name.
 //   - options - OperatorAPIConnectionsClientGetOptions contains the optional parameters for the OperatorAPIConnectionsClient.Get
@@ -245,8 +237,8 @@ func (client *OperatorAPIConnectionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -261,8 +253,6 @@ func (client *OperatorAPIConnectionsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByResourceGroupPager - List OperatorApiConnection resources by resource group.
-//
-// Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - OperatorAPIConnectionsClientListByResourceGroupOptions contains the optional parameters for the OperatorAPIConnectionsClient.NewListByResourceGroupPager
 //     method.
@@ -305,8 +295,8 @@ func (client *OperatorAPIConnectionsClient) listByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *OperatorAPIConnectionsClient) listByResourceGroupHandleResponse(re
 }
 
 // NewListBySubscriptionPager - List OperatorApiConnection resources by subscription ID.
-//
-// Generated from API version 2024-01-15-preview
 //   - options - OperatorAPIConnectionsClientListBySubscriptionOptions contains the optional parameters for the OperatorAPIConnectionsClient.NewListBySubscriptionPager
 //     method.
 func (client *OperatorAPIConnectionsClient) NewListBySubscriptionPager(options *OperatorAPIConnectionsClientListBySubscriptionOptions) *runtime.Pager[OperatorAPIConnectionsClientListBySubscriptionResponse] {
@@ -360,8 +348,8 @@ func (client *OperatorAPIConnectionsClient) listBySubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -377,8 +365,6 @@ func (client *OperatorAPIConnectionsClient) listBySubscriptionHandleResponse(res
 
 // BeginUpdate - Update an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - operatorAPIConnectionName - Azure Programmable Connectivity (APC) Operator API Connection Name.
 //   - properties - The resource properties to be updated.
@@ -403,8 +389,6 @@ func (client *OperatorAPIConnectionsClient) BeginUpdate(ctx context.Context, res
 
 // Update - Update an Operator API Connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-15-preview
 func (client *OperatorAPIConnectionsClient) update(ctx context.Context, resourceGroupName string, operatorAPIConnectionName string, properties OperatorAPIConnectionUpdate, options *OperatorAPIConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OperatorAPIConnectionsClient.BeginUpdate"
@@ -446,8 +430,8 @@ func (client *OperatorAPIConnectionsClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240115Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleNameAvailabilityClient_CheckGlobally() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.NameAvailabilityClientCheckGloballyResponse{
-	// 	NameAvailabilityModel: &armpostgresqlflexibleservers.NameAvailabilityModel{
+	// 	NameAvailabilityModel: armpostgresqlflexibleservers.NameAvailabilityModel{
 	// 		Name: to.Ptr("exampleserver"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
 	// 		Message: to.Ptr(""),
@@ -65,7 +65,7 @@ func ExampleNameAvailabilityClient_CheckWithLocation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.NameAvailabilityClientCheckWithLocationResponse{
-	// 	NameAvailabilityModel: &armpostgresqlflexibleservers.NameAvailabilityModel{
+	// 	NameAvailabilityModel: armpostgresqlflexibleservers.NameAvailabilityModel{
 	// 		Name: to.Ptr("exampleserver"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers"),
 	// 		Message: to.Ptr(""),

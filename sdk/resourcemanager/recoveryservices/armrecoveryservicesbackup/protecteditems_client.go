@@ -18,6 +18,8 @@ import (
 
 // ProtectedItemsClient contains the methods for the ProtectedItems group.
 // Don't use this type directly, use NewProtectedItemsClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type ProtectedItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewProtectedItemsClient(subscriptionID string, credential azcore.TokenCrede
 // This is an
 // asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProtectedItemsClient.BeginCreateOrUpdate
 //     method.
@@ -69,8 +69,6 @@ func (client *ProtectedItemsClient) BeginCreateOrUpdate(ctx context.Context, vau
 // is an
 // asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 func (client *ProtectedItemsClient) createOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ProtectedItemResource, options *ProtectedItemsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectedItemsClient.BeginCreateOrUpdate"
@@ -124,8 +122,8 @@ func (client *ProtectedItemsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -141,8 +139,6 @@ func (client *ProtectedItemsClient) createOrUpdateCreateRequest(ctx context.Cont
 // the
 // request, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemsClientDeleteOptions contains the optional parameters for the ProtectedItemsClient.Delete method.
 func (client *ProtectedItemsClient) Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *ProtectedItemsClientDeleteOptions) (ProtectedItemsClientDeleteResponse, error) {
@@ -198,16 +194,14 @@ func (client *ProtectedItemsClient) deleteCreateRequest(ctx context.Context, vau
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Provides the details of the backed up item. This is an asynchronous operation. To know the status of the operation,
 // call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemsClientGetOptions contains the optional parameters for the ProtectedItemsClient.Get method.
 func (client *ProtectedItemsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *ProtectedItemsClientGetOptions) (ProtectedItemsClientGetResponse, error) {
@@ -267,8 +261,8 @@ func (client *ProtectedItemsClient) getCreateRequest(ctx context.Context, vaultN
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

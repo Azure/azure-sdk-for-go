@@ -6,11 +6,10 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/ReplicationProtectedItems_AddDisks.json
@@ -43,13 +42,13 @@ func ExampleReplicationProtectedItemsClient_BeginAddDisks() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientAddDisksResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -118,13 +117,13 @@ func ExampleReplicationProtectedItemsClient_BeginApplyRecoveryPoint() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientApplyRecoveryPointResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -194,13 +193,13 @@ func ExampleReplicationProtectedItemsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientCreateResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -265,7 +264,7 @@ func ExampleReplicationProtectedItemsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -286,13 +285,13 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCancel() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientFailoverCancelResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -352,13 +351,13 @@ func ExampleReplicationProtectedItemsClient_BeginFailoverCommit() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientFailoverCommitResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -421,7 +420,7 @@ func ExampleReplicationProtectedItemsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientGetResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -627,13 +626,13 @@ func ExampleReplicationProtectedItemsClient_BeginPlannedFailover() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientPlannedFailoverResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -695,7 +694,7 @@ func ExampleReplicationProtectedItemsClient_BeginPurge() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -720,13 +719,13 @@ func ExampleReplicationProtectedItemsClient_BeginReinstallMobilityService() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientReinstallMobilityServiceResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("79dd20ab-2b40-11e7-9791-0050568f387e"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/b364ed8d-4279-4bf8-8fd1-56f8fa0ae05c/resourceGroups/wcusValidations/providers/Microsoft.RecoveryServices/vaults/WCUSVault/replicationFabrics/d70b0326a201008a953505ef271dc908e5e23468bc7356862ea178696f5f15c7/replicationProtectionContainers/cloud_c6780228-83bd-4f3e-a70e-cb46b7da33a0/replicationProtectedItems/79dd20ab-2b40-11e7-9791-0050568f387e"),
@@ -793,13 +792,13 @@ func ExampleReplicationProtectedItemsClient_BeginRemoveDisks() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientRemoveDisksResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -861,13 +860,13 @@ func ExampleReplicationProtectedItemsClient_BeginRepairReplication() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientRepairReplicationResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -933,13 +932,13 @@ func ExampleReplicationProtectedItemsClient_BeginReprotect() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientReprotectResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -1009,13 +1008,13 @@ func ExampleReplicationProtectedItemsClient_BeginResolveHealthErrors() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientResolveHealthErrorsResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -1087,13 +1086,13 @@ func ExampleReplicationProtectedItemsClient_BeginSwitchProvider() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientSwitchProviderResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -1164,13 +1163,13 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailover() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientTestFailoverResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -1231,13 +1230,13 @@ func ExampleReplicationProtectedItemsClient_BeginTestFailoverCleanup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientTestFailoverCleanupResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -1307,13 +1306,13 @@ func ExampleReplicationProtectedItemsClient_BeginUnplannedFailover() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientUnplannedFailoverResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -1399,13 +1398,13 @@ func ExampleReplicationProtectedItemsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientUpdateResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("f8491e4f-817a-40dd-a90c-af773978c75b"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b"),
@@ -1472,13 +1471,13 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateAppliance() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientUpdateApplianceResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("idclab-vcen67_50158124-8857-3e08-0893-2ddf8ebb8c1f"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/Ayan-0106-SA-RG/providers/Microsoft.RecoveryServices/vaults/Ayan-0106-SA-Vault/replicationFabrics/Ayan-0106-SA-Vaultreplicationfabric/replicationProtectionContainers/Ayan-0106-SA-Vaultreplicationcontainer/replicationProtectedItems/idclab-vcen67_50158124-8857-3e08-0893-2ddf8ebb8c1f"),
@@ -1544,13 +1543,13 @@ func ExampleReplicationProtectedItemsClient_BeginUpdateMobilityService() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ReplicationProtectedItemsClientUpdateMobilityServiceResponse{
-	// 	ReplicationProtectedItem: &armrecoveryservicessiterecovery.ReplicationProtectedItem{
+	// 	ReplicationProtectedItem: armrecoveryservicessiterecovery.ReplicationProtectedItem{
 	// 		Name: to.Ptr("79dd20ab-2b40-11e7-9791-0050568f387e"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectedItems"),
 	// 		ID: to.Ptr("/Subscriptions/b364ed8d-4279-4bf8-8fd1-56f8fa0ae05c/resourceGroups/wcusValidations/providers/Microsoft.RecoveryServices/vaults/WCUSVault/replicationFabrics/d70b0326a201008a953505ef271dc908e5e23468bc7356862ea178696f5f15c7/replicationProtectionContainers/cloud_c6780228-83bd-4f3e-a70e-cb46b7da33a0/replicationProtectedItems/79dd20ab-2b40-11e7-9791-0050568f387e"),

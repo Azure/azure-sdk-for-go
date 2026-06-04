@@ -18,6 +18,8 @@ import (
 
 // CapturedLogsClient contains the methods for the CapturedLogs group.
 // Don't use this type directly, use NewCapturedLogsClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type CapturedLogsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewCapturedLogsClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // NewListByServerPager - Lists all captured logs for download in a server.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - CapturedLogsClientListByServerOptions contains the optional parameters for the CapturedLogsClient.NewListByServerPager
@@ -89,8 +89,8 @@ func (client *CapturedLogsClient) listByServerCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

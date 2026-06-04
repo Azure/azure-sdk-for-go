@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
 	"log"
 )
 
@@ -35,7 +35,7 @@ func ExampleBackupsLongTermRetentionClient_CheckPrerequisites() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.BackupsLongTermRetentionClientCheckPrerequisitesResponse{
-	// 	LtrPreBackupResponse: &armpostgresqlflexibleservers.LtrPreBackupResponse{
+	// 	LtrPreBackupResponse: armpostgresqlflexibleservers.LtrPreBackupResponse{
 	// 		Properties: &armpostgresqlflexibleservers.BackupsLongTermRetentionResponseProperties{
 	// 			NumberOfContainers: to.Ptr[int32](1),
 	// 		},
@@ -62,7 +62,7 @@ func ExampleBackupsLongTermRetentionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.BackupsLongTermRetentionClientGetResponse{
-	// 	BackupsLongTermRetentionOperation: &armpostgresqlflexibleservers.BackupsLongTermRetentionOperation{
+	// 	BackupsLongTermRetentionOperation: armpostgresqlflexibleservers.BackupsLongTermRetentionOperation{
 	// 		Name: to.Ptr("exampleltrbackup"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/ltrbackupOperations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
@@ -152,13 +152,13 @@ func ExampleBackupsLongTermRetentionClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.BackupsLongTermRetentionClientStartResponse{
-	// 	BackupsLongTermRetentionResponse: &armpostgresqlflexibleservers.BackupsLongTermRetentionResponse{
+	// 	BackupsLongTermRetentionResponse: armpostgresqlflexibleservers.BackupsLongTermRetentionResponse{
 	// 		Properties: &armpostgresqlflexibleservers.LtrBackupOperationResponseProperties{
 	// 			BackupMetadata: to.Ptr("backupmetadata"),
 	// 			DataTransferredInBytes: to.Ptr[int64](23),

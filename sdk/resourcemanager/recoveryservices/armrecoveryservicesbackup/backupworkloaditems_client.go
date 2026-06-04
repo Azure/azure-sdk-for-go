@@ -18,6 +18,8 @@ import (
 
 // BackupWorkloadItemsClient contains the methods for the BackupWorkloadItems group.
 // Don't use this type directly, use NewBackupWorkloadItemsClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type BackupWorkloadItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewBackupWorkloadItemsClient(subscriptionID string, credential azcore.Token
 // NewListPager - Provides a pageable list of workload item of a specific container according to the query filter and the
 // pagination
 // parameters.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupWorkloadItemsClientListOptions contains the optional parameters for the BackupWorkloadItemsClient.NewListPager
 //     method.
@@ -104,8 +104,8 @@ func (client *BackupWorkloadItemsClient) listCreateRequest(ctx context.Context, 
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

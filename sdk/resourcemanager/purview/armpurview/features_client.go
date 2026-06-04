@@ -7,18 +7,19 @@ package armpurview
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // FeaturesClient contains the methods for the Features group.
 // Don't use this type directly, use NewFeaturesClient() instead.
+//
+// Generated from API version 2024-04-01-preview
 type FeaturesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,8 +47,6 @@ func NewFeaturesClient(subscriptionID string, credential azcore.TokenCredential,
 //
 // Gets details from a list of feature names.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the account.
 //   - featureRequest - Request body with feature names.
@@ -94,8 +93,8 @@ func (client *FeaturesClient) accountGetCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, featureRequest); err != nil {
@@ -119,8 +118,6 @@ func (client *FeaturesClient) accountGetHandleResponse(resp *http.Response) (Fea
 //
 // Gets details from a list of feature names.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - locations - Location of feature.
 //   - featureRequest - The request body
 //   - options - FeaturesClientSubscriptionGetOptions contains the optional parameters for the FeaturesClient.SubscriptionGet
@@ -163,8 +160,8 @@ func (client *FeaturesClient) subscriptionGetCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, featureRequest); err != nil {

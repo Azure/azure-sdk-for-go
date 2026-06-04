@@ -18,6 +18,8 @@ import (
 
 // NameAvailabilityClient contains the methods for the NameAvailability group.
 // Don't use this type directly, use NewNameAvailabilityClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type NameAvailabilityClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewNameAvailabilityClient(subscriptionID string, credential azcore.TokenCre
 // CheckGlobally - Checks the validity and availability of the given name, to assign it to a new server or to use it as the
 // base name of a new pair of virtual endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - parameters - The request body
 //   - options - NameAvailabilityClientCheckGloballyOptions contains the optional parameters for the NameAvailabilityClient.CheckGlobally
 //     method.
@@ -81,8 +81,8 @@ func (client *NameAvailabilityClient) checkGloballyCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -102,8 +102,6 @@ func (client *NameAvailabilityClient) checkGloballyHandleResponse(resp *http.Res
 
 // CheckWithLocation - Check the availability of name for resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - locationName - The name of the location.
 //   - parameters - The request body
 //   - options - NameAvailabilityClientCheckWithLocationOptions contains the optional parameters for the NameAvailabilityClient.CheckWithLocation
@@ -146,8 +144,8 @@ func (client *NameAvailabilityClient) checkWithLocationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

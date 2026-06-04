@@ -30,7 +30,7 @@ func ExampleRecoveryPointClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.RecoveryPointClientGetResponse{
-	// 	RecoveryPointModel: &armrecoveryservicesdatareplication.RecoveryPointModel{
+	// 	RecoveryPointModel: armrecoveryservicesdatareplication.RecoveryPointModel{
 	// 		Properties: &armrecoveryservicesdatareplication.RecoveryPointModelProperties{
 	// 			RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-25T00:28:56.403Z"); return t}()),
 	// 			RecoveryPointType: to.Ptr(armrecoveryservicesdatareplication.RecoveryPointTypeApplicationConsistent),

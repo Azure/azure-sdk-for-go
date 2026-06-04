@@ -6,11 +6,10 @@ package armpurview_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
+	"log"
 )
 
 // Generated from example definition: 2024-04-01-preview/Features_AccountGet.json
@@ -38,7 +37,7 @@ func ExampleFeaturesClient_AccountGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurview.FeaturesClientAccountGetResponse{
-	// 	BatchFeatureStatus: &armpurview.BatchFeatureStatus{
+	// 	BatchFeatureStatus: armpurview.BatchFeatureStatus{
 	// 		Features: map[string]*bool{
 	// 			"Feature1": to.Ptr(true),
 	// 			"Feature2": to.Ptr(false),
@@ -72,7 +71,7 @@ func ExampleFeaturesClient_SubscriptionGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurview.FeaturesClientSubscriptionGetResponse{
-	// 	BatchFeatureStatus: &armpurview.BatchFeatureStatus{
+	// 	BatchFeatureStatus: armpurview.BatchFeatureStatus{
 	// 		Features: map[string]*bool{
 	// 			"Feature1": to.Ptr(true),
 	// 			"Feature2": to.Ptr(false),

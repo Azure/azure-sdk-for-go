@@ -8,15 +8,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
 )
 
 // ReplicationMigrationItemsServer is a fake server for instances of the armrecoveryservicessiterecovery.ReplicationMigrationItemsClient type.
@@ -119,9 +119,7 @@ func (r *ReplicationMigrationItemsServerTransport) Do(req *http.Request) (*http.
 }
 
 func (r *ReplicationMigrationItemsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -159,10 +157,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchToMethodFake(req *htt
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -222,7 +217,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginCreate(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -266,11 +261,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginDelete(req *http
 		if err != nil {
 			return nil, err
 		}
-		deleteOptionUnescaped, err := url.QueryUnescape(qp.Get("deleteOption"))
-		if err != nil {
-			return nil, err
-		}
-		deleteOptionParam := getOptional(deleteOptionUnescaped)
+		deleteOptionParam := getOptional(qp.Get("deleteOption"))
 		var options *armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginDeleteOptions
 		if deleteOptionParam != nil {
 			options = &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientBeginDeleteOptions{
@@ -290,7 +281,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginDelete(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		r.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -336,7 +327,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchGet(req *http.Request
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MigrationItem, req)
@@ -367,21 +358,9 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchNewListPager(req *htt
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
-		takeTokenUnescaped, err := url.QueryUnescape(qp.Get("takeToken"))
-		if err != nil {
-			return nil, err
-		}
-		takeTokenParam := getOptional(takeTokenUnescaped)
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
+		skipTokenParam := getOptional(qp.Get("skipToken"))
+		takeTokenParam := getOptional(qp.Get("takeToken"))
+		filterParam := getOptional(qp.Get("$filter"))
 		var options *armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions
 		if skipTokenParam != nil || takeTokenParam != nil || filterParam != nil {
 			options = &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListOptions{
@@ -401,7 +380,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchNewListPager(req *htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -440,21 +419,9 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchNewListByReplicationP
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
-		takeTokenUnescaped, err := url.QueryUnescape(qp.Get("takeToken"))
-		if err != nil {
-			return nil, err
-		}
-		takeTokenParam := getOptional(takeTokenUnescaped)
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
+		skipTokenParam := getOptional(qp.Get("skipToken"))
+		takeTokenParam := getOptional(qp.Get("takeToken"))
+		filterParam := getOptional(qp.Get("$filter"))
 		var options *armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions
 		if skipTokenParam != nil || takeTokenParam != nil || filterParam != nil {
 			options = &armrecoveryservicessiterecovery.ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions{
@@ -474,7 +441,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchNewListByReplicationP
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListByReplicationProtectionContainersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -533,7 +500,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginMigrate(req *htt
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginMigrate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -593,7 +560,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginPauseReplication
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginPauseReplication.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -653,7 +620,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginResumeReplicatio
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginResumeReplication.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -713,7 +680,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginResync(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginResync.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -773,7 +740,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginTestMigrate(req 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginTestMigrate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -833,7 +800,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginTestMigrateClean
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginTestMigrateCleanup.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -893,7 +860,7 @@ func (r *ReplicationMigrationItemsServerTransport) dispatchBeginUpdate(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		r.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

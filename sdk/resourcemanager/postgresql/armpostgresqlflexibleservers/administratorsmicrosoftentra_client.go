@@ -18,6 +18,8 @@ import (
 
 // AdministratorsMicrosoftEntraClient contains the methods for the AdministratorsMicrosoftEntra group.
 // Don't use this type directly, use NewAdministratorsMicrosoftEntraClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type AdministratorsMicrosoftEntraClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAdministratorsMicrosoftEntraClient(subscriptionID string, credential azc
 
 // BeginCreateOrUpdate - Creates a new server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - objectID - Object identifier of the Microsoft Entra principal.
@@ -69,8 +69,6 @@ func (client *AdministratorsMicrosoftEntraClient) BeginCreateOrUpdate(ctx contex
 
 // CreateOrUpdate - Creates a new server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *AdministratorsMicrosoftEntraClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, objectID string, parameters AdministratorMicrosoftEntraAdd, options *AdministratorsMicrosoftEntraClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdministratorsMicrosoftEntraClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *AdministratorsMicrosoftEntraClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -127,8 +125,6 @@ func (client *AdministratorsMicrosoftEntraClient) createOrUpdateCreateRequest(ct
 
 // BeginDelete - Deletes an existing server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - objectID - Object identifier of the Microsoft Entra principal.
@@ -153,8 +149,6 @@ func (client *AdministratorsMicrosoftEntraClient) BeginDelete(ctx context.Contex
 
 // Delete - Deletes an existing server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *AdministratorsMicrosoftEntraClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, objectID string, options *AdministratorsMicrosoftEntraClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdministratorsMicrosoftEntraClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *AdministratorsMicrosoftEntraClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about a server administrator associated to a Microsoft Entra principal.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - objectID - Object identifier of the Microsoft Entra principal.
@@ -260,8 +252,8 @@ func (client *AdministratorsMicrosoftEntraClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *AdministratorsMicrosoftEntraClient) getHandleResponse(resp *http.R
 }
 
 // NewListByServerPager - List all server administrators associated to a Microsoft Entra principal.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - AdministratorsMicrosoftEntraClientListByServerOptions contains the optional parameters for the AdministratorsMicrosoftEntraClient.NewListByServerPager
@@ -325,8 +315,8 @@ func (client *AdministratorsMicrosoftEntraClient) listByServerCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

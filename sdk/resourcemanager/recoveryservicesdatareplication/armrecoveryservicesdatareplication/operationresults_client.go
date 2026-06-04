@@ -18,6 +18,8 @@ import (
 
 // OperationResultsClient contains the methods for the OperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
+//
+// Generated from API version 2024-09-01
 type OperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 //
 // Gets the operations.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
@@ -90,8 +90,8 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

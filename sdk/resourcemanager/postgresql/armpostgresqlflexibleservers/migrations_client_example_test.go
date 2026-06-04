@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers/v6"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresql/armpostgresqlflexibleservers"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleMigrationsClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCancelResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -99,7 +99,7 @@ func ExampleMigrationsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCheckNameAvailabilityResponse{
-	// 	MigrationNameAvailability: &armpostgresqlflexibleservers.MigrationNameAvailability{
+	// 	MigrationNameAvailability: armpostgresqlflexibleservers.MigrationNameAvailability{
 	// 		Name: to.Ptr("naexamplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	// 		NameAvailable: to.Ptr(true),
@@ -145,7 +145,7 @@ func ExampleMigrationsClient_Create_createAMigration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -222,7 +222,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValida
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -300,7 +300,7 @@ func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -377,7 +377,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainName
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -454,7 +454,7 @@ func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -530,7 +530,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -606,7 +606,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -661,7 +661,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -731,7 +731,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -839,7 +839,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -946,7 +946,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -1038,7 +1038,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -1330,7 +1330,7 @@ func ExampleMigrationsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientUpdateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),

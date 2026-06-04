@@ -6,10 +6,9 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/SupportedOperatingSystems_Get.json
@@ -31,7 +30,7 @@ func ExampleSupportedOperatingSystemsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.SupportedOperatingSystemsClientGetResponse{
-	// 	SupportedOperatingSystems: &armrecoveryservicessiterecovery.SupportedOperatingSystems{
+	// 	SupportedOperatingSystems: armrecoveryservicessiterecovery.SupportedOperatingSystems{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationSupportedOperatingSystems"),
 	// 		ID: to.Ptr("/Subscriptions/bc403605-c2b0-43dd-abe9-0162124b1ee1/resourceGroups/oneBoxRG/providers/Microsoft.RecoveryServices/vaults/oneBoxRSVault/replicationSupportedOperatingSystems/Default"),

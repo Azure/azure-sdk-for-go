@@ -7,11 +7,10 @@ package armpurview
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AccessKeys.

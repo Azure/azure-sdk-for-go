@@ -37,7 +37,7 @@ New-TestResources.ps1 [-BaseName <String>] [-ResourceGroupName <String>] [-Servi
 ```
 
 ## DESCRIPTION
-Deploys live test resources specified in test-resources.json or test-resources.bicep
+Deploys live test resouces specified in test-resources.json or test-resources.bicep
 files to a new resource group.
 
 This script searches the directory specified in $ServiceDirectory recursively

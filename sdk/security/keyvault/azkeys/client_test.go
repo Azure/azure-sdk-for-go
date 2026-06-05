@@ -486,8 +486,8 @@ func TestListKeyVersions(t *testing.T) {
 			expectedVersions := make(map[string]struct{}, 4)
 			for i := 0; i < 4; i++ {
 				createResp, err = client.CreateKey(context.Background(), keyName, azkeys.CreateKeyParameters{Kty: to.Ptr(azkeys.KeyTypeRSA)}, nil)
-				expectedVersions[createResp.Key.KID.Version()] = struct{}{}
 				require.NoError(t, err)
+				expectedVersions[createResp.Key.KID.Version()] = struct{}{}
 			}
 			defer cleanUpKey(t, client, createResp.Key.KID)
 

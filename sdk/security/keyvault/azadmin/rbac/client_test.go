@@ -122,7 +122,7 @@ func TestDeleteRoleDefinition_FailureInvalidRole(t *testing.T) {
 	client := startAccessControlTest(t)
 	var httpErr *azcore.ResponseError
 
-	res, err := client.DeleteRoleDefinition(context.Background(), "", "invalidDefinition", nil)
+	res, err := client.DeleteRoleDefinition(context.Background(), rbac.RoleScopeGlobal, "invalidDefinition", nil)
 	require.Error(t, err)
 	require.ErrorAs(t, err, &httpErr)
 	require.Equal(t, httpErr.ErrorCode, "RoleDefinitionNotFound")
@@ -231,7 +231,7 @@ func TestDeleteRoleAssignment_FailureInvalidRole(t *testing.T) {
 	client := startAccessControlTest(t)
 	var httpErr *azcore.ResponseError
 
-	res, err := client.DeleteRoleAssignment(context.Background(), "", "invalidRole", nil)
+	res, err := client.DeleteRoleAssignment(context.Background(), rbac.RoleScopeGlobal, "invalidRole", nil)
 	require.Error(t, err)
 	require.ErrorAs(t, err, &httpErr)
 	require.Equal(t, httpErr.ErrorCode, "RoleAssignmentNotFound")
@@ -253,8 +253,8 @@ func TestAPIVersion(t *testing.T) {
 			return true
 		}
 	}
-	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer close()
+	srv, serverClose := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer serverClose()
 	srv.AppendResponse(
 		mock.WithStatusCode(200),
 		mock.WithPredicate(requireVersion(t)),

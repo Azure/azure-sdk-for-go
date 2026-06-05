@@ -373,7 +373,7 @@ func TestSecureWrapUnwrapKeyRequests(t *testing.T) {
 				bodyReader, err = req.GetBody()
 				require.NoError(t, err)
 			}
-			defer bodyReader.Close()
+			defer func() { _ = bodyReader.Close() }()
 			var body map[string]any
 			require.NoError(t, json.NewDecoder(bodyReader).Decode(&body))
 			require.Equal(t, string(algorithm), body["alg"])
@@ -393,7 +393,7 @@ func TestSecureWrapUnwrapKeyRequests(t *testing.T) {
 				bodyReader, err = req.GetBody()
 				require.NoError(t, err)
 			}
-			defer bodyReader.Close()
+			defer func() { _ = bodyReader.Close() }()
 			var body map[string]any
 			require.NoError(t, json.NewDecoder(bodyReader).Decode(&body))
 			require.Equal(t, string(algorithm), body["alg"])

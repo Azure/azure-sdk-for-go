@@ -1,14 +1,21 @@
 ## Release History
 
-### 1.5.1-beta.1 (Unreleased)
+### 1.6.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the `ekm` package for external key management operations
 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+* Upgraded to API service version `2026-01-01-preview`
+* Upgraded dependencies
+* The `ekm` package's tests honour three new environment variables when
+  recording: `EKM_PROXY_HOST` (EKM proxy host:port), `EKM_SERVER_CA_CERTIFICATE`
+  (PEM or base64-encoded DER CA chain), and `EKM_EXTERNAL_ID` (name of an
+  external key exposed by the EKM proxy)
 
 ### 1.5.0 (2026-05-25)
 

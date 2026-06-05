@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.1-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 * Added the `SecureWrapKey` and `SecureUnwrapKey` operations

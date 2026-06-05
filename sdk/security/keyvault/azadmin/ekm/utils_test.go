@@ -69,8 +69,13 @@ func run(m *testing.M) int {
 	hsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)
 	// EKM_PROXY_HOST should point at an EKM proxy reachable from the Managed HSM
 	// (for example "ekm.contoso.com:443"). In playback it is replaced by the
-	// sanitized placeholder.
+	// sanitized placeholder. The value is normalized to always include an explicit
+	// port: the host sanitizer regex matches "<host>:<port>", so a bare hostname
+	// would also match — and overwrite — the bare CN value in the same body.
 	ekmProxyHost = recording.GetEnvVariable("EKM_PROXY_HOST", fakeEkmProxyHost)
+	if _, _, err := net.SplitHostPort(ekmProxyHost); err != nil {
+		ekmProxyHost = ekmProxyHost + ":443"
+	}
 	// EKM_EXTERNAL_ID names a key that already exists at the EKM proxy. It is
 	// referenced by the external-key tests when creating a Key Vault key whose
 	// material lives in the EKM.
@@ -104,12 +109,16 @@ func run(m *testing.M) int {
 		}
 		// The CA certificate appears base64-encoded in request bodies under the
 		// server_ca_certificates JSON field. Sanitize its on-wire base64 form so
-		// real certificate material never lands in recordings. The corresponding
-		// service-generated ca_certificates response field would need its own
-		// sanitizer if it ever contains sensitive material.
+		// real certificate material never lands in recordings. The replacement
+		// must match what playback sends (base64(fakeCACert)), not the generic
+		// "Sanitized" placeholder, because the test-proxy matches request bodies
+		// byte-for-byte and the playback test always sends the fake cert.
 		caCertB64 := base64.StdEncoding.EncodeToString(ekmCACert)
-		if err := recording.AddBodyRegexSanitizer(recording.SanitizedValue, regexp.QuoteMeta(caCertB64), nil); err != nil {
-			panic(err)
+		fakeCACertB64 := base64.StdEncoding.EncodeToString(fakeCACert)
+		if caCertB64 != fakeCACertB64 {
+			if err := recording.AddBodyRegexSanitizer(fakeCACertB64, regexp.QuoteMeta(caCertB64), nil); err != nil {
+				panic(err)
+			}
 		}
 	}
 

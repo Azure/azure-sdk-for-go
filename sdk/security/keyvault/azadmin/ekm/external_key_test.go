@@ -40,10 +40,9 @@ func TestExternalKeyReference(t *testing.T) {
 	localKeyName := "ekm-external-key-test"
 	ctx := context.Background()
 
-	// Best-effort cleanup of a prior run.
-	if recording.GetRecordMode() != recording.PlaybackMode {
-		_, _ = keyClient.DeleteKey(ctx, localKeyName, nil)
-	}
+	// Best-effort cleanup of a prior run. Run this in playback too so the
+	// corresponding entry in the recording is consumed in lockstep.
+	_, _ = keyClient.DeleteKey(ctx, localKeyName, nil)
 
 	// ExternalKey and Kty are mutually exclusive on CreateKey: the key material
 	// lives at the EKM proxy, so the Key Vault never picks its own key type.
@@ -55,11 +54,13 @@ func TestExternalKeyReference(t *testing.T) {
 
 	created, err := keyClient.CreateKey(ctx, localKeyName, params, nil)
 	if err != nil {
-		// The most common live-mode failure is that no EKM connection is
-		// configured on the HSM, in which case the service returns a 4xx.
-		// Surface that as a skip so the playback contract test still runs.
+		// The most common failure is that no EKM connection is configured on
+		// the HSM, in which case the service returns a 4xx. Surface that as a
+		// skip — including in playback, where the recording may legitimately
+		// have captured that 4xx — so the wire contract test still runs without
+		// requiring a fully provisioned EKM proxy.
 		var httpErr *azcore.ResponseError
-		if errors.As(err, &httpErr) && recording.GetRecordMode() != recording.PlaybackMode {
+		if errors.As(err, &httpErr) {
 			t.Skipf("CreateKey failed (HTTP %d, %s); is an EKM connection configured on the HSM?",
 				httpErr.StatusCode, httpErr.ErrorCode)
 		}

@@ -18,6 +18,8 @@ import (
 
 // AvailabilityGroupListenersClient contains the methods for the AvailabilityGroupListeners group.
 // Don't use this type directly, use NewAvailabilityGroupListenersClient() instead.
+//
+// Generated from API version 2023-10-01
 type AvailabilityGroupListenersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAvailabilityGroupListenersClient(subscriptionID string, credential azcor
 
 // BeginCreateOrUpdate - Creates or updates an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - availabilityGroupListenerName - Name of the availability group listener.
@@ -68,8 +68,6 @@ func (client *AvailabilityGroupListenersClient) BeginCreateOrUpdate(ctx context.
 
 // CreateOrUpdate - Creates or updates an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *AvailabilityGroupListenersClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, parameters AvailabilityGroupListener, options *AvailabilityGroupListenersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvailabilityGroupListenersClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +125,6 @@ func (client *AvailabilityGroupListenersClient) createOrUpdateCreateRequest(ctx 
 
 // BeginDelete - Deletes an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - availabilityGroupListenerName - Name of the availability group listener.
@@ -153,8 +149,6 @@ func (client *AvailabilityGroupListenersClient) BeginDelete(ctx context.Context,
 
 // Delete - Deletes an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *AvailabilityGroupListenersClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineGroupName string, availabilityGroupListenerName string, options *AvailabilityGroupListenersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvailabilityGroupListenersClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *AvailabilityGroupListenersClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an availability group listener.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - availabilityGroupListenerName - Name of the availability group listener.
@@ -263,8 +255,8 @@ func (client *AvailabilityGroupListenersClient) getCreateRequest(ctx context.Con
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -279,8 +271,6 @@ func (client *AvailabilityGroupListenersClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByGroupPager - Lists all availability group listeners in a SQL virtual machine group.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - options - AvailabilityGroupListenersClientListByGroupOptions contains the optional parameters for the AvailabilityGroupListenersClient.NewListByGroupPager
@@ -328,8 +318,8 @@ func (client *AvailabilityGroupListenersClient) listByGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

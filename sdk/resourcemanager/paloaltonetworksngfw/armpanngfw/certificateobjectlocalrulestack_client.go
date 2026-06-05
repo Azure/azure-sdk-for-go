@@ -18,6 +18,8 @@ import (
 
 // CertificateObjectLocalRulestackClient contains the methods for the CertificateObjectLocalRulestack group.
 // Don't use this type directly, use NewCertificateObjectLocalRulestackClient() instead.
+//
+// Generated from API version 2025-10-08
 type CertificateObjectLocalRulestackClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCertificateObjectLocalRulestackClient(subscriptionID string, credential 
 
 // BeginCreateOrUpdate - Create a CertificateObjectLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - name - certificate name
@@ -68,8 +68,6 @@ func (client *CertificateObjectLocalRulestackClient) BeginCreateOrUpdate(ctx con
 
 // CreateOrUpdate - Create a CertificateObjectLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *CertificateObjectLocalRulestackClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource CertificateObjectLocalRulestackResource, options *CertificateObjectLocalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificateObjectLocalRulestackClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *CertificateObjectLocalRulestackClient) createOrUpdateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *CertificateObjectLocalRulestackClient) createOrUpdateCreateRequest
 
 // BeginDelete - Delete a CertificateObjectLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - name - certificate name
@@ -153,8 +149,6 @@ func (client *CertificateObjectLocalRulestackClient) BeginDelete(ctx context.Con
 
 // Delete - Delete a CertificateObjectLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *CertificateObjectLocalRulestackClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *CertificateObjectLocalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificateObjectLocalRulestackClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *CertificateObjectLocalRulestackClient) deleteCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a CertificateObjectLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - name - certificate name
@@ -260,8 +252,8 @@ func (client *CertificateObjectLocalRulestackClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *CertificateObjectLocalRulestackClient) getHandleResponse(resp *htt
 }
 
 // NewListByLocalRulestacksPager - List CertificateObjectLocalRulestackResource resources by LocalRulestacks
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - CertificateObjectLocalRulestackClientListByLocalRulestacksOptions contains the optional parameters for the CertificateObjectLocalRulestackClient.NewListByLocalRulestacksPager
@@ -325,8 +315,8 @@ func (client *CertificateObjectLocalRulestackClient) listByLocalRulestacksCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

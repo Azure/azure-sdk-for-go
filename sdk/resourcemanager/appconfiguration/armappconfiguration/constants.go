@@ -4,6 +4,10 @@
 
 package armappconfiguration
 
+const (
+	version20250801Preview string = "2025-08-01-preview"
+)
+
 // AccessRuleDirection - Direction of Access Rule
 type AccessRuleDirection string
 

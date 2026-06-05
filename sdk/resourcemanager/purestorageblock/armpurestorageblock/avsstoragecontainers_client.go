@@ -18,6 +18,8 @@ import (
 
 // AvsStorageContainersClient contains the methods for the AvsStorageContainers group.
 // Don't use this type directly, use NewAvsStorageContainersClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type AvsStorageContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAvsStorageContainersClient(subscriptionID string, credential azcore.Toke
 
 // BeginDelete - Delete an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - storageContainerName - Name of the storage container
@@ -67,8 +67,6 @@ func (client *AvsStorageContainersClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Delete an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *AvsStorageContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, options *AvsStorageContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AvsStorageContainersClient.BeginDelete"
@@ -114,15 +112,13 @@ func (client *AvsStorageContainersClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get an AVS storage container
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - storageContainerName - Name of the storage container
@@ -174,8 +170,8 @@ func (client *AvsStorageContainersClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -190,8 +186,6 @@ func (client *AvsStorageContainersClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByStoragePoolPager - List AVS storage containers by storage pool
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - options - AvsStorageContainersClientListByStoragePoolOptions contains the optional parameters for the AvsStorageContainersClient.NewListByStoragePoolPager
@@ -239,8 +233,8 @@ func (client *AvsStorageContainersClient) listByStoragePoolCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

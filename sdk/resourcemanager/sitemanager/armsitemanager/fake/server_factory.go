@@ -58,17 +58,17 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "SitesByServiceGroupClient":
-		initServer(s, &s.trSitesByServiceGroupServer, func() *SitesByServiceGroupServerTransport {
+		initServer(&s.trMu, &s.trSitesByServiceGroupServer, func() *SitesByServiceGroupServerTransport {
 			return NewSitesByServiceGroupServerTransport(&s.srv.SitesByServiceGroupServer)
 		})
 		resp, err = s.trSitesByServiceGroupServer.Do(req)
 	case "SitesBySubscriptionClient":
-		initServer(s, &s.trSitesBySubscriptionServer, func() *SitesBySubscriptionServerTransport {
+		initServer(&s.trMu, &s.trSitesBySubscriptionServer, func() *SitesBySubscriptionServerTransport {
 			return NewSitesBySubscriptionServerTransport(&s.srv.SitesBySubscriptionServer)
 		})
 		resp, err = s.trSitesBySubscriptionServer.Do(req)
 	case "SitesClient":
-		initServer(s, &s.trSitesServer, func() *SitesServerTransport { return NewSitesServerTransport(&s.srv.SitesServer) })
+		initServer(&s.trMu, &s.trSitesServer, func() *SitesServerTransport { return NewSitesServerTransport(&s.srv.SitesServer) })
 		resp, err = s.trSitesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -79,12 +79,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

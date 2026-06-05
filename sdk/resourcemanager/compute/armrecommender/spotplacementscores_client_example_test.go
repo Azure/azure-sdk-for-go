@@ -31,7 +31,7 @@ func ExampleSpotPlacementScoresClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecommender.SpotPlacementScoresClientGetResponse{
-	// 	ComputeDiagnosticBase: &armrecommender.ComputeDiagnosticBase{
+	// 	ComputeDiagnosticBase: armrecommender.ComputeDiagnosticBase{
 	// 		Name: to.Ptr("spotPlacementScores"),
 	// 		Type: to.Ptr("Microsoft.Compute/placementScores"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/placementScores/spot?api-version=2025-06-05"),
@@ -75,7 +75,7 @@ func ExampleSpotPlacementScoresClient_Post() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecommender.SpotPlacementScoresClientPostResponse{
-	// 	SpotPlacementScoresResponse: &armrecommender.SpotPlacementScoresResponse{
+	// 	SpotPlacementScoresResponse: armrecommender.SpotPlacementScoresResponse{
 	// 		AvailabilityZones: to.Ptr(true),
 	// 		DesiredCount: to.Ptr[int32](1),
 	// 		DesiredLocations: []*string{

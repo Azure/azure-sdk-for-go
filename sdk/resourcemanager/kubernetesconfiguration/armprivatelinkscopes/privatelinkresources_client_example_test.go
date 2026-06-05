@@ -6,10 +6,9 @@ package armprivatelinkscopes_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armprivatelinkscopes"
+	"log"
 )
 
 // Generated from example definition: 2024-11-01-preview/PrivateLinkScopePrivateLinkResourceGet.json
@@ -31,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armprivatelinkscopes.PrivateLinkResource{
+	// 	PrivateLinkResource: armprivatelinkscopes.PrivateLinkResource{
 	// 		Name: to.Ptr("KubernetesConfiguration"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/privateLinkScopes/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KubernetesConfiguration/privateLinkScopes/myPrivateLinkScope/privateLinkResources/KubernetesConfiguration"),
@@ -71,7 +70,7 @@ func ExamplePrivateLinkResourcesClient_ListByPrivateLinkScope() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.PrivateLinkResourcesClientListByPrivateLinkScopeResponse{
-	// 	PrivateLinkResourceListResult: &armprivatelinkscopes.PrivateLinkResourceListResult{
+	// 	PrivateLinkResourceListResult: armprivatelinkscopes.PrivateLinkResourceListResult{
 	// 		Value: []*armprivatelinkscopes.PrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("KubernetesConfiguration"),

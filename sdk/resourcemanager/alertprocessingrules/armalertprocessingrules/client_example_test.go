@@ -49,7 +49,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateARuleThatAddsAnActionGroupToAllA
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientCreateOrUpdateResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("AddActionGroupToSubscription"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/AddActionGroupToSubscription"),
@@ -132,7 +132,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateARuleThatAddsTwoActionGroupsToAl
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientCreateOrUpdateResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("AddActionGroupsBySeverity"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/AddActionGroupsBySeverity"),
@@ -221,7 +221,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateARuleThatRemovesAllActionGroupsF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientCreateOrUpdateResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("RemoveActionGroupsSpecificAlertRule"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/RemoveActionGroupsSpecificAlertRule"),
@@ -312,7 +312,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateARuleThatRemovesAllActionGroupsO
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientCreateOrUpdateResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("RemoveActionGroupsOutsideBusinessHours"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/RemoveActionGroupsOutsideBusinessHours"),
@@ -418,7 +418,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateARuleThatRemovesAllActionGroupsF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientCreateOrUpdateResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("RemoveActionGroupsRecurringMaintenance"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/RemoveActionGroupsRecurringMaintenance"),
@@ -512,7 +512,7 @@ func ExampleClient_CreateOrUpdate_createOrUpdateARuleThatRemovesAllActionGroupsF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientCreateOrUpdateResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("RemoveActionGroupsMaintenanceWindow"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/RemoveActionGroupsMaintenanceWindow"),
@@ -589,7 +589,7 @@ func ExampleClient_GetByName() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientGetByNameResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("DailySuppression"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/1e3ff1c0-771a-4119-a03b-be82a51e232d/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/DailySuppression"),
@@ -1002,7 +1002,7 @@ func ExampleClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertprocessingrules.ClientUpdateResponse{
-	// 	AlertProcessingRule: &armalertprocessingrules.AlertProcessingRule{
+	// 	AlertProcessingRule: armalertprocessingrules.AlertProcessingRule{
 	// 		Name: to.Ptr("WeeklySuppression"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/actionRules"),
 	// 		ID: to.Ptr("/subscriptions/1e3ff1c0-771a-4119-a03b-be82a51e232d/resourceGroups/alertscorrelationrg/providers/Microsoft.AlertsManagement/actionRules/WeeklySuppression"),

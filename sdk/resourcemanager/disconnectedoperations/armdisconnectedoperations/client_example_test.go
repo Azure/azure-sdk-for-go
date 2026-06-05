@@ -50,13 +50,13 @@ func ExampleClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ClientCreateOrUpdateResponse{
-	// 	DisconnectedOperation: &armdisconnectedoperations.DisconnectedOperation{
+	// 	DisconnectedOperation: armdisconnectedoperations.DisconnectedOperation{
 	// 		Properties: &armdisconnectedoperations.DisconnectedOperationProperties{
 	// 			ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 			StampID: to.Ptr("663ee8a3-4ea8-48ec-8810-b1f8b86cb270"),
@@ -121,7 +121,7 @@ func ExampleClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -144,7 +144,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ClientGetResponse{
-	// 	DisconnectedOperation: &armdisconnectedoperations.DisconnectedOperation{
+	// 	DisconnectedOperation: armdisconnectedoperations.DisconnectedOperation{
 	// 		Properties: &armdisconnectedoperations.DisconnectedOperationProperties{
 	// 			ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 			StampID: to.Ptr("663ee8a3-4ea8-48ec-8810-b1f8b86cb270"),
@@ -365,7 +365,7 @@ func ExampleClient_ListDeploymentManifest() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ClientListDeploymentManifestResponse{
-	// 	DisconnectedOperationDeploymentManifest: &armdisconnectedoperations.DisconnectedOperationDeploymentManifest{
+	// 	DisconnectedOperationDeploymentManifest: armdisconnectedoperations.DisconnectedOperationDeploymentManifest{
 	// 		ResourceID: to.Ptr("/subscriptions/1F6CACA0-5FFA-47AD-94FD-42368F71E49E/resourceGroups/rgdisconnectedOperations/providers/Microsoft.Edge/disconnectedOperations/demo-resource"),
 	// 		ResourceName: to.Ptr("demo-resource"),
 	// 		StampID: to.Ptr("401ECB09-83EC-4777-A56C-6FFF26BCC815"),
@@ -424,7 +424,7 @@ func ExampleClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ClientUpdateResponse{
-	// 	DisconnectedOperation: &armdisconnectedoperations.DisconnectedOperation{
+	// 	DisconnectedOperation: armdisconnectedoperations.DisconnectedOperation{
 	// 		Properties: &armdisconnectedoperations.DisconnectedOperationProperties{
 	// 			ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 			StampID: to.Ptr("663ee8a3-4ea8-48ec-8810-b1f8b86cb270"),

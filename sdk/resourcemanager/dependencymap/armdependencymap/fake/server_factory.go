@@ -58,15 +58,15 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "DiscoverySourcesClient":
-		initServer(s, &s.trDiscoverySourcesServer, func() *DiscoverySourcesServerTransport {
+		initServer(&s.trMu, &s.trDiscoverySourcesServer, func() *DiscoverySourcesServerTransport {
 			return NewDiscoverySourcesServerTransport(&s.srv.DiscoverySourcesServer)
 		})
 		resp, err = s.trDiscoverySourcesServer.Do(req)
 	case "MapsClient":
-		initServer(s, &s.trMapsServer, func() *MapsServerTransport { return NewMapsServerTransport(&s.srv.MapsServer) })
+		initServer(&s.trMu, &s.trMapsServer, func() *MapsServerTransport { return NewMapsServerTransport(&s.srv.MapsServer) })
 		resp, err = s.trMapsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -77,12 +77,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

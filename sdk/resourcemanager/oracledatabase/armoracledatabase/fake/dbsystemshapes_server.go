@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // DbSystemShapesServer is a fake server for instances of the armoracledatabase.DbSystemShapesClient type.
@@ -58,9 +59,7 @@ func (d *DbSystemShapesServerTransport) Do(req *http.Request) (*http.Response, e
 }
 
 func (d *DbSystemShapesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (d *DbSystemShapesServerTransport) dispatchToMethodFake(req *http.Request, 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -115,7 +111,7 @@ func (d *DbSystemShapesServerTransport) dispatchGet(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DbSystemShape, req)
@@ -142,16 +138,8 @@ func (d *DbSystemShapesServerTransport) dispatchNewListByLocationPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		zoneUnescaped, err := url.QueryUnescape(qp.Get("zone"))
-		if err != nil {
-			return nil, err
-		}
-		zoneParam := getOptional(zoneUnescaped)
-		shapeAttributeUnescaped, err := url.QueryUnescape(qp.Get("shapeAttribute"))
-		if err != nil {
-			return nil, err
-		}
-		shapeAttributeParam := getOptional(shapeAttributeUnescaped)
+		zoneParam := getOptional(qp.Get("zone"))
+		shapeAttributeParam := getOptional(qp.Get("shapeAttribute"))
 		var options *armoracledatabase.DbSystemShapesClientListByLocationOptions
 		if zoneParam != nil || shapeAttributeParam != nil {
 			options = &armoracledatabase.DbSystemShapesClientListByLocationOptions{
@@ -170,7 +158,7 @@ func (d *DbSystemShapesServerTransport) dispatchNewListByLocationPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListByLocationPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

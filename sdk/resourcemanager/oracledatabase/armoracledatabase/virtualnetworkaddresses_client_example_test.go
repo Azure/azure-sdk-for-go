@@ -36,13 +36,13 @@ func ExampleVirtualNetworkAddressesClient_BeginCreateOrUpdate_createVirtualNetwo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.VirtualNetworkAddressesClientCreateOrUpdateResponse{
-	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 	VirtualNetworkAddress: armoracledatabase.VirtualNetworkAddress{
 	// 		Properties: &armoracledatabase.VirtualNetworkAddressProperties{
 	// 			IPAddress: to.Ptr("192.168.0.1"),
 	// 			VMOcid: to.Ptr("ocid1..aaaa"),
@@ -85,13 +85,13 @@ func ExampleVirtualNetworkAddressesClient_BeginCreateOrUpdate_createVirtualNetwo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.VirtualNetworkAddressesClientCreateOrUpdateResponse{
-	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 	VirtualNetworkAddress: armoracledatabase.VirtualNetworkAddress{
 	// 	},
 	// }
 }
@@ -118,13 +118,13 @@ func ExampleVirtualNetworkAddressesClient_BeginCreateOrUpdate_virtualNetworkAddr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.VirtualNetworkAddressesClientCreateOrUpdateResponse{
-	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 	VirtualNetworkAddress: armoracledatabase.VirtualNetworkAddress{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/virtualNetworkAddresses"),
 	// 		Properties: &armoracledatabase.VirtualNetworkAddressProperties{
@@ -158,7 +158,7 @@ func ExampleVirtualNetworkAddressesClient_BeginDelete_deleteVirtualNetworkAddres
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -179,7 +179,7 @@ func ExampleVirtualNetworkAddressesClient_BeginDelete_deleteVirtualNetworkAddres
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -200,7 +200,7 @@ func ExampleVirtualNetworkAddressesClient_BeginDelete_virtualNetworkAddressesDel
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -223,7 +223,7 @@ func ExampleVirtualNetworkAddressesClient_Get_getVirtualNetworkAddressGeneratedB
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.VirtualNetworkAddressesClientGetResponse{
-	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 	VirtualNetworkAddress: armoracledatabase.VirtualNetworkAddress{
 	// 		Properties: &armoracledatabase.VirtualNetworkAddressProperties{
 	// 			IPAddress: to.Ptr("192.168.0.1"),
 	// 			VMOcid: to.Ptr("ocid1..aaaa"),
@@ -268,7 +268,7 @@ func ExampleVirtualNetworkAddressesClient_Get_getVirtualNetworkAddressGeneratedB
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.VirtualNetworkAddressesClientGetResponse{
-	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 	VirtualNetworkAddress: armoracledatabase.VirtualNetworkAddress{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
 	// 	},
 	// }
@@ -293,7 +293,7 @@ func ExampleVirtualNetworkAddressesClient_Get_virtualNetworkAddressesGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.VirtualNetworkAddressesClientGetResponse{
-	// 	VirtualNetworkAddress: &armoracledatabase.VirtualNetworkAddress{
+	// 	VirtualNetworkAddress: armoracledatabase.VirtualNetworkAddress{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/virtualNetworkAddresses/hostname1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/virtualNetworkAddresses"),
 	// 		Properties: &armoracledatabase.VirtualNetworkAddressProperties{

@@ -35,7 +35,7 @@ func ExampleDpsCertificateClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientCreateOrUpdateResponse{
-	// 	CertificateResponse: &armdeviceprovisioningservices.CertificateResponse{
+	// 	CertificateResponse: armdeviceprovisioningservices.CertificateResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/Certificates"),
 	// 		Etag: to.Ptr("AAAAAAExpNs="),
@@ -94,7 +94,7 @@ func ExampleDpsCertificateClient_GenerateVerificationCode() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeResponse{
-	// 	VerificationCodeResponse: &armdeviceprovisioningservices.VerificationCodeResponse{
+	// 	VerificationCodeResponse: armdeviceprovisioningservices.VerificationCodeResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Properties: &armdeviceprovisioningservices.VerificationCodeResponseProperties{
 	// 			Certificate: []byte("MA=="),
@@ -129,7 +129,7 @@ func ExampleDpsCertificateClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientGetResponse{
-	// 	CertificateResponse: &armdeviceprovisioningservices.CertificateResponse{
+	// 	CertificateResponse: armdeviceprovisioningservices.CertificateResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/Certificates"),
 	// 		Etag: to.Ptr("AAAAAAExpNs="),
@@ -166,7 +166,7 @@ func ExampleDpsCertificateClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientListResponse{
-	// 	CertificateListDescription: &armdeviceprovisioningservices.CertificateListDescription{
+	// 	CertificateListDescription: armdeviceprovisioningservices.CertificateListDescription{
 	// 		Value: []*armdeviceprovisioningservices.CertificateResponse{
 	// 			{
 	// 				Name: to.Ptr("cert"),
@@ -209,7 +209,7 @@ func ExampleDpsCertificateClient_VerifyCertificate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateResponse{
-	// 	CertificateResponse: &armdeviceprovisioningservices.CertificateResponse{
+	// 	CertificateResponse: armdeviceprovisioningservices.CertificateResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/Certificates"),
 	// 		Etag: to.Ptr("AAAAAAExpTQ="),

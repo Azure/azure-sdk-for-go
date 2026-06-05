@@ -52,13 +52,13 @@ func ExampleExascaleDbStorageVaultsClient_BeginCreate_exascaleDbStorageVaultsCre
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbStorageVaultsClientCreateResponse{
-	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 	ExascaleDbStorageVault: armoracledatabase.ExascaleDbStorageVault{
 	// 		Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 	// 			AdditionalFlashCacheInPercent: to.Ptr[int32](0),
 	// 			Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
@@ -119,13 +119,13 @@ func ExampleExascaleDbStorageVaultsClient_BeginCreate_exascaleDbStorageVaultsCre
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbStorageVaultsClientCreateResponse{
-	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 	ExascaleDbStorageVault: armoracledatabase.ExascaleDbStorageVault{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
 	// 		Location: to.Ptr("eastus"),
 	// 	},
@@ -149,7 +149,7 @@ func ExampleExascaleDbStorageVaultsClient_BeginDelete_exascaleDbStorageVaultsDel
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -170,7 +170,7 @@ func ExampleExascaleDbStorageVaultsClient_BeginDelete_exascaleDbStorageVaultsDel
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -193,7 +193,7 @@ func ExampleExascaleDbStorageVaultsClient_Get_exascaleDbStorageVaultsGetMaximumS
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbStorageVaultsClientGetResponse{
-	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 	ExascaleDbStorageVault: armoracledatabase.ExascaleDbStorageVault{
 	// 		Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 	// 			AdditionalFlashCacheInPercent: to.Ptr[int32](0),
 	// 			Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
@@ -254,7 +254,7 @@ func ExampleExascaleDbStorageVaultsClient_Get_exascaleDbStorageVaultsGetMaximumS
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbStorageVaultsClientGetResponse{
-	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 	ExascaleDbStorageVault: armoracledatabase.ExascaleDbStorageVault{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
 	// 		Location: to.Ptr("eastus"),
 	// 	},
@@ -494,13 +494,13 @@ func ExampleExascaleDbStorageVaultsClient_BeginUpdate_exascaleDbStorageVaultsUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbStorageVaultsClientUpdateResponse{
-	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 	ExascaleDbStorageVault: armoracledatabase.ExascaleDbStorageVault{
 	// 		Properties: &armoracledatabase.ExascaleDbStorageVaultProperties{
 	// 			AdditionalFlashCacheInPercent: to.Ptr[int32](0),
 	// 			Description: to.Ptr("kgqvxvtegzwyppegpvqxnlslvetbjlgveofcpjddenhbpocyzwtswaeaetqkipcxyhedsymuljalirryldlbviuvidhssyiwodacajjnbpkbvbvzwzsjctsidchalyjkievnivikwnnypaojcvhmokddstxwiqxmbfmbvglfimseguwyvibwzllggjtwejdfgezoeuvjjbsyfozswihydzuscjrqnklewongumiljeordhqlsclwlmftzdoey"),
@@ -559,13 +559,13 @@ func ExampleExascaleDbStorageVaultsClient_BeginUpdate_exascaleDbStorageVaultsUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbStorageVaultsClientUpdateResponse{
-	// 	ExascaleDbStorageVault: &armoracledatabase.ExascaleDbStorageVault{
+	// 	ExascaleDbStorageVault: armoracledatabase.ExascaleDbStorageVault{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/exascaleDbStorageVaults/storagevault1"),
 	// 		Location: to.Ptr("eastus"),
 	// 	},

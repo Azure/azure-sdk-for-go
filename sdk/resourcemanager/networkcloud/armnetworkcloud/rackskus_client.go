@@ -18,6 +18,8 @@ import (
 
 // RackSKUsClient contains the methods for the RackSKUs group.
 // Don't use this type directly, use NewRackSKUsClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type RackSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRackSKUsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Get - Get the properties of the provided rack SKU.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - rackSKUName - The name of the rack SKU.
 //   - options - RackSKUsClientGetOptions contains the optional parameters for the RackSKUsClient.Get method.
 func (client *RackSKUsClient) Get(ctx context.Context, rackSKUName string, options *RackSKUsClientGetOptions) (RackSKUsClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *RackSKUsClient) getCreateRequest(ctx context.Context, rackSKUName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *RackSKUsClient) getHandleResponse(resp *http.Response) (RackSKUsCl
 }
 
 // NewListBySubscriptionPager - Get a list of rack SKUs in the provided subscription.
-//
-// Generated from API version 2025-09-01
 //   - options - RackSKUsClientListBySubscriptionOptions contains the optional parameters for the RackSKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *RackSKUsClient) NewListBySubscriptionPager(options *RackSKUsClientListBySubscriptionOptions) *runtime.Pager[RackSKUsClientListBySubscriptionResponse] {
@@ -138,8 +136,8 @@ func (client *RackSKUsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

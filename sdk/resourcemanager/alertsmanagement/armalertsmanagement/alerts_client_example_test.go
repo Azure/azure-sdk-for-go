@@ -32,7 +32,7 @@ func ExampleAlertsClient_ChangeState() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientChangeStateResponse{
-	// 	Alert: &armalertsmanagement.Alert{
+	// 	Alert: armalertsmanagement.Alert{
 	// 		Name: to.Ptr("cpu alert"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
 	// 		ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
@@ -89,7 +89,7 @@ func ExampleAlertsClient_ChangeStateTenant() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientChangeStateTenantResponse{
-	// 	Alert: &armalertsmanagement.Alert{
+	// 	Alert: armalertsmanagement.Alert{
 	// 		Name: to.Ptr("cpu alert"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
 	// 		ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
@@ -457,7 +457,7 @@ func ExampleAlertsClient_GetByID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientGetByIDResponse{
-	// 	Alert: &armalertsmanagement.Alert{
+	// 	Alert: armalertsmanagement.Alert{
 	// 		Name: to.Ptr("cpu alert"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
 	// 		ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
@@ -517,7 +517,7 @@ func ExampleAlertsClient_GetByIDTenant() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientGetByIDTenantResponse{
-	// 	Alert: &armalertsmanagement.Alert{
+	// 	Alert: armalertsmanagement.Alert{
 	// 		Name: to.Ptr("cpu alert"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
 	// 		ID: to.Ptr("/subscriptions/3b540246-808d-4331-99aa-917b808a9166/resourcegroups/servicedeskresourcegroup/providers/microsoft.insights/components/servicedeskappinsight/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
@@ -662,7 +662,7 @@ func ExampleAlertsClient_GetHistory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientGetHistoryResponse{
-	// 	AlertModification: &armalertsmanagement.AlertModification{
+	// 	AlertModification: armalertsmanagement.AlertModification{
 	// 		Name: to.Ptr("CPU Alert"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
 	// 		ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/someResourceGroup/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
@@ -763,7 +763,7 @@ func ExampleAlertsClient_GetHistoryTenant() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientGetHistoryTenantResponse{
-	// 	AlertModification: &armalertsmanagement.AlertModification{
+	// 	AlertModification: armalertsmanagement.AlertModification{
 	// 		Name: to.Ptr("CPU Alert"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/alerts"),
 	// 		ID: to.Ptr("/subscriptions/9e261de7-c804-4b9d-9ebf-6f50fe350a9a/resourceGroups/someResourceGroup/providers/Microsoft.AlertsManagement/alerts/66114d64-d9d9-478b-95c9-b789d6502100"),
@@ -864,7 +864,7 @@ func ExampleAlertsClient_GetSummary() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientGetSummaryResponse{
-	// 	AlertsSummary: &armalertsmanagement.AlertsSummary{
+	// 	AlertsSummary: armalertsmanagement.AlertsSummary{
 	// 		Name: to.Ptr("current"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/alertsSummary"),
 	// 		ID: to.Ptr("/subscriptions/1e3ff1c0-771a-4119-a03b-be82a51e232d/providers/Microsoft.AlertsManagement/alertsSummary/current"),
@@ -993,7 +993,7 @@ func ExampleAlertsClient_MetaData() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armalertsmanagement.AlertsClientMetaDataResponse{
-	// 	AlertsMetaData: &armalertsmanagement.AlertsMetaData{
+	// 	AlertsMetaData: armalertsmanagement.AlertsMetaData{
 	// 		Properties: &armalertsmanagement.MonitorServiceList{
 	// 			Data: []*armalertsmanagement.MonitorServiceDetails{
 	// 				{

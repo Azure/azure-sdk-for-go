@@ -18,6 +18,8 @@ import (
 
 // DiscoverySolutionNLPClient contains the methods for the DiscoverySolutionNLP group.
 // Don't use this type directly, use NewDiscoverySolutionNLPClient() instead.
+//
+// Generated from API version 2024-03-01-preview
 type DiscoverySolutionNLPClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewDiscoverySolutionNLPClient(credential azcore.TokenCredential, options *a
 // DiscoverSolutions - Search for relevant Azure Diagnostics, Solutions and Troubleshooters using a natural language issue
 // summary.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-03-01-preview
 //   - options - DiscoverySolutionNLPClientDiscoverSolutionsOptions contains the optional parameters for the DiscoverySolutionNLPClient.DiscoverSolutions
 //     method.
 func (client *DiscoverySolutionNLPClient) DiscoverSolutions(ctx context.Context, options *DiscoverySolutionNLPClientDiscoverSolutionsOptions) (DiscoverySolutionNLPClientDiscoverSolutionsResponse, error) {
@@ -73,8 +73,8 @@ func (client *DiscoverySolutionNLPClient) discoverSolutionsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.DiscoverSolutionRequest != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -98,8 +98,6 @@ func (client *DiscoverySolutionNLPClient) discoverSolutionsHandleResponse(resp *
 // DiscoverSolutionsBySubscription - Search for relevant Azure Diagnostics, Solutions and Troubleshooters using a natural
 // language issue summary and subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-03-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionOptions contains the optional parameters for the DiscoverySolutionNLPClient.DiscoverSolutionsBySubscription
 //     method.
@@ -137,8 +135,8 @@ func (client *DiscoverySolutionNLPClient) discoverSolutionsBySubscriptionCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.DiscoverSolutionRequest != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

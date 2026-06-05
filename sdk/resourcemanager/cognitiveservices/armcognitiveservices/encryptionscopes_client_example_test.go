@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/PutEncryptionScope.json
+// Generated from example definition: 2026-03-15-preview/PutEncryptionScope.json
 func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.EncryptionScopesClientCreateOrUpdateResponse{
-	// 	EncryptionScope: &armcognitiveservices.EncryptionScope{
+	// 	EncryptionScope: armcognitiveservices.EncryptionScope{
 	// 		Name: to.Ptr("encryptionScopeName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/encryptionScopes"),
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
@@ -70,7 +70,7 @@ func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/DeleteEncryptionScope.json
+// Generated from example definition: 2026-03-15-preview/DeleteEncryptionScope.json
 func ExampleEncryptionScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,11 +87,11 @@ func ExampleEncryptionScopesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/GetEncryptionScope.json
+// Generated from example definition: 2026-03-15-preview/GetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleEncryptionScopesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.EncryptionScopesClientGetResponse{
-	// 	EncryptionScope: &armcognitiveservices.EncryptionScope{
+	// 	EncryptionScope: armcognitiveservices.EncryptionScope{
 	// 		Name: to.Ptr("encryptionScopeName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/encryptionScopes"),
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
@@ -138,7 +138,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ListEncryptionScopes.json
+// Generated from example definition: 2026-03-15-preview/ListEncryptionScopes.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

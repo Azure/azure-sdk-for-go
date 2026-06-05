@@ -144,7 +144,8 @@ type downloadOptions struct {
 	CPKInfo      *CPKInfo
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -198,7 +199,8 @@ type DownloadBufferOptions struct {
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -226,7 +228,8 @@ type DownloadFileOptions struct {
 	CPKInfo      *CPKInfo
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.

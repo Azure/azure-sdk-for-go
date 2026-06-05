@@ -31,7 +31,7 @@ func ExampleGiMinorVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.GiMinorVersionsClientGetResponse{
-	// 	GiMinorVersion: &armoracledatabase.GiMinorVersion{
+	// 	GiMinorVersion: armoracledatabase.GiMinorVersion{
 	// 		Properties: &armoracledatabase.GiMinorVersionProperties{
 	// 			Version: to.Ptr("jolryvqmzblqeiewwngwdrcmmewqrrgzwxwqivjrznzzyvxxitlhonfzpvzwrpjqiikrpibfngbotspixjtlbysflyxiowrygizhstxbqcanvdqsmnddcxtptbthsvsfcejfymhjoiksdrbupvrcfvuhjhnplavyequrmgjcyrqglmkugvprmdpgnqhzohwbdkkrlwxlwdvunlejuzncpikujpotlilymajcbfjtxydybalpyn"),
 	// 			GridImageOcid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),

@@ -18,6 +18,8 @@ import (
 
 // ResourceReferenceClient contains the methods for the ResourceReference group.
 // Don't use this type directly, use NewResourceReferenceClient() instead.
+//
+// Generated from API version 2023-07-01-preview
 type ResourceReferenceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewResourceReferenceClient(subscriptionID string, credential azcore.TokenCr
 
 // GetByTargetResources - Returns the DNS records specified by the referencing targetResourceIds.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - parameters - The request body
 //   - options - ResourceReferenceClientGetByTargetResourcesOptions contains the optional parameters for the ResourceReferenceClient.GetByTargetResources
 //     method.
@@ -80,8 +80,8 @@ func (client *ResourceReferenceClient) getByTargetResourcesCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

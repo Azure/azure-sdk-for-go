@@ -96,13 +96,13 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientCreateOrUpdateResponse{
-	// 	PostRulesResource: &armpanngfw.PostRulesResource{
+	// 	PostRulesResource: armpanngfw.PostRulesResource{
 	// 		Name: to.Ptr("aaaaaaaaaa"),
 	// 		Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -206,13 +206,13 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMinimumSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientCreateOrUpdateResponse{
-	// 	PostRulesResource: &armpanngfw.PostRulesResource{
+	// 	PostRulesResource: armpanngfw.PostRulesResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/lrs1/postrules/1"),
 	// 		Properties: &armpanngfw.RuleEntry{
 	// 			RuleName: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -238,7 +238,7 @@ func ExamplePostRulesClient_BeginDelete_postRulesDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -264,7 +264,7 @@ func ExamplePostRulesClient_BeginDelete_postRulesDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -292,7 +292,7 @@ func ExamplePostRulesClient_Get_postRulesGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientGetResponse{
-	// 	PostRulesResource: &armpanngfw.PostRulesResource{
+	// 	PostRulesResource: armpanngfw.PostRulesResource{
 	// 		Name: to.Ptr("aaaaaaaaaa"),
 	// 		Type: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -394,7 +394,7 @@ func ExamplePostRulesClient_Get_postRulesGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientGetResponse{
-	// 	PostRulesResource: &armpanngfw.PostRulesResource{
+	// 	PostRulesResource: armpanngfw.PostRulesResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/lrs1/postrules/1"),
 	// 		Properties: &armpanngfw.RuleEntry{
 	// 			RuleName: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -423,7 +423,7 @@ func ExamplePostRulesClient_GetCounters_postRulesGetCountersMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientGetCountersResponse{
-	// 	RuleCounter: &armpanngfw.RuleCounter{
+	// 	RuleCounter: armpanngfw.RuleCounter{
 	// 		AppSeen: &armpanngfw.AppSeenData{
 	// 			AppSeenList: []*armpanngfw.AppSeenInfo{
 	// 				{
@@ -470,7 +470,7 @@ func ExamplePostRulesClient_GetCounters_postRulesGetCountersMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientGetCountersResponse{
-	// 	RuleCounter: &armpanngfw.RuleCounter{
+	// 	RuleCounter: armpanngfw.RuleCounter{
 	// 		Priority: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
 	// 		RuleName: to.Ptr("aaaa"),
 	// 	},
@@ -681,7 +681,7 @@ func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMaximumSetGen() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientResetCountersResponse{
-	// 	RuleCounterReset: &armpanngfw.RuleCounterReset{
+	// 	RuleCounterReset: armpanngfw.RuleCounterReset{
 	// 		FirewallName: to.Ptr("aaaaaaaaaaaaaaaaaa"),
 	// 		Priority: to.Ptr("aaaaaaa"),
 	// 		RuleListName: to.Ptr("aaaaa"),
@@ -710,7 +710,7 @@ func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMinimumSetGen() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PostRulesClientResetCountersResponse{
-	// 	RuleCounterReset: &armpanngfw.RuleCounterReset{
+	// 	RuleCounterReset: armpanngfw.RuleCounterReset{
 	// 	},
 	// }
 }

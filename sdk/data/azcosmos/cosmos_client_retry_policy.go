@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// cSpell:ignore azlog Writef Retriable unrecovered
+
 package azcosmos
 
 import (
@@ -11,16 +13,99 @@ import (
 	"io"
 	"net"
 	"net/http"
+	"runtime/debug"
+	"sync/atomic"
 	"syscall"
 	"time"
 
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
 
 type clientRetryPolicy struct {
 	gem *globalEndpointManager
+	// asyncRefreshState tracks the in-flight goroutine spawned by
+	// asyncForceRefreshGEM (Idle/Pending/Failed). See its doc comment.
+	asyncRefreshState atomic.Int32
+	// lastForcedRefreshUnixNano is the completion time of the most
+	// recent asyncForceRefreshGEM. Read by staleForcedRefresh to
+	// rate-limit repeat refreshes against the same endpoint.
+	lastForcedRefreshUnixNano atomic.Int64
+}
+
+const (
+	asyncRefreshIdle    int32 = 0
+	asyncRefreshPending int32 = 1
+	asyncRefreshFailed  int32 = 2
+
+	// forcedRefreshMinInterval rate-limits repeat forced refreshes
+	// against an already-unavailable endpoint. Must be >=
+	// defaultBackoff*time.Second so a tight 403 loop cannot bypass it.
+	forcedRefreshMinInterval = 2 * time.Second
+)
+
+// asyncForceRefreshGEM kicks off a forced GEM topology refresh in a
+// detached goroutine. The refresh must never block a data-plane retry:
+// during a regional outage the global FQDN often resolves to the same
+// regional FE pool we just marked unavailable, so a synchronous Update
+// can stall and prevent failover.
+//
+// asyncRefreshState (CAS-gated) caps in-flight refreshes at one per
+// policy. We run on context.Background() so a near-expired caller
+// deadline cannot abort the refresh. Panics from gem.Update are
+// recovered + logged but NOT re-panicked (an unrecovered panic in a
+// detached goroutine terminates the process).
+//
+// Returns true if a refresh was actually spawned.
+func (p *clientRetryPolicy) asyncForceRefreshGEM() bool {
+	for {
+		state := p.asyncRefreshState.Load()
+		if state == asyncRefreshPending {
+			return false
+		}
+		if p.asyncRefreshState.CompareAndSwap(state, asyncRefreshPending) {
+			break
+		}
+	}
+	go func() {
+		err := error(nil)
+		defer func() {
+			if r := recover(); r != nil {
+				err = fmt.Errorf("panic in azcosmos retry-policy async GEM refresh: %v", r)
+				log.Writef(azlog.EventResponse, "%v\n%s", err, debug.Stack())
+			}
+			// Record completion time BEFORE flipping state so callers
+			// that observe Idle also see the freshly-updated timestamp.
+			p.lastForcedRefreshUnixNano.Store(time.Now().UnixNano())
+			if err != nil {
+				p.asyncRefreshState.Store(asyncRefreshFailed)
+			} else {
+				p.asyncRefreshState.Store(asyncRefreshIdle)
+			}
+		}()
+		err = p.gem.Update(context.Background(), true)
+		if err != nil {
+			log.Writef(azlog.EventResponse,
+				"azcosmos retry-policy async GEM refresh failed: %v", err)
+		}
+	}()
+	return true
+}
+
+// staleForcedRefresh reports whether the rate-limit window has
+// elapsed since the last completed asyncForceRefreshGEM (or no refresh
+// has run yet). Used to permit follow-up refreshes for repeat 403s
+// against an already-unavailable endpoint -- critical for single-master
+// writes, which cannot reroute locally.
+func (p *clientRetryPolicy) staleForcedRefresh() bool {
+	last := p.lastForcedRefreshUnixNano.Load()
+	if last == 0 {
+		return true
+	}
+	return time.Since(time.Unix(0, last)) >= forcedRefreshMinInterval
 }
 
 // Retry context for the request
@@ -29,6 +114,10 @@ type retryContext struct {
 	retryCount             int
 	sessionRetryCount      int
 	preferredLocationIndex int
+	// serverErrorRetryCount tracks the number of retries attempted for a
+	// transient 5xx server error (500/502/504). Only reads are retried;
+	// the budget is one in-region retry followed by one cross-region retry.
+	serverErrorRetryCount int
 	// sameRegionRetryCount tracks the number of consecutive retries we have
 	// attempted against the currently-resolved endpoint for a connection
 	// error chain. It resets to 0 whenever we fail over to another region
@@ -43,10 +132,20 @@ type retryContext struct {
 	// single cross-region retry for an HTTP 408. Only reads are retried
 	// on 408; writes are returned to the caller immediately.
 	requestTimeoutRetryDone bool
+	// resolveFromHead is a one-shot signal to the outer Do loop to use
+	// locationIndex 0 instead of retryCount. Set by retry paths that
+	// demote-to-tail (MarkEndpointUnavailable* moves the bad endpoint
+	// to the tail of the route list).
+	resolveFromHead bool
 }
 
 const maxRetryCount = 120
 const defaultBackoff = 1
+
+// maxServerErrorRetryCount is the total number of retries attempted for a
+// transient 5xx server error: one in-region retry followed by one
+// cross-region retry.
+const maxServerErrorRetryCount = 2
 
 // sleepWithContext sleeps for d, but returns early with the context's error
 // if ctx is cancelled or its deadline expires. Use this in retry paths so
@@ -97,7 +196,13 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	for {
 		// Update the retry context with the latest retry values
 		req.SetOperationValue(retryContext)
-		resolvedEndpoint := p.gem.ResolveServiceEndpoint(retryContext.retryCount, o.resourceType, o.isWriteOperation, retryContext.useWriteEndpoint)
+		// Consume the one-shot resolveFromHead override.
+		locationIndex := retryContext.retryCount
+		if retryContext.resolveFromHead {
+			locationIndex = 0
+			retryContext.resolveFromHead = false
+		}
+		resolvedEndpoint := p.gem.ResolveServiceEndpoint(locationIndex, o.resourceType, o.isWriteOperation, retryContext.useWriteEndpoint)
 		regionName := p.gem.GetEndpointLocation(resolvedEndpoint)
 		req.Raw().Host = resolvedEndpoint.Host
 		req.Raw().URL.Host = resolvedEndpoint.Host
@@ -138,6 +243,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {
 			retryContext.useWriteEndpoint = false
+			// advanceLocation gates whether the post-switch logic advances
+			// retryCount (which moves the resolved endpoint to the next
+			// region). An in-region 5xx retry leaves it true=>false so the
+			// retry targets the same endpoint.
+			advanceLocation := true
 			switch response.StatusCode {
 			case http.StatusForbidden:
 				shouldRetry, err := p.attemptRetryOnEndpointFailure(req, o.isWriteOperation, &retryContext)
@@ -163,12 +273,25 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 				if !shouldRetry {
 					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
 				}
+			case http.StatusInternalServerError, http.StatusBadGateway, http.StatusGatewayTimeout:
+				shouldRetry, inRegion := p.attemptRetryOnServerError(o.isWriteOperation, &retryContext)
+				if !shouldRetry {
+					return nil, errorinfo.NonRetriableError(azruntime.NewResponseErrorWithErrorCode(response, response.Status))
+				}
+				// The in-region retry targets the same endpoint, so do not
+				// advance retryCount. The cross-region retry advances the
+				// location via preferredLocationIndex and retryCount.
+				if inRegion {
+					advanceLocation = false
+				}
 			}
 			err = req.RewindBody()
 			if err != nil {
 				return response, err
 			}
-			retryContext.retryCount += 1
+			if advanceLocation {
+				retryContext.retryCount += 1
+			}
 			// HTTP-status retries can change the endpoint (via retryCount
 			// or preferredLocationIndex). Reset the connection-error
 			// same-region budget so a fresh chain of connection errors
@@ -187,57 +310,44 @@ func (p *clientRetryPolicy) shouldRetryStatus(status int, subStatus string) (sho
 	if (status == http.StatusForbidden && (subStatus == subStatusWriteForbidden || subStatus == subStatusDatabaseAccountNotFound)) ||
 		(status == http.StatusNotFound && subStatus == subStatusReadSessionNotAvailable) ||
 		(status == http.StatusServiceUnavailable) ||
-		(status == http.StatusRequestTimeout) {
+		(status == http.StatusRequestTimeout) ||
+		(status == http.StatusInternalServerError) ||
+		(status == http.StatusBadGateway) ||
+		(status == http.StatusGatewayTimeout) {
 		return true
 	}
 	return false
 }
 
-// attemptRetryOnNetworkError decides how to respond to a transport-level
-// failure. While the policy is enabled (enableCrossRegionRetries), the
-// first maxSameRegionConnectionRetries attempts retry against the same
-// region (the currently-resolved endpoint) without touching the location
-// cache. Once that budget is exhausted, exactly one cross-region failover
-// is attempted, subject to write-safety rules:
-//   - reads always fail over;
-//   - writes only fail over when the error is classified as
-//     connectionErrorNotSent (i.e. we are sure the request never reached
-//     the service). Writes on ambiguous errors stop retrying to avoid
-//     duplicate side-effects, and mark the endpoint unavailable so
-//     concurrent requests learn about the regional outage.
+// attemptRetryOnNetworkError handles transport-level failures. With
+// cross-region retries enabled, it allows up to maxSameRegionConnectionRetries
+// against the current region (reads always, writes only when
+// connectionErrorNotSent so non-idempotent mutations are never replayed),
+// then performs at most one cross-region failover.
 //
-// Ambiguous-error writes also skip the same-region budget: replaying a
-// non-idempotent mutation (e.g. PatchItem(Increment), TransactionalBatch)
-// up to 3 times against the same region could silently produce up to 4
-// applications of the operation. Reads can always be retried.
+// MarkEndpointUnavailable* is only invoked for connectionErrorNotSent;
+// a single mid-exchange failure is too weak a signal to declare the
+// whole region unavailable for concurrent and future traffic. As a
+// result, the ambiguous-read failover cannot rely on demote-to-tail —
+// it bumps retryContext.retryCount so the Do loop resolves a different
+// locationIndex on the next iteration (mirroring the 503/408 paths).
 //
-// After the single cross-region failover, any further connection error
-// stops retrying — the policy does not chain failovers across regions.
-//
-// When enableCrossRegionRetries is false the policy performs no retries
-// at all; the caller has explicitly opted into a "fail fast" mode.
-//
-// transportErr is the underlying transport error from req.Next(); it is
-// preserved alongside the caller's context error if the backoff is
-// interrupted by ctx cancellation, so callers can errors.Is the result
-// against both context.DeadlineExceeded and the transport error class.
+// transportErr is preserved alongside the caller's context error when
+// the backoff is interrupted by ctx cancellation, so callers can
+// errors.Is against both context.DeadlineExceeded and the transport
+// error class.
 func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, transportErr error, retryContext *retryContext) (bool, error) {
 	if retryContext.retryCount > maxRetryCount {
 		return false, nil
 	}
-	// If the caller disabled cross-region retries we treat that as a
-	// blanket opt-out from any retries performed by this policy,
-	// preserving the pre-existing "fail fast" semantics.
+	// Caller opted out of any retries.
 	if !p.gem.locationCache.enableCrossRegionRetries {
 		return false, nil
 	}
 
-	// While still on the original region, allow the same-region budget,
-	// but only for operations where retry is safe: reads always, writes
-	// only when we can prove the request never reached the service.
-	// Ambiguous-error writes skip this branch entirely so a
-	// non-idempotent mutation that may have been applied server-side is
-	// not silently replayed.
+	// Same-region budget: reads always, writes only when we can prove
+	// the request never reached the service (avoids replaying
+	// non-idempotent mutations).
 	if !retryContext.crossRegionFailoverDone &&
 		retryContext.sameRegionRetryCount < maxSameRegionConnectionRetries &&
 		(!isWriteOperation || kind == connectionErrorNotSent) {
@@ -248,66 +358,52 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return true, nil
 	}
 
-	// We've either exhausted the same-region budget or already failed
-	// over once. We only ever perform a single cross-region failover
-	// from this policy; further connection failures bubble up to the
-	// caller.
+	// At most one cross-region failover per request.
 	if retryContext.crossRegionFailoverDone {
 		return false, nil
 	}
 
-	// Decide whether a cross-region failover is even possible for this
-	// operation before mutating any shared state. Writes on a
-	// single-master account cannot meaningfully fail over (there is only
-	// one write region), so don't bother marking the endpoint
-	// unavailable — that would just degrade the cache for everyone
-	// without producing a different endpoint.
 	canCrossRegionWrite := !isWriteOperation || p.gem.CanUseMultipleWriteLocations()
 	if isWriteOperation && (kind != connectionErrorNotSent || !canCrossRegionWrite) {
-		// Ambiguous failure, or single-master write: we cannot safely
-		// retry on another region. Mark the endpoint unavailable for
-		// reads so concurrent requests learn about the outage, but do
-		// not mark it unavailable for writes on a single-master
-		// account (we have nowhere else to send writes).
-		//
-		// Intentionally no gem.Update(ctx, true) here: as of PR #26815
-		// MarkEndpointUnavailable* invalidates the GEM cache once per
-		// newly-unavailable endpoint, so the *next* caller's
-		// Update(false) will issue a refresh on its own. We skip the
-		// synchronous refresh because connection errors do not
-		// indicate that account topology has changed — they just say
-		// "this region is unhealthy right now." Forcing a refresh on
-		// every give-up under a regional outage would amplify the
-		// outage by piling GetDatabaseAccount calls on the metadata
-		// endpoint precisely when we want to be most responsive.
-		if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
-			return false, err
-		}
-		if canCrossRegionWrite {
-			if err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL); err != nil {
+		// Ambiguous write OR single-master write: cannot safely retry.
+		// Only mark when NotSent (single-master write); ambiguous is
+		// too weak a signal. No forced gem.Update: invalidate() inside
+		// MarkEndpointUnavailable* arms the next non-force Update.
+		if kind == connectionErrorNotSent {
+			if _, err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
 				return false, err
+			}
+			if canCrossRegionWrite {
+				if _, err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL); err != nil {
+					return false, err
+				}
 			}
 		}
 		return false, nil
 	}
 
-	if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
-		return false, err
-	}
-	if isWriteOperation {
-		if err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL); err != nil {
+	// Cross-region failover: reads (any kind) or NotSent multi-master
+	// writes (ambiguous writes are gated above).
+	if kind == connectionErrorNotSent {
+		// Mark + demote-to-tail; resolveFromHead pins the next resolve
+		// to index 0, which now points at the failover region.
+		if _, err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
 			return false, err
 		}
-	}
-	// Force a refresh so the new unavailability is reflected in
-	// readEndpoints / writeEndpoints for both this request and any
-	// concurrent requests racing through resolveServiceEndpoint.
-	if err := p.gem.Update(req.Raw().Context(), true); err != nil {
-		return false, err
+		if isWriteOperation {
+			if _, err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL); err != nil {
+				return false, err
+			}
+		}
+		retryContext.resolveFromHead = true
+	} else {
+		// Ambiguous read: don't mark. Route to the next region by
+		// bumping retryCount (Do loop uses it as locationIndex when
+		// resolveFromHead is not set). Mirrors the 503/408 paths.
+		retryContext.retryCount += 1
 	}
 
 	retryContext.sameRegionRetryCount = 0
-	retryContext.retryCount += 1
 	retryContext.crossRegionFailoverDone = true
 	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
 		return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
@@ -319,34 +415,85 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 	if (retryContext.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries {
 		return false, nil
 	}
+	var wasAlreadyUnavailable bool
+	var err error
 	if isWriteOperation {
-		err := p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
+		wasAlreadyUnavailable, err = p.gem.MarkEndpointUnavailableForWrite(*req.Raw().URL)
 		if err != nil {
 			return false, err
 		}
 	} else {
-		err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
+		wasAlreadyUnavailable, err = p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL)
 		if err != nil {
 			return false, err
 		}
 	}
 
-	err := p.gem.Update(req.Raw().Context(), true)
-	if err != nil {
-		return false, err
+	// Kick off a forced async refresh on:
+	//   - a NEW unavailability event for this endpoint (first
+	//     transition; we always want fresh topology after a brand-new
+	//     mark), OR
+	//   - a repeat mark when no refresh is currently in flight AND
+	//     the last completed forced refresh is older than
+	//     forcedRefreshMinInterval. This single condition covers
+	//     both recovery from a successful-but-stale prior refresh
+	//     (single-master writes can't reroute locally) and recovery
+	//     from a failed prior refresh (metadata endpoint was
+	//     transiently unhealthy) without storming GetDatabaseAccount
+	//     when the metadata endpoint is sustained-unhealthy.
+	//
+	// MarkEndpointUnavailable* already calls invalidate() on the first
+	// transition, so the next non-force Update will refresh anyway --
+	// but for single-master writes the local route list cannot reroute
+	// around the bad write endpoint, so without these additional
+	// forced refreshes the client could be stuck on the failed write
+	// region for refreshTimeInterval (default 5 min).
+	//
+	// Fire-and-forget: we do NOT block the retry on its outcome.
+	// MarkEndpointUnavailable* has already invalidated the GEM cache
+	// and demoted the bad endpoint locally, so the next
+	// ResolveServiceEndpoint will pick the failover region (in
+	// multi-region scenarios) whether or not the metadata refresh
+	// succeeds. Blocking here would surface a transient metadata
+	// failure to the caller and skip the very cross-region retry this
+	// function is supposed to perform.
+	state := p.asyncRefreshState.Load()
+	shouldForceRefresh := !wasAlreadyUnavailable ||
+		(state != asyncRefreshPending && p.staleForcedRefresh())
+	if shouldForceRefresh {
+		p.asyncForceRefreshGEM()
 	}
 
-	time.Sleep(defaultBackoff * time.Second)
+	// Force the next resolve to use locationIndex 0. Without this, the
+	// outer Do() loop bumps retryCount += 1 after we return true, which
+	// for a two-region account turns readEndpoints[1 % 2] back into the
+	// just-marked unhealthy endpoint that MarkEndpointUnavailable*
+	// demoted to the tail. resolveFromHead is a one-shot consumed by
+	// the outer loop's ResolveServiceEndpoint call.
+	retryContext.resolveFromHead = true
+
+	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+		return false, sleepErr
+	}
 	return true, nil
 }
 
 func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(isWriteOperation bool, retryContext *retryContext) bool {
-	if p.gem.CanUseMultipleWriteLocations() {
-		endpoints := p.gem.locationCache.locationInfo.availReadLocations
+	// Snapshot multi-write capability AND the relevant slice length
+	// under a single RLock. The async refresh paths (in this file and
+	// in globalEndpointManagerPolicy) can call locationCache.update
+	// concurrently, which rewrites enableMultipleWriteLocations and
+	// availRead/WriteLocations under mapMutex.Lock(). Sampling these
+	// across two separate lock acquisitions can yield a mixed snapshot
+	// (multi-write decision from before a refresh + slice length from
+	// after it, or vice versa), causing the wrong branch to be taken.
+	multiWrite, readN, writeN := p.gem.locationCache.sessionRetrySnapshot()
+	if multiWrite {
+		n := readN
 		if isWriteOperation {
-			endpoints = p.gem.locationCache.locationInfo.availWriteLocations
+			n = writeN
 		}
-		if retryContext.sessionRetryCount >= len(endpoints) {
+		if retryContext.sessionRetryCount >= n {
 			return false
 		}
 	} else {
@@ -370,6 +517,39 @@ func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bo
 	return true
 }
 
+// attemptRetryOnServerError applies the 5xx retry policy for transient server
+// errors (500 Internal Server Error, 502 Bad Gateway, 504 Gateway Timeout).
+// Consistent with the other Cosmos SDKs (.NET, Python, Java), only read
+// operations are retried. The retry budget is one in-region retry followed by
+// one cross-region retry, after which the error is surfaced to the caller. The
+// cross-region retry is only attempted when cross-region retries are enabled, a
+// preferred location is available to fail over to, and the location cache has
+// resolved more than one read endpoint -- otherwise the "cross-region" retry
+// would just hit the same endpoint as the in-region retry. The returned
+// inRegion flag tells the caller whether to keep targeting the current endpoint
+// (true) or to advance to the next preferred region (false).
+func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, retryContext *retryContext) (shouldRetry bool, inRegion bool) {
+	if isWriteOperation {
+		return false, false
+	}
+	if retryContext.serverErrorRetryCount >= maxServerErrorRetryCount {
+		return false, false
+	}
+	if retryContext.serverErrorRetryCount == 0 {
+		retryContext.serverErrorRetryCount += 1
+		return true, true
+	}
+	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+		return false, false
+	}
+	if p.gem.locationCache.readEndpointCount() <= 1 {
+		return false, false
+	}
+	retryContext.serverErrorRetryCount += 1
+	retryContext.preferredLocationIndex += 1
+	return true, false
+}
+
 // attemptRetryOnRequestTimeout handles an HTTP 408 from the service. A
 // 408 is ambiguous from a write-safety standpoint (the request may or
 // may not have been processed before the server timed out), so only
@@ -387,14 +567,6 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 		return false, nil
 	}
 
-	if err := p.gem.MarkEndpointUnavailableForRead(*req.Raw().URL); err != nil {
-		return false, err
-	}
-	// Force a refresh so the unavailability is reflected in
-	// readEndpoints for this and concurrent requests.
-	if err := p.gem.Update(req.Raw().Context(), true); err != nil {
-		return false, err
-	}
 	retryContext.requestTimeoutRetryDone = true
 	// Preserve the caller's cancellation cause if their context fires
 	// during the backoff so errors.Is(returned, context.DeadlineExceeded)

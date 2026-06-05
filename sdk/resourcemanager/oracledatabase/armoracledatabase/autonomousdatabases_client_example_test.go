@@ -32,13 +32,13 @@ func ExampleAutonomousDatabasesClient_BeginAction() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientActionResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -229,13 +229,13 @@ func ExampleAutonomousDatabasesClient_BeginChangeDisasterRecoveryConfiguration_p
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientChangeDisasterRecoveryConfigurationResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -424,13 +424,13 @@ func ExampleAutonomousDatabasesClient_BeginChangeDisasterRecoveryConfiguration_a
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientChangeDisasterRecoveryConfigurationResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),
@@ -619,13 +619,13 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_createAutonomousDataba
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -830,13 +830,13 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCre
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),
@@ -917,13 +917,13 @@ func ExampleAutonomousDatabasesClient_BeginCreateOrUpdate_autonomousDatabasesCre
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientCreateOrUpdateResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),
@@ -984,7 +984,7 @@ func ExampleAutonomousDatabasesClient_BeginDelete_deleteAutonomousDatabaseGenera
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1005,7 +1005,7 @@ func ExampleAutonomousDatabasesClient_BeginDelete_autonomousDatabasesDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1030,13 +1030,13 @@ func ExampleAutonomousDatabasesClient_BeginFailover_performFailoverActionOnAuton
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientFailoverResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -1224,13 +1224,13 @@ func ExampleAutonomousDatabasesClient_BeginFailover_autonomousDatabasesFailover(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientFailoverResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),
@@ -1303,7 +1303,7 @@ func ExampleAutonomousDatabasesClient_GenerateWallet_generateWalletActionOnAuton
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientGenerateWalletResponse{
-	// 	AutonomousDatabaseWalletFile: &armoracledatabase.AutonomousDatabaseWalletFile{
+	// 	AutonomousDatabaseWalletFile: armoracledatabase.AutonomousDatabaseWalletFile{
 	// 		WalletFiles: to.Ptr("testEncodedFiles"),
 	// 	},
 	// }
@@ -1332,7 +1332,7 @@ func ExampleAutonomousDatabasesClient_GenerateWallet_autonomousDatabasesGenerate
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientGenerateWalletResponse{
-	// 	AutonomousDatabaseWalletFile: &armoracledatabase.AutonomousDatabaseWalletFile{
+	// 	AutonomousDatabaseWalletFile: armoracledatabase.AutonomousDatabaseWalletFile{
 	// 		WalletFiles: to.Ptr("testEncodedFiles"),
 	// 	},
 	// }
@@ -1357,7 +1357,7 @@ func ExampleAutonomousDatabasesClient_Get_getAutonomousDatabaseGeneratedByMaximu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientGetResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -1545,7 +1545,7 @@ func ExampleAutonomousDatabasesClient_Get_autonomousDatabasesGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientGetResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),
@@ -2274,13 +2274,13 @@ func ExampleAutonomousDatabasesClient_BeginRestore_performRestoreActionOnAutonom
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientRestoreResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -2468,13 +2468,13 @@ func ExampleAutonomousDatabasesClient_BeginRestore_autonomousDatabasesRestore() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientRestoreResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),
@@ -2542,13 +2542,13 @@ func ExampleAutonomousDatabasesClient_BeginShrink() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientShrinkResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -2738,13 +2738,13 @@ func ExampleAutonomousDatabasesClient_BeginSwitchover_performSwitchoverActionOnA
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientSwitchoverResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -2932,13 +2932,13 @@ func ExampleAutonomousDatabasesClient_BeginSwitchover_autonomousDatabasesSwitcho
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientSwitchoverResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),
@@ -3052,13 +3052,13 @@ func ExampleAutonomousDatabasesClient_BeginUpdate_patchAutonomousDatabaseGenerat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientUpdateResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		Properties: &armoracledatabase.AutonomousDatabaseProperties{
 	// 			DataBaseType: to.Ptr(armoracledatabase.DataBaseTypeRegular),
 	// 			DisplayName: to.Ptr("example_autonomous_databasedb1"),
@@ -3244,13 +3244,13 @@ func ExampleAutonomousDatabasesClient_BeginUpdate_autonomousDatabasesUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabasesClientUpdateResponse{
-	// 	AutonomousDatabase: &armoracledatabase.AutonomousDatabase{
+	// 	AutonomousDatabase: armoracledatabase.AutonomousDatabase{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/autonomousDatabases/databasedb1"),
 	// 		Type: to.Ptr("Oracle.Database/autonomousDatabases"),
 	// 		Location: to.Ptr("eastus"),

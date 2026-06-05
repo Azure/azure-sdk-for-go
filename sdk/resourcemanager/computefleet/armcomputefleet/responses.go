@@ -4,11 +4,6 @@
 
 package armcomputefleet
 
-// FleetsClientCancelResponse contains the response from method FleetsClient.BeginCancel.
-type FleetsClientCancelResponse struct {
-	// placeholder for future response values
-}
-
 // FleetsClientCreateOrUpdateResponse contains the response from method FleetsClient.BeginCreateOrUpdate.
 type FleetsClientCreateOrUpdateResponse struct {
 	// An Compute Fleet resource

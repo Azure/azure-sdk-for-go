@@ -6,10 +6,9 @@ package armcommerce_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commerce/armcommerce"
+	"log"
 )
 
 // Generated from example definition: 2015-06-01-preview/GetRateCard.json
@@ -31,7 +30,7 @@ func ExampleRateCardClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcommerce.RateCardClientGetResponse{
-	// 	ResourceRateCardInfo: &armcommerce.ResourceRateCardInfo{
+	// 	ResourceRateCardInfo: armcommerce.ResourceRateCardInfo{
 	// 		Meters: []*armcommerce.MeterInfo{
 	// 			{
 	// 				EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-01T00:00:00Z"); return t}()),

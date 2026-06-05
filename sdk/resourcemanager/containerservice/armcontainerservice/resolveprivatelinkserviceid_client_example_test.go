@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-02-preview/ResolvePrivateLinkServiceId.json
+// Generated from example definition: 2026-04-01/ResolvePrivateLinkServiceId.json
 func ExampleResolvePrivateLinkServiceIDClient_POST() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

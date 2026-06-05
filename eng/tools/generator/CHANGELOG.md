@@ -1,5 +1,17 @@
 # Release History
 
+## 0.4.14 (2026-06-03)
+
+### Bugs Fixed
+
+- Bumped `eng/tools/internal` dependency to pick up the fix for the `addConst` panic on untyped consts whose value is a selector expression (e.g. `const EventUpload = exported.EventUpload`).
+
+## 0.4.13 (2026-05-28)
+
+### Bugs Fixed
+
+- Updated `apiVersionConstRegex` to match the current `versionYYYYMMDD[Preview] string = "..."` constant pattern emitted by the generator, so preview packages are no longer misclassified as stable.
+
 ## 0.4.12 (2026-05-18)
 
 ### Features Added

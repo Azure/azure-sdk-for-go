@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicySetDefinition.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicySetDefinition.json
 func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefiniti
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionsClientCreateOrUpdateResponse{
-	// 	SetDefinition: &armpolicy.SetDefinition{
+	// 	SetDefinition: armpolicy.SetDefinition{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
@@ -124,7 +124,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefiniti
 	// }
 }
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicySetDefinitionWithGroups.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicySetDefinitionWithGroups.json
 func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefinitionWithGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefiniti
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionsClientCreateOrUpdateResponse{
-	// 	SetDefinition: &armpolicy.SetDefinition{
+	// 	SetDefinition: armpolicy.SetDefinition{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
@@ -263,7 +263,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicySetDefiniti
 	// }
 }
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicySetDefinitionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicySetDefinitionAtManagementGroup.json
 func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateAPolicySetDefinitionAtManagementGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 							},
 						},
 					},
-					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
+					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
 					PolicyDefinitionReferenceID: to.Ptr("Limit_Skus"),
 				},
 				{
@@ -303,7 +303,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 							Value: "-LC",
 						},
 					},
-					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 					PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 				},
 			},
@@ -316,10 +316,10 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse{
-	// 	SetDefinition: &armpolicy.SetDefinition{
+	// 	SetDefinition: armpolicy.SetDefinition{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
 	// 		Properties: &armpolicy.SetDefinitionProperties{
 	// 			Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 	// 			DisplayName: to.Ptr("Cost Management"),
@@ -350,7 +350,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 	// 							Value: "-LC",
 	// 						},
 	// 					},
-	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 	// 					PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 	// 				},
 	// 			},
@@ -359,7 +359,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 	// }
 }
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
 func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateAPolicySetDefinitionWithGroupsAtManagementGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -430,10 +430,10 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse{
-	// 	SetDefinition: &armpolicy.SetDefinition{
+	// 	SetDefinition: armpolicy.SetDefinition{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
 	// 		Properties: &armpolicy.SetDefinitionProperties{
 	// 			Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 	// 			DisplayName: to.Ptr("Cost Management"),
@@ -496,7 +496,7 @@ func ExampleSetDefinitionsClient_CreateOrUpdateAtManagementGroup_createOrUpdateA
 	// }
 }
 
-// Generated from example definition: 2025-03-01/deletePolicySetDefinition.json
+// Generated from example definition: 2026-01-01-preview/deletePolicySetDefinition.json
 func ExampleSetDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -518,7 +518,7 @@ func ExampleSetDefinitionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/deletePolicySetDefinitionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/deletePolicySetDefinitionAtManagementGroup.json
 func ExampleSetDefinitionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleSetDefinitionsClient_DeleteAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getPolicySetDefinition.json
+// Generated from example definition: 2026-01-01-preview/getPolicySetDefinition.json
 func ExampleSetDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -559,7 +559,7 @@ func ExampleSetDefinitionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionsClientGetResponse{
-	// 	SetDefinition: &armpolicy.SetDefinition{
+	// 	SetDefinition: armpolicy.SetDefinition{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
@@ -625,7 +625,7 @@ func ExampleSetDefinitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getPolicySetDefinitionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/getPolicySetDefinitionAtManagementGroup.json
 func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,10 +644,10 @@ func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionsClientGetAtManagementGroupResponse{
-	// 	SetDefinition: &armpolicy.SetDefinition{
+	// 	SetDefinition: armpolicy.SetDefinition{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
 	// 		Properties: &armpolicy.SetDefinitionProperties{
 	// 			Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 	// 			DisplayName: to.Ptr("Cost Management"),
@@ -678,7 +678,7 @@ func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 	// 							Value: "-LC",
 	// 						},
 	// 					},
-	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 	// 					PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 	// 				},
 	// 			},
@@ -692,7 +692,7 @@ func ExampleSetDefinitionsClient_GetAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getBuiltInPolicySetDefinition.json
+// Generated from example definition: 2026-01-01-preview/getBuiltInPolicySetDefinition.json
 func ExampleSetDefinitionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +711,7 @@ func ExampleSetDefinitionsClient_GetBuiltIn() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionsClientGetBuiltInResponse{
-	// 	SetDefinition: &armpolicy.SetDefinition{
+	// 	SetDefinition: armpolicy.SetDefinition{
 	// 		Name: to.Ptr("1f3afdf9-d0c9-4c3d-847f-89da613e70a8"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
 	// 		ID: to.Ptr("/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8"),
@@ -786,7 +786,7 @@ func ExampleSetDefinitionsClient_GetBuiltIn() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listPolicySetDefinitions.json
+// Generated from example definition: 2026-01-01-preview/listPolicySetDefinitions.json
 func ExampleSetDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -934,7 +934,7 @@ func ExampleSetDefinitionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/listBuiltInPolicySetDefinitions.json
+// Generated from example definition: 2026-01-01-preview/listBuiltInPolicySetDefinitions.json
 func ExampleSetDefinitionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1037,7 +1037,7 @@ func ExampleSetDefinitionsClient_NewListBuiltInPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/listPolicySetDefinitionsByManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/listPolicySetDefinitionsByManagementGroup.json
 func ExampleSetDefinitionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1135,7 +1135,7 @@ func ExampleSetDefinitionsClient_NewListByManagementGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("CostManagement"),
 		// 				Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
-		// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
+		// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
 		// 				Properties: &armpolicy.SetDefinitionProperties{
 		// 					Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 		// 					DisplayName: to.Ptr("Cost Management"),
@@ -1166,7 +1166,7 @@ func ExampleSetDefinitionsClient_NewListByManagementGroupPager() {
 		// 									Value: "-LC",
 		// 								},
 		// 							},
-		// 							PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+		// 							PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 		// 							PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 		// 						},
 		// 					},

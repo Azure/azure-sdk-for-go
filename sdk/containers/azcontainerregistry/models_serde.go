@@ -9,7 +9,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type ACRAccessToken.
@@ -157,10 +159,10 @@ func (c *ContainerRepositoryProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ChangeableAttributes", &c.ChangeableAttributes)
 			delete(rawMsg, key)
 		case "createdTime":
-			err = unpopulateDateTimeRFC3339(val, "CreatedOn", &c.CreatedOn)
+			err = unpopulateTime[datetime.RFC3339](val, "CreatedOn", &c.CreatedOn)
 			delete(rawMsg, key)
 		case "lastUpdateTime":
-			err = unpopulateDateTimeRFC3339(val, "LastUpdatedOn", &c.LastUpdatedOn)
+			err = unpopulateTime[datetime.RFC3339](val, "LastUpdatedOn", &c.LastUpdatedOn)
 			delete(rawMsg, key)
 		case "manifestCount":
 			err = unpopulate(val, "ManifestCount", &c.ManifestCount)
@@ -201,13 +203,13 @@ func (m *ManifestAttributes) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ConfigMediaType", &m.ConfigMediaType)
 			delete(rawMsg, key)
 		case "createdTime":
-			err = unpopulateDateTimeRFC3339(val, "CreatedOn", &m.CreatedOn)
+			err = unpopulateTime[datetime.RFC3339](val, "CreatedOn", &m.CreatedOn)
 			delete(rawMsg, key)
 		case "digest":
 			err = unpopulate(val, "Digest", &m.Digest)
 			delete(rawMsg, key)
 		case "lastUpdateTime":
-			err = unpopulateDateTimeRFC3339(val, "LastUpdatedOn", &m.LastUpdatedOn)
+			err = unpopulateTime[datetime.RFC3339](val, "LastUpdatedOn", &m.LastUpdatedOn)
 			delete(rawMsg, key)
 		case "mediaType":
 			err = unpopulate(val, "MediaType", &m.MediaType)
@@ -375,13 +377,13 @@ func (t *TagAttributes) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ChangeableAttributes", &t.ChangeableAttributes)
 			delete(rawMsg, key)
 		case "createdTime":
-			err = unpopulateDateTimeRFC3339(val, "CreatedOn", &t.CreatedOn)
+			err = unpopulateTime[datetime.RFC3339](val, "CreatedOn", &t.CreatedOn)
 			delete(rawMsg, key)
 		case "digest":
 			err = unpopulate(val, "Digest", &t.Digest)
 			delete(rawMsg, key)
 		case "lastUpdateTime":
-			err = unpopulateDateTimeRFC3339(val, "LastUpdatedOn", &t.LastUpdatedOn)
+			err = unpopulateTime[datetime.RFC3339](val, "LastUpdatedOn", &t.LastUpdatedOn)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &t.Name)
@@ -472,6 +474,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -480,4 +493,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

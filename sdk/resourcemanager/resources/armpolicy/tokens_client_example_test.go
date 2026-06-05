@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/acquirePolicyToken.json
+// Generated from example definition: 2026-01-01-preview/acquirePolicyToken.json
 func ExampleTokensClient_Acquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,11 +36,26 @@ func ExampleTokensClient_Acquire() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.TokensClientAcquireResponse{
-	// 	TokenResponse: &armpolicy.TokenResponse{
-	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
+	// 	TokenResponse: armpolicy.TokenResponse{
 	// 		Result: to.Ptr(armpolicy.PolicyTokenResultSucceeded),
+	// 		RequestDetails: &armpolicy.TokenEvaluatedRequestDetails{
+	// 			URI: to.Ptr("https://management.azure.com/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM?api-version=2024-01-01"),
+	// 			ResourceID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM"),
+	// 			APIVersion: to.Ptr("2024-01-01"),
+	// 			AuthorizationAction: to.Ptr("Microsoft.Compute/virtualMachines/delete"),
+	// 			HTTPMethod: to.Ptr("DELETE"),
+	// 			ContentHash: to.Ptr("0000000000000000000000000000000000000000000000000000000000000000"),
+	// 		},
 	// 		Results: []*armpolicy.ExternalEvaluationEndpointInvocationResult{
 	// 			{
+	// 				PolicyInfo: &armpolicy.LogInfo{
+	// 					PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/3f2def86"),
+	// 					PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/5ed64d02"),
+	// 					PolicyDefinitionEffect: to.Ptr("denyAction"),
+	// 				},
+	// 				Result: to.Ptr(armpolicy.ExternalEndpointResultSucceeded),
+	// 				EndpointKind: to.Ptr("CoinFlip"),
+	// 				Message: to.Ptr("Coin flip successful (success probability: '1')."),
 	// 				Claims: map[string]any{
 	// 					"date": "2025-01-01T19:30:00.00Z",
 	// 					"double": 0.99,
@@ -70,22 +85,33 @@ func ExampleTokensClient_Acquire() {
 	// 						},
 	// 					},
 	// 				},
-	// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
-	// 				Message: to.Ptr("Coin flip successful (success probability: '1')."),
-	// 				PolicyInfo: &armpolicy.LogInfo{
-	// 					PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/3f2def86"),
-	// 					PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/5ed64d02"),
+	// 				PolicyAction: to.Ptr(armpolicy.PolicyActionAllow),
+	// 				PolicyEvaluationDetails: map[string]any{
+	// 					"evaluatedExpressions": []any{
+	// 						map[string]any{
+	// 							"result": "False",
+	// 							"expressionKind": "Value",
+	// 							"expression": "[claims().isValid]",
+	// 							"expressionValue": false,
+	// 							"targetValue": "True",
+	// 							"operator": "Equals",
+	// 						},
+	// 					},
 	// 				},
-	// 				Result: to.Ptr(armpolicy.ExternalEndpointResultSucceeded),
+	// 				AdditionalInfo: map[string]any{
+	// 					"successProbability": 1,
+	// 				},
+	// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
 	// 			},
 	// 		},
-	// 		Token: to.Ptr("PoP 7zmVse52pjMKPQd5m2uiNjz5UV2pZ.LPGtRiTeuCDBomEVbzj9kIaL9odEmlNv4D9VzyrQLTAyv4HHnUR7oNytWnL.AQrZ5bSGAQZzr8eySqvugzrD-ceRVL311SL3Nn6f-4c9kgPgU_u1ArXQKW25QCxMlsAuWmaE"),
+	// 		Token: to.Ptr("PT 1.ey7zmVse52pjMKPQd5m2uiNjz5UV2pZ.LPGtRiTeuCDBomEVbzj9kIaL9odEmlNv4D9VzyrQLTAyv4HHnUR7oNytWnL.AQrZ5bSGAQZzr8eySqvugzrD-ceRVL311SL3Nn6f-4c9kgPgU_u1ArXQKW25QCxMlsAuWmaE"),
 	// 		TokenID: to.Ptr("0da8a969-c660-4de0-a6a4-b2034d4325e4"),
+	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-01/acquirePolicyTokenAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/acquirePolicyTokenAtManagementGroup.json
 func ExampleTokensClient_AcquireAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,11 +135,26 @@ func ExampleTokensClient_AcquireAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.TokensClientAcquireAtManagementGroupResponse{
-	// 	TokenResponse: &armpolicy.TokenResponse{
-	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
+	// 	TokenResponse: armpolicy.TokenResponse{
 	// 		Result: to.Ptr(armpolicy.PolicyTokenResultSucceeded),
+	// 		RequestDetails: &armpolicy.TokenEvaluatedRequestDetails{
+	// 			URI: to.Ptr("https://management.azure.com/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000000000?api-version=2022-04-01"),
+	// 			ResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/roleAssignments/00000000-0000-0000-0000-000000000000"),
+	// 			APIVersion: to.Ptr("2022-04-01"),
+	// 			AuthorizationAction: to.Ptr("Microsoft.Authorization/roleAssignments/delete"),
+	// 			HTTPMethod: to.Ptr("DELETE"),
+	// 			ContentHash: to.Ptr("0000000000000000000000000000000000000000000000000000000000000000"),
+	// 		},
 	// 		Results: []*armpolicy.ExternalEvaluationEndpointInvocationResult{
 	// 			{
+	// 				PolicyInfo: &armpolicy.LogInfo{
+	// 					PolicyAssignmentID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/3f2def86"),
+	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/5ed64d02"),
+	// 					PolicyDefinitionEffect: to.Ptr("denyAction"),
+	// 				},
+	// 				Result: to.Ptr(armpolicy.ExternalEndpointResultSucceeded),
+	// 				EndpointKind: to.Ptr("CoinFlip"),
+	// 				Message: to.Ptr("Coin flip successful (success probability: '1')."),
 	// 				Claims: map[string]any{
 	// 					"date": "2025-01-01T19:30:00.00Z",
 	// 					"double": 0.99,
@@ -143,17 +184,28 @@ func ExampleTokensClient_AcquireAtManagementGroup() {
 	// 						},
 	// 					},
 	// 				},
-	// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
-	// 				Message: to.Ptr("Coin flip successful (success probability: '1')."),
-	// 				PolicyInfo: &armpolicy.LogInfo{
-	// 					PolicyAssignmentID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyAssignments/3f2def86"),
-	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/5ed64d02"),
+	// 				PolicyAction: to.Ptr(armpolicy.PolicyActionAllow),
+	// 				PolicyEvaluationDetails: map[string]any{
+	// 					"evaluatedExpressions": []any{
+	// 						map[string]any{
+	// 							"result": "False",
+	// 							"expressionKind": "Value",
+	// 							"expression": "[claims().isValid]",
+	// 							"expressionValue": false,
+	// 							"targetValue": "True",
+	// 							"operator": "Equals",
+	// 						},
+	// 					},
 	// 				},
-	// 				Result: to.Ptr(armpolicy.ExternalEndpointResultSucceeded),
+	// 				AdditionalInfo: map[string]any{
+	// 					"successProbability": 1,
+	// 				},
+	// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
 	// 			},
 	// 		},
-	// 		Token: to.Ptr("PoP 7zmVse52pjMKPQd5m2uiNjz5UV2pZ.LPGtRiTeuCDBomEVbzj9kIaL9odEmlNv4D9VzyrQLTAyv4HHnUR7oNytWnL.AQrZ5bSGAQZzr8eySqvugzrD-ceRVL311SL3Nn6f-4c9kgPgU_u1ArXQKW25QCxMlsAuWmaE"),
+	// 		Token: to.Ptr("PT 1.ey7zmVse52pjMKPQd5m2uiNjz5UV2pZ.LPGtRiTeuCDBomEVbzj9kIaL9odEmlNv4D9VzyrQLTAyv4HHnUR7oNytWnL.AQrZ5bSGAQZzr8eySqvugzrD-ceRVL311SL3Nn6f-4c9kgPgU_u1ArXQKW25QCxMlsAuWmaE"),
 	// 		TokenID: to.Ptr("0da8a969-c660-4de0-a6a4-b2034d4325e4"),
+	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
 	// 	},
 	// }
 }

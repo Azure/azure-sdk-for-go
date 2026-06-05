@@ -30,7 +30,7 @@ func ExampleSummariesClient_Get_summariesGetMaximumSetGenGeneratedByMaximumSetRu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.SummariesClientGetResponse{
-	// 	SummaryResource: &armiotfirmwaredefense.SummaryResource{
+	// 	SummaryResource: armiotfirmwaredefense.SummaryResource{
 	// 		Properties: &armiotfirmwaredefense.FirmwareSummary{
 	// 			SummaryType: to.Ptr(armiotfirmwaredefense.SummaryTypeFirmware),
 	// 			ProvisioningState: to.Ptr(armiotfirmwaredefense.ProvisioningStateSucceeded),
@@ -69,7 +69,7 @@ func ExampleSummariesClient_Get_summariesGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.SummariesClientGetResponse{
-	// 	SummaryResource: &armiotfirmwaredefense.SummaryResource{
+	// 	SummaryResource: armiotfirmwaredefense.SummaryResource{
 	// 	},
 	// }
 }

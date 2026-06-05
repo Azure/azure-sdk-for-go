@@ -78,36 +78,36 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "EndpointsClient":
-		initServer(s, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
+		initServer(&s.trMu, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
 		resp, err = s.trEndpointsServer.Do(req)
 	case "GenerateAwsTemplateClient":
-		initServer(s, &s.trGenerateAwsTemplateServer, func() *GenerateAwsTemplateServerTransport {
+		initServer(&s.trMu, &s.trGenerateAwsTemplateServer, func() *GenerateAwsTemplateServerTransport {
 			return NewGenerateAwsTemplateServerTransport(&s.srv.GenerateAwsTemplateServer)
 		})
 		resp, err = s.trGenerateAwsTemplateServer.Do(req)
 	case "InventoryClient":
-		initServer(s, &s.trInventoryServer, func() *InventoryServerTransport { return NewInventoryServerTransport(&s.srv.InventoryServer) })
+		initServer(&s.trMu, &s.trInventoryServer, func() *InventoryServerTransport { return NewInventoryServerTransport(&s.srv.InventoryServer) })
 		resp, err = s.trInventoryServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PublicCloudConnectorsClient":
-		initServer(s, &s.trPublicCloudConnectorsServer, func() *PublicCloudConnectorsServerTransport {
+		initServer(&s.trMu, &s.trPublicCloudConnectorsServer, func() *PublicCloudConnectorsServerTransport {
 			return NewPublicCloudConnectorsServerTransport(&s.srv.PublicCloudConnectorsServer)
 		})
 		resp, err = s.trPublicCloudConnectorsServer.Do(req)
 	case "ServiceConfigurationsClient":
-		initServer(s, &s.trServiceConfigurationsServer, func() *ServiceConfigurationsServerTransport {
+		initServer(&s.trMu, &s.trServiceConfigurationsServer, func() *ServiceConfigurationsServerTransport {
 			return NewServiceConfigurationsServerTransport(&s.srv.ServiceConfigurationsServer)
 		})
 		resp, err = s.trServiceConfigurationsServer.Do(req)
 	case "SolutionConfigurationsClient":
-		initServer(s, &s.trSolutionConfigurationsServer, func() *SolutionConfigurationsServerTransport {
+		initServer(&s.trMu, &s.trSolutionConfigurationsServer, func() *SolutionConfigurationsServerTransport {
 			return NewSolutionConfigurationsServerTransport(&s.srv.SolutionConfigurationsServer)
 		})
 		resp, err = s.trSolutionConfigurationsServer.Do(req)
 	case "SolutionTypesClient":
-		initServer(s, &s.trSolutionTypesServer, func() *SolutionTypesServerTransport {
+		initServer(&s.trMu, &s.trSolutionTypesServer, func() *SolutionTypesServerTransport {
 			return NewSolutionTypesServerTransport(&s.srv.SolutionTypesServer)
 		})
 		resp, err = s.trSolutionTypesServer.Do(req)
@@ -120,12 +120,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

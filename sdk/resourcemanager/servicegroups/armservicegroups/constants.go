@@ -4,6 +4,10 @@
 
 package armservicegroups
 
+const (
+	version20240201Preview string = "2024-02-01-preview"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

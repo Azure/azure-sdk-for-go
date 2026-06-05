@@ -11,14 +11,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // SignalDefinitionsClient contains the methods for the SignalDefinitions group.
 // Don't use this type directly, use NewSignalDefinitionsClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type SignalDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,40 +42,56 @@ func NewSignalDefinitionsClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
-// CreateOrUpdate - Create a SignalDefinition
+// BeginCreateOrUpdate - Create a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - signalDefinitionName - Name of the signal definition. Must be unique within a health model.
 //   - resource - Resource create parameters.
-//   - options - SignalDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the SignalDefinitionsClient.CreateOrUpdate
+//   - options - SignalDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SignalDefinitionsClient.BeginCreateOrUpdate
 //     method.
-func (client *SignalDefinitionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, resource SignalDefinition, options *SignalDefinitionsClientCreateOrUpdateOptions) (SignalDefinitionsClientCreateOrUpdateResponse, error) {
+func (client *SignalDefinitionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, resource SignalDefinition, options *SignalDefinitionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SignalDefinitionsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, healthModelName, signalDefinitionName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SignalDefinitionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SignalDefinitionsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create a SignalDefinition
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SignalDefinitionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, resource SignalDefinition, options *SignalDefinitionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SignalDefinitionsClient.CreateOrUpdate"
+	const operationName = "SignalDefinitionsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, healthModelName, signalDefinitionName, resource, options)
 	if err != nil {
-		return SignalDefinitionsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SignalDefinitionsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return SignalDefinitionsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SignalDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, resource SignalDefinition, _ *SignalDefinitionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *SignalDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, resource SignalDefinition, _ *SignalDefinitionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,8 +114,8 @@ func (client *SignalDefinitionsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -106,47 +124,55 @@ func (client *SignalDefinitionsClient) createOrUpdateCreateRequest(ctx context.C
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SignalDefinitionsClient) createOrUpdateHandleResponse(resp *http.Response) (SignalDefinitionsClientCreateOrUpdateResponse, error) {
-	result := SignalDefinitionsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SignalDefinition); err != nil {
-		return SignalDefinitionsClientCreateOrUpdateResponse{}, err
+// BeginDelete - Delete a SignalDefinition
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - signalDefinitionName - Name of the signal definition. Must be unique within a health model.
+//   - options - SignalDefinitionsClientBeginDeleteOptions contains the optional parameters for the SignalDefinitionsClient.BeginDelete
+//     method.
+func (client *SignalDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, options *SignalDefinitionsClientBeginDeleteOptions) (*runtime.Poller[SignalDefinitionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, healthModelName, signalDefinitionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SignalDefinitionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SignalDefinitionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
 	}
-	return result, nil
 }
 
 // Delete - Delete a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01-preview
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - healthModelName - Name of health model resource
-//   - signalDefinitionName - Name of the signal definition. Must be unique within a health model.
-//   - options - SignalDefinitionsClientDeleteOptions contains the optional parameters for the SignalDefinitionsClient.Delete
-//     method.
-func (client *SignalDefinitionsClient) Delete(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, options *SignalDefinitionsClientDeleteOptions) (SignalDefinitionsClientDeleteResponse, error) {
+func (client *SignalDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, options *SignalDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SignalDefinitionsClient.Delete"
+	const operationName = "SignalDefinitionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, healthModelName, signalDefinitionName, options)
 	if err != nil {
-		return SignalDefinitionsClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SignalDefinitionsClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return SignalDefinitionsClientDeleteResponse{}, err
+		return nil, err
 	}
-	return SignalDefinitionsClientDeleteResponse{}, nil
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SignalDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, _ *SignalDefinitionsClientDeleteOptions) (*policy.Request, error) {
+func (client *SignalDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, signalDefinitionName string, _ *SignalDefinitionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions/{signalDefinitionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -169,15 +195,13 @@ func (client *SignalDefinitionsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a SignalDefinition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - signalDefinitionName - Name of the signal definition. Must be unique within a health model.
@@ -228,8 +252,8 @@ func (client *SignalDefinitionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -244,8 +268,6 @@ func (client *SignalDefinitionsClient) getHandleResponse(resp *http.Response) (S
 }
 
 // NewListByHealthModelPager - List SignalDefinition resources by HealthModel
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - options - SignalDefinitionsClientListByHealthModelOptions contains the optional parameters for the SignalDefinitionsClient.NewListByHealthModelPager
@@ -293,11 +315,11 @@ func (client *SignalDefinitionsClient) listByHealthModelCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", version20260101Preview)
 	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", options.Timestamp.Format(time.RFC3339Nano))
+		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

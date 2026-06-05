@@ -40,13 +40,13 @@ func ExampleFqdnListLocalRulestackClient_BeginCreateOrUpdate_fqdnListLocalRulest
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListLocalRulestackClientCreateOrUpdateResponse{
-	// 	FqdnListLocalRulestackResource: &armpanngfw.FqdnListLocalRulestackResource{
+	// 	FqdnListLocalRulestackResource: armpanngfw.FqdnListLocalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -96,13 +96,13 @@ func ExampleFqdnListLocalRulestackClient_BeginCreateOrUpdate_fqdnListLocalRulest
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListLocalRulestackClientCreateOrUpdateResponse{
-	// 	FqdnListLocalRulestackResource: &armpanngfw.FqdnListLocalRulestackResource{
+	// 	FqdnListLocalRulestackResource: armpanngfw.FqdnListLocalRulestackResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/praval/fqdnlists/armid1"),
 	// 		Properties: &armpanngfw.FqdnObject{
 	// 			FqdnList: []*string{
@@ -131,7 +131,7 @@ func ExampleFqdnListLocalRulestackClient_BeginDelete_fqdnListLocalRulestackDelet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -157,7 +157,7 @@ func ExampleFqdnListLocalRulestackClient_BeginDelete_fqdnListLocalRulestackDelet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -185,7 +185,7 @@ func ExampleFqdnListLocalRulestackClient_Get_fqdnListLocalRulestackGetMaximumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListLocalRulestackClientGetResponse{
-	// 	FqdnListLocalRulestackResource: &armpanngfw.FqdnListLocalRulestackResource{
+	// 	FqdnListLocalRulestackResource: armpanngfw.FqdnListLocalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -230,7 +230,7 @@ func ExampleFqdnListLocalRulestackClient_Get_fqdnListLocalRulestackGetMinimumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListLocalRulestackClientGetResponse{
-	// 	FqdnListLocalRulestackResource: &armpanngfw.FqdnListLocalRulestackResource{
+	// 	FqdnListLocalRulestackResource: armpanngfw.FqdnListLocalRulestackResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/praval/fqdnlists/armid1"),
 	// 		Properties: &armpanngfw.FqdnObject{
 	// 			FqdnList: []*string{

@@ -19,6 +19,8 @@ import (
 
 // StorageTasksReportClient contains the methods for the StorageTasksReport group.
 // Don't use this type directly, use NewStorageTasksReportClient() instead.
+//
+// Generated from API version 2023-01-01
 type StorageTasksReportClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewStorageTasksReportClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewListPager - Fetch the storage tasks run report summary for each assignment.
-//
-// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
 //     3 and 18 characters in length and use numbers and lower-case letters only.
@@ -97,8 +97,8 @@ func (client *StorageTasksReportClient) listCreateRequest(ctx context.Context, r
 	if options != nil && options.Maxpagesize != nil {
 		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
 	}
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

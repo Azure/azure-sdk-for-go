@@ -18,6 +18,8 @@ import (
 
 // StorageTasksClient contains the methods for the StorageTasks group.
 // Don't use this type directly, use NewStorageTasksClient() instead.
+//
+// Generated from API version 2023-01-01
 type StorageTasksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +46,6 @@ func NewStorageTasksClient(subscriptionID string, credential azcore.TokenCredent
 // If a storage task is already created and a subsequent create or update request is issued with the exact same set of properties,
 // the request will succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
 //     3 and 18 characters in length and use numbers and lower-case letters only.
@@ -75,8 +75,6 @@ func (client *StorageTasksClient) BeginCreate(ctx context.Context, resourceGroup
 // If a storage task is already created and a subsequent create or update request is issued with the exact same set of properties,
 // the request will succeed.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 func (client *StorageTasksClient) create(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTask, options *StorageTasksClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTasksClient.BeginCreate"
@@ -118,8 +116,8 @@ func (client *StorageTasksClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,8 +128,6 @@ func (client *StorageTasksClient) createCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Delete the storage task resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
 //     3 and 18 characters in length and use numbers and lower-case letters only.
@@ -157,8 +153,6 @@ func (client *StorageTasksClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Delete the storage task resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 func (client *StorageTasksClient) deleteOperation(ctx context.Context, resourceGroupName string, storageTaskName string, options *StorageTasksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTasksClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *StorageTasksClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the storage task properties
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
 //     3 and 18 characters in length and use numbers and lower-case letters only.
@@ -255,8 +247,8 @@ func (client *StorageTasksClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -271,8 +263,6 @@ func (client *StorageTasksClient) getHandleResponse(resp *http.Response) (Storag
 }
 
 // NewListByResourceGroupPager - Lists all the storage tasks available under the given resource group.
-//
-// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - StorageTasksClientListByResourceGroupOptions contains the optional parameters for the StorageTasksClient.NewListByResourceGroupPager
 //     method.
@@ -315,8 +305,8 @@ func (client *StorageTasksClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -331,8 +321,6 @@ func (client *StorageTasksClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListBySubscriptionPager - Lists all the storage tasks available under the subscription.
-//
-// Generated from API version 2023-01-01
 //   - options - StorageTasksClientListBySubscriptionOptions contains the optional parameters for the StorageTasksClient.NewListBySubscriptionPager
 //     method.
 func (client *StorageTasksClient) NewListBySubscriptionPager(options *StorageTasksClientListBySubscriptionOptions) *runtime.Pager[StorageTasksClientListBySubscriptionResponse] {
@@ -370,8 +358,8 @@ func (client *StorageTasksClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -387,8 +375,6 @@ func (client *StorageTasksClient) listBySubscriptionHandleResponse(resp *http.Re
 
 // PreviewActions - Runs the input conditions against input object metadata properties and designates matched objects in response.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 //   - parameters - The parameters to preview action condition.
 //   - options - StorageTasksClientPreviewActionsOptions contains the optional parameters for the StorageTasksClient.PreviewActions
 //     method.
@@ -430,8 +416,8 @@ func (client *StorageTasksClient) previewActionsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -451,8 +437,6 @@ func (client *StorageTasksClient) previewActionsHandleResponse(resp *http.Respon
 
 // BeginUpdate - Update storage task properties
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
 //     3 and 18 characters in length and use numbers and lower-case letters only.
@@ -478,8 +462,6 @@ func (client *StorageTasksClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Update storage task properties
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-01-01
 func (client *StorageTasksClient) update(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTaskUpdateParameters, options *StorageTasksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTasksClient.BeginUpdate"
@@ -521,8 +503,8 @@ func (client *StorageTasksClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

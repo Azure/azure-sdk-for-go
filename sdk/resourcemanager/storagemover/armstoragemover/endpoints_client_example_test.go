@@ -39,7 +39,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateAzureMultiClou
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
@@ -82,7 +82,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateAzureStorageBl
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -125,7 +125,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateAzureStorageNf
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
@@ -168,7 +168,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateAzureStorageSm
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -211,7 +211,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateNfsMount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -260,7 +260,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateS3WithHmac() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -313,7 +313,7 @@ func ExampleEndpointsClient_CreateOrUpdate_endpointsCreateOrUpdateSmbMount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientCreateOrUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -351,7 +351,7 @@ func ExampleEndpointsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -379,7 +379,7 @@ func ExampleEndpointsClient_Get_endpointsGetAzureMultiCloudConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientGetResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
@@ -414,7 +414,7 @@ func ExampleEndpointsClient_Get_endpointsGetAzureStorageBlobContainer() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientGetResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -449,7 +449,7 @@ func ExampleEndpointsClient_Get_endpointsGetAzureStorageNfsFileShare() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientGetResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
@@ -484,7 +484,7 @@ func ExampleEndpointsClient_Get_endpointsGetAzureStorageSmbFileShare() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientGetResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -519,7 +519,7 @@ func ExampleEndpointsClient_Get_endpointsGetNfsMount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientGetResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -555,7 +555,7 @@ func ExampleEndpointsClient_Get_endpointsGetS3WithHmac() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientGetResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -595,7 +595,7 @@ func ExampleEndpointsClient_Get_endpointsGetSmbMount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientGetResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -709,7 +709,7 @@ func ExampleEndpointsClient_Update_endpointsUpdateAzureMultiCloudConnector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
@@ -748,7 +748,7 @@ func ExampleEndpointsClient_Update_endpointsUpdateAzureStorageBlobContainer() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -787,7 +787,7 @@ func ExampleEndpointsClient_Update_endpointsUpdateAzureStorageNfsFileShare() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
@@ -826,7 +826,7 @@ func ExampleEndpointsClient_Update_endpointsUpdateAzureStorageSmbFileShare() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -865,7 +865,7 @@ func ExampleEndpointsClient_Update_endpointsUpdateNfsMount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -905,7 +905,7 @@ func ExampleEndpointsClient_Update_endpointsUpdateS3WithHmac() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),
@@ -953,7 +953,7 @@ func ExampleEndpointsClient_Update_endpointsUpdateSmbMount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.EndpointsClientUpdateResponse{
-	// 	Endpoint: &armstoragemover.Endpoint{
+	// 	Endpoint: armstoragemover.Endpoint{
 	// 		Name: to.Ptr("examples-endpointName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/endpoints"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/examples-endpointName"),

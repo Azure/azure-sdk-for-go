@@ -3,5 +3,3 @@ https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appserv
 https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v4
 https://github.com/Azure/sdk-release-request/issues
 %7Brun_url%7D
-# Remove after the first release of the ekm subpackage is published to pkg.go.dev.
-https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/ekm

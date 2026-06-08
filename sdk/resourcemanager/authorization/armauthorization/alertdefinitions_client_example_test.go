@@ -30,7 +30,7 @@ func ExampleAlertDefinitionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.AlertDefinitionsClientGetResponse{
-	// 	AlertDefinition: &armauthorization.AlertDefinition{
+	// 	AlertDefinition: armauthorization.AlertDefinition{
 	// 		Name: to.Ptr("TooManyPermanentOwnersAssignedToResource"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleManagementAlertDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/afa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/roleManagementAlertDefinitions/TooManyPermanentOwnersAssignedToResource"),

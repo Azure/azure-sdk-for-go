@@ -7,18 +7,19 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // DatabaseAccountRegionClient contains the methods for the DatabaseAccountRegion group.
 // Don't use this type directly, use NewDatabaseAccountRegionClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type DatabaseAccountRegionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,12 +42,10 @@ func NewDatabaseAccountRegionClient(subscriptionID string, credential azcore.Tok
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and region.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - region - Cosmos DB region, with spaces between words and each word capitalized.
-//   - Filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
 //     name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator
 //     is eq.
 //   - options - DatabaseAccountRegionClientListMetricsOptions contains the optional parameters for the DatabaseAccountRegionClient.NewListMetricsPager
@@ -99,8 +98,8 @@ func (client *DatabaseAccountRegionClient) listMetricsCreateRequest(ctx context.
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

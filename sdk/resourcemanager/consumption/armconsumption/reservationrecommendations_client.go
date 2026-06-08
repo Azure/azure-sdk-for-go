@@ -17,6 +17,8 @@ import (
 
 // ReservationRecommendationsClient contains the methods for the ReservationRecommendations group.
 // Don't use this type directly, use NewReservationRecommendationsClient() instead.
+//
+// Generated from API version 2024-08-01
 type ReservationRecommendationsClient struct {
 	internal *arm.Client
 }
@@ -36,8 +38,6 @@ func NewReservationRecommendationsClient(credential azcore.TokenCredential, opti
 }
 
 // NewListPager - List of recommendations for purchasing reserved instances.
-//
-// Generated from API version 2024-08-01
 //   - resourceScope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - ReservationRecommendationsClientListOptions contains the optional parameters for the ReservationRecommendationsClient.NewListPager
 //     method.
@@ -79,8 +79,8 @@ func (client *ReservationRecommendationsClient) listCreateRequest(ctx context.Co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

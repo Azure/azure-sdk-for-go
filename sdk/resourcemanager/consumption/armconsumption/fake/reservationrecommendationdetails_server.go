@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ReservationRecommendationDetailsServer is a fake server for instances of the armconsumption.ReservationRecommendationDetailsClient type.
@@ -49,9 +50,7 @@ func (r *ReservationRecommendationDetailsServerTransport) Do(req *http.Request) 
 }
 
 func (r *ReservationRecommendationDetailsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -67,10 +66,7 @@ func (r *ReservationRecommendationDetailsServerTransport) dispatchToMethodFake(r
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -96,61 +92,19 @@ func (r *ReservationRecommendationDetailsServerTransport) dispatchGet(req *http.
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := parseWithCast(qp.Get("scope"), func(v string) (armconsumption.Scope, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armconsumption.Scope(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	regionParam, err := url.QueryUnescape(qp.Get("region"))
-	if err != nil {
-		return nil, err
-	}
-	termParam, err := parseWithCast(qp.Get("term"), func(v string) (armconsumption.Term, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armconsumption.Term(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	lookBackPeriodParam, err := parseWithCast(qp.Get("lookBackPeriod"), func(v string) (armconsumption.LookBackPeriod, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armconsumption.LookBackPeriod(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	productParam, err := url.QueryUnescape(qp.Get("product"))
-	if err != nil {
-		return nil, err
-	}
-	filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-	if err != nil {
-		return nil, err
-	}
-	filterParam := getOptional(filterUnescaped)
+	filterParam := getOptional(qp.Get("$filter"))
 	var options *armconsumption.ReservationRecommendationDetailsClientGetOptions
 	if filterParam != nil {
 		options = &armconsumption.ReservationRecommendationDetailsClientGetOptions{
 			Filter: filterParam,
 		}
 	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceScopeParam, scopeParam, regionParam, termParam, lookBackPeriodParam, productParam, options)
+	respr, errRespr := r.srv.Get(req.Context(), resourceScopeParam, armconsumption.Scope(qp.Get("scope")), qp.Get("region"), armconsumption.Term(qp.Get("term")), armconsumption.LookBackPeriod(qp.Get("lookBackPeriod")), qp.Get("product"), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ReservationRecommendationDetailsModel, req)

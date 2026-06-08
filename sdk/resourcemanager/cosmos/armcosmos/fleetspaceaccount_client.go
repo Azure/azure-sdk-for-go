@@ -18,6 +18,8 @@ import (
 
 // FleetspaceAccountClient contains the methods for the FleetspaceAccount group.
 // Don't use this type directly, use NewFleetspaceAccountClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type FleetspaceAccountClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFleetspaceAccountClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreate - Creates an Azure Cosmos DB fleetspace account under a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -69,8 +69,6 @@ func (client *FleetspaceAccountClient) BeginCreate(ctx context.Context, resource
 
 // Create - Creates an Azure Cosmos DB fleetspace account under a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *FleetspaceAccountClient) create(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, body FleetspaceAccountResource, options *FleetspaceAccountClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetspaceAccountClient.BeginCreate"
@@ -120,8 +118,8 @@ func (client *FleetspaceAccountClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -132,8 +130,6 @@ func (client *FleetspaceAccountClient) createCreateRequest(ctx context.Context, 
 
 // BeginDelete - Removes an existing Azure Cosmos DB fleetspace account from a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -160,8 +156,6 @@ func (client *FleetspaceAccountClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Removes an existing Azure Cosmos DB fleetspace account from a fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *FleetspaceAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, fleetspaceAccountName string, options *FleetspaceAccountClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetspaceAccountClient.BeginDelete"
@@ -211,15 +205,13 @@ func (client *FleetspaceAccountClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves the properties of an existing Azure Cosmos DB fleetspace account under a fleetspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -275,8 +267,8 @@ func (client *FleetspaceAccountClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -291,8 +283,6 @@ func (client *FleetspaceAccountClient) getHandleResponse(resp *http.Response) (F
 }
 
 // NewListPager - Lists all the fleetspaces accounts under a fleetspace.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
@@ -345,8 +335,8 @@ func (client *FleetspaceAccountClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

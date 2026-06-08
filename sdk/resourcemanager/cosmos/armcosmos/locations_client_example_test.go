@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBLocationGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBLocationGet.json
 func ExampleLocationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleLocationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.LocationsClientGetResponse{
-	// 	LocationGetResult: &armcosmos.LocationGetResult{
+	// 	LocationGetResult: armcosmos.LocationGetResult{
 	// 		Name: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/locations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus"),
@@ -49,7 +49,7 @@ func ExampleLocationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBLocationList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBLocationList.json
 func ExampleLocationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

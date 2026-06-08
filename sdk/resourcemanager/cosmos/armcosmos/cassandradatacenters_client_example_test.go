@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterCreate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraDataCenterCreate.json
 func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraDataCentersClientCreateUpdateResponse{
-	// 	DataCenterResource: &armcosmos.DataCenterResource{
+	// 	DataCenterResource: armcosmos.DataCenterResource{
 	// 		Name: to.Ptr("dc1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters/dataCenters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
@@ -67,7 +67,7 @@ func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraDataCenterDelete.json
 func ExampleCassandraDataCentersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,11 +84,11 @@ func ExampleCassandraDataCentersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraDataCenterGet.json
 func ExampleCassandraDataCentersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleCassandraDataCentersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraDataCentersClientGetResponse{
-	// 	DataCenterResource: &armcosmos.DataCenterResource{
+	// 	DataCenterResource: armcosmos.DataCenterResource{
 	// 		Name: to.Ptr("dc1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters/dataCenters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),
@@ -133,7 +133,7 @@ func ExampleCassandraDataCentersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraDataCenterList.json
 func ExampleCassandraDataCentersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleCassandraDataCentersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraDataCenterPatch.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraDataCenterPatch.json
 func ExampleCassandraDataCentersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,13 +211,13 @@ func ExampleCassandraDataCentersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraDataCentersClientUpdateResponse{
-	// 	DataCenterResource: &armcosmos.DataCenterResource{
+	// 	DataCenterResource: armcosmos.DataCenterResource{
 	// 		Name: to.Ptr("dc1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters/dataCenters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod/dataCenters/dc1"),

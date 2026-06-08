@@ -18,6 +18,8 @@ import (
 
 // MongoMIResourcesClient contains the methods for the MongoMIResources group.
 // Don't use this type directly, use NewMongoMIResourcesClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type MongoMIResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewMongoMIResourcesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateUpdateMongoMIRoleAssignment - Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -68,8 +68,6 @@ func (client *MongoMIResourcesClient) BeginCreateUpdateMongoMIRoleAssignment(ctx
 
 // CreateUpdateMongoMIRoleAssignment - Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateMongoMIRoleAssignmentParameters MongoMIRoleAssignmentResource, options *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoMIResourcesClient.BeginCreateUpdateMongoMIRoleAssignment"
@@ -115,8 +113,8 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignmentCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateMongoMIRoleAssignmentParameters); err != nil {
@@ -127,8 +125,6 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignmentCreateReq
 
 // BeginCreateUpdateMongoMIRoleDefinition - Creates or updates an Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -154,8 +150,6 @@ func (client *MongoMIResourcesClient) BeginCreateUpdateMongoMIRoleDefinition(ctx
 
 // CreateUpdateMongoMIRoleDefinition - Creates or updates an Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateMongoMIRoleDefinitionParameters MongoMIRoleDefinitionResource, options *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoMIResourcesClient.BeginCreateUpdateMongoMIRoleDefinition"
@@ -201,8 +195,8 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinitionCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateMongoMIRoleDefinitionParameters); err != nil {
@@ -213,8 +207,6 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinitionCreateReq
 
 // BeginDeleteMongoMIRoleAssignment - Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -239,8 +231,6 @@ func (client *MongoMIResourcesClient) BeginDeleteMongoMIRoleAssignment(ctx conte
 
 // DeleteMongoMIRoleAssignment - Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *MongoMIResourcesClientBeginDeleteMongoMIRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoMIResourcesClient.BeginDeleteMongoMIRoleAssignment"
@@ -286,15 +276,13 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignmentCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDeleteMongoMIRoleDefinition - Deletes an existing Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -319,8 +307,6 @@ func (client *MongoMIResourcesClient) BeginDeleteMongoMIRoleDefinition(ctx conte
 
 // DeleteMongoMIRoleDefinition - Deletes an existing Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *MongoMIResourcesClientBeginDeleteMongoMIRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoMIResourcesClient.BeginDeleteMongoMIRoleDefinition"
@@ -366,16 +352,14 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinitionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GetMongoMIRoleAssignment - Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Assignment with the given
 // Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -427,8 +411,8 @@ func (client *MongoMIResourcesClient) getMongoMIRoleAssignmentCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -445,8 +429,6 @@ func (client *MongoMIResourcesClient) getMongoMIRoleAssignmentHandleResponse(res
 // GetMongoMIRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB MongoMI Role Definition with the given
 // Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -498,8 +480,8 @@ func (client *MongoMIResourcesClient) getMongoMIRoleDefinitionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -514,8 +496,6 @@ func (client *MongoMIResourcesClient) getMongoMIRoleDefinitionHandleResponse(res
 }
 
 // NewListMongoMIRoleAssignmentsPager - Retrieves the list of all Azure Cosmos DB MongoMI Role Assignments.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - MongoMIResourcesClientListMongoMIRoleAssignmentsOptions contains the optional parameters for the MongoMIResourcesClient.NewListMongoMIRoleAssignmentsPager
@@ -563,8 +543,8 @@ func (client *MongoMIResourcesClient) listMongoMIRoleAssignmentsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -579,8 +559,6 @@ func (client *MongoMIResourcesClient) listMongoMIRoleAssignmentsHandleResponse(r
 }
 
 // NewListMongoMIRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB MongoMI Role Definitions.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - MongoMIResourcesClientListMongoMIRoleDefinitionsOptions contains the optional parameters for the MongoMIResourcesClient.NewListMongoMIRoleDefinitionsPager
@@ -628,8 +606,8 @@ func (client *MongoMIResourcesClient) listMongoMIRoleDefinitionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

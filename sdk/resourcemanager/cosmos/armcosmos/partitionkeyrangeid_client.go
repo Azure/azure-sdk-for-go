@@ -7,18 +7,19 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PartitionKeyRangeIDClient contains the methods for the PartitionKeyRangeID group.
 // Don't use this type directly, use NewPartitionKeyRangeIDClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type PartitionKeyRangeIDClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,14 +42,12 @@ func NewPartitionKeyRangeIDClient(subscriptionID string, credential azcore.Token
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given partition key range id.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
 //   - collectionRid - Cosmos DB collection rid.
 //   - partitionKeyRangeID - Partition Key Range Id for which to get data.
-//   - Filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
 //     name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator
 //     is eq.
 //   - options - PartitionKeyRangeIDClientListMetricsOptions contains the optional parameters for the PartitionKeyRangeIDClient.NewListMetricsPager
@@ -109,8 +108,8 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

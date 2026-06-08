@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultValidatedSolutionRecipesClientVersion string = "2026-04-30"
-
 // ValidatedSolutionRecipesClient contains the methods for the ValidatedSolutionRecipes group.
 // Don't use this type directly, use NewValidatedSolutionRecipesClient() instead.
 //
@@ -91,7 +89,7 @@ func (client *ValidatedSolutionRecipesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultValidatedSolutionRecipesClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -149,7 +147,7 @@ func (client *ValidatedSolutionRecipesClient) listBySubscriptionLocationResource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultValidatedSolutionRecipesClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

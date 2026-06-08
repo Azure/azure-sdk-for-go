@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // DatabaseAccountRegionServer is a fake server for instances of the armcosmos.DatabaseAccountRegionClient type.
@@ -53,9 +54,7 @@ func (d *DatabaseAccountRegionServerTransport) Do(req *http.Request) (*http.Resp
 }
 
 func (d *DatabaseAccountRegionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (d *DatabaseAccountRegionServerTransport) dispatchToMethodFake(req *http.Re
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -110,11 +106,7 @@ func (d *DatabaseAccountRegionServerTransport) dispatchNewListMetricsPager(req *
 		if err != nil {
 			return nil, err
 		}
-		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		resp := d.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, regionParam, filterParam, nil)
+		resp := d.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, regionParam, qp.Get("$filter"), nil)
 		newListMetricsPager = &resp
 		d.newListMetricsPager.add(req, newListMetricsPager)
 		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.DatabaseAccountRegionClientListMetricsResponse, createLink func() string) {
@@ -125,7 +117,7 @@ func (d *DatabaseAccountRegionServerTransport) dispatchNewListMetricsPager(req *
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListMetricsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -30,7 +30,7 @@ func ExampleWorkflowVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WorkflowVersionsClientGetResponse{
-	// 	WorkflowVersion: &armappservice.WorkflowVersion{
+	// 	WorkflowVersion: armappservice.WorkflowVersion{
 	// 		Name: to.Ptr("test-workflow"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflows/versions"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/sites/test-name/workflows/test-workflow/versions/08586676824806722526"),

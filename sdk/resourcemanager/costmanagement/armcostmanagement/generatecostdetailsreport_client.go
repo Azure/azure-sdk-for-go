@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGenerateCostDetailsReportClientVersion string = "2025-03-01"
-
 // GenerateCostDetailsReportClient contains the methods for the GenerateCostDetailsReport group.
 // Don't use this type directly, use NewGenerateCostDetailsReportClient() instead.
 //
@@ -115,7 +113,7 @@ func (client *GenerateCostDetailsReportClient) createOperationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGenerateCostDetailsReportClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -190,7 +188,7 @@ func (client *GenerateCostDetailsReportClient) getOperationResultsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGenerateCostDetailsReportClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

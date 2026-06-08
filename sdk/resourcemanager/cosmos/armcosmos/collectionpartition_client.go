@@ -7,18 +7,19 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // CollectionPartitionClient contains the methods for the CollectionPartition group.
 // Don't use this type directly, use NewCollectionPartitionClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type CollectionPartitionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,13 +42,11 @@ func NewCollectionPartitionClient(subscriptionID string, credential azcore.Token
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given collection, split by partition.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
 //   - collectionRid - Cosmos DB collection rid.
-//   - Filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
 //     name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator
 //     is eq.
 //   - options - CollectionPartitionClientListMetricsOptions contains the optional parameters for the CollectionPartitionClient.NewListMetricsPager
@@ -104,8 +103,8 @@ func (client *CollectionPartitionClient) listMetricsCreateRequest(ctx context.Co
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -120,8 +119,6 @@ func (client *CollectionPartitionClient) listMetricsHandleResponse(resp *http.Re
 }
 
 // NewListUsagesPager - Retrieves the usages (most recent storage data) for the given collection, split by partition.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -182,8 +179,8 @@ func (client *CollectionPartitionClient) listUsagesCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

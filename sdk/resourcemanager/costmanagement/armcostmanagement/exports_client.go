@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultExportsClientVersion string = "2025-03-01"
-
 // ExportsClient contains the methods for the Exports group.
 // Don't use this type directly, use NewExportsClient() instead.
 //
@@ -85,7 +83,7 @@ func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExportsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -146,7 +144,7 @@ func (client *ExportsClient) deleteCreateRequest(ctx context.Context, scope stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExportsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -193,7 +191,7 @@ func (client *ExportsClient) executeCreateRequest(ctx context.Context, scope str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExportsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Parameters != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -251,7 +249,7 @@ func (client *ExportsClient) getCreateRequest(ctx context.Context, scope string,
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", defaultExportsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,7 +308,7 @@ func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExportsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -374,7 +372,7 @@ func (client *ExportsClient) listCreateRequest(ctx context.Context, scope string
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", defaultExportsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

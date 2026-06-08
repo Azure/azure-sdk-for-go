@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDeploymentSettingsClientVersion string = "2026-04-30"
-
 // DeploymentSettingsClient contains the methods for the DeploymentSettings group.
 // Don't use this type directly, use NewDeploymentSettingsClient() instead.
 //
@@ -115,7 +113,7 @@ func (client *DeploymentSettingsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDeploymentSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -196,7 +194,7 @@ func (client *DeploymentSettingsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDeploymentSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -253,7 +251,7 @@ func (client *DeploymentSettingsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDeploymentSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -316,7 +314,7 @@ func (client *DeploymentSettingsClient) listByClustersCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDeploymentSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

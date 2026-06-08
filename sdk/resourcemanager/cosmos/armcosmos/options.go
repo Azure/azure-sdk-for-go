@@ -1795,6 +1795,105 @@ type ServiceClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SoftDeletedDatabaseAccountsClientBeginPurgeOptions contains the optional parameters for the SoftDeletedDatabaseAccountsClient.BeginPurge
+// method.
+type SoftDeletedDatabaseAccountsClientBeginPurgeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+
+	// The kind of soft delete action to perform.
+	SoftDeleteActionKind *SoftDeleteActionKind
+}
+
+// SoftDeletedDatabaseAccountsClientBeginRestoreOptions contains the optional parameters for the SoftDeletedDatabaseAccountsClient.BeginRestore
+// method.
+type SoftDeletedDatabaseAccountsClientBeginRestoreOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+
+	// The kind of soft delete action to perform.
+	SoftDeleteActionKind *SoftDeleteActionKind
+}
+
+// SoftDeletedDatabaseAccountsClientGetOptions contains the optional parameters for the SoftDeletedDatabaseAccountsClient.Get
+// method.
+type SoftDeletedDatabaseAccountsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SoftDeletedDatabaseAccountsClientListByLocationOptions contains the optional parameters for the SoftDeletedDatabaseAccountsClient.ListByLocation
+// method.
+type SoftDeletedDatabaseAccountsClientListByLocationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SoftDeletedDatabaseAccountsClientListByResourceGroupAndLocationOptions contains the optional parameters for the SoftDeletedDatabaseAccountsClient.ListByResourceGroupAndLocation
+// method.
+type SoftDeletedDatabaseAccountsClientListByResourceGroupAndLocationOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SoftDeletedSQLContainersClientBeginPurgeOptions contains the optional parameters for the SoftDeletedSQLContainersClient.BeginPurge
+// method.
+type SoftDeletedSQLContainersClientBeginPurgeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+
+	// The kind of soft delete action to perform.
+	SoftDeleteActionKind *SoftDeleteActionKind
+}
+
+// SoftDeletedSQLContainersClientBeginRestoreOptions contains the optional parameters for the SoftDeletedSQLContainersClient.BeginRestore
+// method.
+type SoftDeletedSQLContainersClientBeginRestoreOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+
+	// The kind of soft delete action to perform.
+	SoftDeleteActionKind *SoftDeleteActionKind
+}
+
+// SoftDeletedSQLContainersClientGetOptions contains the optional parameters for the SoftDeletedSQLContainersClient.Get method.
+type SoftDeletedSQLContainersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SoftDeletedSQLContainersClientListOptions contains the optional parameters for the SoftDeletedSQLContainersClient.List
+// method.
+type SoftDeletedSQLContainersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SoftDeletedSQLDatabasesClientBeginPurgeOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.BeginPurge
+// method.
+type SoftDeletedSQLDatabasesClientBeginPurgeOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+
+	// The kind of soft delete action to perform.
+	SoftDeleteActionKind *SoftDeleteActionKind
+}
+
+// SoftDeletedSQLDatabasesClientBeginRestoreOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.BeginRestore
+// method.
+type SoftDeletedSQLDatabasesClientBeginRestoreOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+
+	// The kind of soft delete action to perform.
+	SoftDeleteActionKind *SoftDeleteActionKind
+}
+
+// SoftDeletedSQLDatabasesClientGetOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.Get method.
+type SoftDeletedSQLDatabasesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SoftDeletedSQLDatabasesClientListOptions contains the optional parameters for the SoftDeletedSQLDatabasesClient.List method.
+type SoftDeletedSQLDatabasesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TableResourcesClientBeginCreateUpdateTableOptions contains the optional parameters for the TableResourcesClient.BeginCreateUpdateTable
 // method.
 type TableResourcesClientBeginCreateUpdateTableOptions struct {

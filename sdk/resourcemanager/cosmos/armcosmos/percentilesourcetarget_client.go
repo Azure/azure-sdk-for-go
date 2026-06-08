@@ -7,18 +7,19 @@ package armcosmos
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PercentileSourceTargetClient contains the methods for the PercentileSourceTarget group.
 // Don't use this type directly, use NewPercentileSourceTargetClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type PercentileSourceTargetClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,13 +43,11 @@ func NewPercentileSourceTargetClient(subscriptionID string, credential azcore.To
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given account, source and target region.
 // This url is only for PBS and Replication Latency data
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - sourceRegion - Source region from which data is written. Cosmos DB region, with spaces between words and each word capitalized.
 //   - targetRegion - Target region to which data is written. Cosmos DB region, with spaces between words and each word capitalized.
-//   - Filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
 //     name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator
 //     is eq.
 //   - options - PercentileSourceTargetClientListMetricsOptions contains the optional parameters for the PercentileSourceTargetClient.NewListMetricsPager
@@ -105,8 +104,8 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -4,6 +4,13 @@
 
 package armcompute
 
+const (
+	version20210701 string = "2021-07-01"
+	version20250102 string = "2025-01-02"
+	version20250303 string = "2025-03-03"
+	version20251101 string = "2025-11-01"
+)
+
 // AccessControlRulesMode - This property allows you to specify whether the access control rules are in Audit mode, in Enforce
 // mode or Disabled. Possible values are: 'Audit', 'Enforce' or 'Disabled'.
 type AccessControlRulesMode string

@@ -18,6 +18,8 @@ import (
 
 // FleetAnalyticsClient contains the methods for the FleetAnalytics group.
 // Don't use this type directly, use NewFleetAnalyticsClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type FleetAnalyticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFleetAnalyticsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Create - Creates an Azure Cosmos DB FleetAnalytics under a fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetAnalyticsName - Cosmos DB fleetAnalytics name.
@@ -94,8 +94,8 @@ func (client *FleetAnalyticsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -115,8 +115,6 @@ func (client *FleetAnalyticsClient) createHandleResponse(resp *http.Response) (F
 
 // BeginDelete - Deletes an existing Azure Cosmos DB FleetAnalytics.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetAnalyticsName - Cosmos DB fleetAnalytics name.
@@ -142,8 +140,6 @@ func (client *FleetAnalyticsClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Deletes an existing Azure Cosmos DB FleetAnalytics.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *FleetAnalyticsClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetAnalyticsName string, options *FleetAnalyticsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FleetAnalyticsClient.BeginDelete"
@@ -189,15 +185,13 @@ func (client *FleetAnalyticsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves the properties of an existing Azure Cosmos DB FleetAnalytics under a fleet
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - fleetAnalyticsName - Cosmos DB fleetAnalytics name.
@@ -248,8 +242,8 @@ func (client *FleetAnalyticsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,8 +258,6 @@ func (client *FleetAnalyticsClient) getHandleResponse(resp *http.Response) (Flee
 }
 
 // NewListPager - Lists all the FleetAnalytics under a fleet.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
 //   - options - FleetAnalyticsClientListOptions contains the optional parameters for the FleetAnalyticsClient.NewListPager method.
@@ -312,8 +304,8 @@ func (client *FleetAnalyticsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

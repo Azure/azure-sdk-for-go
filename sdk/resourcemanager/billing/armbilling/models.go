@@ -2985,7 +2985,7 @@ type Reseller struct {
 type Reservation struct {
 	Etag *int32
 
-	// The geo-location where the resource lives
+	// The location of the reservation.
 	Location *string
 
 	// The properties associated to this reservation
@@ -2994,7 +2994,7 @@ type Reservation struct {
 	// The sku information associated to this reservation
 	SKU *ReservationSKUProperty
 
-	// Resource tags.
+	// Tags for this reservation
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}

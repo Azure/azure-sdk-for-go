@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -54,9 +55,7 @@ func (u *UsageDetailsServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (u *UsageDetailsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -72,10 +71,7 @@ func (u *UsageDetailsServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -103,26 +99,10 @@ func (u *UsageDetailsServerTransport) dispatchNewListPager(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam := getOptional(skiptokenUnescaped)
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		expandParam := getOptional(qp.Get("$expand"))
+		filterParam := getOptional(qp.Get("$filter"))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -132,11 +112,7 @@ func (u *UsageDetailsServerTransport) dispatchNewListPager(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		metricUnescaped, err := url.QueryUnescape(qp.Get("metric"))
-		if err != nil {
-			return nil, err
-		}
-		metricParam := getOptional(armconsumption.Metrictype(metricUnescaped))
+		metricParam := getOptional(armconsumption.Metrictype(qp.Get("metric")))
 		var options *armconsumption.UsageDetailsClientListOptions
 		if expandParam != nil || filterParam != nil || skiptokenParam != nil || topParam != nil || metricParam != nil {
 			options = &armconsumption.UsageDetailsClientListOptions{
@@ -158,7 +134,7 @@ func (u *UsageDetailsServerTransport) dispatchNewListPager(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, resp.StatusCode) {
 		u.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", resp.StatusCode)}
 	}

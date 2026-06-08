@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultViewsClientVersion string = "2025-03-01"
-
 // ViewsClient contains the methods for the Views group.
 // Don't use this type directly, use NewViewsClient() instead.
 //
@@ -80,7 +78,7 @@ func (client *ViewsClient) createOrUpdateCreateRequest(ctx context.Context, view
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -145,7 +143,7 @@ func (client *ViewsClient) createOrUpdateByScopeCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -201,7 +199,7 @@ func (client *ViewsClient) deleteCreateRequest(ctx context.Context, viewName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -248,7 +246,7 @@ func (client *ViewsClient) deleteByScopeCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -291,7 +289,7 @@ func (client *ViewsClient) getCreateRequest(ctx context.Context, viewName string
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -349,7 +347,7 @@ func (client *ViewsClient) getByScopeCreateRequest(ctx context.Context, scope st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -397,7 +395,7 @@ func (client *ViewsClient) listCreateRequest(ctx context.Context, _ *ViewsClient
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -450,7 +448,7 @@ func (client *ViewsClient) listByScopeCreateRequest(ctx context.Context, scope s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultViewsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

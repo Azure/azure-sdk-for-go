@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableMongodbResourceList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBRestorableMongodbResourceList.json
 func ExampleRestorableMongodbResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

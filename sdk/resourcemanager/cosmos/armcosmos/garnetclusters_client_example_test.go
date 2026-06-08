@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGarnetClusterCreate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterCreate.json
 func ExampleGarnetClustersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -27,10 +27,12 @@ func ExampleGarnetClustersClient_BeginCreateUpdate() {
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.GarnetClusterResourceProperties{
-			SubnetID:          to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-			NodeCount:         to.Ptr[int32](4),
-			NodeSKU:           to.Ptr("Standard_DS13_v2"),
-			ReplicationFactor: to.Ptr[int32](2),
+			SubnetID:             to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+			ShardCount:           to.Ptr[int32](4),
+			NodeSKU:              to.Ptr("Standard_DS13_v2"),
+			ReplicationFactor:    to.Ptr[int32](2),
+			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+			Persistence:          to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -38,13 +40,13 @@ func ExampleGarnetClustersClient_BeginCreateUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GarnetClustersClientCreateUpdateResponse{
-	// 	GarnetClusterResource: &armcosmos.GarnetClusterResource{
+	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
 	// 		Name: to.Ptr("garnet-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),
@@ -54,12 +56,17 @@ func ExampleGarnetClustersClient_BeginCreateUpdate() {
 	// 		Properties: &armcosmos.GarnetClusterResourceProperties{
 	// 			ProvisioningState: to.Ptr(armcosmos.GarnetCacheProvisioningStateSucceeded),
 	// 			SubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+	// 			ShardCount: to.Ptr[int32](4),
+	// 			NodeSKU: to.Ptr("Standard_DS13_v2"),
+	// 			ReplicationFactor: to.Ptr[int32](2),
+	// 			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+	// 			Persistence: to.Ptr(true),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGarnetClusterDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterDelete.json
 func ExampleGarnetClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,11 +83,11 @@ func ExampleGarnetClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGarnetClusterGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterGet.json
 func ExampleGarnetClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +106,7 @@ func ExampleGarnetClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GarnetClustersClientGetResponse{
-	// 	GarnetClusterResource: &armcosmos.GarnetClusterResource{
+	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
 	// 		Name: to.Ptr("garnet-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),
@@ -109,6 +116,11 @@ func ExampleGarnetClustersClient_Get() {
 	// 		Properties: &armcosmos.GarnetClusterResourceProperties{
 	// 			ProvisioningState: to.Ptr(armcosmos.GarnetCacheProvisioningStateSucceeded),
 	// 			SubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+	// 			ShardCount: to.Ptr[int32](4),
+	// 			NodeSKU: to.Ptr("Standard_DS13_v2"),
+	// 			ReplicationFactor: to.Ptr[int32](2),
+	// 			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+	// 			Persistence: to.Ptr(true),
 	// 			EndPoints: []*armcosmos.GarnetClusterResourcePropertiesEndPointsItem{
 	// 				{
 	// 					IPAddress: to.Ptr("10.0.0.13"),
@@ -140,7 +152,7 @@ func ExampleGarnetClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGarnetClusterListByResourceGroup.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterListByResourceGroup.json
 func ExampleGarnetClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,6 +187,11 @@ func ExampleGarnetClustersClient_NewListByResourceGroupPager() {
 		// 				Properties: &armcosmos.GarnetClusterResourceProperties{
 		// 					ProvisioningState: to.Ptr(armcosmos.GarnetCacheProvisioningStateSucceeded),
 		// 					SubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+		// 					ShardCount: to.Ptr[int32](4),
+		// 					NodeSKU: to.Ptr("Standard_DS13_v2"),
+		// 					ReplicationFactor: to.Ptr[int32](2),
+		// 					AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+		// 					Persistence: to.Ptr(true),
 		// 				},
 		// 			},
 		// 		},
@@ -183,7 +200,7 @@ func ExampleGarnetClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGarnetClusterListBySubscription.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterListBySubscription.json
 func ExampleGarnetClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,6 +235,11 @@ func ExampleGarnetClustersClient_NewListBySubscriptionPager() {
 		// 				Properties: &armcosmos.GarnetClusterResourceProperties{
 		// 					ProvisioningState: to.Ptr(armcosmos.GarnetCacheProvisioningStateSucceeded),
 		// 					SubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+		// 					ShardCount: to.Ptr[int32](4),
+		// 					NodeSKU: to.Ptr("Standard_DS13_v2"),
+		// 					ReplicationFactor: to.Ptr[int32](2),
+		// 					AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+		// 					Persistence: to.Ptr(true),
 		// 				},
 		// 			},
 		// 		},
@@ -226,7 +248,7 @@ func ExampleGarnetClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGarnetClusterPatch.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGarnetClusterPatch.json
 func ExampleGarnetClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +261,9 @@ func ExampleGarnetClustersClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewGarnetClustersClient().BeginUpdate(ctx, "garnet-prod-rg", "garnet-prod", armcosmos.GarnetClusterResourcePatch{
 		Properties: &armcosmos.GarnetClusterResourcePatchProperties{
-			ClusterType: to.Ptr(armcosmos.ClusterTypeProduction),
+			ClusterType:          to.Ptr(armcosmos.ClusterTypeProduction),
+			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+			Persistence:          to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -247,13 +271,13 @@ func ExampleGarnetClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GarnetClustersClientUpdateResponse{
-	// 	GarnetClusterResource: &armcosmos.GarnetClusterResource{
+	// 	GarnetClusterResource: armcosmos.GarnetClusterResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/garnet-prod-rg/providers/Microsoft.DocumentDB/garnetClusters/garnet-prod"),
 	// 		Name: to.Ptr("garnet-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/garnetClusters"),
@@ -263,6 +287,11 @@ func ExampleGarnetClustersClient_BeginUpdate() {
 	// 		Properties: &armcosmos.GarnetClusterResourceProperties{
 	// 			ProvisioningState: to.Ptr(armcosmos.GarnetCacheProvisioningStateSucceeded),
 	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+	// 			ShardCount: to.Ptr[int32](4),
+	// 			NodeSKU: to.Ptr("Standard_DS13_v2"),
+	// 			ReplicationFactor: to.Ptr[int32](2),
+	// 			AuthenticationMethod: to.Ptr(armcosmos.GarnetAuthenticationTypeEntra),
+	// 			Persistence: to.Ptr(true),
 	// 		},
 	// 	},
 	// }

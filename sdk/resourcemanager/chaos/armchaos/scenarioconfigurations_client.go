@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
@@ -210,38 +209,57 @@ func (client *ScenarioConfigurationsClient) deleteCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// Execute - Execute the scenario execution with the given scenario configuration.
+// BeginExecute - Execute the scenario execution with the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
 //   - scenarioConfigurationName - Name of the scenario definition.
-//   - options - ScenarioConfigurationsClientExecuteOptions contains the optional parameters for the ScenarioConfigurationsClient.Execute
+//   - options - ScenarioConfigurationsClientBeginExecuteOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginExecute
 //     method.
-func (client *ScenarioConfigurationsClient) Execute(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientExecuteOptions) (ScenarioConfigurationsClientExecuteResponse, error) {
+func (client *ScenarioConfigurationsClient) BeginExecute(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginExecuteOptions) (*runtime.Poller[ScenarioConfigurationsClientExecuteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.execute(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientExecuteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScenarioConfigurationsClientExecuteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Execute - Execute the scenario execution with the given scenario configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScenarioConfigurationsClient) execute(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginExecuteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ScenarioConfigurationsClient.Execute"
+	const operationName = "ScenarioConfigurationsClient.BeginExecute"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
 	if err != nil {
-		return ScenarioConfigurationsClientExecuteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScenarioConfigurationsClientExecuteResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ScenarioConfigurationsClientExecuteResponse{}, err
+		return nil, err
 	}
-	resp, err := client.executeHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *ScenarioConfigurationsClient) executeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientExecuteOptions) (*policy.Request, error) {
+func (client *ScenarioConfigurationsClient) executeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/execute"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -273,23 +291,6 @@ func (client *ScenarioConfigurationsClient) executeCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// executeHandleResponse handles the Execute response.
-func (client *ScenarioConfigurationsClient) executeHandleResponse(resp *http.Response) (ScenarioConfigurationsClientExecuteResponse, error) {
-	result := ScenarioConfigurationsClientExecuteResponse{}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return ScenarioConfigurationsClientExecuteResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	return result, nil
-}
-
 // BeginFixResourcePermissions - Fixes resource permissions for the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -305,7 +306,8 @@ func (client *ScenarioConfigurationsClient) BeginFixResourcePermissions(ctx cont
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientFixResourcePermissionsResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -534,7 +536,8 @@ func (client *ScenarioConfigurationsClient) BeginValidate(ctx context.Context, r
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientValidateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {

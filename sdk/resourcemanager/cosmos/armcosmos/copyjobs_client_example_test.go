@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobCancel.json
+// Generated from example definition: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobCancel.json
 func ExampleCopyJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleCopyJobsClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientCancelResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -71,7 +71,7 @@ func ExampleCopyJobsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobComplete.json
+// Generated from example definition: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobComplete.json
 func ExampleCopyJobsClient_Complete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleCopyJobsClient_Complete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientCompleteResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/e35cc6eb-c8e3-447b-8de6-b83328cd0098/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -130,7 +130,7 @@ func ExampleCopyJobsClient_Complete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobCreate.json
+// Generated from example definition: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobCreate.json
 func ExampleCopyJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleCopyJobsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientCreateResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -218,7 +218,7 @@ func ExampleCopyJobsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobGet.json
+// Generated from example definition: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobGet.json
 func ExampleCopyJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleCopyJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientGetResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -277,7 +277,7 @@ func ExampleCopyJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobFeed.json
+// Generated from example definition: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobFeed.json
 func ExampleCopyJobsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleCopyJobsClient_NewListByDatabaseAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobPause.json
+// Generated from example definition: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobPause.json
 func ExampleCopyJobsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,7 +364,7 @@ func ExampleCopyJobsClient_Pause() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientPauseResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{
@@ -404,7 +404,7 @@ func ExampleCopyJobsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/copy-jobs/CosmosDBCopyJobResume.json
+// Generated from example definition: 2026-04-01-preview/copy-jobs/CosmosDBCopyJobResume.json
 func ExampleCopyJobsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExampleCopyJobsClient_Resume() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CopyJobsClientResumeResponse{
-	// 	CopyJobGetResults: &armcosmos.CopyJobGetResults{
+	// 	CopyJobGetResults: armcosmos.CopyJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/copyJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/copyJobs/j1"),
 	// 		Properties: &armcosmos.CopyJobProperties{

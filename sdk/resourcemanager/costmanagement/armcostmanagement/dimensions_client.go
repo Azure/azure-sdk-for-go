@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultDimensionsClientVersion string = "2025-03-01"
-
 // DimensionsClient contains the methods for the Dimensions group.
 // Don't use this type directly, use NewDimensionsClient() instead.
 //
@@ -99,7 +97,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", defaultDimensionsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,7 +170,7 @@ func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope str
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", defaultDimensionsClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

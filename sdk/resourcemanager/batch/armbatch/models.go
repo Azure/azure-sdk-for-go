@@ -1306,6 +1306,7 @@ type NetworkSecurityPerimeter struct {
 
 // NetworkSecurityPerimeterConfiguration - Network security perimeter (NSP) configuration resource
 type NetworkSecurityPerimeterConfiguration struct {
+	// Network security configuration properties.
 	Properties *NetworkSecurityPerimeterConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1321,13 +1322,13 @@ type NetworkSecurityPerimeterConfiguration struct {
 	Type *string
 }
 
-// NetworkSecurityPerimeterConfigurationListResult - Result of a list NSP (network security perimeter) configurations request.
+// NetworkSecurityPerimeterConfigurationListResult - The response of a NetworkSecurityPerimeterConfiguration list operation.
 type NetworkSecurityPerimeterConfigurationListResult struct {
-	// The link used to get the next page of results.
-	NextLink *string
-
-	// Array of network security perimeter results.
+	// REQUIRED; The NetworkSecurityPerimeterConfiguration items on this page
 	Value []*NetworkSecurityPerimeterConfiguration
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.

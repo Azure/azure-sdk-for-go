@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBNotebookWorkspaceCreate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceCreate.json
 func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,13 +28,13 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientCreateOrUpdateResponse{
-	// 	NotebookWorkspace: &armcosmos.NotebookWorkspace{
+	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
@@ -46,7 +46,7 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBNotebookWorkspaceDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceDelete.json
 func ExampleNotebookWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,11 +63,11 @@ func ExampleNotebookWorkspacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBNotebookWorkspaceGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceGet.json
 func ExampleNotebookWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleNotebookWorkspacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientGetResponse{
-	// 	NotebookWorkspace: &armcosmos.NotebookWorkspace{
+	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
@@ -98,7 +98,7 @@ func ExampleNotebookWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBNotebookWorkspaceList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceList.json
 func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBNotebookWorkspaceListConnectionInfo.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceListConnectionInfo.json
 func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,14 +157,14 @@ func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientListConnectionInfoResponse{
-	// 	NotebookWorkspaceConnectionInfoResult: &armcosmos.NotebookWorkspaceConnectionInfoResult{
+	// 	NotebookWorkspaceConnectionInfoResult: armcosmos.NotebookWorkspaceConnectionInfoResult{
 	// 		AuthToken: to.Ptr("auth-token"),
 	// 		NotebookServerEndpoint: to.Ptr("notebook endpoint"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
 func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -190,7 +190,7 @@ func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBNotebookWorkspaceStart.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceStart.json
 func ExampleNotebookWorkspacesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleNotebookWorkspacesClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

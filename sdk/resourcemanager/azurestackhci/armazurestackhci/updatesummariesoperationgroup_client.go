@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultUpdateSummariesOperationGroupClientVersion string = "2026-04-30"
-
 // UpdateSummariesOperationGroupClient contains the methods for the UpdateSummariesOperationGroup group.
 // Don't use this type directly, use NewUpdateSummariesOperationGroupClient() instead.
 //
@@ -109,7 +107,7 @@ func (client *UpdateSummariesOperationGroupClient) checkHealthCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateSummariesOperationGroupClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -181,7 +179,7 @@ func (client *UpdateSummariesOperationGroupClient) checkUpdatesCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateSummariesOperationGroupClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

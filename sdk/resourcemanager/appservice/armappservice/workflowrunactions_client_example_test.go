@@ -30,7 +30,7 @@ func ExampleWorkflowRunActionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.WorkflowRunActionsClientGetResponse{
-	// 	WorkflowRunAction: &armappservice.WorkflowRunAction{
+	// 	WorkflowRunAction: armappservice.WorkflowRunAction{
 	// 		Name: to.Ptr("HTTP"),
 	// 		Type: to.Ptr("Microsoft.Web/sites/workflows/runs/actions"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-resource-group/providers/Microsoft.Web/sites/test-name/workflows/test-workflow/runs/08586676746934337772206998657CU22/actions/HTTP"),

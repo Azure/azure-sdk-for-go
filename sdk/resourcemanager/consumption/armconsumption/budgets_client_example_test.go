@@ -95,7 +95,7 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.BudgetsClientCreateOrUpdateResponse{
-	// 	Budget: &armconsumption.Budget{
+	// 	Budget: armconsumption.Budget{
 	// 		Name: to.Ptr("TestBudget"),
 	// 		Type: to.Ptr("Microsoft.Consumption/budgets"),
 	// 		ETag: to.Ptr("\"1d34d012214157f\""),
@@ -209,7 +209,7 @@ func ExampleBudgetsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.BudgetsClientGetResponse{
-	// 	Budget: &armconsumption.Budget{
+	// 	Budget: armconsumption.Budget{
 	// 		Name: to.Ptr("TestBudget"),
 	// 		Type: to.Ptr("Microsoft.Consumption/budgets"),
 	// 		ETag: to.Ptr("\"1d34d012214157f\""),

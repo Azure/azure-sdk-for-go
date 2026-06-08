@@ -18,6 +18,8 @@ import (
 
 // WorkflowsClient contains the methods for the Workflows group.
 // Don't use this type directly, use NewWorkflowsClient() instead.
+//
+// Generated from API version 2025-05-01
 type WorkflowsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential
 
 // RegenerateAccessKey - Regenerates the callback URL access key for request triggers.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -94,8 +94,8 @@ func (client *WorkflowsClient) regenerateAccessKeyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, keyType); err != nil {
 		return nil, err
@@ -105,8 +105,6 @@ func (client *WorkflowsClient) regenerateAccessKeyCreateRequest(ctx context.Cont
 
 // Validate - Validates the workflow definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -157,8 +155,8 @@ func (client *WorkflowsClient) validateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, validate); err != nil {
 		return nil, err

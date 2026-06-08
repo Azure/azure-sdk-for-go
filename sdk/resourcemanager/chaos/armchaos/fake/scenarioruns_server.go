@@ -22,9 +22,9 @@ import (
 
 // ScenarioRunsServer is a fake server for instances of the armchaos.ScenarioRunsClient type.
 type ScenarioRunsServer struct {
-	// Cancel is the fake for method ScenarioRunsClient.Cancel
-	// HTTP status codes to indicate success: http.StatusAccepted
-	Cancel func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, options *armchaos.ScenarioRunsClientCancelOptions) (resp azfake.Responder[armchaos.ScenarioRunsClientCancelResponse], errResp azfake.ErrorResponder)
+	// BeginCancel is the fake for method ScenarioRunsClient.BeginCancel
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginCancel func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, options *armchaos.ScenarioRunsClientBeginCancelOptions) (resp azfake.PollerResponder[armchaos.ScenarioRunsClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method ScenarioRunsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -41,6 +41,7 @@ type ScenarioRunsServer struct {
 func NewScenarioRunsServerTransport(srv *ScenarioRunsServer) *ScenarioRunsServerTransport {
 	return &ScenarioRunsServerTransport{
 		srv:             srv,
+		beginCancel:     newTracker[azfake.PollerResponder[armchaos.ScenarioRunsClientCancelResponse]](),
 		newListAllPager: newTracker[azfake.PagerResponder[armchaos.ScenarioRunsClientListAllResponse]](),
 	}
 }
@@ -49,6 +50,7 @@ func NewScenarioRunsServerTransport(srv *ScenarioRunsServer) *ScenarioRunsServer
 // Don't use this type directly, use NewScenarioRunsServerTransport instead.
 type ScenarioRunsServerTransport struct {
 	srv             *ScenarioRunsServer
+	beginCancel     *tracker[azfake.PollerResponder[armchaos.ScenarioRunsClientCancelResponse]]
 	newListAllPager *tracker[azfake.PagerResponder[armchaos.ScenarioRunsClientListAllResponse]]
 }
 
@@ -73,8 +75,8 @@ func (s *ScenarioRunsServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
-			case "ScenarioRunsClient.Cancel":
-				res.resp, res.err = s.dispatchCancel(req)
+			case "ScenarioRunsClient.BeginCancel":
+				res.resp, res.err = s.dispatchBeginCancel(req)
 			case "ScenarioRunsClient.Get":
 				res.resp, res.err = s.dispatchGet(req)
 			case "ScenarioRunsClient.NewListAllPager":
@@ -95,50 +97,55 @@ func (s *ScenarioRunsServerTransport) dispatchToMethodFake(req *http.Request, me
 	}
 }
 
-func (s *ScenarioRunsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
-	if s.srv.Cancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
+func (s *ScenarioRunsServerTransport) dispatchBeginCancel(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginCancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCancel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCancel := s.beginCancel.get(req)
+	if beginCancel == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runs/(?P<runId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		scenarioNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioName")])
+		if err != nil {
+			return nil, err
+		}
+		runIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("runId")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginCancel(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, runIDParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCancel = &respr
+		s.beginCancel.add(req, beginCancel)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginCancel, req)
 	if err != nil {
 		return nil, err
 	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginCancel.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	scenarioNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCancel) {
+		s.beginCancel.remove(req)
 	}
-	runIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("runId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Cancel(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, runIDParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("Location", *val)
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
-	}
+
 	return resp, nil
 }
 

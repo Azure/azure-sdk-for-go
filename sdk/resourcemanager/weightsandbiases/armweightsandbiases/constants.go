@@ -4,6 +4,10 @@
 
 package armweightsandbiases
 
+const (
+	version20240918 string = "2024-09-18"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

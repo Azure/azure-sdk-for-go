@@ -35,13 +35,13 @@ func ExampleSchemasClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SchemasClientCreateOrUpdateResponse{
-	// 	Schema: &armworkloadorchestration.Schema{
+	// 	Schema: armworkloadorchestration.Schema{
 	// 		Properties: &armworkloadorchestration.SchemaProperties{
 	// 			CurrentVersion: to.Ptr("u"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
@@ -91,13 +91,13 @@ func ExampleSchemasClient_BeginCreateVersion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SchemasClientCreateVersionResponse{
-	// 	SchemaVersion: &armworkloadorchestration.SchemaVersion{
+	// 	SchemaVersion: armworkloadorchestration.SchemaVersion{
 	// 		Properties: &armworkloadorchestration.SchemaVersionProperties{
 	// 			Value: to.Ptr("uiaqdwsi"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
@@ -135,7 +135,7 @@ func ExampleSchemasClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -158,7 +158,7 @@ func ExampleSchemasClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SchemasClientGetResponse{
-	// 	Schema: &armworkloadorchestration.Schema{
+	// 	Schema: armworkloadorchestration.Schema{
 	// 		Properties: &armworkloadorchestration.SchemaProperties{
 	// 			CurrentVersion: to.Ptr("u"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
@@ -312,7 +312,7 @@ func ExampleSchemasClient_RemoveVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SchemasClientRemoveVersionResponse{
-	// 	RemoveVersionResponse: &armworkloadorchestration.RemoveVersionResponse{
+	// 	RemoveVersionResponse: armworkloadorchestration.RemoveVersionResponse{
 	// 		Status: to.Ptr("fymylelaohqtwdoqw"),
 	// 	},
 	// }
@@ -342,7 +342,7 @@ func ExampleSchemasClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SchemasClientUpdateResponse{
-	// 	Schema: &armworkloadorchestration.Schema{
+	// 	Schema: armworkloadorchestration.Schema{
 	// 		Properties: &armworkloadorchestration.SchemaProperties{
 	// 			CurrentVersion: to.Ptr("u"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),

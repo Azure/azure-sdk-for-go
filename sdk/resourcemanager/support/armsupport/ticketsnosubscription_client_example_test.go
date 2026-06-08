@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleTicketsNoSubscriptionClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: &armsupport.CheckNameAvailabilityOutput{
+	// 	CheckNameAvailabilityOutput: armsupport.CheckNameAvailabilityOutput{
 	// 		Message: to.Ptr("Name not available"),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("Name is already in use"),
@@ -79,13 +79,13 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForBillingRelat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
@@ -165,13 +165,13 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForSubscription
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
@@ -258,13 +258,13 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForTechnicalIss
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientCreateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
@@ -333,7 +333,7 @@ func ExampleTicketsNoSubscriptionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientGetResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1232,7 +1232,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateAdvancedDiagnosticConsentOf
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1314,7 +1314,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateContactDetailsOfASupportTic
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1384,7 +1384,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateSeverityOfASupportTicket() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
@@ -1453,7 +1453,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateStatusOfASupportTicket() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.TicketsNoSubscriptionClientUpdateResponse{
-	// 	TicketDetails: &armsupport.TicketDetails{
+	// 	TicketDetails: armsupport.TicketDetails{
 	// 		Name: to.Ptr("testticket"),
 	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),

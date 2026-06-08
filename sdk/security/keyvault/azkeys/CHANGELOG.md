@@ -1,14 +1,20 @@
 # Release History
 
-## 1.5.1-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
+* Added the `SecureWrapKey` and `SecureUnwrapKey` operations
+* Added the `JSONWebKeyWrapAlgorithm` type and the `ExternalKey`, `SecureKeyOperationResult`,
+  `SecureKeyUnWrapOperationParameters`, and `SecureKeyWrapOperationParameters` models
+* Added the `ExternalKey` and `KeySize` fields to `KeyAttributes`
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded to API service version `2026-01-01-preview`
+* Upgraded dependencies
 
 ## 1.5.0 (2026-05-25)
 

@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity/cache v0.4.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2
-	github.com/AzureAD/microsoft-authentication-library-for-go v1.7.0
+	github.com/AzureAD/microsoft-authentication-library-for-go v1.7.1
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.11.1

@@ -18,8 +18,6 @@ import (
 
 // FileWorkspacesNoSubscriptionClient contains the methods for the FileWorkspacesNoSubscription group.
 // Don't use this type directly, use NewFileWorkspacesNoSubscriptionClient() instead.
-//
-// Generated from API version 2024-04-01
 type FileWorkspacesNoSubscriptionClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewFileWorkspacesNoSubscriptionClient(credential azcore.TokenCredential, op
 
 // Create - Creates a new file workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - The name of the FileWorkspaceDetails
 //   - options - FileWorkspacesNoSubscriptionClientCreateOptions contains the optional parameters for the FileWorkspacesNoSubscriptionClient.Create
 //     method.
@@ -77,8 +77,8 @@ func (client *FileWorkspacesNoSubscriptionClient) createCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -94,6 +94,8 @@ func (client *FileWorkspacesNoSubscriptionClient) createHandleResponse(resp *htt
 
 // Get - Gets details for a specific file workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - The name of the FileWorkspaceDetails
 //   - options - FileWorkspacesNoSubscriptionClientGetOptions contains the optional parameters for the FileWorkspacesNoSubscriptionClient.Get
 //     method.
@@ -131,8 +133,8 @@ func (client *FileWorkspacesNoSubscriptionClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

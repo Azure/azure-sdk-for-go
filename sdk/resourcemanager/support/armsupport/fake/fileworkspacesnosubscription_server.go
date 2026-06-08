@@ -11,11 +11,10 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // FileWorkspacesNoSubscriptionServer is a fake server for instances of the armsupport.FileWorkspacesNoSubscriptionClient type.
@@ -54,7 +53,9 @@ func (f *FileWorkspacesNoSubscriptionServerTransport) Do(req *http.Request) (*ht
 }
 
 func (f *FileWorkspacesNoSubscriptionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -72,7 +73,10 @@ func (f *FileWorkspacesNoSubscriptionServerTransport) dispatchToMethodFake(req *
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -102,7 +106,7 @@ func (f *FileWorkspacesNoSubscriptionServerTransport) dispatchCreate(req *http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusCreated}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileWorkspaceDetails, req)
@@ -131,7 +135,7 @@ func (f *FileWorkspacesNoSubscriptionServerTransport) dispatchGet(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileWorkspaceDetails, req)

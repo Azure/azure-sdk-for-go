@@ -18,8 +18,6 @@ import (
 
 // FilesNoSubscriptionClient contains the methods for the FilesNoSubscription group.
 // Don't use this type directly, use NewFilesNoSubscriptionClient() instead.
-//
-// Generated from API version 2024-04-01
 type FilesNoSubscriptionClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewFilesNoSubscriptionClient(credential azcore.TokenCredential, options *ar
 
 // Create - Creates a new file under a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - The name of the FileWorkspaceDetails
 //   - fileName - The name of the FileDetails
 //   - createFileParameters - Create file object
@@ -83,8 +83,8 @@ func (client *FilesNoSubscriptionClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createFileParameters); err != nil {
@@ -104,6 +104,8 @@ func (client *FilesNoSubscriptionClient) createHandleResponse(resp *http.Respons
 
 // Get - Returns details of a specific file in a work space.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - The name of the FileWorkspaceDetails
 //   - fileName - The name of the FileDetails
 //   - options - FilesNoSubscriptionClientGetOptions contains the optional parameters for the FilesNoSubscriptionClient.Get method.
@@ -145,8 +147,8 @@ func (client *FilesNoSubscriptionClient) getCreateRequest(ctx context.Context, f
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -161,6 +163,8 @@ func (client *FilesNoSubscriptionClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Lists all the Files information under a workspace for an Azure subscription.
+//
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - The name of the FileWorkspaceDetails
 //   - options - FilesNoSubscriptionClientListOptions contains the optional parameters for the FilesNoSubscriptionClient.NewListPager
 //     method.
@@ -199,8 +203,8 @@ func (client *FilesNoSubscriptionClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -216,6 +220,8 @@ func (client *FilesNoSubscriptionClient) listHandleResponse(resp *http.Response)
 
 // Upload - This API allows you to upload content to a file
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - fileWorkspaceName - The name of the FileWorkspaceDetails
 //   - fileName - The name of the FileDetails
 //   - uploadFile - UploadFile object
@@ -258,8 +264,8 @@ func (client *FilesNoSubscriptionClient) uploadCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, uploadFile); err != nil {
 		return nil, err

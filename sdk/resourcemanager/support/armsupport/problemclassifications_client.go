@@ -18,8 +18,6 @@ import (
 
 // ProblemClassificationsClient contains the methods for the ProblemClassifications group.
 // Don't use this type directly, use NewProblemClassificationsClient() instead.
-//
-// Generated from API version 2024-04-01
 type ProblemClassificationsClient struct {
 	internal *arm.Client
 }
@@ -40,6 +38,8 @@ func NewProblemClassificationsClient(credential azcore.TokenCredential, options 
 
 // Get - Get problem classification details for a specific Azure service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-04-01
 //   - serviceName - Name of the Azure service.
 //   - problemClassificationName - Name of problem classification.
 //   - options - ProblemClassificationsClientGetOptions contains the optional parameters for the ProblemClassificationsClient.Get
@@ -82,8 +82,8 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -100,6 +100,8 @@ func (client *ProblemClassificationsClient) getHandleResponse(resp *http.Respons
 // NewListPager - Lists all the problem classifications (categories) available for a specific Azure service. Always use the
 // service and problem classifications obtained programmatically. This practice ensures that you always have the most recent
 // set of service and problem classification Ids.
+//
+// Generated from API version 2024-04-01
 //   - serviceName - Name of the Azure service.
 //   - options - ProblemClassificationsClientListOptions contains the optional parameters for the ProblemClassificationsClient.NewListPager
 //     method.
@@ -138,8 +140,8 @@ func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-04-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

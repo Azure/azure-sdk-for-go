@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionsDelete.json
+// Generated from example definition: 2026-04-01-preview/PrivateEndpointConnectionsDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,11 +29,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionsGet.json
+// Generated from example definition: 2026-04-01-preview/PrivateEndpointConnectionsGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armpostgresqlflexibleservers.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armpostgresqlflexibleservers.PrivateEndpointConnection{
 	// 		Name: to.Ptr("private-endpoint-connection-name.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/privateEndpointConnections/private-endpoint-connection-name.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
@@ -74,7 +74,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionsList.json
+// Generated from example definition: 2026-04-01-preview/PrivateEndpointConnectionsList.json
 func ExamplePrivateEndpointConnectionsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionsUpdate.json
+// Generated from example definition: 2026-04-01-preview/PrivateEndpointConnectionsUpdate.json
 func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,6 +167,6 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

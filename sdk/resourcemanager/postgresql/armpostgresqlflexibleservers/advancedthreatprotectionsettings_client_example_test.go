@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AdvancedThreatProtectionSettingsGet.json
+// Generated from example definition: 2026-04-01-preview/AdvancedThreatProtectionSettingsGet.json
 func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.AdvancedThreatProtectionSettingsClientGetResponse{
-	// 	AdvancedThreatProtectionSettingsModel: &armpostgresqlflexibleservers.AdvancedThreatProtectionSettingsModel{
+	// 	AdvancedThreatProtectionSettingsModel: armpostgresqlflexibleservers.AdvancedThreatProtectionSettingsModel{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/advancedThreatProtectionSettings/Default"),
@@ -42,7 +42,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AdvancedThreatProtectionSettingsListByServer.json
+// Generated from example definition: 2026-04-01-preview/AdvancedThreatProtectionSettingsListByServer.json
 func ExampleAdvancedThreatProtectionSettingsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

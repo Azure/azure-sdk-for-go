@@ -12,7 +12,7 @@ cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validate
 
 The Azure Key Vault administration library clients support administrative tasks such as full backup / restore, key-level role-based access control (RBAC), settings management, and External Key Manager (EKM) connection management.
 
-[Source code][azadmin_repo] | [Package (pkg.go.dev)][azadmin_pkg_go]| [Product documentation][managed_hsm_docs] | Samples ([backup][azadmin_pkg_go_samples_backup], [rbac][azadmin_pkg_go_samples_rbac], [settings][azadmin_pkg_go_samples_settings], [ekm][azadmin_pkg_go_samples_ekm])
+[Source code][azadmin_repo] | [Package (pkg.go.dev)][azadmin_pkg_go]| [Product documentation][managed_hsm_docs] | Samples ([backup][azadmin_pkg_go_samples_backup], [rbac][azadmin_pkg_go_samples_rbac], [settings][azadmin_pkg_go_samples_settings], ekm - TBD)
 
 ## Getting started
 
@@ -45,7 +45,7 @@ Constructing the client also requires your Managed HSM's URL, which you can get 
 - [Example backup client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup#example-NewClient)
 - [Example rbac client][azadmin_pkg_go_samples_rbac]
 - [Example settings client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings#example-NewClient)
-- [Example ekm client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/ekm#example-NewClient)
+- Example ekm client - TBD
 
 ## Key concepts
 
@@ -81,7 +81,7 @@ Get started with our examples:
 - [backup][azadmin_pkg_go_samples_backup]  
 - [rbac][azadmin_pkg_go_samples_rbac]
 - [settings][azadmin_pkg_go_samples_settings]
-- [ekm][azadmin_pkg_go_samples_ekm]
+- ekm - TBD
 
 ## Troubleshooting
 
@@ -153,7 +153,6 @@ additional questions or comments.
 [azadmin_pkg_go_samples_backup]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup#pkg-examples
 [azadmin_pkg_go_samples_rbac]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/rbac#pkg-examples
 [azadmin_pkg_go_samples_settings]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings#pkg-examples
-[azadmin_pkg_go_samples_ekm]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/ekm#pkg-examples
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free
 [create_managed_hsm]: https://learn.microsoft.com/azure/key-vault/managed-hsm/quick-create-cli

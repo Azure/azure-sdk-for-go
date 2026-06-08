@@ -12,10 +12,9 @@
 #### Other Changes
 * Upgraded to API service version `2026-01-01-preview`
 * Upgraded dependencies
-* The `ekm` package's tests honour three new environment variables when
+* The `ekm` package's tests require two new environment variables when
   recording: `EKM_PROXY_HOST` (EKM proxy host:port), `EKM_SERVER_CA_CERTIFICATE`
-  (PEM or base64-encoded DER CA chain), and `EKM_EXTERNAL_ID` (name of an
-  external key exposed by the EKM proxy)
+  (PEM or base64-encoded DER CA chain)
 
 ### 1.5.0 (2026-05-25)
 

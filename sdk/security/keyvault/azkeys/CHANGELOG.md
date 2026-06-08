@@ -15,6 +15,7 @@
 ### Other Changes
 * Upgraded to API service version `2026-01-01-preview`
 * Upgraded dependencies
+* The test new require a new environment variable when recording: `EKM_EXTERNAL_ID` (name of an external key exposed by the EKM proxy)
 
 ## 1.5.0 (2026-05-25)
 

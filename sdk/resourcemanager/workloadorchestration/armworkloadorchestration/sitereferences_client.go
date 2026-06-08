@@ -18,6 +18,8 @@ import (
 
 // SiteReferencesClient contains the methods for the SiteReferences group.
 // Don't use this type directly, use NewSiteReferencesClient() instead.
+//
+// Generated from API version 2025-06-01
 type SiteReferencesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSiteReferencesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - siteReferenceName - The name of the SiteReference
@@ -68,8 +68,6 @@ func (client *SiteReferencesClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SiteReferencesClient) createOrUpdate(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, resource SiteReference, options *SiteReferencesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SiteReferencesClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *SiteReferencesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *SiteReferencesClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - siteReferenceName - The name of the SiteReference
@@ -153,8 +149,6 @@ func (client *SiteReferencesClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SiteReferencesClient) deleteOperation(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, options *SiteReferencesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SiteReferencesClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *SiteReferencesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - siteReferenceName - The name of the SiteReference
@@ -259,8 +251,8 @@ func (client *SiteReferencesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *SiteReferencesClient) getHandleResponse(resp *http.Response) (Site
 }
 
 // NewListByContextPager - List Site Reference Resources
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - options - SiteReferencesClientListByContextOptions contains the optional parameters for the SiteReferencesClient.NewListByContextPager
@@ -324,8 +314,8 @@ func (client *SiteReferencesClient) listByContextCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +331,6 @@ func (client *SiteReferencesClient) listByContextHandleResponse(resp *http.Respo
 
 // BeginUpdate - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - siteReferenceName - The name of the SiteReference
@@ -368,8 +356,6 @@ func (client *SiteReferencesClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Get Site Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SiteReferencesClient) update(ctx context.Context, resourceGroupName string, contextName string, siteReferenceName string, properties SiteReference, options *SiteReferencesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SiteReferencesClient.BeginUpdate"
@@ -415,8 +401,8 @@ func (client *SiteReferencesClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

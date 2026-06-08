@@ -42,13 +42,13 @@ func ExampleSolutionTemplatesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SolutionTemplatesClientCreateOrUpdateResponse{
-	// 	SolutionTemplate: &armworkloadorchestration.SolutionTemplate{
+	// 	SolutionTemplate: armworkloadorchestration.SolutionTemplate{
 	// 		Properties: &armworkloadorchestration.SolutionTemplateProperties{
 	// 			Description: to.Ptr("psrftehgzngcdlccivhjmwsmiz"),
 	// 			Capabilities: []*string{
@@ -106,13 +106,13 @@ func ExampleSolutionTemplatesClient_BeginCreateVersion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SolutionTemplatesClientCreateVersionResponse{
-	// 	SolutionTemplateVersion: &armworkloadorchestration.SolutionTemplateVersion{
+	// 	SolutionTemplateVersion: armworkloadorchestration.SolutionTemplateVersion{
 	// 		Properties: &armworkloadorchestration.SolutionTemplateVersionProperties{
 	// 			Configurations: to.Ptr("ofqcsavwmeuwmvtjnqpoybtjvkmrlh"),
 	// 			Specification: map[string]any{
@@ -153,7 +153,7 @@ func ExampleSolutionTemplatesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -176,7 +176,7 @@ func ExampleSolutionTemplatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SolutionTemplatesClientGetResponse{
-	// 	SolutionTemplate: &armworkloadorchestration.SolutionTemplate{
+	// 	SolutionTemplate: armworkloadorchestration.SolutionTemplate{
 	// 		Properties: &armworkloadorchestration.SolutionTemplateProperties{
 	// 			Description: to.Ptr("psrftehgzngcdlccivhjmwsmiz"),
 	// 			Capabilities: []*string{
@@ -346,7 +346,7 @@ func ExampleSolutionTemplatesClient_BeginRemoveVersion() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -381,7 +381,7 @@ func ExampleSolutionTemplatesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SolutionTemplatesClientUpdateResponse{
-	// 	SolutionTemplate: &armworkloadorchestration.SolutionTemplate{
+	// 	SolutionTemplate: armworkloadorchestration.SolutionTemplate{
 	// 		Properties: &armworkloadorchestration.SolutionTemplateProperties{
 	// 			Description: to.Ptr("psrftehgzngcdlccivhjmwsmiz"),
 	// 			Capabilities: []*string{

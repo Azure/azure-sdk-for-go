@@ -4,6 +4,10 @@
 
 package armworkloadorchestration
 
+const (
+	version20250601 string = "2025-06-01"
+)
+
 // ActiveState - Instance State
 type ActiveState string
 

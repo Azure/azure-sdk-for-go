@@ -24,15 +24,13 @@ import (
 const recordingDirectory = "sdk/security/keyvault/azadmin/testdata"
 
 var (
-	credential    azcore.TokenCredential
-	hsmURL        string
-	ekmProxyHost  string
-	ekmCACert     []byte
-	externalKeyID string
+	credential   azcore.TokenCredential
+	hsmURL       string
+	ekmProxyHost string
+	ekmCACert    []byte
 
-	fakeHsmURL        = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
-	fakeEkmProxyHost  = fmt.Sprintf("%s.ekm.example.com:443", recording.SanitizedValue)
-	fakeExternalKeyID = "external-key-id"
+	fakeHsmURL       = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
+	fakeEkmProxyHost = fmt.Sprintf("%s.ekm.example.com:443", recording.SanitizedValue)
 	// fakeCACert is the byte sequence used in place of a real CA certificate when
 	// no EKM_SERVER_CA_CERTIFICATE is supplied. The Managed HSM accepts these
 	// bytes verbatim on create/update; only CheckEkmConnection / GetEkmCertificate
@@ -76,10 +74,6 @@ func run(m *testing.M) int {
 	if _, _, err := net.SplitHostPort(ekmProxyHost); err != nil {
 		ekmProxyHost += ":443"
 	}
-	// EKM_EXTERNAL_ID names a key that already exists at the EKM proxy. It is
-	// referenced by the external-key tests when creating a Key Vault key whose
-	// material lives in the EKM.
-	externalKeyID = recording.GetEnvVariable("EKM_EXTERNAL_ID", fakeExternalKeyID)
 	// EKM_SERVER_CA_CERTIFICATE is the CA certificate chain that issued the EKM
 	// proxy's server certificate. PEM and base64-encoded DER are both accepted.
 	// In playback we fall back to fakeCACert so recordings remain stable.
@@ -99,11 +93,6 @@ func run(m *testing.M) int {
 		fakeCN := serverSubjectCommonNameFor(fakeEkmProxyHost)
 		if realCN != fakeCN {
 			if err := recording.AddBodyRegexSanitizer(fakeCN, regexp.QuoteMeta(realCN), nil); err != nil {
-				panic(err)
-			}
-		}
-		if externalKeyID != fakeExternalKeyID {
-			if err := recording.AddBodyRegexSanitizer(fakeExternalKeyID, regexp.QuoteMeta(externalKeyID), nil); err != nil {
 				panic(err)
 			}
 		}

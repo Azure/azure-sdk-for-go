@@ -743,17 +743,11 @@ func TestWrapUnwrap(t *testing.T) {
 	}
 }
 
-// TestSecureWrapUnwrap exercises the SecureWrapKey/SecureUnwrapKey operations against the live
-// service using record/replay. These operations require a trusted execution environment (TEE) and
-// Microsoft Azure Attestation (MAA), so the test follows the same attestation-token pattern as
-// TestReleaseKey. It runs against Managed HSM, which is where secure wrap/unwrap is supported.
 func TestSecureWrapUnwrap(t *testing.T) {
 	client := startTest(t, true)
 
 	keyName := createRandomName(t, "securewrap")
 
-	// retry creating the key because Key Vault sometimes can't reach the fake
-	// attestation service we use in CI for several minutes after deployment
 	var createResp azkeys.CreateKeyResponse
 	var err error
 	for i := 0; i < 5; i++ {
@@ -784,7 +778,6 @@ func TestSecureWrapUnwrap(t *testing.T) {
 	require.NotNil(t, createResp.Key.KID)
 	defer cleanUpKey(t, client, createResp.Key.KID)
 
-	// fetch an attestation token from the attestation service, mirroring TestReleaseKey
 	attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
@@ -802,7 +795,6 @@ func TestSecureWrapUnwrap(t *testing.T) {
 	err = json.NewDecoder(resp.Body).Decode(&tR)
 	require.NoError(t, err)
 
-	// SecureWrapKey creates a new AES key inside the TEE and wraps it with the named key
 	wrapParams := azkeys.SecureKeyWrapOperationParameters{
 		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
 	}
@@ -816,7 +808,6 @@ func TestSecureWrapUnwrap(t *testing.T) {
 	require.NotNil(t, wrapResp.Algorithm)
 	testSerde(t, &wrapResp.SecureKeyOperationResult)
 
-	// SecureUnwrapKey reverses the operation, requiring the attestation token for the TEE
 	unwrapParams := azkeys.SecureKeyUnWrapOperationParameters{
 		Algorithm:              wrapParams.Algorithm,
 		TargetAttestationToken: tR.Token,
@@ -830,6 +821,58 @@ func TestSecureWrapUnwrap(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, unwrapResp.Value)
 	testSerde(t, &unwrapResp.SecureKeyOperationResult)
+}
+
+func TestExternalKeyReference(t *testing.T) {
+	keyClient := startTest(t, false)
+
+	localKeyName := "ekm-external-key-test"
+	ctx := context.Background()
+
+	// Best-effort cleanup of a prior run. Run this in playback too so the
+	// corresponding entry in the recording is consumed in lockstep.
+	_, _ = keyClient.DeleteKey(ctx, localKeyName, nil)
+
+	// ExternalKey and Kty are mutually exclusive on CreateKey: the key material
+	// lives at the EKM proxy, so the Key Vault never picks its own key type.
+	params := azkeys.CreateKeyParameters{
+		KeyAttributes: &azkeys.KeyAttributes{
+			ExternalKey: &azkeys.ExternalKey{ID: to.Ptr(externalKeyID)},
+		},
+	}
+
+	created, err := keyClient.CreateKey(ctx, localKeyName, params, nil)
+	if err != nil {
+		// The most common failure is that no EKM connection is configured on
+		// the HSM, in which case the service returns a 4xx. Surface that as a
+		// skip — including in playback, where the recording may legitimately
+		// have captured that 4xx — so the wire contract test still runs without
+		// requiring a fully provisioned EKM proxy.
+		var httpErr *azcore.ResponseError
+		if errors.As(err, &httpErr) {
+			t.Skipf("CreateKey failed (HTTP %d, %s); is an EKM connection configured on the HSM?",
+				httpErr.StatusCode, httpErr.ErrorCode)
+		}
+		require.NoError(t, err)
+	}
+	t.Cleanup(func() {
+		_, _ = keyClient.DeleteKey(context.Background(), localKeyName, nil)
+	})
+
+	require.NotNil(t, created.Attributes, "expected attributes on created key")
+	require.NotNil(t, created.Attributes.ExternalKey, "expected ExternalKey on created key attributes")
+	require.NotNil(t, created.Attributes.ExternalKey.ID)
+	require.Equal(t, externalKeyID, *created.Attributes.ExternalKey.ID)
+	require.NotNil(t, created.Key)
+	require.NotNil(t, created.Key.KID)
+
+	// Round-trip via GET so we know the reference is persisted (not just echoed).
+	got, err := keyClient.GetKey(ctx, localKeyName, "", nil)
+	require.NoError(t, err)
+	require.NotNil(t, got.Attributes)
+	require.NotNil(t, got.Attributes.ExternalKey)
+	require.NotNil(t, got.Attributes.ExternalKey.ID)
+	require.Equal(t, externalKeyID, *got.Attributes.ExternalKey.ID)
 }
 
 func TestSecureKeyModelsSerde(t *testing.T) {

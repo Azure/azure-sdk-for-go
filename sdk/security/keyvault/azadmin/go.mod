@@ -6,16 +6,11 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.22.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0
-	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys v1.6.0-beta.1
+	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys v1.5.0
 	github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal v1.2.0
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.11.1
 )
-
-// Local development override: the EKM external-key test depends on the
-// ExternalKey type added in azkeys v1.6.0-beta.1. Remove this replace
-// directive once that azkeys version is published.
-replace github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys => ../azkeys
 
 require (
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.7.2 // indirect

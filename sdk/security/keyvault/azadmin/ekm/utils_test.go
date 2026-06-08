@@ -74,7 +74,7 @@ func run(m *testing.M) int {
 	// would also match — and overwrite — the bare CN value in the same body.
 	ekmProxyHost = recording.GetEnvVariable("EKM_PROXY_HOST", fakeEkmProxyHost)
 	if _, _, err := net.SplitHostPort(ekmProxyHost); err != nil {
-		ekmProxyHost = ekmProxyHost + ":443"
+		ekmProxyHost += ":443"
 	}
 	// EKM_EXTERNAL_ID names a key that already exists at the EKM proxy. It is
 	// referenced by the external-key tests when creating a Key Vault key whose

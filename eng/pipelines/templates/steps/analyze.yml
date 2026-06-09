@@ -8,16 +8,16 @@ parameters:
   ArtifactName: packages
 
 steps:
-  # - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-  #   parameters:
-  #     ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #     PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
-  # - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
-  #   parameters:
-  #     ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #     PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
-  #     IncludeIndirect: false
+  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+      IncludeIndirect: false
 
   - pwsh: |
       . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1

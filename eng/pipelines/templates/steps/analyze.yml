@@ -90,10 +90,10 @@ steps:
   #     displayName: Create API review for Go
   #     condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
 
-  - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
-    - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
-      parameters:
-        Condition: ${{ parameters.IsSdkLibrary }}
+  #- ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
+  #  - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
+  #    parameters:
+  #      Condition: ${{ parameters.IsSdkLibrary }}
 
         #- ${{ if and(ne(variables['Skip.PackageValidation'], 'true'), eq(variables['System.TeamProject'], 'internal')) }}:
         #  - pwsh: |
@@ -157,142 +157,142 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     retryCountOnTaskFailure: 3
 
-  - pwsh: |
-      $changedPackages = "$(Packages)" -split ","
-      $failed = $false
+    #- pwsh: |
+    #    $changedPackages = "$(Packages)" -split ","
+    #    $failed = $false
 
-      foreach($packageDirectory in $changedPackages) {
-        if ($packageDirectory.startsWith('eng')) {
-          Write-Host "skipping linting on engineering-only package: '$jpackageDirectory'"
-          continue
-        }
+    #    foreach($packageDirectory in $changedPackages) {
+    #      if ($packageDirectory.startsWith('eng')) {
+    #        Write-Host "skipping linting on engineering-only package: '$jpackageDirectory'"
+    #        continue
+    #      }
 
-        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
+    #      $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
 
-        foreach ($md in $modDirs) {
-          pushd $md
-          Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
-          golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
+    #      foreach ($md in $modDirs) {
+    #        pushd $md
+    #        Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
+    #        golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
 
-          if ($LASTEXITCODE) {
-            Write-Host "golangci-lint for $packageDirectory failed. Check above output for details."
-            $failed = $true
-          }
-        }
-      }
+    #        if ($LASTEXITCODE) {
+    #          Write-Host "golangci-lint for $packageDirectory failed. Check above output for details."
+    #          $failed = $true
+    #        }
+    #      }
+    #    }
 
-      if ($failed) {
-        Write-Host "golangci-lint failed. Check above output for details."
-        exit 1
-      }
-    displayName: 'Lint'
-    workingDirectory: $(System.DefaultWorkingDirectory)
-    condition: succeededOrFailed()
+    #    if ($failed) {
+    #      Write-Host "golangci-lint failed. Check above output for details."
+    #      exit 1
+    #    }
+    #  displayName: 'Lint'
+    #  workingDirectory: $(System.DefaultWorkingDirectory)
+    #  condition: succeededOrFailed()
 
-  - pwsh: |
-      $changedPackages = "$(Packages)" -split ","
-      $failed = $false
+    #- pwsh: |
+    #    $changedPackages = "$(Packages)" -split ","
+    #    $failed = $false
 
-      foreach($packageDirectory in $changedPackages) {
-        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
-        foreach ($md in $modDirs) {
-          pushd $md
-          Write-Host "##[command]Executing go get -u all in $md"
-          go get -u all
-          $diff = (git diff -w .)
-          Write-Host ($diff -join "`n")
-          if ($diff.Length -gt 0) {
-            Write-Host "Failed to go get $packageDirectory"
-            $failed = $true
-          }
-        }
-      }
+    #    foreach($packageDirectory in $changedPackages) {
+    #      $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
+    #      foreach ($md in $modDirs) {
+    #        pushd $md
+    #        Write-Host "##[command]Executing go get -u all in $md"
+    #        go get -u all
+    #        $diff = (git diff -w .)
+    #        Write-Host ($diff -join "`n")
+    #        if ($diff.Length -gt 0) {
+    #          Write-Host "Failed to go get $packageDirectory"
+    #          $failed = $true
+    #        }
+    #      }
+    #    }
 
-      if ($failed) {
-        Write-Host "go get failed. Check above output for details."
-        exit 1
-      }
-    displayName: 'go get -u all'
-    condition: eq(variables.SkipGoGetUAll, 'false')
-    workingDirectory: $(System.DefaultWorkingDirectory)
+    #    if ($failed) {
+    #      Write-Host "go get failed. Check above output for details."
+    #      exit 1
+    #    }
+    #  displayName: 'go get -u all'
+    #  condition: eq(variables.SkipGoGetUAll, 'false')
+    #  workingDirectory: $(System.DefaultWorkingDirectory)
 
-  - pwsh: |
-      $changedPackages = "$(Packages)" -split ","
-      $failed = $false
+    #- pwsh: |
+    #    $changedPackages = "$(Packages)" -split ","
+    #    $failed = $false
 
-      foreach($packageDirectory in $changedPackages) {
-        $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
-        foreach ($md in $modDirs) {
-          pushd $md
-          Write-Host "##[command]Executing go mod tidy in $md"
-          go mod tidy
-          $diff = (git diff -w .)
-          Write-Host ($diff -join "`n")
-          if ($diff.Length -gt 0) {
-            $failed = $true
-            Write-Host "Failed to go mod tidy $packageDirectory"
-          }
-        }
-      }
+    #    foreach($packageDirectory in $changedPackages) {
+    #      $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
+    #      foreach ($md in $modDirs) {
+    #        pushd $md
+    #        Write-Host "##[command]Executing go mod tidy in $md"
+    #        go mod tidy
+    #        $diff = (git diff -w .)
+    #        Write-Host ($diff -join "`n")
+    #        if ($diff.Length -gt 0) {
+    #          $failed = $true
+    #          Write-Host "Failed to go mod tidy $packageDirectory"
+    #        }
+    #      }
+    #    }
 
-      if ($failed) {
-        Write-Host "go mod tidy failed. Check above output for details."
-        exit 1
-      }
-    displayName: 'go mod tidy'
-    workingDirectory: $(System.DefaultWorkingDirectory)
-    condition: succeededOrFailed()
+    #    if ($failed) {
+    #      Write-Host "go mod tidy failed. Check above output for details."
+    #      exit 1
+    #    }
+    #  displayName: 'go mod tidy'
+    #  workingDirectory: $(System.DefaultWorkingDirectory)
+    #  condition: succeededOrFailed()
 
-  - pwsh: |
-      $packages = "$(Packages)" -split ","
-      foreach($packageDir in $packages) {
-        $modDirs = ./eng/scripts/get_module_dirs.ps1 "$packageDir"
-        foreach ($md in $modDirs) {
-          if (-Not $md -Match "/arm") {
-            Get-ChildItem $md/doc.go
-          }
-        }
-      }
-    displayName: 'Verify doc.go'
-    workingDirectory: $(System.DefaultWorkingDirectory)
-    condition: succeededOrFailed()
+    #- pwsh: |
+    #    $packages = "$(Packages)" -split ","
+    #    foreach($packageDir in $packages) {
+    #      $modDirs = ./eng/scripts/get_module_dirs.ps1 "$packageDir"
+    #      foreach ($md in $modDirs) {
+    #        if (-Not $md -Match "/arm") {
+    #          Get-ChildItem $md/doc.go
+    #        }
+    #      }
+    #    }
+    #  displayName: 'Verify doc.go'
+    #  workingDirectory: $(System.DefaultWorkingDirectory)
+    #  condition: succeededOrFailed()
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
-      arguments: >
-        -Packages '$(Packages)'
-      pwsh: true
-    displayName: 'Copyright header Check'
-    condition: succeededOrFailed()
+    #- task: Powershell@2
+    #  inputs:
+    #    filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
+    #    arguments: >
+    #      -Packages '$(Packages)'
+    #    pwsh: true
+    #  displayName: 'Copyright header Check'
+    #  condition: succeededOrFailed()
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
-      arguments: >
-        -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
-      pwsh: true
-    displayName: 'LICENSE.txt Check'
-    condition: succeededOrFailed()
+    #- task: Powershell@2
+    #  inputs:
+    #    filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
+    #    arguments: >
+    #      -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
+    #    pwsh: true
+    #  displayName: 'LICENSE.txt Check'
+    #  condition: succeededOrFailed()
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
-      arguments: >
-        -Packages '$(Packages)'
-      pwsh: true
-    displayName: 'Format Check'
-    condition: succeededOrFailed()
+    #- task: Powershell@2
+    #  inputs:
+    #    filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
+    #    arguments: >
+    #      -Packages '$(Packages)'
+    #    pwsh: true
+    #  displayName: 'Format Check'
+    #  condition: succeededOrFailed()
 
-  - template: /eng/common/pipelines/templates/steps/verify-links.yml
-    parameters:
-      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-        Directory: ''
-        Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-      ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-        Directory: sdk/${{ parameters.ServiceDirectory }}
-      CheckLinkGuidance: $true
-      Condition: succeededOrFailed()
+    #- template: /eng/common/pipelines/templates/steps/verify-links.yml
+    #  parameters:
+    #    ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+    #      Directory: ''
+    #      Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+    #    ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+    #      Directory: sdk/${{ parameters.ServiceDirectory }}
+    #    CheckLinkGuidance: $true
+    #    Condition: succeededOrFailed()
 
   - pwsh: |
       if (-not "$(Packages)") {

@@ -12,7 +12,7 @@
 /sdk/samples/                                                      @jhendrixMSFT @richardpark-msft @rickwinter
 
 # PRLabel: %App Configuration
-/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820
+/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820 @mrm9084
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %App Configuration

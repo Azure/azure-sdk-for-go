@@ -13,11 +13,11 @@ steps:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
-  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
-    parameters:
-      ServiceDirectory: ${{parameters.ServiceDirectory}}
-      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
-      IncludeIndirect: false
+      #- template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+      #  parameters:
+      #    ServiceDirectory: ${{parameters.ServiceDirectory}}
+      #    PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+      #    IncludeIndirect: false
 
       #- pwsh: |
       #    . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
@@ -48,26 +48,26 @@ steps:
       #  Copy-Item "$(Build.ArtifactStagingDirectory)/PackageInfo" -Destination $directoryToPublish -Recurse
       #displayName: 'Create Go APIView Artifact'
 
-  - ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
-    # in a PR context, always publish the artifacts, even if they are not shipping
-    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-      parameters:
-        ArtifactName: ${{ parameters.ArtifactName }}
-        ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
-  - ${{ else }}:
-    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-      parameters:
-        ArtifactName: ${{ parameters.ArtifactName }}
-        ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
-        CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+      #- ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+      #  # in a PR context, always publish the artifacts, even if they are not shipping
+      #  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      #    parameters:
+      #      ArtifactName: ${{ parameters.ArtifactName }}
+      #      ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
+      #- ${{ else }}:
+      #  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      #    parameters:
+      #      ArtifactName: ${{ parameters.ArtifactName }}
+      #      ArtifactPath: "$(Build.ArtifactStagingDirectory)/${{ parameters.ArtifactName }}"
+      #      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
-    - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-      parameters:
-        ArtifactName: PackageInfo
-        ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
-        CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
+      #  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+      #    parameters:
+      #      ArtifactName: PackageInfo
+      #      ArtifactPath: "$(Build.ArtifactStagingDirectory)/PackageInfo"
+      #      CustomCondition: and(succeeded(), ${{ parameters.IsSdkLibrary }})
 
-  - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
+      #- template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
   # - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'], 'PullRequest'), not(endsWith(variables['Build.Repository.Name'], '-pr'))) }}:
   #   - task: AzureCLI@2

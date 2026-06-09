@@ -1,4 +1,4 @@
-directory: specification/keyvault/data-plane/Administration/BackupRestore
+directory: specification/keyvault/data-plane/Administration/EKM
 commit: 3da218c900a6ee02ec0c23c53dc7004c515d221b
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

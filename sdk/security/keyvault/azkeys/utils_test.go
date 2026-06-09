@@ -30,6 +30,7 @@ var (
 	fakeVaultURL       = fmt.Sprintf("https://%s.vault.azure.net/", recording.SanitizedValue)
 	fakeHsmURL         = fmt.Sprintf("https://%s.managedhsm.azure.net/", recording.SanitizedValue)
 	fakeAttestationURL = fmt.Sprintf("https://%s.azurewebsites.net/", recording.SanitizedValue)
+	fakeExternalKeyID  = "external-key-id"
 
 	keysToPurge = struct {
 		mut   sync.Mutex
@@ -41,6 +42,7 @@ var (
 	attestationURL string
 	mhsmURL        string
 	vaultURL       string
+	externalKeyID  string
 )
 
 func TestMain(m *testing.M) {
@@ -74,6 +76,7 @@ func run(m *testing.M) int {
 	attestationURL = recording.GetEnvVariable("AZURE_KEYVAULT_ATTESTATION_URL", fakeAttestationURL)
 	mhsmURL = recording.GetEnvVariable("AZURE_MANAGEDHSM_URL", fakeHsmURL)
 	vaultURL = recording.GetEnvVariable("AZURE_KEYVAULT_URL", fakeVaultURL)
+	externalKeyID = recording.GetEnvVariable("EKM_EXTERNAL_ID", fakeExternalKeyID)
 	enableHSM = mhsmURL != fakeHsmURL
 
 	if recording.GetRecordMode() == recording.RecordingMode {
@@ -92,6 +95,11 @@ func run(m *testing.M) int {
 		for _, attestation := range []string{"$.target", "$.token"} {
 			err := recording.AddBodyKeySanitizer(attestation, recording.SanitizedValue, "", nil)
 			if err != nil {
+				panic(err)
+			}
+		}
+		if externalKeyID != fakeExternalKeyID {
+			if err := recording.AddBodyRegexSanitizer(fakeExternalKeyID, regexp.QuoteMeta(externalKeyID), nil); err != nil {
 				panic(err)
 			}
 		}

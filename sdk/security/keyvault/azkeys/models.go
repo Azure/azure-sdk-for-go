@@ -102,6 +102,13 @@ type DeletedKeyPropertiesListResult struct {
 	Value []*DeletedKeyProperties
 }
 
+// ExternalKey - External Key parameters.
+type ExternalKey struct {
+	// REQUIRED; The external key identifier. The valid id can only contain characters in the set [a-zA-Z0-9-]. Maximum length
+	// is 64 characters.
+	ID *string
+}
+
 // GetRandomBytesParameters - The get random bytes request object.
 type GetRandomBytesParameters struct {
 	// REQUIRED; The requested number of random bytes.
@@ -204,6 +211,9 @@ type KeyAttributes struct {
 	// key.
 	Exportable *bool
 
+	// The external key information.
+	ExternalKey *ExternalKey
+
 	// Not before date in UTC.
 	NotBefore *time.Time
 
@@ -215,6 +225,9 @@ type KeyAttributes struct {
 
 	// READ-ONLY; The underlying HSM Platform.
 	HSMPlatform *string
+
+	// READ-ONLY; The optional key size in bits for symmetric keys. For example: 128, 192, or 256 for AES keys.
+	KeySize *int32
 
 	// READ-ONLY; softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.
 	RecoverableDays *int32
@@ -407,6 +420,36 @@ type ReleaseParameters struct {
 type RestoreKeyParameters struct {
 	// REQUIRED; The backup blob associated with a key bundle.
 	KeyBackup []byte
+}
+
+// SecureKeyOperationResult - The secure key wrap operation result.
+type SecureKeyOperationResult struct {
+	// REQUIRED; The algorithm used for the operation.
+	Algorithm *JSONWebKeyWrapAlgorithm
+
+	// REQUIRED; Key identifier
+	Kid *string
+
+	// REQUIRED; The result of the operation.
+	Value []byte
+}
+
+// SecureKeyUnWrapOperationParameters - The Secure Key unwrap attributes.
+type SecureKeyUnWrapOperationParameters struct {
+	// REQUIRED; algorithm identifier
+	Algorithm *JSONWebKeyWrapAlgorithm
+
+	// REQUIRED; The attestation assertion for the target of the key release.
+	TargetAttestationToken *string
+
+	// REQUIRED; The value to operate on.
+	Value []byte
+}
+
+// SecureKeyWrapOperationParameters - The Secure Key wrap attributes.
+type SecureKeyWrapOperationParameters struct {
+	// REQUIRED; algorithm identifier
+	Algorithm *JSONWebKeyWrapAlgorithm
 }
 
 // SignParameters - The key operations parameters.

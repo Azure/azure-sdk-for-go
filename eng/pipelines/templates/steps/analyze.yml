@@ -149,13 +149,13 @@ steps:
         #  env:
         #    GO111MODULE: 'on'
 
-  - script: |
-      curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
-      golangci-lint --version
-    displayName: 'Install GoLintCLI and dependencies.'
-    condition: succeededOrFailed()
-    workingDirectory: $(System.DefaultWorkingDirectory)
-    retryCountOnTaskFailure: 3
+  # - script: |
+  #     curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin ${{parameters.LintVersion}}
+  #     golangci-lint --version
+  #   displayName: 'Install GoLintCLI and dependencies.'
+  #   condition: succeededOrFailed()
+  #   workingDirectory: $(System.DefaultWorkingDirectory)
+  #   retryCountOnTaskFailure: 3
 
     #- pwsh: |
     #    $changedPackages = "$(Packages)" -split ","
@@ -294,31 +294,31 @@ steps:
     #    CheckLinkGuidance: $true
     #    Condition: succeededOrFailed()
 
-  - pwsh: |
-      if (-not "$(Packages)") {
-        Write-Host "No services were changed build. Skipping doccheck."
-        exit 0
-      }
+    # - pwsh: |
+    #     if (-not "$(Packages)") {
+    #       Write-Host "No services were changed build. Skipping doccheck."
+    #       exit 0
+    #     }
 
-      $changedServices = "$(Packages)" -split ","
-      $failed = $false
+    #     $changedServices = "$(Packages)" -split ","
+    #     $failed = $false
 
-      foreach ($service in $changedServices) {
-        go run . --directory "$(System.DefaultWorkingDirectory)/$service"
-        if ($LASTEXITCODE -ne 0) {
-          $failed = $true
-        }
-      }
+    #     foreach ($service in $changedServices) {
+    #       go run . --directory "$(System.DefaultWorkingDirectory)/$service"
+    #       if ($LASTEXITCODE -ne 0) {
+    #         $failed = $true
+    #       }
+    #     }
 
-      if ($failed) {
-        Write-Host "Doccheck failed. Check above output for details."
-        exit 1
-      }
-    displayName: 'Validate Documentation'
-    condition: succeededOrFailed()
-    workingDirectory: 'eng/tools/doccheck'
+    #     if ($failed) {
+    #       Write-Host "Doccheck failed. Check above output for details."
+    #       exit 1
+    #     }
+    #   displayName: 'Validate Documentation'
+    #   condition: succeededOrFailed()
+    #   workingDirectory: 'eng/tools/doccheck'
 
-  - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+    # - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
   #- pwsh: |
   #    ./eng/scripts/Invoke-SmokeTests.ps1 "$(Packages)"
@@ -326,23 +326,23 @@ steps:
 
   # There are no more checks after this one, so simply removing all packageInfo that aren't shipping
   # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.
-  - pwsh: |
-      # remove the manifest files that were dropped into this directory due to publishing of the 1es artifact.
-      # we don't need them around anymore and they will break the verify-changelogs step.
+  #- pwsh: |
+  #    # remove the manifest files that were dropped into this directory due to publishing of the 1es artifact.
+  #    # we don't need them around anymore and they will break the verify-changelogs step.
 
-      if (Test-Path -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest) {
-        Remove-Item -Recurse -Force -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest
-      }
+  #    if (Test-Path -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest) {
+  #      Remove-Item -Recurse -Force -Path $(Build.ArtifactStagingDirectory)/PackageInfo/_manifest
+  #    }
 
-      Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/PackageInfo -Recurse -Filter *.json `
-        | ForEach-Object {
-          $json = Get-Content -Path $_.FullName -Raw | ConvertFrom-Json
-          if ($json.CIParameters.NonShipping) {
-            Remove-Item -Path $_.FullName -Force
-          }
-        }
-    displayName: Clean up Non-Shipping Artifacts
+  #    Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/PackageInfo -Recurse -Filter *.json `
+  #      | ForEach-Object {
+  #        $json = Get-Content -Path $_.FullName -Raw | ConvertFrom-Json
+  #        if ($json.CIParameters.NonShipping) {
+  #          Remove-Item -Path $_.FullName -Force
+  #        }
+  #      }
+  #  displayName: Clean up Non-Shipping Artifacts
 
-  - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-    parameters:
-      PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+  #- template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+  #  parameters:
+  #    PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo

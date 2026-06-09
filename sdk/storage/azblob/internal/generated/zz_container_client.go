@@ -65,10 +65,10 @@ func (client *ContainerClient) acquireLeaseCreateRequest(ctx context.Context, du
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -152,10 +152,10 @@ func (client *ContainerClient) breakLeaseCreateRequest(ctx context.Context, opti
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -244,10 +244,10 @@ func (client *ContainerClient) changeLeaseCreateRequest(ctx context.Context, lea
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -417,10 +417,10 @@ func (client *ContainerClient) deleteCreateRequest(ctx context.Context, options 
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -1032,10 +1032,10 @@ func (client *ContainerClient) releaseLeaseCreateRequest(ctx context.Context, le
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -1180,10 +1180,10 @@ func (client *ContainerClient) renewLeaseCreateRequest(ctx context.Context, leas
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -1333,10 +1333,10 @@ func (client *ContainerClient) setAccessPolicyCreateRequest(ctx context.Context,
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Access != nil {
 		req.Raw().Header["x-ms-blob-public-access"] = []string{string(*options.Access)}
@@ -1425,7 +1425,7 @@ func (client *ContainerClient) setMetadataCreateRequest(ctx context.Context, opt
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}

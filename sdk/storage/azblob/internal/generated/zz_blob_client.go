@@ -135,13 +135,13 @@ func (client *BlobClient) acquireLeaseCreateRequest(ctx context.Context, duratio
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -231,13 +231,13 @@ func (client *BlobClient) breakLeaseCreateRequest(ctx context.Context, options *
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -332,13 +332,13 @@ func (client *BlobClient) changeLeaseCreateRequest(ctx context.Context, leaseID 
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -426,13 +426,13 @@ func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -460,7 +460,7 @@ func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
 	if options != nil && options.ImmutabilityPolicyExpiry != nil {
-		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(*options.ImmutabilityPolicyExpiry).String()}
+		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC7231(*options.ImmutabilityPolicyExpiry).String()}
 	}
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
@@ -483,13 +483,13 @@ func (client *BlobClient) copyFromURLCreateRequest(ctx context.Context, copySour
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*options.SourceIfMatch)}
 	}
 	if options != nil && options.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*options.SourceIfModifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC7231(*options.SourceIfModifiedSince).String()}
 	}
 	if options != nil && options.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*options.SourceIfNoneMatch)}
 	}
 	if options != nil && options.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*options.SourceIfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC7231(*options.SourceIfUnmodifiedSince).String()}
 	}
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
@@ -593,13 +593,13 @@ func (client *BlobClient) createSnapshotCreateRequest(ctx context.Context, optio
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -724,19 +724,19 @@ func (client *BlobClient) deleteCreateRequest(ctx context.Context, options *Blob
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.AccessTierIfModifiedSince != nil {
-		req.Raw().Header["x-ms-access-tier-if-modified-since"] = []string{datetime.RFC1123(*options.AccessTierIfModifiedSince).String()}
+		req.Raw().Header["x-ms-access-tier-if-modified-since"] = []string{datetime.RFC7231(*options.AccessTierIfModifiedSince).String()}
 	}
 	if options != nil && options.AccessTierIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-access-tier-if-unmodified-since"] = []string{datetime.RFC1123(*options.AccessTierIfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-access-tier-if-unmodified-since"] = []string{datetime.RFC7231(*options.AccessTierIfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -889,13 +889,13 @@ func (client *BlobClient) downloadCreateRequest(ctx context.Context, options *Bl
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Range != nil {
 		req.Raw().Header["Range"] = []string{*options.Range}
@@ -1276,13 +1276,13 @@ func (client *BlobClient) getPropertiesCreateRequest(ctx context.Context, option
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -1593,13 +1593,13 @@ func (client *BlobClient) getTagsCreateRequest(ctx context.Context, options *Blo
 		req.Raw().Header["x-ms-blob-if-match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["x-ms-blob-if-modified-since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["x-ms-blob-if-modified-since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["x-ms-blob-if-none-match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-blob-if-unmodified-since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-blob-if-unmodified-since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -1678,13 +1678,13 @@ func (client *BlobClient) releaseLeaseCreateRequest(ctx context.Context, leaseID
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -1768,13 +1768,13 @@ func (client *BlobClient) renewLeaseCreateRequest(ctx context.Context, leaseID s
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -1937,13 +1937,13 @@ func (client *BlobClient) setHTTPHeadersCreateRequest(ctx context.Context, optio
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.BlobCacheControl != nil {
 		req.Raw().Header["x-ms-blob-cache-control"] = []string{*options.BlobCacheControl}
@@ -2057,7 +2057,7 @@ func (client *BlobClient) setImmutabilityPolicyCreateRequest(ctx context.Context
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -2065,7 +2065,7 @@ func (client *BlobClient) setImmutabilityPolicyCreateRequest(ctx context.Context
 	if options != nil && options.ImmutabilityPolicyMode != nil {
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
-	req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(expiry).String()}
+	req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC7231(expiry).String()}
 	req.Raw().Header["x-ms-version"] = []string{version20260606}
 	return req, nil
 }
@@ -2216,13 +2216,13 @@ func (client *BlobClient) setMetadataCreateRequest(ctx context.Context, options 
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -2348,13 +2348,13 @@ func (client *BlobClient) setTagsCreateRequest(ctx context.Context, tags BlobTag
 		req.Raw().Header["x-ms-blob-if-match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["x-ms-blob-if-modified-since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["x-ms-blob-if-modified-since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["x-ms-blob-if-none-match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-blob-if-unmodified-since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-blob-if-unmodified-since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -2515,13 +2515,13 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Tier != nil {
 		req.Raw().Header["x-ms-access-tier"] = []string{string(*options.Tier)}
@@ -2537,7 +2537,7 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 		req.Raw().Header["x-ms-immutability-policy-mode"] = []string{string(*options.ImmutabilityPolicyMode)}
 	}
 	if options != nil && options.ImmutabilityPolicyExpiry != nil {
-		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC1123(*options.ImmutabilityPolicyExpiry).String()}
+		req.Raw().Header["x-ms-immutability-policy-until-date"] = []string{datetime.RFC7231(*options.ImmutabilityPolicyExpiry).String()}
 	}
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
@@ -2562,7 +2562,7 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*options.SourceIfMatch)}
 	}
 	if options != nil && options.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*options.SourceIfModifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC7231(*options.SourceIfModifiedSince).String()}
 	}
 	if options != nil && options.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*options.SourceIfNoneMatch)}
@@ -2571,7 +2571,7 @@ func (client *BlobClient) startCopyFromURLCreateRequest(ctx context.Context, cop
 		req.Raw().Header["x-ms-source-if-tags"] = []string{*options.SourceIfTags}
 	}
 	if options != nil && options.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*options.SourceIfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC7231(*options.SourceIfUnmodifiedSince).String()}
 	}
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}

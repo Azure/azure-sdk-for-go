@@ -11,7 +11,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 // SharedKeyCredential contains an account's name and its primary or secondary key.
@@ -139,8 +138,8 @@ func (o *DeleteOptions) format() *generated.ContainerClientDeleteOptions {
 			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
-			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
-			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
 		}
 	}
 
@@ -330,7 +329,7 @@ func (o *SetMetadataOptions) format() *generated.ContainerClientSetMetadataOptio
 		opts.LeaseID = o.LeaseAccessConditions.LeaseID
 	}
 	if o.ModifiedAccessConditions != nil {
-		opts.IfModifiedSince = shared.ConvertToGMT(o.ModifiedAccessConditions.IfModifiedSince)
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
 	}
 
 	// Note: missing mapping for most of o.ModifiedAccessConditions
@@ -381,8 +380,8 @@ func (o *SetAccessPolicyOptions) format() *generated.ContainerClientSetAccessPol
 			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
-			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
-			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
 		}
 	}
 
@@ -454,9 +453,9 @@ func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 		}
 		if o.AccessConditions.ModifiedAccessConditions != nil {
 			opts.IfMatch = o.AccessConditions.ModifiedAccessConditions.IfMatch
-			opts.IfModifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfModifiedSince)
+			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
-			opts.IfUnmodifiedSince = shared.ConvertToGMT(o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince)
+			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
 		}
 	}
 

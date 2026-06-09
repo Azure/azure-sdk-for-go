@@ -116,25 +116,25 @@ func (b BlobProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) err
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime        *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		AccessTierChangeTime        *datetime.RFC7231 `xml:"AccessTierChangeTime"`
 		ContentMD5                  *string           `xml:"Content-MD5"`
-		CopyCompletionTime          *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime                *datetime.RFC1123 `xml:"Creation-Time"`
-		DeletedTime                 *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn                   *datetime.RFC1123 `xml:"Expiry-Time"`
-		ImmutabilityPolicyExpiresOn *datetime.RFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn              *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified                *datetime.RFC1123 `xml:"Last-Modified"`
+		CopyCompletionTime          *datetime.RFC7231 `xml:"CopyCompletionTime"`
+		CreationTime                *datetime.RFC7231 `xml:"Creation-Time"`
+		DeletedTime                 *datetime.RFC7231 `xml:"DeletedTime"`
+		ExpiresOn                   *datetime.RFC7231 `xml:"Expiry-Time"`
+		ImmutabilityPolicyExpiresOn *datetime.RFC7231 `xml:"ImmutabilityPolicyUntilDate"`
+		LastAccessedOn              *datetime.RFC7231 `xml:"LastAccessTime"`
+		LastModified                *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias:                       (*alias)(&b),
-		AccessTierChangeTime:        (*datetime.RFC1123)(b.AccessTierChangeTime),
-		CopyCompletionTime:          (*datetime.RFC1123)(b.CopyCompletionTime),
-		CreationTime:                (*datetime.RFC1123)(b.CreationTime),
-		DeletedTime:                 (*datetime.RFC1123)(b.DeletedTime),
-		ExpiresOn:                   (*datetime.RFC1123)(b.ExpiresOn),
-		ImmutabilityPolicyExpiresOn: (*datetime.RFC1123)(b.ImmutabilityPolicyExpiresOn),
-		LastAccessedOn:              (*datetime.RFC1123)(b.LastAccessedOn),
-		LastModified:                (*datetime.RFC1123)(b.LastModified),
+		AccessTierChangeTime:        (*datetime.RFC7231)(b.AccessTierChangeTime),
+		CopyCompletionTime:          (*datetime.RFC7231)(b.CopyCompletionTime),
+		CreationTime:                (*datetime.RFC7231)(b.CreationTime),
+		DeletedTime:                 (*datetime.RFC7231)(b.DeletedTime),
+		ExpiresOn:                   (*datetime.RFC7231)(b.ExpiresOn),
+		ImmutabilityPolicyExpiresOn: (*datetime.RFC7231)(b.ImmutabilityPolicyExpiresOn),
+		LastAccessedOn:              (*datetime.RFC7231)(b.LastAccessedOn),
+		LastModified:                (*datetime.RFC7231)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(b.ContentMD5, runtime.Base64StdFormat)
@@ -148,15 +148,15 @@ func (b *BlobProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	type alias BlobProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime        *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		AccessTierChangeTime        *datetime.RFC7231 `xml:"AccessTierChangeTime"`
 		ContentMD5                  *string           `xml:"Content-MD5"`
-		CopyCompletionTime          *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime                *datetime.RFC1123 `xml:"Creation-Time"`
-		DeletedTime                 *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn                   *datetime.RFC1123 `xml:"Expiry-Time"`
-		ImmutabilityPolicyExpiresOn *datetime.RFC1123 `xml:"ImmutabilityPolicyUntilDate"`
-		LastAccessedOn              *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified                *datetime.RFC1123 `xml:"Last-Modified"`
+		CopyCompletionTime          *datetime.RFC7231 `xml:"CopyCompletionTime"`
+		CreationTime                *datetime.RFC7231 `xml:"Creation-Time"`
+		DeletedTime                 *datetime.RFC7231 `xml:"DeletedTime"`
+		ExpiresOn                   *datetime.RFC7231 `xml:"Expiry-Time"`
+		ImmutabilityPolicyExpiresOn *datetime.RFC7231 `xml:"ImmutabilityPolicyUntilDate"`
+		LastAccessedOn              *datetime.RFC7231 `xml:"LastAccessTime"`
+		LastModified                *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -313,12 +313,12 @@ func (c ContainerProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *datetime.RFC1123 `xml:"DeletedTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		DeletedTime  *datetime.RFC7231 `xml:"DeletedTime"`
+		LastModified *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias:        (*alias)(&c),
-		DeletedTime:  (*datetime.RFC1123)(c.DeletedTime),
-		LastModified: (*datetime.RFC1123)(c.LastModified),
+		DeletedTime:  (*datetime.RFC7231)(c.DeletedTime),
+		LastModified: (*datetime.RFC7231)(c.LastModified),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -328,8 +328,8 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	type alias ContainerProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *datetime.RFC1123 `xml:"DeletedTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		DeletedTime  *datetime.RFC7231 `xml:"DeletedTime"`
+		LastModified *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(c),
 	}
@@ -378,10 +378,10 @@ func (g GeoReplication) MarshalXML(enc *xml.Encoder, start xml.StartElement) err
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *datetime.RFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *datetime.RFC7231 `xml:"LastSyncTime"`
 	}{
 		alias:        (*alias)(&g),
-		LastSyncTime: (*datetime.RFC1123)(g.LastSyncTime),
+		LastSyncTime: (*datetime.RFC7231)(g.LastSyncTime),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -391,7 +391,7 @@ func (g *GeoReplication) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) 
 	type alias GeoReplication
 	aux := &struct {
 		*alias
-		LastSyncTime *datetime.RFC1123 `xml:"LastSyncTime"`
+		LastSyncTime *datetime.RFC7231 `xml:"LastSyncTime"`
 	}{
 		alias: (*alias)(g),
 	}

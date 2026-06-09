@@ -836,12 +836,8 @@ func TestExternalKeyReference(t *testing.T) {
 	}
 	keyClient := startTest(t, true)
 
-	localKeyName := "ekm-external-key-test"
+	localKeyName := createRandomName(t, "ekm-external-key-test")
 	ctx := context.Background()
-
-	// Best-effort cleanup of a prior run. Run this in playback too so the
-	// corresponding entry in the recording is consumed in lockstep.
-	_, _ = keyClient.DeleteKey(ctx, localKeyName, nil)
 
 	// ExternalKey and Kty are mutually exclusive on CreateKey: the key material
 	// lives at the EKM proxy, so the Key Vault never picks its own key type.
@@ -855,7 +851,15 @@ func TestExternalKeyReference(t *testing.T) {
 	require.NoError(t, err)
 
 	t.Cleanup(func() {
-		_, _ = keyClient.DeleteKey(context.Background(), localKeyName, nil)
+		_, err = keyClient.DeleteKey(context.Background(), localKeyName, nil)
+		require.NoError(t, err)
+		pollStatus(t, 404, func() error {
+			_, err := keyClient.GetDeletedKey(context.Background(), localKeyName, nil)
+			return err
+		})
+
+		_, err = keyClient.PurgeDeletedKey(context.Background(), localKeyName, nil)
+		require.NoError(t, err)
 	})
 
 	require.NotNil(t, created.Attributes, "expected attributes on created key")

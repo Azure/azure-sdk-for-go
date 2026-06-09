@@ -834,7 +834,7 @@ func TestExternalKeyReference(t *testing.T) {
 	if recording.GetRecordMode() == recording.LiveMode && os.Getenv("EKM_EXTERNAL_ID") == "" {
 		t.Skip("skipping live external-key test: set EKM_EXTERNAL_ID to run against a real EKM proxy")
 	}
-	keyClient := startTest(t, false)
+	keyClient := startTest(t, true)
 
 	localKeyName := "ekm-external-key-test"
 	ctx := context.Background()

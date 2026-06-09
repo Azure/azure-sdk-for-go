@@ -8,16 +8,16 @@ parameters:
   ArtifactName: packages
 
 steps:
-  # - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-  #   parameters:
-  #     ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #     PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
-  # - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
-  #   parameters:
-  #     ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #     PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
-  #     IncludeIndirect: false
+  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+      IncludeIndirect: false
 
   - pwsh: |
       . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
@@ -257,42 +257,42 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     condition: succeededOrFailed()
 
-    # - task: Powershell@2
-    #   inputs:
-    #     filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
-    #     arguments: >
-    #       -Packages '$(Packages)'
-    #     pwsh: true
-    #   displayName: 'Copyright header Check'
-    #   condition: succeededOrFailed()
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
+      arguments: >
+        -Packages '$(Packages)'
+      pwsh: true
+    displayName: 'Copyright header Check'
+    condition: succeededOrFailed()
 
-    # - task: Powershell@2
-    #   inputs:
-    #     filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
-    #     arguments: >
-    #       -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
-    #     pwsh: true
-    #   displayName: 'LICENSE.txt Check'
-    #   condition: succeededOrFailed()
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
+      arguments: >
+        -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
+      pwsh: true
+    displayName: 'LICENSE.txt Check'
+    condition: succeededOrFailed()
 
-    # - task: Powershell@2
-    #   inputs:
-    #     filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
-    #     arguments: >
-    #       -Packages '$(Packages)'
-    #     pwsh: true
-    #   displayName: 'Format Check'
-    #   condition: succeededOrFailed()
+  - task: Powershell@2
+    inputs:
+      filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
+      arguments: >
+        -Packages '$(Packages)'
+      pwsh: true
+    displayName: 'Format Check'
+    condition: succeededOrFailed()
 
-    # - template: /eng/common/pipelines/templates/steps/verify-links.yml
-    #   parameters:
-    #     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-    #       Directory: ''
-    #       Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-    #     ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-    #       Directory: sdk/${{ parameters.ServiceDirectory }}
-    #     CheckLinkGuidance: $true
-    #     Condition: succeededOrFailed()
+  - template: /eng/common/pipelines/templates/steps/verify-links.yml
+    parameters:
+      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+        Directory: ''
+        Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+      ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+        Directory: sdk/${{ parameters.ServiceDirectory }}
+      CheckLinkGuidance: $true
+      Condition: succeededOrFailed()
 
   - pwsh: |
       if (-not "$(Packages)") {

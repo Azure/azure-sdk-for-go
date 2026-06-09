@@ -18,8 +18,17 @@ type ServerFactory struct {
 	// AgentPoolsServer contains the fakes for client AgentPoolsClient
 	AgentPoolsServer AgentPoolsServer
 
+	// Server contains the fakes for client Client
+	Server Server
+
 	// IdentityBindingsServer contains the fakes for client IdentityBindingsClient
 	IdentityBindingsServer IdentityBindingsServer
+
+	// JWTAuthenticatorsServer contains the fakes for client JWTAuthenticatorsClient
+	JWTAuthenticatorsServer JWTAuthenticatorsServer
+
+	// LoadBalancersServer contains the fakes for client LoadBalancersClient
+	LoadBalancersServer LoadBalancersServer
 
 	// MachinesServer contains the fakes for client MachinesClient
 	MachinesServer MachinesServer
@@ -27,11 +36,23 @@ type ServerFactory struct {
 	// MaintenanceConfigurationsServer contains the fakes for client MaintenanceConfigurationsClient
 	MaintenanceConfigurationsServer MaintenanceConfigurationsServer
 
+	// MaintenanceWindowsServer contains the fakes for client MaintenanceWindowsClient
+	MaintenanceWindowsServer MaintenanceWindowsServer
+
+	// ManagedClusterSnapshotsServer contains the fakes for client ManagedClusterSnapshotsClient
+	ManagedClusterSnapshotsServer ManagedClusterSnapshotsServer
+
 	// ManagedClustersServer contains the fakes for client ManagedClustersClient
 	ManagedClustersServer ManagedClustersServer
 
 	// ManagedNamespacesServer contains the fakes for client ManagedNamespacesClient
 	ManagedNamespacesServer ManagedNamespacesServer
+
+	// MeshMembershipsServer contains the fakes for client MeshMembershipsClient
+	MeshMembershipsServer MeshMembershipsServer
+
+	// OperationStatusResultServer contains the fakes for client OperationStatusResultClient
+	OperationStatusResultServer OperationStatusResultServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
@@ -53,6 +74,9 @@ type ServerFactory struct {
 
 	// TrustedAccessRolesServer contains the fakes for client TrustedAccessRolesClient
 	TrustedAccessRolesServer TrustedAccessRolesServer
+
+	// VMSKUsServer contains the fakes for client VMSKUsClient
+	VMSKUsServer VMSKUsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -70,11 +94,18 @@ type ServerFactoryTransport struct {
 	srv                                 *ServerFactory
 	trMu                                sync.Mutex
 	trAgentPoolsServer                  *AgentPoolsServerTransport
+	trServer                            *ServerTransport
 	trIdentityBindingsServer            *IdentityBindingsServerTransport
+	trJWTAuthenticatorsServer           *JWTAuthenticatorsServerTransport
+	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
+	trMaintenanceWindowsServer          *MaintenanceWindowsServerTransport
+	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
 	trManagedNamespacesServer           *ManagedNamespacesServerTransport
+	trMeshMembershipsServer             *MeshMembershipsServerTransport
+	trOperationStatusResultServer       *OperationStatusResultServerTransport
 	trOperationsServer                  *OperationsServerTransport
 	trPrivateEndpointConnectionsServer  *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer        *PrivateLinkResourcesServerTransport
@@ -82,6 +113,7 @@ type ServerFactoryTransport struct {
 	trSnapshotsServer                   *SnapshotsServerTransport
 	trTrustedAccessRoleBindingsServer   *TrustedAccessRoleBindingsServerTransport
 	trTrustedAccessRolesServer          *TrustedAccessRolesServerTransport
+	trVMSKUsServer                      *VMSKUsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -100,11 +132,24 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AgentPoolsClient":
 		initServer(&s.trMu, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
+	case "Client":
+		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		resp, err = s.trServer.Do(req)
 	case "IdentityBindingsClient":
 		initServer(&s.trMu, &s.trIdentityBindingsServer, func() *IdentityBindingsServerTransport {
 			return NewIdentityBindingsServerTransport(&s.srv.IdentityBindingsServer)
 		})
 		resp, err = s.trIdentityBindingsServer.Do(req)
+	case "JWTAuthenticatorsClient":
+		initServer(&s.trMu, &s.trJWTAuthenticatorsServer, func() *JWTAuthenticatorsServerTransport {
+			return NewJWTAuthenticatorsServerTransport(&s.srv.JWTAuthenticatorsServer)
+		})
+		resp, err = s.trJWTAuthenticatorsServer.Do(req)
+	case "LoadBalancersClient":
+		initServer(&s.trMu, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
+			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
+		})
+		resp, err = s.trLoadBalancersServer.Do(req)
 	case "MachinesClient":
 		initServer(&s.trMu, &s.trMachinesServer, func() *MachinesServerTransport { return NewMachinesServerTransport(&s.srv.MachinesServer) })
 		resp, err = s.trMachinesServer.Do(req)
@@ -113,6 +158,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMaintenanceConfigurationsServerTransport(&s.srv.MaintenanceConfigurationsServer)
 		})
 		resp, err = s.trMaintenanceConfigurationsServer.Do(req)
+	case "MaintenanceWindowsClient":
+		initServer(&s.trMu, &s.trMaintenanceWindowsServer, func() *MaintenanceWindowsServerTransport {
+			return NewMaintenanceWindowsServerTransport(&s.srv.MaintenanceWindowsServer)
+		})
+		resp, err = s.trMaintenanceWindowsServer.Do(req)
+	case "ManagedClusterSnapshotsClient":
+		initServer(&s.trMu, &s.trManagedClusterSnapshotsServer, func() *ManagedClusterSnapshotsServerTransport {
+			return NewManagedClusterSnapshotsServerTransport(&s.srv.ManagedClusterSnapshotsServer)
+		})
+		resp, err = s.trManagedClusterSnapshotsServer.Do(req)
 	case "ManagedClustersClient":
 		initServer(&s.trMu, &s.trManagedClustersServer, func() *ManagedClustersServerTransport {
 			return NewManagedClustersServerTransport(&s.srv.ManagedClustersServer)
@@ -123,6 +178,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedNamespacesServerTransport(&s.srv.ManagedNamespacesServer)
 		})
 		resp, err = s.trManagedNamespacesServer.Do(req)
+	case "MeshMembershipsClient":
+		initServer(&s.trMu, &s.trMeshMembershipsServer, func() *MeshMembershipsServerTransport {
+			return NewMeshMembershipsServerTransport(&s.srv.MeshMembershipsServer)
+		})
+		resp, err = s.trMeshMembershipsServer.Do(req)
+	case "OperationStatusResultClient":
+		initServer(&s.trMu, &s.trOperationStatusResultServer, func() *OperationStatusResultServerTransport {
+			return NewOperationStatusResultServerTransport(&s.srv.OperationStatusResultServer)
+		})
+		resp, err = s.trOperationStatusResultServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -154,6 +219,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewTrustedAccessRolesServerTransport(&s.srv.TrustedAccessRolesServer)
 		})
 		resp, err = s.trTrustedAccessRolesServer.Do(req)
+	case "VMSKUsClient":
+		initServer(&s.trMu, &s.trVMSKUsServer, func() *VMSKUsServerTransport { return NewVMSKUsServerTransport(&s.srv.VMSKUsServer) })
+		resp, err = s.trVMSKUsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

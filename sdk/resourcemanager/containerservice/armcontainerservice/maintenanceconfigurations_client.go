@@ -19,7 +19,7 @@ import (
 // MaintenanceConfigurationsClient contains the methods for the MaintenanceConfigurations group.
 // Don't use this type directly, use NewMaintenanceConfigurationsClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-04-02-preview
 type MaintenanceConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *MaintenanceConfigurationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260402Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -168,7 +168,7 @@ func (client *MaintenanceConfigurationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260402Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -227,7 +227,7 @@ func (client *MaintenanceConfigurationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260402Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *MaintenanceConfigurationsClient) listByManagedClusterCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260402Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

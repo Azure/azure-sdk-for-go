@@ -40,9 +40,33 @@ func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	}
 }
 
+// NewClient creates a new instance of Client.
+func (c *ClientFactory) NewClient() *Client {
+	return &Client{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewIdentityBindingsClient creates a new instance of IdentityBindingsClient.
 func (c *ClientFactory) NewIdentityBindingsClient() *IdentityBindingsClient {
 	return &IdentityBindingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewJWTAuthenticatorsClient creates a new instance of JWTAuthenticatorsClient.
+func (c *ClientFactory) NewJWTAuthenticatorsClient() *JWTAuthenticatorsClient {
+	return &JWTAuthenticatorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewLoadBalancersClient creates a new instance of LoadBalancersClient.
+func (c *ClientFactory) NewLoadBalancersClient() *LoadBalancersClient {
+	return &LoadBalancersClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -64,6 +88,22 @@ func (c *ClientFactory) NewMaintenanceConfigurationsClient() *MaintenanceConfigu
 	}
 }
 
+// NewMaintenanceWindowsClient creates a new instance of MaintenanceWindowsClient.
+func (c *ClientFactory) NewMaintenanceWindowsClient() *MaintenanceWindowsClient {
+	return &MaintenanceWindowsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedClusterSnapshotsClient creates a new instance of ManagedClusterSnapshotsClient.
+func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
+	return &ManagedClusterSnapshotsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewManagedClustersClient creates a new instance of ManagedClustersClient.
 func (c *ClientFactory) NewManagedClustersClient() *ManagedClustersClient {
 	return &ManagedClustersClient{
@@ -75,6 +115,22 @@ func (c *ClientFactory) NewManagedClustersClient() *ManagedClustersClient {
 // NewManagedNamespacesClient creates a new instance of ManagedNamespacesClient.
 func (c *ClientFactory) NewManagedNamespacesClient() *ManagedNamespacesClient {
 	return &ManagedNamespacesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMeshMembershipsClient creates a new instance of MeshMembershipsClient.
+func (c *ClientFactory) NewMeshMembershipsClient() *MeshMembershipsClient {
+	return &MeshMembershipsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewOperationStatusResultClient creates a new instance of OperationStatusResultClient.
+func (c *ClientFactory) NewOperationStatusResultClient() *OperationStatusResultClient {
+	return &OperationStatusResultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -130,6 +186,14 @@ func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleB
 // NewTrustedAccessRolesClient creates a new instance of TrustedAccessRolesClient.
 func (c *ClientFactory) NewTrustedAccessRolesClient() *TrustedAccessRolesClient {
 	return &TrustedAccessRolesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVMSKUsClient creates a new instance of VMSKUsClient.
+func (c *ClientFactory) NewVMSKUsClient() *VMSKUsClient {
+	return &VMSKUsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

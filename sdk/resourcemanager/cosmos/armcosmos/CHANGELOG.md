@@ -1,5 +1,57 @@
 # Release History
 
+## 4.0.0-beta.4 (2026-06-09)
+### Breaking Changes
+
+- Field `NodeCount` of struct `GarnetClusterResourceProperties` has been removed
+
+### Features Added
+
+- New value `ContinuousTierContinuous35Days` added to enum type `ContinuousTier`
+- New enum type `GarnetAuthenticationType` with values `GarnetAuthenticationTypeEntra`
+- New enum type `SoftDeleteActionKind` with values `SoftDeleteActionKindPermanentDeleteResource`, `SoftDeleteActionKindRestoreSoftDeletedResource`
+- New function `*ClientFactory.NewSoftDeletedDatabaseAccountsClient() *SoftDeletedDatabaseAccountsClient`
+- New function `*ClientFactory.NewSoftDeletedSQLContainersClient() *SoftDeletedSQLContainersClient`
+- New function `*ClientFactory.NewSoftDeletedSQLDatabasesClient() *SoftDeletedSQLDatabasesClient`
+- New function `NewSoftDeletedDatabaseAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftDeletedDatabaseAccountsClient, error)`
+- New function `*SoftDeletedDatabaseAccountsClient.Get(ctx context.Context, resourceGroupName string, location string, accountName string, options *SoftDeletedDatabaseAccountsClientGetOptions) (SoftDeletedDatabaseAccountsClientGetResponse, error)`
+- New function `*SoftDeletedDatabaseAccountsClient.ListByLocation(ctx context.Context, location string, options *SoftDeletedDatabaseAccountsClientListByLocationOptions) (SoftDeletedDatabaseAccountsClientListByLocationResponse, error)`
+- New function `*SoftDeletedDatabaseAccountsClient.ListByResourceGroupAndLocation(ctx context.Context, resourceGroupName string, location string, options *SoftDeletedDatabaseAccountsClientListByResourceGroupAndLocationOptions) (SoftDeletedDatabaseAccountsClientListByResourceGroupAndLocationResponse, error)`
+- New function `*SoftDeletedDatabaseAccountsClient.BeginPurge(ctx context.Context, resourceGroupName string, location string, accountName string, options *SoftDeletedDatabaseAccountsClientBeginPurgeOptions) (*runtime.Poller[SoftDeletedDatabaseAccountsClientPurgeResponse], error)`
+- New function `*SoftDeletedDatabaseAccountsClient.BeginRestore(ctx context.Context, resourceGroupName string, location string, accountName string, options *SoftDeletedDatabaseAccountsClientBeginRestoreOptions) (*runtime.Poller[SoftDeletedDatabaseAccountsClientRestoreResponse], error)`
+- New function `NewSoftDeletedSQLContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftDeletedSQLContainersClient, error)`
+- New function `*SoftDeletedSQLContainersClient.Get(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, containerName string, options *SoftDeletedSQLContainersClientGetOptions) (SoftDeletedSQLContainersClientGetResponse, error)`
+- New function `*SoftDeletedSQLContainersClient.List(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLContainersClientListOptions) (SoftDeletedSQLContainersClientListResponse, error)`
+- New function `*SoftDeletedSQLContainersClient.BeginPurge(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, containerName string, options *SoftDeletedSQLContainersClientBeginPurgeOptions) (*runtime.Poller[SoftDeletedSQLContainersClientPurgeResponse], error)`
+- New function `*SoftDeletedSQLContainersClient.BeginRestore(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, containerName string, options *SoftDeletedSQLContainersClientBeginRestoreOptions) (*runtime.Poller[SoftDeletedSQLContainersClientRestoreResponse], error)`
+- New function `NewSoftDeletedSQLDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftDeletedSQLDatabasesClient, error)`
+- New function `*SoftDeletedSQLDatabasesClient.Get(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientGetOptions) (SoftDeletedSQLDatabasesClientGetResponse, error)`
+- New function `*SoftDeletedSQLDatabasesClient.List(ctx context.Context, resourceGroupName string, location string, accountName string, options *SoftDeletedSQLDatabasesClientListOptions) (SoftDeletedSQLDatabasesClientListResponse, error)`
+- New function `*SoftDeletedSQLDatabasesClient.BeginPurge(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginPurgeOptions) (*runtime.Poller[SoftDeletedSQLDatabasesClientPurgeResponse], error)`
+- New function `*SoftDeletedSQLDatabasesClient.BeginRestore(ctx context.Context, resourceGroupName string, location string, accountName string, databaseName string, options *SoftDeletedSQLDatabasesClientBeginRestoreOptions) (*runtime.Poller[SoftDeletedSQLDatabasesClientRestoreResponse], error)`
+- New struct `SoftDeleteConfiguration`
+- New struct `SoftDeletedDatabaseAccountGetResult`
+- New struct `SoftDeletedDatabaseAccountProperties`
+- New struct `SoftDeletedDatabaseAccountResource`
+- New struct `SoftDeletedDatabaseAccountsListResult`
+- New struct `SoftDeletedSQLContainerGetResult`
+- New struct `SoftDeletedSQLContainerProperties`
+- New struct `SoftDeletedSQLContainerResource`
+- New struct `SoftDeletedSQLContainersListResult`
+- New struct `SoftDeletedSQLDatabaseGetResult`
+- New struct `SoftDeletedSQLDatabaseProperties`
+- New struct `SoftDeletedSQLDatabaseResource`
+- New struct `SoftDeletedSQLDatabasesListResult`
+- New struct `SoftDeletionMetadata`
+- New field `ApproximateLastUsageTime` in struct `AccountKeyMetadata`
+- New field `EnforceHierarchicalPartitionKeyIDLastLevel`, `SoftDeleteConfiguration` in struct `DatabaseAccountCreateUpdateProperties`
+- New field `EnforceHierarchicalPartitionKeyIDLastLevel`, `SoftDeleteConfiguration` in struct `DatabaseAccountGetProperties`
+- New field `SkipAccountKeysLastUsageCheck` in struct `DatabaseAccountRegenerateKeyParameters`
+- New field `EnforceHierarchicalPartitionKeyIDLastLevel`, `SoftDeleteConfiguration` in struct `DatabaseAccountUpdateProperties`
+- New field `AuthenticationMethod`, `Persistence` in struct `GarnetClusterResourcePatchProperties`
+- New field `AuthenticationMethod`, `Persistence`, `ShardCount` in struct `GarnetClusterResourceProperties`
+
+
 ## 4.0.0-beta.3 (2026-03-23)
 ### Breaking Changes
 

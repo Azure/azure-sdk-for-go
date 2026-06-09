@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeyCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,13 +44,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateClientEncryptionKeyResponse{
-	// 	ClientEncryptionKeyGetResults: &armcosmos.ClientEncryptionKeyGetResults{
+	// 	ClientEncryptionKeyGetResults: armcosmos.ClientEncryptionKeyGetResults{
 	// 		Name: to.Ptr("cekName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
@@ -74,7 +74,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContainerCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,13 +242,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
 	// 		Name: to.Ptr("containerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
@@ -421,7 +421,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerRestore.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRestore.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContainerRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -453,13 +453,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		Name: to.Ptr("containerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
@@ -532,7 +532,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlMaterializedViewCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlMaterializedViewCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlMaterializedViewCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -591,13 +591,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlMaterial
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/mvContainerName"),
 	// 		Name: to.Ptr("mvContainerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
@@ -652,7 +652,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlMaterial
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -678,13 +678,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse{
-	// 	SQLDatabaseGetResults: &armcosmos.SQLDatabaseGetResults{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
@@ -703,7 +703,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseC
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseRestore.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRestore.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,13 +735,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseR
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse{
-	// 	SQLDatabaseGetResults: &armcosmos.SQLDatabaseGetResults{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
@@ -760,7 +760,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseR
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -783,13 +783,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse{
-	// 	SQLRoleAssignmentGetResults: &armcosmos.SQLRoleAssignmentGetResults{
+	// 	SQLRoleAssignmentGetResults: armcosmos.SQLRoleAssignmentGetResults{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
@@ -802,7 +802,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -837,13 +837,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse{
-	// 	SQLRoleDefinitionGetResults: &armcosmos.SQLRoleDefinitionGetResults{
+	// 	SQLRoleDefinitionGetResults: armcosmos.SQLRoleDefinitionGetResults{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
@@ -867,7 +867,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlStoredProcedureCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -892,13 +892,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLStoredProcedureResponse{
-	// 	SQLStoredProcedureGetResults: &armcosmos.SQLStoredProcedureGetResults{
+	// 	SQLStoredProcedureGetResults: armcosmos.SQLStoredProcedureGetResults{
 	// 		Name: to.Ptr("storedProcedureName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlStoredProcedures"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
@@ -915,7 +915,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlTriggerCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -942,13 +942,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLTriggerResponse{
-	// 	SQLTriggerGetResults: &armcosmos.SQLTriggerGetResults{
+	// 	SQLTriggerGetResults: armcosmos.SQLTriggerGetResults{
 	// 		Name: to.Ptr("triggerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlTriggers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
@@ -967,7 +967,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionCreateUpdate.json
 func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -992,13 +992,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse{
-	// 	SQLUserDefinedFunctionGetResults: &armcosmos.SQLUserDefinedFunctionGetResults{
+	// 	SQLUserDefinedFunctionGetResults: armcosmos.SQLUserDefinedFunctionGetResults{
 	// 		Name: to.Ptr("userDefinedFunctionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlUserDefinedFunctions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
@@ -1015,7 +1015,7 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1032,11 +1032,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1053,11 +1053,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleAssignmentDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1074,7 +1074,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1083,7 +1083,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleDefinitionDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1100,7 +1100,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1109,7 +1109,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlStoredProcedureDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1126,11 +1126,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlTriggerDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1147,11 +1147,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlUserDefinedFunctionDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionDelete.json
 func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1168,11 +1168,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlClientEncryptionKeyGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeyGet.json
 func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1191,7 +1191,7 @@ func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetClientEncryptionKeyResponse{
-	// 	ClientEncryptionKeyGetResults: &armcosmos.ClientEncryptionKeyGetResults{
+	// 	ClientEncryptionKeyGetResults: armcosmos.ClientEncryptionKeyGetResults{
 	// 		Name: to.Ptr("cekName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
@@ -1215,7 +1215,7 @@ func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerGet.json
 func ExampleSQLResourcesClient_GetSQLContainer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1234,7 +1234,7 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
 	// 		Name: to.Ptr("containerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
@@ -1423,7 +1423,7 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerThroughputGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1442,7 +1442,7 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLContainerThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/throughputSettings"),
@@ -1488,7 +1488,7 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseGet.json
 func ExampleSQLResourcesClient_GetSQLDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1507,7 +1507,7 @@ func ExampleSQLResourcesClient_GetSQLDatabase() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLDatabaseResponse{
-	// 	SQLDatabaseGetResults: &armcosmos.SQLDatabaseGetResults{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
@@ -1528,7 +1528,7 @@ func ExampleSQLResourcesClient_GetSQLDatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseThroughputGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseThroughputGet.json
 func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1547,7 +1547,7 @@ func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
@@ -1570,7 +1570,7 @@ func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleAssignmentGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentGet.json
 func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1589,7 +1589,7 @@ func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLRoleAssignmentResponse{
-	// 	SQLRoleAssignmentGetResults: &armcosmos.SQLRoleAssignmentGetResults{
+	// 	SQLRoleAssignmentGetResults: armcosmos.SQLRoleAssignmentGetResults{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
@@ -1602,7 +1602,7 @@ func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleDefinitionGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionGet.json
 func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1621,7 +1621,7 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLRoleDefinitionResponse{
-	// 	SQLRoleDefinitionGetResults: &armcosmos.SQLRoleDefinitionGetResults{
+	// 	SQLRoleDefinitionGetResults: armcosmos.SQLRoleDefinitionGetResults{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
@@ -1647,7 +1647,7 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlStoredProcedureGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureGet.json
 func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1666,7 +1666,7 @@ func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLStoredProcedureResponse{
-	// 	SQLStoredProcedureGetResults: &armcosmos.SQLStoredProcedureGetResults{
+	// 	SQLStoredProcedureGetResults: armcosmos.SQLStoredProcedureGetResults{
 	// 		Name: to.Ptr("storedProcedureName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlStoredProcedures"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
@@ -1683,7 +1683,7 @@ func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlTriggerGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerGet.json
 func ExampleSQLResourcesClient_GetSQLTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1702,7 +1702,7 @@ func ExampleSQLResourcesClient_GetSQLTrigger() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLTriggerResponse{
-	// 	SQLTriggerGetResults: &armcosmos.SQLTriggerGetResults{
+	// 	SQLTriggerGetResults: armcosmos.SQLTriggerGetResults{
 	// 		Name: to.Ptr("triggerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlTriggers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
@@ -1721,7 +1721,7 @@ func ExampleSQLResourcesClient_GetSQLTrigger() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlUserDefinedFunctionGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionGet.json
 func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1740,7 +1740,7 @@ func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLUserDefinedFunctionResponse{
-	// 	SQLUserDefinedFunctionGetResults: &armcosmos.SQLUserDefinedFunctionGetResults{
+	// 	SQLUserDefinedFunctionGetResults: armcosmos.SQLUserDefinedFunctionGetResults{
 	// 		Name: to.Ptr("userDefinedFunctionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlUserDefinedFunctions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
@@ -1757,7 +1757,7 @@ func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlClientEncryptionKeysList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlClientEncryptionKeysList.json
 func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1830,7 +1830,7 @@ func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerPartitionMerge.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerPartitionMerge.json
 func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1849,13 +1849,13 @@ func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
 	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
 	// 			{
 	// 				ID: to.Ptr("0"),
@@ -1886,7 +1886,7 @@ func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerList.json
 func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2225,7 +2225,7 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseList.json
 func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2274,7 +2274,7 @@ func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleAssignmentList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleAssignmentList.json
 func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2315,7 +2315,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlRoleDefinitionList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlRoleDefinitionList.json
 func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2369,7 +2369,7 @@ func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlStoredProcedureList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlStoredProcedureList.json
 func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2414,7 +2414,7 @@ func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlTriggerList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlTriggerList.json
 func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2461,7 +2461,7 @@ func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlUserDefinedFunctionList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlUserDefinedFunctionList.json
 func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2506,7 +2506,7 @@ func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerMigrateToAutoscale.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2523,13 +2523,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2547,7 +2547,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerMigrateToManualThroughput.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2564,13 +2564,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2585,7 +2585,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseMigrateToAutoscale.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToAutoscale.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2602,13 +2602,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2626,7 +2626,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseMigrateToManualThroughput.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseMigrateToManualThroughput.json
 func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2643,13 +2643,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2664,7 +2664,7 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerBackupInformation.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerBackupInformation.json
 func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2683,13 +2683,13 @@ func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse{
-	// 	BackupInformation: &armcosmos.BackupInformation{
+	// 	BackupInformation: armcosmos.BackupInformation{
 	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
 	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
 	// 		},
@@ -2697,7 +2697,7 @@ func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerRedistributeThroughput.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRedistributeThroughput.json
 func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2739,13 +2739,13 @@ func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -2776,7 +2776,7 @@ func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerRetrieveThroughputDistribution.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerRetrieveThroughputDistribution.json
 func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2806,13 +2806,13 @@ func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -2833,7 +2833,7 @@ func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution()
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabasePartitionMerge.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabasePartitionMerge.json
 func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2852,13 +2852,13 @@ func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
 	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
 	// 			{
 	// 				ID: to.Ptr("0"),
@@ -2889,7 +2889,7 @@ func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseRedistributeThroughput.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRedistributeThroughput.json
 func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2931,13 +2931,13 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 			},
@@ -2946,7 +2946,7 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseRetrieveThroughputDistribution.json
 func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2976,13 +2976,13 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 			},
@@ -2991,7 +2991,7 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlContainerThroughputUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlContainerThroughputUpdate.json
 func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3016,13 +3016,13 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/throughputSettings"),
@@ -3066,7 +3066,7 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBSqlDatabaseThroughputUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBSqlDatabaseThroughputUpdate.json
 func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3091,13 +3091,13 @@ func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),

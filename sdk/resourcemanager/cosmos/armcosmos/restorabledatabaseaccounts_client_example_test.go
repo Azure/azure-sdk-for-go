@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableDatabaseAccountGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBRestorableDatabaseAccountGet.json
 func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.RestorableDatabaseAccountsClientGetByLocationResponse{
-	// 	RestorableDatabaseAccountGetResult: &armcosmos.RestorableDatabaseAccountGetResult{
+	// 	RestorableDatabaseAccountGetResult: armcosmos.RestorableDatabaseAccountGetResult{
 	// 		Name: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
@@ -59,7 +59,7 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableDatabaseAccountNoLocationList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBRestorableDatabaseAccountNoLocationList.json
 func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableDatabaseAccountList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBRestorableDatabaseAccountList.json
 func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

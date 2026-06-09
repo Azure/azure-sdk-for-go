@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolAccountCreate.json
+// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolAccountCreate.json
 func ExampleThroughputPoolAccountClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,13 +34,13 @@ func ExampleThroughputPoolAccountClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ThroughputPoolAccountClientCreateResponse{
-	// 	ThroughputPoolAccountResource: &armcosmos.ThroughputPoolAccountResource{
+	// 	ThroughputPoolAccountResource: armcosmos.ThroughputPoolAccountResource{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/throughputPools/tp1/throughputPoolAccounts/db1"),
 	// 		Properties: &armcosmos.ThroughputPoolAccountProperties{
 	// 			AccountInstanceID: to.Ptr("{instance-id1}"),
@@ -52,7 +52,7 @@ func ExampleThroughputPoolAccountClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolAccountDelete.json
+// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolAccountDelete.json
 func ExampleThroughputPoolAccountClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,11 +69,11 @@ func ExampleThroughputPoolAccountClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolAccountGet.json
+// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolAccountGet.json
 func ExampleThroughputPoolAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleThroughputPoolAccountClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ThroughputPoolAccountClientGetResponse{
-	// 	ThroughputPoolAccountResource: &armcosmos.ThroughputPoolAccountResource{
+	// 	ThroughputPoolAccountResource: armcosmos.ThroughputPoolAccountResource{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/throughputPools/tp1/throughputPoolAccounts/db1"),
 	// 		Properties: &armcosmos.ThroughputPoolAccountProperties{
 	// 			AccountInstanceID: to.Ptr("{instance-id}"),

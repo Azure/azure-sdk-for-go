@@ -156,6 +156,15 @@ type ServerFactory struct {
 	// ServiceServer contains the fakes for client ServiceClient
 	ServiceServer ServiceServer
 
+	// SoftDeletedDatabaseAccountsServer contains the fakes for client SoftDeletedDatabaseAccountsClient
+	SoftDeletedDatabaseAccountsServer SoftDeletedDatabaseAccountsServer
+
+	// SoftDeletedSQLContainersServer contains the fakes for client SoftDeletedSQLContainersClient
+	SoftDeletedSQLContainersServer SoftDeletedSQLContainersServer
+
+	// SoftDeletedSQLDatabasesServer contains the fakes for client SoftDeletedSQLDatabasesClient
+	SoftDeletedSQLDatabasesServer SoftDeletedSQLDatabasesServer
+
 	// TableResourcesServer contains the fakes for client TableResourcesClient
 	TableResourcesServer TableResourcesServer
 
@@ -233,6 +242,9 @@ type ServerFactoryTransport struct {
 	trRestorableTablesServer                       *RestorableTablesServerTransport
 	trSQLResourcesServer                           *SQLResourcesServerTransport
 	trServiceServer                                *ServiceServerTransport
+	trSoftDeletedDatabaseAccountsServer            *SoftDeletedDatabaseAccountsServerTransport
+	trSoftDeletedSQLContainersServer               *SoftDeletedSQLContainersServerTransport
+	trSoftDeletedSQLDatabasesServer                *SoftDeletedSQLDatabasesServerTransport
 	trTableResourcesServer                         *TableResourcesServerTransport
 	trThroughputPoolAccountServer                  *ThroughputPoolAccountServerTransport
 	trThroughputPoolAccountsServer                 *ThroughputPoolAccountsServerTransport
@@ -466,6 +478,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ServiceClient":
 		initServer(&s.trMu, &s.trServiceServer, func() *ServiceServerTransport { return NewServiceServerTransport(&s.srv.ServiceServer) })
 		resp, err = s.trServiceServer.Do(req)
+	case "SoftDeletedDatabaseAccountsClient":
+		initServer(&s.trMu, &s.trSoftDeletedDatabaseAccountsServer, func() *SoftDeletedDatabaseAccountsServerTransport {
+			return NewSoftDeletedDatabaseAccountsServerTransport(&s.srv.SoftDeletedDatabaseAccountsServer)
+		})
+		resp, err = s.trSoftDeletedDatabaseAccountsServer.Do(req)
+	case "SoftDeletedSQLContainersClient":
+		initServer(&s.trMu, &s.trSoftDeletedSQLContainersServer, func() *SoftDeletedSQLContainersServerTransport {
+			return NewSoftDeletedSQLContainersServerTransport(&s.srv.SoftDeletedSQLContainersServer)
+		})
+		resp, err = s.trSoftDeletedSQLContainersServer.Do(req)
+	case "SoftDeletedSQLDatabasesClient":
+		initServer(&s.trMu, &s.trSoftDeletedSQLDatabasesServer, func() *SoftDeletedSQLDatabasesServerTransport {
+			return NewSoftDeletedSQLDatabasesServerTransport(&s.srv.SoftDeletedSQLDatabasesServer)
+		})
+		resp, err = s.trSoftDeletedSQLDatabasesServer.Do(req)
 	case "TableResourcesClient":
 		initServer(&s.trMu, &s.trTableResourcesServer, func() *TableResourcesServerTransport {
 			return NewTableResourcesServerTransport(&s.srv.TableResourcesServer)

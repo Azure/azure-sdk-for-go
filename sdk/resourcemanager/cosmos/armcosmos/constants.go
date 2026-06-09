@@ -4,6 +4,10 @@
 
 package armcosmos
 
+const (
+	version20260401Preview string = "2026-04-01-preview"
+)
+
 // APIType - Enum to indicate the API type of the restorable database account.
 type APIType string
 
@@ -362,6 +366,8 @@ type ContinuousTier string
 
 const (
 	ContinuousTierContinuous30Days ContinuousTier = "Continuous30Days"
+	// ContinuousTierContinuous35Days - Continuous 35 Days backup tier.
+	ContinuousTierContinuous35Days ContinuousTier = "Continuous35Days"
 	ContinuousTierContinuous7Days  ContinuousTier = "Continuous7Days"
 )
 
@@ -369,6 +375,7 @@ const (
 func PossibleContinuousTierValues() []ContinuousTier {
 	return []ContinuousTier{
 		ContinuousTierContinuous30Days,
+		ContinuousTierContinuous35Days,
 		ContinuousTierContinuous7Days,
 	}
 }
@@ -694,6 +701,21 @@ func PossibleFleetspacePropertiesServiceTierValues() []FleetspacePropertiesServi
 	return []FleetspacePropertiesServiceTier{
 		FleetspacePropertiesServiceTierBusinessCritical,
 		FleetspacePropertiesServiceTierGeneralPurpose,
+	}
+}
+
+// GarnetAuthenticationType - The authentication method used for the Garnet cluster.
+type GarnetAuthenticationType string
+
+const (
+	// GarnetAuthenticationTypeEntra - Microsoft Entra authentication.
+	GarnetAuthenticationTypeEntra GarnetAuthenticationType = "Entra"
+)
+
+// PossibleGarnetAuthenticationTypeValues returns the possible values for the GarnetAuthenticationType const type.
+func PossibleGarnetAuthenticationTypeValues() []GarnetAuthenticationType {
+	return []GarnetAuthenticationType{
+		GarnetAuthenticationTypeEntra,
 	}
 }
 
@@ -1260,6 +1282,24 @@ func PossibleSeverityValues() []Severity {
 	return []Severity{
 		SeverityError,
 		SeverityWarning,
+	}
+}
+
+// SoftDeleteActionKind - The kind of soft delete action to perform.
+type SoftDeleteActionKind string
+
+const (
+	// SoftDeleteActionKindPermanentDeleteResource - Permanently deletes the soft-deleted resource.
+	SoftDeleteActionKindPermanentDeleteResource SoftDeleteActionKind = "PermanentDeleteResource"
+	// SoftDeleteActionKindRestoreSoftDeletedResource - Restores the soft-deleted resource to active/online state.
+	SoftDeleteActionKindRestoreSoftDeletedResource SoftDeleteActionKind = "RestoreSoftDeletedResource"
+)
+
+// PossibleSoftDeleteActionKindValues returns the possible values for the SoftDeleteActionKind const type.
+func PossibleSoftDeleteActionKindValues() []SoftDeleteActionKind {
+	return []SoftDeleteActionKind{
+		SoftDeleteActionKindPermanentDeleteResource,
+		SoftDeleteActionKindRestoreSoftDeletedResource,
 	}
 }
 

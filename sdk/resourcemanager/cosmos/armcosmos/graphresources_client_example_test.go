@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphResourceCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGraphResourceCreateUpdate.json
 func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,13 +38,13 @@ func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GraphResourcesClientCreateUpdateGraphResponse{
-	// 	GraphResourceGetResults: &armcosmos.GraphResourceGetResults{
+	// 	GraphResourceGetResults: armcosmos.GraphResourceGetResults{
 	// 		Name: to.Ptr("graphName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/graphs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/graphs/graphName"),
@@ -60,7 +60,7 @@ func ExampleGraphResourcesClient_BeginCreateUpdateGraph() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphResourceDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGraphResourceDelete.json
 func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -86,7 +86,7 @@ func ExampleGraphResourcesClient_BeginDeleteGraphResource() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphResourceGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGraphResourceGet.json
 func ExampleGraphResourcesClient_GetGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleGraphResourcesClient_GetGraph() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GraphResourcesClientGetGraphResponse{
-	// 	GraphResourceGetResults: &armcosmos.GraphResourceGetResults{
+	// 	GraphResourceGetResults: armcosmos.GraphResourceGetResults{
 	// 		Name: to.Ptr("graphName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/graphs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/graphs/graphName"),
@@ -121,7 +121,7 @@ func ExampleGraphResourcesClient_GetGraph() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphResourceList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGraphResourceList.json
 func ExampleGraphResourcesClient_NewListGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

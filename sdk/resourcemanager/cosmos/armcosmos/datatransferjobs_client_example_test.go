@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobCancel.json
+// Generated from example definition: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobCancel.json
 func ExampleDataTransferJobsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientCancelResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -56,7 +56,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobComplete.json
+// Generated from example definition: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobComplete.json
 func ExampleDataTransferJobsClient_Complete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleDataTransferJobsClient_Complete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientCompleteResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/e35cc6eb-c8e3-447b-8de6-b83328cd0098/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -100,7 +100,7 @@ func ExampleDataTransferJobsClient_Complete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobCreate.json
+// Generated from example definition: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobCreate.json
 func ExampleDataTransferJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleDataTransferJobsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientCreateResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -157,7 +157,7 @@ func ExampleDataTransferJobsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobGet.json
+// Generated from example definition: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobGet.json
 func ExampleDataTransferJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleDataTransferJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientGetResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -201,7 +201,7 @@ func ExampleDataTransferJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobFeed.json
+// Generated from example definition: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobFeed.json
 func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleDataTransferJobsClient_NewListByDatabaseAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobPause.json
+// Generated from example definition: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobPause.json
 func ExampleDataTransferJobsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientPauseResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -298,7 +298,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/data-transfer-service/CosmosDBDataTransferJobResume.json
+// Generated from example definition: 2026-04-01-preview/data-transfer-service/CosmosDBDataTransferJobResume.json
 func ExampleDataTransferJobsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleDataTransferJobsClient_Resume() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientResumeResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{

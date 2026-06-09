@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentCreateUpdate.json
 func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,13 +35,13 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientCreateUpdateMongoMIRoleAssignmentResponse{
-	// 	MongoMIRoleAssignmentResource: &armcosmos.MongoMIRoleAssignmentResource{
+	// 	MongoMIRoleAssignmentResource: armcosmos.MongoMIRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleAssignments/myRoleAssignmentId"),
@@ -54,7 +54,7 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionCreateUpdate.json
 func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,13 +89,13 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientCreateUpdateMongoMIRoleDefinitionResponse{
-	// 	MongoMIRoleDefinitionResource: &armcosmos.MongoMIRoleDefinitionResource{
+	// 	MongoMIRoleDefinitionResource: armcosmos.MongoMIRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleDefinitions/myRoleDefinitionId"),
@@ -119,7 +119,7 @@ func ExampleMongoMIResourcesClient_BeginCreateUpdateMongoMIRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentDelete.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentDelete.json
 func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -145,7 +145,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionDelete.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionDelete.json
 func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -171,7 +171,7 @@ func ExampleMongoMIResourcesClient_BeginDeleteMongoMIRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentGet.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentGet.json
 func ExampleMongoMIResourcesClient_GetMongoMIRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{
-	// 	MongoMIRoleAssignmentResource: &armcosmos.MongoMIRoleAssignmentResource{
+	// 	MongoMIRoleAssignmentResource: armcosmos.MongoMIRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleAssignments/myRoleAssignmentId"),
@@ -203,7 +203,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionGet.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionGet.json
 func ExampleMongoMIResourcesClient_GetMongoMIRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{
-	// 	MongoMIRoleDefinitionResource: &armcosmos.MongoMIRoleDefinitionResource{
+	// 	MongoMIRoleDefinitionResource: armcosmos.MongoMIRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoMIRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongoMIRoleDefinitions/myRoleDefinitionId"),
@@ -248,7 +248,7 @@ func ExampleMongoMIResourcesClient_GetMongoMIRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentList.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleAssignmentList.json
 func ExampleMongoMIResourcesClient_NewListMongoMIRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleMongoMIResourcesClient_NewListMongoMIRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionList.json
+// Generated from example definition: 2026-04-01-preview/mongoMIrbac/CosmosDBMongoMIRoleDefinitionList.json
 func ExampleMongoMIResourcesClient_NewListMongoMIRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

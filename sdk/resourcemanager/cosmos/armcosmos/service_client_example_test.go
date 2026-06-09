@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDataTransferServiceCreate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBDataTransferServiceCreate.json
 func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,13 +35,13 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("DataTransfer"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/DataTransfer"),
@@ -63,7 +63,7 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceCreate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGraphAPIComputeServiceCreate.json
 func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,13 +86,13 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("GraphAPICompute"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/GraphAPICompute"),
@@ -116,7 +116,7 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceCreate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBMaterializedViewsBuilderServiceCreate.json
 func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,13 +139,13 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("MaterializedViewsBuilder"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/MaterializedViewsBuilder"),
@@ -167,7 +167,7 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
+// Generated from example definition: 2026-04-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
 func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,13 +191,13 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("SqlDedicatedGateway"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/SqlDedicatedGateway"),
@@ -222,7 +222,7 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDataTransferServiceDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBDataTransferServiceDelete.json
 func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -248,7 +248,7 @@ func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGraphAPIComputeServiceDelete.json
 func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -274,7 +274,7 @@ func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBMaterializedViewsBuilderServiceDelete.json
 func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -300,7 +300,7 @@ func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceDelete.json
+// Generated from example definition: 2026-04-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceDelete.json
 func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -326,7 +326,7 @@ func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDataTransferServiceGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBDataTransferServiceGet.json
 func ExampleServiceClient_Get_dataTransferServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleServiceClient_Get_dataTransferServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("DataTransfer"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/DataTransfer"),
@@ -367,7 +367,7 @@ func ExampleServiceClient_Get_dataTransferServiceGet() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBGraphAPIComputeServiceGet.json
 func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("GraphAPICompute"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/GraphAPICompute"),
@@ -410,7 +410,7 @@ func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBMaterializedViewsBuilderServiceGet.json
 func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +429,7 @@ func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("MaterializedViewsBuilder"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/MaterializedViewsBuilder"),
@@ -451,7 +451,7 @@ func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceGet.json
+// Generated from example definition: 2026-04-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceGet.json
 func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +470,7 @@ func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
 	// 		Name: to.Ptr("SqlDedicatedGateway"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/SqlDedicatedGateway"),
@@ -495,7 +495,7 @@ func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBServicesList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBServicesList.json
 func ExampleServiceClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

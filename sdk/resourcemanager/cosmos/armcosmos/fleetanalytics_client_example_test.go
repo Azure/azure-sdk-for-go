@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetAnalyticsCreate.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetAnalyticsCreate.json
 func ExampleFleetAnalyticsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleFleetAnalyticsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetAnalyticsClientCreateResponse{
-	// 	FleetAnalyticsResource: &armcosmos.FleetAnalyticsResource{
+	// 	FleetAnalyticsResource: armcosmos.FleetAnalyticsResource{
 	// 		Name: to.Ptr("storageAccount"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetAnalytics"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetAnalytics/storageAccount"),
@@ -49,7 +49,7 @@ func ExampleFleetAnalyticsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetAnalyticsDelete.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetAnalyticsDelete.json
 func ExampleFleetAnalyticsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,11 +66,11 @@ func ExampleFleetAnalyticsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetAnalyticsGet.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetAnalyticsGet.json
 func ExampleFleetAnalyticsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleFleetAnalyticsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetAnalyticsClientGetResponse{
-	// 	FleetAnalyticsResource: &armcosmos.FleetAnalyticsResource{
+	// 	FleetAnalyticsResource: armcosmos.FleetAnalyticsResource{
 	// 		Name: to.Ptr("storageAccount"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetAnalytics"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetAnalytics/storageAccount"),
@@ -102,7 +102,7 @@ func ExampleFleetAnalyticsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetAnalyticsList.json
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetAnalyticsList.json
 func ExampleFleetAnalyticsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

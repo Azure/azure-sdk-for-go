@@ -18,14 +18,14 @@ import (
 
 // MetricsClient contains the methods for the Metrics group.
 // Don't use this type directly, use a constructor function instead.
+//
+// Generated from API version 2024-02-01
 type MetricsClient struct {
-	host     string
 	internal *azcore.Client
+	endpoint string
 }
 
 // NewListDefinitionsPager - Lists the metric definitions for the resource.
-//
-// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientListDefinitionsOptions contains the optional parameters for the MetricsClient.NewListDefinitionsPager
 //     method.
@@ -56,16 +56,16 @@ func (client *MetricsClient) NewListDefinitionsPager(resourceURI string, options
 func (client *MetricsClient) listDefinitionsCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListDefinitionsOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metricDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", version20240201)
 	if options != nil && options.MetricNamespace != nil {
 		reqQP.Set("metricnamespace", *options.MetricNamespace)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -80,8 +80,6 @@ func (client *MetricsClient) listDefinitionsHandleResponse(resp *http.Response) 
 }
 
 // NewListNamespacesPager - Lists the metric namespaces for the resource.
-//
-// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientListNamespacesOptions contains the optional parameters for the MetricsClient.NewListNamespacesPager
 //     method.
@@ -112,16 +110,16 @@ func (client *MetricsClient) NewListNamespacesPager(resourceURI string, options 
 func (client *MetricsClient) listNamespacesCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientListNamespacesOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/microsoft.insights/metricNamespaces"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", version20240201)
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -137,8 +135,6 @@ func (client *MetricsClient) listNamespacesHandleResponse(resp *http.Response) (
 
 // QueryResource - Lists the metric values for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceURI - The identifier of the resource.
 //   - options - MetricsClientQueryResourceOptions contains the optional parameters for the MetricsClient.QueryResource method.
 func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (MetricsClientQueryResourceResponse, error) {
@@ -165,7 +161,7 @@ func (client *MetricsClient) QueryResource(ctx context.Context, resourceURI stri
 func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, resourceURI string, options *MetricsClientQueryResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metrics"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +178,7 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	if options != nil && options.Aggregation != nil {
 		reqQP.Set("aggregation", aggregationTypeToString(options.Aggregation))
 	}
-	reqQP.Set("api-version", "2024-02-01")
+	reqQP.Set("api-version", version20240201)
 	if options != nil && options.Interval != nil {
 		reqQP.Set("interval", *options.Interval)
 	}
@@ -207,7 +203,7 @@ func (client *MetricsClient) queryResourceCreateRequest(ctx context.Context, res
 	if options != nil && options.Top != nil {
 		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

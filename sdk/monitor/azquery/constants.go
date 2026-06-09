@@ -5,6 +5,10 @@
 
 package azquery
 
+const (
+	version20240201 string = "2024-02-01"
+)
+
 // AggregationType - The aggregation type of the metric.
 type AggregationType string
 

@@ -33,7 +33,7 @@ function Update-PSModulePathForCI() {
   if ($homeDirectories.Count -gt 0) {
     $global:CurrentUserModulePath = $homeDirectories[0]
     if ($homeDirectories.Count -gt 1) {
-      Write-Verbose "Found more then one module path starting with $home so selecting the first one $global:CurrentUserModulePath"
+      Write-Host "Found more then one module path starting with $home so selecting the first one $global:CurrentUserModulePath"
     }
 
     # In some cases the directory might not exist so we need to create it otherwise caching an empty directory will fail
@@ -62,7 +62,7 @@ function moduleIsInstalled([string]$moduleName, [string]$version) {
   if ($version -as [Version]) {
     $modules = $modules.Where({ [Version]$_.Version -ge [Version]$version })
     if ($modules.Count -gt 0) {
-      Write-Verbose "Using module $($modules[0].Name) with version $($modules[0].Version)."
+      Write-Host "Using module $($modules[0].Name) with version $($modules[0].Version)."
       return $modules[0]
     }
   }
@@ -83,7 +83,7 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
     Set-PSRepository -Name $repo.Name -InstallationPolicy "Trusted" | Out-Null
   }
 
-  Write-Verbose "Installing module $moduleName with version $version from $repoUrl"
+  Write-Host "Installing module $moduleName with version $version from $repoUrl"
   # Install under CurrentUser scope so that the end up under $CurrentUserModulePath for caching
   Install-Module $moduleName -RequiredVersion $version -Repository $repo.Name -Scope CurrentUser -Force -WhatIf:$false
   # Ensure module installed
@@ -139,7 +139,7 @@ function Install-ModuleIfNotInstalled() {
     Write-Host "Module '$moduleName' with version '$version' is not installed. Attempting to install from $repoUrl."
 
     $module = installModule -moduleName $moduleName -version $version -repoUrl $repoUrl
-    Write-Verbose "Using module '$($module.Name)' with version '$($module.Version)'."
+    Write-Host "Using module '$($module.Name)' with version '$($module.Version)'."
   }
   finally {
     $mutex.ReleaseMutex()

@@ -124,6 +124,14 @@ func startRecording(t *testing.T) {
 }
 
 func startEKMTest(t *testing.T) *ekm.KeyVaultClient {
+	// EKM tests require an external key manager proxy reachable from the
+	// Managed HSM. CI doesn't provision one, so live runs are skipped unless
+	// EKM_PROXY_HOST is supplied. Recording runs still execute (so recordings
+	// can be refreshed against an environment that does have a real proxy)
+	// and playback runs always execute against the recordings.
+	if recording.GetRecordMode() == recording.LiveMode && os.Getenv("EKM_PROXY_HOST") == "" {
+		t.Skip("skipping live EKM test: set EKM_PROXY_HOST to run against a real EKM proxy")
+	}
 	startRecording(t)
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)

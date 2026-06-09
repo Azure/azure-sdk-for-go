@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -824,6 +825,15 @@ func TestSecureWrapUnwrap(t *testing.T) {
 }
 
 func TestExternalKeyReference(t *testing.T) {
+	// External-key creation requires a working EKM connection on the HSM
+	// pointed at an EKM proxy that exposes the key named by EKM_EXTERNAL_ID.
+	// CI doesn't provision that, so live runs are skipped unless the env var
+	// is supplied. Recording runs still execute (so recordings can be
+	// refreshed against an environment that does have a real proxy) and
+	// playback runs always execute against the recordings.
+	if recording.GetRecordMode() == recording.LiveMode && os.Getenv("EKM_EXTERNAL_ID") == "" {
+		t.Skip("skipping live external-key test: set EKM_EXTERNAL_ID to run against a real EKM proxy")
+	}
 	keyClient := startTest(t, false)
 
 	localKeyName := "ekm-external-key-test"

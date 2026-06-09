@@ -852,19 +852,8 @@ func TestExternalKeyReference(t *testing.T) {
 	}
 
 	created, err := keyClient.CreateKey(ctx, localKeyName, params, nil)
-	if err != nil {
-		// The most common failure is that no EKM connection is configured on
-		// the HSM, in which case the service returns a 4xx. Surface that as a
-		// skip — including in playback, where the recording may legitimately
-		// have captured that 4xx — so the wire contract test still runs without
-		// requiring a fully provisioned EKM proxy.
-		var httpErr *azcore.ResponseError
-		if errors.As(err, &httpErr) {
-			t.Skipf("CreateKey failed (HTTP %d, %s); is an EKM connection configured on the HSM?",
-				httpErr.StatusCode, httpErr.ErrorCode)
-		}
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
+
 	t.Cleanup(func() {
 		_, _ = keyClient.DeleteKey(context.Background(), localKeyName, nil)
 	})

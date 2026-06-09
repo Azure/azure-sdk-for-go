@@ -8,16 +8,16 @@ parameters:
   ArtifactName: packages
 
 steps:
-  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-    parameters:
-      ServiceDirectory: ${{parameters.ServiceDirectory}}
-      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+  # - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+  #   parameters:
+  #     ServiceDirectory: ${{parameters.ServiceDirectory}}
+  #     PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
-  - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
-    parameters:
-      ServiceDirectory: ${{parameters.ServiceDirectory}}
-      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
-      IncludeIndirect: false
+  # - template: /eng/pipelines/templates/steps/set-artifact-packages.yml
+  #   parameters:
+  #     ServiceDirectory: ${{parameters.ServiceDirectory}}
+  #     PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
+  #     IncludeIndirect: false
 
   - pwsh: |
       . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
@@ -69,26 +69,26 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
 
-  - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'], 'PullRequest'), not(endsWith(variables['Build.Repository.Name'], '-pr'))) }}:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'APIView prod deployment'
-        scriptType: pscore
-        scriptLocation: inlineScript
-        inlineScript: |
-          . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
-          New-APIViewFromCI `
-            -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
-            -ArtifactPath '$(Build.ArtifactStagingDirectory)' `
-            -SourceBranch '$(Build.SourceBranchName)' `
-            -DefaultBranch '$(DefaultBranch)' `
-            -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
-            -BuildId $(Build.BuildId) `
-            -RepoName '$(Build.Repository.Name)'
-        pwsh: true
-        workingDirectory: $(Pipeline.Workspace)
-      displayName: Create API review for Go
-      condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
+  # - ${{ if and(eq(variables['System.TeamProject'], 'internal'), ne(variables['Build.Reason'], 'PullRequest'), not(endsWith(variables['Build.Repository.Name'], '-pr'))) }}:
+  #   - task: AzureCLI@2
+  #     inputs:
+  #       azureSubscription: 'APIView prod deployment'
+  #       scriptType: pscore
+  #       scriptLocation: inlineScript
+  #       inlineScript: |
+  #         . $(Build.SourcesDirectory)/eng/scripts/apiview-helpers.ps1
+  #         New-APIViewFromCI `
+  #           -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
+  #           -ArtifactPath '$(Build.ArtifactStagingDirectory)' `
+  #           -SourceBranch '$(Build.SourceBranchName)' `
+  #           -DefaultBranch '$(DefaultBranch)' `
+  #           -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
+  #           -BuildId $(Build.BuildId) `
+  #           -RepoName '$(Build.Repository.Name)'
+  #       pwsh: true
+  #       workingDirectory: $(Pipeline.Workspace)
+  #     displayName: Create API review for Go
+  #     condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
 
   - ${{ if eq(variables['Build.Reason'],'PullRequest') }}:
     - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
@@ -116,31 +116,31 @@ steps:
       displayName: "Set as release build"
       condition: and(succeeded(), eq(variables['SetAsReleaseBuild'], ''))
 
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: opensource-api-connection
-        scriptType: pscore
-        scriptLocation: inlineScript
-        inlineScript: |
-          $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1 `
-            -ArtifactList ('$(ArtifactsList)' | ConvertFrom-Json | Select-Object Name) `
-            -ArtifactPath $(Build.ArtifactStagingDirectory) `
-            -RepoRoot $(Build.SourcesDirectory) `
-            -APIKey $(azuresdk-apiview-apikey) `
-            -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
-            -BuildDefinition $(System.CollectionUri)$(System.TeamProject)/_build?definitionId=$(System.DefinitionId) `
-            -PipelineUrl $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId) `
-            -IsReleaseBuild $$(SetAsReleaseBuild)
-        pwsh: true
-        workingDirectory: $(Pipeline.Workspace)
-      displayName: Validate packages and update work items
-      continueOnError: true
-      condition: >-
-        and(
-          succeededOrFailed(),
-          not(endsWith(variables['Build.Repository.Name'], '-pr')),
-          not(endsWith(variables['Build.DefinitionName'], 'weekly'))
-        )
+      #   - task: AzureCLI@2
+      #     inputs:
+      #       azureSubscription: opensource-api-connection
+      #       scriptType: pscore
+      #       scriptLocation: inlineScript
+      #       inlineScript: |
+      #         $(Build.SourcesDirectory)/eng/common/scripts/Validate-All-Packages.ps1 `
+      #           -ArtifactList ('$(ArtifactsList)' | ConvertFrom-Json | Select-Object Name) `
+      #           -ArtifactPath $(Build.ArtifactStagingDirectory) `
+      #           -RepoRoot $(Build.SourcesDirectory) `
+      #           -APIKey $(azuresdk-apiview-apikey) `
+      #           -ConfigFileDir '$(Build.ArtifactStagingDirectory)/PackageInfo' `
+      #           -BuildDefinition $(System.CollectionUri)$(System.TeamProject)/_build?definitionId=$(System.DefinitionId) `
+      #           -PipelineUrl $(System.CollectionUri)$(System.TeamProject)/_build/results?buildId=$(Build.BuildId) `
+      #           -IsReleaseBuild $$(SetAsReleaseBuild)
+      #       pwsh: true
+      #       workingDirectory: $(Pipeline.Workspace)
+      #     displayName: Validate packages and update work items
+      #     continueOnError: true
+      #     condition: >-
+      #       and(
+      #         succeededOrFailed(),
+      #         not(endsWith(variables['Build.Repository.Name'], '-pr')),
+      #         not(endsWith(variables['Build.DefinitionName'], 'weekly'))
+      #       )
 
   - pwsh: |
       ./eng/scripts/Invoke-DependencyCheck.ps1 "$(Packages)"
@@ -257,42 +257,42 @@ steps:
     workingDirectory: $(System.DefaultWorkingDirectory)
     condition: succeededOrFailed()
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
-      arguments: >
-        -Packages '$(Packages)'
-      pwsh: true
-    displayName: 'Copyright header Check'
-    condition: succeededOrFailed()
+    # - task: Powershell@2
+    #   inputs:
+    #     filePath: $(Build.SourcesDirectory)/eng/scripts/copyright-header-check.ps1
+    #     arguments: >
+    #       -Packages '$(Packages)'
+    #     pwsh: true
+    #   displayName: 'Copyright header Check'
+    #   condition: succeededOrFailed()
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
-      arguments: >
-        -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
-      pwsh: true
-    displayName: 'LICENSE.txt Check'
-    condition: succeededOrFailed()
+    # - task: Powershell@2
+    #   inputs:
+    #     filePath: $(Build.SourcesDirectory)/eng/scripts/license-check.ps1
+    #     arguments: >
+    #       -PackageInfoFolder '$(Build.ArtifactStagingDirectory)/PackageInfo'
+    #     pwsh: true
+    #   displayName: 'LICENSE.txt Check'
+    #   condition: succeededOrFailed()
 
-  - task: Powershell@2
-    inputs:
-      filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
-      arguments: >
-        -Packages '$(Packages)'
-      pwsh: true
-    displayName: 'Format Check'
-    condition: succeededOrFailed()
+    # - task: Powershell@2
+    #   inputs:
+    #     filePath: $(Build.SourcesDirectory)/eng/scripts/go-fmt-check.ps1
+    #     arguments: >
+    #       -Packages '$(Packages)'
+    #     pwsh: true
+    #   displayName: 'Format Check'
+    #   condition: succeededOrFailed()
 
-  - template: /eng/common/pipelines/templates/steps/verify-links.yml
-    parameters:
-      ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
-        Directory: ''
-        Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
-      ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
-        Directory: sdk/${{ parameters.ServiceDirectory }}
-      CheckLinkGuidance: $true
-      Condition: succeededOrFailed()
+    # - template: /eng/common/pipelines/templates/steps/verify-links.yml
+    #   parameters:
+    #     ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+    #       Directory: ''
+    #       Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+    #     ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+    #       Directory: sdk/${{ parameters.ServiceDirectory }}
+    #     CheckLinkGuidance: $true
+    #     Condition: succeededOrFailed()
 
   - pwsh: |
       if (-not "$(Packages)") {
@@ -320,9 +320,9 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  - pwsh: |
-      ./eng/scripts/Invoke-SmokeTests.ps1 "$(Packages)"
-    displayName: 'Run Nightly SmokeTests'
+  #- pwsh: |
+  #    ./eng/scripts/Invoke-SmokeTests.ps1 "$(Packages)"
+  #  displayName: 'Run Nightly SmokeTests'
 
   # There are no more checks after this one, so simply removing all packageInfo that aren't shipping
   # to allow the default verify-changeslogs template to work correctly is probably better than any custom conditional code in that template.

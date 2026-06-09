@@ -4,6 +4,10 @@
 
 package armdynatrace
 
+const (
+	version20240424 string = "2024-04-24"
+)
+
 // Action - Install/Uninstall action.
 type Action string
 

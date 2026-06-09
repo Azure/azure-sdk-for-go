@@ -30,7 +30,7 @@ func ExampleSolutionSelfHelpClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.SolutionSelfHelpClientGetResponse{
-	// 	SolutionResourceSelfHelp: &armselfhelp.SolutionResourceSelfHelp{
+	// 	SolutionResourceSelfHelp: armselfhelp.SolutionResourceSelfHelp{
 	// 		Name: to.Ptr("SolutionId1"),
 	// 		Type: to.Ptr("Microsoft.Help/SelfHelp"),
 	// 		ID: to.Ptr("/providers/Microsoft.KeyVault/vaults/test-keyvault-rp/providers/Microsoft.Help/selfHelp/SolutionId1"),

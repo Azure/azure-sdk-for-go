@@ -36,6 +36,9 @@ type ServerFactory struct {
 	// MaintenanceConfigurationsServer contains the fakes for client MaintenanceConfigurationsClient
 	MaintenanceConfigurationsServer MaintenanceConfigurationsServer
 
+	// MaintenanceWindowsServer contains the fakes for client MaintenanceWindowsClient
+	MaintenanceWindowsServer MaintenanceWindowsServer
+
 	// ManagedClusterSnapshotsServer contains the fakes for client ManagedClusterSnapshotsClient
 	ManagedClusterSnapshotsServer ManagedClusterSnapshotsServer
 
@@ -97,6 +100,7 @@ type ServerFactoryTransport struct {
 	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
+	trMaintenanceWindowsServer          *MaintenanceWindowsServerTransport
 	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
 	trManagedNamespacesServer           *ManagedNamespacesServerTransport
@@ -154,6 +158,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMaintenanceConfigurationsServerTransport(&s.srv.MaintenanceConfigurationsServer)
 		})
 		resp, err = s.trMaintenanceConfigurationsServer.Do(req)
+	case "MaintenanceWindowsClient":
+		initServer(&s.trMu, &s.trMaintenanceWindowsServer, func() *MaintenanceWindowsServerTransport {
+			return NewMaintenanceWindowsServerTransport(&s.srv.MaintenanceWindowsServer)
+		})
+		resp, err = s.trMaintenanceWindowsServer.Do(req)
 	case "ManagedClusterSnapshotsClient":
 		initServer(&s.trMu, &s.trManagedClusterSnapshotsServer, func() *ManagedClusterSnapshotsServerTransport {
 			return NewManagedClusterSnapshotsServerTransport(&s.srv.ManagedClusterSnapshotsServer)

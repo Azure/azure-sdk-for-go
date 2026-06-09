@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAvsStorageContainerVolumesClientVersion string = "2026-01-01-preview"
-
 // AvsStorageContainerVolumesClient contains the methods for the AvsStorageContainerVolumes group.
 // Don't use this type directly, use NewAvsStorageContainerVolumesClient() instead.
 //
@@ -119,7 +117,7 @@ func (client *AvsStorageContainerVolumesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsStorageContainerVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -182,7 +180,7 @@ func (client *AvsStorageContainerVolumesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsStorageContainerVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +248,7 @@ func (client *AvsStorageContainerVolumesClient) listByAvsStorageContainerCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsStorageContainerVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -342,7 +340,7 @@ func (client *AvsStorageContainerVolumesClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAvsStorageContainerVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

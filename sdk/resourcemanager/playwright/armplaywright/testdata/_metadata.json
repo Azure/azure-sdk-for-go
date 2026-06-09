@@ -2,5 +2,5 @@
   "apiVersions": {
     "Playwright.Management": "2026-02-01-preview"
   },
-  "emitterVersion": "0.10.5"
+  "emitterVersion": "0.14.1"
 }

@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armrecoveryservicesdatareplication.PrivateLinkResource{
+	// 	PrivateLinkResource: armrecoveryservicesdatareplication.PrivateLinkResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationVaults/vault1/privateLinkResources/link1"),
 	// 		Name: to.Ptr("u"),
 	// 		Type: to.Ptr("ydabrhxuyafq"),

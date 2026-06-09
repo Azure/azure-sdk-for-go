@@ -42,13 +42,13 @@ func ExamplePublicCloudConnectorsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.PublicCloudConnectorsClientCreateOrUpdateResponse{
-	// 	PublicCloudConnector: &armhybridconnectivity.PublicCloudConnector{
+	// 	PublicCloudConnector: armhybridconnectivity.PublicCloudConnector{
 	// 		Properties: &armhybridconnectivity.PublicCloudConnectorProperties{
 	// 			AwsCloudProfile: &armhybridconnectivity.AwsCloudProfile{
 	// 				AccountID: to.Ptr("snbnuxckevyqpm"),
@@ -120,7 +120,7 @@ func ExamplePublicCloudConnectorsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.PublicCloudConnectorsClientGetResponse{
-	// 	PublicCloudConnector: &armhybridconnectivity.PublicCloudConnector{
+	// 	PublicCloudConnector: armhybridconnectivity.PublicCloudConnector{
 	// 		Properties: &armhybridconnectivity.PublicCloudConnectorProperties{
 	// 			AwsCloudProfile: &armhybridconnectivity.AwsCloudProfile{
 	// 				AccountID: to.Ptr("snbnuxckevyqpm"),
@@ -288,13 +288,13 @@ func ExamplePublicCloudConnectorsClient_BeginTestPermissions() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse{
-	// 	OperationStatusResult: &armhybridconnectivity.OperationStatusResult{
+	// 	OperationStatusResult: armhybridconnectivity.OperationStatusResult{
 	// 		ID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 	// 		ResourceID: to.Ptr("/subscriptions/5ACC4579-DB34-4C2F-8F8C-25061168F342/providers/Microsoft.HybridConnectivity/PublicCloudConnectors/esixipkbydb"),
 	// 		Name: to.Ptr("ppeygvsnaspxmpwalpmkqva"),
@@ -375,7 +375,7 @@ func ExamplePublicCloudConnectorsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridconnectivity.PublicCloudConnectorsClientUpdateResponse{
-	// 	PublicCloudConnector: &armhybridconnectivity.PublicCloudConnector{
+	// 	PublicCloudConnector: armhybridconnectivity.PublicCloudConnector{
 	// 		Properties: &armhybridconnectivity.PublicCloudConnectorProperties{
 	// 			AwsCloudProfile: &armhybridconnectivity.AwsCloudProfile{
 	// 				AccountID: to.Ptr("snbnuxckevyqpm"),

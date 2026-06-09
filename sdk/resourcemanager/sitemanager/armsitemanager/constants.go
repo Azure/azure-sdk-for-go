@@ -4,6 +4,10 @@
 
 package armsitemanager
 
+const (
+	version20250601 string = "2025-06-01"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

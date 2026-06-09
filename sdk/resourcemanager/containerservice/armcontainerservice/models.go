@@ -385,6 +385,34 @@ type AzureKeyVaultKms struct {
 	KeyVaultResourceID *string
 }
 
+// BastionProfile - Profile to enable managed Azure Bastion or reference to an existing Bastion for the managed cluster.
+// See https://aka.ms/aks/BastionConnect for more details.
+type BastionProfile struct {
+	// Indicates whether managed bastion is enabled.
+	Enabled *bool
+
+	// The resource ID of the public IP address associated with the managed bastion.
+	// When provided during creation, the managed bastion will reference this existing public IP address instead of creating a
+	// new one.
+	// The referenced public IP address must be in the same subscription and region as the managed cluster.
+	// When not provided during creation, AKS will automatically create a new public IP address.
+	// This field cannot be updated. To change IP address after creation, please disable and re-enable the managed bastion with
+	// the new public IP address.
+	PublicIPAddressID *string
+
+	// The SKU of the managed bastion.
+	// Only Standard and Premium SKUs are supported.
+	// SKU downgrading is not allowed. To downgrade SKU, please disable then re-enable the managed bastion with new SKU.
+	// See https://aka.ms/aks/BastionSKUs for more details.
+	SKU *BastionSKU
+
+	// The scale units of the managed bastion. Default value is 2.
+	ScaleUnits *int32
+
+	// READ-ONLY; The resource ID of the managed bastion associated with the managed cluster.
+	BastionID *string
+}
+
 // ClusterUpgradeSettings - Settings for upgrading a cluster.
 type ClusterUpgradeSettings struct {
 	// Settings for overrides.
@@ -1472,6 +1500,80 @@ type MaintenanceWindow struct {
 	UTCOffset *string
 }
 
+// MaintenanceWindowResource - A maintenance window is a resource-group-scoped resource that defines a reusable
+// maintenance schedule which can be linked to maintenance configurations on one
+// or more managed clusters.
+// For more information, see https://aka.ms/aks/maintenance-windows.
+type MaintenanceWindowResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of a maintenance window.
+	Properties *MaintenanceWindowResourceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MaintenanceWindowResourceListResult - The response of a MaintenanceWindowResource list operation.
+type MaintenanceWindowResourceListResult struct {
+	// REQUIRED; The MaintenanceWindowResource items on this page
+	Value []*MaintenanceWindowResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MaintenanceWindowResourceProperties - Properties of a maintenance window.
+// For more information, see https://aka.ms/aks/maintenance-windows.
+type MaintenanceWindowResourceProperties struct {
+	// REQUIRED; Length of the maintenance window in hours.
+	DurationHours *int32
+
+	// REQUIRED; Recurrence schedule for the maintenance window. One and only one of the schedule
+	// types should be specified: 'daily', 'weekly', 'absoluteMonthly', or 'relativeMonthly'.
+	Schedule *Schedule
+
+	// REQUIRED; The start time of the maintenance window. Accepted values are from '00:00' to
+	// '23:59'. 'utcOffset' applies to this field. For example: '02:00' with
+	// 'utcOffset: +02:00' means UTC time '00:00'.
+	StartTime *string
+
+	// Date ranges during which maintenance is not allowed. 'utcOffset' applies to
+	// these dates. For example, with 'utcOffset: +02:00' and a date span of
+	// '2026-12-23' to '2027-01-03', maintenance will be blocked from
+	// '2026-12-22 22:00' to '2027-01-03 22:00' in UTC time.
+	NotAllowedDates []*DateSpan
+
+	// The date the maintenance window activates. If the current date is before this
+	// date, the maintenance window is inactive and will not be used. If not specified,
+	// the maintenance window will be active right away.
+	StartDate *time.Time
+
+	// The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00'
+	// for PST. If not specified, the default is '+00:00'.
+	// Note: this is a static offset and does not adjust for Daylight Saving Time.
+	// Customers in DST-observing regions should pick the offset that matches their
+	// preferred wall-clock time year-round; the maintenance window will shift by one
+	// hour relative to local time when DST starts or ends.
+	UTCOffset *string
+
+	// READ-ONLY; The provisioning state of the maintenance window.
+	ProvisioningState *ResourceProvisioningState
+}
+
 // ManagedCluster - Managed cluster.
 type ManagedCluster struct {
 	// REQUIRED; The geo-location where the resource lives
@@ -1719,7 +1821,8 @@ type ManagedClusterAgentPoolProfile struct {
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
 
-	// The version of node image
+	// The version of the node image. Setting this value triggers an agentPool rollback.
+	// Only values from `recentlyUsedVersions` are allowed.
 	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
@@ -1947,7 +2050,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
 
-	// The version of node image
+	// The version of the node image. Setting this value triggers an agentPool rollback.
+	// Only values from `recentlyUsedVersions` are allowed.
 	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
@@ -3512,6 +3616,10 @@ type NetworkProfile struct {
 	// Advanced Networking profile for enabling observability and security feature suite on a cluster. For more information see
 	// aka.ms/aksadvancednetworking.
 	AdvancedNetworking *AdvancedNetworking
+
+	// Profile of the Bastion Host associated with the managed cluster.
+	// See https://aka.ms/aks/BastionConnect for more details.
+	BastionProfile *BastionProfile
 
 	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
 	// in serviceCidr.

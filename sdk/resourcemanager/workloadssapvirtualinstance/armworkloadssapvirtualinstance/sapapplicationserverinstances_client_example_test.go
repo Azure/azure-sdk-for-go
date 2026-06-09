@@ -33,13 +33,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServer
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientCreateResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
+	// 	SAPApplicationServerInstance: armworkloadssapvirtualinstance.SAPApplicationServerInstance{
 	// 		Name: to.Ptr("app01"),
 	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -100,13 +100,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientCreateResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
+	// 	SAPApplicationServerInstance: armworkloadssapvirtualinstance.SAPApplicationServerInstance{
 	// 		Name: to.Ptr("app01"),
 	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -180,7 +180,7 @@ func ExampleSAPApplicationServerInstancesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -203,7 +203,7 @@ func ExampleSAPApplicationServerInstancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientGetResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
+	// 	SAPApplicationServerInstance: armworkloadssapvirtualinstance.SAPApplicationServerInstance{
 	// 		Name: to.Ptr("app01"),
 	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -366,13 +366,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startTheSapApplicatio
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -402,13 +402,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginStart_startVirtualMachineAn
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStartResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -438,13 +438,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -475,13 +475,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_stopTheSapApplicationS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -511,13 +511,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -548,13 +548,13 @@ func ExampleSAPApplicationServerInstancesClient_BeginStop_softStopTheSapApplicat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientStopResponse{
-	// 	OperationStatusResult: &armworkloadssapvirtualinstance.OperationStatusResult{
+	// 	OperationStatusResult: armworkloadssapvirtualinstance.OperationStatusResult{
 	// 		Name: to.Ptr("app01"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T03:38:07.000Z"); return t}()),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),
@@ -587,7 +587,7 @@ func ExampleSAPApplicationServerInstancesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadssapvirtualinstance.SAPApplicationServerInstancesClientUpdateResponse{
-	// 	SAPApplicationServerInstance: &armworkloadssapvirtualinstance.SAPApplicationServerInstance{
+	// 	SAPApplicationServerInstance: armworkloadssapvirtualinstance.SAPApplicationServerInstance{
 	// 		Name: to.Ptr("app01"),
 	// 		Type: to.Ptr("Microsoft.Workloads/sapVirtualInstances/applicationInstances"),
 	// 		ID: to.Ptr("/subscriptions/6d875e77-e412-4d7d-9af4-8895278b4443/resourceGroups/test-rg/providers/Microsoft.Workloads/sapVirtualInstances/X00/applicationInstances/app01"),

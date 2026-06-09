@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // FlexComponentsServer is a fake server for instances of the armoracledatabase.FlexComponentsClient type.
@@ -58,9 +59,7 @@ func (f *FlexComponentsServerTransport) Do(req *http.Request) (*http.Response, e
 }
 
 func (f *FlexComponentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (f *FlexComponentsServerTransport) dispatchToMethodFake(req *http.Request, 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -115,7 +111,7 @@ func (f *FlexComponentsServerTransport) dispatchGet(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FlexComponent, req)
@@ -142,11 +138,7 @@ func (f *FlexComponentsServerTransport) dispatchNewListByParentPager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		shapeUnescaped, err := url.QueryUnescape(qp.Get("shape"))
-		if err != nil {
-			return nil, err
-		}
-		shapeParam := getOptional(armoracledatabase.SystemShapes(shapeUnescaped))
+		shapeParam := getOptional(armoracledatabase.SystemShapes(qp.Get("shape")))
 		var options *armoracledatabase.FlexComponentsClientListByParentOptions
 		if shapeParam != nil {
 			options = &armoracledatabase.FlexComponentsClientListByParentOptions{
@@ -164,7 +156,7 @@ func (f *FlexComponentsServerTransport) dispatchNewListByParentPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListByParentPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

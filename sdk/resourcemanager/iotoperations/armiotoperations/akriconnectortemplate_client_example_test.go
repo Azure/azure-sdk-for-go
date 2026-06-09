@@ -87,13 +87,13 @@ func ExampleAkriConnectorTemplateClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.AkriConnectorTemplateClientCreateOrUpdateResponse{
-	// 	AkriConnectorTemplateResource: &armiotoperations.AkriConnectorTemplateResource{
+	// 	AkriConnectorTemplateResource: armiotoperations.AkriConnectorTemplateResource{
 	// 		Properties: &armiotoperations.AkriConnectorTemplateProperties{
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 			AioMetadata: &armiotoperations.AkriConnectorTemplateAioMetadata{
@@ -184,7 +184,7 @@ func ExampleAkriConnectorTemplateClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -207,7 +207,7 @@ func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetManagedRest(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.AkriConnectorTemplateClientGetResponse{
-	// 	AkriConnectorTemplateResource: &armiotoperations.AkriConnectorTemplateResource{
+	// 	AkriConnectorTemplateResource: armiotoperations.AkriConnectorTemplateResource{
 	// 		Properties: &armiotoperations.AkriConnectorTemplateProperties{
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 			RuntimeConfiguration: &armiotoperations.AkriConnectorTemplateManagedConfiguration{
@@ -296,7 +296,7 @@ func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetMaximumSet()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.AkriConnectorTemplateClientGetResponse{
-	// 	AkriConnectorTemplateResource: &armiotoperations.AkriConnectorTemplateResource{
+	// 	AkriConnectorTemplateResource: armiotoperations.AkriConnectorTemplateResource{
 	// 		Properties: &armiotoperations.AkriConnectorTemplateProperties{
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 			AioMetadata: &armiotoperations.AkriConnectorTemplateAioMetadata{

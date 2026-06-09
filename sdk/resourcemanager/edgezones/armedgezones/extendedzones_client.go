@@ -18,6 +18,8 @@ import (
 
 // ExtendedZonesClient - ExtendedZone operations
 // Don't use this type directly, use NewExtendedZonesClient() instead.
+//
+// Generated from API version 2024-04-01-preview
 type ExtendedZonesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewExtendedZonesClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Gets an Azure Extended Zone for a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - extendedZoneName - The name of the ExtendedZone
 //   - options - ExtendedZonesClientGetOptions contains the optional parameters for the ExtendedZonesClient.Get method.
 func (client *ExtendedZonesClient) Get(ctx context.Context, extendedZoneName string, options *ExtendedZonesClientGetOptions) (ExtendedZonesClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *ExtendedZonesClient) getCreateRequest(ctx context.Context, extende
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *ExtendedZonesClient) getHandleResponse(resp *http.Response) (Exten
 }
 
 // NewListBySubscriptionPager - Lists the Azure Extended Zones available to a subscription
-//
-// Generated from API version 2024-04-01-preview
 //   - options - ExtendedZonesClientListBySubscriptionOptions contains the optional parameters for the ExtendedZonesClient.NewListBySubscriptionPager
 //     method.
 func (client *ExtendedZonesClient) NewListBySubscriptionPager(options *ExtendedZonesClientListBySubscriptionOptions) *runtime.Pager[ExtendedZonesClientListBySubscriptionResponse] {
@@ -138,8 +136,8 @@ func (client *ExtendedZonesClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -155,8 +153,6 @@ func (client *ExtendedZonesClient) listBySubscriptionHandleResponse(resp *http.R
 
 // Register - Registers a subscription for an Extended Zone
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - extendedZoneName - The name of the ExtendedZone
 //   - options - ExtendedZonesClientRegisterOptions contains the optional parameters for the ExtendedZonesClient.Register method.
 func (client *ExtendedZonesClient) Register(ctx context.Context, extendedZoneName string, options *ExtendedZonesClientRegisterOptions) (ExtendedZonesClientRegisterResponse, error) {
@@ -197,8 +193,8 @@ func (client *ExtendedZonesClient) registerCreateRequest(ctx context.Context, ex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -214,8 +210,6 @@ func (client *ExtendedZonesClient) registerHandleResponse(resp *http.Response) (
 
 // Unregister - Unregisters a subscription for an Extended Zone
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - extendedZoneName - The name of the ExtendedZone
 //   - options - ExtendedZonesClientUnregisterOptions contains the optional parameters for the ExtendedZonesClient.Unregister
 //     method.
@@ -257,8 +251,8 @@ func (client *ExtendedZonesClient) unregisterCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

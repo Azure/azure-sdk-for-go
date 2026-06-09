@@ -18,6 +18,8 @@ import (
 
 // VirtualEndpointsClient contains the methods for the VirtualEndpoints group.
 // Don't use this type directly, use NewVirtualEndpointsClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type VirtualEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewVirtualEndpointsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreate - Creates a pair of virtual endpoints for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - virtualEndpointName - Base name of the virtual endpoints.
@@ -69,8 +69,6 @@ func (client *VirtualEndpointsClient) BeginCreate(ctx context.Context, resourceG
 
 // Create - Creates a pair of virtual endpoints for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *VirtualEndpointsClient) create(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, parameters VirtualEndpoint, options *VirtualEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualEndpointsClient.BeginCreate"
@@ -116,8 +114,8 @@ func (client *VirtualEndpointsClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -127,8 +125,6 @@ func (client *VirtualEndpointsClient) createCreateRequest(ctx context.Context, r
 
 // BeginDelete - Deletes a pair of virtual endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - virtualEndpointName - Base name of the virtual endpoints.
@@ -153,8 +149,6 @@ func (client *VirtualEndpointsClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Deletes a pair of virtual endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *VirtualEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, options *VirtualEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualEndpointsClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *VirtualEndpointsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about a pair of virtual endpoints.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - virtualEndpointName - Base name of the virtual endpoints.
@@ -259,8 +251,8 @@ func (client *VirtualEndpointsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *VirtualEndpointsClient) getHandleResponse(resp *http.Response) (Vi
 }
 
 // NewListByServerPager - Lists pair of virtual endpoints associated to a server.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - VirtualEndpointsClientListByServerOptions contains the optional parameters for the VirtualEndpointsClient.NewListByServerPager
@@ -324,8 +314,8 @@ func (client *VirtualEndpointsClient) listByServerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +331,6 @@ func (client *VirtualEndpointsClient) listByServerHandleResponse(resp *http.Resp
 
 // BeginUpdate - Updates a pair of virtual endpoints for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - virtualEndpointName - Base name of the virtual endpoints.
@@ -369,8 +357,6 @@ func (client *VirtualEndpointsClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - Updates a pair of virtual endpoints for a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *VirtualEndpointsClient) update(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, parameters VirtualEndpointResourceForPatch, options *VirtualEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualEndpointsClient.BeginUpdate"
@@ -416,8 +402,8 @@ func (client *VirtualEndpointsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

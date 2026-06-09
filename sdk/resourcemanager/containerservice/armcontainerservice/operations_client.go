@@ -17,7 +17,7 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2026-03-02-preview
+// Generated from API version 2026-04-02-preview
 type OperationsClient struct {
 	internal *arm.Client
 }
@@ -69,7 +69,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260402Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

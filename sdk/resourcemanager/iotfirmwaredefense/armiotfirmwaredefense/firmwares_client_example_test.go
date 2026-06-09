@@ -47,7 +47,7 @@ func ExampleFirmwaresClient_Create_firmwaresCreateMaximumSetGenGeneratedByMaximu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.FirmwaresClientCreateResponse{
-	// 	Firmware: &armiotfirmwaredefense.Firmware{
+	// 	Firmware: armiotfirmwaredefense.Firmware{
 	// 		Properties: &armiotfirmwaredefense.FirmwareProperties{
 	// 			FileName: to.Ptr("FileNameThatWasUploaded.bin"),
 	// 			Vendor: to.Ptr("ExampleVendorName"),
@@ -100,7 +100,7 @@ func ExampleFirmwaresClient_Create_firmwaresCreateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.FirmwaresClientCreateResponse{
-	// 	Firmware: &armiotfirmwaredefense.Firmware{
+	// 	Firmware: armiotfirmwaredefense.Firmware{
 	// 	},
 	// }
 }
@@ -168,7 +168,7 @@ func ExampleFirmwaresClient_Get_firmwaresGetMaximumSetGenGeneratedByMaximumSetRu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.FirmwaresClientGetResponse{
-	// 	Firmware: &armiotfirmwaredefense.Firmware{
+	// 	Firmware: armiotfirmwaredefense.Firmware{
 	// 		Properties: &armiotfirmwaredefense.FirmwareProperties{
 	// 			FileName: to.Ptr("FileNameThatWasUploaded.bin"),
 	// 			Vendor: to.Ptr("ExampleVendorName"),
@@ -219,7 +219,7 @@ func ExampleFirmwaresClient_Get_firmwaresGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.FirmwaresClientGetResponse{
-	// 	Firmware: &armiotfirmwaredefense.Firmware{
+	// 	Firmware: armiotfirmwaredefense.Firmware{
 	// 	},
 	// }
 }
@@ -351,7 +351,7 @@ func ExampleFirmwaresClient_Update_firmwaresUpdateMaximumSetGenGeneratedByMaximu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.FirmwaresClientUpdateResponse{
-	// 	Firmware: &armiotfirmwaredefense.Firmware{
+	// 	Firmware: armiotfirmwaredefense.Firmware{
 	// 		Properties: &armiotfirmwaredefense.FirmwareProperties{
 	// 			FileName: to.Ptr("FileNameThatWasUploaded.bin"),
 	// 			Vendor: to.Ptr("ExampleVendorName"),
@@ -402,7 +402,7 @@ func ExampleFirmwaresClient_Update_firmwaresUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.FirmwaresClientUpdateResponse{
-	// 	Firmware: &armiotfirmwaredefense.Firmware{
+	// 	Firmware: armiotfirmwaredefense.Firmware{
 	// 	},
 	// }
 }

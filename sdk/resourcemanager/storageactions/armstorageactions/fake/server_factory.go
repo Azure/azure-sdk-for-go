@@ -62,18 +62,18 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "StorageTaskAssignmentClient":
-		initServer(s, &s.trStorageTaskAssignmentServer, func() *StorageTaskAssignmentServerTransport {
+		initServer(&s.trMu, &s.trStorageTaskAssignmentServer, func() *StorageTaskAssignmentServerTransport {
 			return NewStorageTaskAssignmentServerTransport(&s.srv.StorageTaskAssignmentServer)
 		})
 		resp, err = s.trStorageTaskAssignmentServer.Do(req)
 	case "StorageTasksClient":
-		initServer(s, &s.trStorageTasksServer, func() *StorageTasksServerTransport { return NewStorageTasksServerTransport(&s.srv.StorageTasksServer) })
+		initServer(&s.trMu, &s.trStorageTasksServer, func() *StorageTasksServerTransport { return NewStorageTasksServerTransport(&s.srv.StorageTasksServer) })
 		resp, err = s.trStorageTasksServer.Do(req)
 	case "StorageTasksReportClient":
-		initServer(s, &s.trStorageTasksReportServer, func() *StorageTasksReportServerTransport {
+		initServer(&s.trMu, &s.trStorageTasksReportServer, func() *StorageTasksReportServerTransport {
 			return NewStorageTasksReportServerTransport(&s.srv.StorageTasksReportServer)
 		})
 		resp, err = s.trStorageTasksReportServer.Do(req)
@@ -86,12 +86,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

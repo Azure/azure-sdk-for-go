@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CryptoKeysServer is a fake server for instances of the armiotfirmwaredefense.CryptoKeysClient type.
@@ -53,9 +54,7 @@ func (c *CryptoKeysServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (c *CryptoKeysServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (c *CryptoKeysServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -120,7 +116,7 @@ func (c *CryptoKeysServerTransport) dispatchNewListByFirmwarePager(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListByFirmwarePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

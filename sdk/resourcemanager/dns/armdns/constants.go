@@ -4,6 +4,10 @@
 
 package armdns
 
+const (
+	version20230701Preview string = "2023-07-01-preview"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

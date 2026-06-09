@@ -1,6 +1,6 @@
 # Release History
 
-## 9.3.0-beta.1 (2026-05-18)
+## 9.4.0-beta.1 (2026-06-04)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
@@ -13,13 +13,13 @@
 - New value `WorkloadRuntimeKataMshvVMIsolation` added to enum type `WorkloadRuntime`
 - New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
 - New enum type `AgentPoolNetworkInterfaceType` with values `AgentPoolNetworkInterfaceTypeDynamic`, `AgentPoolNetworkInterfaceTypeStandard`
+- New enum type `BastionSKU` with values `BastionSKUPremium`, `BastionSKUStandard`
 - New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
 - New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
 - New enum type `ControlPlaneScalingSize` with values `ControlPlaneScalingSizeH2`, `ControlPlaneScalingSizeH4`, `ControlPlaneScalingSizeH8`
 - New enum type `DriftAction` with values `DriftActionRecreate`, `DriftActionSynced`
 - New enum type `DriverType` with values `DriverTypeCUDA`, `DriverTypeGRID`
 - New enum type `GuardrailsSupport` with values `GuardrailsSupportPreview`, `GuardrailsSupportStable`
-- New enum type `IdentityBindingProvisioningState` with values `IdentityBindingProvisioningStateCanceled`, `IdentityBindingProvisioningStateCreating`, `IdentityBindingProvisioningStateDeleting`, `IdentityBindingProvisioningStateFailed`, `IdentityBindingProvisioningStateSucceeded`, `IdentityBindingProvisioningStateUpdating`
 - New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
 - New enum type `IpvsScheduler` with values `IpvsSchedulerLeastConnection`, `IpvsSchedulerRoundRobin`
 - New enum type `JWTAuthenticatorProvisioningState` with values `JWTAuthenticatorProvisioningStateCanceled`, `JWTAuthenticatorProvisioningStateCreating`, `JWTAuthenticatorProvisioningStateDeleting`, `JWTAuthenticatorProvisioningStateFailed`, `JWTAuthenticatorProvisioningStateSucceeded`, `JWTAuthenticatorProvisioningStateUpdating`
@@ -30,6 +30,7 @@
 - New enum type `NodeDisruptionPolicy` with values `NodeDisruptionPolicyAllow`, `NodeDisruptionPolicyAllowDuringMaintenanceWindow`, `NodeDisruptionPolicyBlock`
 - New enum type `Operator` with values `OperatorDoesNotExist`, `OperatorExists`, `OperatorIn`, `OperatorNotIn`
 - New enum type `PodLinkLocalAccess` with values `PodLinkLocalAccessIMDS`, `PodLinkLocalAccessNone`
+- New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
 - New enum type `ResourceSKUCapacityScaleType` with values `ResourceSKUCapacityScaleTypeAutomatic`, `ResourceSKUCapacityScaleTypeManual`, `ResourceSKUCapacityScaleTypeNone`
 - New enum type `ResourceSKURestrictionsReasonCode` with values `ResourceSKURestrictionsReasonCodeNotAvailableForSubscription`, `ResourceSKURestrictionsReasonCodeQuotaID`
 - New enum type `ResourceSKURestrictionsType` with values `ResourceSKURestrictionsTypeLocation`, `ResourceSKURestrictionsTypeZone`
@@ -42,18 +43,13 @@
 - New function `NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error)`
 - New function `*Client.NewListNodeImageVersionsPager(location string, options *ClientListNodeImageVersionsOptions) *runtime.Pager[ClientListNodeImageVersionsResponse]`
 - New function `*ClientFactory.NewClient() *Client`
-- New function `*ClientFactory.NewIdentityBindingsClient() *IdentityBindingsClient`
 - New function `*ClientFactory.NewJWTAuthenticatorsClient() *JWTAuthenticatorsClient`
 - New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
+- New function `*ClientFactory.NewMaintenanceWindowsClient() *MaintenanceWindowsClient`
 - New function `*ClientFactory.NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient`
 - New function `*ClientFactory.NewMeshMembershipsClient() *MeshMembershipsClient`
 - New function `*ClientFactory.NewOperationStatusResultClient() *OperationStatusResultClient`
 - New function `*ClientFactory.NewVMSKUsClient() *VMSKUsClient`
-- New function `NewIdentityBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IdentityBindingsClient, error)`
-- New function `*IdentityBindingsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, options *IdentityBindingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IdentityBindingsClientCreateOrUpdateResponse], error)`
-- New function `*IdentityBindingsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientBeginDeleteOptions) (*runtime.Poller[IdentityBindingsClientDeleteResponse], error)`
-- New function `*IdentityBindingsClient.Get(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientGetOptions) (IdentityBindingsClientGetResponse, error)`
-- New function `*IdentityBindingsClient.NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *IdentityBindingsClientListByManagedClusterOptions) *runtime.Pager[IdentityBindingsClientListByManagedClusterResponse]`
 - New function `NewJWTAuthenticatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JWTAuthenticatorsClient, error)`
 - New function `*JWTAuthenticatorsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, options *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JWTAuthenticatorsClientCreateOrUpdateResponse], error)`
 - New function `*JWTAuthenticatorsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientBeginDeleteOptions) (*runtime.Poller[JWTAuthenticatorsClientDeleteResponse], error)`
@@ -65,6 +61,13 @@
 - New function `*LoadBalancersClient.Get(ctx context.Context, resourceGroupName string, resourceName string, loadBalancerName string, options *LoadBalancersClientGetOptions) (LoadBalancersClientGetResponse, error)`
 - New function `*LoadBalancersClient.NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *LoadBalancersClientListByManagedClusterOptions) *runtime.Pager[LoadBalancersClientListByManagedClusterResponse]`
 - New function `*MachinesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, machineName string, parameters Machine, options *MachinesClientBeginCreateOrUpdateOptions) (*runtime.Poller[MachinesClientCreateOrUpdateResponse], error)`
+- New function `NewMaintenanceWindowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceWindowsClient, error)`
+- New function `*MaintenanceWindowsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, maintenanceWindowName string, resource MaintenanceWindowResource, options *MaintenanceWindowsClientBeginCreateOrUpdateOptions) (*runtime.Poller[MaintenanceWindowsClientCreateOrUpdateResponse], error)`
+- New function `*MaintenanceWindowsClient.BeginDelete(ctx context.Context, resourceGroupName string, maintenanceWindowName string, options *MaintenanceWindowsClientBeginDeleteOptions) (*runtime.Poller[MaintenanceWindowsClientDeleteResponse], error)`
+- New function `*MaintenanceWindowsClient.Get(ctx context.Context, resourceGroupName string, maintenanceWindowName string, options *MaintenanceWindowsClientGetOptions) (MaintenanceWindowsClientGetResponse, error)`
+- New function `*MaintenanceWindowsClient.NewListBySubscriptionPager(options *MaintenanceWindowsClientListBySubscriptionOptions) *runtime.Pager[MaintenanceWindowsClientListBySubscriptionResponse]`
+- New function `*MaintenanceWindowsClient.NewListPager(resourceGroupName string, options *MaintenanceWindowsClientListOptions) *runtime.Pager[MaintenanceWindowsClientListResponse]`
+- New function `*MaintenanceWindowsClient.UpdateTags(ctx context.Context, resourceGroupName string, maintenanceWindowName string, properties TagsObject, options *MaintenanceWindowsClientUpdateTagsOptions) (MaintenanceWindowsClientUpdateTagsResponse, error)`
 - New function `NewManagedClusterSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedClusterSnapshotsClient, error)`
 - New function `*ManagedClusterSnapshotsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters ManagedClusterSnapshot, options *ManagedClusterSnapshotsClientCreateOrUpdateOptions) (ManagedClusterSnapshotsClientCreateOrUpdateResponse, error)`
 - New function `*ManagedClusterSnapshotsClient.Delete(ctx context.Context, resourceGroupName string, resourceName string, options *ManagedClusterSnapshotsClientDeleteOptions) (ManagedClusterSnapshotsClientDeleteResponse, error)`
@@ -90,19 +93,14 @@
 - New function `*VMSKUsClient.NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse]`
 - New struct `AgentPoolBlueGreenUpgradeSettings`
 - New struct `AgentPoolNetworkInterface`
-- New struct `AgentPoolRecentlyUsedVersion`
 - New struct `AutoScaleProfile`
+- New struct `BastionProfile`
 - New struct `Component`
 - New struct `ComponentsByRelease`
 - New struct `GuardrailsAvailableVersion`
 - New struct `GuardrailsAvailableVersionsList`
 - New struct `GuardrailsAvailableVersionsProperties`
 - New struct `HardEvictionThreshold`
-- New struct `IdentityBinding`
-- New struct `IdentityBindingListResult`
-- New struct `IdentityBindingManagedIdentityProfile`
-- New struct `IdentityBindingOidcIssuerProfile`
-- New struct `IdentityBindingProperties`
 - New struct `JWTAuthenticator`
 - New struct `JWTAuthenticatorClaimMappingExpression`
 - New struct `JWTAuthenticatorClaimMappings`
@@ -125,10 +123,12 @@
 - New struct `MachineOSProfileLinuxProfile`
 - New struct `MachineSecurityProfile`
 - New struct `MachineStatus`
+- New struct `MaintenanceWindowResource`
+- New struct `MaintenanceWindowResourceListResult`
+- New struct `MaintenanceWindowResourceProperties`
 - New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
 - New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
 - New struct `ManagedClusterAzureMonitorProfileContainerInsights`
-- New struct `ManagedClusterAzureMonitorProfileMetricsControlPlane`
 - New struct `ManagedClusterControlPlaneScalingProfile`
 - New struct `ManagedClusterHealthMonitorProfile`
 - New struct `ManagedClusterIngressDefaultDomainProfile`
@@ -175,7 +175,7 @@
 - New struct `ServiceAccountImagePullProfile`
 - New struct `VMSKUsListResult`
 - New field `NodePublicIPPrefixIDs`, `SecondaryNetworkInterfaces` in struct `AgentPoolNetworkProfile`
-- New field `ComponentsByReleases`, `RecentlyUsedVersions` in struct `AgentPoolUpgradeProfileProperties`
+- New field `ComponentsByReleases` in struct `AgentPoolUpgradeProfileProperties`
 - New field `IsOutOfSupport` in struct `AgentPoolUpgradeProfilePropertiesUpgradesItem`
 - New field `MaxBlockedNodes` in struct `AgentPoolUpgradeSettings`
 - New field `DriverType`, `Nvidia` in struct `GPUProfile`
@@ -186,7 +186,6 @@
 - New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
 - New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
 - New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
-- New field `ControlPlane` in struct `ManagedClusterAzureMonitorProfileMetrics`
 - New field `EffectiveNoProxy` in struct `ManagedClusterHTTPProxyConfig`
 - New field `ApplicationLoadBalancer` in struct `ManagedClusterIngressProfile`
 - New field `DefaultDomain` in struct `ManagedClusterIngressProfileWebAppRouting`
@@ -200,8 +199,29 @@
 - New field `SecurityGating` in struct `ManagedClusterSecurityProfileDefender`
 - New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
-- New field `KubeProxyConfig`, `PodLinkLocalAccess` in struct `NetworkProfile`
+- New field `BastionProfile`, `KubeProxyConfig`, `PodLinkLocalAccess` in struct `NetworkProfile`
 - New field `Autoscale` in struct `ScaleProfile`
+
+
+## 9.3.0 (2026-06-03)
+### Features Added
+
+- New enum type `IdentityBindingProvisioningState` with values `IdentityBindingProvisioningStateCanceled`, `IdentityBindingProvisioningStateCreating`, `IdentityBindingProvisioningStateDeleting`, `IdentityBindingProvisioningStateFailed`, `IdentityBindingProvisioningStateSucceeded`, `IdentityBindingProvisioningStateUpdating`
+- New function `*ClientFactory.NewIdentityBindingsClient() *IdentityBindingsClient`
+- New function `NewIdentityBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IdentityBindingsClient, error)`
+- New function `*IdentityBindingsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, options *IdentityBindingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IdentityBindingsClientCreateOrUpdateResponse], error)`
+- New function `*IdentityBindingsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientBeginDeleteOptions) (*runtime.Poller[IdentityBindingsClientDeleteResponse], error)`
+- New function `*IdentityBindingsClient.Get(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientGetOptions) (IdentityBindingsClientGetResponse, error)`
+- New function `*IdentityBindingsClient.NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *IdentityBindingsClientListByManagedClusterOptions) *runtime.Pager[IdentityBindingsClientListByManagedClusterResponse]`
+- New struct `AgentPoolRecentlyUsedVersion`
+- New struct `IdentityBinding`
+- New struct `IdentityBindingListResult`
+- New struct `IdentityBindingManagedIdentityProfile`
+- New struct `IdentityBindingOidcIssuerProfile`
+- New struct `IdentityBindingProperties`
+- New struct `ManagedClusterAzureMonitorProfileMetricsControlPlane`
+- New field `RecentlyUsedVersions` in struct `AgentPoolUpgradeProfileProperties`
+- New field `ControlPlane` in struct `ManagedClusterAzureMonitorProfileMetrics`
 
 
 ## 9.2.0 (2026-05-09)

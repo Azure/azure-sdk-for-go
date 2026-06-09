@@ -60,10 +60,10 @@
 # ServiceOwners:                                                   @rajeshka @shankarsama
 
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak
+/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak @j7nw4r @SwayGom @sagar0207
 
 # ServiceLabel: %Event Hubs
-# ServiceOwners:                                                   @axisc @hmlam @sjkwak
+# ServiceOwners:                                                   @axisc @hmlam @sjkwak @j7nw4r @SwayGom @sagar0207
 
 # PRLabel: %Internal
 /sdk/internal/                                                     @jhendrixMSFT @richardpark-msft @rickwinter
@@ -79,7 +79,7 @@
 # ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault
 
 # PRLabel: %Monitor
-/sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @gracewilcox @jhendrixMSFT
+/sdk/monitor/                                                      @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-sdk-write-monitor-query-logs @jhendrixMSFT
 
 # PRLabel: %Monitor
 /sdk/monitor/ingestion/azlogs/                                     @Azure/azure-sdk-write-monitor-data-plane
@@ -87,9 +87,9 @@
 # PRLabel: %Monitor
 /sdk/monitor/query/azmetrics/                                      @Azure/azure-sdk-write-monitor-query-metrics
 
-# AzureSdkOwners:                                                  @gracewilcox
+# AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Monitor
-# ServiceOwners:                                                   @Azure/azure-sdk-write-monitor-data-plane @gracewilcox @jhendrixMSFT
+# ServiceOwners:                                                   @Azure/azure-sdk-write-monitor-data-plane @jhendrixMSFT
 
 # ServiceLabel: %Monitor
 # ServiceOwners:                                                   @AzmonActionG @AzmonAlerts @AzMonEssential @AzmonLogA @dadunl @SameergMS
@@ -109,13 +109,13 @@
 # ServiceOwners:                                                   @jhendrixMSFT @rickwinter
 
 # PRLabel: %Service Bus
-/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft
+/sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
 
 # PRLabel: %Service Bus
-/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft
+/sdk/messaging/stress/                                             @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
 
 # ServiceLabel: %Service Bus
-# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
+# ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
 
 # PRLabel: %Storage
 /sdk/storage/                                                      @gapra-msft @jhendrixMSFT @souravgupta-msft @tanyasethi-msft
@@ -655,7 +655,7 @@
 ###########
 /eng/                              @benbp @weshaggard
 /eng/common/                       @Azure/azure-sdk-eng
-/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @gracewilcox
+/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter
 /.config/1espt/                    @benbp @weshaggard
 /.github/workflows/                @Azure/azure-sdk-eng
 /.github/CODEOWNERS                @rickwinter @sandeep-sen @Azure/azure-sdk-eng
@@ -669,8 +669,8 @@
 /eng/swagger_to_sdk_config.json @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
-/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @gracewilcox
-/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @gracewilcox
+/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter
+/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter
 
 
 # Add owners for notifications for specific pipelines

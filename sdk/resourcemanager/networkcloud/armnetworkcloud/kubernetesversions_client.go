@@ -19,6 +19,8 @@ import (
 
 // KubernetesVersionsClient contains the methods for the KubernetesVersions group.
 // Don't use this type directly, use NewKubernetesVersionsClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type KubernetesVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewKubernetesVersionsClient(subscriptionID string, credential azcore.TokenC
 // BeginCreateOrUpdate - Create the Kubernetes version resource or update its tags. This resource is system managed and should
 // only be created with the name "default".
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesVersionName - The name of the Kubernetes version resource.
 //   - kubernetesVersionParameters - The request body.
@@ -70,8 +70,6 @@ func (client *KubernetesVersionsClient) BeginCreateOrUpdate(ctx context.Context,
 // CreateOrUpdate - Create the Kubernetes version resource or update its tags. This resource is system managed and should
 // only be created with the name "default".
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *KubernetesVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionParameters KubernetesVersion, options *KubernetesVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "KubernetesVersionsClient.BeginCreateOrUpdate"
@@ -113,8 +111,8 @@ func (client *KubernetesVersionsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -131,8 +129,6 @@ func (client *KubernetesVersionsClient) createOrUpdateCreateRequest(ctx context.
 
 // BeginDelete - Delete the specified Kubernetes version resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesVersionName - The name of the Kubernetes version resource.
 //   - options - KubernetesVersionsClientBeginDeleteOptions contains the optional parameters for the KubernetesVersionsClient.BeginDelete
@@ -156,8 +152,6 @@ func (client *KubernetesVersionsClient) BeginDelete(ctx context.Context, resourc
 
 // Delete - Delete the specified Kubernetes version resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *KubernetesVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *KubernetesVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "KubernetesVersionsClient.BeginDelete"
@@ -199,8 +193,8 @@ func (client *KubernetesVersionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -212,8 +206,6 @@ func (client *KubernetesVersionsClient) deleteCreateRequest(ctx context.Context,
 
 // Get - Retrieve the Kubernetes version resource that describes the available Kubernetes versions for deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesVersionName - The name of the Kubernetes version resource.
 //   - options - KubernetesVersionsClientGetOptions contains the optional parameters for the KubernetesVersionsClient.Get method.
@@ -259,8 +251,8 @@ func (client *KubernetesVersionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *KubernetesVersionsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListByResourceGroupPager - Get a list of Kubernetes version resources in the provided resource group.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - KubernetesVersionsClientListByResourceGroupOptions contains the optional parameters for the KubernetesVersionsClient.NewListByResourceGroupPager
 //     method.
@@ -325,8 +315,8 @@ func (client *KubernetesVersionsClient) listByResourceGroupCreateRequest(ctx con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +331,6 @@ func (client *KubernetesVersionsClient) listByResourceGroupHandleResponse(resp *
 }
 
 // NewListBySubscriptionPager - Get a list of Kubernetes version resources in the provided subscription.
-//
-// Generated from API version 2026-05-01-preview
 //   - options - KubernetesVersionsClientListBySubscriptionOptions contains the optional parameters for the KubernetesVersionsClient.NewListBySubscriptionPager
 //     method.
 func (client *KubernetesVersionsClient) NewListBySubscriptionPager(options *KubernetesVersionsClientListBySubscriptionOptions) *runtime.Pager[KubernetesVersionsClientListBySubscriptionResponse] {
@@ -386,8 +374,8 @@ func (client *KubernetesVersionsClient) listBySubscriptionCreateRequest(ctx cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -403,8 +391,6 @@ func (client *KubernetesVersionsClient) listBySubscriptionHandleResponse(resp *h
 
 // BeginUpdate - Update tags associated with the Kubernetes version resource. No other properties are supported for update.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - kubernetesVersionName - The name of the Kubernetes version resource.
 //   - kubernetesVersionPatchParameters - The request body.
@@ -429,8 +415,6 @@ func (client *KubernetesVersionsClient) BeginUpdate(ctx context.Context, resourc
 
 // Update - Update tags associated with the Kubernetes version resource. No other properties are supported for update.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *KubernetesVersionsClient) update(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters KubernetesVersionPatchParameters, options *KubernetesVersionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "KubernetesVersionsClient.BeginUpdate"
@@ -472,8 +456,8 @@ func (client *KubernetesVersionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

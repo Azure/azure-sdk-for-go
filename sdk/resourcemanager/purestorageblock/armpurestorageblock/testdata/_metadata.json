@@ -2,5 +2,5 @@
   "apiVersions": {
     "PureStorage.Block": "2026-01-01-preview"
   },
-  "emitterVersion": "0.12.0"
+  "emitterVersion": "0.14.1"
 }

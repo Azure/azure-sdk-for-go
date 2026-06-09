@@ -187,6 +187,50 @@ type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 	MaintenanceConfigurationListResult
 }
 
+// MaintenanceWindowsClientCreateOrUpdateResponse contains the response from method MaintenanceWindowsClient.BeginCreateOrUpdate.
+type MaintenanceWindowsClientCreateOrUpdateResponse struct {
+	// A maintenance window is a resource-group-scoped resource that defines a reusable
+	// maintenance schedule which can be linked to maintenance configurations on one
+	// or more managed clusters.
+	// For more information, see https://aka.ms/aks/maintenance-windows.
+	MaintenanceWindowResource
+}
+
+// MaintenanceWindowsClientDeleteResponse contains the response from method MaintenanceWindowsClient.BeginDelete.
+type MaintenanceWindowsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MaintenanceWindowsClientGetResponse contains the response from method MaintenanceWindowsClient.Get.
+type MaintenanceWindowsClientGetResponse struct {
+	// A maintenance window is a resource-group-scoped resource that defines a reusable
+	// maintenance schedule which can be linked to maintenance configurations on one
+	// or more managed clusters.
+	// For more information, see https://aka.ms/aks/maintenance-windows.
+	MaintenanceWindowResource
+}
+
+// MaintenanceWindowsClientListBySubscriptionResponse contains the response from method MaintenanceWindowsClient.NewListBySubscriptionPager.
+type MaintenanceWindowsClientListBySubscriptionResponse struct {
+	// The response of a MaintenanceWindowResource list operation.
+	MaintenanceWindowResourceListResult
+}
+
+// MaintenanceWindowsClientListResponse contains the response from method MaintenanceWindowsClient.NewListPager.
+type MaintenanceWindowsClientListResponse struct {
+	// The response of a MaintenanceWindowResource list operation.
+	MaintenanceWindowResourceListResult
+}
+
+// MaintenanceWindowsClientUpdateTagsResponse contains the response from method MaintenanceWindowsClient.UpdateTags.
+type MaintenanceWindowsClientUpdateTagsResponse struct {
+	// A maintenance window is a resource-group-scoped resource that defines a reusable
+	// maintenance schedule which can be linked to maintenance configurations on one
+	// or more managed clusters.
+	// For more information, see https://aka.ms/aks/maintenance-windows.
+	MaintenanceWindowResource
+}
+
 // ManagedClusterSnapshotsClientCreateOrUpdateResponse contains the response from method ManagedClusterSnapshotsClient.CreateOrUpdate.
 type ManagedClusterSnapshotsClientCreateOrUpdateResponse struct {
 	// A managed cluster snapshot resource.

@@ -96,13 +96,13 @@ func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMaximum
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientCreateOrUpdateResponse{
-	// 	LocalRulesResource: &armpanngfw.LocalRulesResource{
+	// 	LocalRulesResource: armpanngfw.LocalRulesResource{
 	// 		Name: to.Ptr("aaaaaaaaa"),
 	// 		Type: to.Ptr("aaaaaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
@@ -206,13 +206,13 @@ func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMinimum
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientCreateOrUpdateResponse{
-	// 	LocalRulesResource: &armpanngfw.LocalRulesResource{
+	// 	LocalRulesResource: armpanngfw.LocalRulesResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/grs1/localrules/1"),
 	// 		Properties: &armpanngfw.RuleEntry{
 	// 			RuleName: to.Ptr("aaaaaa"),
@@ -238,7 +238,7 @@ func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -264,7 +264,7 @@ func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -292,7 +292,7 @@ func ExampleLocalRulesClient_Get_localRulesGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientGetResponse{
-	// 	LocalRulesResource: &armpanngfw.LocalRulesResource{
+	// 	LocalRulesResource: armpanngfw.LocalRulesResource{
 	// 		Name: to.Ptr("aaaaaaaaa"),
 	// 		Type: to.Ptr("aaaaaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
@@ -394,7 +394,7 @@ func ExampleLocalRulesClient_Get_localRulesGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientGetResponse{
-	// 	LocalRulesResource: &armpanngfw.LocalRulesResource{
+	// 	LocalRulesResource: armpanngfw.LocalRulesResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/grs1/localrules/1"),
 	// 		Properties: &armpanngfw.RuleEntry{
 	// 			RuleName: to.Ptr("aaaaaa"),
@@ -423,7 +423,7 @@ func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientGetCountersResponse{
-	// 	RuleCounter: &armpanngfw.RuleCounter{
+	// 	RuleCounter: armpanngfw.RuleCounter{
 	// 		AppSeen: &armpanngfw.AppSeenData{
 	// 			AppSeenList: []*armpanngfw.AppSeenInfo{
 	// 				{
@@ -470,7 +470,7 @@ func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientGetCountersResponse{
-	// 	RuleCounter: &armpanngfw.RuleCounter{
+	// 	RuleCounter: armpanngfw.RuleCounter{
 	// 		Priority: to.Ptr("aaaaaaaaaaaaaaaaaaaa"),
 	// 		RuleName: to.Ptr("aaaa"),
 	// 	},
@@ -681,7 +681,7 @@ func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMaximumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientResetCountersResponse{
-	// 	RuleCounterReset: &armpanngfw.RuleCounterReset{
+	// 	RuleCounterReset: armpanngfw.RuleCounterReset{
 	// 		FirewallName: to.Ptr("aaaaaaaaaaaaaaaaaa"),
 	// 		Priority: to.Ptr("aaaaaaa"),
 	// 		RuleListName: to.Ptr("aaaaa"),
@@ -710,7 +710,7 @@ func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMinimumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientResetCountersResponse{
-	// 	RuleCounterReset: &armpanngfw.RuleCounterReset{
+	// 	RuleCounterReset: armpanngfw.RuleCounterReset{
 	// 	},
 	// }
 }

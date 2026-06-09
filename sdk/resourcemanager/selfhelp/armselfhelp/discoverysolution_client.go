@@ -11,10 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // DiscoverySolutionClient contains the methods for the DiscoverySolution group.
 // Don't use this type directly, use NewDiscoverySolutionClient() instead.
+//
+// Generated from API version 2024-03-01-preview
 type DiscoverySolutionClient struct {
 	internal *arm.Client
 }
@@ -39,8 +42,6 @@ func NewDiscoverySolutionClient(credential azcore.TokenCredential, options *arm.
 // API](https://learn.microsoft.com/rest/api/support/problem-classifications/list?tabs=HTTP)) <br/>Optional input: resourceUri
 // OR resource Type <br/><br/> <b>Note: </b> ‘requiredInputs’ from Discovery solutions response must be passed via ‘additionalParameters’
 // as an input to Diagnostics and Solutions API.
-//
-// Generated from API version 2024-03-01-preview
 //   - options - DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager
 //     method.
 func (client *DiscoverySolutionClient) NewListPager(options *DiscoverySolutionClientListOptions) *runtime.Pager[DiscoverySolutionClientListResponse] {
@@ -80,8 +81,8 @@ func (client *DiscoverySolutionClient) listCreateRequest(ctx context.Context, op
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	reqQP.Set("api-version", "2024-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

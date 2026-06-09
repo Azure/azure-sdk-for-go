@@ -62,18 +62,18 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "ArtifactsClient":
-		initServer(s, &s.trArtifactsServer, func() *ArtifactsServerTransport { return NewArtifactsServerTransport(&s.srv.ArtifactsServer) })
+		initServer(&s.trMu, &s.trArtifactsServer, func() *ArtifactsServerTransport { return NewArtifactsServerTransport(&s.srv.ArtifactsServer) })
 		resp, err = s.trArtifactsServer.Do(req)
 	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
 	case "HardwareSettingsClient":
-		initServer(s, &s.trHardwareSettingsServer, func() *HardwareSettingsServerTransport {
+		initServer(&s.trMu, &s.trHardwareSettingsServer, func() *HardwareSettingsServerTransport {
 			return NewHardwareSettingsServerTransport(&s.srv.HardwareSettingsServer)
 		})
 		resp, err = s.trHardwareSettingsServer.Do(req)
 	case "ImagesClient":
-		initServer(s, &s.trImagesServer, func() *ImagesServerTransport { return NewImagesServerTransport(&s.srv.ImagesServer) })
+		initServer(&s.trMu, &s.trImagesServer, func() *ImagesServerTransport { return NewImagesServerTransport(&s.srv.ImagesServer) })
 		resp, err = s.trImagesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -84,12 +84,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

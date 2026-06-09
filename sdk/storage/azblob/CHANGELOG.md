@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.8.0-beta.3 (Unreleased)
 
 ### Features Added
 * Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
@@ -12,6 +12,15 @@
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.
 * Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+
+## 1.8.0-beta.2 (2026-06-03)
+
+### Features Added
+* Added support for the `Expect: 100-continue` HTTP header on requests with a body. The new `ExpectContinueBehavior` field on `ClientOptions` configures the
+  behavior via `ExpectContinueOptions`. By default (`ExpectContinueModeApplyOnThrottle`) the header is sent for one minute after a 429, 500, or 503 response
+  is received; the interval can be overridden via `ExpectContinueOptions.ThrottleInterval`. Other modes are `ExpectContinueModeOn` (always send) and
+  `ExpectContinueModeOff` (never send). Set the environment variable `AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER=true` to disable the feature regardless of
+  `ClientOptions`.
 
 ## 1.7.0 (2026-05-14)
 

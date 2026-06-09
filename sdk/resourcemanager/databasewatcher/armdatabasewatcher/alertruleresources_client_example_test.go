@@ -40,7 +40,7 @@ func ExampleAlertRuleResourcesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatabasewatcher.AlertRuleResourcesClientCreateOrUpdateResponse{
-	// 	AlertRuleResource: &armdatabasewatcher.AlertRuleResource{
+	// 	AlertRuleResource: armdatabasewatcher.AlertRuleResource{
 	// 		Properties: &armdatabasewatcher.AlertRuleResourceProperties{
 	// 			AlertRuleResourceID: to.Ptr("/subscriptions/469DD77C-C8DB-47B7-B9E1-72D29F8C878Be/resourceGroups/rgWatcher/providers/microsoft.insights/scheduledqueryrules/alerts-demo"),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-25T15:38:47.798Z"); return t}()),
@@ -105,7 +105,7 @@ func ExampleAlertRuleResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatabasewatcher.AlertRuleResourcesClientGetResponse{
-	// 	AlertRuleResource: &armdatabasewatcher.AlertRuleResource{
+	// 	AlertRuleResource: armdatabasewatcher.AlertRuleResource{
 	// 		Properties: &armdatabasewatcher.AlertRuleResourceProperties{
 	// 			AlertRuleResourceID: to.Ptr("/subscriptions/469DD77C-C8DB-47B7-B9E1-72D29F8C878Be/resourceGroups/rgWatcher/providers/microsoft.insights/scheduledqueryrules/alerts-demo"),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-25T15:38:47.798Z"); return t}()),

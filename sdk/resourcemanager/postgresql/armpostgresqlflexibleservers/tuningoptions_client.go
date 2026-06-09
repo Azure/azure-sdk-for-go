@@ -18,6 +18,8 @@ import (
 
 // TuningOptionsClient contains the methods for the TuningOptions group.
 // Don't use this type directly, use NewTuningOptionsClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type TuningOptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTuningOptionsClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Gets the tuning options of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - tuningOption - The name of the tuning option.
@@ -93,8 +93,8 @@ func (client *TuningOptionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *TuningOptionsClient) getHandleResponse(resp *http.Response) (Tunin
 }
 
 // NewListByServerPager - Lists the tuning options of a server.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - TuningOptionsClientListByServerOptions contains the optional parameters for the TuningOptionsClient.NewListByServerPager
@@ -158,8 +156,8 @@ func (client *TuningOptionsClient) listByServerCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -174,8 +172,6 @@ func (client *TuningOptionsClient) listByServerHandleResponse(resp *http.Respons
 }
 
 // NewListRecommendationsPager - Lists available object recommendations.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - tuningOption - The name of the tuning option.
@@ -228,11 +224,11 @@ func (client *TuningOptionsClient) listRecommendationsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
+	reqQP.Set("api-version", version20260401Preview)
 	if options != nil && options.RecommendationType != nil {
 		reqQP.Set("recommendationType", string(*options.RecommendationType))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // DiagnosticsClient contains the methods for the Diagnostics group.
 // Don't use this type directly, use NewDiagnosticsClient() instead.
+//
+// Generated from API version 2025-06-01
 type DiagnosticsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDiagnosticsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Creates new or updates existing Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diagnosticName - Name of Diagnostic.
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *DiagnosticsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Creates new or updates existing Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *DiagnosticsClient) createOrUpdate(ctx context.Context, resourceGroupName string, diagnosticName string, resource Diagnostic, options *DiagnosticsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *DiagnosticsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *DiagnosticsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Deletes specified Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diagnosticName - Name of Diagnostic.
 //   - options - DiagnosticsClientBeginDeleteOptions contains the optional parameters for the DiagnosticsClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *DiagnosticsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Deletes specified Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *DiagnosticsClient) deleteOperation(ctx context.Context, resourceGroupName string, diagnosticName string, options *DiagnosticsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticsClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *DiagnosticsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Returns details of specified Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diagnosticName - Name of Diagnostic.
 //   - options - DiagnosticsClientGetOptions contains the optional parameters for the DiagnosticsClient.Get method.
@@ -243,8 +235,8 @@ func (client *DiagnosticsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *DiagnosticsClient) getHandleResponse(resp *http.Response) (Diagnos
 }
 
 // NewListByResourceGroupPager - Returns a collection of Diagnostic resources within the resource group.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DiagnosticsClientListByResourceGroupOptions contains the optional parameters for the DiagnosticsClient.NewListByResourceGroupPager
 //     method.
@@ -303,8 +293,8 @@ func (client *DiagnosticsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -319,8 +309,6 @@ func (client *DiagnosticsClient) listByResourceGroupHandleResponse(resp *http.Re
 }
 
 // NewListBySubscriptionPager - Lists Diagnostics resources within an Azure subscription.
-//
-// Generated from API version 2025-06-01
 //   - options - DiagnosticsClientListBySubscriptionOptions contains the optional parameters for the DiagnosticsClient.NewListBySubscriptionPager
 //     method.
 func (client *DiagnosticsClient) NewListBySubscriptionPager(options *DiagnosticsClientListBySubscriptionOptions) *runtime.Pager[DiagnosticsClientListBySubscriptionResponse] {
@@ -358,8 +346,8 @@ func (client *DiagnosticsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,8 +363,6 @@ func (client *DiagnosticsClient) listBySubscriptionHandleResponse(resp *http.Res
 
 // BeginUpdate - Updates existing Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - diagnosticName - Name of Diagnostic.
 //   - properties - The resource properties to be updated.
@@ -400,8 +386,6 @@ func (client *DiagnosticsClient) BeginUpdate(ctx context.Context, resourceGroupN
 
 // Update - Updates existing Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *DiagnosticsClient) update(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, options *DiagnosticsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiagnosticsClient.BeginUpdate"
@@ -443,8 +427,8 @@ func (client *DiagnosticsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

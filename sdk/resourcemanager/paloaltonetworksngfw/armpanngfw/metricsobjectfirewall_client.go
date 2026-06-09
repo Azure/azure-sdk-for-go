@@ -18,6 +18,8 @@ import (
 
 // MetricsObjectFirewallClient contains the methods for the MetricsObjectFirewall group.
 // Don't use this type directly, use NewMetricsObjectFirewallClient() instead.
+//
+// Generated from API version 2025-10-08
 type MetricsObjectFirewallClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewMetricsObjectFirewallClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Create a MetricsObjectFirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *MetricsObjectFirewallClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Create a MetricsObjectFirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *MetricsObjectFirewallClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallName string, resource MetricsObjectFirewallResource, options *MetricsObjectFirewallClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MetricsObjectFirewallClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *MetricsObjectFirewallClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *MetricsObjectFirewallClient) createOrUpdateCreateRequest(ctx conte
 
 // BeginDelete - Delete a MetricsObjectFirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - MetricsObjectFirewallClientBeginDeleteOptions contains the optional parameters for the MetricsObjectFirewallClient.BeginDelete
@@ -148,8 +144,6 @@ func (client *MetricsObjectFirewallClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Delete a MetricsObjectFirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *MetricsObjectFirewallClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallName string, options *MetricsObjectFirewallClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MetricsObjectFirewallClient.BeginDelete"
@@ -191,15 +185,13 @@ func (client *MetricsObjectFirewallClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a MetricsObjectFirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - MetricsObjectFirewallClientGetOptions contains the optional parameters for the MetricsObjectFirewallClient.Get
@@ -246,8 +238,8 @@ func (client *MetricsObjectFirewallClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -262,8 +254,6 @@ func (client *MetricsObjectFirewallClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByFirewallsPager - List MetricsObjectFirewallResource resources by Firewalls
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - MetricsObjectFirewallClientListByFirewallsOptions contains the optional parameters for the MetricsObjectFirewallClient.NewListByFirewallsPager
@@ -311,8 +301,8 @@ func (client *MetricsObjectFirewallClient) listByFirewallsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

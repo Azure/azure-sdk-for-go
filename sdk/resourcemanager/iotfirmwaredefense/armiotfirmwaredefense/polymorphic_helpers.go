@@ -16,16 +16,16 @@ func unmarshalSummaryResourcePropertiesClassification(rawMsg json.RawMessage) (S
 	}
 	var b SummaryResourcePropertiesClassification
 	switch m["summaryType"] {
-	case string(SummaryTypeFirmware):
-		b = &FirmwareSummary{}
-	case string(SummaryTypeCommonVulnerabilitiesAndExposures):
-		b = &CveSummary{}
 	case string(SummaryTypeBinaryHardening):
 		b = &BinaryHardeningSummaryResource{}
+	case string(SummaryTypeCommonVulnerabilitiesAndExposures):
+		b = &CveSummary{}
 	case string(SummaryTypeCryptoCertificate):
 		b = &CryptoCertificateSummaryResource{}
 	case string(SummaryTypeCryptoKey):
 		b = &CryptoKeySummaryResource{}
+	case string(SummaryTypeFirmware):
+		b = &FirmwareSummary{}
 	default:
 		b = &SummaryResourceProperties{}
 	}

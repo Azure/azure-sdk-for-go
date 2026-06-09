@@ -269,6 +269,17 @@ func (lc *locationCache) sessionRetrySnapshot() (multiWrite bool, readN, writeN 
 		len(lc.locationInfo.availWriteLocations)
 }
 
+// readEndpointCount returns the number of resolved preferred read endpoints
+// under RLock. The server-error retry path uses it to decide whether a
+// cross-region failover would actually target a different endpoint. Reading
+// the slice length under the lock prevents a torn read against a concurrent
+// locationCache.update (e.g. from an async GEM refresh).
+func (lc *locationCache) readEndpointCount() int {
+	lc.mapMutex.RLock()
+	defer lc.mapMutex.RUnlock()
+	return len(lc.locationInfo.readEndpoints)
+}
+
 func (lc *locationCache) markEndpointUnavailableForRead(endpoint url.URL) (wasAlreadyUnavailable bool, err error) {
 	return lc.markEndpointUnavailable(endpointKey(endpoint), read)
 }

@@ -18,6 +18,8 @@ import (
 
 // DatabasesClient contains the methods for the Databases group.
 // Don't use this type directly, use NewDatabasesClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type DatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDatabasesClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreate - Creates a new database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - Name of the database (case-sensitive). Exact database names can be retrieved by getting the list of all
@@ -69,8 +69,6 @@ func (client *DatabasesClient) BeginCreate(ctx context.Context, resourceGroupNam
 
 // Create - Creates a new database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *DatabasesClient) create(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters Database, options *DatabasesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginCreate"
@@ -116,8 +114,8 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -127,8 +125,6 @@ func (client *DatabasesClient) createCreateRequest(ctx context.Context, resource
 
 // BeginDelete - Deletes an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - Name of the database (case-sensitive). Exact database names can be retrieved by getting the list of all
@@ -153,8 +149,6 @@ func (client *DatabasesClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Deletes an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, options *DatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DatabasesClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *DatabasesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - Name of the database (case-sensitive). Exact database names can be retrieved by getting the list of all
@@ -260,8 +252,8 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *DatabasesClient) getHandleResponse(resp *http.Response) (Databases
 }
 
 // NewListByServerPager - Lists all databases in a server.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - DatabasesClientListByServerOptions contains the optional parameters for the DatabasesClient.NewListByServerPager
@@ -325,8 +315,8 @@ func (client *DatabasesClient) listByServerCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

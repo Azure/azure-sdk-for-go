@@ -40,6 +40,14 @@ func getOptional[T any](v T) *T {
 	return &v
 }
 
+func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
+	mu.Lock()
+	if *dst == nil {
+		*dst = src()
+	}
+	mu.Unlock()
+}
+
 func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error) {
 	if v == "" {
 		return nil, nil

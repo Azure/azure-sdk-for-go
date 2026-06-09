@@ -30,7 +30,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicegroups.ClientGetResponse{
-	// 	ServiceGroup: &armservicegroups.ServiceGroup{
+	// 	ServiceGroup: armservicegroups.ServiceGroup{
 	// 		Name: to.Ptr("20000000-0001-0000-0000-000000000000"),
 	// 		Type: to.Ptr("Microsoft.Management/serviceGroups"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/serviceGroups/20000000-0001-0000-0000-000000000000"),
@@ -64,7 +64,7 @@ func ExampleClient_ListAncestors() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicegroups.ClientListAncestorsResponse{
-	// 	ServiceGroupCollectionResponse: &armservicegroups.ServiceGroupCollectionResponse{
+	// 	ServiceGroupCollectionResponse: armservicegroups.ServiceGroupCollectionResponse{
 	// 		NextLink: to.Ptr("https://abc.def.com/providers/Microsoft.Management/serviceGroups/20000000-0001-0000-0000-000000000000/listAncestors?api-version=2024-02-01-preview&skipToken=xyz"),
 	// 		Value: []*armservicegroups.ServiceGroup{
 	// 			{

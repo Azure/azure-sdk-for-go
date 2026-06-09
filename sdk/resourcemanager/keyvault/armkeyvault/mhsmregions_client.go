@@ -18,6 +18,8 @@ import (
 
 // MHSMRegionsClient contains the methods for the MHSMRegions group.
 // Don't use this type directly, use NewMHSMRegionsClient() instead.
+//
+// Generated from API version 2026-02-01
 type MHSMRegionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewMHSMRegionsClient(subscriptionID string, credential azcore.TokenCredenti
 }
 
 // NewListByResourcePager - The List operation gets information about the regions associated with the managed HSM Pool.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the managed HSM Pool.
 //   - options - MHSMRegionsClientListByResourceOptions contains the optional parameters for the MHSMRegionsClient.NewListByResourcePager
@@ -89,8 +89,8 @@ func (client *MHSMRegionsClient) listByResourceCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

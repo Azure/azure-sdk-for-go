@@ -71,7 +71,7 @@ func ExampleWorkspacesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragediscovery.WorkspacesClientCreateOrUpdateResponse{
-	// 	Workspace: &armstoragediscovery.Workspace{
+	// 	Workspace: armstoragediscovery.Workspace{
 	// 		ID: to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/sampleworkspace"),
 	// 		Name: to.Ptr("sampleworkspace"),
 	// 		Type: to.Ptr("Microsoft.StorageDiscovery/storageDiscoveryWorkspaces"),
@@ -169,7 +169,7 @@ func ExampleWorkspacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragediscovery.WorkspacesClientGetResponse{
-	// 	Workspace: &armstoragediscovery.Workspace{
+	// 	Workspace: armstoragediscovery.Workspace{
 	// 		ID: to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/sampleworkspace"),
 	// 		Name: to.Ptr("sampleworkspace"),
 	// 		Type: to.Ptr("Microsoft.StorageDiscovery/storageDiscoveryWorkspaces"),
@@ -479,7 +479,7 @@ func ExampleWorkspacesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragediscovery.WorkspacesClientUpdateResponse{
-	// 	Workspace: &armstoragediscovery.Workspace{
+	// 	Workspace: armstoragediscovery.Workspace{
 	// 		ID: to.Ptr("/subscriptions/b79cb3ba-745e-5d9a-8903-4a02327a7e09/resourceGroups/sample-rg/providers/Microsoft.StorageDiscovery/storageDiscoveryWorkspaces/sampleworkspace"),
 	// 		Name: to.Ptr("sampleworkspace"),
 	// 		Type: to.Ptr("Microsoft.StorageDiscovery/storageDiscoveryWorkspaces"),

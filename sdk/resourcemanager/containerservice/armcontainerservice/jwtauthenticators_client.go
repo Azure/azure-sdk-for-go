@@ -16,65 +16,67 @@ import (
 	"strings"
 )
 
-// IdentityBindingsClient contains the methods for the IdentityBindings group.
-// Don't use this type directly, use NewIdentityBindingsClient() instead.
+// JWTAuthenticatorsClient contains the methods for the JWTAuthenticators group.
+// Don't use this type directly, use NewJWTAuthenticatorsClient() instead.
 //
 // Generated from API version 2026-04-02-preview
-type IdentityBindingsClient struct {
+type JWTAuthenticatorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewIdentityBindingsClient creates a new instance of IdentityBindingsClient with the specified values.
+// NewJWTAuthenticatorsClient creates a new instance of JWTAuthenticatorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewIdentityBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IdentityBindingsClient, error) {
+func NewJWTAuthenticatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JWTAuthenticatorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &IdentityBindingsClient{
+	client := &JWTAuthenticatorsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates an identity binding in the specified managed cluster.
+// BeginCreateOrUpdate - Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply
+// the settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - identityBindingName - The name of the identity binding.
-//   - parameters - The identity binding to create or update.
-//   - options - IdentityBindingsClientBeginCreateOrUpdateOptions contains the optional parameters for the IdentityBindingsClient.BeginCreateOrUpdate
+//   - jwtAuthenticatorName - The name of the JWT authenticator.
+//   - parameters - The JWT authenticator to create or update.
+//   - options - JWTAuthenticatorsClientBeginCreateOrUpdateOptions contains the optional parameters for the JWTAuthenticatorsClient.BeginCreateOrUpdate
 //     method.
-func (client *IdentityBindingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, options *IdentityBindingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IdentityBindingsClientCreateOrUpdateResponse], error) {
+func (client *JWTAuthenticatorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, options *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[JWTAuthenticatorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, identityBindingName, parameters, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, jwtAuthenticatorName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IdentityBindingsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JWTAuthenticatorsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IdentityBindingsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JWTAuthenticatorsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Creates or updates an identity binding in the specified managed cluster.
+// CreateOrUpdate - Creates or updates JWT authenticator in the managed cluster and updates the managed cluster to apply the
+// settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IdentityBindingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, options *IdentityBindingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *JWTAuthenticatorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, options *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "IdentityBindingsClient.BeginCreateOrUpdate"
+	const operationName = "JWTAuthenticatorsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, identityBindingName, parameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, jwtAuthenticatorName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -90,8 +92,8 @@ func (client *IdentityBindingsClient) createOrUpdate(ctx context.Context, resour
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, parameters IdentityBinding, _ *IdentityBindingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
+func (client *JWTAuthenticatorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, parameters JWTAuthenticator, _ *JWTAuthenticatorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -104,10 +106,10 @@ func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if identityBindingName == "" {
-		return nil, errors.New("parameter identityBindingName cannot be empty")
+	if jwtAuthenticatorName == "" {
+		return nil, errors.New("parameter jwtAuthenticatorName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{identityBindingName}", url.PathEscape(identityBindingName))
+	urlPath = strings.ReplaceAll(urlPath, "{jwtAuthenticatorName}", url.PathEscape(jwtAuthenticatorName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -123,39 +125,39 @@ func (client *IdentityBindingsClient) createOrUpdateCreateRequest(ctx context.Co
 	return req, nil
 }
 
-// BeginDelete - Deletes an identity binding in the specified managed cluster.
+// BeginDelete - Deletes a JWT authenticator and updates the managed cluster to apply the settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - identityBindingName - The name of the identity binding.
-//   - options - IdentityBindingsClientBeginDeleteOptions contains the optional parameters for the IdentityBindingsClient.BeginDelete
+//   - jwtAuthenticatorName - The name of the JWT authenticator.
+//   - options - JWTAuthenticatorsClientBeginDeleteOptions contains the optional parameters for the JWTAuthenticatorsClient.BeginDelete
 //     method.
-func (client *IdentityBindingsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientBeginDeleteOptions) (*runtime.Poller[IdentityBindingsClientDeleteResponse], error) {
+func (client *JWTAuthenticatorsClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientBeginDeleteOptions) (*runtime.Poller[JWTAuthenticatorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, identityBindingName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, jwtAuthenticatorName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IdentityBindingsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JWTAuthenticatorsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[IdentityBindingsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JWTAuthenticatorsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes an identity binding in the specified managed cluster.
+// Delete - Deletes a JWT authenticator and updates the managed cluster to apply the settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IdentityBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *JWTAuthenticatorsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "IdentityBindingsClient.BeginDelete"
+	const operationName = "JWTAuthenticatorsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, identityBindingName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, jwtAuthenticatorName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -171,8 +173,8 @@ func (client *IdentityBindingsClient) deleteOperation(ctx context.Context, resou
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, _ *IdentityBindingsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
+func (client *JWTAuthenticatorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, _ *JWTAuthenticatorsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -185,10 +187,10 @@ func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if identityBindingName == "" {
-		return nil, errors.New("parameter identityBindingName cannot be empty")
+	if jwtAuthenticatorName == "" {
+		return nil, errors.New("parameter jwtAuthenticatorName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{identityBindingName}", url.PathEscape(identityBindingName))
+	urlPath = strings.ReplaceAll(urlPath, "{jwtAuthenticatorName}", url.PathEscape(jwtAuthenticatorName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -199,37 +201,37 @@ func (client *IdentityBindingsClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
-// Get - Gets the specified Identity Binding.
+// Get - Gets the specified JWT authenticator of a managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - identityBindingName - The name of the identity binding.
-//   - options - IdentityBindingsClientGetOptions contains the optional parameters for the IdentityBindingsClient.Get method.
-func (client *IdentityBindingsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, options *IdentityBindingsClientGetOptions) (IdentityBindingsClientGetResponse, error) {
+//   - jwtAuthenticatorName - The name of the JWT authenticator.
+//   - options - JWTAuthenticatorsClientGetOptions contains the optional parameters for the JWTAuthenticatorsClient.Get method.
+func (client *JWTAuthenticatorsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, options *JWTAuthenticatorsClientGetOptions) (JWTAuthenticatorsClientGetResponse, error) {
 	var err error
-	const operationName = "IdentityBindingsClient.Get"
+	const operationName = "JWTAuthenticatorsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, identityBindingName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, jwtAuthenticatorName, options)
 	if err != nil {
-		return IdentityBindingsClientGetResponse{}, err
+		return JWTAuthenticatorsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return IdentityBindingsClientGetResponse{}, err
+		return JWTAuthenticatorsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return IdentityBindingsClientGetResponse{}, err
+		return JWTAuthenticatorsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *IdentityBindingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, identityBindingName string, _ *IdentityBindingsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings/{identityBindingName}"
+func (client *JWTAuthenticatorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jwtAuthenticatorName string, _ *JWTAuthenticatorsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators/{jwtAuthenticatorName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -242,10 +244,10 @@ func (client *IdentityBindingsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if identityBindingName == "" {
-		return nil, errors.New("parameter identityBindingName cannot be empty")
+	if jwtAuthenticatorName == "" {
+		return nil, errors.New("parameter jwtAuthenticatorName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{identityBindingName}", url.PathEscape(identityBindingName))
+	urlPath = strings.ReplaceAll(urlPath, "{jwtAuthenticatorName}", url.PathEscape(jwtAuthenticatorName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -258,26 +260,26 @@ func (client *IdentityBindingsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *IdentityBindingsClient) getHandleResponse(resp *http.Response) (IdentityBindingsClientGetResponse, error) {
-	result := IdentityBindingsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityBinding); err != nil {
-		return IdentityBindingsClientGetResponse{}, err
+func (client *JWTAuthenticatorsClient) getHandleResponse(resp *http.Response) (JWTAuthenticatorsClientGetResponse, error) {
+	result := JWTAuthenticatorsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JWTAuthenticator); err != nil {
+		return JWTAuthenticatorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByManagedClusterPager - Gets a list of identity bindings in the specified managed cluster.
+// NewListByManagedClusterPager - Gets a list of JWT authenticators in the specified managed cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the managed cluster resource.
-//   - options - IdentityBindingsClientListByManagedClusterOptions contains the optional parameters for the IdentityBindingsClient.NewListByManagedClusterPager
+//   - options - JWTAuthenticatorsClientListByManagedClusterOptions contains the optional parameters for the JWTAuthenticatorsClient.NewListByManagedClusterPager
 //     method.
-func (client *IdentityBindingsClient) NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *IdentityBindingsClientListByManagedClusterOptions) *runtime.Pager[IdentityBindingsClientListByManagedClusterResponse] {
-	return runtime.NewPager(runtime.PagingHandler[IdentityBindingsClientListByManagedClusterResponse]{
-		More: func(page IdentityBindingsClientListByManagedClusterResponse) bool {
+func (client *JWTAuthenticatorsClient) NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *JWTAuthenticatorsClientListByManagedClusterOptions) *runtime.Pager[JWTAuthenticatorsClientListByManagedClusterResponse] {
+	return runtime.NewPager(runtime.PagingHandler[JWTAuthenticatorsClientListByManagedClusterResponse]{
+		More: func(page JWTAuthenticatorsClientListByManagedClusterResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *IdentityBindingsClientListByManagedClusterResponse) (IdentityBindingsClientListByManagedClusterResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IdentityBindingsClient.NewListByManagedClusterPager")
+		Fetcher: func(ctx context.Context, page *JWTAuthenticatorsClientListByManagedClusterResponse) (JWTAuthenticatorsClientListByManagedClusterResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JWTAuthenticatorsClient.NewListByManagedClusterPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -286,7 +288,7 @@ func (client *IdentityBindingsClient) NewListByManagedClusterPager(resourceGroup
 				return client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
 			}, nil)
 			if err != nil {
-				return IdentityBindingsClientListByManagedClusterResponse{}, err
+				return JWTAuthenticatorsClientListByManagedClusterResponse{}, err
 			}
 			return client.listByManagedClusterHandleResponse(resp)
 		},
@@ -295,8 +297,8 @@ func (client *IdentityBindingsClient) NewListByManagedClusterPager(resourceGroup
 }
 
 // listByManagedClusterCreateRequest creates the ListByManagedCluster request.
-func (client *IdentityBindingsClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IdentityBindingsClientListByManagedClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/identityBindings"
+func (client *JWTAuthenticatorsClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *JWTAuthenticatorsClientListByManagedClusterOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/jwtAuthenticators"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -321,10 +323,10 @@ func (client *IdentityBindingsClient) listByManagedClusterCreateRequest(ctx cont
 }
 
 // listByManagedClusterHandleResponse handles the ListByManagedCluster response.
-func (client *IdentityBindingsClient) listByManagedClusterHandleResponse(resp *http.Response) (IdentityBindingsClientListByManagedClusterResponse, error) {
-	result := IdentityBindingsClientListByManagedClusterResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IdentityBindingListResult); err != nil {
-		return IdentityBindingsClientListByManagedClusterResponse{}, err
+func (client *JWTAuthenticatorsClient) listByManagedClusterHandleResponse(resp *http.Response) (JWTAuthenticatorsClientListByManagedClusterResponse, error) {
+	result := JWTAuthenticatorsClientListByManagedClusterResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JWTAuthenticatorListResult); err != nil {
+		return JWTAuthenticatorsClientListByManagedClusterResponse{}, err
 	}
 	return result, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // BackupsUnderBackupVaultClient contains the methods for the BackupsUnderBackupVault group.
 // Don't use this type directly, use NewBackupsUnderBackupVaultClient() instead.
+//
+// Generated from API version 2026-04-01
 type BackupsUnderBackupVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupsUnderBackupVaultClient(subscriptionID string, credential azcore.T
 
 // BeginRestoreFiles - Restore the specified files from the specified backup to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - backupVaultName - The name of the Backup Vault
@@ -69,8 +69,6 @@ func (client *BackupsUnderBackupVaultClient) BeginRestoreFiles(ctx context.Conte
 
 // RestoreFiles - Restore the specified files from the specified backup to the active filesystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *BackupsUnderBackupVaultClient) restoreFiles(ctx context.Context, resourceGroupName string, accountName string, backupVaultName string, backupName string, body BackupRestoreFiles, options *BackupsUnderBackupVaultClientBeginRestoreFilesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsUnderBackupVaultClient.BeginRestoreFiles"
@@ -120,8 +118,8 @@ func (client *BackupsUnderBackupVaultClient) restoreFilesCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err

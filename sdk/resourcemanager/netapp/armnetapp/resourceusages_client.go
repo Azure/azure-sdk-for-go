@@ -18,6 +18,8 @@ import (
 
 // ResourceUsagesClient contains the methods for the ResourceUsages group.
 // Don't use this type directly, use NewResourceUsagesClient() instead.
+//
+// Generated from API version 2026-04-01
 type ResourceUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewResourceUsagesClient(subscriptionID string, credential azcore.TokenCrede
 //
 // Get current subscription usage of the specific type
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - location - The name of the Azure region.
 //   - usageType - The type of usage
 //   - options - ResourceUsagesClientGetOptions contains the optional parameters for the ResourceUsagesClient.Get method.
@@ -90,8 +90,8 @@ func (client *ResourceUsagesClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -107,10 +107,8 @@ func (client *ResourceUsagesClient) getHandleResponse(resp *http.Response) (Reso
 
 // NewListPager - Get usages
 //
-// # Get current subscription usages
-//
-// Generated from API version 2026-01-01
-//   - location - The location name.
+// Get current subscription usages
+//   - location - The name of the Azure region.
 //   - options - ResourceUsagesClientListOptions contains the optional parameters for the ResourceUsagesClient.NewListPager method.
 func (client *ResourceUsagesClient) NewListPager(location string, options *ResourceUsagesClientListOptions) *runtime.Pager[ResourceUsagesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceUsagesClientListResponse]{
@@ -151,8 +149,8 @@ func (client *ResourceUsagesClient) listCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/Usages_Get.json
+// Generated from example definition: 2026-04-01/Usages_Get.json
 func ExampleResourceUsagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleResourceUsagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceUsagesClientGetResponse{
-	// 	UsageResult: &armnetapp.UsageResult{
+	// 	UsageResult: armnetapp.UsageResult{
 	// 		Name: &armnetapp.UsageName{
 	// 			LocalizedValue: to.Ptr("Total TiBs per subscription"),
 	// 			Value: to.Ptr("totalTibsPerSubscription"),
@@ -45,7 +45,7 @@ func ExampleResourceUsagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Usages_List.json
+// Generated from example definition: 2026-04-01/Usages_List.json
 func ExampleResourceUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

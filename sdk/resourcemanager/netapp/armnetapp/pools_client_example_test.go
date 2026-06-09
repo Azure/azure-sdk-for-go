@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/Pools_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Pools_CreateOrUpdate.json
 func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.PoolsClientCreateOrUpdateResponse{
-	// 	CapacityPool: &armnetapp.CapacityPool{
+	// 	CapacityPool: armnetapp.CapacityPool{
 	// 		Name: to.Ptr("account1/pool1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
@@ -59,7 +59,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Pools_CreateOrUpdate_CustomThroughput.json
+// Generated from example definition: 2026-04-01/Pools_CreateOrUpdate_CustomThroughput.json
 func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,13 +84,13 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.PoolsClientCreateOrUpdateResponse{
-	// 	CapacityPool: &armnetapp.CapacityPool{
+	// 	CapacityPool: armnetapp.CapacityPool{
 	// 		Name: to.Ptr("account1/customPool1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/customPool1"),
@@ -108,7 +108,7 @@ func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateCustomThroughput(
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Pools_Delete.json
+// Generated from example definition: 2026-04-01/Pools_Delete.json
 func ExamplePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,11 +125,11 @@ func ExamplePoolsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Pools_Get.json
+// Generated from example definition: 2026-04-01/Pools_Get.json
 func ExamplePoolsClient_Get_poolsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExamplePoolsClient_Get_poolsGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.PoolsClientGetResponse{
-	// 	CapacityPool: &armnetapp.CapacityPool{
+	// 	CapacityPool: armnetapp.CapacityPool{
 	// 		Name: to.Ptr("account1/pool1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
@@ -166,7 +166,7 @@ func ExamplePoolsClient_Get_poolsGet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Pools_Get_CustomThroughput.json
+// Generated from example definition: 2026-04-01/Pools_Get_CustomThroughput.json
 func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.PoolsClientGetResponse{
-	// 	CapacityPool: &armnetapp.CapacityPool{
+	// 	CapacityPool: armnetapp.CapacityPool{
 	// 		Name: to.Ptr("account1/customPool1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/customPool1"),
@@ -204,7 +204,7 @@ func ExamplePoolsClient_Get_poolsGetCustomThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Pools_List.json
+// Generated from example definition: 2026-04-01/Pools_List.json
 func ExamplePoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExamplePoolsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Pools_Update.json
+// Generated from example definition: 2026-04-01/Pools_Update.json
 func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,13 +283,13 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.PoolsClientUpdateResponse{
-	// 	CapacityPool: &armnetapp.CapacityPool{
+	// 	CapacityPool: armnetapp.CapacityPool{
 	// 		Name: to.Ptr("account1/pool1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1"),
@@ -307,7 +307,7 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Pools_Update_CustomThroughput.json
+// Generated from example definition: 2026-04-01/Pools_Update_CustomThroughput.json
 func ExamplePoolsClient_BeginUpdate_poolsUpdateCustomThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -324,13 +324,13 @@ func ExamplePoolsClient_BeginUpdate_poolsUpdateCustomThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.PoolsClientUpdateResponse{
-	// 	CapacityPool: &armnetapp.CapacityPool{
+	// 	CapacityPool: armnetapp.CapacityPool{
 	// 		Name: to.Ptr("account1/customPool1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/customPool1"),

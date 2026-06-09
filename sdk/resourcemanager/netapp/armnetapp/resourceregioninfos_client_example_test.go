@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/RegionInfos_Get.json
+// Generated from example definition: 2026-04-01/RegionInfos_Get.json
 func ExampleResourceRegionInfosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleResourceRegionInfosClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceRegionInfosClientGetResponse{
-	// 	RegionInfoResource: &armnetapp.RegionInfoResource{
+	// 	RegionInfoResource: armnetapp.RegionInfoResource{
 	// 		Name: to.Ptr("eastus/default"),
 	// 		Type: to.Ptr("Microsoft.NetApp/locations/regionInfos"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/regionInfos/default"),
@@ -55,7 +55,7 @@ func ExampleResourceRegionInfosClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RegionInfos_List.json
+// Generated from example definition: 2026-04-01/RegionInfos_List.json
 func ExampleResourceRegionInfosClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

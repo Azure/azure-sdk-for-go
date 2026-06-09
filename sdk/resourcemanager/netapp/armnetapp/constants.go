@@ -4,6 +4,10 @@
 
 package armnetapp
 
+const (
+	version20260401 string = "2026-04-01"
+)
+
 // AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
 // not have enough space to accommodate the volume after split, it will be automatically resized, which will lead to increased
 // billing. To accept capacity pool size auto grow and create a short term clone volume, set the property as accepted.
@@ -162,6 +166,25 @@ func PossibleBucketPermissionsValues() []BucketPermissions {
 	return []BucketPermissions{
 		BucketPermissionsReadOnly,
 		BucketPermissionsReadWrite,
+	}
+}
+
+// CacheFileAccessLogs - Flag indicating whether file access logs are enabled for the Cache, based on active diagnostic settings
+// present on the Cache.
+type CacheFileAccessLogs string
+
+const (
+	// CacheFileAccessLogsDisabled - fileAccessLogs are not enabled
+	CacheFileAccessLogsDisabled CacheFileAccessLogs = "Disabled"
+	// CacheFileAccessLogsEnabled - fileAccessLogs are enabled
+	CacheFileAccessLogsEnabled CacheFileAccessLogs = "Enabled"
+)
+
+// PossibleCacheFileAccessLogsValues returns the possible values for the CacheFileAccessLogs const type.
+func PossibleCacheFileAccessLogsValues() []CacheFileAccessLogs {
+	return []CacheFileAccessLogs{
+		CacheFileAccessLogsDisabled,
+		CacheFileAccessLogsEnabled,
 	}
 }
 

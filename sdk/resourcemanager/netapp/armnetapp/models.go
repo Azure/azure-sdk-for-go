@@ -773,6 +773,10 @@ type CacheProperties struct {
 	// READ-ONLY; Specifies if the cache is encryption or not.
 	Encryption *EncryptionState
 
+	// READ-ONLY; Flag indicating whether file access logs are enabled for the Cache, based on active diagnostic settings present
+	// on the Cache.
+	FileAccessLogs *CacheFileAccessLogs
+
 	// READ-ONLY; Language supported for volume.
 	Language *VolumeLanguage
 

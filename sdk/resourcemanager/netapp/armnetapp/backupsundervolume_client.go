@@ -18,6 +18,8 @@ import (
 
 // BackupsUnderVolumeClient contains the methods for the BackupsUnderVolume group.
 // Don't use this type directly, use NewBackupsUnderVolumeClient() instead.
+//
+// Generated from API version 2026-04-01
 type BackupsUnderVolumeClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupsUnderVolumeClient(subscriptionID string, credential azcore.TokenC
 
 // BeginMigrateBackups - Migrate the backups under volume to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - poolName - The name of the capacity pool
@@ -69,8 +69,6 @@ func (client *BackupsUnderVolumeClient) BeginMigrateBackups(ctx context.Context,
 
 // MigrateBackups - Migrate the backups under volume to backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *BackupsUnderVolumeClient) migrateBackups(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, body BackupsMigrationRequest, options *BackupsUnderVolumeClientBeginMigrateBackupsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsUnderVolumeClient.BeginMigrateBackups"
@@ -120,8 +118,8 @@ func (client *BackupsUnderVolumeClient) migrateBackupsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err

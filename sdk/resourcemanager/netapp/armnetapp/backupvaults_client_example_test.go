@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/BackupVaults_Create.json
+// Generated from example definition: 2026-04-01/BackupVaults_Create.json
 func ExampleBackupVaultsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,13 +31,13 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BackupVaultsClientCreateOrUpdateResponse{
-	// 	BackupVault: &armnetapp.BackupVault{
+	// 	BackupVault: armnetapp.BackupVault{
 	// 		Name: to.Ptr("account1/backupVault1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupVaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
@@ -49,7 +49,7 @@ func ExampleBackupVaultsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BackupVaults_Delete.json
+// Generated from example definition: 2026-04-01/BackupVaults_Delete.json
 func ExampleBackupVaultsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,11 +66,11 @@ func ExampleBackupVaultsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/BackupVaults_Get.json
+// Generated from example definition: 2026-04-01/BackupVaults_Get.json
 func ExampleBackupVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleBackupVaultsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BackupVaultsClientGetResponse{
-	// 	BackupVault: &armnetapp.BackupVault{
+	// 	BackupVault: armnetapp.BackupVault{
 	// 		Name: to.Ptr("account1/backupVault1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupVaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),
@@ -104,7 +104,7 @@ func ExampleBackupVaultsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BackupVaults_List.json
+// Generated from example definition: 2026-04-01/BackupVaults_List.json
 func ExampleBackupVaultsClient_NewListByNetAppAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleBackupVaultsClient_NewListByNetAppAccountPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/BackupVaults_Update.json
+// Generated from example definition: 2026-04-01/BackupVaults_Update.json
 func ExampleBackupVaultsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,13 +168,13 @@ func ExampleBackupVaultsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BackupVaultsClientUpdateResponse{
-	// 	BackupVault: &armnetapp.BackupVault{
+	// 	BackupVault: armnetapp.BackupVault{
 	// 		Name: to.Ptr("account1/backupVault1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupVaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1"),

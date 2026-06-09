@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/CheckFilePathAvailability.json
+// Generated from example definition: 2026-04-01/CheckFilePathAvailability.json
 func ExampleResourceClient_CheckFilePathAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,13 +34,13 @@ func ExampleResourceClient_CheckFilePathAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceClientCheckFilePathAvailabilityResponse{
-	// 	CheckAvailabilityResponse: &armnetapp.CheckAvailabilityResponse{
+	// 	CheckAvailabilityResponse: armnetapp.CheckAvailabilityResponse{
 	// 		IsAvailable: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01/CheckNameAvailability.json
+// Generated from example definition: 2026-04-01/CheckNameAvailability.json
 func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,13 +63,13 @@ func ExampleResourceClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceClientCheckNameAvailabilityResponse{
-	// 	CheckAvailabilityResponse: &armnetapp.CheckAvailabilityResponse{
+	// 	CheckAvailabilityResponse: armnetapp.CheckAvailabilityResponse{
 	// 		IsAvailable: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01/CheckQuotaAvailability.json
+// Generated from example definition: 2026-04-01/CheckQuotaAvailability.json
 func ExampleResourceClient_CheckQuotaAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,13 +92,13 @@ func ExampleResourceClient_CheckQuotaAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceClientCheckQuotaAvailabilityResponse{
-	// 	CheckAvailabilityResponse: &armnetapp.CheckAvailabilityResponse{
+	// 	CheckAvailabilityResponse: armnetapp.CheckAvailabilityResponse{
 	// 		IsAvailable: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkSiblingSet_Query.json
+// Generated from example definition: 2026-04-01/NetworkSiblingSet_Query.json
 func ExampleResourceClient_QueryNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleResourceClient_QueryNetworkSiblingSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceClientQueryNetworkSiblingSetResponse{
-	// 	NetworkSiblingSet: &armnetapp.NetworkSiblingSet{
+	// 	NetworkSiblingSet: armnetapp.NetworkSiblingSet{
 	// 		NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 	// 		NetworkSiblingSetID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 	// 		NetworkSiblingSetStateID: to.Ptr("12345_44420.8001578125"),
@@ -151,7 +151,7 @@ func ExampleResourceClient_QueryNetworkSiblingSet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/RegionInfo.json
+// Generated from example definition: 2026-04-01/RegionInfo.json
 func ExampleResourceClient_QueryRegionInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleResourceClient_QueryRegionInfo() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceClientQueryRegionInfoResponse{
-	// 	RegionInfo: &armnetapp.RegionInfo{
+	// 	RegionInfo: armnetapp.RegionInfo{
 	// 		AvailabilityZoneMappings: []*armnetapp.RegionInfoAvailabilityZoneMappingsItem{
 	// 			{
 	// 				AvailabilityZone: to.Ptr("1"),
@@ -182,7 +182,7 @@ func ExampleResourceClient_QueryRegionInfo() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetworkSiblingSet_Update.json
+// Generated from example definition: 2026-04-01/NetworkSiblingSet_Update.json
 func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,13 +204,13 @@ func ExampleResourceClient_BeginUpdateNetworkSiblingSet() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceClientUpdateNetworkSiblingSetResponse{
-	// 	NetworkSiblingSet: &armnetapp.NetworkSiblingSet{
+	// 	NetworkSiblingSet: armnetapp.NetworkSiblingSet{
 	// 		NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 	// 		NetworkSiblingSetID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 	// 		NetworkSiblingSetStateID: to.Ptr("12345_44420.8001578125"),

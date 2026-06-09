@@ -1609,6 +1609,7 @@ func (c CacheProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "encryption", c.Encryption)
 	populate(objectMap, "encryptionKeySource", c.EncryptionKeySource)
 	populate(objectMap, "exportPolicy", c.ExportPolicy)
+	populate(objectMap, "fileAccessLogs", c.FileAccessLogs)
 	populate(objectMap, "filePath", c.FilePath)
 	populate(objectMap, "globalFileLocking", c.GlobalFileLocking)
 	populate(objectMap, "kerberos", c.Kerberos)
@@ -1658,6 +1659,9 @@ func (c *CacheProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "exportPolicy":
 			err = unpopulate(val, "ExportPolicy", &c.ExportPolicy)
+			delete(rawMsg, key)
+		case "fileAccessLogs":
+			err = unpopulate(val, "FileAccessLogs", &c.FileAccessLogs)
 			delete(rawMsg, key)
 		case "filePath":
 			err = unpopulate(val, "FilePath", &c.FilePath)
@@ -6935,5 +6939,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/internal"
 )
 
@@ -66,4 +67,26 @@ func (i *ID) Version() string {
 		return ""
 	}
 	return *version
+}
+
+// SecureWrapKeyParameters contains the parameters for [Client.SecureWrapKey].
+type SecureWrapKeyParameters = SecureKeyWrapOperationParameters
+
+// SecureUnwrapKeyParameters contains the parameters for [Client.SecureUnwrapKey].
+type SecureUnwrapKeyParameters = SecureKeyUnWrapOperationParameters
+
+// NewSecureWrapKeyParameters creates parameters for [Client.SecureWrapKey].
+func NewSecureWrapKeyParameters(algorithm JSONWebKeyWrapAlgorithm) SecureWrapKeyParameters {
+	return SecureWrapKeyParameters{
+		Algorithm: to.Ptr(algorithm),
+	}
+}
+
+// NewSecureUnwrapKeyParameters creates parameters for [Client.SecureUnwrapKey].
+func NewSecureUnwrapKeyParameters(algorithm JSONWebKeyWrapAlgorithm, value []byte, targetAttestationToken string) SecureUnwrapKeyParameters {
+	return SecureUnwrapKeyParameters{
+		Algorithm:              to.Ptr(algorithm),
+		TargetAttestationToken: to.Ptr(targetAttestationToken),
+		Value:                  value,
+	}
 }

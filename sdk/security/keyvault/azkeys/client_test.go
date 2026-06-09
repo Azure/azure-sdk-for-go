@@ -9,6 +9,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -23,6 +24,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azkeys"
 	"github.com/stretchr/testify/require"
 )
+
+type transportFunc func(*http.Request) (*http.Response, error)
+
+func (f transportFunc) Do(req *http.Request) (*http.Response, error) {
+	return f(req)
+}
 
 // pollStatus calls a function until it stops returning a response error with the given status code.
 // If this takes more than 2 minutes, it fails the test.
@@ -336,6 +343,138 @@ func TestGetRandomBytes(t *testing.T) {
 	testSerde(t, &resp)
 }
 
+func TestSecureWrapUnwrapKeyParameters(t *testing.T) {
+	wrapParams := azkeys.NewSecureWrapKeyParameters(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256)
+	require.Equal(t, azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, *wrapParams.Algorithm)
+	testSerde(t, &wrapParams)
+
+	unwrapParams := azkeys.NewSecureUnwrapKeyParameters(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, []byte("wrapped"), "attestation")
+	require.Equal(t, azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, *unwrapParams.Algorithm)
+	require.Equal(t, []byte("wrapped"), unwrapParams.Value)
+	require.Equal(t, "attestation", *unwrapParams.TargetAttestationToken)
+	testSerde(t, &unwrapParams)
+}
+
+func TestSecureWrapUnwrapKeyRequests(t *testing.T) {
+	keyName := "secure-key"
+	keyVersion := "secure-version"
+	algorithm := azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256
+
+	requestNumber := 0
+	transport := transportFunc(func(req *http.Request) (*http.Response, error) {
+		requestNumber++
+		switch requestNumber {
+		case 1:
+			require.Equal(t, "/keys/secure-key/secure-version/securewrapkey", req.URL.Path)
+			bodyReader := req.Body
+			if bodyReader == nil {
+				require.NotNil(t, req.GetBody)
+				var err error
+				bodyReader, err = req.GetBody()
+				require.NoError(t, err)
+			}
+			defer func() { _ = bodyReader.Close() }()
+			var body map[string]any
+			require.NoError(t, json.NewDecoder(bodyReader).Decode(&body))
+			require.Equal(t, string(algorithm), body["alg"])
+			require.NotContains(t, body, "value")
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				Body:       io.NopCloser(strings.NewReader(`{"kid":"https://fakevault.vault.azure.net/keys/secure-key/secure-version","value":"d3JhcHBlZA","alg":"RSA-OAEP-256"}`)),
+				Request:    req,
+			}, nil
+		case 2:
+			require.Equal(t, "/keys/secure-key/secure-version/secureunwrapkey", req.URL.Path)
+			bodyReader := req.Body
+			if bodyReader == nil {
+				require.NotNil(t, req.GetBody)
+				var err error
+				bodyReader, err = req.GetBody()
+				require.NoError(t, err)
+			}
+			defer func() { _ = bodyReader.Close() }()
+			var body map[string]any
+			require.NoError(t, json.NewDecoder(bodyReader).Decode(&body))
+			require.Equal(t, string(algorithm), body["alg"])
+			require.Equal(t, "d3JhcHBlZA", body["value"])
+			require.Equal(t, "attestation", body["target"])
+			return &http.Response{
+				StatusCode: http.StatusOK,
+				Header:     http.Header{"Content-Type": []string{"application/json"}},
+				Body:       io.NopCloser(strings.NewReader(`{"kid":"https://fakevault.vault.azure.net/keys/secure-key/secure-version","value":"dW53cmFwcGVk","alg":"RSA-OAEP-256"}`)),
+				Request:    req,
+			}, nil
+		default:
+			return &http.Response{StatusCode: http.StatusInternalServerError, Body: io.NopCloser(strings.NewReader("")), Request: req}, nil
+		}
+	})
+
+	client, err := azkeys.NewClient(vaultURL, &azcred.Fake{}, &azkeys.ClientOptions{
+		ClientOptions: azcore.ClientOptions{Transport: transport},
+	})
+	require.NoError(t, err)
+
+	wrapResp, err := client.SecureWrapKey(context.Background(), keyName, keyVersion, azkeys.NewSecureWrapKeyParameters(algorithm), nil)
+	require.NoError(t, err)
+	require.Equal(t, string(algorithm), string(*wrapResp.Algorithm))
+	require.Equal(t, []byte("wrapped"), wrapResp.Value)
+	require.Equal(t, "https://fakevault.vault.azure.net/keys/secure-key/secure-version", *wrapResp.Kid)
+	testSerde(t, &wrapResp.SecureKeyOperationResult)
+
+	unwrapResp, err := client.SecureUnwrapKey(context.Background(), keyName, keyVersion, azkeys.NewSecureUnwrapKeyParameters(algorithm, wrapResp.Value, "attestation"), nil)
+	require.NoError(t, err)
+	require.Equal(t, string(algorithm), string(*unwrapResp.Algorithm))
+	require.Equal(t, []byte("unwrapped"), unwrapResp.Value)
+	require.Equal(t, "https://fakevault.vault.azure.net/keys/secure-key/secure-version", *unwrapResp.Kid)
+	testSerde(t, &unwrapResp.SecureKeyOperationResult)
+	require.Equal(t, 2, requestNumber)
+}
+
+func TestSecureWrapUnwrapKey(t *testing.T) {
+	client := startTest(t, true)
+
+	keyName := createRandomName(t, "testsecurewrap")
+	createParams := azkeys.CreateKeyParameters{
+		Kty:    to.Ptr(azkeys.KeyTypeRSAHSM),
+		KeyOps: to.SliceOfPtrs(azkeys.KeyOperationWrapKey, azkeys.KeyOperationUnwrapKey),
+	}
+	createResp, err := client.CreateKey(context.Background(), keyName, createParams, nil)
+	require.NoError(t, err)
+	defer cleanUpKey(t, client, createResp.Key.KID)
+	require.NotNil(t, createResp.Key.KID)
+	require.NotEmpty(t, createResp.Key.KID.Version())
+
+	algorithm := azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256
+	wrapParams := azkeys.NewSecureWrapKeyParameters(algorithm)
+	testSerde(t, &wrapParams)
+	wrapResp, err := client.SecureWrapKey(context.Background(), keyName, createResp.Key.KID.Version(), wrapParams, nil)
+	if err != nil && strings.Contains(err.Error(), "Operation secureWrapKey is not permitted") {
+		t.Skip("secure wrap is not enabled on the target Managed HSM")
+	}
+	require.NoError(t, err)
+	require.Equal(t, algorithm, *wrapResp.Algorithm)
+	require.NotNil(t, wrapResp.Kid)
+	wrapKID := azkeys.ID(*wrapResp.Kid)
+	require.Equal(t, keyName, wrapKID.Name())
+	require.Equal(t, createResp.Key.KID.Version(), wrapKID.Version())
+	require.NotEmpty(t, wrapResp.Value)
+	testSerde(t, &wrapResp.SecureKeyOperationResult)
+
+	attestationToken := getTestAttestationToken(t)
+	unwrapParams := azkeys.NewSecureUnwrapKeyParameters(algorithm, wrapResp.Value, attestationToken)
+	testSerde(t, &unwrapParams)
+	unwrapResp, err := client.SecureUnwrapKey(context.Background(), keyName, createResp.Key.KID.Version(), unwrapParams, nil)
+	require.NoError(t, err)
+	require.Equal(t, algorithm, *unwrapResp.Algorithm)
+	require.NotNil(t, unwrapResp.Kid)
+	unwrapKID := azkeys.ID(*unwrapResp.Kid)
+	require.Equal(t, keyName, unwrapKID.Name())
+	require.Equal(t, createResp.Key.KID.Version(), unwrapKID.Version())
+	require.Len(t, unwrapResp.Value, 32)
+	testSerde(t, &unwrapResp.SecureKeyOperationResult)
+}
+
 func TestID(t *testing.T) {
 	for _, test := range []struct{ ID, name, version string }{
 		{"https://foo.vault.azure.net/keys/name/version", "name", "version"},
@@ -584,24 +723,8 @@ func TestReleaseKey(t *testing.T) {
 			require.NotNil(t, createResp.Key.KID)
 			defer cleanUpKey(t, client, createResp.Key.KID)
 
-			attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
-			require.NoError(t, err)
-			req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
-			require.NoError(t, err)
-			resp, err := attestationClient.Do(req)
-			require.NoError(t, err)
-			require.Equal(t, http.StatusOK, resp.StatusCode)
-			defer func() {
-				_ = resp.Body.Close()
-			}()
-
-			var tR struct {
-				Token *string `json:"token"`
-			}
-			err = json.NewDecoder(resp.Body).Decode(&tR)
-			require.NoError(t, err)
-
-			params := azkeys.ReleaseParameters{TargetAttestationToken: tR.Token}
+			attestationToken := getTestAttestationToken(t)
+			params := azkeys.ReleaseParameters{TargetAttestationToken: to.Ptr(attestationToken)}
 			testSerde(t, &params)
 			releaseResp, err := client.Release(context.Background(), key, "", params, nil)
 			if err != nil && strings.Contains(err.Error(), "Target environment attestation statement cannot be verified.") {
@@ -613,6 +736,27 @@ func TestReleaseKey(t *testing.T) {
 		})
 	}
 
+}
+
+func getTestAttestationToken(t *testing.T) string {
+	attestationClient, err := recording.NewRecordingHTTPClient(t, nil)
+	require.NoError(t, err)
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/generate-test-token", attestationURL), nil)
+	require.NoError(t, err)
+	resp, err := attestationClient.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, resp.StatusCode)
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	var tokenResponse struct {
+		Token *string `json:"token"`
+	}
+	err = json.NewDecoder(resp.Body).Decode(&tokenResponse)
+	require.NoError(t, err)
+	require.NotNil(t, tokenResponse.Token)
+	return *tokenResponse.Token
 }
 
 func TestRotateKey(t *testing.T) {

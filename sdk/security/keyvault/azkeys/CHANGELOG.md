@@ -1,8 +1,15 @@
 # Release History
 
 ## 1.5.1-beta.1 (Unreleased)
-
 ### Features Added
+
+* Added support for API version `2026-03-01-preview` (now the default).
+* New `SecureWrapKey` and `SecureUnwrapKey` operations on `*Client` for securely wrapping/unwrapping keys (HSM).
+* New enum type `JSONWebKeyWrapAlgorithm` with values `JSONWebKeyWrapAlgorithmA128KW`, `JSONWebKeyWrapAlgorithmA128KWPAD`, `JSONWebKeyWrapAlgorithmA192KW`, `JSONWebKeyWrapAlgorithmA192KWPAD`, `JSONWebKeyWrapAlgorithmA256KW`, `JSONWebKeyWrapAlgorithmA256KWPAD`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAP`, `JSONWebKeyWrapAlgorithmCKMAESKEYWRAPPAD`, `JSONWebKeyWrapAlgorithmRSAOAEP256`.
+* New helpers `NewSecureWrapKeyParameters` and `NewSecureUnwrapKeyParameters`.
+* New type aliases `SecureWrapKeyParameters` and `SecureUnwrapKeyParameters`.
+* New structs `ExternalKey`, `SecureKeyOperationResult`, `SecureKeyWrapOperationParameters`, `SecureKeyUnWrapOperationParameters`.
+* New fields `ExternalKey`, `KeySize` on `KeyAttributes`.
 
 ### Breaking Changes
 

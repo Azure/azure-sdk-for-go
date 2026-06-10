@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2024-12-01-preview/MaintenancesListByServer.json
+// Generated from example definition: 2024-12-30/MaintenancesListByServer.json
 func ExampleMaintenancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleMaintenancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-12-01-preview/MaintenanceRead.json
+// Generated from example definition: 2024-12-30/MaintenanceRead.json
 func ExampleMaintenancesClient_Read() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleMaintenancesClient_Read() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.MaintenancesClientReadResponse{
-	// 	Maintenance: &armmysqlflexibleservers.Maintenance{
+	// 	Maintenance: armmysqlflexibleservers.Maintenance{
 	// 		Name: to.Ptr("_T9Q-TS8"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/maintenances"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/maintenances/_T9Q-TS8"),
@@ -111,7 +111,7 @@ func ExampleMaintenancesClient_Read() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/MaintenanceUpdate.json
+// Generated from example definition: 2024-12-30/MaintenanceUpdate.json
 func ExampleMaintenancesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,13 +132,13 @@ func ExampleMaintenancesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.MaintenancesClientUpdateResponse{
-	// 	Maintenance: &armmysqlflexibleservers.Maintenance{
+	// 	Maintenance: armmysqlflexibleservers.Maintenance{
 	// 		Name: to.Ptr("_T9Q-TS8"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/maintenances"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/maintenances/_T9Q-TS8"),

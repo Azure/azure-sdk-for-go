@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/CheckVirtualNetworkSubnetUsage.json
+// Generated from example definition: 2024-12-30/CheckVirtualNetworkSubnetUsage.json
 func ExampleCheckVirtualNetworkSubnetUsageClient_Execute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleCheckVirtualNetworkSubnetUsageClient_Execute() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.CheckVirtualNetworkSubnetUsageClientExecuteResponse{
-	// 	VirtualNetworkSubnetUsageResult: &armmysqlflexibleservers.VirtualNetworkSubnetUsageResult{
+	// 	VirtualNetworkSubnetUsageResult: armmysqlflexibleservers.VirtualNetworkSubnetUsageResult{
 	// 		DelegatedSubnetsUsage: []*armmysqlflexibleservers.DelegatedSubnetUsage{
 	// 			{
 	// 				SubnetName: to.Ptr("test-subnet-1"),

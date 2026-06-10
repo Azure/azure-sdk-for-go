@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/PrivateEndpointConnectionUpdate.json
+// Generated from example definition: 2024-12-30/PrivateEndpointConnectionUpdate.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.PrivateEndpointConnectionsClientCreateOrUpdateResponse{
-	// 	PrivateEndpointConnection: &armmysqlflexibleservers.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armmysqlflexibleservers.PrivateEndpointConnection{
 	// 		Name: to.Ptr("private-endpoint-connection-name"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/servers/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.DBforMySQL/servers/test-svr/privateEndpointConnections/private-endpoint-connection-name"),
@@ -61,7 +61,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/PrivateEndpointConnectionDelete.json
+// Generated from example definition: 2024-12-30/PrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -87,7 +87,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/PrivateEndpointConnectionGet.json
+// Generated from example definition: 2024-12-30/PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armmysqlflexibleservers.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armmysqlflexibleservers.PrivateEndpointConnection{
 	// 		Name: to.Ptr("private-endpoint-connection-name"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/servers/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.DBforMySQL/servers/test-svr/privateEndpointConnections/private-endpoint-connection-name"),
@@ -125,7 +125,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/PrivateEndpointConnectionList.json
+// Generated from example definition: 2024-12-30/PrivateEndpointConnectionList.json
 func ExamplePrivateEndpointConnectionsClient_ListByServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByServer() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.PrivateEndpointConnectionsClientListByServerResponse{
-	// 	PrivateEndpointConnectionListResult: &armmysqlflexibleservers.PrivateEndpointConnectionListResult{
+	// 	PrivateEndpointConnectionListResult: armmysqlflexibleservers.PrivateEndpointConnectionListResult{
 	// 		Value: []*armmysqlflexibleservers.PrivateEndpointConnection{
 	// 			{
 	// 				Name: to.Ptr("private-endpoint-connection-name"),

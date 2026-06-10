@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/CutoverMigration.json
+// Generated from example definition: 2024-12-30/CutoverMigration.json
 func ExampleServersMigrationClient_BeginCutoverMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,13 +28,13 @@ func ExampleServersMigrationClient_BeginCutoverMigration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.ServersMigrationClientCutoverMigrationResponse{
-	// 	Server: &armmysqlflexibleservers.Server{
+	// 	Server: armmysqlflexibleservers.Server{
 	// 		Name: to.Ptr("mysqltestserver"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver"),

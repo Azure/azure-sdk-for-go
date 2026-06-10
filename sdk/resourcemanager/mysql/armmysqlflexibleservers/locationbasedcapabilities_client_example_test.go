@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/CapabilitiesByLocationList.json
+// Generated from example definition: 2024-12-30/CapabilitiesByLocationList.json
 func ExampleLocationBasedCapabilitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

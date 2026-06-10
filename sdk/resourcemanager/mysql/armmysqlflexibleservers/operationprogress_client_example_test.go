@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/OperationProgress_Get_BackupAndExport.json
+// Generated from example definition: 2024-12-30/OperationProgress_Get_BackupAndExport.json
 func ExampleOperationProgressClient_Get_operationProgressGetBackupAndExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleOperationProgressClient_Get_operationProgressGetBackupAndExport() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.OperationProgressClientGetResponse{
-	// 	OperationProgressResult: &armmysqlflexibleservers.OperationProgressResult{
+	// 	OperationProgressResult: armmysqlflexibleservers.OperationProgressResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforMySQL/locations/westus/operationProgress/00000000-0000-0000-0000-000000000000"),
 	// 		PercentComplete: to.Ptr[float64](10),
@@ -46,7 +46,7 @@ func ExampleOperationProgressClient_Get_operationProgressGetBackupAndExport() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/OperationProgress_Get_ImportFromStorage.json
+// Generated from example definition: 2024-12-30/OperationProgress_Get_ImportFromStorage.json
 func ExampleOperationProgressClient_Get_operationProgressGetImportFromStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleOperationProgressClient_Get_operationProgressGetImportFromStorage() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.OperationProgressClientGetResponse{
-	// 	OperationProgressResult: &armmysqlflexibleservers.OperationProgressResult{
+	// 	OperationProgressResult: armmysqlflexibleservers.OperationProgressResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforMySQL/locations/westus/operationProgress/00000000-0000-0000-0000-000000000000"),
 	// 		PercentComplete: to.Ptr[float64](10),

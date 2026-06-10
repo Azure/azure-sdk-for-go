@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/PrivateLinkResourcesGet.json
+// Generated from example definition: 2024-12-30/PrivateLinkResourcesGet.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armmysqlflexibleservers.PrivateLinkResource{
+	// 	PrivateLinkResource: armmysqlflexibleservers.PrivateLinkResource{
 	// 		Name: to.Ptr("plr"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/servers/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.DBforMySQL/servers/test-svr/privateLinkResources/plr"),
@@ -44,7 +44,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/PrivateLinkResourcesList.json
+// Generated from example definition: 2024-12-30/PrivateLinkResourcesList.json
 func ExamplePrivateLinkResourcesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

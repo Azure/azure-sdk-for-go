@@ -282,10 +282,10 @@ func TestCheckEkmConnection_MockError(t *testing.T) {
 }
 
 // TestEkmRequestRouting asserts that each operation makes the right HTTP
-// method/path/api-version combination. It uses an inspector transport rather
-// than per-test predicates because the challenge auth policy may issue a
-// body-less probe before the real request, and the request shape we care
-// about (method + path + query) is preserved across both.
+// method/path/api-version combination.
+// It captures method/path/query via mock.WithPredicate. This is sufficient because
+// KeyVaultChallengePolicy may first send an unauthenticated request (no body) before
+// resending the same method/path/query after a 401 challenge.
 func TestEkmRequestRouting(t *testing.T) {
 	type call struct {
 		method string

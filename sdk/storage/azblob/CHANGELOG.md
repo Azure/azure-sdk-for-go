@@ -1,14 +1,9 @@
 # Release History
 
-## 1.8.0-beta.3 (Unreleased)
+## 1.8.0 (Unreleased)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Includes all features from `1.8.0-beta.1` and `1.8.0-beta.2`
 
 ## 1.8.0-beta.2 (2026-06-03)
 

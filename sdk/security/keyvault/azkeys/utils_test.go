@@ -79,6 +79,19 @@ func run(m *testing.M) int {
 	externalKeyID = recording.GetEnvVariable("EKM_EXTERNAL_ID", fakeExternalKeyID)
 	enableHSM = mhsmURL != fakeHsmURL
 
+	if recording.GetRecordMode() != recording.LiveMode {
+		// AZSDK3430 sanitizes every JSON $..id field to "Sanitized", which would
+		// overwrite legitimate id values the tests assert on (for example the
+		// external-key id on KeyAttributes.ExternalKey). Other Key Vault modules
+		// disable it for the same reason.
+		err := recording.RemoveRegisteredSanitizers([]string{
+			"AZSDK3430", // id in body
+		}, nil)
+		if err != nil {
+			panic(err)
+		}
+	}
+
 	if recording.GetRecordMode() == recording.RecordingMode {
 		for _, path := range []string{"$.error.message", "$.key.kid", "$.recoveryId"} {
 			err := recording.AddBodyKeySanitizer(path, fakeVaultURL, vaultURL, nil)

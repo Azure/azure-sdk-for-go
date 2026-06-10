@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -824,14 +825,19 @@ func TestSecureWrapUnwrap(t *testing.T) {
 }
 
 func TestExternalKeyReference(t *testing.T) {
-	keyClient := startTest(t, false)
+	// External-key creation requires a working EKM connection on the HSM
+	// pointed at an EKM proxy that exposes the key named by EKM_EXTERNAL_ID.
+	// CI doesn't provision that, so live runs are skipped unless the env var
+	// is supplied. Recording runs still execute (so recordings can be
+	// refreshed against an environment that does have a real proxy) and
+	// playback runs always execute against the recordings.
+	if recording.GetRecordMode() == recording.LiveMode && os.Getenv("EKM_EXTERNAL_ID") == "" {
+		t.Skip("skipping live external-key test: set EKM_EXTERNAL_ID to run against a real EKM proxy")
+	}
+	keyClient := startTest(t, true)
 
-	localKeyName := "ekm-external-key-test"
+	localKeyName := createRandomName(t, "ekm-external-key-test")
 	ctx := context.Background()
-
-	// Best-effort cleanup of a prior run. Run this in playback too so the
-	// corresponding entry in the recording is consumed in lockstep.
-	_, _ = keyClient.DeleteKey(ctx, localKeyName, nil)
 
 	// ExternalKey and Kty are mutually exclusive on CreateKey: the key material
 	// lives at the EKM proxy, so the Key Vault never picks its own key type.
@@ -842,21 +848,18 @@ func TestExternalKeyReference(t *testing.T) {
 	}
 
 	created, err := keyClient.CreateKey(ctx, localKeyName, params, nil)
-	if err != nil {
-		// The most common failure is that no EKM connection is configured on
-		// the HSM, in which case the service returns a 4xx. Surface that as a
-		// skip — including in playback, where the recording may legitimately
-		// have captured that 4xx — so the wire contract test still runs without
-		// requiring a fully provisioned EKM proxy.
-		var httpErr *azcore.ResponseError
-		if errors.As(err, &httpErr) {
-			t.Skipf("CreateKey failed (HTTP %d, %s); is an EKM connection configured on the HSM?",
-				httpErr.StatusCode, httpErr.ErrorCode)
-		}
-		require.NoError(t, err)
-	}
+	require.NoError(t, err)
+
 	t.Cleanup(func() {
-		_, _ = keyClient.DeleteKey(context.Background(), localKeyName, nil)
+		_, err = keyClient.DeleteKey(context.Background(), localKeyName, nil)
+		require.NoError(t, err)
+		pollStatus(t, 404, func() error {
+			_, err := keyClient.GetDeletedKey(context.Background(), localKeyName, nil)
+			return err
+		})
+
+		_, err = keyClient.PurgeDeletedKey(context.Background(), localKeyName, nil)
+		require.NoError(t, err)
 	})
 
 	require.NotNil(t, created.Attributes, "expected attributes on created key")

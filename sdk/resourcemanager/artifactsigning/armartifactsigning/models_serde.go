@@ -207,6 +207,7 @@ func (c CertificateProfileProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "includeState", c.IncludeState)
 	populate(objectMap, "includeStreetAddress", c.IncludeStreetAddress)
 	populate(objectMap, "profileType", c.ProfileType)
+	populate(objectMap, "programType", c.ProgramType)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "status", c.Status)
 	return json.Marshal(objectMap)
@@ -244,6 +245,9 @@ func (c *CertificateProfileProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "profileType":
 			err = unpopulate(val, "ProfileType", &c.ProfileType)
+			delete(rawMsg, key)
+		case "programType":
+			err = unpopulate(val, "ProgramType", &c.ProgramType)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
@@ -703,6 +707,33 @@ func (r *RevokeCertificate) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type RevokeCertificateList.
+func (r RevokeCertificateList) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "revokeCertificates", r.RevokeCertificates)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type RevokeCertificateList.
+func (r *RevokeCertificateList) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", r, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "revokeCertificates":
+			err = unpopulate(val, "RevokeCertificates", &r.RevokeCertificates)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", r, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -795,5 +826,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

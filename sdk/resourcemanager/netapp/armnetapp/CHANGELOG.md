@@ -1,6 +1,6 @@
 # Release History
 
-## 10.1.0 (2026-06-09)
+## 10.1.0 (2026-06-10)
 ### Features Added
 
 - New enum type `CacheFileAccessLogs` with values `CacheFileAccessLogsDisabled`, `CacheFileAccessLogsEnabled`

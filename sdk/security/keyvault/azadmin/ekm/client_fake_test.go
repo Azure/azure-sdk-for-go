@@ -44,11 +44,10 @@ const mockEKMProxyInfoBody = `{
 }`
 
 // newMockClient builds a KeyVaultClient wired to the given mock transport.
-// Retries are disabled so each test only needs to enqueue a single response —
-// the challenge auth policy issues a body-less probe first, but that probe
-// receives the same mock response as the main request because we always
-// configure responses via SetResponse or a predicate that matches both.
-func newMockClient(t *testing.T, srv *mock.Server) *ekm.KeyVaultClient {
+// Retries are disabled to keep tests fast and to avoid consuming queued mock
+// responses on retriable status codes (e.g. 502).
+// Note: KeyVaultChallengePolicy may first send an unauthenticated request (with
+// any body removed) and only send an authorized request after a 401 challenge.
 	t.Helper()
 	opts := &ekm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{

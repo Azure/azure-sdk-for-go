@@ -20,15 +20,13 @@ import (
 // LogsClient contains the methods for the Logs group.
 // Don't use this type directly, use a constructor function instead.
 type LogsClient struct {
-	host     string
 	internal *azcore.Client
+	endpoint string
 }
 
 // QueryBatch - Executes a batch of Analytics queries for data. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/batch-queries]
 // is an example for using POST with an Analytics query.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-10-27
 //   - body - The batch request body
 //   - options - LogsClientQueryBatchOptions contains the optional parameters for the LogsClient.QueryBatch method.
 func (client *LogsClient) QueryBatch(ctx context.Context, body BatchRequest, options *LogsClientQueryBatchOptions) (LogsClientQueryBatchResponse, error) {
@@ -54,7 +52,7 @@ func (client *LogsClient) QueryBatch(ctx context.Context, body BatchRequest, opt
 // queryBatchCreateRequest creates the QueryBatch request.
 func (client *LogsClient) queryBatchCreateRequest(ctx context.Context, body BatchRequest, _ *LogsClientQueryBatchOptions) (*policy.Request, error) {
 	urlPath := "/$batch"
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -78,8 +76,6 @@ func (client *LogsClient) queryBatchHandleResponse(resp *http.Response) (LogsCli
 // is an example for using POST with an Analytics
 // query.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-10-27
 //   - resourceID - The identifier of the resource.
 //   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 //   - options - LogsClientQueryResourceOptions contains the optional parameters for the LogsClient.QueryResource method.
@@ -107,7 +103,7 @@ func (client *LogsClient) QueryResource(ctx context.Context, resourceID string, 
 func (client *LogsClient) queryResourceCreateRequest(ctx context.Context, resourceID string, body Body, options *LogsClientQueryResourceOptions) (*policy.Request, error) {
 	urlPath := "/{resourceId}/query"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -133,8 +129,6 @@ func (client *LogsClient) queryResourceHandleResponse(resp *http.Response) (Logs
 // QueryWorkspace - Executes an Analytics query for data. Here [https://learn.microsoft.com/azure/azure-monitor/logs/api/request-format]
 // is an example for using POST with an Analytics query.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-10-27
 //   - workspaceID - Primary Workspace ID of the query. This is the Workspace ID from the Properties blade in the Azure portal.
 //   - body - The Analytics query. Learn more about the Analytics query syntax [https://azure.microsoft.com/documentation/articles/app-insights-analytics-reference/]
 //   - options - LogsClientQueryWorkspaceOptions contains the optional parameters for the LogsClient.QueryWorkspace method.
@@ -165,7 +159,7 @@ func (client *LogsClient) queryWorkspaceCreateRequest(ctx context.Context, works
 		return nil, errors.New("parameter workspaceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceId}", url.PathEscape(workspaceID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
 	if err != nil {
 		return nil, err
 	}

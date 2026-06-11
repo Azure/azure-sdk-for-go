@@ -5,35 +5,35 @@
 # Client Libraries
 ####################
 
-/**                                                                @jhendrixMSFT @rickwinter
+/**                                                                @jhendrixMSFT @rickwinter @xirzec
 
-/sdk/                                                              @richardpark-msft @rickwinter
+/sdk/                                                              @richardpark-msft @rickwinter @xirzec
 
-/sdk/samples/                                                      @jhendrixMSFT @richardpark-msft @rickwinter
+/sdk/samples/                                                      @jhendrixMSFT @richardpark-msft @rickwinter @xirzec
 
 # PRLabel: %App Configuration
-/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820
+/sdk/data/azappconfig/                                             @jhendrixMSFT @linglingye001 @RichardChen820 @mrm9084
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %App Configuration
-# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
+# ServiceOwners:                                                   @jhendrixMSFT @rickwinter @xirzec
 
 # ServiceLabel: %App Configuration
 # ServiceOwners:                                                   @avanigupta @shenmuxiaosen
 
 # PRLabel: %Azure.Core
-/sdk/azcore/                                                       @jhendrixMSFT @richardpark-msft @rickwinter
+/sdk/azcore/                                                       @jhendrixMSFT @richardpark-msft @rickwinter @xirzec
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Azure.Core
-# ServiceOwners:                                                   @jhendrixMSFT @richardpark-msft @rickwinter
+# ServiceOwners:                                                   @jhendrixMSFT @richardpark-msft @rickwinter @xirzec
 
 # PRLabel: %Azure.Identity
-/sdk/azidentity/                                                   @Azure/azure-sdk-write-identity @jhendrixMSFT @rickwinter
+/sdk/azidentity/                                                   @Azure/azure-sdk-write-identity @jhendrixMSFT @rickwinter @xirzec
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Azure.Identity
-# ServiceOwners:                                                   @Azure/azure-sdk-write-identity @rickwinter
+# ServiceOwners:                                                   @Azure/azure-sdk-write-identity @rickwinter @xirzec
 
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
@@ -46,11 +46,11 @@
 # ServiceOwners:                                                   @MehaKaushik @Pilchie @Wmengmsft
 
 # PRLabel: %EngSys
-/sdk/template/                                                     @benbp @weshaggard
+/sdk/template/                                                     @benbp @mikeharder
 
 # AzureSdkOwners:                                                  @benbp
 # ServiceLabel: %EngSys
-# ServiceOwners:                                                   @benbp @weshaggard
+# ServiceOwners:                                                   @benbp @mikeharder
 
 # PRLabel: %Event Grid
 /sdk/messaging/eventgrid/                                          @rajeshka @shankarsama
@@ -66,11 +66,11 @@
 # ServiceOwners:                                                   @axisc @hmlam @sjkwak @j7nw4r @SwayGom @sagar0207
 
 # PRLabel: %Internal
-/sdk/internal/                                                     @jhendrixMSFT @richardpark-msft @rickwinter
+/sdk/internal/                                                     @jhendrixMSFT @richardpark-msft @rickwinter @xirzec
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %Internal
-# ServiceOwners:                                                   @jhendrixMSFT @richardpark-msft @rickwinter
+# ServiceOwners:                                                   @jhendrixMSFT @richardpark-msft @rickwinter @xirzec
 
 # PRLabel: %KeyVault
 /sdk/security/keyvault/                                            @Azure/azure-sdk-write-keyvault
@@ -102,11 +102,11 @@
 # ServiceOwners:                                                   @achauhan-scc @glecaros @jhendrixMSFT @kingernupur @PratibhaShrivastav18 @richardpark-msft
 
 # PRLabel: %OpenTelemetry
-/sdk/tracing/azotel                                                @jhendrixMSFT @rickwinter
+/sdk/tracing/azotel                                                @jhendrixMSFT @rickwinter @xirzec
 
 # AzureSdkOwners:                                                  @jhendrixMSFT
 # ServiceLabel: %OpenTelemetry
-# ServiceOwners:                                                   @jhendrixMSFT @rickwinter
+# ServiceOwners:                                                   @jhendrixMSFT @rickwinter @xirzec
 
 # PRLabel: %Service Bus
 /sdk/messaging/azservicebus/                                       @EldertGrootenboer @skarri-microsoft @j7nw4r @SwayGom @sagar0207
@@ -653,12 +653,12 @@
 ###########
 # Eng Sys
 ###########
-/eng/                              @benbp @weshaggard
+/eng/                              @benbp @mikeharder
 /eng/common/                       @Azure/azure-sdk-eng
-/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter
-/.config/1espt/                    @benbp @weshaggard
+/eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
+/.config/1espt/                    @benbp @mikeharder
 /.github/workflows/                @Azure/azure-sdk-eng
-/.github/CODEOWNERS                @rickwinter @sandeep-sen @Azure/azure-sdk-eng
+/.github/CODEOWNERS                @rickwinter @xirzec @sandeep-sen @Azure/azure-sdk-eng
 /.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos
 
 # Add owners for go sdk tool
@@ -669,9 +669,9 @@
 /eng/swagger_to_sdk_config.json @lirenhe @tadelesh @JiaqiZhang-Dev
 
 # Add owners for typespec emitter config
-/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter
-/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter
+/eng/emitter-package-lock.json  @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
+/eng/emitter-package.json       @lirenhe @tadelesh @JiaqiZhang-Dev @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
 
 
 # Add owners for notifications for specific pipelines
-/eng/common/pipelines/codeowners-linter.yml       @rickwinter
+/eng/common/pipelines/codeowners-linter.yml       @rickwinter @xirzec

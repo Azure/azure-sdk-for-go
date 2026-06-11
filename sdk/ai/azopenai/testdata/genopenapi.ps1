@@ -10,13 +10,13 @@ if ($LASTEXITCODE -ne 0) {
     Exit 1
 }
 
-npm install -D "@azure-tools/typespec-autorest@0.64.0"
+npm install -D "@azure-tools/typespec-autorest@0.68.0"
 
 if ($LASTEXITCODE -ne 0) {
     Exit 1
 }
 
-npm install -D "@typespec/openapi3@1.8.0"
+npm install -D "@typespec/openapi3@1.12.0"
 
 if ($LASTEXITCODE -ne 0) {
     Exit 1
@@ -28,7 +28,7 @@ if ($LASTEXITCODE -ne 0) {
     Exit 1
 }
 
-tsp compile ./TempTypeSpecFiles/OpenAI.Inference --config ./tspconfig.yaml
+npx tsp compile ./TempTypeSpecFiles/OpenAI.Inference --config ./tspconfig.yaml
 
 if ($LASTEXITCODE -ne 0) {
     Exit 1

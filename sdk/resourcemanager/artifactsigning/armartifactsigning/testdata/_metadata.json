@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.CodeSigning": "2025-10-13"
+    "Microsoft.CodeSigning": "2026-05-15-preview"
   },
-  "emitterVersion": "0.14.1"
+  "emitterVersion": "0.14.2"
 }

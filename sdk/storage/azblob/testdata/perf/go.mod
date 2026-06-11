@@ -13,6 +13,7 @@ require (
 	golang.org/x/text v0.36.0 // indirect
 )
 
+// TODO: This will be removed once the internal module changes are released
 replace github.com/Azure/azure-sdk-for-go/sdk/internal => ../../../../internal
 
 replace github.com/Azure/azure-sdk-for-go/sdk/storage/azblob => ../../.

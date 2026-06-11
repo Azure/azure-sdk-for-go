@@ -173,7 +173,7 @@ func (r *perfRunner) Run() error {
 	}
 	for iter := 1; iter <= loopCount; iter++ {
 		if loopCount > 1 {
-			fmt.Printf("\n=== %s ===\n", fmt.Sprintf("Test %d", iter))
+			fmt.Printf("\n=== Test %d ===\n", iter)
 		}
 		// Reset per-iteration measurement counters/state on each worker
 		// and on the runner so each iteration produces independent stats.

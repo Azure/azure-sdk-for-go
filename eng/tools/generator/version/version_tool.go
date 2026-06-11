@@ -45,24 +45,35 @@ var (
 func UpdateAllVersionFiles(modulePath string, version *semver.Version, sdkRepo repo.SDKRepository) error {
 	// Update autorest.md if it exists (swagger-based packages)
 	autorestMdPath := filepath.Join(modulePath, "autorest.md")
-	if err := UpdateAutorestMdVersion(autorestMdPath, version.String()); err != nil {
-		return fmt.Errorf("failed to update autorest.md: %v", err)
+	if _, err := os.Stat(autorestMdPath); err == nil {
+		if err := UpdateAutorestMdVersion(autorestMdPath, version.String()); err != nil {
+			return fmt.Errorf("failed to update autorest.md: %v", err)
+		}
 	}
 
-	// Update version.go
-	if err := UpdateVersionGoFile(modulePath, version); err != nil {
-		return fmt.Errorf("failed to update version.go: %v", err)
+	// Update version.go if it exists
+	versionGoPath := filepath.Join(modulePath, "version.go")
+	if _, err := os.Stat(versionGoPath); err == nil {
+		if err := UpdateVersionGoFile(modulePath, version); err != nil {
+			return fmt.Errorf("failed to update version.go: %v", err)
+		}
 	}
 
 	if version.Major() > 1 {
-		// Update go.mod for v2+ modules
-		if err := UpdateModuleDefinition(modulePath, version, sdkRepo); err != nil {
-			return fmt.Errorf("failed to update go.mod: %v", err)
+		// Update go.mod for v2+ modules if it exists
+		goModPath := filepath.Join(modulePath, "go.mod")
+		if _, err := os.Stat(goModPath); err == nil {
+			if err := UpdateModuleDefinition(modulePath, version, sdkRepo); err != nil {
+				return fmt.Errorf("failed to update go.mod: %v", err)
+			}
 		}
 
-		// Update README.md module path for v2+
-		if err := UpdateReadmeModule(modulePath, version, sdkRepo); err != nil {
-			return fmt.Errorf("failed to update README.md: %v", err)
+		// Update README.md module path for v2+ if it exists
+		readmePath := filepath.Join(modulePath, "README.md")
+		if _, err := os.Stat(readmePath); err == nil {
+			if err := UpdateReadmeModule(modulePath, version, sdkRepo); err != nil {
+				return fmt.Errorf("failed to update README.md: %v", err)
+			}
 		}
 
 		// Update import paths for v2+
@@ -77,10 +88,6 @@ func UpdateAllVersionFiles(modulePath string, version *semver.Version, sdkRepo r
 // UpdateAutorestMdVersion updates the module version in autorest.md file
 func UpdateAutorestMdVersion(autorestMdPath, newVersion string) error {
 	log.Printf("Updating autorest.md version to %s...", newVersion)
-
-	if _, err := os.Stat(autorestMdPath); os.IsNotExist(err) {
-		return nil
-	}
 
 	b, err := os.ReadFile(autorestMdPath)
 	if err != nil {
@@ -103,10 +110,6 @@ func UpdateVersionGoFile(modulePath string, version *semver.Version) error {
 	log.Printf("Updating version.go to %s...", version.String())
 
 	path := filepath.Join(modulePath, "version.go")
-
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil
-	}
 
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -132,10 +135,6 @@ func UpdateModuleDefinition(modulePath string, version *semver.Version, sdkRepo 
 	}
 
 	path := filepath.Join(modulePath, "go.mod")
-
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil
-	}
 
 	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)
 	if err != nil {
@@ -209,11 +208,6 @@ func UpdateReadmeModule(modulePath string, version *semver.Version, sdkRepo repo
 	}
 
 	readmePath := filepath.Join(modulePath, "README.md")
-
-	if _, err := os.Stat(readmePath); os.IsNotExist(err) {
-		return nil
-	}
-
 	readmeFile, err := os.ReadFile(readmePath)
 	if err != nil {
 		return err

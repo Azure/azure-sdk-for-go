@@ -4,7 +4,7 @@
 
 ### Bugs Fixed
 
-- `UpdateAllVersionFiles` now ignores target files that don't exist instead of returning an error, so version bumping works for packages missing optional files such as `autorest.md` or `README.md`.
+- `UpdateAllVersionFiles` now checks each target file for existence before updating it, skipping missing files (such as `autorest.md`, `version.go`, `go.mod`, or `README.md`) instead of returning an error.
 
 ## 0.4.14 (2026-06-03)
 

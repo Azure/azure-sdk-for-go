@@ -70,6 +70,14 @@ function moduleIsInstalled([string]$moduleName, [string]$version) {
 }
 
 function installModule([string]$moduleName, [string]$version, $repoUrl) {
+  # Disable PSGallery completely in Azure Pipelines CI contexts.
+  # Pipelines will get flagged by 1es network isolation if they call out to
+  # powershellgallery.com, which will happen in Get-PSRepository which fetches
+  # metadata for all registered repositories.
+  if ($null -ne $env:SYSTEM_TEAMPROJECTID) {
+    Unregister-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
+  }
+
   $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })
   if ($repo.Count -eq 0) {
     Register-PSRepository -Name $repoUrl -SourceLocation $repoUrl -InstallationPolicy Trusted | Out-Null
@@ -82,10 +90,6 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
   if ($repo.InstallationPolicy -ne "Trusted") {
     Set-PSRepository -Name $repo.Name -InstallationPolicy "Trusted" | Out-Null
   }
-
-  Write-Host "[BBP] REMOVING PSGALLERY"
-  Unregister-PSRepository -Name PSGallery
-  Get-PSRepository
 
   Write-Verbose "Installing module $moduleName with version $version from $repoUrl"
   # Install under CurrentUser scope so that the end up under $CurrentUserModulePath for caching

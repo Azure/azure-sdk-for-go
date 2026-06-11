@@ -8,17 +8,10 @@ parameters:
   ArtifactName: packages
 
 steps:
-  #- template: /eng/common/pipelines/templates/steps/save-package-properties.yml
-  #  parameters:
-  #    ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #    PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
-
-  - task: Powershell@2
-    displayName: Test vanilla powershell
-    inputs:
-      targetType: inline
-      script: echo foo
-      pwsh: true
+  - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+    parameters:
+      ServiceDirectory: ${{parameters.ServiceDirectory}}
+      PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
 
       #- template: /eng/pipelines/templates/steps/set-artifact-packages.yml
       #  parameters:

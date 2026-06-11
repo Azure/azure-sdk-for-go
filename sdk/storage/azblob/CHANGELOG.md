@@ -8,6 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed `ListBlobsHierarchyOptions` and `NewListBlobsFlatPager` to correctly pass `StartFrom` to the generated client.
 
 ### Other Changes
 

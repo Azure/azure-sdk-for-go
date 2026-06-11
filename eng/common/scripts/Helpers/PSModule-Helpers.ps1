@@ -79,8 +79,8 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
 
     Get-PackageSource -ErrorAction SilentlyContinue |
       Where-Object { $_.Location -like '*powershellgallery.com*' } |
-      ForEach-Object { Unregister-PackageSource -Name $_.Name -ProviderName $_.ProviderName }
-    Unregister-PSRepository -Name PSGallery
+      ForEach-Object { Unregister-PackageSource -Name $_.Name -ProviderName $_.ProviderName -ErrorAction SilentlyContinue }
+    Unregister-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
 
     Write-Host "[BBP] REMOVED PSGALLERY"
 

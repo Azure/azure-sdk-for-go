@@ -31,6 +31,8 @@ extends:
     template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
     featureFlags:
+      ${{ if ne(variables['Build.DefinitionName'], 'go - azcore') }}:
+        autoBaseline: false
       golang:
         # New pipelines are not auto-onboarded so we have to opt-in to the module proxy
         internalModuleProxy:

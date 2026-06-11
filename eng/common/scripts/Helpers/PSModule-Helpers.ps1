@@ -85,6 +85,7 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
 
   Write-Host "[BBP] REMOVING PSGALLERY"
   Unregister-PSRepository -Name PSGallery
+  Get-PSRepository
 
   Write-Verbose "Installing module $moduleName with version $version from $repoUrl"
   # Install under CurrentUser scope so that the end up under $CurrentUserModulePath for caching

@@ -8,6 +8,9 @@ parameters:
   ArtifactName: packages
 
 steps:
+  - pwsh: unregister-psrepository -name PSGallery
+    displayName: unregister global
+
   - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
     parameters:
       ServiceDirectory: ${{parameters.ServiceDirectory}}

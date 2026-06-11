@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountCheckNameExists.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountCheckNameExists.json
 func ExampleDatabaseAccountsClient_CheckNameExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleDatabaseAccountsClient_CheckNameExists() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountCreateMax.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMax.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,15 +122,14 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 			Capacity: &armcosmos.Capacity{
 				TotalThroughputLimit: to.Ptr[int32](2000),
 			},
-			CapacityMode:                               to.Ptr(armcosmos.CapacityModeProvisioned),
-			EnableMaterializedViews:                    to.Ptr(false),
-			EnableBurstCapacity:                        to.Ptr(true),
-			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTls12),
-			EnablePriorityBasedExecution:               to.Ptr(true),
-			DefaultPriorityLevel:                       to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			EnablePerRegionPerPartitionAutoscale:       to.Ptr(true),
-			EnableAllVersionsAndDeletesChangeFeed:      to.Ptr(false),
+			CapacityMode:                          to.Ptr(armcosmos.CapacityModeProvisioned),
+			EnableMaterializedViews:               to.Ptr(false),
+			EnableBurstCapacity:                   to.Ptr(true),
+			MinimalTLSVersion:                     to.Ptr(armcosmos.MinimalTLSVersionTls12),
+			EnablePriorityBasedExecution:          to.Ptr(true),
+			DefaultPriorityLevel:                  to.Ptr(armcosmos.DefaultPriorityLevelLow),
+			EnablePerRegionPerPartitionAutoscale:  to.Ptr(true),
+			EnableAllVersionsAndDeletesChangeFeed: to.Ptr(false),
 		},
 	}, nil)
 	if err != nil {
@@ -138,13 +137,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -276,24 +275,19 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
 	// 			EnableMaterializedViews: to.Ptr(false),
 	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTls12),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 			},
 	// 			EnablePriorityBasedExecution: to.Ptr(true),
@@ -309,7 +303,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountCreateMin.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMin.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,13 +333,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -423,19 +417,15 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 			},
 	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](0),
@@ -448,7 +438,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBRestoreDatabaseAccountCreateUpdate.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAccountCreateUpdateJson() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,8 +480,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 					LocationName:     to.Ptr("southcentralus"),
 				},
 			},
-			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTLS),
+			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 			RestoreParameters: &armcosmos.RestoreParameters{
 				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
 					{
@@ -523,13 +512,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
 	// 		Name: to.Ptr("ddb1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
@@ -569,19 +558,15 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 			},
 	// 			Locations: []*armcosmos.Location{
@@ -593,7 +578,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// 					ProvisioningState: to.Ptr("Initializing"),
 	// 				},
 	// 			},
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
 	// 			NetworkACLBypassResourceIDs: []*string{
@@ -627,7 +611,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountDelete.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountDelete.json
 func ExampleDatabaseAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,11 +628,11 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountFailoverPriorityChange.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountFailoverPriorityChange.json
 func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,11 +660,11 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGet.json
 func ExampleDatabaseAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -699,7 +683,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientGetResponse{
-	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -800,7 +784,6 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 			},
 	// 			EnablePartitionMerge: to.Ptr(true),
 	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
 	// 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryFalse),
@@ -818,19 +801,15 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 			},
 	// 			EnablePriorityBasedExecution: to.Ptr(true),
@@ -855,7 +834,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -874,14 +853,14 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientGetReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 	DatabaseAccountListReadOnlyKeysResult: &armcosmos.DatabaseAccountListReadOnlyKeysResult{
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountList.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountList.json
 func ExampleDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -999,7 +978,6 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					},
 		// 					EnablePartitionMerge: to.Ptr(true),
 		// 					EnableBurstCapacity: to.Ptr(true),
-		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
 		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
@@ -1014,19 +992,15 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 					},
 		// 					EnablePriorityBasedExecution: to.Ptr(true),
@@ -1056,7 +1030,7 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListByResourceGroup.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListByResourceGroup.json
 func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1162,24 +1136,19 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
 		// 					},
 		// 					EnableMaterializedViews: to.Ptr(false),
-		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 						SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 						PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 						SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-		// 							ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 		// 						},
 		// 					},
 		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
@@ -1206,7 +1175,7 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListConnectionStrings.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListConnectionStrings.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1225,7 +1194,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 	DatabaseAccountListConnectionStringsResult: &armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
 	// 				Type: to.Ptr(armcosmos.TypeSQL),
@@ -1238,7 +1207,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListConnectionStringsMongo.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStringsMongo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1257,7 +1226,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 	DatabaseAccountListConnectionStringsResult: &armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
 	// 				Description: to.Ptr("Name of the connection string"),
@@ -1268,7 +1237,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListKeys.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListKeys.json
 func ExampleDatabaseAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1287,7 +1256,7 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListKeysResponse{
-	// 	DatabaseAccountListKeysResult: armcosmos.DatabaseAccountListKeysResult{
+	// 	DatabaseAccountListKeysResult: &armcosmos.DatabaseAccountListKeysResult{
 	// 		PrimaryMasterKey: to.Ptr("primaryMasterKey"),
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryMasterKey: to.Ptr("secondaryMasterKey"),
@@ -1296,7 +1265,7 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetMetricDefinitions.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGetMetricDefinitions.json
 func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1350,7 +1319,7 @@ func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetMetrics.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGetMetrics.json
 func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1361,7 +1330,7 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricsPager("rg1", "ddb1", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricsPager("rg1", "ddb1", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1417,7 +1386,7 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1436,14 +1405,14 @@ func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 	DatabaseAccountListReadOnlyKeysResult: &armcosmos.DatabaseAccountListReadOnlyKeysResult{
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountGetUsages.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGetUsages.json
 func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1455,7 +1424,7 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewDatabaseAccountsClient().NewListUsagesPager("rg1", "ddb1", &armcosmos.DatabaseAccountsClientListUsagesOptions{
-		Filter: to.Ptr("name.value eq 'Storage'")})
+		Filter: to.Ptr("$filter=name.value eq 'Storage'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1485,7 +1454,7 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountOfflineRegion.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountOfflineRegion.json
 func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1504,7 +1473,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1513,7 +1482,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountOnlineRegion.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountOnlineRegion.json
 func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1532,7 +1501,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1541,7 +1510,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountRegenerateKey.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountRegenerateKey.json
 func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1553,15 +1522,14 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabaseAccountsClient().BeginRegenerateKey(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountRegenerateKeyParameters{
-		KeyKind:                       to.Ptr(armcosmos.KeyKindPrimary),
-		SkipAccountKeysLastUsageCheck: to.Ptr(false),
+		KeyKind: to.Ptr(armcosmos.KeyKindPrimary),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1570,7 +1538,7 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountPatch.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountPatch.json
 func ExampleDatabaseAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1638,13 +1606,12 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
 			},
-			EnablePartitionMerge:                       to.Ptr(true),
-			EnableBurstCapacity:                        to.Ptr(true),
-			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
-			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTLS),
-			EnablePriorityBasedExecution:               to.Ptr(true),
-			DefaultPriorityLevel:                       to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			EnablePerRegionPerPartitionAutoscale:       to.Ptr(true),
+			EnablePartitionMerge:                 to.Ptr(true),
+			EnableBurstCapacity:                  to.Ptr(true),
+			MinimalTLSVersion:                    to.Ptr(armcosmos.MinimalTLSVersionTLS),
+			EnablePriorityBasedExecution:         to.Ptr(true),
+			DefaultPriorityLevel:                 to.Ptr(armcosmos.DefaultPriorityLevelLow),
+			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
 		},
 	}, nil)
 	if err != nil {
@@ -1652,13 +1619,13 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientUpdateResponse{
-	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -1792,24 +1759,19 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 			},
 	// 			EnableMaterializedViews: to.Ptr(false),
 	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
-	// 					ApproximateLastUsageTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-09T11:45:33Z"); return t}()),
 	// 				},
 	// 			},
 	// 			EnablePriorityBasedExecution: to.Ptr(true),

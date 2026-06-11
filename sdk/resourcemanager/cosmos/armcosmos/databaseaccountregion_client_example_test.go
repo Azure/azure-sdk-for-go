@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBDatabaseAccountRegionGetMetrics.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountRegionGetMetrics.json
 func ExampleDatabaseAccountRegionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleDatabaseAccountRegionClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDatabaseAccountRegionClient().NewListMetricsPager("rg1", "ddb1", "North Europe", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewDatabaseAccountRegionClient().NewListMetricsPager("rg1", "ddb1", "North Europe", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

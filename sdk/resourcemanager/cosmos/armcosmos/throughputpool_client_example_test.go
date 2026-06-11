@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolCreate.json
+// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolCreate.json
 func ExampleThroughputPoolClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,13 +35,13 @@ func ExampleThroughputPoolClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ThroughputPoolClientCreateOrUpdateResponse{
-	// 	ThroughputPoolResource: armcosmos.ThroughputPoolResource{
+	// 	ThroughputPoolResource: &armcosmos.ThroughputPoolResource{
 	// 		Name: to.Ptr("tp1"),
 	// 		Type: to.Ptr("/Microsoft.DocumentDB/throughputPools"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/throughputPools/tp1"),
@@ -59,7 +59,7 @@ func ExampleThroughputPoolClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolDelete.json
+// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolDelete.json
 func ExampleThroughputPoolClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,11 +76,11 @@ func ExampleThroughputPoolClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolGet.json
+// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolGet.json
 func ExampleThroughputPoolClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleThroughputPoolClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ThroughputPoolClientGetResponse{
-	// 	ThroughputPoolResource: armcosmos.ThroughputPoolResource{
+	// 	ThroughputPoolResource: &armcosmos.ThroughputPoolResource{
 	// 		Name: to.Ptr("tp1"),
 	// 		Type: to.Ptr("/Microsoft.DocumentDB/throughputPools"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/throughputPools/tp1"),
@@ -116,7 +116,7 @@ func ExampleThroughputPoolClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolUpdate.json
+// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolUpdate.json
 func ExampleThroughputPoolClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,13 +137,13 @@ func ExampleThroughputPoolClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ThroughputPoolClientUpdateResponse{
-	// 	ThroughputPoolResource: armcosmos.ThroughputPoolResource{
+	// 	ThroughputPoolResource: &armcosmos.ThroughputPoolResource{
 	// 		Name: to.Ptr("tp1"),
 	// 		Type: to.Ptr("/Microsoft.DocumentDB/throughputPools"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/throughputPools/tp1"),

@@ -7,19 +7,18 @@ package armcosmos
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // DatabaseClient contains the methods for the Database group.
 // Don't use this type directly, use NewDatabaseClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type DatabaseClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +41,8 @@ func NewDatabaseClient(subscriptionID string, credential azcore.TokenCredential,
 }
 
 // NewListMetricDefinitionsPager - Retrieves metric definitions for the given database.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -94,8 +95,8 @@ func (client *DatabaseClient) listMetricDefinitionsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,10 +111,12 @@ func (client *DatabaseClient) listMetricDefinitionsHandleResponse(resp *http.Res
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account and database.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
-//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//   - Filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
 //     name.value (name of the metric, can have an or of multiple names), startTime, endTime, and timeGrain. The supported operator
 //     is eq.
 //   - options - DatabaseClientListMetricsOptions contains the optional parameters for the DatabaseClient.NewListMetricsPager
@@ -166,8 +169,8 @@ func (client *DatabaseClient) listMetricsCreateRequest(ctx context.Context, reso
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -182,6 +185,8 @@ func (client *DatabaseClient) listMetricsHandleResponse(resp *http.Response) (Da
 }
 
 // NewListUsagesPager - Retrieves the usages (most recent data) for the given database.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseRid - Cosmos DB database rid.
@@ -236,8 +241,8 @@ func (client *DatabaseClient) listUsagesCreateRequest(ctx context.Context, resou
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

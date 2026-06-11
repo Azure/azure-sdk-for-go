@@ -153,7 +153,6 @@ func (a *AccessRulePropertiesSubscriptionsItem) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type AccountKeyMetadata.
 func (a AccountKeyMetadata) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "approximateLastUsageTime", a.ApproximateLastUsageTime)
 	populateTime[datetime.RFC3339](objectMap, "generationTime", a.GenerationTime)
 	return json.Marshal(objectMap)
 }
@@ -167,9 +166,6 @@ func (a *AccountKeyMetadata) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "approximateLastUsageTime":
-			err = unpopulateTime[datetime.RFC3339](val, "ApproximateLastUsageTime", &a.ApproximateLastUsageTime)
-			delete(rawMsg, key)
 		case "generationTime":
 			err = unpopulateTime[datetime.RFC3339](val, "GenerationTime", &a.GenerationTime)
 			delete(rawMsg, key)
@@ -4769,7 +4765,6 @@ func (d DatabaseAccountCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enablePartitionMerge", d.EnablePartitionMerge)
 	populate(objectMap, "enablePerRegionPerPartitionAutoscale", d.EnablePerRegionPerPartitionAutoscale)
 	populate(objectMap, "enablePriorityBasedExecution", d.EnablePriorityBasedExecution)
-	populate(objectMap, "enforceHierarchicalPartitionKeyIdLastLevel", d.EnforceHierarchicalPartitionKeyIDLastLevel)
 	populate(objectMap, "ipRules", d.IPRules)
 	populate(objectMap, "isVirtualNetworkFilterEnabled", d.IsVirtualNetworkFilterEnabled)
 	populate(objectMap, "keyVaultKeyUri", d.KeyVaultKeyURI)
@@ -4780,7 +4775,6 @@ func (d DatabaseAccountCreateUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "networkAclBypassResourceIds", d.NetworkACLBypassResourceIDs)
 	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
 	populate(objectMap, "restoreParameters", d.RestoreParameters)
-	populate(objectMap, "softDeleteConfiguration", d.SoftDeleteConfiguration)
 	populate(objectMap, "virtualNetworkRules", d.VirtualNetworkRules)
 	return json.Marshal(objectMap)
 }
@@ -4878,9 +4872,6 @@ func (d *DatabaseAccountCreateUpdateProperties) UnmarshalJSON(data []byte) error
 		case "enablePriorityBasedExecution":
 			err = unpopulate(val, "EnablePriorityBasedExecution", &d.EnablePriorityBasedExecution)
 			delete(rawMsg, key)
-		case "enforceHierarchicalPartitionKeyIdLastLevel":
-			err = unpopulate(val, "EnforceHierarchicalPartitionKeyIDLastLevel", &d.EnforceHierarchicalPartitionKeyIDLastLevel)
-			delete(rawMsg, key)
 		case "ipRules":
 			err = unpopulate(val, "IPRules", &d.IPRules)
 			delete(rawMsg, key)
@@ -4910,9 +4901,6 @@ func (d *DatabaseAccountCreateUpdateProperties) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "restoreParameters":
 			err = unpopulate(val, "RestoreParameters", &d.RestoreParameters)
-			delete(rawMsg, key)
-		case "softDeleteConfiguration":
-			err = unpopulate(val, "SoftDeleteConfiguration", &d.SoftDeleteConfiguration)
 			delete(rawMsg, key)
 		case "virtualNetworkRules":
 			err = unpopulate(val, "VirtualNetworkRules", &d.VirtualNetworkRules)
@@ -4960,7 +4948,6 @@ func (d DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enablePartitionMerge", d.EnablePartitionMerge)
 	populate(objectMap, "enablePerRegionPerPartitionAutoscale", d.EnablePerRegionPerPartitionAutoscale)
 	populate(objectMap, "enablePriorityBasedExecution", d.EnablePriorityBasedExecution)
-	populate(objectMap, "enforceHierarchicalPartitionKeyIdLastLevel", d.EnforceHierarchicalPartitionKeyIDLastLevel)
 	populate(objectMap, "failoverPolicies", d.FailoverPolicies)
 	populate(objectMap, "ipRules", d.IPRules)
 	populate(objectMap, "instanceId", d.InstanceID)
@@ -4977,7 +4964,6 @@ func (d DatabaseAccountGetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
 	populate(objectMap, "readLocations", d.ReadLocations)
 	populate(objectMap, "restoreParameters", d.RestoreParameters)
-	populate(objectMap, "softDeleteConfiguration", d.SoftDeleteConfiguration)
 	populate(objectMap, "throughputPoolDedicatedRUs", d.ThroughputPoolDedicatedRUs)
 	populate(objectMap, "throughputPoolMaxConsumableRUs", d.ThroughputPoolMaxConsumableRUs)
 	populate(objectMap, "virtualNetworkRules", d.VirtualNetworkRules)
@@ -5084,9 +5070,6 @@ func (d *DatabaseAccountGetProperties) UnmarshalJSON(data []byte) error {
 		case "enablePriorityBasedExecution":
 			err = unpopulate(val, "EnablePriorityBasedExecution", &d.EnablePriorityBasedExecution)
 			delete(rawMsg, key)
-		case "enforceHierarchicalPartitionKeyIdLastLevel":
-			err = unpopulate(val, "EnforceHierarchicalPartitionKeyIDLastLevel", &d.EnforceHierarchicalPartitionKeyIDLastLevel)
-			delete(rawMsg, key)
 		case "failoverPolicies":
 			err = unpopulate(val, "FailoverPolicies", &d.FailoverPolicies)
 			delete(rawMsg, key)
@@ -5134,9 +5117,6 @@ func (d *DatabaseAccountGetProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "restoreParameters":
 			err = unpopulate(val, "RestoreParameters", &d.RestoreParameters)
-			delete(rawMsg, key)
-		case "softDeleteConfiguration":
-			err = unpopulate(val, "SoftDeleteConfiguration", &d.SoftDeleteConfiguration)
 			delete(rawMsg, key)
 		case "throughputPoolDedicatedRUs":
 			err = unpopulate(val, "ThroughputPoolDedicatedRUs", &d.ThroughputPoolDedicatedRUs)
@@ -5357,7 +5337,6 @@ func (d *DatabaseAccountListReadOnlyKeysResult) UnmarshalJSON(data []byte) error
 func (d DatabaseAccountRegenerateKeyParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "keyKind", d.KeyKind)
-	populate(objectMap, "skipAccountKeysLastUsageCheck", d.SkipAccountKeysLastUsageCheck)
 	return json.Marshal(objectMap)
 }
 
@@ -5372,9 +5351,6 @@ func (d *DatabaseAccountRegenerateKeyParameters) UnmarshalJSON(data []byte) erro
 		switch key {
 		case "keyKind":
 			err = unpopulate(val, "KeyKind", &d.KeyKind)
-			delete(rawMsg, key)
-		case "skipAccountKeysLastUsageCheck":
-			err = unpopulate(val, "SkipAccountKeysLastUsageCheck", &d.SkipAccountKeysLastUsageCheck)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5452,7 +5428,6 @@ func (d DatabaseAccountUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enablePartitionMerge", d.EnablePartitionMerge)
 	populate(objectMap, "enablePerRegionPerPartitionAutoscale", d.EnablePerRegionPerPartitionAutoscale)
 	populate(objectMap, "enablePriorityBasedExecution", d.EnablePriorityBasedExecution)
-	populate(objectMap, "enforceHierarchicalPartitionKeyIdLastLevel", d.EnforceHierarchicalPartitionKeyIDLastLevel)
 	populate(objectMap, "ipRules", d.IPRules)
 	populate(objectMap, "isVirtualNetworkFilterEnabled", d.IsVirtualNetworkFilterEnabled)
 	populate(objectMap, "keyVaultKeyUri", d.KeyVaultKeyURI)
@@ -5462,7 +5437,6 @@ func (d DatabaseAccountUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "networkAclBypass", d.NetworkACLBypass)
 	populate(objectMap, "networkAclBypassResourceIds", d.NetworkACLBypassResourceIDs)
 	populate(objectMap, "publicNetworkAccess", d.PublicNetworkAccess)
-	populate(objectMap, "softDeleteConfiguration", d.SoftDeleteConfiguration)
 	populate(objectMap, "virtualNetworkRules", d.VirtualNetworkRules)
 	return json.Marshal(objectMap)
 }
@@ -5554,9 +5528,6 @@ func (d *DatabaseAccountUpdateProperties) UnmarshalJSON(data []byte) error {
 		case "enablePriorityBasedExecution":
 			err = unpopulate(val, "EnablePriorityBasedExecution", &d.EnablePriorityBasedExecution)
 			delete(rawMsg, key)
-		case "enforceHierarchicalPartitionKeyIdLastLevel":
-			err = unpopulate(val, "EnforceHierarchicalPartitionKeyIDLastLevel", &d.EnforceHierarchicalPartitionKeyIDLastLevel)
-			delete(rawMsg, key)
 		case "ipRules":
 			err = unpopulate(val, "IPRules", &d.IPRules)
 			delete(rawMsg, key)
@@ -5583,9 +5554,6 @@ func (d *DatabaseAccountUpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "publicNetworkAccess":
 			err = unpopulate(val, "PublicNetworkAccess", &d.PublicNetworkAccess)
-			delete(rawMsg, key)
-		case "softDeleteConfiguration":
-			err = unpopulate(val, "SoftDeleteConfiguration", &d.SoftDeleteConfiguration)
 			delete(rawMsg, key)
 		case "virtualNetworkRules":
 			err = unpopulate(val, "VirtualNetworkRules", &d.VirtualNetworkRules)
@@ -6615,10 +6583,8 @@ func (g *GarnetClusterResourcePatch) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GarnetClusterResourcePatchProperties.
 func (g GarnetClusterResourcePatchProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationMethod", g.AuthenticationMethod)
 	populate(objectMap, "clusterType", g.ClusterType)
 	populate(objectMap, "extensions", g.Extensions)
-	populate(objectMap, "persistence", g.Persistence)
 	return json.Marshal(objectMap)
 }
 
@@ -6631,17 +6597,11 @@ func (g *GarnetClusterResourcePatchProperties) UnmarshalJSON(data []byte) error 
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "authenticationMethod":
-			err = unpopulate(val, "AuthenticationMethod", &g.AuthenticationMethod)
-			delete(rawMsg, key)
 		case "clusterType":
 			err = unpopulate(val, "ClusterType", &g.ClusterType)
 			delete(rawMsg, key)
 		case "extensions":
 			err = unpopulate(val, "Extensions", &g.Extensions)
-			delete(rawMsg, key)
-		case "persistence":
-			err = unpopulate(val, "Persistence", &g.Persistence)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -6655,17 +6615,15 @@ func (g *GarnetClusterResourcePatchProperties) UnmarshalJSON(data []byte) error 
 func (g GarnetClusterResourceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "allocationState", g.AllocationState)
-	populate(objectMap, "authenticationMethod", g.AuthenticationMethod)
 	populate(objectMap, "availabilityZone", g.AvailabilityZone)
 	populate(objectMap, "clusterType", g.ClusterType)
 	populate(objectMap, "endPoints", g.EndPoints)
 	populate(objectMap, "extensions", g.Extensions)
+	populate(objectMap, "nodeCount", g.NodeCount)
 	populate(objectMap, "nodeSku", g.NodeSKU)
-	populate(objectMap, "persistence", g.Persistence)
 	populate(objectMap, "provisionError", g.ProvisionError)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
 	populate(objectMap, "replicationFactor", g.ReplicationFactor)
-	populate(objectMap, "shardCount", g.ShardCount)
 	populate(objectMap, "subnetId", g.SubnetID)
 	return json.Marshal(objectMap)
 }
@@ -6682,9 +6640,6 @@ func (g *GarnetClusterResourceProperties) UnmarshalJSON(data []byte) error {
 		case "allocationState":
 			err = unpopulate(val, "AllocationState", &g.AllocationState)
 			delete(rawMsg, key)
-		case "authenticationMethod":
-			err = unpopulate(val, "AuthenticationMethod", &g.AuthenticationMethod)
-			delete(rawMsg, key)
 		case "availabilityZone":
 			err = unpopulate(val, "AvailabilityZone", &g.AvailabilityZone)
 			delete(rawMsg, key)
@@ -6697,11 +6652,11 @@ func (g *GarnetClusterResourceProperties) UnmarshalJSON(data []byte) error {
 		case "extensions":
 			err = unpopulate(val, "Extensions", &g.Extensions)
 			delete(rawMsg, key)
+		case "nodeCount":
+			err = unpopulate(val, "NodeCount", &g.NodeCount)
+			delete(rawMsg, key)
 		case "nodeSku":
 			err = unpopulate(val, "NodeSKU", &g.NodeSKU)
-			delete(rawMsg, key)
-		case "persistence":
-			err = unpopulate(val, "Persistence", &g.Persistence)
 			delete(rawMsg, key)
 		case "provisionError":
 			err = unpopulate(val, "ProvisionError", &g.ProvisionError)
@@ -6711,9 +6666,6 @@ func (g *GarnetClusterResourceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "replicationFactor":
 			err = unpopulate(val, "ReplicationFactor", &g.ReplicationFactor)
-			delete(rawMsg, key)
-		case "shardCount":
-			err = unpopulate(val, "ShardCount", &g.ShardCount)
 			delete(rawMsg, key)
 		case "subnetId":
 			err = unpopulate(val, "SubnetID", &g.SubnetID)
@@ -16726,504 +16678,6 @@ func (s *ServiceResourceProperties) UnmarshalJSON(data []byte) error {
 				err = json.Unmarshal(val, &aux)
 				s.AdditionalProperties[key] = aux
 			}
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeleteConfiguration.
-func (s SoftDeleteConfiguration) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "minMinutesBeforePermanentDeletionAllowed", s.MinMinutesBeforePermanentDeletionAllowed)
-	populate(objectMap, "softDeleteRetentionPeriodInMinutes", s.SoftDeleteRetentionPeriodInMinutes)
-	populate(objectMap, "softDeletionEnabled", s.SoftDeletionEnabled)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeleteConfiguration.
-func (s *SoftDeleteConfiguration) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "minMinutesBeforePermanentDeletionAllowed":
-			err = unpopulate(val, "MinMinutesBeforePermanentDeletionAllowed", &s.MinMinutesBeforePermanentDeletionAllowed)
-			delete(rawMsg, key)
-		case "softDeleteRetentionPeriodInMinutes":
-			err = unpopulate(val, "SoftDeleteRetentionPeriodInMinutes", &s.SoftDeleteRetentionPeriodInMinutes)
-			delete(rawMsg, key)
-		case "softDeletionEnabled":
-			err = unpopulate(val, "SoftDeletionEnabled", &s.SoftDeletionEnabled)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedDatabaseAccountGetResult.
-func (s SoftDeletedDatabaseAccountGetResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedDatabaseAccountGetResult.
-func (s *SoftDeletedDatabaseAccountGetResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &s.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedDatabaseAccountProperties.
-func (s SoftDeletedDatabaseAccountProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "accountName", s.AccountName)
-	populate(objectMap, "resource", s.Resource)
-	populate(objectMap, "softDeleteConfiguration", s.SoftDeleteConfiguration)
-	populate(objectMap, "softDeletionMetadata", s.SoftDeletionMetadata)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedDatabaseAccountProperties.
-func (s *SoftDeletedDatabaseAccountProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "accountName":
-			err = unpopulate(val, "AccountName", &s.AccountName)
-			delete(rawMsg, key)
-		case "resource":
-			err = unpopulate(val, "Resource", &s.Resource)
-			delete(rawMsg, key)
-		case "softDeleteConfiguration":
-			err = unpopulate(val, "SoftDeleteConfiguration", &s.SoftDeleteConfiguration)
-			delete(rawMsg, key)
-		case "softDeletionMetadata":
-			err = unpopulate(val, "SoftDeletionMetadata", &s.SoftDeletionMetadata)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedDatabaseAccountResource.
-func (s SoftDeletedDatabaseAccountResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "locations", s.Locations)
-	populate(objectMap, "readLocations", s.ReadLocations)
-	populate(objectMap, "writeLocations", s.WriteLocations)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedDatabaseAccountResource.
-func (s *SoftDeletedDatabaseAccountResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "locations":
-			err = unpopulate(val, "Locations", &s.Locations)
-			delete(rawMsg, key)
-		case "readLocations":
-			err = unpopulate(val, "ReadLocations", &s.ReadLocations)
-			delete(rawMsg, key)
-		case "writeLocations":
-			err = unpopulate(val, "WriteLocations", &s.WriteLocations)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedDatabaseAccountsListResult.
-func (s SoftDeletedDatabaseAccountsListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedDatabaseAccountsListResult.
-func (s *SoftDeletedDatabaseAccountsListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &s.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &s.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLContainerGetResult.
-func (s SoftDeletedSQLContainerGetResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLContainerGetResult.
-func (s *SoftDeletedSQLContainerGetResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &s.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLContainerProperties.
-func (s SoftDeletedSQLContainerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "resource", s.Resource)
-	populate(objectMap, "softDeletionMetadata", s.SoftDeletionMetadata)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLContainerProperties.
-func (s *SoftDeletedSQLContainerProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "resource":
-			err = unpopulate(val, "Resource", &s.Resource)
-			delete(rawMsg, key)
-		case "softDeletionMetadata":
-			err = unpopulate(val, "SoftDeletionMetadata", &s.SoftDeletionMetadata)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLContainerResource.
-func (s SoftDeletedSQLContainerResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "defaultTtl", s.DefaultTTL)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "partitionKey", s.PartitionKey)
-	populate(objectMap, "_rid", s.Rid)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLContainerResource.
-func (s *SoftDeletedSQLContainerResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "defaultTtl":
-			err = unpopulate(val, "DefaultTTL", &s.DefaultTTL)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &s.ID)
-			delete(rawMsg, key)
-		case "partitionKey":
-			err = unpopulate(val, "PartitionKey", &s.PartitionKey)
-			delete(rawMsg, key)
-		case "_rid":
-			err = unpopulate(val, "Rid", &s.Rid)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLContainersListResult.
-func (s SoftDeletedSQLContainersListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLContainersListResult.
-func (s *SoftDeletedSQLContainersListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &s.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &s.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLDatabaseGetResult.
-func (s SoftDeletedSQLDatabaseGetResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "name", s.Name)
-	populate(objectMap, "properties", s.Properties)
-	populate(objectMap, "systemData", s.SystemData)
-	populate(objectMap, "type", s.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLDatabaseGetResult.
-func (s *SoftDeletedSQLDatabaseGetResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &s.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &s.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &s.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &s.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &s.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLDatabaseProperties.
-func (s SoftDeletedSQLDatabaseProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "resource", s.Resource)
-	populate(objectMap, "softDeletionMetadata", s.SoftDeletionMetadata)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLDatabaseProperties.
-func (s *SoftDeletedSQLDatabaseProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "resource":
-			err = unpopulate(val, "Resource", &s.Resource)
-			delete(rawMsg, key)
-		case "softDeletionMetadata":
-			err = unpopulate(val, "SoftDeletionMetadata", &s.SoftDeletionMetadata)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLDatabaseResource.
-func (s SoftDeletedSQLDatabaseResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", s.ID)
-	populate(objectMap, "_rid", s.Rid)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLDatabaseResource.
-func (s *SoftDeletedSQLDatabaseResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &s.ID)
-			delete(rawMsg, key)
-		case "_rid":
-			err = unpopulate(val, "Rid", &s.Rid)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletedSQLDatabasesListResult.
-func (s SoftDeletedSQLDatabasesListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", s.NextLink)
-	populate(objectMap, "value", s.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletedSQLDatabasesListResult.
-func (s *SoftDeletedSQLDatabasesListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &s.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &s.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type SoftDeletionMetadata.
-func (s SoftDeletionMetadata) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "isSoftDeleted", s.IsSoftDeleted)
-	populate(objectMap, "softDeletionResourceExpirationTimestamp", s.SoftDeletionResourceExpirationTimestamp)
-	populate(objectMap, "softDeletionStartTimestamp", s.SoftDeletionStartTimestamp)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type SoftDeletionMetadata.
-func (s *SoftDeletionMetadata) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "isSoftDeleted":
-			err = unpopulate(val, "IsSoftDeleted", &s.IsSoftDeleted)
-			delete(rawMsg, key)
-		case "softDeletionResourceExpirationTimestamp":
-			err = unpopulate(val, "SoftDeletionResourceExpirationTimestamp", &s.SoftDeletionResourceExpirationTimestamp)
-			delete(rawMsg, key)
-		case "softDeletionStartTimestamp":
-			err = unpopulate(val, "SoftDeletionStartTimestamp", &s.SoftDeletionStartTimestamp)
 			delete(rawMsg, key)
 		}
 		if err != nil {

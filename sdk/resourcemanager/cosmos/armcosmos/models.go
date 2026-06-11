@@ -48,11 +48,6 @@ type AccessRulePropertiesSubscriptionsItem struct {
 
 // AccountKeyMetadata - The metadata related to an access key for a given database account.
 type AccountKeyMetadata struct {
-	// READ-ONLY; Approximate time in UTC of the most recent usage of the key in ISO-8601 format.
-	// If the value is missing from the object, it means there is no recorded data plane
-	// usage for this key.
-	ApproximateLastUsageTime *time.Time
-
 	// READ-ONLY; Generation time in UTC of the key in ISO-8601 format. If the value is missing from the object, it means that
 	// the last key regeneration was triggered before 2022-06-18.
 	GenerationTime *time.Time
@@ -439,17 +434,13 @@ type CassandraKeyspaceGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB Cassandra keyspace
 	Properties *CassandraKeyspaceGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -742,17 +733,13 @@ type CassandraTableGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB Cassandra table
 	Properties *CassandraTableGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -865,17 +852,13 @@ type CassandraViewGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB Cassandra view
 	Properties *CassandraViewGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1078,17 +1061,13 @@ type ClusterResource struct {
 	// Identity for the resource.
 	Identity *ManagedCassandraManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// Properties of a managed Cassandra cluster.
 	Properties *ClusterResourceProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1997,9 +1976,6 @@ type DatabaseAccountCreateUpdateProperties struct {
 	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
 	EnablePriorityBasedExecution *bool
 
-	// Flag to indicate enabling/disabling of hierarchical partition key ID last level enforcement on the account.
-	EnforceHierarchicalPartitionKeyIDLastLevel *bool
-
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
 
@@ -2024,9 +2000,6 @@ type DatabaseAccountCreateUpdateProperties struct {
 
 	// Parameters to indicate the information about the restore.
 	RestoreParameters *RestoreParameters
-
-	// The configuration for soft delete on the Cosmos DB account.
-	SoftDeleteConfiguration *SoftDeleteConfiguration
 
 	// List of Virtual Network ACL rules configured for the Cosmos DB account.
 	VirtualNetworkRules []*VirtualNetworkRule
@@ -2126,9 +2099,6 @@ type DatabaseAccountGetProperties struct {
 	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
 	EnablePriorityBasedExecution *bool
 
-	// Flag to indicate enabling/disabling of hierarchical partition key ID last level enforcement on the account.
-	EnforceHierarchicalPartitionKeyIDLastLevel *bool
-
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
 
@@ -2153,9 +2123,6 @@ type DatabaseAccountGetProperties struct {
 
 	// Parameters to indicate the information about the restore.
 	RestoreParameters *RestoreParameters
-
-	// The configuration for soft delete on the Cosmos DB account.
-	SoftDeleteConfiguration *SoftDeleteConfiguration
 
 	// Total dedicated throughput (RU/s) for database account. Represents the sum of all manual provisioned throughput and all
 	// autoscale max RU/s across all shared throughput databases and dedicated throughput containers in the account for 1 region.
@@ -2212,17 +2179,13 @@ type DatabaseAccountGetResults struct {
 	// Indicates the type of database account. This can only be set at database account creation.
 	Kind *DatabaseAccountKind
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// Properties for the database account.
 	Properties *DatabaseAccountGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -2287,9 +2250,6 @@ type DatabaseAccountListReadOnlyKeysResult struct {
 type DatabaseAccountRegenerateKeyParameters struct {
 	// REQUIRED; The access key to regenerate.
 	KeyKind *KeyKind
-
-	// Optional flag indicating whether to skip account keys last usage check.
-	SkipAccountKeysLastUsageCheck *bool
 }
 
 // DatabaseAccountUpdateParameters - Parameters for patching Azure Cosmos DB database account properties.
@@ -2395,9 +2355,6 @@ type DatabaseAccountUpdateProperties struct {
 	// Flag to indicate enabling/disabling of Priority Based Execution Preview feature on the account
 	EnablePriorityBasedExecution *bool
 
-	// Flag to indicate enabling/disabling of hierarchical partition key ID last level enforcement on the account.
-	EnforceHierarchicalPartitionKeyIDLastLevel *bool
-
 	// List of IpRules.
 	IPRules []*IPAddressOrRange
 
@@ -2422,9 +2379,6 @@ type DatabaseAccountUpdateProperties struct {
 
 	// Whether requests from Public Network are allowed
 	PublicNetworkAccess *PublicNetworkAccess
-
-	// The configuration for soft delete on the Cosmos DB account.
-	SoftDeleteConfiguration *SoftDeleteConfiguration
 
 	// List of Virtual Network ACL rules configured for the Cosmos DB account.
 	VirtualNetworkRules []*VirtualNetworkRule
@@ -2773,17 +2727,11 @@ type GarnetClusterResourcePatch struct {
 
 // GarnetClusterResourcePatchProperties - Properties of a Garnet cache cluster for updates.
 type GarnetClusterResourcePatchProperties struct {
-	// The authentication method used for the Garnet cluster.
-	AuthenticationMethod *GarnetAuthenticationType
-
 	// Type of the cluster. If set to Production, some operations might not be permitted on cluster.
 	ClusterType *ClusterType
 
 	// Extensions to be added or updated on cluster.
 	Extensions []*string
-
-	// Flag to indicate if persistence is enabled for the Garnet cluster.
-	Persistence *bool
 }
 
 // GarnetClusterResourceProperties - Properties of a Garnet cache cluster.
@@ -2791,9 +2739,6 @@ type GarnetClusterResourceProperties struct {
 	// Allocation state of the cluster and data center resources. Active implies the virtual machines of the cluster are allocated,
 	// deallocated implies virtual machines and resources are deallocated.
 	AllocationState *AllocationState
-
-	// The authentication method used for the Garnet cluster.
-	AuthenticationMethod *GarnetAuthenticationType
 
 	// If the data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the garnet cluster
 	// virtual machines.
@@ -2805,20 +2750,17 @@ type GarnetClusterResourceProperties struct {
 	// Extensions to be added or updated on cluster.
 	Extensions []*string
 
+	// Number of nodes.
+	NodeCount *int32
+
 	// Virtual Machine SKU used for clusters. Default value is Standard_DS14_v2.
 	NodeSKU *string
-
-	// Flag to indicate if persistence is enabled for the Garnet cluster.
-	Persistence *bool
 
 	// Error related to resource provisioning.
 	ProvisionError *ErrorDetail
 
 	// Number of copies of data maintained by the cluster.
 	ReplicationFactor *int32
-
-	// Number of shards in the cluster.
-	ShardCount *int32
 
 	// Resource id of a subnet that this cluster's management service should have its network interface attached to. The subnet
 	// must be routable to all subnets that will be delegated to data centers. The resource id must be of the form '/subscriptions/<subscription
@@ -2984,17 +2926,13 @@ type GraphResourceGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB Graph resource.
 	Properties *GraphResourceGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -3095,17 +3033,13 @@ type GremlinDatabaseGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB SQL database
 	Properties *GremlinDatabaseGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -3246,17 +3180,13 @@ type GremlinGraphGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB Gremlin graph
 	Properties *GremlinGraphGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -3919,17 +3849,13 @@ type MongoDBCollectionGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB MongoDB collection
 	Properties *MongoDBCollectionGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -4051,17 +3977,13 @@ type MongoDBDatabaseGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB MongoDB database
 	Properties *MongoDBDatabaseGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -5955,17 +5877,13 @@ type SQLContainerGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB container
 	Properties *SQLContainerGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -6156,17 +6074,13 @@ type SQLDatabaseGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB SQL database
 	Properties *SQLDatabaseGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -6442,17 +6356,13 @@ type SQLStoredProcedureGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB storedProcedure
 	Properties *SQLStoredProcedureGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -6555,17 +6465,13 @@ type SQLTriggerGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB trigger
 	Properties *SQLTriggerGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -6668,17 +6574,13 @@ type SQLUserDefinedFunctionGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB userDefinedFunction
 	Properties *SQLUserDefinedFunctionGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -6790,183 +6692,6 @@ func (s *ServiceResourceProperties) GetServiceResourceProperties() *ServiceResou
 	return s
 }
 
-// SoftDeleteConfiguration - Configuration for soft delete on the Cosmos DB account.
-type SoftDeleteConfiguration struct {
-	// Minimum number of minutes before a soft deleted resource can be permanently deleted.
-	MinMinutesBeforePermanentDeletionAllowed *int32
-
-	// Soft delete retention period in minutes for resources.
-	SoftDeleteRetentionPeriodInMinutes *int32
-
-	// Flag to indicate whether soft delete is enabled on the account.
-	SoftDeletionEnabled *bool
-}
-
-// SoftDeletedDatabaseAccountGetResult - A Azure Cosmos DB soft-deleted database account.
-type SoftDeletedDatabaseAccountGetResult struct {
-	// The resource-specific properties for this resource.
-	Properties *SoftDeletedDatabaseAccountProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// SoftDeletedDatabaseAccountProperties - The properties of a soft-deleted database account.
-type SoftDeletedDatabaseAccountProperties struct {
-	// The name of the database account.
-	AccountName *string
-
-	// A subset of properties of the underlying database account resource.
-	Resource *SoftDeletedDatabaseAccountResource
-
-	// The soft delete configuration for the database account.
-	SoftDeleteConfiguration *SoftDeleteConfiguration
-
-	// Metadata related to the soft deletion of the database account.
-	SoftDeletionMetadata *SoftDeletionMetadata
-}
-
-// SoftDeletedDatabaseAccountResource - The database account resource information for a soft-deleted account.
-type SoftDeletedDatabaseAccountResource struct {
-	// An array that contains all of the locations enabled for the Cosmos DB account.
-	Locations []*Location
-
-	// An array that contains the read locations enabled for the Cosmos DB account.
-	ReadLocations []*Location
-
-	// An array that contains the write location(s) for the Cosmos DB account.
-	WriteLocations []*Location
-}
-
-// SoftDeletedDatabaseAccountsListResult - The List operation response, that contains the soft-deleted database accounts and
-// their properties.
-type SoftDeletedDatabaseAccountsListResult struct {
-	// REQUIRED; The SoftDeletedDatabaseAccountGetResult items on this page
-	Value []*SoftDeletedDatabaseAccountGetResult
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// SoftDeletedSQLContainerGetResult - An Azure Cosmos DB soft-deleted SQL container.
-type SoftDeletedSQLContainerGetResult struct {
-	// The resource-specific properties for this resource.
-	Properties *SoftDeletedSQLContainerProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// SoftDeletedSQLContainerProperties - The properties of a soft-deleted SQL container.
-type SoftDeletedSQLContainerProperties struct {
-	// The resource information for the soft-deleted SQL container.
-	Resource *SoftDeletedSQLContainerResource
-
-	// Metadata related to the soft deletion of the SQL container.
-	SoftDeletionMetadata *SoftDeletionMetadata
-}
-
-// SoftDeletedSQLContainerResource - Cosmos DB SQL container resource object
-type SoftDeletedSQLContainerResource struct {
-	// REQUIRED; Name of the Cosmos DB SQL container
-	ID *string
-
-	// Default time to live
-	DefaultTTL *int32
-
-	// The configuration of the partition key to be used for partitioning data into multiple partitions
-	PartitionKey *ContainerPartitionKey
-
-	// READ-ONLY; A system generated property. A unique identifier.
-	Rid *string
-}
-
-// SoftDeletedSQLContainersListResult - The List operation response, that contains the soft-deleted SQL containers and their
-// properties.
-type SoftDeletedSQLContainersListResult struct {
-	// REQUIRED; The SoftDeletedSqlContainerGetResult items on this page
-	Value []*SoftDeletedSQLContainerGetResult
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// SoftDeletedSQLDatabaseGetResult - An Azure Cosmos DB soft-deleted SQL database.
-type SoftDeletedSQLDatabaseGetResult struct {
-	// The resource-specific properties for this resource.
-	Properties *SoftDeletedSQLDatabaseProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// SoftDeletedSQLDatabaseProperties - The properties of a soft-deleted SQL database.
-type SoftDeletedSQLDatabaseProperties struct {
-	// The resource information for the soft-deleted SQL database.
-	Resource *SoftDeletedSQLDatabaseResource
-
-	// Metadata related to the soft deletion of the SQL database.
-	SoftDeletionMetadata *SoftDeletionMetadata
-}
-
-// SoftDeletedSQLDatabaseResource - Cosmos DB SQL database resource object
-type SoftDeletedSQLDatabaseResource struct {
-	// REQUIRED; Name of the Cosmos DB SQL database
-	ID *string
-
-	// READ-ONLY; A system generated property. A unique identifier.
-	Rid *string
-}
-
-// SoftDeletedSQLDatabasesListResult - The List operation response, that contains the soft-deleted SQL databases and their
-// properties.
-type SoftDeletedSQLDatabasesListResult struct {
-	// REQUIRED; The SoftDeletedSqlDatabaseGetResult items on this page
-	Value []*SoftDeletedSQLDatabaseGetResult
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// SoftDeletionMetadata - Metadata about the soft deletion of a resource.
-type SoftDeletionMetadata struct {
-	// Indicates whether the resource is soft deleted.
-	IsSoftDeleted *bool
-
-	// The timestamp when the soft-deleted resource will expire and be permanently deleted.
-	SoftDeletionResourceExpirationTimestamp *int64
-
-	// The timestamp when the soft deletion started.
-	SoftDeletionStartTimestamp *int64
-}
-
 type SpatialSpec struct {
 	// The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
 	Path *string
@@ -7073,17 +6798,13 @@ type TableGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB Table
 	Properties *TableGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -7363,17 +7084,13 @@ type ThroughputSettingsGetResults struct {
 	// Identity for the resource.
 	Identity *ManagedServiceIdentity
 
-	// The location of the resource group to which the resource belongs.
+	// The geo-location where the resource lives
 	Location *string
 
 	// The properties of an Azure Cosmos DB resource throughput
 	Properties *ThroughputSettingsGetProperties
 
-	// Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping this resource
-	// (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a key no greater than
-	// 128 characters and value no greater than 256 characters. For example, the default experience for a template type is set
-	// with \"defaultExperience\": \"Cassandra\". Current \"defaultExperience\" values also include \"Table\", \"Graph\", \"DocumentDB\",
-	// and \"MongoDB\".
+	// Resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}

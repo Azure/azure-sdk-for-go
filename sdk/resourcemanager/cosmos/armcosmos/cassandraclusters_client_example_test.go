@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterCreate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterCreate.json
 func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,13 +61,13 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientCreateUpdateResponse{
-	// 	ClusterResource: armcosmos.ClusterResource{
+	// 	ClusterResource: &armcosmos.ClusterResource{
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
@@ -132,7 +132,7 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterDeallocate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterDeallocate.json
 func ExampleCassandraClustersClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,11 +149,11 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterDelete.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterDelete.json
 func ExampleCassandraClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,11 +170,11 @@ func ExampleCassandraClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterGet.json
 func ExampleCassandraClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleCassandraClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientGetResponse{
-	// 	ClusterResource: armcosmos.ClusterResource{
+	// 	ClusterResource: &armcosmos.ClusterResource{
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
@@ -258,7 +258,7 @@ func ExampleCassandraClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraBackup.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraBackup.json
 func ExampleCassandraClustersClient_GetBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +277,7 @@ func ExampleCassandraClustersClient_GetBackup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientGetBackupResponse{
-	// 	BackupResource: armcosmos.BackupResource{
+	// 	BackupResource: &armcosmos.BackupResource{
 	// 		BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.3841617+00:00"); return t}()),
 	// 		BackupID: to.Ptr("2517222704776158383"),
 	// 		BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
@@ -287,7 +287,7 @@ func ExampleCassandraClustersClient_GetBackup() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraCommandResult.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraCommandResult.json
 func ExampleCassandraClustersClient_GetCommandAsync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +306,7 @@ func ExampleCassandraClustersClient_GetCommandAsync() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientGetCommandAsyncResponse{
-	// 	CommandPublicResource: armcosmos.CommandPublicResource{
+	// 	CommandPublicResource: &armcosmos.CommandPublicResource{
 	// 		Arguments: map[string]any{
 	// 			"status": "",
 	// 		},
@@ -321,7 +321,7 @@ func ExampleCassandraClustersClient_GetCommandAsync() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraCommand.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraCommand.json
 func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,11 +344,11 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraCommandAsync.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraCommandAsync.json
 func ExampleCassandraClustersClient_BeginInvokeCommandAsync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,13 +371,13 @@ func ExampleCassandraClustersClient_BeginInvokeCommandAsync() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientInvokeCommandAsyncResponse{
-	// 	CommandPublicResource: armcosmos.CommandPublicResource{
+	// 	CommandPublicResource: &armcosmos.CommandPublicResource{
 	// 		Arguments: map[string]any{
 	// 			"status": "",
 	// 		},
@@ -391,7 +391,7 @@ func ExampleCassandraClustersClient_BeginInvokeCommandAsync() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraBackupsList.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraBackupsList.json
 func ExampleCassandraClustersClient_NewListBackupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,7 +448,7 @@ func ExampleCassandraClustersClient_NewListBackupsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterListByResourceGroup.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterListByResourceGroup.json
 func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,7 +541,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterListBySubscription.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterListBySubscription.json
 func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -634,7 +634,7 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraListCommand.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraListCommand.json
 func ExampleCassandraClustersClient_NewListCommandPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +676,7 @@ func ExampleCassandraClustersClient_NewListCommandPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterStart.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterStart.json
 func ExampleCassandraClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -693,11 +693,11 @@ func ExampleCassandraClustersClient_BeginStart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraStatus.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraStatus.json
 func ExampleCassandraClustersClient_Status() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -716,7 +716,7 @@ func ExampleCassandraClustersClient_Status() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientStatusResponse{
-	// 	CassandraClusterPublicStatus: armcosmos.CassandraClusterPublicStatus{
+	// 	CassandraClusterPublicStatus: &armcosmos.CassandraClusterPublicStatus{
 	// 		ConnectionErrors: []*armcosmos.ConnectionError{
 	// 		},
 	// 		DataCenters: []*armcosmos.CassandraClusterPublicStatusDataCentersItem{
@@ -853,7 +853,7 @@ func ExampleCassandraClustersClient_Status() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBManagedCassandraClusterPatch.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterPatch.json
 func ExampleCassandraClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -894,13 +894,13 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientUpdateResponse{
-	// 	ClusterResource: armcosmos.ClusterResource{
+	// 	ClusterResource: &armcosmos.ClusterResource{
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),

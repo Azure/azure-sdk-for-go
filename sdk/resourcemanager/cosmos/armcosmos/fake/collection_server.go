@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // CollectionServer is a fake server for instances of the armcosmos.CollectionClient type.
@@ -66,7 +65,9 @@ func (c *CollectionServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (c *CollectionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -86,7 +87,10 @@ func (c *CollectionServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -136,7 +140,7 @@ func (c *CollectionServerTransport) dispatchNewListMetricDefinitionsPager(req *h
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListMetricDefinitionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -175,7 +179,11 @@ func (c *CollectionServerTransport) dispatchNewListMetricsPager(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		resp := c.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, databaseRidParam, collectionRidParam, qp.Get("$filter"), nil)
+		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, databaseRidParam, collectionRidParam, filterParam, nil)
 		newListMetricsPager = &resp
 		c.newListMetricsPager.add(req, newListMetricsPager)
 		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.CollectionClientListMetricsResponse, createLink func() string) {
@@ -186,7 +194,7 @@ func (c *CollectionServerTransport) dispatchNewListMetricsPager(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListMetricsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -225,7 +233,11 @@ func (c *CollectionServerTransport) dispatchNewListUsagesPager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		filterParam := getOptional(qp.Get("$filter"))
+		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(filterUnescaped)
 		var options *armcosmos.CollectionClientListUsagesOptions
 		if filterParam != nil {
 			options = &armcosmos.CollectionClientListUsagesOptions{
@@ -243,7 +255,7 @@ func (c *CollectionServerTransport) dispatchNewListUsagesPager(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListUsagesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

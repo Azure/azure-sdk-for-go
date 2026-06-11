@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableCreateUpdate.json
 func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,13 +38,13 @@ func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientCreateUpdateTableResponse{
-	// 	TableGetResults: armcosmos.TableGetResults{
+	// 	TableGetResults: &armcosmos.TableGetResults{
 	// 		Name: to.Ptr("tableName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
@@ -58,7 +58,7 @@ func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleAssignmentCreateUpdate.json
 func ExampleTableResourcesClient_BeginCreateUpdateTableRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,13 +81,13 @@ func ExampleTableResourcesClient_BeginCreateUpdateTableRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientCreateUpdateTableRoleAssignmentResponse{
-	// 	TableRoleAssignmentResource: armcosmos.TableRoleAssignmentResource{
+	// 	TableRoleAssignmentResource: &armcosmos.TableRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tableRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/tableRoleAssignments/myRoleAssignmentId"),
@@ -100,7 +100,7 @@ func ExampleTableResourcesClient_BeginCreateUpdateTableRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleDefinitionCreateUpdate.json
 func ExampleTableResourcesClient_BeginCreateUpdateTableRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,13 +135,13 @@ func ExampleTableResourcesClient_BeginCreateUpdateTableRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientCreateUpdateTableRoleDefinitionResponse{
-	// 	TableRoleDefinitionResource: armcosmos.TableRoleDefinitionResource{
+	// 	TableRoleDefinitionResource: &armcosmos.TableRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tableRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/tableRoleDefinitions/myRoleDefinitionId"),
@@ -165,7 +165,7 @@ func ExampleTableResourcesClient_BeginCreateUpdateTableRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableDelete.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableDelete.json
 func ExampleTableResourcesClient_BeginDeleteTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,11 +182,11 @@ func ExampleTableResourcesClient_BeginDeleteTable() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentDelete.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleAssignmentDelete.json
 func ExampleTableResourcesClient_BeginDeleteTableRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleTableResourcesClient_BeginDeleteTableRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -212,7 +212,7 @@ func ExampleTableResourcesClient_BeginDeleteTableRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionDelete.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleDefinitionDelete.json
 func ExampleTableResourcesClient_BeginDeleteTableRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleTableResourcesClient_BeginDeleteTableRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -238,7 +238,7 @@ func ExampleTableResourcesClient_BeginDeleteTableRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableGet.json
 func ExampleTableResourcesClient_GetTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleTableResourcesClient_GetTable() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientGetTableResponse{
-	// 	TableGetResults: armcosmos.TableGetResults{
+	// 	TableGetResults: &armcosmos.TableGetResults{
 	// 		Name: to.Ptr("tableName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
@@ -276,7 +276,7 @@ func ExampleTableResourcesClient_GetTable() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentGet.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleAssignmentGet.json
 func ExampleTableResourcesClient_GetTableRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleTableResourcesClient_GetTableRoleAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientGetTableRoleAssignmentResponse{
-	// 	TableRoleAssignmentResource: armcosmos.TableRoleAssignmentResource{
+	// 	TableRoleAssignmentResource: &armcosmos.TableRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tableRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/tableRoleAssignments/myRoleAssignmentId"),
@@ -308,7 +308,7 @@ func ExampleTableResourcesClient_GetTableRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionGet.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleDefinitionGet.json
 func ExampleTableResourcesClient_GetTableRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +327,7 @@ func ExampleTableResourcesClient_GetTableRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientGetTableRoleDefinitionResponse{
-	// 	TableRoleDefinitionResource: armcosmos.TableRoleDefinitionResource{
+	// 	TableRoleDefinitionResource: &armcosmos.TableRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tableRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/tableRoleDefinitions/myRoleDefinitionId"),
@@ -353,7 +353,7 @@ func ExampleTableResourcesClient_GetTableRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableThroughputGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableThroughputGet.json
 func ExampleTableResourcesClient_GetTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,7 +372,7 @@ func ExampleTableResourcesClient_GetTableThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientGetTableThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName/throughputSettings/default"),
@@ -395,7 +395,7 @@ func ExampleTableResourcesClient_GetTableThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentList.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleAssignmentList.json
 func ExampleTableResourcesClient_NewListTableRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +436,7 @@ func ExampleTableResourcesClient_NewListTableRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionList.json
+// Generated from example definition: 2025-11-01-preview/tablerbac/CosmosDBTableRoleDefinitionList.json
 func ExampleTableResourcesClient_NewListTableRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +490,7 @@ func ExampleTableResourcesClient_NewListTableRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableList.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableList.json
 func ExampleTableResourcesClient_NewListTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -534,7 +534,7 @@ func ExampleTableResourcesClient_NewListTablesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableMigrateToAutoscale.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableMigrateToAutoscale.json
 func ExampleTableResourcesClient_BeginMigrateTableToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,13 +551,13 @@ func ExampleTableResourcesClient_BeginMigrateTableToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientMigrateTableToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -575,7 +575,7 @@ func ExampleTableResourcesClient_BeginMigrateTableToAutoscale() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableMigrateToManualThroughput.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableMigrateToManualThroughput.json
 func ExampleTableResourcesClient_BeginMigrateTableToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -592,13 +592,13 @@ func ExampleTableResourcesClient_BeginMigrateTableToManualThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientMigrateTableToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -613,7 +613,7 @@ func ExampleTableResourcesClient_BeginMigrateTableToManualThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableBackupInformation.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableBackupInformation.json
 func ExampleTableResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -632,13 +632,13 @@ func ExampleTableResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientRetrieveContinuousBackupInformationResponse{
-	// 	BackupInformation: armcosmos.BackupInformation{
+	// 	BackupInformation: &armcosmos.BackupInformation{
 	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
 	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
 	// 		},
@@ -646,7 +646,7 @@ func ExampleTableResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBTableThroughputUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBTableThroughputUpdate.json
 func ExampleTableResourcesClient_BeginUpdateTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -671,13 +671,13 @@ func ExampleTableResourcesClient_BeginUpdateTableThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientUpdateTableThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName/throughputSettings/default"),

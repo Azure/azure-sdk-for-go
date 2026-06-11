@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/NetworkSecurityPerimeterConfigurationGet.json
+// Generated from example definition: 2025-11-01-preview/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NetworkSecurityPerimeterConfigurationsClientGetResponse{
-	// 	NetworkSecurityPerimeterConfiguration: armcosmos.NetworkSecurityPerimeterConfiguration{
+	// 	NetworkSecurityPerimeterConfiguration: &armcosmos.NetworkSecurityPerimeterConfiguration{
 	// 		Name: to.Ptr("dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/networkSecurityPerimeterConfigurations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/res4410/providers/Microsoft.DocumentDB/databaseAccounts/cosmosTest/networkSecurityPerimeterConfigurations/dbedb4e0-40e6-4145-81f3-f1314c150774.resourceAssociation1"),
@@ -72,7 +72,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: 2025-11-01-preview/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/NetworkSecurityPerimeterConfigurationReconcile.json
+// Generated from example definition: 2025-11-01-preview/NetworkSecurityPerimeterConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,6 +158,6 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcile() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }

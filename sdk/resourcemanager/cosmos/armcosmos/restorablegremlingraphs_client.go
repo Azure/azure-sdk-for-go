@@ -18,8 +18,6 @@ import (
 
 // RestorableGremlinGraphsClient contains the methods for the RestorableGremlinGraphs group.
 // Don't use this type directly, use NewRestorableGremlinGraphsClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type RestorableGremlinGraphsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewRestorableGremlinGraphsClient(subscriptionID string, credential azcore.T
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
 // This helps in scenario where container was accidentally deleted. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission
+//
+// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableGremlinGraphsClientListOptions contains the optional parameters for the RestorableGremlinGraphsClient.NewListPager
@@ -91,7 +91,7 @@ func (client *RestorableGremlinGraphsClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", "2025-11-01-preview")
 	if options != nil && options.EndTime != nil {
 		reqQP.Set("endTime", *options.EndTime)
 	}
@@ -101,7 +101,7 @@ func (client *RestorableGremlinGraphsClient) listCreateRequest(ctx context.Conte
 	if options != nil && options.StartTime != nil {
 		reqQP.Set("startTime", *options.StartTime)
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

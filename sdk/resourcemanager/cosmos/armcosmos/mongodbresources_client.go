@@ -18,8 +18,6 @@ import (
 
 // MongoDBResourcesClient contains the methods for the MongoDBResources group.
 // Don't use this type directly, use NewMongoDBResourcesClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type MongoDBResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewMongoDBResourcesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateUpdateMongoDBCollection - Create or update an Azure Cosmos DB MongoDB Collection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -69,6 +69,8 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoDBCollection(ctx con
 
 // CreateUpdateMongoDBCollection - Create or update an Azure Cosmos DB MongoDB Collection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) createUpdateMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection"
@@ -118,8 +120,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateMongoDBCollectionParameters); err != nil {
@@ -130,6 +132,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionCreateRequest
 
 // BeginCreateUpdateMongoDBDatabase - Create or updates Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -155,6 +159,8 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoDBDatabase(ctx conte
 
 // CreateUpdateMongoDBDatabase - Create or updates Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) createUpdateMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginCreateUpdateMongoDBDatabase"
@@ -200,8 +206,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateMongoDBDatabaseParameters); err != nil {
@@ -212,6 +218,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseCreateRequest(c
 
 // BeginCreateUpdateMongoRoleDefinition - Creates or updates an Azure Cosmos DB Mongo Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoRoleDefinition
 //     method.
@@ -234,6 +242,8 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoRoleDefinition(ctx c
 
 // CreateUpdateMongoRoleDefinition - Creates or updates an Azure Cosmos DB Mongo Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinition(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, createUpdateMongoRoleDefinitionParameters MongoRoleDefinitionCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginCreateUpdateMongoRoleDefinition"
@@ -279,8 +289,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinitionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateMongoRoleDefinitionParameters); err != nil {
@@ -291,6 +301,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinitionCreateReque
 
 // BeginCreateUpdateMongoUserDefinition - Creates or updates an Azure Cosmos DB Mongo User Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginCreateUpdateMongoUserDefinition
 //     method.
@@ -313,6 +325,8 @@ func (client *MongoDBResourcesClient) BeginCreateUpdateMongoUserDefinition(ctx c
 
 // CreateUpdateMongoUserDefinition - Creates or updates an Azure Cosmos DB Mongo User Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) createUpdateMongoUserDefinition(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, createUpdateMongoUserDefinitionParameters MongoUserDefinitionCreateUpdateParameters, options *MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginCreateUpdateMongoUserDefinition"
@@ -358,8 +372,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoUserDefinitionCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateMongoUserDefinitionParameters); err != nil {
@@ -370,6 +384,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoUserDefinitionCreateReque
 
 // BeginDeleteMongoDBCollection - Deletes an existing Azure Cosmos DB MongoDB Collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -395,6 +411,8 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoDBCollection(ctx context.C
 
 // DeleteMongoDBCollection - Deletes an existing Azure Cosmos DB MongoDB Collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) deleteMongoDBCollection(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginDeleteMongoDBCollection"
@@ -444,13 +462,15 @@ func (client *MongoDBResourcesClient) deleteMongoDBCollectionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteMongoDBDatabase - Deletes an existing Azure Cosmos DB MongoDB database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -475,6 +495,8 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoDBDatabase(ctx context.Con
 
 // DeleteMongoDBDatabase - Deletes an existing Azure Cosmos DB MongoDB database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) deleteMongoDBDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginDeleteMongoDBDatabase"
@@ -520,13 +542,15 @@ func (client *MongoDBResourcesClient) deleteMongoDBDatabaseCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteMongoRoleDefinition - Deletes an existing Azure Cosmos DB Mongo Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginDeleteMongoRoleDefinition
 //     method.
@@ -549,6 +573,8 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoRoleDefinition(ctx context
 
 // DeleteMongoRoleDefinition - Deletes an existing Azure Cosmos DB Mongo Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) deleteMongoRoleDefinition(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, options *MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginDeleteMongoRoleDefinition"
@@ -594,13 +620,15 @@ func (client *MongoDBResourcesClient) deleteMongoRoleDefinitionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteMongoUserDefinition - Deletes an existing Azure Cosmos DB Mongo User Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.BeginDeleteMongoUserDefinition
 //     method.
@@ -623,6 +651,8 @@ func (client *MongoDBResourcesClient) BeginDeleteMongoUserDefinition(ctx context
 
 // DeleteMongoUserDefinition - Deletes an existing Azure Cosmos DB Mongo User Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) deleteMongoUserDefinition(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, options *MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginDeleteMongoUserDefinition"
@@ -668,13 +698,15 @@ func (client *MongoDBResourcesClient) deleteMongoUserDefinitionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // GetMongoDBCollection - Gets the MongoDB collection under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -731,8 +763,8 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -749,6 +781,8 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionHandleResponse(resp *h
 // GetMongoDBCollectionThroughput - Gets the RUs per second of the MongoDB collection under an existing Azure Cosmos DB database
 // account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -805,8 +839,8 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -822,6 +856,8 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputHandleRespon
 
 // GetMongoDBDatabase - Gets the MongoDB databases under an existing Azure Cosmos DB database account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -873,8 +909,8 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -891,6 +927,8 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseHandleResponse(resp *htt
 // GetMongoDBDatabaseThroughput - Gets the RUs per second of the MongoDB database under an existing Azure Cosmos DB database
 // account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -942,8 +980,8 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -959,6 +997,8 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputHandleResponse
 
 // GetMongoRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB Mongo Role Definition with the given Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MongoDBResourcesClientGetMongoRoleDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.GetMongoRoleDefinition
 //     method.
@@ -1008,8 +1048,8 @@ func (client *MongoDBResourcesClient) getMongoRoleDefinitionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1025,6 +1065,8 @@ func (client *MongoDBResourcesClient) getMongoRoleDefinitionHandleResponse(resp 
 
 // GetMongoUserDefinition - Retrieves the properties of an existing Azure Cosmos DB Mongo User Definition with the given Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MongoDBResourcesClientGetMongoUserDefinitionOptions contains the optional parameters for the MongoDBResourcesClient.GetMongoUserDefinition
 //     method.
@@ -1074,8 +1116,8 @@ func (client *MongoDBResourcesClient) getMongoUserDefinitionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1091,6 +1133,8 @@ func (client *MongoDBResourcesClient) getMongoUserDefinitionHandleResponse(resp 
 
 // BeginListMongoDBCollectionPartitionMerge - Merges the partitions of a MongoDB Collection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1117,6 +1161,8 @@ func (client *MongoDBResourcesClient) BeginListMongoDBCollectionPartitionMerge(c
 
 // ListMongoDBCollectionPartitionMerge - Merges the partitions of a MongoDB Collection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) listMongoDBCollectionPartitionMerge(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, mergeParameters MergeParameters, options *MongoDBResourcesClientBeginListMongoDBCollectionPartitionMergeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge"
@@ -1166,8 +1212,8 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionPartitionMergeCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, mergeParameters); err != nil {
@@ -1177,6 +1223,8 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionPartitionMergeCreateR
 }
 
 // NewListMongoDBCollectionsPager - Lists the MongoDB collection under an existing Azure Cosmos DB database account.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1229,8 +1277,8 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1245,6 +1293,8 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleResponse(resp 
 }
 
 // NewListMongoDBDatabasesPager - Lists the MongoDB databases under an existing Azure Cosmos DB database account.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - MongoDBResourcesClientListMongoDBDatabasesOptions contains the optional parameters for the MongoDBResourcesClient.NewListMongoDBDatabasesPager
@@ -1292,8 +1342,8 @@ func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1308,6 +1358,8 @@ func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleResponse(resp *h
 }
 
 // NewListMongoRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB Mongo Role Definitions.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - MongoDBResourcesClientListMongoRoleDefinitionsOptions contains the optional parameters for the MongoDBResourcesClient.NewListMongoRoleDefinitionsPager
@@ -1355,8 +1407,8 @@ func (client *MongoDBResourcesClient) listMongoRoleDefinitionsCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1371,6 +1423,8 @@ func (client *MongoDBResourcesClient) listMongoRoleDefinitionsHandleResponse(res
 }
 
 // NewListMongoUserDefinitionsPager - Retrieves the list of all Azure Cosmos DB Mongo User Definition.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - MongoDBResourcesClientListMongoUserDefinitionsOptions contains the optional parameters for the MongoDBResourcesClient.NewListMongoUserDefinitionsPager
@@ -1418,8 +1472,8 @@ func (client *MongoDBResourcesClient) listMongoUserDefinitionsCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1435,6 +1489,8 @@ func (client *MongoDBResourcesClient) listMongoUserDefinitionsHandleResponse(res
 
 // BeginMigrateMongoDBCollectionToAutoscale - Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1460,6 +1516,8 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBCollectionToAutoscale(c
 
 // MigrateMongoDBCollectionToAutoscale - Migrate an Azure Cosmos DB MongoDB collection from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMigrateMongoDBCollectionToAutoscale"
@@ -1509,8 +1567,8 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1518,6 +1576,8 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleCreateR
 // BeginMigrateMongoDBCollectionToManualThroughput - Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual
 // throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1543,6 +1603,8 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBCollectionToManualThrou
 
 // MigrateMongoDBCollectionToManualThroughput - Migrate an Azure Cosmos DB MongoDB collection from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, options *MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMigrateMongoDBCollectionToManualThroughput"
@@ -1592,14 +1654,16 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginMigrateMongoDBDatabaseToAutoscale - Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1624,6 +1688,8 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBDatabaseToAutoscale(ctx
 
 // MigrateMongoDBDatabaseToAutoscale - Migrate an Azure Cosmos DB MongoDB database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToAutoscale"
@@ -1669,14 +1735,16 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginMigrateMongoDBDatabaseToManualThroughput - Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1701,6 +1769,8 @@ func (client *MongoDBResourcesClient) BeginMigrateMongoDBDatabaseToManualThrough
 
 // MigrateMongoDBDatabaseToManualThroughput - Migrate an Azure Cosmos DB MongoDB database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToManualThroughput"
@@ -1746,14 +1816,16 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginMongoDBContainerRedistributeThroughput - Redistribute throughput for an Azure Cosmos DB MongoDB container
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1780,6 +1852,8 @@ func (client *MongoDBResourcesClient) BeginMongoDBContainerRedistributeThroughpu
 
 // MongoDBContainerRedistributeThroughput - Redistribute throughput for an Azure Cosmos DB MongoDB container
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) mongoDBContainerRedistributeThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, redistributeThroughputParameters RedistributeThroughputParameters, options *MongoDBResourcesClientBeginMongoDBContainerRedistributeThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMongoDBContainerRedistributeThroughput"
@@ -1829,8 +1903,8 @@ func (client *MongoDBResourcesClient) mongoDBContainerRedistributeThroughputCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, redistributeThroughputParameters); err != nil {
@@ -1841,6 +1915,8 @@ func (client *MongoDBResourcesClient) mongoDBContainerRedistributeThroughputCrea
 
 // BeginMongoDBContainerRetrieveThroughputDistribution - Retrieve throughput distribution for an Azure Cosmos DB MongoDB container
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1868,6 +1944,8 @@ func (client *MongoDBResourcesClient) BeginMongoDBContainerRetrieveThroughputDis
 
 // MongoDBContainerRetrieveThroughputDistribution - Retrieve throughput distribution for an Azure Cosmos DB MongoDB container
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) mongoDBContainerRetrieveThroughputDistribution(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, retrieveThroughputParameters RetrieveThroughputParameters, options *MongoDBResourcesClientBeginMongoDBContainerRetrieveThroughputDistributionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMongoDBContainerRetrieveThroughputDistribution"
@@ -1917,8 +1995,8 @@ func (client *MongoDBResourcesClient) mongoDBContainerRetrieveThroughputDistribu
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, retrieveThroughputParameters); err != nil {
@@ -1929,6 +2007,8 @@ func (client *MongoDBResourcesClient) mongoDBContainerRetrieveThroughputDistribu
 
 // BeginMongoDBDatabasePartitionMerge - Merges the partitions of a MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1954,6 +2034,8 @@ func (client *MongoDBResourcesClient) BeginMongoDBDatabasePartitionMerge(ctx con
 
 // MongoDBDatabasePartitionMerge - Merges the partitions of a MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) mongoDBDatabasePartitionMerge(ctx context.Context, resourceGroupName string, accountName string, databaseName string, mergeParameters MergeParameters, options *MongoDBResourcesClientBeginMongoDBDatabasePartitionMergeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMongoDBDatabasePartitionMerge"
@@ -1999,8 +2081,8 @@ func (client *MongoDBResourcesClient) mongoDBDatabasePartitionMergeCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, mergeParameters); err != nil {
@@ -2011,6 +2093,8 @@ func (client *MongoDBResourcesClient) mongoDBDatabasePartitionMergeCreateRequest
 
 // BeginMongoDBDatabaseRedistributeThroughput - Redistribute throughput for an Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2036,6 +2120,8 @@ func (client *MongoDBResourcesClient) BeginMongoDBDatabaseRedistributeThroughput
 
 // MongoDBDatabaseRedistributeThroughput - Redistribute throughput for an Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) mongoDBDatabaseRedistributeThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, redistributeThroughputParameters RedistributeThroughputParameters, options *MongoDBResourcesClientBeginMongoDBDatabaseRedistributeThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMongoDBDatabaseRedistributeThroughput"
@@ -2081,8 +2167,8 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRedistributeThroughputCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, redistributeThroughputParameters); err != nil {
@@ -2093,6 +2179,8 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRedistributeThroughputCreat
 
 // BeginMongoDBDatabaseRetrieveThroughputDistribution - Retrieve throughput distribution for an Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2119,6 +2207,8 @@ func (client *MongoDBResourcesClient) BeginMongoDBDatabaseRetrieveThroughputDist
 
 // MongoDBDatabaseRetrieveThroughputDistribution - Retrieve throughput distribution for an Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) mongoDBDatabaseRetrieveThroughputDistribution(ctx context.Context, resourceGroupName string, accountName string, databaseName string, retrieveThroughputParameters RetrieveThroughputParameters, options *MongoDBResourcesClientBeginMongoDBDatabaseRetrieveThroughputDistributionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginMongoDBDatabaseRetrieveThroughputDistribution"
@@ -2164,8 +2254,8 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRetrieveThroughputDistribut
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, retrieveThroughputParameters); err != nil {
@@ -2176,6 +2266,8 @@ func (client *MongoDBResourcesClient) mongoDBDatabaseRetrieveThroughputDistribut
 
 // BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a Mongodb collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2202,6 +2294,8 @@ func (client *MongoDBResourcesClient) BeginRetrieveContinuousBackupInformation(c
 
 // RetrieveContinuousBackupInformation - Retrieves continuous backup information for a Mongodb collection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, location ContinuousBackupRestoreLocation, options *MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginRetrieveContinuousBackupInformation"
@@ -2251,8 +2345,8 @@ func (client *MongoDBResourcesClient) retrieveContinuousBackupInformationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, location); err != nil {
@@ -2263,6 +2357,8 @@ func (client *MongoDBResourcesClient) retrieveContinuousBackupInformationCreateR
 
 // BeginUpdateMongoDBCollectionThroughput - Update the RUs per second of an Azure Cosmos DB MongoDB collection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2289,6 +2385,8 @@ func (client *MongoDBResourcesClient) BeginUpdateMongoDBCollectionThroughput(ctx
 
 // UpdateMongoDBCollectionThroughput - Update the RUs per second of an Azure Cosmos DB MongoDB collection
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginUpdateMongoDBCollectionThroughput"
@@ -2338,8 +2436,8 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
@@ -2350,6 +2448,8 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputCreateReq
 
 // BeginUpdateMongoDBDatabaseThroughput - Update RUs per second of the an Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -2375,6 +2475,8 @@ func (client *MongoDBResourcesClient) BeginUpdateMongoDBDatabaseThroughput(ctx c
 
 // UpdateMongoDBDatabaseThroughput - Update RUs per second of the an Azure Cosmos DB MongoDB database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MongoDBResourcesClient.BeginUpdateMongoDBDatabaseThroughput"
@@ -2420,8 +2522,8 @@ func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {

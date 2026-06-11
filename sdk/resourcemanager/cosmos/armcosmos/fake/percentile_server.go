@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // PercentileServer is a fake server for instances of the armcosmos.PercentileClient type.
@@ -54,7 +53,9 @@ func (p *PercentileServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (p *PercentileServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (p *PercentileServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -102,7 +106,11 @@ func (p *PercentileServerTransport) dispatchNewListMetricsPager(req *http.Reques
 		if err != nil {
 			return nil, err
 		}
-		resp := p.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, qp.Get("$filter"), nil)
+		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, filterParam, nil)
 		newListMetricsPager = &resp
 		p.newListMetricsPager.add(req, newListMetricsPager)
 		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.PercentileClientListMetricsResponse, createLink func() string) {
@@ -113,7 +121,7 @@ func (p *PercentileServerTransport) dispatchNewListMetricsPager(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListMetricsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

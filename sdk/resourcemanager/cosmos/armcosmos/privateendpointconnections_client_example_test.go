@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBPrivateEndpointConnectionUpdate.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.PrivateEndpointConnectionsClientCreateOrUpdateResponse{
-	// 	PrivateEndpointConnection: armcosmos.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: &armcosmos.PrivateEndpointConnection{
 	// 		Name: to.Ptr("privateEndpointConnectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDb/databaseAccounts/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
@@ -62,7 +62,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionDelete.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBPrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,11 +79,11 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBPrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: armcosmos.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: &armcosmos.PrivateEndpointConnection{
 	// 		Name: to.Ptr("privateEndpointConnectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDb/databaseAccounts/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateEndpointConnections/privateEndpointConnectionName"),
@@ -122,7 +122,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBPrivateEndpointConnectionListGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBPrivateEndpointConnectionListGet.json
 func ExamplePrivateEndpointConnectionsClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

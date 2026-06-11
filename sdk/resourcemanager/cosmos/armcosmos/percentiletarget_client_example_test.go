@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBPercentileTargetGetMetrics.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBPercentileTargetGetMetrics.json
 func ExamplePercentileTargetClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExamplePercentileTargetClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPercentileTargetClient().NewListMetricsPager("rg1", "ddb1", "East US", "(name.value eq 'Probabilistic Bounded Staleness') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewPercentileTargetClient().NewListMetricsPager("rg1", "ddb1", "East US", "$filter=(name.value eq 'Probabilistic Bounded Staleness') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

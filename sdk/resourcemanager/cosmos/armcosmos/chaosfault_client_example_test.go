@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/ChaosFaultEnableDisable.json
+// Generated from example definition: 2025-11-01-preview/ChaosFaultEnableDisable.json
 func ExampleChaosFaultClient_BeginEnableDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExampleChaosFaultClient_BeginEnableDisable() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ChaosFaultClientEnableDisableResponse{
-	// 	ChaosFaultResource: armcosmos.ChaosFaultResource{
+	// 	ChaosFaultResource: &armcosmos.ChaosFaultResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/chaosFaults/ServiceUnavailability"),
 	// 		Properties: &armcosmos.ChaosFaultProperties{
 	// 			Action: to.Ptr(armcosmos.SupportedActionsEnable),
@@ -55,7 +55,7 @@ func ExampleChaosFaultClient_BeginEnableDisable() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ChaosFaultGet.json
+// Generated from example definition: 2025-11-01-preview/ChaosFaultGet.json
 func ExampleChaosFaultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleChaosFaultClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ChaosFaultClientGetResponse{
-	// 	ChaosFaultResource: armcosmos.ChaosFaultResource{
+	// 	ChaosFaultResource: &armcosmos.ChaosFaultResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/chaosFaults/ServiceUnavailability"),
 	// 		Properties: &armcosmos.ChaosFaultProperties{
 	// 			Action: to.Ptr(armcosmos.SupportedActionsEnable),
@@ -87,7 +87,7 @@ func ExampleChaosFaultClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ChaosFaultList.json
+// Generated from example definition: 2025-11-01-preview/ChaosFaultList.json
 func ExampleChaosFaultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

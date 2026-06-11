@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,13 +38,13 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientCreateUpdateGremlinDatabaseResponse{
-	// 	GremlinDatabaseGetResults: armcosmos.GremlinDatabaseGetResults{
+	// 	GremlinDatabaseGetResults: &armcosmos.GremlinDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
@@ -63,7 +63,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,13 +131,13 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientCreateUpdateGremlinGraphResponse{
-	// 	GremlinGraphGetResults: armcosmos.GremlinGraphGetResults{
+	// 	GremlinGraphGetResults: &armcosmos.GremlinGraphGetResults{
 	// 		Name: to.Ptr("graphName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/gremlinGraphs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName"),
@@ -199,7 +199,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,13 +222,13 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleAssignmentResponse{
-	// 	GremlinRoleAssignmentResource: armcosmos.GremlinRoleAssignmentResource{
+	// 	GremlinRoleAssignmentResource: &armcosmos.GremlinRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/gremlinRoleAssignments/myRoleAssignmentId"),
@@ -241,7 +241,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,13 +276,13 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientCreateUpdateGremlinRoleDefinitionResponse{
-	// 	GremlinRoleDefinitionResource: armcosmos.GremlinRoleDefinitionResource{
+	// 	GremlinRoleDefinitionResource: &armcosmos.GremlinRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/gremlinRoleDefinitions/myRoleDefinitionId"),
@@ -306,7 +306,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseDelete.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,11 +323,11 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphDelete.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,11 +344,11 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentDelete.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,7 +365,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -374,7 +374,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionDelete.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,7 +391,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -400,7 +400,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +419,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinDatabaseResponse{
-	// 	GremlinDatabaseGetResults: armcosmos.GremlinDatabaseGetResults{
+	// 	GremlinDatabaseGetResults: &armcosmos.GremlinDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
@@ -438,7 +438,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseThroughputGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +457,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/throughputSettings/default"),
@@ -480,7 +480,7 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +499,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinGraphResponse{
-	// 	GremlinGraphGetResults: armcosmos.GremlinGraphGetResults{
+	// 	GremlinGraphGetResults: &armcosmos.GremlinGraphGetResults{
 	// 		Name: to.Ptr("graphName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/apis/databases/graphs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/graphs/graphName"),
@@ -558,7 +558,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphThroughputGet.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +577,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinGraphThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName/throughputSettings/default"),
@@ -600,7 +600,7 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentGet.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentGet.json
 func ExampleGremlinResourcesClient_GetGremlinRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -619,7 +619,7 @@ func ExampleGremlinResourcesClient_GetGremlinRoleAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinRoleAssignmentResponse{
-	// 	GremlinRoleAssignmentResource: armcosmos.GremlinRoleAssignmentResource{
+	// 	GremlinRoleAssignmentResource: &armcosmos.GremlinRoleAssignmentResource{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/gremlinRoleAssignments/myRoleAssignmentId"),
@@ -632,7 +632,7 @@ func ExampleGremlinResourcesClient_GetGremlinRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionGet.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionGet.json
 func ExampleGremlinResourcesClient_GetGremlinRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleGremlinResourcesClient_GetGremlinRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinRoleDefinitionResponse{
-	// 	GremlinRoleDefinitionResource: armcosmos.GremlinRoleDefinitionResource{
+	// 	GremlinRoleDefinitionResource: &armcosmos.GremlinRoleDefinitionResource{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/gremlinRoleDefinitions/myRoleDefinitionId"),
@@ -677,7 +677,7 @@ func ExampleGremlinResourcesClient_GetGremlinRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseList.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseList.json
 func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -724,7 +724,7 @@ func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphList.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphList.json
 func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -811,7 +811,7 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentList.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentList.json
 func ExampleGremlinResourcesClient_NewListGremlinRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -852,7 +852,7 @@ func ExampleGremlinResourcesClient_NewListGremlinRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionList.json
+// Generated from example definition: 2025-11-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionList.json
 func ExampleGremlinResourcesClient_NewListGremlinRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -906,7 +906,7 @@ func ExampleGremlinResourcesClient_NewListGremlinRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseMigrateToAutoscale.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -923,13 +923,13 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -947,7 +947,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -964,13 +964,13 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -985,7 +985,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphMigrateToAutoscale.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1002,13 +1002,13 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -1026,7 +1026,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphMigrateToManualThroughput.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1043,13 +1043,13 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -1064,7 +1064,7 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() 
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphBackupInformation.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphBackupInformation.json
 func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1083,13 +1083,13 @@ func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientRetrieveContinuousBackupInformationResponse{
-	// 	BackupInformation: armcosmos.BackupInformation{
+	// 	BackupInformation: &armcosmos.BackupInformation{
 	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
 	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
 	// 		},
@@ -1097,7 +1097,7 @@ func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseThroughputUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinDatabaseThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1122,13 +1122,13 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/throughputSettings/default"),
@@ -1149,7 +1149,7 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphThroughputUpdate.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBGremlinGraphThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1174,13 +1174,13 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientUpdateGremlinGraphThroughputResponse{
-	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName/throughputSettings/default"),

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBPKeyRangeIdGetMetrics.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBPKeyRangeIdGetMetrics.json
 func ExamplePartitionKeyRangeIDClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExamplePartitionKeyRangeIDClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPartitionKeyRangeIDClient().NewListMetricsPager("rg1", "ddb1", "databaseRid", "collectionRid", "0", "(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z", nil)
+	pager := clientFactory.NewPartitionKeyRangeIDClient().NewListMetricsPager("rg1", "ddb1", "databaseRid", "collectionRid", "0", "$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

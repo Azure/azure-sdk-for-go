@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // RestorableMongodbResourcesServer is a fake server for instances of the armcosmos.RestorableMongodbResourcesClient type.
@@ -54,7 +53,9 @@ func (r *RestorableMongodbResourcesServerTransport) Do(req *http.Request) (*http
 }
 
 func (r *RestorableMongodbResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (r *RestorableMongodbResourcesServerTransport) dispatchToMethodFake(req *ht
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -102,8 +106,16 @@ func (r *RestorableMongodbResourcesServerTransport) dispatchNewListPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		restoreLocationParam := getOptional(qp.Get("restoreLocation"))
-		restoreTimestampInUTCParam := getOptional(qp.Get("restoreTimestampInUtc"))
+		restoreLocationUnescaped, err := url.QueryUnescape(qp.Get("restoreLocation"))
+		if err != nil {
+			return nil, err
+		}
+		restoreLocationParam := getOptional(restoreLocationUnescaped)
+		restoreTimestampInUTCUnescaped, err := url.QueryUnescape(qp.Get("restoreTimestampInUtc"))
+		if err != nil {
+			return nil, err
+		}
+		restoreTimestampInUTCParam := getOptional(restoreTimestampInUTCUnescaped)
 		var options *armcosmos.RestorableMongodbResourcesClientListOptions
 		if restoreLocationParam != nil || restoreTimestampInUTCParam != nil {
 			options = &armcosmos.RestorableMongodbResourcesClientListOptions{
@@ -122,7 +134,7 @@ func (r *RestorableMongodbResourcesServerTransport) dispatchNewListPager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

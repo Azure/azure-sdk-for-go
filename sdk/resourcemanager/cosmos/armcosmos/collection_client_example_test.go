@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBCollectionGetMetricDefinitions.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBCollectionGetMetricDefinitions.json
 func ExampleCollectionClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleCollectionClient_NewListMetricDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBCollectionGetMetrics.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBCollectionGetMetrics.json
 func ExampleCollectionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleCollectionClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCollectionClient().NewListMetricsPager("rg1", "ddb1", "databaseRid", "collectionRid", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewCollectionClient().NewListMetricsPager("rg1", "ddb1", "databaseRid", "collectionRid", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -133,7 +133,7 @@ func ExampleCollectionClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBCollectionGetUsages.json
+// Generated from example definition: 2025-11-01-preview/CosmosDBCollectionGetUsages.json
 func ExampleCollectionClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleCollectionClient_NewListUsagesPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewCollectionClient().NewListUsagesPager("rg1", "ddb1", "databaseRid", "collectionRid", &armcosmos.CollectionClientListUsagesOptions{
-		Filter: to.Ptr("name.value eq 'Storage'")})
+		Filter: to.Ptr("$filter=name.value eq 'Storage'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

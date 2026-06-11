@@ -407,30 +407,6 @@ func (c *ClientFactory) NewServiceClient() *ServiceClient {
 	}
 }
 
-// NewSoftDeletedDatabaseAccountsClient creates a new instance of SoftDeletedDatabaseAccountsClient.
-func (c *ClientFactory) NewSoftDeletedDatabaseAccountsClient() *SoftDeletedDatabaseAccountsClient {
-	return &SoftDeletedDatabaseAccountsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewSoftDeletedSQLContainersClient creates a new instance of SoftDeletedSQLContainersClient.
-func (c *ClientFactory) NewSoftDeletedSQLContainersClient() *SoftDeletedSQLContainersClient {
-	return &SoftDeletedSQLContainersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewSoftDeletedSQLDatabasesClient creates a new instance of SoftDeletedSQLDatabasesClient.
-func (c *ClientFactory) NewSoftDeletedSQLDatabasesClient() *SoftDeletedSQLDatabasesClient {
-	return &SoftDeletedSQLDatabasesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewTableResourcesClient creates a new instance of TableResourcesClient.
 func (c *ClientFactory) NewTableResourcesClient() *TableResourcesClient {
 	return &TableResourcesClient{

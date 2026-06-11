@@ -18,8 +18,6 @@ import (
 
 // ThroughputPoolAccountClient contains the methods for the ThroughputPoolAccount group.
 // Don't use this type directly, use NewThroughputPoolAccountClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type ThroughputPoolAccountClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewThroughputPoolAccountClient(subscriptionID string, credential azcore.Tok
 // BeginCreate - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - throughputPoolAccountName - Cosmos DB global database account in a Throughput Pool
@@ -70,6 +70,8 @@ func (client *ThroughputPoolAccountClient) BeginCreate(ctx context.Context, reso
 // Create - Creates or updates an Azure Cosmos DB ThroughputPool account. The "Update" method is preferred when performing
 // updates on an account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *ThroughputPoolAccountClient) create(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, body ThroughputPoolAccountResource, options *ThroughputPoolAccountClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ThroughputPoolAccountClient.BeginCreate"
@@ -115,8 +117,8 @@ func (client *ThroughputPoolAccountClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,6 +129,8 @@ func (client *ThroughputPoolAccountClient) createCreateRequest(ctx context.Conte
 
 // BeginDelete - Removes an existing Azure Cosmos DB database account from a throughput pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - throughputPoolAccountName - Cosmos DB global database account in a Throughput Pool
@@ -151,6 +155,8 @@ func (client *ThroughputPoolAccountClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Removes an existing Azure Cosmos DB database account from a throughput pool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *ThroughputPoolAccountClient) deleteOperation(ctx context.Context, resourceGroupName string, throughputPoolName string, throughputPoolAccountName string, options *ThroughputPoolAccountClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ThroughputPoolAccountClient.BeginDelete"
@@ -196,13 +202,15 @@ func (client *ThroughputPoolAccountClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Retrieves the properties of an existing Azure Cosmos DB Throughput Pool
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - throughputPoolName - Cosmos DB Throughput Pool name.
 //   - throughputPoolAccountName - Cosmos DB global database account in a Throughput Pool
@@ -254,8 +262,8 @@ func (client *ThroughputPoolAccountClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

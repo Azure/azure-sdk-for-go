@@ -18,8 +18,6 @@ import (
 
 // GarnetClustersClient contains the methods for the GarnetClusters group.
 // Don't use this type directly, use NewGarnetClustersClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type GarnetClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewGarnetClustersClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateUpdate - Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the GarnetClusterResource
 //   - body - Resource create parameters.
@@ -67,6 +67,8 @@ func (client *GarnetClustersClient) BeginCreateUpdate(ctx context.Context, resou
 
 // CreateUpdate - Create or update a Garnet cache cluster. When updating, you must specify all writable properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GarnetClustersClient) createUpdate(ctx context.Context, resourceGroupName string, clusterName string, body GarnetClusterResource, options *GarnetClustersClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GarnetClustersClient.BeginCreateUpdate"
@@ -108,8 +110,8 @@ func (client *GarnetClustersClient) createUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -120,6 +122,8 @@ func (client *GarnetClustersClient) createUpdateCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes a Garnet cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the GarnetClusterResource
 //   - options - GarnetClustersClientBeginDeleteOptions contains the optional parameters for the GarnetClustersClient.BeginDelete
@@ -143,6 +147,8 @@ func (client *GarnetClustersClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Deletes a Garnet cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GarnetClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *GarnetClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GarnetClustersClient.BeginDelete"
@@ -184,13 +190,15 @@ func (client *GarnetClustersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Get the properties of a Garnet cache cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the GarnetClusterResource
 //   - options - GarnetClustersClientGetOptions contains the optional parameters for the GarnetClustersClient.Get method.
@@ -236,8 +244,8 @@ func (client *GarnetClustersClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -252,6 +260,8 @@ func (client *GarnetClustersClient) getHandleResponse(resp *http.Response) (Garn
 }
 
 // NewListByResourceGroupPager - List all Garnet clusters in this resource group.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - GarnetClustersClientListByResourceGroupOptions contains the optional parameters for the GarnetClustersClient.NewListByResourceGroupPager
 //     method.
@@ -294,8 +304,8 @@ func (client *GarnetClustersClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -310,6 +320,8 @@ func (client *GarnetClustersClient) listByResourceGroupHandleResponse(resp *http
 }
 
 // NewListBySubscriptionPager - List all Garnet clusters in this subscription.
+//
+// Generated from API version 2025-11-01-preview
 //   - options - GarnetClustersClientListBySubscriptionOptions contains the optional parameters for the GarnetClustersClient.NewListBySubscriptionPager
 //     method.
 func (client *GarnetClustersClient) NewListBySubscriptionPager(options *GarnetClustersClientListBySubscriptionOptions) *runtime.Pager[GarnetClustersClientListBySubscriptionResponse] {
@@ -347,8 +359,8 @@ func (client *GarnetClustersClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -364,6 +376,8 @@ func (client *GarnetClustersClient) listBySubscriptionHandleResponse(resp *http.
 
 // BeginUpdate - Updates some of the properties of a garnet cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the GarnetClusterResource
 //   - body - The resource properties to be updated.
@@ -388,6 +402,8 @@ func (client *GarnetClustersClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Updates some of the properties of a garnet cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GarnetClustersClient) update(ctx context.Context, resourceGroupName string, clusterName string, body GarnetClusterResourcePatch, options *GarnetClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GarnetClustersClient.BeginUpdate"
@@ -429,8 +445,8 @@ func (client *GarnetClustersClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

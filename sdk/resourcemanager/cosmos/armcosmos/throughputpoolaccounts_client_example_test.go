@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/throughputPool/CosmosDBThroughputPoolAccountsList.json
+// Generated from example definition: 2025-11-01-preview/throughputPool/CosmosDBThroughputPoolAccountsList.json
 func ExampleThroughputPoolAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

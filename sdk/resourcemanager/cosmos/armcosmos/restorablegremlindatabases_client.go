@@ -18,8 +18,6 @@ import (
 
 // RestorableGremlinDatabasesClient contains the methods for the RestorableGremlinDatabases group.
 // Don't use this type directly, use NewRestorableGremlinDatabasesClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type RestorableGremlinDatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewRestorableGremlinDatabasesClient(subscriptionID string, credential azcor
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin databases under the restorable
 // account. This helps in scenario where database was accidentally deleted to get the deletion time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read'
 // permission
+//
+// Generated from API version 2025-11-01-preview
 //   - location - Cosmos DB region, with spaces between words and each word capitalized.
 //   - instanceID - The instanceId GUID of a restorable database account.
 //   - options - RestorableGremlinDatabasesClientListOptions contains the optional parameters for the RestorableGremlinDatabasesClient.NewListPager
@@ -91,8 +91,8 @@ func (client *RestorableGremlinDatabasesClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

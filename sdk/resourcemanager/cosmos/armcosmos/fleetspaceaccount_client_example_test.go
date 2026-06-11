@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountCreate.json
+// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetspaceAccountCreate.json
 func ExampleFleetspaceAccountClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExampleFleetspaceAccountClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetspaceAccountClientCreateResponse{
-	// 	FleetspaceAccountResource: armcosmos.FleetspaceAccountResource{
+	// 	FleetspaceAccountResource: &armcosmos.FleetspaceAccountResource{
 	// 		Name: to.Ptr("db1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces/fleetspaceAccounts"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
@@ -57,7 +57,7 @@ func ExampleFleetspaceAccountClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountDelete.json
+// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetspaceAccountDelete.json
 func ExampleFleetspaceAccountClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,11 +74,11 @@ func ExampleFleetspaceAccountClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
+		log.Fatalf("failed to pull the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountGet.json
+// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetspaceAccountGet.json
 func ExampleFleetspaceAccountClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,14 +97,14 @@ func ExampleFleetspaceAccountClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetspaceAccountClientGetResponse{
-	// 	FleetspaceAccountResource: armcosmos.FleetspaceAccountResource{
+	// 	FleetspaceAccountResource: &armcosmos.FleetspaceAccountResource{
 	// 		Name: to.Ptr("db1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets/fleetspaces/fleetspaceAccounts"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1/fleetspaces/fleetspace1/fleetspaceAccounts/db1"),
 	// 		Properties: &armcosmos.FleetspaceAccountProperties{
 	// 			GlobalDatabaseAccountProperties: &armcosmos.FleetspaceAccountPropertiesGlobalDatabaseAccountProperties{
 	// 				ArmLocation: to.Ptr("West US"),
-	// 				ResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/db1"),
+	// 				ResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DocumentDB/resourceGroup/rg1/databaseAccounts/db1"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 		},
@@ -112,7 +112,7 @@ func ExampleFleetspaceAccountClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetspaceAccountList.json
+// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetspaceAccountList.json
 func ExampleFleetspaceAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

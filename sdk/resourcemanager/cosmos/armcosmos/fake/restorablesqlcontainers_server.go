@@ -15,7 +15,6 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
-	"slices"
 )
 
 // RestorableSQLContainersServer is a fake server for instances of the armcosmos.RestorableSQLContainersClient type.
@@ -54,7 +53,9 @@ func (r *RestorableSQLContainersServerTransport) Do(req *http.Request) (*http.Re
 }
 
 func (r *RestorableSQLContainersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result, 1)
+	resultChan := make(chan result)
+	defer close(resultChan)
+
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,7 +71,10 @@ func (r *RestorableSQLContainersServerTransport) dispatchToMethodFake(req *http.
 			}
 
 		}
-		resultChan <- res
+		select {
+		case resultChan <- res:
+		case <-req.Context().Done():
+		}
 	}()
 
 	select {
@@ -102,9 +106,21 @@ func (r *RestorableSQLContainersServerTransport) dispatchNewListPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		restorableSQLDatabaseRidParam := getOptional(qp.Get("restorableSqlDatabaseRid"))
-		startTimeParam := getOptional(qp.Get("startTime"))
-		endTimeParam := getOptional(qp.Get("endTime"))
+		restorableSQLDatabaseRidUnescaped, err := url.QueryUnescape(qp.Get("restorableSqlDatabaseRid"))
+		if err != nil {
+			return nil, err
+		}
+		restorableSQLDatabaseRidParam := getOptional(restorableSQLDatabaseRidUnescaped)
+		startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
+		if err != nil {
+			return nil, err
+		}
+		startTimeParam := getOptional(startTimeUnescaped)
+		endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
+		if err != nil {
+			return nil, err
+		}
+		endTimeParam := getOptional(endTimeUnescaped)
 		var options *armcosmos.RestorableSQLContainersClientListOptions
 		if restorableSQLDatabaseRidParam != nil || startTimeParam != nil || endTimeParam != nil {
 			options = &armcosmos.RestorableSQLContainersClientListOptions{
@@ -124,7 +140,7 @@ func (r *RestorableSQLContainersServerTransport) dispatchNewListPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

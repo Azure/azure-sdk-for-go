@@ -18,8 +18,6 @@ import (
 
 // GremlinResourcesClient contains the methods for the GremlinResources group.
 // Don't use this type directly, use NewGremlinResourcesClient() instead.
-//
-// Generated from API version 2026-04-01-preview
 type GremlinResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewGremlinResourcesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateUpdateGremlinDatabase - Create or update an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -68,6 +68,8 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinDatabase(ctx conte
 
 // CreateUpdateGremlinDatabase - Create or update an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateGremlinDatabaseParameters GremlinDatabaseCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinDatabase"
@@ -113,8 +115,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabaseCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateGremlinDatabaseParameters); err != nil {
@@ -125,6 +127,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabaseCreateRequest(c
 
 // BeginCreateUpdateGremlinGraph - Create or update an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -151,6 +155,8 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinGraph(ctx context.
 
 // CreateUpdateGremlinGraph - Create or update an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, createUpdateGremlinGraphParameters GremlinGraphCreateUpdateParameters, options *GremlinResourcesClientBeginCreateUpdateGremlinGraphOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinGraph"
@@ -200,8 +206,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraphCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateGremlinGraphParameters); err != nil {
@@ -212,6 +218,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraphCreateRequest(ctx 
 
 // BeginCreateUpdateGremlinRoleAssignment - Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -237,6 +245,8 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinRoleAssignment(ctx
 
 // CreateUpdateGremlinRoleAssignment - Creates or updates an Azure Cosmos DB Gremlin Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateGremlinRoleAssignmentParameters GremlinRoleAssignmentResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinRoleAssignment"
@@ -282,8 +292,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignmentCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateGremlinRoleAssignmentParameters); err != nil {
@@ -294,6 +304,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignmentCreateReq
 
 // BeginCreateUpdateGremlinRoleDefinition - Creates or updates an Azure Cosmos DB Gremlin Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -319,6 +331,8 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinRoleDefinition(ctx
 
 // CreateUpdateGremlinRoleDefinition - Creates or updates an Azure Cosmos DB Gremlin Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateGremlinRoleDefinitionParameters GremlinRoleDefinitionResource, options *GremlinResourcesClientBeginCreateUpdateGremlinRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginCreateUpdateGremlinRoleDefinition"
@@ -364,8 +378,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinitionCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateGremlinRoleDefinitionParameters); err != nil {
@@ -376,6 +390,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinitionCreateReq
 
 // BeginDeleteGremlinDatabase - Deletes an existing Azure Cosmos DB Gremlin database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -400,6 +416,8 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinDatabase(ctx context.Con
 
 // DeleteGremlinDatabase - Deletes an existing Azure Cosmos DB Gremlin database.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginDeleteGremlinDatabaseOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginDeleteGremlinDatabase"
@@ -445,13 +463,15 @@ func (client *GremlinResourcesClient) deleteGremlinDatabaseCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteGremlinGraph - Deletes an existing Azure Cosmos DB Gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -477,6 +497,8 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinGraph(ctx context.Contex
 
 // DeleteGremlinGraph - Deletes an existing Azure Cosmos DB Gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginDeleteGremlinGraphOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginDeleteGremlinGraph"
@@ -526,13 +548,15 @@ func (client *GremlinResourcesClient) deleteGremlinGraphCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteGremlinRoleAssignment - Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -557,6 +581,8 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinRoleAssignment(ctx conte
 
 // DeleteGremlinRoleAssignment - Deletes an existing Azure Cosmos DB Gremlin Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) deleteGremlinRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *GremlinResourcesClientBeginDeleteGremlinRoleAssignmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginDeleteGremlinRoleAssignment"
@@ -602,13 +628,15 @@ func (client *GremlinResourcesClient) deleteGremlinRoleAssignmentCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // BeginDeleteGremlinRoleDefinition - Deletes an existing Azure Cosmos DB Gremlin Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -633,6 +661,8 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinRoleDefinition(ctx conte
 
 // DeleteGremlinRoleDefinition - Deletes an existing Azure Cosmos DB Gremlin Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) deleteGremlinRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *GremlinResourcesClientBeginDeleteGremlinRoleDefinitionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginDeleteGremlinRoleDefinition"
@@ -678,13 +708,15 @@ func (client *GremlinResourcesClient) deleteGremlinRoleDefinitionCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // GetGremlinDatabase - Gets the Gremlin databases under an existing Azure Cosmos DB database account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -736,8 +768,8 @@ func (client *GremlinResourcesClient) getGremlinDatabaseCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -754,6 +786,8 @@ func (client *GremlinResourcesClient) getGremlinDatabaseHandleResponse(resp *htt
 // GetGremlinDatabaseThroughput - Gets the RUs per second of the Gremlin database under an existing Azure Cosmos DB database
 // account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -805,8 +839,8 @@ func (client *GremlinResourcesClient) getGremlinDatabaseThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -822,6 +856,8 @@ func (client *GremlinResourcesClient) getGremlinDatabaseThroughputHandleResponse
 
 // GetGremlinGraph - Gets the Gremlin graph under an existing Azure Cosmos DB database account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -878,8 +914,8 @@ func (client *GremlinResourcesClient) getGremlinGraphCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -896,6 +932,8 @@ func (client *GremlinResourcesClient) getGremlinGraphHandleResponse(resp *http.R
 // GetGremlinGraphThroughput - Gets the Gremlin graph throughput under an existing Azure Cosmos DB database account with the
 // provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -952,8 +990,8 @@ func (client *GremlinResourcesClient) getGremlinGraphThroughputCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -970,6 +1008,8 @@ func (client *GremlinResourcesClient) getGremlinGraphThroughputHandleResponse(re
 // GetGremlinRoleAssignment - Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Assignment with the given
 // Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleAssignmentID - The GUID for the Role Assignment.
@@ -1021,8 +1061,8 @@ func (client *GremlinResourcesClient) getGremlinRoleAssignmentCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1039,6 +1079,8 @@ func (client *GremlinResourcesClient) getGremlinRoleAssignmentHandleResponse(res
 // GetGremlinRoleDefinition - Retrieves the properties of an existing Azure Cosmos DB Gremlin Role Definition with the given
 // Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - roleDefinitionID - The GUID for the Role Definition.
@@ -1090,8 +1132,8 @@ func (client *GremlinResourcesClient) getGremlinRoleDefinitionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1106,6 +1148,8 @@ func (client *GremlinResourcesClient) getGremlinRoleDefinitionHandleResponse(res
 }
 
 // NewListGremlinDatabasesPager - Lists the Gremlin databases under an existing Azure Cosmos DB database account.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - GremlinResourcesClientListGremlinDatabasesOptions contains the optional parameters for the GremlinResourcesClient.NewListGremlinDatabasesPager
@@ -1153,8 +1197,8 @@ func (client *GremlinResourcesClient) listGremlinDatabasesCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1169,6 +1213,8 @@ func (client *GremlinResourcesClient) listGremlinDatabasesHandleResponse(resp *h
 }
 
 // NewListGremlinGraphsPager - Lists the Gremlin graph under an existing Azure Cosmos DB database account.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1221,8 +1267,8 @@ func (client *GremlinResourcesClient) listGremlinGraphsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1237,6 +1283,8 @@ func (client *GremlinResourcesClient) listGremlinGraphsHandleResponse(resp *http
 }
 
 // NewListGremlinRoleAssignmentsPager - Retrieves the list of all Azure Cosmos DB Gremlin Role Assignments.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - GremlinResourcesClientListGremlinRoleAssignmentsOptions contains the optional parameters for the GremlinResourcesClient.NewListGremlinRoleAssignmentsPager
@@ -1284,8 +1332,8 @@ func (client *GremlinResourcesClient) listGremlinRoleAssignmentsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1300,6 +1348,8 @@ func (client *GremlinResourcesClient) listGremlinRoleAssignmentsHandleResponse(r
 }
 
 // NewListGremlinRoleDefinitionsPager - Retrieves the list of all Azure Cosmos DB Gremlin Role Definitions.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - GremlinResourcesClientListGremlinRoleDefinitionsOptions contains the optional parameters for the GremlinResourcesClient.NewListGremlinRoleDefinitionsPager
@@ -1347,8 +1397,8 @@ func (client *GremlinResourcesClient) listGremlinRoleDefinitionsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1364,6 +1414,8 @@ func (client *GremlinResourcesClient) listGremlinRoleDefinitionsHandleResponse(r
 
 // BeginMigrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1388,6 +1440,8 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToAutoscale(ctx
 
 // MigrateGremlinDatabaseToAutoscale - Migrate an Azure Cosmos DB Gremlin database from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToAutoscale"
@@ -1433,14 +1487,16 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscaleCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginMigrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1465,6 +1521,8 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToManualThrough
 
 // MigrateGremlinDatabaseToManualThroughput - Migrate an Azure Cosmos DB Gremlin database from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, options *GremlinResourcesClientBeginMigrateGremlinDatabaseToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinDatabaseToManualThroughput"
@@ -1510,14 +1568,16 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughputCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginMigrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1543,6 +1603,8 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToAutoscale(ctx co
 
 // MigrateGremlinGraphToAutoscale - Migrate an Azure Cosmos DB Gremlin graph from manual throughput to autoscale
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToAutoscaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToAutoscale"
@@ -1592,14 +1654,16 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscaleCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginMigrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1625,6 +1689,8 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToManualThroughput
 
 // MigrateGremlinGraphToManualThroughput - Migrate an Azure Cosmos DB Gremlin graph from autoscale to manual throughput
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, options *GremlinResourcesClientBeginMigrateGremlinGraphToManualThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginMigrateGremlinGraphToManualThroughput"
@@ -1674,14 +1740,16 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughputCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRetrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1708,6 +1776,8 @@ func (client *GremlinResourcesClient) BeginRetrieveContinuousBackupInformation(c
 
 // RetrieveContinuousBackupInformation - Retrieves continuous backup information for a gremlin graph.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, location ContinuousBackupRestoreLocation, options *GremlinResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginRetrieveContinuousBackupInformation"
@@ -1757,8 +1827,8 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, location); err != nil {
@@ -1769,6 +1839,8 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateR
 
 // BeginUpdateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1794,6 +1866,8 @@ func (client *GremlinResourcesClient) BeginUpdateGremlinDatabaseThroughput(ctx c
 
 // UpdateGremlinDatabaseThroughput - Update RUs per second of an Azure Cosmos DB Gremlin database
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinDatabaseThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginUpdateGremlinDatabaseThroughput"
@@ -1839,8 +1913,8 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {
@@ -1851,6 +1925,8 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateReque
 
 // BeginUpdateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - databaseName - Cosmos DB database name.
@@ -1877,6 +1953,8 @@ func (client *GremlinResourcesClient) BeginUpdateGremlinGraphThroughput(ctx cont
 
 // UpdateGremlinGraphThroughput - Update RUs per second of an Azure Cosmos DB Gremlin graph
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-01-preview
 func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.Context, resourceGroupName string, accountName string, databaseName string, graphName string, updateThroughputParameters ThroughputSettingsUpdateParameters, options *GremlinResourcesClientBeginUpdateGremlinGraphThroughputOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GremlinResourcesClient.BeginUpdateGremlinGraphThroughput"
@@ -1926,8 +2004,8 @@ func (client *GremlinResourcesClient) updateGremlinGraphThroughputCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-11-01-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateThroughputParameters); err != nil {

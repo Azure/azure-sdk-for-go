@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.15 (Unreleased)
+
+### Bugs Fixed
+
+- `UpdateAllVersionFiles` now ignores target files that don't exist instead of returning an error, so version bumping works for packages missing optional files such as `autorest.md` or `README.md`.
+
 ## 0.4.14 (2026-06-03)
 
 ### Bugs Fixed

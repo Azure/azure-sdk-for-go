@@ -45,10 +45,8 @@ var (
 func UpdateAllVersionFiles(modulePath string, version *semver.Version, sdkRepo repo.SDKRepository) error {
 	// Update autorest.md if it exists (swagger-based packages)
 	autorestMdPath := filepath.Join(modulePath, "autorest.md")
-	if _, err := os.Stat(autorestMdPath); err == nil {
-		if err := UpdateAutorestMdVersion(autorestMdPath, version.String()); err != nil {
-			return fmt.Errorf("failed to update autorest.md: %v", err)
-		}
+	if err := UpdateAutorestMdVersion(autorestMdPath, version.String()); err != nil {
+		return fmt.Errorf("failed to update autorest.md: %v", err)
 	}
 
 	// Update version.go
@@ -79,6 +77,10 @@ func UpdateAllVersionFiles(modulePath string, version *semver.Version, sdkRepo r
 // UpdateAutorestMdVersion updates the module version in autorest.md file
 func UpdateAutorestMdVersion(autorestMdPath, newVersion string) error {
 	log.Printf("Updating autorest.md version to %s...", newVersion)
+
+	if _, err := os.Stat(autorestMdPath); os.IsNotExist(err) {
+		return nil
+	}
 
 	b, err := os.ReadFile(autorestMdPath)
 	if err != nil {

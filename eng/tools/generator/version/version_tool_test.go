@@ -708,6 +708,32 @@ retract v2.0.0 // bad release
 	})
 }
 
+func TestUpdateAutorestMdVersion(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-autorest")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	t.Run("Missing autorest.md is ignored", func(t *testing.T) {
+		err := UpdateAutorestMdVersion(filepath.Join(tempDir, "autorest.md"), "1.2.3")
+		require.NoError(t, err)
+	})
+
+	t.Run("Existing autorest.md version is updated", func(t *testing.T) {
+		autorestMdPath := filepath.Join(tempDir, "autorest.md")
+		content := "```yaml\nmodule-version: 1.0.0\n```\n"
+		err := os.WriteFile(autorestMdPath, []byte(content), 0644)
+		require.NoError(t, err)
+
+		err = UpdateAutorestMdVersion(autorestMdPath, "1.2.3")
+		require.NoError(t, err)
+
+		updatedContent, err := os.ReadFile(autorestMdPath)
+		require.NoError(t, err)
+
+		require.Contains(t, string(updatedContent), "module-version: 1.2.3")
+	})
+}
+
 func TestUpdateReadmeModule(t *testing.T) {
 	tempDir, err := os.MkdirTemp("", "test-update-readme")
 	require.NoError(t, err)

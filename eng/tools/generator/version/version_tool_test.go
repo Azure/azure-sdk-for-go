@@ -707,3 +707,40 @@ retract v2.0.0 // bad release
 		require.Contains(t, string(updatedContent), "retract v2.0.0")
 	})
 }
+
+func TestUpdateReadmeModule(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-readme")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "foo", "armfoo")
+	err = os.MkdirAll(modulePath, 0755)
+	require.NoError(t, err)
+
+	mockRepo := &mockSDKRepo{root: tempDir}
+
+	t.Run("Missing README.md is ignored", func(t *testing.T) {
+		version, err := semver.NewVersion("2.0.0")
+		require.NoError(t, err)
+
+		err = UpdateReadmeModule(modulePath, version, mockRepo)
+		require.NoError(t, err)
+	})
+
+	t.Run("Existing README.md module path is updated", func(t *testing.T) {
+		readmeContent := "# armfoo\n\ngithub.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo\n"
+		err = os.WriteFile(filepath.Join(modulePath, "README.md"), []byte(readmeContent), 0644)
+		require.NoError(t, err)
+
+		version, err := semver.NewVersion("2.0.0")
+		require.NoError(t, err)
+
+		err = UpdateReadmeModule(modulePath, version, mockRepo)
+		require.NoError(t, err)
+
+		updatedContent, err := os.ReadFile(filepath.Join(modulePath, "README.md"))
+		require.NoError(t, err)
+
+		require.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2")
+	})
+}

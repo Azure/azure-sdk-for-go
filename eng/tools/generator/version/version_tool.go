@@ -207,6 +207,11 @@ func UpdateReadmeModule(modulePath string, version *semver.Version, sdkRepo repo
 	}
 
 	readmePath := filepath.Join(modulePath, "README.md")
+
+	if _, err := os.Stat(readmePath); os.IsNotExist(err) {
+		return nil
+	}
+
 	readmeFile, err := os.ReadFile(readmePath)
 	if err != nil {
 		return err

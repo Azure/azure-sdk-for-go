@@ -876,6 +876,45 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsHierarchyStartFrom()
 	_require.NotContains(seen, firstBlobName)
 }
 
+func (s *ContainerRecordedTestsSuite) TestContainerListBlobsFlatStartFrom() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Create two blobs that will be listed in lexicographic order.
+	firstBlobName := "a.txt"
+	secondBlobName := "b.txt"
+
+	testcommon.CreateNewBlockBlob(context.Background(), _require, firstBlobName, containerClient)
+	testcommon.CreateNewBlockBlob(context.Background(), _require, secondBlobName, containerClient)
+
+	// Start listing from the secondBlobName.
+	startFrom := secondBlobName
+	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
+		StartFrom: &startFrom,
+	})
+
+	var seen []string
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+
+		for _, blob := range resp.Segment.BlobItems {
+			seen = append(seen, *blob.Name)
+		}
+	}
+
+	// If StartFrom is wired correctly, we should see only secondBlobName, not firstBlobName.
+	_require.Contains(seen, secondBlobName)
+	_require.NotContains(seen, firstBlobName)
+}
+
 func (s *ContainerRecordedTestsSuite) TestContainerListBlobsWithSnapshots() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

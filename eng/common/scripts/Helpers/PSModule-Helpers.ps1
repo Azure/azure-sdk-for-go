@@ -75,7 +75,17 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
   # powershellgallery.com, which will happen in Get-PSRepository which fetches
   # metadata for all registered repositories.
   if ($null -ne $env:SYSTEM_TEAMPROJECTID) {
-    Unregister-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
+    Write-Host "[BBP] REMOVING PSGALLERY"
+
+    Get-PackageSource -ErrorAction SilentlyContinue |
+      Where-Object { $_.Location -like '*powershellgallery.com*' } |
+      ForEach-Object { Unregister-PackageSource -Name $_.Name -ProviderName $_.ProviderName }
+    Unregister-PSRepository -Name PSGallery
+
+    Write-Host "[BBP] REMOVED PSGALLERY"
+
+    Write-Host "PSRepos:"; Get-PSRepository | Format-Table Name, SourceLocation | Out-String | Write-Host
+    Write-Host "PackageSources:"; Get-PackageSource | Format-Table Name, Location, ProviderName | Out-String | Write-Host
   }
 
   $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })

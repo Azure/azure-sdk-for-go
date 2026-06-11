@@ -1,5 +1,11 @@
 $global:CurrentUserModulePath = ""
 
+# Internal Azure Artifacts NuGet v3 feed used to install all PowerShell modules.
+# We deliberately do NOT use PSGallery: pipelines run under network policies
+# that block outbound calls to powershellgallery.com.
+$global:AzSdkPSResourceRepoUri = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-tools/nuget/v3/index.json"
+$global:AzSdkPSResourceRepoName = "AzureSdkTools"
+
 function Update-PSModulePathForCI() {
   # Information on PSModulePath taken from docs
   # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath
@@ -69,42 +75,46 @@ function moduleIsInstalled([string]$moduleName, [string]$version) {
   return $null
 }
 
-function installModule([string]$moduleName, [string]$version, $repoUrl) {
-  # Disable PSGallery completely in Azure Pipelines CI contexts.
-  # Pipelines will get flagged by 1es network isolation if they call out to
-  # powershellgallery.com, which will happen in Get-PSRepository which fetches
-  # metadata for all registered repositories.
-  if ($null -ne $env:SYSTEM_TEAMPROJECTID) {
-    Write-Host "[BBP] REMOVING PSGALLERY"
+function ensureAzSdkPSResourceRepository() {
+  Import-Module Microsoft.PowerShell.PSResourceGet -ErrorAction Stop
 
-    Get-PackageSource -ErrorAction SilentlyContinue |
-      Where-Object { $_.Location -like '*powershellgallery.com*' } |
-      ForEach-Object { Unregister-PackageSource -Name $_.Name -ProviderName $_.ProviderName -ErrorAction SilentlyContinue }
-    Unregister-PSRepository -Name PSGallery -ErrorAction SilentlyContinue
-
-    Write-Host "[BBP] REMOVED PSGALLERY"
-
-    Write-Host "PSRepos:"; Get-PSRepository | Format-Table Name, SourceLocation | Out-String | Write-Host
-    Write-Host "PackageSources:"; Get-PackageSource | Format-Table Name, Location, ProviderName | Out-String | Write-Host
+  $repo = Get-PSResourceRepository -Name $global:AzSdkPSResourceRepoName -ErrorAction SilentlyContinue
+  if (-not $repo) {
+    Write-Verbose "Registering PSResource repository '$($global:AzSdkPSResourceRepoName)' -> $($global:AzSdkPSResourceRepoUri)"
+    Register-PSResourceRepository `
+      -Name $global:AzSdkPSResourceRepoName `
+      -Uri $global:AzSdkPSResourceRepoUri `
+      -Trusted `
+      -ErrorAction Stop | Out-Null
+    $repo = Get-PSResourceRepository -Name $global:AzSdkPSResourceRepoName -ErrorAction Stop
+  }
+  elseif (-not $repo.Trusted) {
+    Set-PSResourceRepository -Name $global:AzSdkPSResourceRepoName -Trusted | Out-Null
   }
 
-  $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })
-  if ($repo.Count -eq 0) {
-    Register-PSRepository -Name $repoUrl -SourceLocation $repoUrl -InstallationPolicy Trusted | Out-Null
-    $repo = (Get-PSRepository).Where({ $_.SourceLocation -eq $repoUrl })
-    if ($repo.Count -eq 0) {
-      throw "Failed to register package repository $repoUrl."
-    }
-  }
+  return $repo
+}
 
-  if ($repo.InstallationPolicy -ne "Trusted") {
-    Set-PSRepository -Name $repo.Name -InstallationPolicy "Trusted" | Out-Null
-  }
+function installResource([string]$moduleName, [string]$version) {
+  $repo = ensureAzSdkPSResourceRepository
 
-  Write-Verbose "Installing module $moduleName with version $version from $repoUrl"
-  # Install under CurrentUser scope so that the end up under $CurrentUserModulePath for caching
-  Install-Module $moduleName -RequiredVersion $version -Repository $repo.Name -Scope CurrentUser -Force -WhatIf:$false
-  # Ensure module installed
+  Write-Verbose "Installing module '$moduleName' version '$version' from '$($repo.Name)' via Install-PSResource"
+  # -Repository is a hard scope in PSResourceGet: primary lookup and dependency
+  # resolution are constrained to the named repository, so this never reaches
+  # PSGallery (unlike PowerShellGet 2.x's Install-Module).
+  Install-PSResource `
+    -Name $moduleName `
+    -Version $version `
+    -Repository $repo.Name `
+    -Scope CurrentUser `
+    -TrustRepository `
+    -AcceptLicense `
+    -Reinstall:$false `
+    -Quiet `
+    -ErrorAction Stop
+
+  # Install-PSResource does not emit a PSModuleInfo. Materialize one so callers
+  # that pipe to Import-Module continue to work.
   $modules = (Get-Module -ListAvailable $moduleName)
   if ($version -as [Version]) {
     $modules = $modules.Where({ [Version]$_.Version -eq [Version]$version })
@@ -113,12 +123,10 @@ function installModule([string]$moduleName, [string]$version, $repoUrl) {
     throw "Failed to install module $moduleName with version $version"
   }
 
+  if (-not (Test-Path variable:script:InstalledModules)) {
+    $script:InstalledModules = @{}
+  }
   $script:InstalledModules["${moduleName}"] = $modules
-
-  # Unregister repository as it can cause overlap issues with `dotnet tool install`
-  # commands using the same devops feed
-  Unregister-PSRepository -Name $repoUrl | Out-Null
-
   return $modules[0]
 }
 
@@ -131,12 +139,16 @@ function InstallAndImport-ModuleIfNotInstalled([string]$module, [string]$version
 }
 
 # Manual test at eng/common-tests/psmodule-helpers/Install-Module-Parallel.ps1
-# If we want to use another default repository other then PSGallery we can update the default parameters
+# Always installs from the internal Azure Artifacts feed via PSResourceGet
+# (Microsoft.PowerShell.PSResourceGet, in-box on PowerShell 7.4+). PSGallery is
+# never contacted.
 function Install-ModuleIfNotInstalled() {
   [CmdletBinding(SupportsShouldProcess = $true)]
   param(
     [string]$moduleName,
     [string]$version,
+    # Retained for back-compat with existing callers; ignored. All installs go
+    # through the internal Azure Artifacts feed via PSResourceGet.
     [string]$repositoryUrl
   )
 
@@ -152,11 +164,9 @@ function Install-ModuleIfNotInstalled() {
     $module = moduleIsInstalled -moduleName $moduleName -version $version
     if ($module) { return $module }
 
-    # Use internal Azure Artifacts feed only.
-    $repoUrl = "https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-tools/nuget/v2"
-    Write-Host "Module '$moduleName' with version '$version' is not installed. Attempting to install from $repoUrl."
+    Write-Host "Module '$moduleName' with version '$version' is not installed. Installing from $($global:AzSdkPSResourceRepoUri)."
 
-    $module = installModule -moduleName $moduleName -version $version -repoUrl $repoUrl
+    $module = installResource -moduleName $moduleName -version $version
     Write-Verbose "Using module '$($module.Name)' with version '$($module.Version)'."
   }
   finally {

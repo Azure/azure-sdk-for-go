@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseMigrationCancel.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseMigrationCancel.json
 func ExampleMigrationClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,11 +29,11 @@ func ExampleMigrationClient_BeginCancel() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseMigrationGet.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseMigrationGet.json
 func ExampleMigrationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleMigrationClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.MigrationClientGetResponse{
-	// 	Migration: &armredisenterprise.Migration{
+	// 	Migration: armredisenterprise.Migration{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
@@ -71,7 +71,7 @@ func ExampleMigrationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseMigrationList.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseMigrationList.json
 func ExampleMigrationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleMigrationClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseMigrationStart.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseMigrationStart.json
 func ExampleMigrationClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,13 +142,13 @@ func ExampleMigrationClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.MigrationClientStartResponse{
-	// 	Migration: &armredisenterprise.Migration{
+	// 	Migration: armredisenterprise.Migration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),

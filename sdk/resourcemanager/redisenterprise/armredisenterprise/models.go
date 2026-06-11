@@ -76,6 +76,11 @@ type AzureCacheForRedisMigrationProperties struct {
 	// cache. This property must be true during the preview.
 	SwitchDNS *bool
 
+	// Sets whether to ignore warnings when performing validation of the migration request. If this property is true, warning-level
+	// disparities between the source and target resources will be ignored, and the request will only fail validation if there
+	// are error-level disparities. The default value is false.
+	ForceMigrate *bool
+
 	// READ-ONLY; The timestamp when the migration operation was created.
 	CreationTime *time.Time
 
@@ -112,8 +117,8 @@ type Cluster struct {
 	// REQUIRED; The SKU to create, which affects price, performance, and features.
 	SKU *SKU
 
-	// The identity of the resource.
-	Identity *ManagedServiceIdentity
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentityV4
 
 	// Other properties of the cluster.
 	Properties *ClusterCreateProperties
@@ -163,6 +168,10 @@ type ClusterCreateProperties struct {
 
 	// READ-ONLY; DNS name of the cluster endpoint
 	HostName *string
+
+	// READ-ONLY; The endpoint of the source resource that is currently pointing to this resource as a result of an ACR/ACRE to
+	// AMR migration.
+	MigratedEndpoint *string
 
 	// READ-ONLY; List of private endpoint connections associated with the specified Redis Enterprise cluster
 	PrivateEndpointConnections []*PrivateEndpointConnection
@@ -219,8 +228,8 @@ type ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity struct {
 
 // ClusterUpdate - A partial update to the Redis Enterprise cluster
 type ClusterUpdate struct {
-	// The identity of the resource.
-	Identity *ManagedServiceIdentity
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentityV4
 
 	// Other properties of the cluster.
 	Properties *ClusterUpdateProperties
@@ -255,6 +264,10 @@ type ClusterUpdateProperties struct {
 
 	// READ-ONLY; DNS name of the cluster endpoint
 	HostName *string
+
+	// READ-ONLY; The endpoint of the source resource that is currently pointing to this resource as a result of an ACR/ACRE to
+	// AMR migration.
+	MigratedEndpoint *string
 
 	// READ-ONLY; List of private endpoint connections associated with the specified Redis Enterprise cluster
 	PrivateEndpointConnections []*PrivateEndpointConnection
@@ -314,6 +327,11 @@ type DatabaseCreateProperties struct {
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
+
+	// Specifies which keyspace events should trigger notifications. Default is an empty string, meaning this feature is disabled.
+	// When enabled, at least 'K' (keyspace events) or 'E' (keyevent events) must be present. For example, 'AKE' enables all standard
+	// events. See https://redis.io/docs/latest/develop/use/keyspace-notifications/ for the complete list of event types.
+	NotifyKeyspaceEvents *string
 
 	// Persistence settings
 	Persistence *Persistence
@@ -379,6 +397,11 @@ type DatabaseUpdateProperties struct {
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
+
+	// Specifies which keyspace events should trigger notifications. Default is an empty string, meaning this feature is disabled.
+	// When enabled, at least 'K' (keyspace events) or 'E' (keyevent events) must be present. For example, 'AKE' enables all standard
+	// events. See https://redis.io/docs/latest/develop/use/keyspace-notifications/ for the complete list of event types.
+	NotifyKeyspaceEvents *string
 
 	// Persistence settings
 	Persistence *Persistence
@@ -508,8 +531,8 @@ type MaintenanceWindowSchedule struct {
 	DayOfWeek *MaintenanceDayOfWeek
 }
 
-// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
-type ManagedServiceIdentity struct {
+// ManagedServiceIdentityV4 - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentityV4 struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
 	Type *ManagedServiceIdentityType
 
@@ -574,6 +597,54 @@ type MigrationProperties struct {
 
 // GetMigrationProperties implements the MigrationPropertiesClassification interface for type MigrationProperties.
 func (m *MigrationProperties) GetMigrationProperties() *MigrationProperties { return m }
+
+// MigrationValidationDisparity - Represents a specific validation issue found during migration validation.
+type MigrationValidationDisparity struct {
+	// REQUIRED; A localized string denoting the category of the validation issue. Examples are "Region", "Data", "Identity",
+	// "Clustering Mode", and "TLS".
+	Category *string
+
+	// REQUIRED; Detailed message describing the validation issue.
+	Message *string
+}
+
+// MigrationValidationError - Represents a validation error that prevents migration.
+type MigrationValidationError struct {
+	// REQUIRED; List of specific disparities that cause this error.
+	Disparities []*MigrationValidationDisparity
+}
+
+// MigrationValidationRequest - Properties for validating migration from Azure Cache for Redis to Redis Enterprise.
+type MigrationValidationRequest struct {
+	// REQUIRED; The source resource ID to validate migration from. This is the resource ID of the Azure Cache for Redis.
+	SourceResourceID *string
+
+	// Sets whether to ignore warnings when validating if the source cache can be migrated to the target cache. If this property
+	// is true, the isValid property in the response will ignore warning-level disparities between the source and target resource.
+	// The default value is false.
+	ForceMigrate *bool
+
+	// Sets whether the data is migrated from source to target or not. The default value is true.
+	SkipDataMigration *bool
+}
+
+// MigrationValidationResponse - Response for migration validation operation.
+type MigrationValidationResponse struct {
+	// REQUIRED; Indicates whether the migration validation passed.
+	IsValid *bool
+
+	// List of validation errors that prevent migration.
+	Errors []*MigrationValidationError
+
+	// List of validation warnings that may impact migration.
+	Warnings []*MigrationValidationWarning
+}
+
+// MigrationValidationWarning - Represents a validation warning that may impact migration.
+type MigrationValidationWarning struct {
+	// REQUIRED; List of specific disparities that cause this warning.
+	Disparities []*MigrationValidationDisparity
+}
 
 // Module - Specifies configuration of a redis module
 type Module struct {

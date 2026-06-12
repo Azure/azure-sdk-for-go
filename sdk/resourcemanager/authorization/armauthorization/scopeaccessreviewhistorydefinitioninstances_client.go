@@ -19,6 +19,8 @@ import (
 // ScopeAccessReviewHistoryDefinitionInstancesClient contains the methods for the ScopeAccessReviewHistoryDefinitionInstances
 // group.
 // Don't use this type directly, use NewScopeAccessReviewHistoryDefinitionInstancesClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewHistoryDefinitionInstancesClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewScopeAccessReviewHistoryDefinitionInstancesClient(credential azcore.Toke
 }
 
 // NewListPager - Get access review history definition instances by definition Id
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - historyDefinitionID - The id of the access review history definition.
 //   - options - ScopeAccessReviewHistoryDefinitionInstancesClientListOptions contains the optional parameters for the ScopeAccessReviewHistoryDefinitionInstancesClient.NewListPager
@@ -83,8 +83,8 @@ func (client *ScopeAccessReviewHistoryDefinitionInstancesClient) listCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

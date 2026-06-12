@@ -17,6 +17,8 @@ import (
 
 // AlertDefinitionsClient contains the methods for the AlertDefinitions group.
 // Don't use this type directly, use NewAlertDefinitionsClient() instead.
+//
+// Generated from API version 2022-08-01-preview
 type AlertDefinitionsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +39,6 @@ func NewAlertDefinitionsClient(credential azcore.TokenCredential, options *arm.C
 
 // Get - Get the specified alert definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - alertDefinitionID - The name of the alert definition to get.
 //   - options - AlertDefinitionsClientGetOptions contains the optional parameters for the AlertDefinitionsClient.Get method.
@@ -80,8 +80,8 @@ func (client *AlertDefinitionsClient) getCreateRequest(ctx context.Context, scop
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -96,8 +96,6 @@ func (client *AlertDefinitionsClient) getHandleResponse(resp *http.Response) (Al
 }
 
 // NewListForScopePager - Gets alert definitions for a resource scope.
-//
-// Generated from API version 2022-08-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - AlertDefinitionsClientListForScopeOptions contains the optional parameters for the AlertDefinitionsClient.NewListForScopePager
 //     method.
@@ -136,8 +134,8 @@ func (client *AlertDefinitionsClient) listForScopeCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

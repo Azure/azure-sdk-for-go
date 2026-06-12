@@ -18,6 +18,8 @@ import (
 
 // EnvironmentClient contains the methods for the Environment group.
 // Don't use this type directly, use NewEnvironmentClient() instead.
+//
+// Generated from API version 2025-08-18-preview
 type EnvironmentClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEnvironmentClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Create confluent environment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-18-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Organization resource name
 //   - environmentID - Confluent environment id
@@ -95,8 +95,8 @@ func (client *EnvironmentClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-18-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250818Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -116,8 +116,6 @@ func (client *EnvironmentClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // BeginDelete - Delete confluent environment by id
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-18-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Organization resource name
 //   - environmentID - Confluent environment id
@@ -141,8 +139,6 @@ func (client *EnvironmentClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Delete confluent environment by id
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-18-preview
 func (client *EnvironmentClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *EnvironmentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnvironmentClient.BeginDelete"
@@ -188,7 +184,7 @@ func (client *EnvironmentClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-18-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250818Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

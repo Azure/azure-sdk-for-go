@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultExtensionsClientVersion string = "2026-04-30"
-
 // ExtensionsClient contains the methods for the Extensions group.
 // Don't use this type directly, use NewExtensionsClient() instead.
 //
@@ -119,7 +117,7 @@ func (client *ExtensionsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExtensionsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -205,7 +203,7 @@ func (client *ExtensionsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExtensionsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -267,7 +265,7 @@ func (client *ExtensionsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExtensionsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -335,7 +333,7 @@ func (client *ExtensionsClient) listByArcSettingCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExtensionsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -427,7 +425,7 @@ func (client *ExtensionsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExtensionsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -513,7 +511,7 @@ func (client *ExtensionsClient) upgradeCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultExtensionsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, extensionUpgradeParameters); err != nil {

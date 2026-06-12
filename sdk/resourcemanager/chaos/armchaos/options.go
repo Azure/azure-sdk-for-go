@@ -226,6 +226,13 @@ type ScenarioConfigurationsClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
+// ScenarioConfigurationsClientBeginExecuteOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginExecute
+// method.
+type ScenarioConfigurationsClientBeginExecuteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ScenarioConfigurationsClientBeginFixResourcePermissionsOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginFixResourcePermissions
 // method.
 type ScenarioConfigurationsClientBeginFixResourcePermissionsOptions struct {
@@ -242,12 +249,6 @@ type ScenarioConfigurationsClientBeginValidateOptions struct {
 	ResumeToken string
 }
 
-// ScenarioConfigurationsClientExecuteOptions contains the optional parameters for the ScenarioConfigurationsClient.Execute
-// method.
-type ScenarioConfigurationsClientExecuteOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ScenarioConfigurationsClientGetOptions contains the optional parameters for the ScenarioConfigurationsClient.Get method.
 type ScenarioConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -259,9 +260,10 @@ type ScenarioConfigurationsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScenarioRunsClientCancelOptions contains the optional parameters for the ScenarioRunsClient.Cancel method.
-type ScenarioRunsClientCancelOptions struct {
-	// placeholder for future optional parameters
+// ScenarioRunsClientBeginCancelOptions contains the optional parameters for the ScenarioRunsClient.BeginCancel method.
+type ScenarioRunsClientBeginCancelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // ScenarioRunsClientGetOptions contains the optional parameters for the ScenarioRunsClient.Get method.

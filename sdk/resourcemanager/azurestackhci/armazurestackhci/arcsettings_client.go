@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultArcSettingsClientVersion string = "2026-04-30"
-
 // ArcSettingsClient contains the methods for the ArcSettings group.
 // Don't use this type directly, use NewArcSettingsClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *ArcSettingsClient) consentAndInstallDefaultExtensionsCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -164,7 +162,7 @@ func (client *ArcSettingsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -255,7 +253,7 @@ func (client *ArcSettingsClient) createIdentityCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -331,7 +329,7 @@ func (client *ArcSettingsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -389,7 +387,7 @@ func (client *ArcSettingsClient) generatePasswordCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -456,7 +454,7 @@ func (client *ArcSettingsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -543,7 +541,7 @@ func (client *ArcSettingsClient) initializeDisableProcessCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -596,7 +594,7 @@ func (client *ArcSettingsClient) listByClusterCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -684,7 +682,7 @@ func (client *ArcSettingsClient) reconcileCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -747,7 +745,7 @@ func (client *ArcSettingsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultArcSettingsClientVersion)
+	reqQP.Set("api-version", version20260430)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

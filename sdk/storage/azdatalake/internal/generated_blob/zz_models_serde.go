@@ -46,12 +46,12 @@ func (f FileSystemProperties) MarshalXML(enc *xml.Encoder, start xml.StartElemen
 	type alias FileSystemProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *datetime.RFC1123 `xml:"DeletedTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		DeletedTime  *datetime.RFC7231 `xml:"DeletedTime"`
+		LastModified *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias:        (*alias)(&f),
-		DeletedTime:  (*datetime.RFC1123)(f.DeletedTime),
-		LastModified: (*datetime.RFC1123)(f.LastModified),
+		DeletedTime:  (*datetime.RFC7231)(f.DeletedTime),
+		LastModified: (*datetime.RFC7231)(f.LastModified),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -61,8 +61,8 @@ func (f *FileSystemProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartEle
 	type alias FileSystemProperties
 	aux := &struct {
 		*alias
-		DeletedTime  *datetime.RFC1123 `xml:"DeletedTime"`
-		LastModified *datetime.RFC1123 `xml:"Last-Modified"`
+		DeletedTime  *datetime.RFC7231 `xml:"DeletedTime"`
+		LastModified *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(f),
 	}

@@ -217,13 +217,13 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
@@ -292,13 +292,13 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*options.SourceIfMatch)}
 	}
 	if options != nil && options.SourceIfModifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC1123(*options.SourceIfModifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-modified-since"] = []string{datetime.RFC7231(*options.SourceIfModifiedSince).String()}
 	}
 	if options != nil && options.SourceIfNoneMatch != nil {
 		req.Raw().Header["x-ms-source-if-none-match"] = []string{string(*options.SourceIfNoneMatch)}
 	}
 	if options != nil && options.SourceIfUnmodifiedSince != nil {
-		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC1123(*options.SourceIfUnmodifiedSince).String()}
+		req.Raw().Header["x-ms-source-if-unmodified-since"] = []string{datetime.RFC7231(*options.SourceIfUnmodifiedSince).String()}
 	}
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
@@ -408,13 +408,13 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -503,13 +503,13 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["x-ms-cache-control"] = []string{*options.CacheControl}
@@ -657,13 +657,13 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -839,13 +839,13 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, leaseAction Pa
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
@@ -944,13 +944,13 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.Range != nil {
 		req.Raw().Header["Range"] = []string{*options.Range}
@@ -1102,13 +1102,13 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}
@@ -1467,13 +1467,13 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 		req.Raw().Header["If-Match"] = []string{string(*options.IfMatch)}
 	}
 	if options != nil && options.IfModifiedSince != nil {
-		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC1123(*options.IfModifiedSince).String()}
+		req.Raw().Header["If-Modified-Since"] = []string{datetime.RFC7231(*options.IfModifiedSince).String()}
 	}
 	if options != nil && options.IfNoneMatch != nil {
 		req.Raw().Header["If-None-Match"] = []string{string(*options.IfNoneMatch)}
 	}
 	if options != nil && options.IfUnmodifiedSince != nil {
-		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC1123(*options.IfUnmodifiedSince).String()}
+		req.Raw().Header["If-Unmodified-Since"] = []string{datetime.RFC7231(*options.IfUnmodifiedSince).String()}
 	}
 	if options != nil && options.ACL != nil {
 		req.Raw().Header["x-ms-acl"] = []string{*options.ACL}

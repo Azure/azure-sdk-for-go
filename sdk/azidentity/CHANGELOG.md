@@ -1,14 +1,22 @@
 # Release History
 
-## 1.14.0-beta.4 (Unreleased)
-
-### Features Added
+## 1.14.0 (2026-06-15)
 
 ### Breaking Changes
 
+> These changes affect only code written against a beta version such as v1.14.0-beta.3
+- Removed `WorkloadIdentityCredentialOptions.EnableAzureProxy`.
+  It will return in v1.15.0-beta.1
+
 ### Bugs Fixed
 
+- `AzureDeveloperCLICredential` improved reporting of error messages returned from `azd`
+
 ### Other Changes
+
+- Returned `azidentity` errors include links to the troubleshooting guide when appropriate
+- This module now requires a minimum Go version of 1.25
+- Upgraded dependencies
 
 ## 1.14.0-beta.3 (2026-02-10)
 

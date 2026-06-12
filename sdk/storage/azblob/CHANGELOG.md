@@ -1,5 +1,11 @@
 # Release History
 
+## 1.9.0-beta.1 (Unreleased)
+
+### Features Added
+* Added support for service version 2026-10-06.
+* Added `AccessTier`, `AccessTierInferred`, `AccessTierChangeTime`, and `SmartAccessTier` to the blob download response in the `blob` package.
+
 ## 1.8.0 (Unreleased)
 
 ### Features Added

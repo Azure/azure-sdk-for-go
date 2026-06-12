@@ -30,7 +30,7 @@ func ExampleVMIngestionClient_Details() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelastic.VMIngestionClientDetailsResponse{
-	// 	VMIngestionDetailsResponse: &armelastic.VMIngestionDetailsResponse{
+	// 	VMIngestionDetailsResponse: armelastic.VMIngestionDetailsResponse{
 	// 		CloudID: to.Ptr("myid123"),
 	// 		IngestionKey: to.Ptr("Vmingeationkey"),
 	// 	},

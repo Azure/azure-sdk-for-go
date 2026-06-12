@@ -18,6 +18,8 @@ import (
 
 // CreateAndAssociateIPFilterClient contains the methods for the CreateAndAssociateIPFilter group.
 // Don't use this type directly, use NewCreateAndAssociateIPFilterClient() instead.
+//
+// Generated from API version 2025-06-01
 type CreateAndAssociateIPFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCreateAndAssociateIPFilterClient(subscriptionID string, credential azcor
 
 // BeginCreate - Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - CreateAndAssociateIPFilterClientBeginCreateOptions contains the optional parameters for the CreateAndAssociateIPFilterClient.BeginCreate
@@ -66,8 +66,6 @@ func (client *CreateAndAssociateIPFilterClient) BeginCreate(ctx context.Context,
 
 // Create - Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *CreateAndAssociateIPFilterClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *CreateAndAssociateIPFilterClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CreateAndAssociateIPFilterClient.BeginCreate"
@@ -109,13 +107,13 @@ func (client *CreateAndAssociateIPFilterClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.IPs != nil {
 		reqQP.Set("ips", *options.IPs)
 	}
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

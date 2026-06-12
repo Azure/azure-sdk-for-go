@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesList
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.PrivateLinkResourcesClientListByElasticSanResponse{
-	// 	PrivateLinkResourceListResult: &armelasticsan.PrivateLinkResourceListResult{
+	// 	PrivateLinkResourceListResult: armelasticsan.PrivateLinkResourceListResult{
 	// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionid/resourceGroups/resourcegroupname/providers/Microsoft.ElasticSan/elasticSans/elasticsanname/privateLinkResources?api-version=2024-07-01-preview&%24skiptoken=mno345pqr678"),
 	// 		Value: []*armelasticsan.PrivateLinkResource{
 	// 			{
@@ -79,7 +79,7 @@ func ExamplePrivateLinkResourcesClient_ListByElasticSan_privateLinkResourcesList
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.PrivateLinkResourcesClientListByElasticSanResponse{
-	// 	PrivateLinkResourceListResult: &armelasticsan.PrivateLinkResourceListResult{
+	// 	PrivateLinkResourceListResult: armelasticsan.PrivateLinkResourceListResult{
 	// 		Value: []*armelasticsan.PrivateLinkResource{
 	// 		},
 	// 	},

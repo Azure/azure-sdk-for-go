@@ -18,6 +18,8 @@ import (
 
 // IntegrationRuntimeObjectMetadataClient contains the methods for the IntegrationRuntimeObjectMetadata group.
 // Don't use this type directly, use NewIntegrationRuntimeObjectMetadataClient() instead.
+//
+// Generated from API version 2018-06-01
 type IntegrationRuntimeObjectMetadataClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential
 
 // Get - Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - integrationRuntimeName - The integration runtime name.
@@ -94,8 +94,8 @@ func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20180601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.GetMetadataRequest != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -118,8 +118,6 @@ func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *ht
 
 // BeginRefresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - integrationRuntimeName - The integration runtime name.
@@ -144,8 +142,6 @@ func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.C
 
 // Refresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2018-06-01
 func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IntegrationRuntimeObjectMetadataClient.BeginRefresh"
@@ -191,8 +187,8 @@ func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20180601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

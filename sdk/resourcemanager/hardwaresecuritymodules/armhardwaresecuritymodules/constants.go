@@ -4,10 +4,6 @@
 
 package armhardwaresecuritymodules
 
-const (
-	version20250331 string = "2025-03-31"
-)
-
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

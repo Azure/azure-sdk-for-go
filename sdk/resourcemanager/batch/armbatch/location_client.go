@@ -19,8 +19,6 @@ import (
 
 // LocationClient contains the methods for the Location group.
 // Don't use this type directly, use NewLocationClient() instead.
-//
-// Generated from API version 2025-06-01
 type LocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewLocationClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckNameAvailability - Checks whether the Batch account name is available in the specified region.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - locationName - The desired region for the name check.
 //   - parameters - Properties needed to check the availability of a name.
 //   - options - LocationClientCheckNameAvailabilityOptions contains the optional parameters for the LocationClient.CheckNameAvailability
@@ -86,8 +86,8 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -107,6 +107,8 @@ func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // GetQuotas - Gets the Batch service quotas for the specified subscription at the given location.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-06-01
 //   - locationName - The region for which to retrieve Batch service quotas.
 //   - options - LocationClientGetQuotasOptions contains the optional parameters for the LocationClient.GetQuotas method.
 func (client *LocationClient) GetQuotas(ctx context.Context, locationName string, options *LocationClientGetQuotasOptions) (LocationClientGetQuotasResponse, error) {
@@ -147,8 +149,8 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-06-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -164,6 +166,8 @@ func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (Loca
 
 // NewListSupportedVirtualMachineSKUsPager - Gets the list of Batch supported Virtual Machine VM sizes available at the given
 // location.
+//
+// Generated from API version 2025-06-01
 //   - locationName - The region for which to retrieve Batch service supported SKUs.
 //   - options - LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedVirtualMachineSKUsPager
 //     method.
@@ -209,11 +213,11 @@ func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", "2025-06-01")
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

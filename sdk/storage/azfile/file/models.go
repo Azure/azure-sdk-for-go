@@ -783,8 +783,15 @@ func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset
 
 // ---------------------------------------------------------------------------------------------------------------------
 
-// GetRangeListOptions contains the optional parameters for the Client.GetRangeList method.
+// GetRangeListOptions contains the optional parameters for the Client.NewGetRangeListPager method.
 type GetRangeListOptions struct {
+	// Marker is a string value that identifies the portion of the list to be returned with the next list operation. The operation
+	// returns a marker value within the response body if the list returned was not complete. The marker value may then be used
+	// in a subsequent call to request the next set of list items. The marker value is opaque to the client.
+	Marker *string
+	// MaxResults specifies the maximum number of entries to return. If the request does not specify MaxResults, or specifies
+	// a value greater than 5,000, the server will return up to 5,000 items.
+	MaxResults *int32
 	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
 	PrevShareSnapshot *string
 	// Specifies the range of bytes over which to list ranges, inclusively.
@@ -800,10 +807,12 @@ type GetRangeListOptions struct {
 
 func (o *GetRangeListOptions) format() (*generated.FileClientGetRangeListOptions, *generated.LeaseAccessConditions) {
 	if o == nil {
-		return nil, nil
+		return &generated.FileClientGetRangeListOptions{}, nil
 	}
 
 	return &generated.FileClientGetRangeListOptions{
+		Marker:            o.Marker,
+		Maxresults:        o.MaxResults,
 		Prevsharesnapshot: o.PrevShareSnapshot,
 		Range:             exported.FormatHTTPRange(o.Range),
 		Sharesnapshot:     o.ShareSnapshot,

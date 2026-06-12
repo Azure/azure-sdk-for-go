@@ -1,5 +1,14 @@
 # Release History
 
+## 1.8.0-beta.1 (Unreleased)
+
+### Features Added
+* Added support for service version 2026-10-06.
+* Added `Client.NewGetRangeListPager` to the `file` package to support listing file ranges with a continuation token.
+
+### Other Changes
+* Deprecated `Client.GetRangeList` in the `file` package. Use `Client.NewGetRangeListPager` instead.
+
 ## 1.7.0 (Unreleased)
 
 ### Features Added

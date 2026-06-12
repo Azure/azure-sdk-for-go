@@ -300,10 +300,18 @@ func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, sour
 
 // GetRangeList operation returns the list of valid ranges for a file.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-ranges.
+//
+// Deprecated: Use NewGetRangeListPager instead.
 func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions) (GetRangeListResponse, error) {
 	opts, leaseAccessConditions := options.format()
-	resp, err := f.generated().GetRangeList(ctx, opts, leaseAccessConditions)
-	return resp, err
+	return f.generated().NewGetRangeListPager(opts, leaseAccessConditions).NextPage(ctx)
+}
+
+// NewGetRangeListPager operation returns the list of valid ranges for a file.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-ranges.
+func (f *Client) NewGetRangeListPager(options *GetRangeListOptions) *runtime.Pager[GetRangeListResponse] {
+	opts, leaseAccessConditions := options.format()
+	return f.generated().NewGetRangeListPager(opts, leaseAccessConditions)
 }
 
 // ForceCloseHandles operation closes a handle or handles opened on a file.

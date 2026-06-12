@@ -5,6 +5,7 @@
 ### Features Added
 * Added support for service version 2026-10-06.
 * Added `AccessTier`, `AccessTierInferred`, `AccessTierChangeTime`, and `SmartAccessTier` to the blob download response in the `blob` package.
+* Added `ContentCRC64` to the upload responses.
 
 ## 1.8.0 (Unreleased)
 

@@ -201,25 +201,25 @@ func (p PathPropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElem
 	type alias PathPropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		AccessTierChangeTime *datetime.RFC7231 `xml:"AccessTierChangeTime"`
 		ContentMD5           *string           `xml:"Content-MD5"`
-		CopyCompletionTime   *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime         *datetime.RFC1123 `xml:"Creation-Time"`
-		DeleteTime           *datetime.RFC1123 `xml:"DeleteTime"`
-		DeletedTime          *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn            *datetime.RFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn       *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified         *datetime.RFC1123 `xml:"Last-Modified"`
+		CopyCompletionTime   *datetime.RFC7231 `xml:"CopyCompletionTime"`
+		CreationTime         *datetime.RFC7231 `xml:"Creation-Time"`
+		DeleteTime           *datetime.RFC7231 `xml:"DeleteTime"`
+		DeletedTime          *datetime.RFC7231 `xml:"DeletedTime"`
+		ExpiresOn            *datetime.RFC7231 `xml:"Expiry-Time"`
+		LastAccessedOn       *datetime.RFC7231 `xml:"LastAccessTime"`
+		LastModified         *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias:                (*alias)(&p),
-		AccessTierChangeTime: (*datetime.RFC1123)(p.AccessTierChangeTime),
-		CopyCompletionTime:   (*datetime.RFC1123)(p.CopyCompletionTime),
-		CreationTime:         (*datetime.RFC1123)(p.CreationTime),
-		DeleteTime:           (*datetime.RFC1123)(p.DeleteTime),
-		DeletedTime:          (*datetime.RFC1123)(p.DeletedTime),
-		ExpiresOn:            (*datetime.RFC1123)(p.ExpiresOn),
-		LastAccessedOn:       (*datetime.RFC1123)(p.LastAccessedOn),
-		LastModified:         (*datetime.RFC1123)(p.LastModified),
+		AccessTierChangeTime: (*datetime.RFC7231)(p.AccessTierChangeTime),
+		CopyCompletionTime:   (*datetime.RFC7231)(p.CopyCompletionTime),
+		CreationTime:         (*datetime.RFC7231)(p.CreationTime),
+		DeleteTime:           (*datetime.RFC7231)(p.DeleteTime),
+		DeletedTime:          (*datetime.RFC7231)(p.DeletedTime),
+		ExpiresOn:            (*datetime.RFC7231)(p.ExpiresOn),
+		LastAccessedOn:       (*datetime.RFC7231)(p.LastAccessedOn),
+		LastModified:         (*datetime.RFC7231)(p.LastModified),
 	}
 	if p.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(p.ContentMD5, runtime.Base64StdFormat)
@@ -233,15 +233,15 @@ func (p *PathPropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartE
 	type alias PathPropertiesInternal
 	aux := &struct {
 		*alias
-		AccessTierChangeTime *datetime.RFC1123 `xml:"AccessTierChangeTime"`
+		AccessTierChangeTime *datetime.RFC7231 `xml:"AccessTierChangeTime"`
 		ContentMD5           *string           `xml:"Content-MD5"`
-		CopyCompletionTime   *datetime.RFC1123 `xml:"CopyCompletionTime"`
-		CreationTime         *datetime.RFC1123 `xml:"Creation-Time"`
-		DeleteTime           *datetime.RFC1123 `xml:"DeleteTime"`
-		DeletedTime          *datetime.RFC1123 `xml:"DeletedTime"`
-		ExpiresOn            *datetime.RFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn       *datetime.RFC1123 `xml:"LastAccessTime"`
-		LastModified         *datetime.RFC1123 `xml:"Last-Modified"`
+		CopyCompletionTime   *datetime.RFC7231 `xml:"CopyCompletionTime"`
+		CreationTime         *datetime.RFC7231 `xml:"Creation-Time"`
+		DeleteTime           *datetime.RFC7231 `xml:"DeleteTime"`
+		DeletedTime          *datetime.RFC7231 `xml:"DeletedTime"`
+		ExpiresOn            *datetime.RFC7231 `xml:"Expiry-Time"`
+		LastAccessedOn       *datetime.RFC7231 `xml:"LastAccessTime"`
+		LastModified         *datetime.RFC7231 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(p),
 	}

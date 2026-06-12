@@ -32,7 +32,7 @@ type FileClient struct {
 // AbortCopy - Aborts a pending Copy File operation, and leaves a destination file with zero length and full metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - copyID - The copy identifier provided in the x-ms-copy-id header of the original Copy File operation.
 //   - options - FileClientAbortCopyOptions contains the optional parameters for the FileClient.AbortCopy method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
@@ -104,7 +104,7 @@ func (client *FileClient) abortCopyHandleResponse(resp *http.Response) (FileClie
 // AcquireLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - duration - Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that never expires. A non-infinite
 //     lease can be between 15 and 60 seconds. A lease duration cannot be changed using
 //     renew or change.
@@ -196,7 +196,7 @@ func (client *FileClient) acquireLeaseHandleResponse(resp *http.Response) (FileC
 // BreakLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientBreakLeaseOptions contains the optional parameters for the FileClient.BreakLease method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) BreakLease(ctx context.Context, options *FileClientBreakLeaseOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientBreakLeaseResponse, error) {
@@ -285,7 +285,7 @@ func (client *FileClient) breakLeaseHandleResponse(resp *http.Response) (FileCli
 // ChangeLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - FileClientChangeLeaseOptions contains the optional parameters for the FileClient.ChangeLease method.
 func (client *FileClient) ChangeLease(ctx context.Context, leaseID string, options *FileClientChangeLeaseOptions) (FileClientChangeLeaseResponse, error) {
@@ -375,7 +375,7 @@ func (client *FileClient) changeLeaseHandleResponse(resp *http.Response) (FileCl
 // Create - Creates a new file or replaces a file. Can also initialize the file with content.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - fileContentLength - Specifies the maximum size for the file, up to 4 TB.
 //   - options - FileClientCreateOptions contains the optional parameters for the FileClient.Create method.
 //   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
@@ -605,7 +605,7 @@ func (client *FileClient) createHandleResponse(resp *http.Response) (FileClientC
 // CreateHardLink - Creates a hard link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - targetFile - NFS only. Required. Specifies the path of the target file to which the link will be created, up to 2 KiB in
 //     length. It should be full path of the target from the root.The target file must be in the
 //     same share and hence the same storage account.
@@ -738,7 +738,7 @@ func (client *FileClient) createHardLinkHandleResponse(resp *http.Response) (Fil
 // CreateSymbolicLink - Creates a symbolic link.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - linkText - NFS only. Required. The path to the original file, the symbolic link is pointing to. The path is of type string
 //     which is not resolved and is stored as is. The path can be absolute path or the relative
 //     path depending on the content stored in the symbolic link file.
@@ -882,7 +882,7 @@ func (client *FileClient) createSymbolicLinkHandleResponse(resp *http.Response) 
 // Delete - removes the file from the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientDeleteOptions contains the optional parameters for the FileClient.Delete method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) Delete(ctx context.Context, options *FileClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDeleteResponse, error) {
@@ -957,7 +957,7 @@ func (client *FileClient) deleteHandleResponse(resp *http.Response) (FileClientD
 // Download - Reads or downloads a file from the system, including its metadata and properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientDownloadOptions contains the optional parameters for the FileClient.Download method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) Download(ctx context.Context, options *FileClientDownloadOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientDownloadResponse, error) {
@@ -1192,7 +1192,7 @@ func (client *FileClient) downloadHandleResponse(resp *http.Response) (FileClien
 // ForceCloseHandles - Closes all handles open for given file
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 //     all handles.
 //   - options - FileClientForceCloseHandlesOptions contains the optional parameters for the FileClient.ForceCloseHandles method.
@@ -1286,7 +1286,7 @@ func (client *FileClient) forceCloseHandlesHandleResponse(resp *http.Response) (
 // not return the content of the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientGetPropertiesOptions contains the optional parameters for the FileClient.GetProperties method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) GetProperties(ctx context.Context, options *FileClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetPropertiesResponse, error) {
@@ -1497,7 +1497,7 @@ func (client *FileClient) getPropertiesHandleResponse(resp *http.Response) (File
 // GetRangeList - Returns the list of valid ranges for a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientGetRangeListOptions contains the optional parameters for the FileClient.GetRangeList method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) GetRangeList(ctx context.Context, options *FileClientGetRangeListOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientGetRangeListResponse, error) {
@@ -1598,7 +1598,7 @@ func (client *FileClient) getRangeListHandleResponse(resp *http.Response) (FileC
 // GetSymbolicLink -
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientGetSymbolicLinkOptions contains the optional parameters for the FileClient.GetSymbolicLink method.
 func (client *FileClient) GetSymbolicLink(ctx context.Context, options *FileClientGetSymbolicLinkOptions) (FileClientGetSymbolicLinkResponse, error) {
 	var err error
@@ -1682,7 +1682,7 @@ func (client *FileClient) getSymbolicLinkHandleResponse(resp *http.Response) (Fi
 // ListHandles - Lists handles for file
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientListHandlesOptions contains the optional parameters for the FileClient.ListHandles method.
 func (client *FileClient) ListHandles(ctx context.Context, options *FileClientListHandlesOptions) (FileClientListHandlesResponse, error) {
 	var err error
@@ -1762,7 +1762,7 @@ func (client *FileClient) listHandlesHandleResponse(resp *http.Response) (FileCl
 // ReleaseLease - [Update] The Lease File operation establishes and manages a lock on a file for write and delete operations
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - leaseID - Specifies the current lease ID on the resource.
 //   - options - FileClientReleaseLeaseOptions contains the optional parameters for the FileClient.ReleaseLease method.
 func (client *FileClient) ReleaseLease(ctx context.Context, leaseID string, options *FileClientReleaseLeaseOptions) (FileClientReleaseLeaseResponse, error) {
@@ -1846,7 +1846,7 @@ func (client *FileClient) releaseLeaseHandleResponse(resp *http.Response) (FileC
 // Rename - Renames a file
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - renameSource - Required. Specifies the URI-style path of the source file, up to 2 KB in length.
 //   - options - FileClientRenameOptions contains the optional parameters for the FileClient.Rename method.
 //   - SourceLeaseAccessConditions - SourceLeaseAccessConditions contains a group of parameters for the DirectoryClient.Rename
@@ -2015,7 +2015,7 @@ func (client *FileClient) renameHandleResponse(resp *http.Response) (FileClientR
 // SetHTTPHeaders - Sets HTTP headers on the file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientSetHTTPHeadersOptions contains the optional parameters for the FileClient.SetHTTPHeaders method.
 //   - ShareFileHTTPHeaders - ShareFileHTTPHeaders contains a group of parameters for the FileClient.Create method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
@@ -2202,7 +2202,7 @@ func (client *FileClient) setHTTPHeadersHandleResponse(resp *http.Response) (Fil
 // SetMetadata - Updates user-defined metadata for the specified file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - FileClientSetMetadataOptions contains the optional parameters for the FileClient.SetMetadata method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ShareClient.GetProperties method.
 func (client *FileClient) SetMetadata(ctx context.Context, options *FileClientSetMetadataOptions, leaseAccessConditions *LeaseAccessConditions) (FileClientSetMetadataResponse, error) {
@@ -2295,7 +2295,7 @@ func (client *FileClient) setMetadataHandleResponse(resp *http.Response) (FileCl
 // StartCopy - Copies a blob or file to a destination file within the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
 //     the same storage account, you may use Shared Key to authenticate the source file. If you are
 //     copying a file from another storage account, or if you are copying a blob from the same storage account or another storage
@@ -2442,7 +2442,7 @@ func (client *FileClient) startCopyHandleResponse(resp *http.Response) (FileClie
 // UploadRange - Upload a range of bytes to a file.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - rangeParam - Specifies the range of bytes to be written. Both the start and end of the range must be specified. For an
 //     update operation, the range can be up to 4 MB in size. For a clear operation, the range can be
 //     up to the value of the file's full size. The File service accepts only a single byte range for the Range and 'x-ms-range'
@@ -2578,7 +2578,7 @@ func (client *FileClient) uploadRangeHandleResponse(resp *http.Response) (FileCl
 // UploadRangeFromURL - Upload a range of bytes to a file where the contents are read from a URL.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - rangeParam - Writes data to the specified byte range in the file.
 //   - copySource - Specifies the URL of the source file or blob, up to 2 KB in length. To copy a file to another file within
 //     the same storage account, you may use Shared Key to authenticate the source file. If you are

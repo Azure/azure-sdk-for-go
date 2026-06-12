@@ -111,16 +111,36 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(enc *xml.Encoder, start xml.S
 	type alias FilesAndDirectoriesListSegment
 	aux := &struct {
 		*alias
-		Directories *[]*Directory `xml:"Directory"`
-		Files       *[]*File      `xml:"File"`
+		BlockDeviceItems *[]*BlockDeviceItem `xml:"BlockDevice"`
+		CharDeviceItems  *[]*CharDeviceItem  `xml:"CharDevice"`
+		Directories      *[]*Directory       `xml:"Directory"`
+		FifoItems        *[]*FifoItem        `xml:"Fifo"`
+		Files            *[]*File            `xml:"File"`
+		SocketItems      *[]*SocketItem      `xml:"Socket"`
+		SymLinkItems     *[]*SymLinkItem     `xml:"SymLink"`
 	}{
 		alias: (*alias)(&f),
+	}
+	if f.BlockDeviceItems != nil {
+		aux.BlockDeviceItems = &f.BlockDeviceItems
+	}
+	if f.CharDeviceItems != nil {
+		aux.CharDeviceItems = &f.CharDeviceItems
 	}
 	if f.Directories != nil {
 		aux.Directories = &f.Directories
 	}
+	if f.FifoItems != nil {
+		aux.FifoItems = &f.FifoItems
+	}
 	if f.Files != nil {
 		aux.Files = &f.Files
+	}
+	if f.SocketItems != nil {
+		aux.SocketItems = &f.SocketItems
+	}
+	if f.SymLinkItems != nil {
+		aux.SymLinkItems = &f.SymLinkItems
 	}
 	return enc.EncodeElement(aux, start)
 }

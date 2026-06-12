@@ -174,18 +174,26 @@ func PossibleLeaseStatusTypeValues() []LeaseStatusType {
 type ListFilesIncludeType string
 
 const (
+	ListFilesIncludeTypeAll           ListFilesIncludeType = "All"
 	ListFilesIncludeTypeAttributes    ListFilesIncludeType = "Attributes"
 	ListFilesIncludeTypeEtag          ListFilesIncludeType = "Etag"
+	ListFilesIncludeTypeLinkCount     ListFilesIncludeType = "LinkCount"
+	ListFilesIncludeTypeNfsAttributes ListFilesIncludeType = "NfsAttributes"
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = "PermissionKey"
+	ListFilesIncludeTypePermissions   ListFilesIncludeType = "Permissions"
 	ListFilesIncludeTypeTimestamps    ListFilesIncludeType = "Timestamps"
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
 	return []ListFilesIncludeType{
+		ListFilesIncludeTypeAll,
 		ListFilesIncludeTypeAttributes,
 		ListFilesIncludeTypeEtag,
+		ListFilesIncludeTypeLinkCount,
+		ListFilesIncludeTypeNfsAttributes,
 		ListFilesIncludeTypePermissionKey,
+		ListFilesIncludeTypePermissions,
 		ListFilesIncludeTypeTimestamps,
 	}
 }
@@ -222,19 +230,28 @@ func PossibleModeCopyModeValues() []ModeCopyMode {
 	}
 }
 
+// NFSFileType - Type of the file.
 type NFSFileType string
 
 const (
-	NFSFileTypeDirectory NFSFileType = "Directory"
-	NFSFileTypeRegular   NFSFileType = "Regular"
-	NFSFileTypeSymLink   NFSFileType = "SymLink"
+	NFSFileTypeBlockDevice     NFSFileType = "BlockDevice"
+	NFSFileTypeCharacterDevice NFSFileType = "CharacterDevice"
+	NFSFileTypeDirectory       NFSFileType = "Directory"
+	NFSFileTypeFifo            NFSFileType = "Fifo"
+	NFSFileTypeRegular         NFSFileType = "Regular"
+	NFSFileTypeSocket          NFSFileType = "Socket"
+	NFSFileTypeSymLink         NFSFileType = "SymLink"
 )
 
 // PossibleNFSFileTypeValues returns the possible values for the NFSFileType const type.
 func PossibleNFSFileTypeValues() []NFSFileType {
 	return []NFSFileType{
+		NFSFileTypeBlockDevice,
+		NFSFileTypeCharacterDevice,
 		NFSFileTypeDirectory,
+		NFSFileTypeFifo,
 		NFSFileTypeRegular,
+		NFSFileTypeSocket,
 		NFSFileTypeSymLink,
 	}
 }

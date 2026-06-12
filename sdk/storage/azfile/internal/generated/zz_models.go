@@ -22,6 +22,32 @@ type AccessPolicy struct {
 	Start *time.Time `xml:"Start"`
 }
 
+// BlockDeviceItem - A listed block device item.
+type BlockDeviceItem struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties  *FileProperty `xml:"Properties"`
+	DeviceMajor *int64        `xml:"DeviceMajor"`
+	DeviceMinor *int64        `xml:"DeviceMinor"`
+	FileID      *string       `xml:"FileId"`
+	LinkCount   *int64        `xml:"LinkCount"`
+}
+
+// CharDeviceItem - A listed character device item.
+type CharDeviceItem struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties  *FileProperty `xml:"Properties"`
+	DeviceMajor *int64        `xml:"DeviceMajor"`
+	DeviceMinor *int64        `xml:"DeviceMinor"`
+	FileID      *string       `xml:"FileId"`
+	LinkCount   *int64        `xml:"LinkCount"`
+}
+
 type ClearRange struct {
 	// REQUIRED
 	End *int64 `xml:"End"`
@@ -61,10 +87,22 @@ type Directory struct {
 	Name          *string `xml:"Name"`
 	Attributes    *string `xml:"Attributes"`
 	ID            *string `xml:"FileId"`
+	LinkCount     *int64  `xml:"LinkCount"`
 	PermissionKey *string `xml:"PermissionKey"`
 
 	// File properties.
 	Properties *FileProperty `xml:"Properties"`
+}
+
+// FifoItem - A listed FIFO item.
+type FifoItem struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+	FileID     *string       `xml:"FileId"`
+	LinkCount  *int64        `xml:"LinkCount"`
 }
 
 // File - A listed file item.
@@ -73,10 +111,14 @@ type File struct {
 	Name *string `xml:"Name"`
 
 	// REQUIRED; File properties.
-	Properties    *FileProperty `xml:"Properties"`
-	Attributes    *string       `xml:"Attributes"`
-	ID            *string       `xml:"FileId"`
-	PermissionKey *string       `xml:"PermissionKey"`
+	Properties *FileProperty `xml:"Properties"`
+	Attributes *string       `xml:"Attributes"`
+
+	// Type of the file.
+	FileType      *NFSFileType `xml:"FileType"`
+	ID            *string      `xml:"FileId"`
+	LinkCount     *int64       `xml:"LinkCount"`
+	PermissionKey *string      `xml:"PermissionKey"`
 }
 
 // FileProperty - File properties.
@@ -88,9 +130,12 @@ type FileProperty struct {
 	ChangeTime     *time.Time   `xml:"ChangeTime"`
 	CreationTime   *time.Time   `xml:"CreationTime"`
 	ETag           *azcore.ETag `xml:"Etag"`
+	Gid            *string      `xml:"Gid"`
 	LastAccessTime *time.Time   `xml:"LastAccessTime"`
 	LastModified   *time.Time   `xml:"Last-Modified"`
 	LastWriteTime  *time.Time   `xml:"LastWriteTime"`
+	Mode           *string      `xml:"Mode"`
+	UID            *string      `xml:"Uid"`
 }
 
 // FileRange - An Azure Storage file range.
@@ -108,7 +153,12 @@ type FilesAndDirectoriesListSegment struct {
 	Directories []*Directory `xml:"Directory"`
 
 	// REQUIRED
-	Files []*File `xml:"File"`
+	Files            []*File            `xml:"File"`
+	BlockDeviceItems []*BlockDeviceItem `xml:"BlockDevice"`
+	CharDeviceItems  []*CharDeviceItem  `xml:"CharDevice"`
+	FifoItems        []*FifoItem        `xml:"Fifo"`
+	SocketItems      []*SocketItem      `xml:"Socket"`
+	SymLinkItems     []*SymLinkItem     `xml:"SymLink"`
 }
 
 // Handle - A listed Azure Storage handle item.
@@ -354,6 +404,17 @@ type SMBMultichannel struct {
 	Enabled *bool `xml:"Enabled"`
 }
 
+// SocketItem - A listed socket item.
+type SocketItem struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+	FileID     *string       `xml:"FileId"`
+	LinkCount  *int64        `xml:"LinkCount"`
+}
+
 type StorageError struct {
 	AuthenticationErrorDetail *string
 	CopySourceErrorCode       *string
@@ -380,6 +441,18 @@ type StorageServiceProperties struct {
 type StringEncoded struct {
 	Content *string `xml:",chardata"`
 	Encoded *bool   `xml:"Encoded,attr"`
+}
+
+// SymLinkItem - A listed symbolic link item.
+type SymLinkItem struct {
+	// REQUIRED
+	Name *string `xml:"Name"`
+
+	// REQUIRED; File properties.
+	Properties *FileProperty `xml:"Properties"`
+	FileID     *string       `xml:"FileId"`
+	LinkCount  *int64        `xml:"LinkCount"`
+	LinkText   *string       `xml:"LinkText"`
 }
 
 // UserDelegationKey - A user delegation key

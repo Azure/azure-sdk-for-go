@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e1470c23ac1cb2a15cd5ef1e2b2dd187a3de13e9/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-06-06/file.json"
+input-file: "https://raw.githubusercontent.com/seanmcc-msft/azure-rest-api-specs/e38b4c39072e9c00e3607cde729cea2e8d237b92/specification/storage/data-plane/Microsoft.FileStorage/stable/2026-12-06/file.json"
 credential-scope: "https://storage.azure.com/.default"
 output-folder: ../generated
 file-prefix: "zz_"

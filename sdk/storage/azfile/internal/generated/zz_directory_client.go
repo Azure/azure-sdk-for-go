@@ -32,7 +32,7 @@ type DirectoryClient struct {
 // Create - Creates a new directory under the specified share or parent directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - DirectoryClientCreateOptions contains the optional parameters for the DirectoryClient.Create method.
 func (client *DirectoryClient) Create(ctx context.Context, options *DirectoryClientCreateOptions) (DirectoryClientCreateResponse, error) {
 	var err error
@@ -199,7 +199,7 @@ func (client *DirectoryClient) createHandleResponse(resp *http.Response) (Direct
 // Delete - Removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - DirectoryClientDeleteOptions contains the optional parameters for the DirectoryClient.Delete method.
 func (client *DirectoryClient) Delete(ctx context.Context, options *DirectoryClientDeleteOptions) (DirectoryClientDeleteResponse, error) {
 	var err error
@@ -264,7 +264,7 @@ func (client *DirectoryClient) deleteHandleResponse(resp *http.Response) (Direct
 // ForceCloseHandles - Closes all handles open for given directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - handleID - Specifies handle ID opened on the file or directory to be closed. Asterisk (‘*’) is a wildcard that specifies
 //     all handles.
 //   - options - DirectoryClientForceCloseHandlesOptions contains the optional parameters for the DirectoryClient.ForceCloseHandles
@@ -363,7 +363,7 @@ func (client *DirectoryClient) forceCloseHandlesHandleResponse(resp *http.Respon
 // subdirectories.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - DirectoryClientGetPropertiesOptions contains the optional parameters for the DirectoryClient.GetProperties method.
 func (client *DirectoryClient) GetProperties(ctx context.Context, options *DirectoryClientGetPropertiesOptions) (DirectoryClientGetPropertiesResponse, error) {
 	var err error
@@ -501,7 +501,7 @@ func (client *DirectoryClient) getPropertiesHandleResponse(resp *http.Response) 
 // NewListFilesAndDirectoriesSegmentPager - Returns a list of files or directories under the specified share or directory.
 // It lists the contents only for a single level of the directory hierarchy.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - DirectoryClientListFilesAndDirectoriesSegmentOptions contains the optional parameters for the DirectoryClient.NewListFilesAndDirectoriesSegmentPager
 //     method.
 //
@@ -575,7 +575,7 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp
 // ListHandles - Lists handles for directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - DirectoryClientListHandlesOptions contains the optional parameters for the DirectoryClient.ListHandles method.
 func (client *DirectoryClient) ListHandles(ctx context.Context, options *DirectoryClientListHandlesOptions) (DirectoryClientListHandlesResponse, error) {
 	var err error
@@ -658,7 +658,7 @@ func (client *DirectoryClient) listHandlesHandleResponse(resp *http.Response) (D
 // Rename - Renames a directory
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - renameSource - Required. Specifies the URI-style path of the source file, up to 2 KB in length.
 //   - options - DirectoryClientRenameOptions contains the optional parameters for the DirectoryClient.Rename method.
 //   - SourceLeaseAccessConditions - SourceLeaseAccessConditions contains a group of parameters for the DirectoryClient.Rename
@@ -824,7 +824,7 @@ func (client *DirectoryClient) renameHandleResponse(resp *http.Response) (Direct
 // SetMetadata - Updates user defined metadata for the specified directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - DirectoryClientSetMetadataOptions contains the optional parameters for the DirectoryClient.SetMetadata method.
 func (client *DirectoryClient) SetMetadata(ctx context.Context, options *DirectoryClientSetMetadataOptions) (DirectoryClientSetMetadataResponse, error) {
 	var err error
@@ -907,7 +907,7 @@ func (client *DirectoryClient) setMetadataHandleResponse(resp *http.Response) (D
 // SetProperties - Sets properties on the directory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-12-06
 //   - options - DirectoryClientSetPropertiesOptions contains the optional parameters for the DirectoryClient.SetProperties method.
 func (client *DirectoryClient) SetProperties(ctx context.Context, options *DirectoryClientSetPropertiesOptions) (DirectoryClientSetPropertiesResponse, error) {
 	var err error

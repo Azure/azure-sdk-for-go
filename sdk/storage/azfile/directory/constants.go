@@ -39,11 +39,33 @@ const (
 	ListFilesIncludeTypeETag          ListFilesIncludeType = generated.ListFilesIncludeTypeEtag
 	ListFilesIncludeTypeAttributes    ListFilesIncludeType = generated.ListFilesIncludeTypeAttributes
 	ListFilesIncludeTypePermissionKey ListFilesIncludeType = generated.ListFilesIncludeTypePermissionKey
+	ListFilesIncludeTypePermissions   ListFilesIncludeType = generated.ListFilesIncludeTypePermissions
+	ListFilesIncludeTypeLinkCount     ListFilesIncludeType = generated.ListFilesIncludeTypeLinkCount
+	ListFilesIncludeTypeNFSAttributes ListFilesIncludeType = generated.ListFilesIncludeTypeNfsAttributes
+	ListFilesIncludeTypeAll           ListFilesIncludeType = generated.ListFilesIncludeTypeAll
 )
 
 // PossibleListFilesIncludeTypeValues returns the possible values for the ListFilesIncludeType const type.
 func PossibleListFilesIncludeTypeValues() []ListFilesIncludeType {
 	return generated.PossibleListFilesIncludeTypeValues()
+}
+
+// NFSFileType specifies the type of a listed file or directory item.
+type NFSFileType = generated.NFSFileType
+
+const (
+	NFSFileTypeBlockDevice     NFSFileType = generated.NFSFileTypeBlockDevice
+	NFSFileTypeCharacterDevice NFSFileType = generated.NFSFileTypeCharacterDevice
+	NFSFileTypeDirectory       NFSFileType = generated.NFSFileTypeDirectory
+	NFSFileTypeFifo            NFSFileType = generated.NFSFileTypeFifo
+	NFSFileTypeRegular         NFSFileType = generated.NFSFileTypeRegular
+	NFSFileTypeSocket          NFSFileType = generated.NFSFileTypeSocket
+	NFSFileTypeSymLink         NFSFileType = generated.NFSFileTypeSymLink
+)
+
+// PossibleNFSFileTypeValues returns the possible values for the NFSFileType const type.
+func PossibleNFSFileTypeValues() []NFSFileType {
+	return generated.PossibleNFSFileTypeValues()
 }
 
 // ShareTokenIntent is required if authorization header specifies an OAuth token.

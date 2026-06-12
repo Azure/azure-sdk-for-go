@@ -278,7 +278,7 @@ type ListFilesAndDirectoriesOptions struct {
 
 // ListFilesInclude specifies one or more datasets to include in the response.
 type ListFilesInclude struct {
-	Timestamps, ETag, Attributes, PermissionKey bool
+	Timestamps, ETag, Attributes, PermissionKey, Permissions, LinkCount, NFSAttributes bool
 }
 
 func (l ListFilesInclude) format() []generated.ListFilesIncludeType {
@@ -300,6 +300,15 @@ func (l ListFilesInclude) format() []generated.ListFilesIncludeType {
 	if l.PermissionKey {
 		include = append(include, ListFilesIncludeTypePermissionKey)
 	}
+	if l.Permissions {
+		include = append(include, ListFilesIncludeTypePermissions)
+	}
+	if l.LinkCount {
+		include = append(include, ListFilesIncludeTypeLinkCount)
+	}
+	if l.NFSAttributes {
+		include = append(include, ListFilesIncludeTypeNFSAttributes)
+	}
 
 	return include
 }
@@ -315,6 +324,21 @@ type File = generated.File
 
 // FileProperty - File properties.
 type FileProperty = generated.FileProperty
+
+// BlockDeviceItem - A listed block device item.
+type BlockDeviceItem = generated.BlockDeviceItem
+
+// CharDeviceItem - A listed character device item.
+type CharDeviceItem = generated.CharDeviceItem
+
+// FifoItem - A listed FIFO item.
+type FifoItem = generated.FifoItem
+
+// SocketItem - A listed socket item.
+type SocketItem = generated.SocketItem
+
+// SymLinkItem - A listed symbolic link item.
+type SymLinkItem = generated.SymLinkItem
 
 // ---------------------------------------------------------------------------------------------------------------------
 

@@ -1,5 +1,10 @@
 # Release History
 
+## 1.8.0-beta.1 (Unreleased)
+
+### Features Added
+* Added support for listing NFS files and directories. The `directory` package now exposes the `NFSFileType` type and the `BlockDeviceItem`, `CharDeviceItem`, `FifoItem`, `SocketItem`, and `SymLinkItem` types, and the `ListFilesInclude` options now support the `Permissions`, `LinkCount`, and `NFSAttributes` datasets.
+
 ## 1.7.0 (Unreleased)
 
 ### Features Added

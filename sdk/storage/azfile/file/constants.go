@@ -50,9 +50,13 @@ type OwnerCopyMode = generated.OwnerCopyMode
 
 const (
 	// NFSFileTypeRegular Default and only value for the parameter NFS File Type.
-	NFSFileTypeRegular   NFSFileType = generated.NFSFileTypeRegular
-	NFSFileTypeDirectory NFSFileType = generated.NFSFileTypeDirectory
-	NFSFileTypeSymlink   NFSFileType = generated.NFSFileTypeSymLink
+	NFSFileTypeRegular         NFSFileType = generated.NFSFileTypeRegular
+	NFSFileTypeDirectory       NFSFileType = generated.NFSFileTypeDirectory
+	NFSFileTypeSymlink         NFSFileType = generated.NFSFileTypeSymLink
+	NFSFileTypeBlockDevice     NFSFileType = generated.NFSFileTypeBlockDevice
+	NFSFileTypeCharacterDevice NFSFileType = generated.NFSFileTypeCharacterDevice
+	NFSFileTypeFifo            NFSFileType = generated.NFSFileTypeFifo
+	NFSFileTypeSocket          NFSFileType = generated.NFSFileTypeSocket
 
 	OwnerCopyModeOverride OwnerCopyMode = generated.OwnerCopyModeOverride
 	OwnerCopyModeSource   OwnerCopyMode = generated.OwnerCopyModeSource

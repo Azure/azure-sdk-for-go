@@ -500,8 +500,18 @@ type FileClientGetPropertiesOptions struct {
 	Timeout *int32
 }
 
-// FileClientGetRangeListOptions contains the optional parameters for the FileClient.GetRangeList method.
+// FileClientGetRangeListOptions contains the optional parameters for the FileClient.NewGetRangeListPager method.
 type FileClientGetRangeListOptions struct {
+	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns
+	// a marker value within the response body if the list returned was not complete.
+	// The marker value may then be used in a subsequent call to request the next set of list items. The marker value is opaque
+	// to the client.
+	Marker *string
+
+	// Specifies the maximum number of entries to return. If the request does not specify maxresults, or specifies a value greater
+	// than 5,000, the server will return up to 5,000 items.
+	Maxresults *int32
+
 	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
 	Prevsharesnapshot *string
 

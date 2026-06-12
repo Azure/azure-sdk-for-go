@@ -30,7 +30,7 @@ type ServiceClient struct {
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 //   - options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 func (client *ServiceClient) GetProperties(ctx context.Context, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
 	var err error
@@ -90,7 +90,7 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // bearer token authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 //   - keyInfo - Key information
 //   - options - ServiceClientGetUserDelegationKeyOptions contains the optional parameters for the ServiceClient.GetUserDelegationKey
 //     method.
@@ -164,7 +164,7 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 // NewListSharesSegmentPager - The List Shares Segment operation returns a list of the shares and share snapshots under the
 // specified account.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 //   - options - ServiceClientListSharesSegmentOptions contains the optional parameters for the ServiceClient.NewListSharesSegmentPager
 //     method.
 //
@@ -219,7 +219,7 @@ func (client *ServiceClient) ListSharesSegmentHandleResponse(resp *http.Response
 // metrics and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 //   - storageServiceProperties - The StorageService properties.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {

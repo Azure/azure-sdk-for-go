@@ -818,7 +818,7 @@ type FileClientGetPropertiesResponse struct {
 	Version *string
 }
 
-// FileClientGetRangeListResponse contains the response from method FileClient.GetRangeList.
+// FileClientGetRangeListResponse contains the response from method FileClient.NewGetRangeListPager.
 type FileClientGetRangeListResponse struct {
 	// The list of file ranges
 	ShareFileRangeList

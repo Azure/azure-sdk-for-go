@@ -268,6 +268,7 @@ type Share struct {
 // ShareFileRangeList - The list of file ranges
 type ShareFileRangeList struct {
 	ClearRanges []*ClearRange `xml:"ClearRange"`
+	NextMarker  *string       `xml:"NextMarker"`
 	Ranges      []*FileRange  `xml:"Range"`
 }
 

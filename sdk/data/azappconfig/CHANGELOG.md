@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Updated to API version `2026-04-01`.
+* Updated dependencies.
 
 ## 2.2.0 (2026-04-14)
 

@@ -6,5 +6,5 @@ package armmanagednetworkfabric
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
-	moduleVersion = "v2.0.1"
+	moduleVersion = "v2.0.0"
 )

@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.1 (2026-06-15)
+### Bug Fixes
+
+- Bumped package version to enable a new release after `v2.0.0` was already tagged.
+
+
 ## 2.0.0 (2026-04-14)
 ### Breaking Changes
 

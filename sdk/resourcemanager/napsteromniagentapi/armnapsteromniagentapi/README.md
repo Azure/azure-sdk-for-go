@@ -1,6 +1,6 @@
-# Azure Napsteromniagentapi Module for Go
+# Azure Napster Companion Agent Api Module for Go
 
-The `armnapsteromniagentapi` module provides operations for working with Azure Napsteromniagentapi.
+The `armnapsteromniagentapi` module provides operations for working with Azure Napster Companion Agent Api.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/napsteromniagentapi/armnapsteromniagentapi)
 
@@ -15,7 +15,7 @@ The `armnapsteromniagentapi` module provides operations for working with Azure N
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Napsteromniagentapi module:
+Install the Azure Napster Companion Agent Api module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/napsteromniagentapi/armnapsteromniagentapi
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/napsteromniagentapi
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Napsteromniagentapi.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Napster Companion Agent Api.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Napsteromniagentapi module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Napster Companion Agent Api module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armnapsteromniagentapi.NewClientFactory(<subscription ID>, cred, nil)

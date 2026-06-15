@@ -17,6 +17,8 @@ import (
 
 // ProviderOperationsMetadataClient contains the methods for the ProviderOperationsMetadata group.
 // Don't use this type directly, use NewProviderOperationsMetadataClient() instead.
+//
+// Generated from API version 2022-04-01
 type ProviderOperationsMetadataClient struct {
 	internal *arm.Client
 }
@@ -37,8 +39,6 @@ func NewProviderOperationsMetadataClient(credential azcore.TokenCredential, opti
 
 // Get - Gets provider operations metadata for the specified resource provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-04-01
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - options - ProviderOperationsMetadataClientGetOptions contains the optional parameters for the ProviderOperationsMetadataClient.Get
 //     method.
@@ -79,8 +79,8 @@ func (client *ProviderOperationsMetadataClient) getCreateRequest(ctx context.Con
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2022-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -95,8 +95,6 @@ func (client *ProviderOperationsMetadataClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Gets provider operations metadata for all resource providers.
-//
-// Generated from API version 2022-04-01
 //   - options - ProviderOperationsMetadataClientListOptions contains the optional parameters for the ProviderOperationsMetadataClient.NewListPager
 //     method.
 func (client *ProviderOperationsMetadataClient) NewListPager(options *ProviderOperationsMetadataClientListOptions) *runtime.Pager[ProviderOperationsMetadataClientListResponse] {
@@ -133,8 +131,8 @@ func (client *ProviderOperationsMetadataClient) listCreateRequest(ctx context.Co
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2022-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

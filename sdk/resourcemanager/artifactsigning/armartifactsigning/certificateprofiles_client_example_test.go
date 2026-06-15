@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-10-13/CertificateProfiles_Create.json
+// Generated from example definition: 2026-05-15-preview/CertificateProfiles_Create.json
 func ExampleCertificateProfilesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,6 +30,7 @@ func ExampleCertificateProfilesClient_BeginCreate() {
 			IdentityValidationID: to.Ptr("00000000-1234-5678-3333-444444444444"),
 			IncludePostalCode:    to.Ptr(true),
 			IncludeStreetAddress: to.Ptr(false),
+			ProgramType:          to.Ptr("test"),
 		},
 	}, nil)
 	if err != nil {
@@ -68,12 +69,13 @@ func ExampleCertificateProfilesClient_BeginCreate() {
 	// 			ProfileType: to.Ptr(armartifactsigning.ProfileTypePublicTrust),
 	// 			ProvisioningState: to.Ptr(armartifactsigning.ProvisioningStateSucceeded),
 	// 			Status: to.Ptr(armartifactsigning.CertificateProfileStatusActive),
+	// 			ProgramType: to.Ptr("test"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-13/CertificateProfiles_Delete.json
+// Generated from example definition: 2026-05-15-preview/CertificateProfiles_Delete.json
 func ExampleCertificateProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +96,7 @@ func ExampleCertificateProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-13/CertificateProfiles_Get.json
+// Generated from example definition: 2026-05-15-preview/CertificateProfiles_Get.json
 func ExampleCertificateProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +145,7 @@ func ExampleCertificateProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-13/CertificateProfiles_ListByCodeSigningAccount.json
+// Generated from example definition: 2026-05-15-preview/CertificateProfiles_ListByCodeSigningAccount.json
 func ExampleCertificateProfilesClient_NewListByCodeSigningAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +173,7 @@ func ExampleCertificateProfilesClient_NewListByCodeSigningAccountPager() {
 		// 			{
 		// 				Name: to.Ptr("profileA"),
 		// 				Type: to.Ptr("Microsoft.CodeSigning/codeSigningAccounts/certificateProfiles"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.CodeSigning/codeSigningAccounts/profileA"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.CodeSigning/codeSigningAccounts/MyAccount/certificateProfiles/profileA"),
 		// 				Properties: &armartifactsigning.CertificateProfileProperties{
 		// 					Certificates: []*armartifactsigning.Certificate{
 		// 						{
@@ -201,8 +203,8 @@ func ExampleCertificateProfilesClient_NewListByCodeSigningAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-13/CertificateProfiles_RevokeCertificate.json
-func ExampleCertificateProfilesClient_RevokeCertificate() {
+// Generated from example definition: 2026-05-15-preview/CertificateProfiles_RevokeCertificates.json
+func ExampleCertificateProfilesClient_RevokeCertificates() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -212,12 +214,23 @@ func ExampleCertificateProfilesClient_RevokeCertificate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewCertificateProfilesClient().RevokeCertificate(ctx, "MyResourceGroup", "MyAccount", "profileA", armartifactsigning.RevokeCertificate{
-		EffectiveAt:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t }()),
-		Reason:       to.Ptr("KeyCompromised"),
-		Remarks:      to.Ptr("test"),
-		SerialNumber: to.Ptr("xxxxxxxxxxxxxxxxxx"),
-		Thumbprint:   to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+	_, err = clientFactory.NewCertificateProfilesClient().RevokeCertificates(ctx, "MyResourceGroup", "MyAccount", "profileA", armartifactsigning.RevokeCertificateList{
+		RevokeCertificates: []*armartifactsigning.RevokeCertificate{
+			{
+				EffectiveAt:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t }()),
+				Reason:       to.Ptr("KeyCompromised"),
+				Remarks:      to.Ptr("test"),
+				SerialNumber: to.Ptr("xxxxxxxxxxxxxxxxxx"),
+				Thumbprint:   to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+			},
+			{
+				EffectiveAt:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-12T23:40:25+00:00"); return t }()),
+				Reason:       to.Ptr("KeyCompromised"),
+				Remarks:      to.Ptr("test"),
+				SerialNumber: to.Ptr("yyyyyyyyyyyyyyyyyy"),
+				Thumbprint:   to.Ptr("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"),
+			},
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)

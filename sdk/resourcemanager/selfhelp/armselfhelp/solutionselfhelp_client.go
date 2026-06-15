@@ -18,6 +18,8 @@ import (
 
 // SolutionSelfHelpClient contains the methods for the SolutionSelfHelp group.
 // Don't use this type directly, use NewSolutionSelfHelpClient() instead.
+//
+// Generated from API version 2024-03-01-preview
 type SolutionSelfHelpClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewSolutionSelfHelpClient(credential azcore.TokenCredential, options *arm.C
 // Get - Gets Self Help Solutions for a given solutionId. Self Help Solutions consist of rich instructional video tutorials,
 // links and guides to public documentation related to a specific problem that enables users to troubleshoot Azure issues.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-03-01-preview
 //   - solutionID - SolutionId is a unique id to identify a solution. You can retrieve the solution id using the Discovery api
 //   - https://learn.microsoft.com/en-us/rest/api/help/discovery-solution/list?view=rest-help-2023-09-01-preview&tabs=HTTP
 //   - options - SolutionSelfHelpClientGetOptions contains the optional parameters for the SolutionSelfHelpClient.Get method.
@@ -78,8 +78,8 @@ func (client *SolutionSelfHelpClient) getCreateRequest(ctx context.Context, solu
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

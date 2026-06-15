@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/SKUList.json
+// Generated from example definition: 2026-04-01/SKUList.json
 func ExampleSKUsClient_NewListPager_skuList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6730,7 +6730,7 @@ func ExampleSKUsClient_NewListPager_skuList() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/SKUListWithLocationInfo.json
+// Generated from example definition: 2026-04-01/SKUListWithLocationInfo.json
 func ExampleSKUsClient_NewListPager_skuListWithLocationInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

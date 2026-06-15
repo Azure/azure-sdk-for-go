@@ -35,7 +35,7 @@ func ExampleManagedHsmKeysClient_CreateIfNotExist() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmKeysClientCreateIfNotExistResponse{
-	// 	ManagedHsmKey: &armkeyvault.ManagedHsmKey{
+	// 	ManagedHsmKey: armkeyvault.ManagedHsmKey{
 	// 		Name: to.Ptr("sample-key-name"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name"),
@@ -82,7 +82,7 @@ func ExampleManagedHsmKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmKeysClientGetResponse{
-	// 	ManagedHsmKey: &armkeyvault.ManagedHsmKey{
+	// 	ManagedHsmKey: armkeyvault.ManagedHsmKey{
 	// 		Name: to.Ptr("sample-key-name"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name"),
@@ -129,7 +129,7 @@ func ExampleManagedHsmKeysClient_GetVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmKeysClientGetVersionResponse{
-	// 	ManagedHsmKey: &armkeyvault.ManagedHsmKey{
+	// 	ManagedHsmKey: armkeyvault.ManagedHsmKey{
 	// 		Name: to.Ptr("fd618d9519b74f9aae94ade66b876acc"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedHSMs/keys/versions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedHSMs/sample-managedhsm-name/keys/sample-key-name/versions/fd618d9519b74f9aae94ade66b876acc"),

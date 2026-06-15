@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-01/FileSharesPut.json
+// Generated from example definition: 2026-04-01/FileSharesPut.json
 func ExampleFileSharesClient_Create_putShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleFileSharesClient_Create_putShares() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesPut_AccessTier.json
+// Generated from example definition: 2026-04-01/FileSharesPut_AccessTier.json
 func ExampleFileSharesClient_Create_putSharesWithAccessTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleFileSharesClient_Create_putSharesWithAccessTier() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesPut_NFS.json
+// Generated from example definition: 2026-04-01/FileSharesPut_NFS.json
 func ExampleFileSharesClient_Create_createNfsShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleFileSharesClient_Create_createNfsShares() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesPut_PaidBursting.json
+// Generated from example definition: 2026-04-01/FileSharesPut_PaidBursting.json
 func ExampleFileSharesClient_Create_putSharesWithPaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleFileSharesClient_Create_putSharesWithPaidBursting() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesPut_ProvisionedV2.json
+// Generated from example definition: 2026-04-01/FileSharesPut_ProvisionedV2.json
 func ExampleFileSharesClient_Create_putSharesProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleFileSharesClient_Create_putSharesProvisionedV2() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesDelete.json
+// Generated from example definition: 2026-04-01/FileSharesDelete.json
 func ExampleFileSharesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleFileSharesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesGet.json
+// Generated from example definition: 2026-04-01/FileSharesGet.json
 func ExampleFileSharesClient_Get_getShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleFileSharesClient_Get_getShares() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesGet_PaidBursting.json
+// Generated from example definition: 2026-04-01/FileSharesGet_PaidBursting.json
 func ExampleFileSharesClient_Get_getSharePaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleFileSharesClient_Get_getSharePaidBursting() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesGet_ProvisionedV2.json
+// Generated from example definition: 2026-04-01/FileSharesGet_ProvisionedV2.json
 func ExampleFileSharesClient_Get_getShareProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleFileSharesClient_Get_getShareProvisionedV2() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesGet_Stats.json
+// Generated from example definition: 2026-04-01/FileSharesGet_Stats.json
 func ExampleFileSharesClient_Get_getShareStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,7 @@ func ExampleFileSharesClient_Get_getShareStats() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesLease_Acquire.json
+// Generated from example definition: 2026-04-01/FileSharesLease_Acquire.json
 func ExampleFileSharesClient_Lease_acquireALeaseOnAShare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleFileSharesClient_Lease_acquireALeaseOnAShare() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesLease_Break.json
+// Generated from example definition: 2026-04-01/FileSharesLease_Break.json
 func ExampleFileSharesClient_Lease_breakALeaseOnAShare() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -412,7 +412,7 @@ func ExampleFileSharesClient_Lease_breakALeaseOnAShare() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/DeletedFileSharesList.json
+// Generated from example definition: 2026-04-01/DeletedFileSharesList.json
 func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +468,7 @@ func ExampleFileSharesClient_NewListPager_listDeletedShares() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/FileShareSnapshotsList.json
+// Generated from example definition: 2026-04-01/FileShareSnapshotsList.json
 func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -521,7 +521,7 @@ func ExampleFileSharesClient_NewListPager_listShareSnapshots() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/FileSharesList.json
+// Generated from example definition: 2026-04-01/FileSharesList.json
 func ExampleFileSharesClient_NewListPager_listShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +573,7 @@ func ExampleFileSharesClient_NewListPager_listShares() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/FileSharesList_PaidBursting.json
+// Generated from example definition: 2026-04-01/FileSharesList_PaidBursting.json
 func ExampleFileSharesClient_NewListPager_listSharesPaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -635,7 +635,7 @@ func ExampleFileSharesClient_NewListPager_listSharesPaidBursting() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/FileSharesList_ProvisionedV2.json
+// Generated from example definition: 2026-04-01/FileSharesList_ProvisionedV2.json
 func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -701,7 +701,7 @@ func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/FileSharesRestore.json
+// Generated from example definition: 2026-04-01/FileSharesRestore.json
 func ExampleFileSharesClient_Restore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -726,7 +726,7 @@ func ExampleFileSharesClient_Restore() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileShareAclsPatch.json
+// Generated from example definition: 2026-04-01/FileShareAclsPatch.json
 func ExampleFileSharesClient_Update_updateShareAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -778,7 +778,7 @@ func ExampleFileSharesClient_Update_updateShareAcls() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesPatch.json
+// Generated from example definition: 2026-04-01/FileSharesPatch.json
 func ExampleFileSharesClient_Update_updateShares() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -816,7 +816,7 @@ func ExampleFileSharesClient_Update_updateShares() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesPatch_PaidBursting.json
+// Generated from example definition: 2026-04-01/FileSharesPatch_PaidBursting.json
 func ExampleFileSharesClient_Update_updateSharePaidBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,7 +858,7 @@ func ExampleFileSharesClient_Update_updateSharePaidBursting() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/FileSharesPatch_ProvisionedV2.json
+// Generated from example definition: 2026-04-01/FileSharesPatch_ProvisionedV2.json
 func ExampleFileSharesClient_Update_updateShareProvisionedV2() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

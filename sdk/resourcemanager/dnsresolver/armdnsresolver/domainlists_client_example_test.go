@@ -34,13 +34,13 @@ func ExampleDomainListsClient_BeginBulk_downloadDnsResolverDomainListDomains() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.DomainListsClientBulkResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// 	DomainList: armdnsresolver.DomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -87,13 +87,13 @@ func ExampleDomainListsClient_BeginBulk_uploadDnsResolverDomainListDomains() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.DomainListsClientBulkResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// 	DomainList: armdnsresolver.DomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -141,13 +141,13 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.DomainListsClientCreateOrUpdateResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// 	DomainList: armdnsresolver.DomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -198,13 +198,13 @@ func ExampleDomainListsClient_BeginCreateOrUpdate_upsertDnsResolverDomainListWit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.DomainListsClientCreateOrUpdateResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// 	DomainList: armdnsresolver.DomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -247,7 +247,7 @@ func ExampleDomainListsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -270,7 +270,7 @@ func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithBulkNumberOfD
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.DomainListsClientGetResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// 	DomainList: armdnsresolver.DomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -313,7 +313,7 @@ func ExampleDomainListsClient_Get_retrieveDnsResolverDomainListWithLessThan1000D
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.DomainListsClientGetResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// 	DomainList: armdnsresolver.DomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -517,13 +517,13 @@ func ExampleDomainListsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdnsresolver.DomainListsClientUpdateResponse{
-	// 	DomainList: &armdnsresolver.DomainList{
+	// 	DomainList: armdnsresolver.DomainList{
 	// 		Name: to.Ptr("sampleDnsResolverDomainList"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsResolverDomainLists"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),

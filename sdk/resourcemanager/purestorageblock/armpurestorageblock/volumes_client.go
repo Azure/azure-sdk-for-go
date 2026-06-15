@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultVolumesClientVersion string = "2026-01-01-preview"
-
 // VolumesClient contains the methods for the Volumes group.
 // Don't use this type directly, use NewVolumesClient() instead.
 //
@@ -119,7 +117,7 @@ func (client *VolumesClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -204,7 +202,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -266,7 +264,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,7 +332,7 @@ func (client *VolumesClient) listByVolumeGroupCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -425,7 +423,7 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultVolumesClientVersion)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

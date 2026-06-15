@@ -45,6 +45,12 @@ type ServerFactory struct {
 	// FirewallRulesServer contains the fakes for client FirewallRulesClient
 	FirewallRulesServer FirewallRulesServer
 
+	// MaintenanceEventsServer contains the fakes for client MaintenanceEventsClient
+	MaintenanceEventsServer MaintenanceEventsServer
+
+	// MajorVersionUpgradePrecheckServer contains the fakes for client MajorVersionUpgradePrecheckClient
+	MajorVersionUpgradePrecheckServer MajorVersionUpgradePrecheckServer
+
 	// MigrationsServer contains the fakes for client MigrationsClient
 	MigrationsServer MigrationsServer
 
@@ -109,6 +115,8 @@ type ServerFactoryTransport struct {
 	trConfigurationsServer                   *ConfigurationsServerTransport
 	trDatabasesServer                        *DatabasesServerTransport
 	trFirewallRulesServer                    *FirewallRulesServerTransport
+	trMaintenanceEventsServer                *MaintenanceEventsServerTransport
+	trMajorVersionUpgradePrecheckServer      *MajorVersionUpgradePrecheckServerTransport
 	trMigrationsServer                       *MigrationsServerTransport
 	trNameAvailabilityServer                 *NameAvailabilityServerTransport
 	trOperationsServer                       *OperationsServerTransport
@@ -183,6 +191,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFirewallRulesServerTransport(&s.srv.FirewallRulesServer)
 		})
 		resp, err = s.trFirewallRulesServer.Do(req)
+	case "MaintenanceEventsClient":
+		initServer(&s.trMu, &s.trMaintenanceEventsServer, func() *MaintenanceEventsServerTransport {
+			return NewMaintenanceEventsServerTransport(&s.srv.MaintenanceEventsServer)
+		})
+		resp, err = s.trMaintenanceEventsServer.Do(req)
+	case "MajorVersionUpgradePrecheckClient":
+		initServer(&s.trMu, &s.trMajorVersionUpgradePrecheckServer, func() *MajorVersionUpgradePrecheckServerTransport {
+			return NewMajorVersionUpgradePrecheckServerTransport(&s.srv.MajorVersionUpgradePrecheckServer)
+		})
+		resp, err = s.trMajorVersionUpgradePrecheckServer.Do(req)
 	case "MigrationsClient":
 		initServer(&s.trMu, &s.trMigrationsServer, func() *MigrationsServerTransport { return NewMigrationsServerTransport(&s.srv.MigrationsServer) })
 		resp, err = s.trMigrationsServer.Do(req)

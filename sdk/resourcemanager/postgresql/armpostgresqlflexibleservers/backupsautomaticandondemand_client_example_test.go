@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/BackupsAutomaticAndOnDemandCreate.json
+// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandCreate.json
 func ExampleBackupsAutomaticAndOnDemandClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,11 +28,11 @@ func ExampleBackupsAutomaticAndOnDemandClient_BeginCreate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/BackupsAutomaticAndOnDemandDelete.json
+// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandDelete.json
 func ExampleBackupsAutomaticAndOnDemandClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,11 +49,11 @@ func ExampleBackupsAutomaticAndOnDemandClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/BackupsAutomaticAndOnDemandGet.json
+// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandGet.json
 func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.BackupsAutomaticAndOnDemandClientGetResponse{
-	// 	BackupAutomaticAndOnDemand: &armpostgresqlflexibleservers.BackupAutomaticAndOnDemand{
+	// 	BackupAutomaticAndOnDemand: armpostgresqlflexibleservers.BackupAutomaticAndOnDemand{
 	// 		Name: to.Ptr("backup_20250601T183022"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/backups"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/backups/backup_638830782181266873"),
@@ -85,7 +85,7 @@ func ExampleBackupsAutomaticAndOnDemandClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/BackupsAutomaticAndOnDemandListByServer.json
+// Generated from example definition: 2026-04-01-preview/BackupsAutomaticAndOnDemandListByServer.json
 func ExampleBackupsAutomaticAndOnDemandClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

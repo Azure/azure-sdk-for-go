@@ -58,13 +58,13 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "DomainsClient":
-		initServer(s, &s.trDomainsServer, func() *DomainsServerTransport { return NewDomainsServerTransport(&s.srv.DomainsServer) })
+		initServer(&s.trMu, &s.trDomainsServer, func() *DomainsServerTransport { return NewDomainsServerTransport(&s.srv.DomainsServer) })
 		resp, err = s.trDomainsServer.Do(req)
 	case "ProviderClient":
-		initServer(s, &s.trProviderServer, func() *ProviderServerTransport { return NewProviderServerTransport(&s.srv.ProviderServer) })
+		initServer(&s.trMu, &s.trProviderServer, func() *ProviderServerTransport { return NewProviderServerTransport(&s.srv.ProviderServer) })
 		resp, err = s.trProviderServer.Do(req)
 	case "TopLevelDomainsClient":
-		initServer(s, &s.trTopLevelDomainsServer, func() *TopLevelDomainsServerTransport {
+		initServer(&s.trMu, &s.trTopLevelDomainsServer, func() *TopLevelDomainsServerTransport {
 			return NewTopLevelDomainsServerTransport(&s.srv.TopLevelDomainsServer)
 		})
 		resp, err = s.trTopLevelDomainsServer.Do(req)
@@ -77,12 +77,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

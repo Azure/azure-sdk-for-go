@@ -18,6 +18,8 @@ import (
 
 // AppliancesClient contains the methods for the Appliances group.
 // Don't use this type directly, use NewAppliancesClient() instead.
+//
+// Generated from API version 2025-03-01-preview
 type AppliancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewAppliancesClient(subscriptionID string, credential azcore.TokenCredentia
 //
 // Creates or updates an Appliance in the specified Subscription and Resource Group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Appliances name.
 //   - parameters - Parameters supplied to create or update an Appliance.
@@ -71,8 +71,6 @@ func (client *AppliancesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 //
 // Creates or updates an Appliance in the specified Subscription and Resource Group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 func (client *AppliancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, parameters Appliance, options *AppliancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AppliancesClient.BeginCreateOrUpdate"
@@ -114,8 +112,8 @@ func (client *AppliancesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,8 +126,6 @@ func (client *AppliancesClient) createOrUpdateCreateRequest(ctx context.Context,
 //
 // Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Appliances name.
 //   - options - AppliancesClientBeginDeleteOptions contains the optional parameters for the AppliancesClient.BeginDelete method.
@@ -154,8 +150,6 @@ func (client *AppliancesClient) BeginDelete(ctx context.Context, resourceGroupNa
 //
 // Deletes an Appliance with the specified Resource Name, Resource Group, and Subscription Id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 func (client *AppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *AppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AppliancesClient.BeginDelete"
@@ -197,8 +191,8 @@ func (client *AppliancesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -206,8 +200,6 @@ func (client *AppliancesClient) deleteCreateRequest(ctx context.Context, resourc
 //
 // Gets the details of an Appliance with a specified resource group and name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Appliances name.
 //   - options - AppliancesClientGetOptions contains the optional parameters for the AppliancesClient.Get method.
@@ -253,8 +245,8 @@ func (client *AppliancesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -272,8 +264,6 @@ func (client *AppliancesClient) getHandleResponse(resp *http.Response) (Applianc
 //
 // Gets the telemetry config.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - options - AppliancesClientGetTelemetryConfigOptions contains the optional parameters for the AppliancesClient.GetTelemetryConfig
 //     method.
 func (client *AppliancesClient) GetTelemetryConfig(ctx context.Context, options *AppliancesClientGetTelemetryConfigOptions) (AppliancesClientGetTelemetryConfigResponse, error) {
@@ -310,8 +300,8 @@ func (client *AppliancesClient) getTelemetryConfigCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -329,8 +319,6 @@ func (client *AppliancesClient) getTelemetryConfigHandleResponse(resp *http.Resp
 //
 // Gets the upgrade graph of an Appliance with a specified resource group and name and specific release train.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Appliances name.
 //   - upgradeGraph - Upgrade graph version, ex - stable
@@ -382,8 +370,8 @@ func (client *AppliancesClient) getUpgradeGraphCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -400,8 +388,6 @@ func (client *AppliancesClient) getUpgradeGraphHandleResponse(resp *http.Respons
 // NewListByResourceGroupPager - Gets a list of Appliances in the specified subscription and resource group.
 //
 // Gets a list of Appliances in the specified subscription and resource group. The operation returns properties of each Appliance.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AppliancesClientListByResourceGroupOptions contains the optional parameters for the AppliancesClient.NewListByResourceGroupPager
 //     method.
@@ -444,8 +430,8 @@ func (client *AppliancesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -462,8 +448,6 @@ func (client *AppliancesClient) listByResourceGroupHandleResponse(resp *http.Res
 // NewListBySubscriptionPager - Gets a list of Appliances in a subscription.
 //
 // Gets a list of Appliances in the specified subscription. The operation returns properties of each Appliance
-//
-// Generated from API version 2025-03-01-preview
 //   - options - AppliancesClientListBySubscriptionOptions contains the optional parameters for the AppliancesClient.NewListBySubscriptionPager
 //     method.
 func (client *AppliancesClient) NewListBySubscriptionPager(options *AppliancesClientListBySubscriptionOptions) *runtime.Pager[AppliancesClientListBySubscriptionResponse] {
@@ -501,8 +485,8 @@ func (client *AppliancesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -520,8 +504,6 @@ func (client *AppliancesClient) listBySubscriptionHandleResponse(resp *http.Resp
 //
 // Returns the cluster user credentials for the dedicated appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Appliances name.
 //   - options - AppliancesClientListClusterUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterUserCredential
@@ -568,8 +550,8 @@ func (client *AppliancesClient) listClusterUserCredentialCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -587,8 +569,6 @@ func (client *AppliancesClient) listClusterUserCredentialHandleResponse(resp *ht
 //
 // Returns the cluster customer credentials for the dedicated appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Appliances name.
 //   - options - AppliancesClientListKeysOptions contains the optional parameters for the AppliancesClient.ListKeys method.
@@ -634,11 +614,11 @@ func (client *AppliancesClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
+	reqQP.Set("api-version", version20250301Preview)
 	if options != nil && options.ArtifactType != nil {
 		reqQP.Set("artifactType", *options.ArtifactType)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -653,8 +633,6 @@ func (client *AppliancesClient) listKeysHandleResponse(resp *http.Response) (App
 }
 
 // NewListOperationsPager - Lists all available Appliances operations.
-//
-// Generated from API version 2025-03-01-preview
 //   - options - AppliancesClientListOperationsOptions contains the optional parameters for the AppliancesClient.NewListOperationsPager
 //     method.
 func (client *AppliancesClient) NewListOperationsPager(options *AppliancesClientListOperationsOptions) *runtime.Pager[AppliancesClientListOperationsResponse] {
@@ -688,8 +666,8 @@ func (client *AppliancesClient) listOperationsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -707,8 +685,6 @@ func (client *AppliancesClient) listOperationsHandleResponse(resp *http.Response
 //
 // Updates an Appliance with the specified Resource Name in the specified Resource Group and Subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - Appliances name.
 //   - parameters - The updatable fields of an existing Appliance.
@@ -755,8 +731,8 @@ func (client *AppliancesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

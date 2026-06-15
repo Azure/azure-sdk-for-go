@@ -18,6 +18,8 @@ import (
 
 // TagRulesClient contains the methods for the TagRules group.
 // Don't use this type directly, use NewTagRulesClient() instead.
+//
+// Generated from API version 2024-04-24
 type TagRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTagRulesClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - ruleSetName - Monitor resource name
@@ -68,8 +68,6 @@ func (client *TagRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 func (client *TagRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource TagRule, options *TagRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TagRulesClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - ruleSetName - Monitor resource name
@@ -153,8 +149,6 @@ func (client *TagRulesClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 func (client *TagRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TagRulesClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a TagRule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - ruleSetName - Monitor resource name
@@ -259,8 +251,8 @@ func (client *TagRulesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *TagRulesClient) getHandleResponse(resp *http.Response) (TagRulesCl
 }
 
 // NewListPager - List all TagRule by monitorName
-//
-// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - TagRulesClientListOptions contains the optional parameters for the TagRulesClient.NewListPager method.
@@ -323,8 +313,8 @@ func (client *TagRulesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

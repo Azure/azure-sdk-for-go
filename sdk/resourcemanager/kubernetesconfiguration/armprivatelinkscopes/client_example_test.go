@@ -6,11 +6,10 @@ package armprivatelinkscopes_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armprivatelinkscopes"
+	"log"
 )
 
 // Generated from example definition: 2024-11-01-preview/PrivateLinkScopesCreate.json
@@ -34,7 +33,7 @@ func ExampleClient_CreateOrUpdate_privateLinkScopeCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.ClientCreateOrUpdateResponse{
-	// 	KubernetesConfigurationPrivateLinkScope: &armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
+	// 	KubernetesConfigurationPrivateLinkScope: armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
 	// 		Name: to.Ptr("my-privatelinkscope"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/privateLinkScopes"),
 	// 		ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/Microsoft.KubernetesConfiguration/privateLinkScopes/my-privatelinkscope"),
@@ -93,7 +92,7 @@ func ExampleClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.ClientCreateOrUpdateResponse{
-	// 	KubernetesConfigurationPrivateLinkScope: &armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
+	// 	KubernetesConfigurationPrivateLinkScope: armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
 	// 		Name: to.Ptr("my-privatelinkscope"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/privateLinkScopes"),
 	// 		ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/Microsoft.KubernetesConfiguration/privateLinkScopes/my-privatelinkscope"),
@@ -170,7 +169,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.ClientGetResponse{
-	// 	KubernetesConfigurationPrivateLinkScope: &armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
+	// 	KubernetesConfigurationPrivateLinkScope: armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
 	// 		Name: to.Ptr("my-privatelinkscope"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/privateLinkScopes"),
 	// 		ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/Microsoft.KubernetesConfiguration/privateLinkScopes/my-privatelinkscope"),
@@ -401,7 +400,7 @@ func ExampleClient_UpdateTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.ClientUpdateTagsResponse{
-	// 	KubernetesConfigurationPrivateLinkScope: &armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
+	// 	KubernetesConfigurationPrivateLinkScope: armprivatelinkscopes.KubernetesConfigurationPrivateLinkScope{
 	// 		Name: to.Ptr("my-privatelinkscope"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/privateLinkScopes"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/Microsoft.KubernetesConfiguration/privateLinkScopes/my-privatelinkscope"),

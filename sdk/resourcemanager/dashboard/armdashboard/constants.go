@@ -4,6 +4,10 @@
 
 package armdashboard
 
+const (
+	version20250801 string = "2025-08-01"
+)
+
 type APIKey string
 
 const (

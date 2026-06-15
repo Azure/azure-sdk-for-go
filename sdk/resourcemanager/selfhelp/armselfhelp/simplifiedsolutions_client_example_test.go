@@ -36,13 +36,13 @@ func ExampleSimplifiedSolutionsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.SimplifiedSolutionsClientCreateResponse{
-	// 	SimplifiedSolutionsResource: &armselfhelp.SimplifiedSolutionsResource{
+	// 	SimplifiedSolutionsResource: armselfhelp.SimplifiedSolutionsResource{
 	// 		Name: to.Ptr("simplifiedSolutionsResourceName1"),
 	// 		Type: to.Ptr("Microsoft.Help/simplifiedSolutions"),
 	// 		ID: to.Ptr("/subscriptions/mySubscription/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp/providers/Microsoft.Help/solutions/SolutionResourceName1"),
@@ -75,7 +75,7 @@ func ExampleSimplifiedSolutionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.SimplifiedSolutionsClientGetResponse{
-	// 	SimplifiedSolutionsResource: &armselfhelp.SimplifiedSolutionsResource{
+	// 	SimplifiedSolutionsResource: armselfhelp.SimplifiedSolutionsResource{
 	// 		Name: to.Ptr("simplifiedSolutionsResourceName1"),
 	// 		Type: to.Ptr("Microsoft.Help/simplifiedSolutions"),
 	// 		ID: to.Ptr("/subscriptions/mySubscription/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp/providers/Microsoft.Help/solutions/SolutionResource1"),

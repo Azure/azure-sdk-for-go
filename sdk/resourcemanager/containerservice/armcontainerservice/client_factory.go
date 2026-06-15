@@ -88,6 +88,14 @@ func (c *ClientFactory) NewMaintenanceConfigurationsClient() *MaintenanceConfigu
 	}
 }
 
+// NewMaintenanceWindowsClient creates a new instance of MaintenanceWindowsClient.
+func (c *ClientFactory) NewMaintenanceWindowsClient() *MaintenanceWindowsClient {
+	return &MaintenanceWindowsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewManagedClusterSnapshotsClient creates a new instance of ManagedClusterSnapshotsClient.
 func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
 	return &ManagedClusterSnapshotsClient{

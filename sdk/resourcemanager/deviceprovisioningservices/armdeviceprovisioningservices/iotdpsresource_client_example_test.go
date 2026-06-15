@@ -33,7 +33,7 @@ func ExampleIotDpsResourceClient_CheckProvisioningServiceNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{
-	// 	NameAvailabilityInfo: &armdeviceprovisioningservices.NameAvailabilityInfo{
+	// 	NameAvailabilityInfo: armdeviceprovisioningservices.NameAvailabilityInfo{
 	// 		Message: to.Ptr("name is valid"),
 	// 		NameAvailable: to.Ptr(true),
 	// 		Reason: to.Ptr(armdeviceprovisioningservices.NameUnavailabilityReasonInvalid),
@@ -68,13 +68,13 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientCreateOrUpdateResponse{
-	// 	ProvisioningServiceDescription: &armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
 	// 		Name: to.Ptr("myFirstProvisioningService"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 		Etag: to.Ptr("AAAAAAAADGk="),
@@ -131,13 +131,13 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsCreateWithNamespace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientCreateOrUpdateResponse{
-	// 	ProvisioningServiceDescription: &armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
 	// 		Name: to.Ptr("myFirstProvisioningService"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 		Etag: to.Ptr("AAAAAAAADGk="),
@@ -214,13 +214,13 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdate_dpsUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientCreateOrUpdateResponse{
-	// 	ProvisioningServiceDescription: &armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
 	// 		Name: to.Ptr("myFirstProvisioningService"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 		Etag: to.Ptr("AAAAAAAADGk="),
@@ -285,13 +285,13 @@ func ExampleIotDpsResourceClient_BeginCreateOrUpdatePrivateEndpointConnection() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientCreateOrUpdatePrivateEndpointConnectionResponse{
-	// 	PrivateEndpointConnection: &armdeviceprovisioningservices.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armdeviceprovisioningservices.PrivateEndpointConnection{
 	// 		Name: to.Ptr("myPrivateEndpointConnection"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateEndpointConnections/myPrivateEndpointConnection"),
@@ -326,7 +326,7 @@ func ExampleIotDpsResourceClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -352,13 +352,13 @@ func ExampleIotDpsResourceClient_BeginDeletePrivateEndpointConnection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientDeletePrivateEndpointConnectionResponse{
-	// 	PrivateEndpointConnection: &armdeviceprovisioningservices.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armdeviceprovisioningservices.PrivateEndpointConnection{
 	// 		Name: to.Ptr("myPrivateEndpointConnection"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateEndpointConnections/myPrivateEndpointConnection"),
@@ -395,7 +395,7 @@ func ExampleIotDpsResourceClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientGetResponse{
-	// 	ProvisioningServiceDescription: &armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
 	// 		Name: to.Ptr("myFirstProvisioningService"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 		Etag: to.Ptr("AAAAAAAADGk="),
@@ -454,7 +454,7 @@ func ExampleIotDpsResourceClient_GetOperationResult() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientGetOperationResultResponse{
-	// 	AsyncOperationResult: &armdeviceprovisioningservices.AsyncOperationResult{
+	// 	AsyncOperationResult: armdeviceprovisioningservices.AsyncOperationResult{
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -479,7 +479,7 @@ func ExampleIotDpsResourceClient_GetPrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientGetPrivateEndpointConnectionResponse{
-	// 	PrivateEndpointConnection: &armdeviceprovisioningservices.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armdeviceprovisioningservices.PrivateEndpointConnection{
 	// 		Name: to.Ptr("myPrivateEndpointConnection"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateEndpointConnections/myPrivateEndpointConnection"),
@@ -516,7 +516,7 @@ func ExampleIotDpsResourceClient_GetPrivateLinkResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientGetPrivateLinkResourcesResponse{
-	// 	GroupIDInformation: &armdeviceprovisioningservices.GroupIDInformation{
+	// 	GroupIDInformation: armdeviceprovisioningservices.GroupIDInformation{
 	// 		Name: to.Ptr("iotDps"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/PrivateLinkResources/iotDps"),
@@ -797,7 +797,7 @@ func ExampleIotDpsResourceClient_ListKeysForKeyName() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientListKeysForKeyNameResponse{
-	// 	SharedAccessSignatureAuthorizationRuleAccessRightsDescription: &armdeviceprovisioningservices.SharedAccessSignatureAuthorizationRuleAccessRightsDescription{
+	// 	SharedAccessSignatureAuthorizationRuleAccessRightsDescription: armdeviceprovisioningservices.SharedAccessSignatureAuthorizationRuleAccessRightsDescription{
 	// 		KeyName: to.Ptr("testKey"),
 	// 		PrimaryKey: to.Ptr("##################################"),
 	// 		Rights: to.Ptr(armdeviceprovisioningservices.AccessRightsDescriptionRegistrationStatusWrite),
@@ -825,7 +825,7 @@ func ExampleIotDpsResourceClient_ListPrivateEndpointConnections() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientListPrivateEndpointConnectionsResponse{
-	// 	undefined: &[]*armdeviceprovisioningservices.PrivateEndpointConnection{
+	// 	PrivateEndpointConnectionArray: []*armdeviceprovisioningservices.PrivateEndpointConnection{
 	// 		{
 	// 			Name: to.Ptr("myPrivateEndpointConnection"),
 	// 			Type: to.Ptr("Microsoft.Devices/ProvisioningServices/PrivateEndpointConnections"),
@@ -864,7 +864,7 @@ func ExampleIotDpsResourceClient_ListPrivateLinkResources() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientListPrivateLinkResourcesResponse{
-	// 	PrivateLinkResources: &armdeviceprovisioningservices.PrivateLinkResources{
+	// 	PrivateLinkResources: armdeviceprovisioningservices.PrivateLinkResources{
 	// 		Value: []*armdeviceprovisioningservices.GroupIDInformation{
 	// 			{
 	// 				Name: to.Ptr("iotDps"),
@@ -940,13 +940,13 @@ func ExampleIotDpsResourceClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.IotDpsResourceClientUpdateResponse{
-	// 	ProvisioningServiceDescription: &armdeviceprovisioningservices.ProvisioningServiceDescription{
+	// 	ProvisioningServiceDescription: armdeviceprovisioningservices.ProvisioningServiceDescription{
 	// 		Name: to.Ptr("myFirstProvisioningService"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices"),
 	// 		Etag: to.Ptr("AAAAAAAADGk="),

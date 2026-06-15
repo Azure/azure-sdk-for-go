@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -83,9 +84,7 @@ func (r *RecordSetsServerTransport) Do(req *http.Request) (*http.Response, error
 }
 
 func (r *RecordSetsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -113,10 +112,7 @@ func (r *RecordSetsServerTransport) dispatchToMethodFake(req *http.Request, meth
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -177,7 +173,7 @@ func (r *RecordSetsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecordSet, req)
@@ -234,7 +230,7 @@ func (r *RecordSetsServerTransport) dispatchDelete(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -281,7 +277,7 @@ func (r *RecordSetsServerTransport) dispatchGet(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecordSet, req)
@@ -312,11 +308,7 @@ func (r *RecordSetsServerTransport) dispatchNewListAllByDNSZonePager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -326,11 +318,7 @@ func (r *RecordSetsServerTransport) dispatchNewListAllByDNSZonePager(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		recordSetNameSuffixUnescaped, err := url.QueryUnescape(qp.Get("$recordsetnamesuffix"))
-		if err != nil {
-			return nil, err
-		}
-		recordSetNameSuffixParam := getOptional(recordSetNameSuffixUnescaped)
+		recordSetNameSuffixParam := getOptional(qp.Get("$recordsetnamesuffix"))
 		var options *armdns.RecordSetsClientListAllByDNSZoneOptions
 		if topParam != nil || recordSetNameSuffixParam != nil {
 			options = &armdns.RecordSetsClientListAllByDNSZoneOptions{
@@ -349,7 +337,7 @@ func (r *RecordSetsServerTransport) dispatchNewListAllByDNSZonePager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListAllByDNSZonePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -380,11 +368,7 @@ func (r *RecordSetsServerTransport) dispatchNewListByDNSZonePager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -394,11 +378,7 @@ func (r *RecordSetsServerTransport) dispatchNewListByDNSZonePager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		recordsetnamesuffixUnescaped, err := url.QueryUnescape(qp.Get("$recordsetnamesuffix"))
-		if err != nil {
-			return nil, err
-		}
-		recordsetnamesuffixParam := getOptional(recordsetnamesuffixUnescaped)
+		recordsetnamesuffixParam := getOptional(qp.Get("$recordsetnamesuffix"))
 		var options *armdns.RecordSetsClientListByDNSZoneOptions
 		if topParam != nil || recordsetnamesuffixParam != nil {
 			options = &armdns.RecordSetsClientListByDNSZoneOptions{
@@ -417,7 +397,7 @@ func (r *RecordSetsServerTransport) dispatchNewListByDNSZonePager(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListByDNSZonePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -458,11 +438,7 @@ func (r *RecordSetsServerTransport) dispatchNewListByTypePager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -472,11 +448,7 @@ func (r *RecordSetsServerTransport) dispatchNewListByTypePager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		recordsetnamesuffixUnescaped, err := url.QueryUnescape(qp.Get("$recordsetnamesuffix"))
-		if err != nil {
-			return nil, err
-		}
-		recordsetnamesuffixParam := getOptional(recordsetnamesuffixUnescaped)
+		recordsetnamesuffixParam := getOptional(qp.Get("$recordsetnamesuffix"))
 		var options *armdns.RecordSetsClientListByTypeOptions
 		if topParam != nil || recordsetnamesuffixParam != nil {
 			options = &armdns.RecordSetsClientListByTypeOptions{
@@ -495,7 +467,7 @@ func (r *RecordSetsServerTransport) dispatchNewListByTypePager(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListByTypePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -553,7 +525,7 @@ func (r *RecordSetsServerTransport) dispatchUpdate(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecordSet, req)

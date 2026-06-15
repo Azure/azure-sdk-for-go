@@ -16,14 +16,14 @@ func unmarshalAutonomousDatabaseBasePropertiesClassification(rawMsg json.RawMess
 	}
 	var b AutonomousDatabaseBasePropertiesClassification
 	switch m["dataBaseType"] {
-	case string(DataBaseTypeRegular):
-		b = &AutonomousDatabaseProperties{}
 	case string(DataBaseTypeClone):
 		b = &AutonomousDatabaseCloneProperties{}
-	case string(DataBaseTypeCrossRegionDisasterRecovery):
-		b = &AutonomousDatabaseCrossRegionDisasterRecoveryProperties{}
 	case string(DataBaseTypeCloneFromBackupTimestamp):
 		b = &AutonomousDatabaseFromBackupTimestampProperties{}
+	case string(DataBaseTypeCrossRegionDisasterRecovery):
+		b = &AutonomousDatabaseCrossRegionDisasterRecoveryProperties{}
+	case string(DataBaseTypeRegular):
+		b = &AutonomousDatabaseProperties{}
 	default:
 		b = &AutonomousDatabaseBaseProperties{}
 	}

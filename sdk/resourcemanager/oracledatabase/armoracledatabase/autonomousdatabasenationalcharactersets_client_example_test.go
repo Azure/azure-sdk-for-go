@@ -30,7 +30,7 @@ func ExampleAutonomousDatabaseNationalCharacterSetsClient_Get_getAutonomousDbNat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseNationalCharacterSetsClientGetResponse{
-	// 	AutonomousDatabaseNationalCharacterSet: &armoracledatabase.AutonomousDatabaseNationalCharacterSet{
+	// 	AutonomousDatabaseNationalCharacterSet: armoracledatabase.AutonomousDatabaseNationalCharacterSet{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDatabaseNationalCharacterSets/NATIONAL"),
 	// 		Type: to.Ptr("Oracle.Database/locations/autonomousDatabaseNationalCharacterSets"),
 	// 		Properties: &armoracledatabase.AutonomousDatabaseNationalCharacterSetProperties{
@@ -68,7 +68,7 @@ func ExampleAutonomousDatabaseNationalCharacterSetsClient_Get_getAutonomousDbNat
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseNationalCharacterSetsClientGetResponse{
-	// 	AutonomousDatabaseNationalCharacterSet: &armoracledatabase.AutonomousDatabaseNationalCharacterSet{
+	// 	AutonomousDatabaseNationalCharacterSet: armoracledatabase.AutonomousDatabaseNationalCharacterSet{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDatabaseNationalCharacterSets/NATIONAL"),
 	// 	},
 	// }
@@ -93,7 +93,7 @@ func ExampleAutonomousDatabaseNationalCharacterSetsClient_Get_autonomousDatabase
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseNationalCharacterSetsClientGetResponse{
-	// 	AutonomousDatabaseNationalCharacterSet: &armoracledatabase.AutonomousDatabaseNationalCharacterSet{
+	// 	AutonomousDatabaseNationalCharacterSet: armoracledatabase.AutonomousDatabaseNationalCharacterSet{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDatabaseNationalCharacterSets/NATIONAL"),
 	// 		Type: to.Ptr("Oracle.Database/locations/autonomousDatabaseNationalCharacterSets"),
 	// 		Properties: &armoracledatabase.AutonomousDatabaseNationalCharacterSetProperties{

@@ -18,6 +18,8 @@ import (
 
 // MarketplacesClient contains the methods for the Marketplaces group.
 // Don't use this type directly, use NewMarketplacesClient() instead.
+//
+// Generated from API version 2024-08-01
 type MarketplacesClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewMarketplacesClient(credential azcore.TokenCredential, options *arm.Clien
 
 // NewListPager - Lists the marketplaces for a scope at the defined scope. Marketplaces are available via this API only for
 // May 1, 2014 or later.
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - MarketplacesClientListOptions contains the optional parameters for the MarketplacesClient.NewListPager method.
 func (client *MarketplacesClient) NewListPager(scope string, options *MarketplacesClientListOptions) *runtime.Pager[MarketplacesClientListResponse] {
@@ -86,8 +86,8 @@ func (client *MarketplacesClient) listCreateRequest(ctx context.Context, scope s
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -51,13 +51,13 @@ func ExampleFabricAgentClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.FabricAgentClientCreateResponse{
-	// 	FabricAgentModel: &armrecoveryservicesdatareplication.FabricAgentModel{
+	// 	FabricAgentModel: armrecoveryservicesdatareplication.FabricAgentModel{
 	// 		Properties: &armrecoveryservicesdatareplication.FabricAgentModelProperties{
 	// 			MachineID: to.Ptr("envzcoijbqhtrpncbjbhk"),
 	// 			MachineName: to.Ptr("y"),
@@ -150,7 +150,7 @@ func ExampleFabricAgentClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -173,7 +173,7 @@ func ExampleFabricAgentClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.FabricAgentClientGetResponse{
-	// 	FabricAgentModel: &armrecoveryservicesdatareplication.FabricAgentModel{
+	// 	FabricAgentModel: armrecoveryservicesdatareplication.FabricAgentModel{
 	// 		Properties: &armrecoveryservicesdatareplication.FabricAgentModelProperties{
 	// 			CorrelationID: to.Ptr("t"),
 	// 			MachineID: to.Ptr("envzcoijbqhtrpncbjbhk"),

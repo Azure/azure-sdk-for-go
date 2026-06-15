@@ -18,6 +18,8 @@ import (
 
 // SQLVirtualMachinesClient contains the methods for the SQLVirtualMachines group.
 // Don't use this type directly, use NewSQLVirtualMachinesClient() instead.
+//
+// Generated from API version 2023-10-01
 type SQLVirtualMachinesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSQLVirtualMachinesClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCreateOrUpdate - Creates or updates a SQL virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
 //   - parameters - The SQL virtual machine.
@@ -67,8 +67,6 @@ func (client *SQLVirtualMachinesClient) BeginCreateOrUpdate(ctx context.Context,
 
 // CreateOrUpdate - Creates or updates a SQL virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *SQLVirtualMachinesClient) createOrUpdate(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters SQLVirtualMachine, options *SQLVirtualMachinesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLVirtualMachinesClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *SQLVirtualMachinesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,8 +120,6 @@ func (client *SQLVirtualMachinesClient) createOrUpdateCreateRequest(ctx context.
 
 // BeginDelete - Deletes a SQL virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
 //   - options - SQLVirtualMachinesClientBeginDeleteOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *SQLVirtualMachinesClient) BeginDelete(ctx context.Context, resourc
 
 // Delete - Deletes a SQL virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *SQLVirtualMachinesClient) deleteOperation(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLVirtualMachinesClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *SQLVirtualMachinesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginFetchDCAssessment - Starts SQL best practices Assessment with Disk Config rules on SQL virtual machine
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
 //   - parameters - Disk Config Assessment property
@@ -223,8 +215,6 @@ func (client *SQLVirtualMachinesClient) BeginFetchDCAssessment(ctx context.Conte
 
 // FetchDCAssessment - Starts SQL best practices Assessment with Disk Config rules on SQL virtual machine
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *SQLVirtualMachinesClient) fetchDCAssessment(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters DiskConfigAssessmentRequest, options *SQLVirtualMachinesClientBeginFetchDCAssessmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLVirtualMachinesClient.BeginFetchDCAssessment"
@@ -266,8 +256,8 @@ func (client *SQLVirtualMachinesClient) fetchDCAssessmentCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -277,8 +267,6 @@ func (client *SQLVirtualMachinesClient) fetchDCAssessmentCreateRequest(ctx conte
 
 // Get - Gets a SQL virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
 //   - options - SQLVirtualMachinesClientGetOptions contains the optional parameters for the SQLVirtualMachinesClient.Get method.
@@ -327,8 +315,8 @@ func (client *SQLVirtualMachinesClient) getCreateRequest(ctx context.Context, re
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -343,8 +331,6 @@ func (client *SQLVirtualMachinesClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets all SQL virtual machines in a subscription.
-//
-// Generated from API version 2023-10-01
 //   - options - SQLVirtualMachinesClientListOptions contains the optional parameters for the SQLVirtualMachinesClient.NewListPager
 //     method.
 func (client *SQLVirtualMachinesClient) NewListPager(options *SQLVirtualMachinesClientListOptions) *runtime.Pager[SQLVirtualMachinesClientListResponse] {
@@ -382,8 +368,8 @@ func (client *SQLVirtualMachinesClient) listCreateRequest(ctx context.Context, _
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -398,8 +384,6 @@ func (client *SQLVirtualMachinesClient) listHandleResponse(resp *http.Response) 
 }
 
 // NewListByResourceGroupPager - Gets all SQL virtual machines in a resource group.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SQLVirtualMachinesClientListByResourceGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.NewListByResourceGroupPager
 //     method.
@@ -442,8 +426,8 @@ func (client *SQLVirtualMachinesClient) listByResourceGroupCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -458,8 +442,6 @@ func (client *SQLVirtualMachinesClient) listByResourceGroupHandleResponse(resp *
 }
 
 // NewListBySQLVMGroupPager - Gets the list of sql virtual machines in a SQL virtual machine group.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineGroupName - Name of the SQL virtual machine group.
 //   - options - SQLVirtualMachinesClientListBySQLVMGroupOptions contains the optional parameters for the SQLVirtualMachinesClient.NewListBySQLVMGroupPager
@@ -507,8 +489,8 @@ func (client *SQLVirtualMachinesClient) listBySQLVMGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -524,8 +506,6 @@ func (client *SQLVirtualMachinesClient) listBySQLVMGroupHandleResponse(resp *htt
 
 // BeginRedeploy - Uninstalls and reinstalls the SQL IaaS Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
 //   - options - SQLVirtualMachinesClientBeginRedeployOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginRedeploy
@@ -549,8 +529,6 @@ func (client *SQLVirtualMachinesClient) BeginRedeploy(ctx context.Context, resou
 
 // Redeploy - Uninstalls and reinstalls the SQL IaaS Extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *SQLVirtualMachinesClient) redeploy(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginRedeployOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLVirtualMachinesClient.BeginRedeploy"
@@ -592,15 +570,13 @@ func (client *SQLVirtualMachinesClient) redeployCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginStartAssessment - Starts SQL best practices Assessment on SQL virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
 //   - options - SQLVirtualMachinesClientBeginStartAssessmentOptions contains the optional parameters for the SQLVirtualMachinesClient.BeginStartAssessment
@@ -624,8 +600,6 @@ func (client *SQLVirtualMachinesClient) BeginStartAssessment(ctx context.Context
 
 // StartAssessment - Starts SQL best practices Assessment on SQL virtual machine.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *SQLVirtualMachinesClient) startAssessment(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, options *SQLVirtualMachinesClientBeginStartAssessmentOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLVirtualMachinesClient.BeginStartAssessment"
@@ -667,15 +641,13 @@ func (client *SQLVirtualMachinesClient) startAssessmentCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Updates SQL virtual machine tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - sqlVirtualMachineName - Name of the SQL virtual machine.
 //   - parameters - The SQL virtual machine.
@@ -700,8 +672,6 @@ func (client *SQLVirtualMachinesClient) BeginUpdate(ctx context.Context, resourc
 
 // Update - Updates SQL virtual machine tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01
 func (client *SQLVirtualMachinesClient) update(ctx context.Context, resourceGroupName string, sqlVirtualMachineName string, parameters Update, options *SQLVirtualMachinesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SQLVirtualMachinesClient.BeginUpdate"
@@ -743,8 +713,8 @@ func (client *SQLVirtualMachinesClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

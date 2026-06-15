@@ -6,11 +6,10 @@ package armextensiontypes_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armextensiontypes"
+	"log"
 )
 
 // Generated from example definition: 2024-11-01-preview/GetExtensionTypeVersion.json
@@ -32,7 +31,7 @@ func ExampleClient_ClusterGetVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensiontypes.ClientClusterGetVersionResponse{
-	// 	ExtensionTypeVersionForReleaseTrain: &armextensiontypes.ExtensionTypeVersionForReleaseTrain{
+	// 	ExtensionTypeVersionForReleaseTrain: armextensiontypes.ExtensionTypeVersionForReleaseTrain{
 	// 		Name: to.Ptr("bbbb"),
 	// 		Type: to.Ptr("cccc"),
 	// 		ID: to.Ptr("aaaa"),
@@ -262,7 +261,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensiontypes.ClientGetResponse{
-	// 	ExtensionType: &armextensiontypes.ExtensionType{
+	// 	ExtensionType: armextensiontypes.ExtensionType{
 	// 		Name: to.Ptr("bbbb"),
 	// 		Type: to.Ptr("cccc"),
 	// 		ID: to.Ptr("aaaa"),
@@ -315,7 +314,7 @@ func ExampleClient_GetVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensiontypes.ClientGetVersionResponse{
-	// 	ExtensionTypeVersionForReleaseTrain: &armextensiontypes.ExtensionTypeVersionForReleaseTrain{
+	// 	ExtensionTypeVersionForReleaseTrain: armextensiontypes.ExtensionTypeVersionForReleaseTrain{
 	// 		Name: to.Ptr("bbbb"),
 	// 		Type: to.Ptr("cccc"),
 	// 		ID: to.Ptr("aaaa"),
@@ -612,7 +611,7 @@ func ExampleClient_LocationGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensiontypes.ClientLocationGetResponse{
-	// 	ExtensionType: &armextensiontypes.ExtensionType{
+	// 	ExtensionType: armextensiontypes.ExtensionType{
 	// 		Name: to.Ptr("bbbb"),
 	// 		Type: to.Ptr("cccc"),
 	// 		ID: to.Ptr("aaaa"),

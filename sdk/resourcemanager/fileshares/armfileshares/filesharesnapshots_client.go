@@ -18,6 +18,8 @@ import (
 
 // FileShareSnapshotsClient contains the methods for the FileShareSnapshots group.
 // Don't use this type directly, use NewFileShareSnapshotsClient() instead.
+//
+// Generated from API version 2026-06-01
 type FileShareSnapshotsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFileShareSnapshotsClient(subscriptionID string, credential azcore.TokenC
 
 // BeginCreateOrUpdateFileShareSnapshot - Create a FileShareSnapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - name - The name of the FileShareSnapshot
@@ -68,8 +68,6 @@ func (client *FileShareSnapshotsClient) BeginCreateOrUpdateFileShareSnapshot(ctx
 
 // CreateOrUpdateFileShareSnapshot - Create a FileShareSnapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 func (client *FileShareSnapshotsClient) createOrUpdateFileShareSnapshot(ctx context.Context, resourceGroupName string, resourceName string, name string, resource FileShareSnapshot, options *FileShareSnapshotsClientBeginCreateOrUpdateFileShareSnapshotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FileShareSnapshotsClient.BeginCreateOrUpdateFileShareSnapshot"
@@ -115,8 +113,8 @@ func (client *FileShareSnapshotsClient) createOrUpdateFileShareSnapshotCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
@@ -126,8 +124,6 @@ func (client *FileShareSnapshotsClient) createOrUpdateFileShareSnapshotCreateReq
 
 // BeginDeleteFileShareSnapshot - Delete a FileShareSnapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - name - The name of the FileShareSnapshot
@@ -152,8 +148,6 @@ func (client *FileShareSnapshotsClient) BeginDeleteFileShareSnapshot(ctx context
 
 // DeleteFileShareSnapshot - Delete a FileShareSnapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 func (client *FileShareSnapshotsClient) deleteFileShareSnapshot(ctx context.Context, resourceGroupName string, resourceName string, name string, options *FileShareSnapshotsClientBeginDeleteFileShareSnapshotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FileShareSnapshotsClient.BeginDeleteFileShareSnapshot"
@@ -199,15 +193,13 @@ func (client *FileShareSnapshotsClient) deleteFileShareSnapshotCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GetFileShareSnapshot - Get a FileShareSnapshot
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - name - The name of the FileShareSnapshot
@@ -259,8 +251,8 @@ func (client *FileShareSnapshotsClient) getFileShareSnapshotCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *FileShareSnapshotsClient) getFileShareSnapshotHandleResponse(resp 
 }
 
 // NewListByFileSharePager - List FileShareSnapshot by FileShare.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - options - FileShareSnapshotsClientListByFileShareOptions contains the optional parameters for the FileShareSnapshotsClient.NewListByFileSharePager
@@ -324,8 +314,8 @@ func (client *FileShareSnapshotsClient) listByFileShareCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +331,6 @@ func (client *FileShareSnapshotsClient) listByFileShareHandleResponse(resp *http
 
 // BeginUpdateFileShareSnapshot - Update a FileShareSnapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - name - The name of the FileShareSnapshot
@@ -368,8 +356,6 @@ func (client *FileShareSnapshotsClient) BeginUpdateFileShareSnapshot(ctx context
 
 // UpdateFileShareSnapshot - Update a FileShareSnapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 func (client *FileShareSnapshotsClient) updateFileShareSnapshot(ctx context.Context, resourceGroupName string, resourceName string, name string, properties FileShareSnapshotUpdate, options *FileShareSnapshotsClientBeginUpdateFileShareSnapshotOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FileShareSnapshotsClient.BeginUpdateFileShareSnapshot"
@@ -415,8 +401,8 @@ func (client *FileShareSnapshotsClient) updateFileShareSnapshotCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

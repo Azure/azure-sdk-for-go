@@ -7,14 +7,14 @@ generated-metadata: false
 clear-output-folder: false
 go: true
 input-file: 
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/eventgrid/data-plane/Microsoft.EventGrid/stable/2018-01-01/EventGrid.json
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/eventgrid/data-plane/EventGrid/stable/2018-01-01/EventGrid.json
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: "data-plane"
 module: github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid
 output-folder: ../azeventgrid
 override-client-name: Client
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.63"
+use: "@autorest/go@4.0.0-preview.80"
 version: "^3.0.0"
 slice-elements-byval: true
 remove-non-reference-schema: true
@@ -23,6 +23,15 @@ directive:
   - from: swagger-document
     where: $["x-ms-parameterized-host"]
     transform: $.parameters[0]["x-ms-parameter-location"] = "client"
+  - from: swagger-document
+    where: $["x-ms-parameterized-host"]
+    transform: $.parameters[0]["name"] = "endpoint"
+  - from: swagger-document
+    where: $["x-ms-parameterized-host"]
+    transform: $.hostTemplate = "{endpoint}"
+  - from: swagger-document
+    where: $["x-ms-parameterized-host"]
+    transform: $.useSchemePrefix = false
   # reference azcore/messaging/CloudEvent
   - from: client.go
     where: $

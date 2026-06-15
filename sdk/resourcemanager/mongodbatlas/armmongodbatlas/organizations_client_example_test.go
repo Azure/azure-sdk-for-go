@@ -63,13 +63,13 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongodbatlas.OrganizationsClientCreateOrUpdateResponse{
-	// 	OrganizationResource: &armmongodbatlas.OrganizationResource{
+	// 	OrganizationResource: armmongodbatlas.OrganizationResource{
 	// 		Properties: &armmongodbatlas.OrganizationProperties{
 	// 			Marketplace: &armmongodbatlas.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("o"),
@@ -141,7 +141,7 @@ func ExampleOrganizationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -164,7 +164,7 @@ func ExampleOrganizationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongodbatlas.OrganizationsClientGetResponse{
-	// 	OrganizationResource: &armmongodbatlas.OrganizationResource{
+	// 	OrganizationResource: armmongodbatlas.OrganizationResource{
 	// 		Properties: &armmongodbatlas.OrganizationProperties{
 	// 			Marketplace: &armmongodbatlas.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("isxzpjgmsgvwmqaridgqgnz"),
@@ -492,13 +492,13 @@ func ExampleOrganizationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongodbatlas.OrganizationsClientUpdateResponse{
-	// 	OrganizationResource: &armmongodbatlas.OrganizationResource{
+	// 	OrganizationResource: armmongodbatlas.OrganizationResource{
 	// 		Properties: &armmongodbatlas.OrganizationProperties{
 	// 			Marketplace: &armmongodbatlas.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("isxzpjgmsgvwmqaridgqgnz"),

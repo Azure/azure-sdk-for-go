@@ -1408,6 +1408,154 @@ func (a *ActiveDirectoryProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AdvancedPlatformMetricsRule.
+func (a AdvancedPlatformMetricsRule) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", a.ID)
+	populate(objectMap, "name", a.Name)
+	populate(objectMap, "properties", a.Properties)
+	populate(objectMap, "systemData", a.SystemData)
+	populate(objectMap, "type", a.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdvancedPlatformMetricsRule.
+func (a *AdvancedPlatformMetricsRule) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &a.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &a.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &a.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &a.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AdvancedPlatformMetricsRuleConfig.
+func (a AdvancedPlatformMetricsRuleConfig) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "filterType", a.FilterType)
+	populate(objectMap, "filterValues", a.FilterValues)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdvancedPlatformMetricsRuleConfig.
+func (a *AdvancedPlatformMetricsRuleConfig) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "filterType":
+			err = unpopulate(val, "FilterType", &a.FilterType)
+			delete(rawMsg, key)
+		case "filterValues":
+			err = unpopulate(val, "FilterValues", &a.FilterValues)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AdvancedPlatformMetricsRuleListResult.
+func (a AdvancedPlatformMetricsRuleListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", a.NextLink)
+	populate(objectMap, "value", a.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdvancedPlatformMetricsRuleListResult.
+func (a *AdvancedPlatformMetricsRuleListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &a.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &a.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AdvancedPlatformMetricsRuleProperties.
+func (a AdvancedPlatformMetricsRuleProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "enabled", a.Enabled)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", a.LastModifiedTime)
+	populate(objectMap, "metricsEmitted", a.MetricsEmitted)
+	populate(objectMap, "ruleConfig", a.RuleConfig)
+	populate(objectMap, "ruleType", a.RuleType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdvancedPlatformMetricsRuleProperties.
+func (a *AdvancedPlatformMetricsRuleProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", a, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "enabled":
+			err = unpopulate(val, "Enabled", &a.Enabled)
+			delete(rawMsg, key)
+		case "lastModifiedTime":
+			err = unpopulateTime[datetime.RFC3339](val, "LastModifiedTime", &a.LastModifiedTime)
+			delete(rawMsg, key)
+		case "metricsEmitted":
+			err = unpopulate(val, "MetricsEmitted", &a.MetricsEmitted)
+			delete(rawMsg, key)
+		case "ruleConfig":
+			err = unpopulate(val, "RuleConfig", &a.RuleConfig)
+			delete(rawMsg, key)
+		case "ruleType":
+			err = unpopulate(val, "RuleType", &a.RuleType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", a, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureFilesIdentityBasedAuthentication.
 func (a AzureFilesIdentityBasedAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4256,6 +4404,8 @@ func (f *FileShareItems) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type FileShareLimits.
 func (f FileShareLimits) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "guardrailBandwidthScalar", f.GuardrailBandwidthScalar)
+	populate(objectMap, "guardrailIOScalar", f.GuardrailIOScalar)
 	populate(objectMap, "maxProvisionedBandwidthMiBPerSec", f.MaxProvisionedBandwidthMiBPerSec)
 	populate(objectMap, "maxProvisionedIOPS", f.MaxProvisionedIOPS)
 	populate(objectMap, "maxProvisionedStorageGiB", f.MaxProvisionedStorageGiB)
@@ -4274,6 +4424,12 @@ func (f *FileShareLimits) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "guardrailBandwidthScalar":
+			err = unpopulate(val, "GuardrailBandwidthScalar", &f.GuardrailBandwidthScalar)
+			delete(rawMsg, key)
+		case "guardrailIOScalar":
+			err = unpopulate(val, "GuardrailIOScalar", &f.GuardrailIOScalar)
+			delete(rawMsg, key)
 		case "maxProvisionedBandwidthMiBPerSec":
 			err = unpopulate(val, "MaxProvisionedBandwidthMiBPerSec", &f.MaxProvisionedBandwidthMiBPerSec)
 			delete(rawMsg, key)

@@ -18,6 +18,8 @@ import (
 
 // TokensClient contains the methods for the Tokens group.
 // Don't use this type directly, use NewTokensClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type TokensClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewTokensClient(subscriptionID string, credential azcore.TokenCredential, o
 //
 // This operation acquires a policy token in the given subscription for the given request body.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - parameters - The request body
 //   - options - TokensClientAcquireOptions contains the optional parameters for the TokensClient.Acquire method.
 func (client *TokensClient) Acquire(ctx context.Context, parameters TokenRequest, options *TokensClientAcquireOptions) (TokensClientAcquireResponse, error) {
@@ -81,8 +81,8 @@ func (client *TokensClient) acquireCreateRequest(ctx context.Context, parameters
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -104,8 +104,6 @@ func (client *TokensClient) acquireHandleResponse(resp *http.Response) (TokensCl
 //
 // This operation acquires a policy token in the given management group for the given request body.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01
 //   - managementGroupName - The name of the management group. The name is case insensitive.
 //   - parameters - The policy token properties.
 //   - options - TokensClientAcquireAtManagementGroupOptions contains the optional parameters for the TokensClient.AcquireAtManagementGroup
@@ -144,8 +142,8 @@ func (client *TokensClient) acquireAtManagementGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

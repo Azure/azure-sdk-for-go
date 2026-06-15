@@ -33,7 +33,7 @@ func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmsClientCheckMhsmNameAvailabilityResponse{
-	// 	CheckMhsmNameAvailabilityResult: &armkeyvault.CheckMhsmNameAvailabilityResult{
+	// 	CheckMhsmNameAvailabilityResult: armkeyvault.CheckMhsmNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
@@ -75,13 +75,13 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmsClientCreateOrUpdateResponse{
-	// 	ManagedHsm: &armkeyvault.ManagedHsm{
+	// 	ManagedHsm: armkeyvault.ManagedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
@@ -127,7 +127,7 @@ func ExampleManagedHsmsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -155,7 +155,7 @@ func ExampleManagedHsmsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmsClientGetResponse{
-	// 	ManagedHsm: &armkeyvault.ManagedHsm{
+	// 	ManagedHsm: armkeyvault.ManagedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),
@@ -203,7 +203,7 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmsClientGetDeletedResponse{
-	// 	DeletedManagedHsm: &armkeyvault.DeletedManagedHsm{
+	// 	DeletedManagedHsm: armkeyvault.DeletedManagedHsm{
 	// 		Name: to.Ptr("vault-agile-drawer-6404"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/deletedManagedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedManagedHSMs/hsm1"),
@@ -471,7 +471,7 @@ func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -498,13 +498,13 @@ func ExampleManagedHsmsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.ManagedHsmsClientUpdateResponse{
-	// 	ManagedHsm: &armkeyvault.ManagedHsm{
+	// 	ManagedHsm: armkeyvault.ManagedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.KeyVault/managedHSMs/hsm1"),

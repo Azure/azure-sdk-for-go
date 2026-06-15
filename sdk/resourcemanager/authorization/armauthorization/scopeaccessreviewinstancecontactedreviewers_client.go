@@ -19,6 +19,8 @@ import (
 // ScopeAccessReviewInstanceContactedReviewersClient contains the methods for the ScopeAccessReviewInstanceContactedReviewers
 // group.
 // Don't use this type directly, use NewScopeAccessReviewInstanceContactedReviewersClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewInstanceContactedReviewersClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewScopeAccessReviewInstanceContactedReviewersClient(credential azcore.Toke
 }
 
 // NewListPager - Get access review instance contacted reviewers
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
@@ -88,8 +88,8 @@ func (client *ScopeAccessReviewInstanceContactedReviewersClient) listCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

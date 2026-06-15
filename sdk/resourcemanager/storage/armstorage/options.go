@@ -114,6 +114,29 @@ type AccountsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AdvancedPlatformMetricsClientCreateOrUpdateOptions contains the optional parameters for the AdvancedPlatformMetricsClient.CreateOrUpdate
+// method.
+type AdvancedPlatformMetricsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdvancedPlatformMetricsClientDeleteOptions contains the optional parameters for the AdvancedPlatformMetricsClient.Delete
+// method.
+type AdvancedPlatformMetricsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdvancedPlatformMetricsClientGetOptions contains the optional parameters for the AdvancedPlatformMetricsClient.Get method.
+type AdvancedPlatformMetricsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AdvancedPlatformMetricsClientListOptions contains the optional parameters for the AdvancedPlatformMetricsClient.NewListPager
+// method.
+type AdvancedPlatformMetricsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // BlobContainersClientBeginObjectLevelWormOptions contains the optional parameters for the BlobContainersClient.BeginObjectLevelWorm
 // method.
 type BlobContainersClientBeginObjectLevelWormOptions struct {

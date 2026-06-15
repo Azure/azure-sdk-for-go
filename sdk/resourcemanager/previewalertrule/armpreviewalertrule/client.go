@@ -19,6 +19,8 @@ import (
 // Client - The Preview Alert Rule API provides the ability to retrieve the results of a simulated historical execution of
 // an alert rule
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2025-07-01-preview
 type Client struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // PreviewAlertRule - Retrieves the results of a simulated historical execution of an alert rule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-01-preview
 //   - options - ClientPreviewAlertRuleOptions contains the optional parameters for the Client.PreviewAlertRule method.
 func (client *Client) PreviewAlertRule(ctx context.Context, resourceID string, parameters Request, options *ClientPreviewAlertRuleOptions) (ClientPreviewAlertRuleResponse, error) {
 	var err error
@@ -76,8 +76,8 @@ func (client *Client) previewAlertRuleCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

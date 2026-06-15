@@ -58,15 +58,15 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "Client":
-		initServer(s, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
 	case "EdgeActionExecutionFiltersClient":
-		initServer(s, &s.trEdgeActionExecutionFiltersServer, func() *EdgeActionExecutionFiltersServerTransport {
+		initServer(&s.trMu, &s.trEdgeActionExecutionFiltersServer, func() *EdgeActionExecutionFiltersServerTransport {
 			return NewEdgeActionExecutionFiltersServerTransport(&s.srv.EdgeActionExecutionFiltersServer)
 		})
 		resp, err = s.trEdgeActionExecutionFiltersServer.Do(req)
 	case "EdgeActionVersionsClient":
-		initServer(s, &s.trEdgeActionVersionsServer, func() *EdgeActionVersionsServerTransport {
+		initServer(&s.trMu, &s.trEdgeActionVersionsServer, func() *EdgeActionVersionsServerTransport {
 			return NewEdgeActionVersionsServerTransport(&s.srv.EdgeActionVersionsServer)
 		})
 		resp, err = s.trEdgeActionVersionsServer.Do(req)
@@ -79,12 +79,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

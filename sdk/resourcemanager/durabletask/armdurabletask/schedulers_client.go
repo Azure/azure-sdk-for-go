@@ -18,6 +18,8 @@ import (
 
 // SchedulersClient contains the methods for the Schedulers group.
 // Don't use this type directly, use NewSchedulersClient() instead.
+//
+// Generated from API version 2026-02-01
 type SchedulersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSchedulersClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreateOrUpdate - Create or update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *SchedulersClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Create or update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *SchedulersClient) createOrUpdate(ctx context.Context, resourceGroupName string, schedulerName string, resource Scheduler, options *SchedulersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *SchedulersClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginCreateOrUpdatePrivateEndpointConnection - Create or update a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -149,8 +145,6 @@ func (client *SchedulersClient) BeginCreateOrUpdatePrivateEndpointConnection(ctx
 
 // CreateOrUpdatePrivateEndpointConnection - Create or update a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *SchedulersClient) createOrUpdatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *SchedulersClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginCreateOrUpdatePrivateEndpointConnection"
@@ -196,8 +190,8 @@ func (client *SchedulersClient) createOrUpdatePrivateEndpointConnectionCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -208,8 +202,6 @@ func (client *SchedulersClient) createOrUpdatePrivateEndpointConnectionCreateReq
 
 // BeginDelete - Delete a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - SchedulersClientBeginDeleteOptions contains the optional parameters for the SchedulersClient.BeginDelete method.
@@ -232,8 +224,6 @@ func (client *SchedulersClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *SchedulersClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, options *SchedulersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginDelete"
@@ -275,15 +265,13 @@ func (client *SchedulersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDeletePrivateEndpointConnection - Delete a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -308,8 +296,6 @@ func (client *SchedulersClient) BeginDeletePrivateEndpointConnection(ctx context
 
 // DeletePrivateEndpointConnection - Delete a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *SchedulersClient) deletePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, options *SchedulersClientBeginDeletePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginDeletePrivateEndpointConnection"
@@ -355,15 +341,13 @@ func (client *SchedulersClient) deletePrivateEndpointConnectionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - SchedulersClientGetOptions contains the optional parameters for the SchedulersClient.Get method.
@@ -409,8 +393,8 @@ func (client *SchedulersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -426,8 +410,6 @@ func (client *SchedulersClient) getHandleResponse(resp *http.Response) (Schedule
 
 // GetPrivateEndpointConnection - Get a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -479,8 +461,8 @@ func (client *SchedulersClient) getPrivateEndpointConnectionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -496,8 +478,6 @@ func (client *SchedulersClient) getPrivateEndpointConnectionHandleResponse(resp 
 
 // GetPrivateLink - Get a private link resource for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - privateLinkResourceName - The name of the private link associated with the Azure resource.
@@ -549,8 +529,8 @@ func (client *SchedulersClient) getPrivateLinkCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -565,8 +545,6 @@ func (client *SchedulersClient) getPrivateLinkHandleResponse(resp *http.Response
 }
 
 // NewListByResourceGroupPager - List Schedulers by resource group
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SchedulersClientListByResourceGroupOptions contains the optional parameters for the SchedulersClient.NewListByResourceGroupPager
 //     method.
@@ -609,8 +587,8 @@ func (client *SchedulersClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -625,8 +603,6 @@ func (client *SchedulersClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - List Schedulers by subscription
-//
-// Generated from API version 2026-02-01
 //   - options - SchedulersClientListBySubscriptionOptions contains the optional parameters for the SchedulersClient.NewListBySubscriptionPager
 //     method.
 func (client *SchedulersClient) NewListBySubscriptionPager(options *SchedulersClientListBySubscriptionOptions) *runtime.Pager[SchedulersClientListBySubscriptionResponse] {
@@ -664,8 +640,8 @@ func (client *SchedulersClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -680,8 +656,6 @@ func (client *SchedulersClient) listBySubscriptionHandleResponse(resp *http.Resp
 }
 
 // NewListPrivateEndpointConnectionsPager - List private endpoint connections for the durable task scheduler
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - SchedulersClientListPrivateEndpointConnectionsOptions contains the optional parameters for the SchedulersClient.NewListPrivateEndpointConnectionsPager
@@ -729,8 +703,8 @@ func (client *SchedulersClient) listPrivateEndpointConnectionsCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -745,8 +719,6 @@ func (client *SchedulersClient) listPrivateEndpointConnectionsHandleResponse(res
 }
 
 // NewListPrivateLinksPager - List private link resources for the durable task scheduler
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - SchedulersClientListPrivateLinksOptions contains the optional parameters for the SchedulersClient.NewListPrivateLinksPager
@@ -794,8 +766,8 @@ func (client *SchedulersClient) listPrivateLinksCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -811,8 +783,6 @@ func (client *SchedulersClient) listPrivateLinksHandleResponse(resp *http.Respon
 
 // BeginUpdate - Update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - properties - The resource properties to be updated.
@@ -836,8 +806,6 @@ func (client *SchedulersClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Update a Scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *SchedulersClient) update(ctx context.Context, resourceGroupName string, schedulerName string, properties SchedulerUpdate, options *SchedulersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginUpdate"
@@ -879,8 +847,8 @@ func (client *SchedulersClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -891,8 +859,6 @@ func (client *SchedulersClient) updateCreateRequest(ctx context.Context, resourc
 
 // BeginUpdatePrivateEndpointConnection - Update a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -918,8 +884,6 @@ func (client *SchedulersClient) BeginUpdatePrivateEndpointConnection(ctx context
 
 // UpdatePrivateEndpointConnection - Update a private endpoint connection for the durable task scheduler
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *SchedulersClient) updatePrivateEndpointConnection(ctx context.Context, resourceGroupName string, schedulerName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *SchedulersClientBeginUpdatePrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulersClient.BeginUpdatePrivateEndpointConnection"
@@ -965,8 +929,8 @@ func (client *SchedulersClient) updatePrivateEndpointConnectionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

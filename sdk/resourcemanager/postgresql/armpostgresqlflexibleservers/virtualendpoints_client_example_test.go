@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/VirtualEndpointCreate.json
+// Generated from example definition: 2026-04-01-preview/VirtualEndpointCreate.json
 func ExampleVirtualEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,11 +36,11 @@ func ExampleVirtualEndpointsClient_BeginCreate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/VirtualEndpointDelete.json
+// Generated from example definition: 2026-04-01-preview/VirtualEndpointDelete.json
 func ExampleVirtualEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,11 +57,11 @@ func ExampleVirtualEndpointsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/VirtualEndpointsGet.json
+// Generated from example definition: 2026-04-01-preview/VirtualEndpointsGet.json
 func ExampleVirtualEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleVirtualEndpointsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.VirtualEndpointsClientGetResponse{
-	// 	VirtualEndpoint: &armpostgresqlflexibleservers.VirtualEndpoint{
+	// 	VirtualEndpoint: armpostgresqlflexibleservers.VirtualEndpoint{
 	// 		Name: to.Ptr("examplebasename"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/virtualEndpoints"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/virtualEndpoints/examplebasename"),
@@ -98,7 +98,7 @@ func ExampleVirtualEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/VirtualEndpointsListByServer.json
+// Generated from example definition: 2026-04-01-preview/VirtualEndpointsListByServer.json
 func ExampleVirtualEndpointsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleVirtualEndpointsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/VirtualEndpointUpdate.json
+// Generated from example definition: 2026-04-01-preview/VirtualEndpointUpdate.json
 func ExampleVirtualEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,6 +168,6 @@ func ExampleVirtualEndpointsClient_BeginUpdate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

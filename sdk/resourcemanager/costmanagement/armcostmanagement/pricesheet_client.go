@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultPriceSheetClientVersion string = "2025-03-01"
-
 // PriceSheetClient contains the methods for the PriceSheet group.
 // Don't use this type directly, use NewPriceSheetClient() instead.
 //
@@ -132,7 +130,7 @@ func (client *PriceSheetClient) downloadByBillingAccountCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultPriceSheetClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +208,7 @@ func (client *PriceSheetClient) downloadByBillingProfileCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultPriceSheetClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,7 +283,7 @@ func (client *PriceSheetClient) downloadByInvoiceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultPriceSheetClientVersion)
+	reqQP.Set("api-version", version20250301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

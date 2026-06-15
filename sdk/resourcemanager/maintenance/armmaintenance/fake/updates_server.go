@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // UpdatesServer is a fake server for instances of the armmaintenance.UpdatesClient type.
@@ -59,9 +60,7 @@ func (u *UpdatesServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (u *UpdatesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -79,10 +78,7 @@ func (u *UpdatesServerTransport) dispatchToMethodFake(req *http.Request, method 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -132,7 +128,7 @@ func (u *UpdatesServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		u.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -189,7 +185,7 @@ func (u *UpdatesServerTransport) dispatchNewListParentPager(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		u.newListParentPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

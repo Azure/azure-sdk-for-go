@@ -18,6 +18,8 @@ import (
 
 // NetworkAnchorsClient contains the methods for the NetworkAnchors group.
 // Don't use this type directly, use NewNetworkAnchorsClient() instead.
+//
+// Generated from API version 2025-09-01
 type NetworkAnchorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkAnchorsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Create a NetworkAnchor
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkAnchorName - The name of the NetworkAnchor
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *NetworkAnchorsClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Create a NetworkAnchor
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *NetworkAnchorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkAnchorName string, resource NetworkAnchor, options *NetworkAnchorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkAnchorsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *NetworkAnchorsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *NetworkAnchorsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Delete a NetworkAnchor
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkAnchorName - The name of the NetworkAnchor
 //   - options - NetworkAnchorsClientBeginDeleteOptions contains the optional parameters for the NetworkAnchorsClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *NetworkAnchorsClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete a NetworkAnchor
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *NetworkAnchorsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkAnchorName string, options *NetworkAnchorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkAnchorsClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *NetworkAnchorsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a NetworkAnchor
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkAnchorName - The name of the NetworkAnchor
 //   - options - NetworkAnchorsClientGetOptions contains the optional parameters for the NetworkAnchorsClient.Get method.
@@ -244,8 +236,8 @@ func (client *NetworkAnchorsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *NetworkAnchorsClient) getHandleResponse(resp *http.Response) (Netw
 }
 
 // NewListByResourceGroupPager - List NetworkAnchor resources by resource group
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkAnchorsClientListByResourceGroupOptions contains the optional parameters for the NetworkAnchorsClient.NewListByResourceGroupPager
 //     method.
@@ -304,8 +294,8 @@ func (client *NetworkAnchorsClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *NetworkAnchorsClient) listByResourceGroupHandleResponse(resp *http
 }
 
 // NewListBySubscriptionPager - List NetworkAnchor resources by subscription ID
-//
-// Generated from API version 2025-09-01
 //   - options - NetworkAnchorsClientListBySubscriptionOptions contains the optional parameters for the NetworkAnchorsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkAnchorsClient) NewListBySubscriptionPager(options *NetworkAnchorsClientListBySubscriptionOptions) *runtime.Pager[NetworkAnchorsClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *NetworkAnchorsClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *NetworkAnchorsClient) listBySubscriptionHandleResponse(resp *http.
 
 // BeginUpdate - Update a NetworkAnchor
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkAnchorName - The name of the NetworkAnchor
 //   - properties - The resource properties to be updated.
@@ -402,8 +388,6 @@ func (client *NetworkAnchorsClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Update a NetworkAnchor
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *NetworkAnchorsClient) update(ctx context.Context, resourceGroupName string, networkAnchorName string, properties NetworkAnchorUpdate, options *NetworkAnchorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkAnchorsClient.BeginUpdate"
@@ -445,8 +429,8 @@ func (client *NetworkAnchorsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

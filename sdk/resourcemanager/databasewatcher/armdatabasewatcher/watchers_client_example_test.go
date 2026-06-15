@@ -48,13 +48,13 @@ func ExampleWatchersClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatabasewatcher.WatchersClientCreateOrUpdateResponse{
-	// 	Watcher: &armdatabasewatcher.Watcher{
+	// 	Watcher: armdatabasewatcher.Watcher{
 	// 		Properties: &armdatabasewatcher.WatcherProperties{
 	// 			Status: to.Ptr(armdatabasewatcher.WatcherStatusStarting),
 	// 			DefaultAlertRuleIdentityResourceID: to.Ptr("/subscriptions/469DD77C-C8DB-47B7-B9E1-72D29F8C878B/resourceGroups/rgWatcher/providers/Microsoft.ManagedIdentity/userAssignedIdentities/3pmtest"),
@@ -111,7 +111,7 @@ func ExampleWatchersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -134,7 +134,7 @@ func ExampleWatchersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatabasewatcher.WatchersClientGetResponse{
-	// 	Watcher: &armdatabasewatcher.Watcher{
+	// 	Watcher: armdatabasewatcher.Watcher{
 	// 		Properties: &armdatabasewatcher.WatcherProperties{
 	// 			Status: to.Ptr(armdatabasewatcher.WatcherStatusStarting),
 	// 			DefaultAlertRuleIdentityResourceID: to.Ptr("/subscriptions/469DD77C-C8DB-47B7-B9E1-72D29F8C878B/resourceGroups/rgWatcher/providers/Microsoft.ManagedIdentity/userAssignedIdentities/3pmtest"),
@@ -769,7 +769,7 @@ func ExampleWatchersClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -795,7 +795,7 @@ func ExampleWatchersClient_BeginStop() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -838,13 +838,13 @@ func ExampleWatchersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatabasewatcher.WatchersClientUpdateResponse{
-	// 	Watcher: &armdatabasewatcher.Watcher{
+	// 	Watcher: armdatabasewatcher.Watcher{
 	// 		Properties: &armdatabasewatcher.WatcherProperties{
 	// 			Status: to.Ptr(armdatabasewatcher.WatcherStatusStarting),
 	// 			DefaultAlertRuleIdentityResourceID: to.Ptr("/subscriptions/469DD77C-C8DB-47B7-B9E1-72D29F8C878B/resourceGroups/rgWatcher/providers/Microsoft.ManagedIdentity/userAssignedIdentities/3pmtest"),

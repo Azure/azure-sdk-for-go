@@ -18,6 +18,8 @@ import (
 
 // PrivateEndpointConnectionProxiesClient contains the methods for the PrivateEndpointConnectionProxies group.
 // Don't use this type directly, use NewPrivateEndpointConnectionProxiesClient() instead.
+//
+// Generated from API version 2024-09-01
 type PrivateEndpointConnectionProxiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPrivateEndpointConnectionProxiesClient(subscriptionID string, credential
 // Create - Create a new private endpoint connection proxy which includes both auto and manual approval types. Creating the
 // proxy resource will also create a private endpoint connection resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - privateEndpointConnectionProxyName - The private endpoint connection proxy name.
@@ -96,8 +96,8 @@ func (client *PrivateEndpointConnectionProxiesClient) createCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -117,8 +117,6 @@ func (client *PrivateEndpointConnectionProxiesClient) createHandleResponse(resp 
 
 // BeginDelete - Returns the operation to track the deletion of private endpoint connection proxy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - privateEndpointConnectionProxyName - The private endpoint connection proxy name.
@@ -143,8 +141,6 @@ func (client *PrivateEndpointConnectionProxiesClient) BeginDelete(ctx context.Co
 
 // Delete - Returns the operation to track the deletion of private endpoint connection proxy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *PrivateEndpointConnectionProxiesClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, privateEndpointConnectionProxyName string, options *PrivateEndpointConnectionProxiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionProxiesClient.BeginDelete"
@@ -190,15 +186,13 @@ func (client *PrivateEndpointConnectionProxiesClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the private endpoint connection proxy details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - privateEndpointConnectionProxyName - The private endpoint connection proxy name.
@@ -250,8 +244,8 @@ func (client *PrivateEndpointConnectionProxiesClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -266,8 +260,6 @@ func (client *PrivateEndpointConnectionProxiesClient) getHandleResponse(resp *ht
 }
 
 // NewListPager - Gets the all private endpoint connections proxies.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - options - PrivateEndpointConnectionProxiesClientListOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.NewListPager
@@ -315,8 +307,8 @@ func (client *PrivateEndpointConnectionProxiesClient) listCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -332,8 +324,6 @@ func (client *PrivateEndpointConnectionProxiesClient) listHandleResponse(resp *h
 
 // Validate - Returns remote private endpoint connection information after validation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - privateEndpointConnectionProxyName - The private endpoint connection proxy name.
@@ -386,8 +376,8 @@ func (client *PrivateEndpointConnectionProxiesClient) validateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

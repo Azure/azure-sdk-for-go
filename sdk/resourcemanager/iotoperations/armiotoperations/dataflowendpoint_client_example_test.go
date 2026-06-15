@@ -46,13 +46,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeDataLakeStorage),
 	// 			DataLakeStorageSettings: &armiotoperations.DataflowEndpointDataLakeStorage{
@@ -122,13 +122,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeDataExplorer),
 	// 			DataExplorerSettings: &armiotoperations.DataflowEndpointDataExplorer{
@@ -203,13 +203,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeMqtt),
 	// 			MqttSettings: &armiotoperations.DataflowEndpointMqtt{
@@ -281,13 +281,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeMqtt),
 	// 			MqttSettings: &armiotoperations.DataflowEndpointMqtt{
@@ -358,13 +358,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeKafka),
 	// 			KafkaSettings: &armiotoperations.DataflowEndpointKafka{
@@ -437,13 +437,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeFabricOneLake),
 	// 			FabricOneLakeSettings: &armiotoperations.DataflowEndpointFabricOneLake{
@@ -531,13 +531,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeKafka),
 	// 			KafkaSettings: &armiotoperations.DataflowEndpointKafka{
@@ -615,13 +615,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeLocalStorage),
 	// 			LocalStorageSettings: &armiotoperations.DataflowEndpointLocalStorage{
@@ -692,13 +692,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeMqtt),
 	// 			MqttSettings: &armiotoperations.DataflowEndpointMqtt{
@@ -901,13 +901,13 @@ func ExampleDataflowEndpointClient_BeginCreateOrUpdate_dataflowEndpointCreateOrU
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientCreateOrUpdateResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeDataExplorer),
 	// 			DataExplorerSettings: &armiotoperations.DataflowEndpointDataExplorer{
@@ -1083,7 +1083,7 @@ func ExampleDataflowEndpointClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1106,7 +1106,7 @@ func ExampleDataflowEndpointClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowEndpointClientGetResponse{
-	// 	DataflowEndpointResource: &armiotoperations.DataflowEndpointResource{
+	// 	DataflowEndpointResource: armiotoperations.DataflowEndpointResource{
 	// 		Properties: &armiotoperations.DataflowEndpointProperties{
 	// 			EndpointType: to.Ptr(armiotoperations.EndpointTypeDataExplorer),
 	// 			DataExplorerSettings: &armiotoperations.DataflowEndpointDataExplorer{

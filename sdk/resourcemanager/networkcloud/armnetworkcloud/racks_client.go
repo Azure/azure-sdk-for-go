@@ -19,6 +19,8 @@ import (
 
 // RacksClient contains the methods for the Racks group.
 // Don't use this type directly, use NewRacksClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type RacksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewRacksClient(subscriptionID string, credential azcore.TokenCredential, op
 // BeginCreateOrUpdate - Create a new rack or update properties of the existing one. All customer initiated requests will
 // be rejected as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - rackParameters - The request body.
@@ -70,8 +70,6 @@ func (client *RacksClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 // CreateOrUpdate - Create a new rack or update properties of the existing one. All customer initiated requests will be rejected
 // as the life cycle of this resource is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *RacksClient) createOrUpdate(ctx context.Context, resourceGroupName string, rackName string, rackParameters Rack, options *RacksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RacksClient.BeginCreateOrUpdate"
@@ -113,8 +111,8 @@ func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -132,8 +130,6 @@ func (client *RacksClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // BeginDelete - Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
 // is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - options - RacksClientBeginDeleteOptions contains the optional parameters for the RacksClient.BeginDelete method.
@@ -157,8 +153,6 @@ func (client *RacksClient) BeginDelete(ctx context.Context, resourceGroupName st
 // Delete - Delete the provided rack. All customer initiated requests will be rejected as the life cycle of this resource
 // is managed by the system.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *RacksClient) deleteOperation(ctx context.Context, resourceGroupName string, rackName string, options *RacksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RacksClient.BeginDelete"
@@ -200,8 +194,8 @@ func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -213,8 +207,6 @@ func (client *RacksClient) deleteCreateRequest(ctx context.Context, resourceGrou
 
 // Get - Get properties of the provided rack.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - options - RacksClientGetOptions contains the optional parameters for the RacksClient.Get method.
@@ -260,8 +252,8 @@ func (client *RacksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *RacksClient) getHandleResponse(resp *http.Response) (RacksClientGe
 }
 
 // NewListByResourceGroupPager - Get a list of racks in the provided resource group.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RacksClientListByResourceGroupOptions contains the optional parameters for the RacksClient.NewListByResourceGroupPager
 //     method.
@@ -326,8 +316,8 @@ func (client *RacksClient) listByResourceGroupCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -342,8 +332,6 @@ func (client *RacksClient) listByResourceGroupHandleResponse(resp *http.Response
 }
 
 // NewListBySubscriptionPager - Get a list of racks in the provided subscription.
-//
-// Generated from API version 2026-05-01-preview
 //   - options - RacksClientListBySubscriptionOptions contains the optional parameters for the RacksClient.NewListBySubscriptionPager
 //     method.
 func (client *RacksClient) NewListBySubscriptionPager(options *RacksClientListBySubscriptionOptions) *runtime.Pager[RacksClientListBySubscriptionResponse] {
@@ -387,8 +375,8 @@ func (client *RacksClient) listBySubscriptionCreateRequest(ctx context.Context, 
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -405,8 +393,6 @@ func (client *RacksClient) listBySubscriptionHandleResponse(resp *http.Response)
 // BeginUpdate - Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
 // can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - rackName - The name of the rack.
 //   - rackUpdateParameters - The request body.
@@ -431,8 +417,6 @@ func (client *RacksClient) BeginUpdate(ctx context.Context, resourceGroupName st
 // Update - Patch properties of the provided rack, or update the tags associated with the rack. Properties and tag updates
 // can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *RacksClient) update(ctx context.Context, resourceGroupName string, rackName string, rackUpdateParameters RackPatchParameters, options *RacksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RacksClient.BeginUpdate"
@@ -474,8 +458,8 @@ func (client *RacksClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

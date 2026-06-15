@@ -18,6 +18,8 @@ import (
 
 // EventsClient contains the methods for the Events group.
 // Don't use this type directly, use NewEventsClient() instead.
+//
+// Generated from API version 2024-08-01
 type EventsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewEventsClient(credential azcore.TokenCredential, options *arm.ClientOptio
 
 // NewListByBillingAccountPager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
 // for a billing account or a billing profile for a given start and end date.
-//
-// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - options - EventsClientListByBillingAccountOptions contains the optional parameters for the EventsClient.NewListByBillingAccountPager
 //     method.
@@ -81,8 +81,8 @@ func (client *EventsClient) listByBillingAccountCreateRequest(ctx context.Contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -98,8 +98,6 @@ func (client *EventsClient) listByBillingAccountHandleResponse(resp *http.Respon
 
 // NewListByBillingProfilePager - Lists the events that decrements Azure credits or Microsoft Azure consumption commitment
 // for a billing account or a billing profile for a given start and end date.
-//
-// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - billingProfileID - Azure Billing Profile ID.
 //   - startDate - Start date
@@ -145,10 +143,10 @@ func (client *EventsClient) listByBillingProfileCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", version20240801)
 	reqQP.Set("endDate", endDate)
 	reqQP.Set("startDate", startDate)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

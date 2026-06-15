@@ -69,13 +69,13 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armlambdatesthyperexecute.OrganizationsClientCreateOrUpdateResponse{
-	// 	OrganizationResource: &armlambdatesthyperexecute.OrganizationResource{
+	// 	OrganizationResource: armlambdatesthyperexecute.OrganizationResource{
 	// 		Properties: &armlambdatesthyperexecute.OrganizationProperties{
 	// 			Marketplace: &armlambdatesthyperexecute.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("zetdxwryjgcsnosezfpovkpvgvim"),
@@ -152,7 +152,7 @@ func ExampleOrganizationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -175,7 +175,7 @@ func ExampleOrganizationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armlambdatesthyperexecute.OrganizationsClientGetResponse{
-	// 	OrganizationResource: &armlambdatesthyperexecute.OrganizationResource{
+	// 	OrganizationResource: armlambdatesthyperexecute.OrganizationResource{
 	// 		Properties: &armlambdatesthyperexecute.OrganizationProperties{
 	// 			Marketplace: &armlambdatesthyperexecute.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("zetdxwryjgcsnosezfpovkpvgvim"),
@@ -508,7 +508,7 @@ func ExampleOrganizationsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armlambdatesthyperexecute.OrganizationsClientUpdateResponse{
-	// 	OrganizationResource: &armlambdatesthyperexecute.OrganizationResource{
+	// 	OrganizationResource: armlambdatesthyperexecute.OrganizationResource{
 	// 		Properties: &armlambdatesthyperexecute.OrganizationProperties{
 	// 			Marketplace: &armlambdatesthyperexecute.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("zetdxwryjgcsnosezfpovkpvgvim"),

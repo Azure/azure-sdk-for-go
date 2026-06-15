@@ -5,7 +5,7 @@
 package armcontainerservice
 
 const (
-	version20260302Preview string = "2026-03-02-preview"
+	version20260402Preview string = "2026-04-02-preview"
 )
 
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
@@ -224,6 +224,25 @@ func PossibleBackendPoolTypeValues() []BackendPoolType {
 	return []BackendPoolType{
 		BackendPoolTypeNodeIP,
 		BackendPoolTypeNodeIPConfiguration,
+	}
+}
+
+// BastionSKU - The SKU of the managed Azure Bastion. The default is 'Standard'. See https://aka.ms/aks/BastionSKUs for more
+// information about the differences between Azure Bastion SKUs.
+type BastionSKU string
+
+const (
+	// BastionSKUPremium - Use the premium SKU of Azure Bastion.
+	BastionSKUPremium BastionSKU = "Premium"
+	// BastionSKUStandard - Use the standard SKU of Azure Bastion.
+	BastionSKUStandard BastionSKU = "Standard"
+)
+
+// PossibleBastionSKUValues returns the possible values for the BastionSKU const type.
+func PossibleBastionSKUValues() []BastionSKU {
+	return []BastionSKU{
+		BastionSKUPremium,
+		BastionSKUStandard,
 	}
 }
 
@@ -1736,6 +1755,27 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeUserAssigned,
+	}
+}
+
+// ResourceProvisioningState - The provisioning state of a resource type.
+type ResourceProvisioningState string
+
+const (
+	// ResourceProvisioningStateCanceled - Resource creation was canceled.
+	ResourceProvisioningStateCanceled ResourceProvisioningState = "Canceled"
+	// ResourceProvisioningStateFailed - Resource creation failed.
+	ResourceProvisioningStateFailed ResourceProvisioningState = "Failed"
+	// ResourceProvisioningStateSucceeded - Resource has been created.
+	ResourceProvisioningStateSucceeded ResourceProvisioningState = "Succeeded"
+)
+
+// PossibleResourceProvisioningStateValues returns the possible values for the ResourceProvisioningState const type.
+func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
+	return []ResourceProvisioningState{
+		ResourceProvisioningStateCanceled,
+		ResourceProvisioningStateFailed,
+		ResourceProvisioningStateSucceeded,
 	}
 }
 

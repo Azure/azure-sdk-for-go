@@ -90,7 +90,7 @@ func ExamplePrivateEndpointConnectionProxiesClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.PrivateEndpointConnectionProxiesClientCreateResponse{
-	// 	PrivateEndpointConnectionProxy: &armrecoveryservicesdatareplication.PrivateEndpointConnectionProxy{
+	// 	PrivateEndpointConnectionProxy: armrecoveryservicesdatareplication.PrivateEndpointConnectionProxy{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationVaults/vault1/privateEndpointConnectionProxies/proxy1"),
 	// 		Name: to.Ptr("wrbeymbilwm"),
 	// 		Type: to.Ptr("xpfgxxykisvjcifsnlvtgjakwifak"),
@@ -173,7 +173,7 @@ func ExamplePrivateEndpointConnectionProxiesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -196,7 +196,7 @@ func ExamplePrivateEndpointConnectionProxiesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.PrivateEndpointConnectionProxiesClientGetResponse{
-	// 	PrivateEndpointConnectionProxy: &armrecoveryservicesdatareplication.PrivateEndpointConnectionProxy{
+	// 	PrivateEndpointConnectionProxy: armrecoveryservicesdatareplication.PrivateEndpointConnectionProxy{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationVaults/vault1/privateEndpointConnectionProxies/proxy1"),
 	// 		Name: to.Ptr("wrbeymbilwm"),
 	// 		Type: to.Ptr("xpfgxxykisvjcifsnlvtgjakwifak"),
@@ -434,7 +434,7 @@ func ExamplePrivateEndpointConnectionProxiesClient_Validate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.PrivateEndpointConnectionProxiesClientValidateResponse{
-	// 	PrivateEndpointConnectionProxy: &armrecoveryservicesdatareplication.PrivateEndpointConnectionProxy{
+	// 	PrivateEndpointConnectionProxy: armrecoveryservicesdatareplication.PrivateEndpointConnectionProxy{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationVaults/vault1/privateEndpointConnectionProxies/proxy1"),
 	// 		Name: to.Ptr("wrbeymbilwm"),
 	// 		Type: to.Ptr("xpfgxxykisvjcifsnlvtgjakwifak"),

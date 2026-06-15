@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-01/TableOperationPut.json
+// Generated from example definition: 2026-04-01/TableOperationPut.json
 func ExampleTableClient_Create_tableOperationPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleTableClient_Create_tableOperationPut() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableOperationPutOrPatchAclsTableCreate.json
+// Generated from example definition: 2026-04-01/TableOperationPutOrPatchAclsTableCreate.json
 func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleTableClient_Create_tableOperationPutOrPatchAcls() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableOperationDelete.json
+// Generated from example definition: 2026-04-01/TableOperationDelete.json
 func ExampleTableClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleTableClient_Delete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/TableOperationGet.json
+// Generated from example definition: 2026-04-01/TableOperationGet.json
 func ExampleTableClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleTableClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableOperationList.json
+// Generated from example definition: 2026-04-01/TableOperationList.json
 func ExampleTableClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleTableClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/TableOperationPatch.json
+// Generated from example definition: 2026-04-01/TableOperationPatch.json
 func ExampleTableClient_Update_tableOperationPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleTableClient_Update_tableOperationPatch() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableOperationPutOrPatchAcls.json
+// Generated from example definition: 2026-04-01/TableOperationPutOrPatchAcls.json
 func ExampleTableClient_Update_tableOperationPutOrPatchAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

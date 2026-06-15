@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/CapturedLogsListByServer.json
+// Generated from example definition: 2026-04-01-preview/CapturedLogsListByServer.json
 func ExampleCapturedLogsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

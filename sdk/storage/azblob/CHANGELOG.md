@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0 (Unreleased)
+## 1.8.0 (2026-06-15)
 
 ### Features Added
 * Includes all features from `1.8.0-beta.1` and `1.8.0-beta.2`

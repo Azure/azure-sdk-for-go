@@ -500,7 +500,7 @@ func (p *clientRetryPolicy) spawnDetachedFailover(req *policy.Request, o pipelin
 			// Drain and close so the connection returns to the pool and
 			// nothing leaks.
 			_, _ = io.Copy(io.Discard, resp.Body)
-			resp.Body.Close()
+			_ = resp.Body.Close()
 		}
 	}()
 }

@@ -137,6 +137,15 @@ type retryContext struct {
 	// demote-to-tail (MarkEndpointUnavailable* moves the bad endpoint
 	// to the tail of the route list).
 	resolveFromHead bool
+	// detachedGraceUsed is set once this request has consumed its single
+	// detached cross-region failover attempt. When the caller's context is
+	// cancelled while an attempt is in flight against an unhealthy region,
+	// the policy grants ONE bounded failover attempt against the next
+	// preferred region on a context detached from the caller (see the
+	// detached-grace path in Do). This flag guarantees the detached attempt
+	// runs at most once so a caller-cancelled request cannot leak unbounded
+	// background work.
+	detachedGraceUsed bool
 }
 
 const maxRetryCount = 120
@@ -146,6 +155,18 @@ const defaultBackoff = 1
 // transient 5xx server error: one in-region retry followed by one
 // cross-region retry.
 const maxServerErrorRetryCount = 2
+
+// metadataFailoverGraceWindow bounds the detached background cross-region
+// failover attempt the policy launches when the caller's context is cancelled
+// while a control-plane read is in flight against an unhealthy region. The
+// attempt runs on a context detached from the caller (context.WithoutCancel)
+// so the cross-region failover read can complete and warm the gem state /
+// connection pool for subsequent callers, while this window guarantees the
+// detached attempt cannot leak unbounded background work. This is the Go port
+// of azure-cosmos-dotnet-v3#5844 (tracked for Go in azure-sdk-for-go#26649);
+// 10s aligns with the .NET fix's grace window. It is a var, not a const, so
+// tests can shrink it without real-time sleeps.
+var metadataFailoverGraceWindow = 10 * time.Second
 
 // sleepWithContext sleeps for d, but returns early with the context's error
 // if ctx is cancelled or its deadline expires. Use this in retry paths so
@@ -193,6 +214,12 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 	}
 
 	retryContext := retryContext{}
+	// callerCtx is the caller-supplied context that governs the normal retry
+	// path. When the caller cancels mid-flight, the cross-region failover
+	// decision must not be silently preempted (azure-cosmos-dotnet-v3#5844 /
+	// azure-sdk-for-go#26649); see the caller-cancellation handling in the
+	// transport-error branch below.
+	callerCtx := req.Raw().Context()
 	for {
 		// Update the retry context with the latest retry values
 		req.SetOperationValue(retryContext)
@@ -212,15 +239,41 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName)
 			}
-			// Honor the caller's context: if their deadline expired or
-			// they cancelled the request, do not consume their budget
-			// with our retries. Preserve both the cancellation reason
-			// (so errors.Is(returned, context.DeadlineExceeded) works)
-			// and the underlying transport error for diagnostics.
-			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
-				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
-			}
+			// Honor the caller's context, but do not let caller cancellation
+			// silently preempt the cross-region failover decision. This is the
+			// Go port of azure-cosmos-dotnet-v3#5844 (tracked for Go in
+			// azure-sdk-for-go#26649): when an unhealthy preferred region
+			// consumes the caller's deadline mid-flight on a retryable READ,
+			// the policy (a) applies the cross-region failover bookkeeping
+			// synchronously so the bad region is marked unavailable for
+			// subsequent callers, and (b) launches a detached, internally
+			// bounded background attempt against the next region so the
+			// failover read still completes (warming the connection pool and
+			// downstream caches). The caller itself still surfaces its
+			// cancellation -- mirroring .NET's detached executor, where the
+			// caller observes cancellation immediately while the detached task
+			// runs to completion. azcore's outer retry policy also enforces
+			// caller cancellation on the response path, so the cancelled caller
+			// can never observe the detached attempt's result directly.
 			kind := classifyNetworkError(err)
+			if callerCtx.Err() != nil {
+				if !retryContext.detachedGraceUsed && kind != connectionErrorNone &&
+					!o.isWriteOperation && p.hasCrossRegionTarget(false) {
+					failedOver, foErr := p.performCrossRegionFailover(req, kind, false, &retryContext)
+					if foErr == nil && failedOver {
+						retryContext.detachedGraceUsed = true
+						// Persist the failover state for any observer (e.g.
+						// diagnostics) before handing a clone to the detached
+						// goroutine; no further writes to the shared operation
+						// values happen after this point.
+						req.SetOperationValue(retryContext)
+						p.spawnDetachedFailover(req, o, retryContext)
+					}
+				}
+				// Surface the caller's cancellation cause, preserving the
+				// underlying transport error for diagnostics.
+				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", callerCtx.Err(), err))
+			}
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
@@ -358,8 +411,120 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return true, nil
 	}
 
-	// At most one cross-region failover per request.
+	// At most one cross-region failover per request. The bookkeeping is
+	// shared with the detached-grace path in Do via performCrossRegionFailover.
+	failedOver, err := p.performCrossRegionFailover(req, kind, isWriteOperation, retryContext)
+	if err != nil {
+		return false, err
+	}
+	if !failedOver {
+		return false, nil
+	}
+	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
+		return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
+	}
+	return true, nil
+}
+
+// hasCrossRegionTarget reports whether the location cache currently resolves
+// more than one endpoint for the operation, i.e. whether a cross-region
+// failover would actually reach a different region. It gates the detached
+// failover path in Do so single-region accounts keep their fail-fast behavior
+// when the caller cancels: re-attempting the same (only) region on a detached
+// context would be pointless background work.
+func (p *clientRetryPolicy) hasCrossRegionTarget(isWriteOperation bool) bool {
+	if !p.gem.locationCache.enableCrossRegionRetries {
+		return false
+	}
+	if isWriteOperation {
+		eps, err := p.gem.locationCache.writeEndpoints()
+		return err == nil && len(eps) > 1
+	}
+	return p.gem.locationCache.readEndpointCount() > 1
+}
+
+// spawnDetachedFailover launches a single, internally bounded cross-region
+// failover attempt on a goroutine whose context is detached from the (already
+// cancelled) caller via context.WithoutCancel. It is the Go analogue of the
+// .NET MetadataDetachedExecutor (azure-cosmos-dotnet-v3#5844): the caller has
+// surfaced its cancellation, but the failover read still runs to completion in
+// the background so its side-effects -- LocationCache region marking (already
+// applied synchronously by performCrossRegionFailover), connection-pool warming
+// against the healthy region, and any downstream cache population -- accrue for
+// subsequent callers.
+//
+// Only READ operations are detached. Writes may carry a request body whose
+// stream is shared with the returning caller's request, and replaying a
+// non-idempotent mutation is unsafe regardless. The attempt is bounded by
+// metadataFailoverGraceWindow and by being a single request with no inner retry
+// loop, so a cancelled request cannot leak unbounded background work. Panics in
+// the detached goroutine are recovered and logged rather than crashing the
+// process (an unrecovered panic in a detached goroutine terminates the host).
+func (p *clientRetryPolicy) spawnDetachedFailover(req *policy.Request, o pipelineRequestOptions, rc retryContext) {
+	// Resolve the failover endpoint now, using the bookkeeping that
+	// performCrossRegionFailover just applied to rc (resolveFromHead for a
+	// demoted not-sent endpoint, or an advanced retryCount for an ambiguous
+	// read).
+	locationIndex := rc.retryCount
+	if rc.resolveFromHead {
+		locationIndex = 0
+	}
+	resolved := p.gem.ResolveServiceEndpoint(locationIndex, o.resourceType, o.isWriteOperation, rc.useWriteEndpoint)
+
+	// Detach from the caller: context.WithoutCancel preserves context values
+	// (diagnostics state, auth options) while shedding the caller's cancelled
+	// deadline. The internal timeout bounds the background work.
+	detachedCtx, cancel := context.WithTimeout(context.WithoutCancel(req.Raw().Context()), metadataFailoverGraceWindow)
+	clone := req.Clone(detachedCtx)
+	clone.Raw().Host = resolved.Host
+	clone.Raw().URL.Host = resolved.Host
+
+	go func() {
+		defer cancel()
+		defer func() {
+			if r := recover(); r != nil {
+				log.Writef(azlog.EventResponse,
+					"panic in azcosmos detached metadata failover: %v\n%s", r, debug.Stack())
+			}
+		}()
+		// clone.Next() dispatches to the policies after clientRetryPolicy
+		// (auth, then transport); it does not re-enter this retry loop, so the
+		// attempt is exactly one request against the failover region.
+		resp, err := clone.Next()
+		if err != nil {
+			log.Writef(azlog.EventResponse,
+				"azcosmos detached metadata failover attempt failed: %v", err)
+			return
+		}
+		if resp != nil && resp.Body != nil {
+			// Drain and close so the connection returns to the pool and
+			// nothing leaks.
+			_, _ = io.Copy(io.Discard, resp.Body)
+			resp.Body.Close()
+		}
+	}()
+}
+
+// performCrossRegionFailover applies the one-shot cross-region failover
+// bookkeeping for a connection error and records that the single failover has
+// been consumed. For a not-sent failure it marks the current endpoint
+// unavailable and pins the next resolve to the head of the (now demoted) route
+// list; for an ambiguous failure it advances to the next preferred region
+// without marking (mirroring the 503/408 paths). It returns false -- without
+// mutating failover state -- when no cross-region failover is possible: the
+// failover was already performed, the retry budget is exhausted, cross-region
+// retries are disabled, or the operation is an unsafe write (an ambiguous
+// write, or a single-master write that cannot reroute). It does NOT sleep;
+// callers apply backoff as appropriate.
+//
+// MarkEndpointUnavailable* is only invoked for connectionErrorNotSent; a single
+// mid-exchange failure is too weak a signal to declare the whole region
+// unavailable for concurrent and future traffic.
+func (p *clientRetryPolicy) performCrossRegionFailover(req *policy.Request, kind connectionErrorKind, isWriteOperation bool, retryContext *retryContext) (bool, error) {
 	if retryContext.crossRegionFailoverDone {
+		return false, nil
+	}
+	if retryContext.retryCount > maxRetryCount || !p.gem.locationCache.enableCrossRegionRetries {
 		return false, nil
 	}
 
@@ -405,9 +570,6 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 
 	retryContext.sameRegionRetryCount = 0
 	retryContext.crossRegionFailoverDone = true
-	if sleepErr := sleepWithContext(req.Raw().Context(), defaultBackoff*time.Second); sleepErr != nil {
-		return false, fmt.Errorf("%w: underlying transport error: %v", sleepErr, transportErr)
-	}
 	return true, nil
 }
 

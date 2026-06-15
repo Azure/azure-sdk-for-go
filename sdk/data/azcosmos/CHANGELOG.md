@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+* Fixed cross-region failover being preempted when the caller's `context` is cancelled (or its deadline expires) while a read is in flight against an unhealthy region. The retry policy now applies the cross-region failover decision before honoring caller cancellation: the unhealthy region is marked unavailable so subsequent callers fail over, and the failover read is completed on a detached, internally bounded `context.WithoutCancel` background attempt against the next preferred region. The cancelled caller still surfaces its own cancellation. This is the Go port of [azure-cosmos-dotnet-v3#5844](https://github.com/Azure/azure-cosmos-dotnet-v3/pull/5844) and addresses [issue 26649](https://github.com/Azure/azure-sdk-for-go/issues/26649).
+
 ### Other Changes
 
 ## 1.5.0-beta.7 (2026-06-02)

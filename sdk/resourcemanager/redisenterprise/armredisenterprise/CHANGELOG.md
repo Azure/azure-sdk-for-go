@@ -1,21 +1,12 @@
 # Release History
 
-## 4.0.0-beta.2 (2026-06-11)
-### Breaking Changes
-
-- Type of `Cluster.Identity` has been changed from `*ManagedServiceIdentity` to `*ManagedServiceIdentityV4`
-- Type of `ClusterUpdate.Identity` has been changed from `*ManagedServiceIdentity` to `*ManagedServiceIdentityV4`
-- `ManagedServiceIdentityTypeSystemAssignedUserAssigned` from enum `ManagedServiceIdentityType` has been removed
-- Struct `ManagedServiceIdentity` has been removed
-
+## 4.0.0-beta.2 (2026-06-16)
 ### Features Added
 
-- New value `ManagedServiceIdentityTypeSystemAndUserAssigned` added to enum type `ManagedServiceIdentityType`
 - New value `MigrationProvisioningStateCancellationFailed` added to enum type `MigrationProvisioningState`
 - New function `*ClientFactory.NewMigrationsClient() *MigrationsClient`
 - New function `NewMigrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error)`
 - New function `*MigrationsClient.Validate(ctx context.Context, resourceGroupName string, clusterName string, body MigrationValidationRequest, options *MigrationsClientValidateOptions) (MigrationsClientValidateResponse, error)`
-- New struct `ManagedServiceIdentityV4`
 - New struct `MigrationValidationDisparity`
 - New struct `MigrationValidationError`
 - New struct `MigrationValidationRequest`

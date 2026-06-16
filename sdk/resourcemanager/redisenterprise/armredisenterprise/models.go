@@ -118,7 +118,7 @@ type Cluster struct {
 	SKU *SKU
 
 	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentityV4
+	Identity *ManagedServiceIdentity
 
 	// Other properties of the cluster.
 	Properties *ClusterCreateProperties
@@ -229,7 +229,7 @@ type ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity struct {
 // ClusterUpdate - A partial update to the Redis Enterprise cluster
 type ClusterUpdate struct {
 	// The managed service identities assigned to this resource.
-	Identity *ManagedServiceIdentityV4
+	Identity *ManagedServiceIdentity
 
 	// Other properties of the cluster.
 	Properties *ClusterUpdateProperties
@@ -531,8 +531,8 @@ type MaintenanceWindowSchedule struct {
 	DayOfWeek *MaintenanceDayOfWeek
 }
 
-// ManagedServiceIdentityV4 - Managed service identity (system assigned and/or user assigned identities)
-type ManagedServiceIdentityV4 struct {
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
 	Type *ManagedServiceIdentityType
 

@@ -24,7 +24,7 @@ func ExampleClient_BeginCreate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreate(ctx, "rg1", "cache1", armredisenterprise.Cluster{
-		Identity: &armredisenterprise.ManagedServiceIdentityV4{
+		Identity: &armredisenterprise.ManagedServiceIdentity{
 			Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armredisenterprise.UserAssignedIdentity{
 				"/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity": {},
@@ -100,7 +100,7 @@ func ExampleClient_BeginCreate() {
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
-	// 		Identity: &armredisenterprise.ManagedServiceIdentityV4{
+	// 		Identity: &armredisenterprise.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeUserAssigned),
 	// 			UserAssignedIdentities: map[string]*armredisenterprise.UserAssignedIdentity{
 	// 				"/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity": &armredisenterprise.UserAssignedIdentity{
@@ -494,7 +494,7 @@ func ExampleClient_BeginUpdate() {
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1"),
-	// 		Identity: &armredisenterprise.ManagedServiceIdentityV4{
+	// 		Identity: &armredisenterprise.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeNone),
 	// 		},
 	// 		Kind: to.Ptr(armredisenterprise.KindV1),

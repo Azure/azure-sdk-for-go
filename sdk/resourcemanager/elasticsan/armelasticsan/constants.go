@@ -4,6 +4,10 @@
 
 package armelasticsan
 
+const (
+	version20250901 string = "2025-09-01"
+)
+
 // Action - The action of virtual network rule.
 type Action string
 

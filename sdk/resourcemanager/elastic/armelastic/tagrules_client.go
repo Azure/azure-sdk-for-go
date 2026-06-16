@@ -18,6 +18,8 @@ import (
 
 // TagRulesClient contains the methods for the TagRules group.
 // Don't use this type directly, use NewTagRulesClient() instead.
+//
+// Generated from API version 2025-06-01
 type TagRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewTagRulesClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Create or update a tag rule set for a given Elastic monitor resource, enabling fine-grained control over
 // observability based on resource tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - body - request body of MonitoringTagRules
 //   - options - TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
@@ -93,8 +93,8 @@ func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -115,8 +115,6 @@ func (client *TagRulesClient) createOrUpdateHandleResponse(resp *http.Response) 
 // BeginDelete - Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability
 // based on resource tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - ruleSetName - Tag Rule Set resource name
@@ -141,8 +139,6 @@ func (client *TagRulesClient) BeginDelete(ctx context.Context, resourceGroupName
 // Delete - Delete a tag rule set for a given Elastic monitor resource, removing fine-grained control over observability based
 // on resource tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *TagRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TagRulesClient.BeginDelete"
@@ -188,15 +184,13 @@ func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get detailed information about a tag rule set for a given Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - ruleSetName - Tag Rule Set resource name
@@ -247,8 +241,8 @@ func (client *TagRulesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,8 +258,6 @@ func (client *TagRulesClient) getHandleResponse(resp *http.Response) (TagRulesCl
 
 // NewListPager - List all tag rules for a given Elastic monitor resource, helping you manage fine-grained control over observability
 // based on resource tags.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - TagRulesClientListOptions contains the optional parameters for the TagRulesClient.NewListPager method.
@@ -312,8 +304,8 @@ func (client *TagRulesClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

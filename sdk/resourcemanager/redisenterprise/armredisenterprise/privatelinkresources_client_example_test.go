@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseListPrivateLinkResources.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseListPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

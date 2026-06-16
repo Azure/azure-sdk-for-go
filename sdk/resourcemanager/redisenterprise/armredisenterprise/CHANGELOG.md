@@ -1,5 +1,29 @@
 # Release History
 
+## 4.0.0-beta.2 (2026-06-16)
+### Breaking Changes
+
+- `ManagedServiceIdentityTypeSystemAssignedUserAssigned` from enum `ManagedServiceIdentityType` has been removed
+
+### Features Added
+
+- New value `ManagedServiceIdentityTypeSYSTEMASSIGNEDUSERASSIGNED` added to enum type `ManagedServiceIdentityType`
+- New value `MigrationProvisioningStateCancellationFailed` added to enum type `MigrationProvisioningState`
+- New function `*ClientFactory.NewMigrationsClient() *MigrationsClient`
+- New function `NewMigrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error)`
+- New function `*MigrationsClient.Validate(ctx context.Context, resourceGroupName string, clusterName string, body MigrationValidationRequest, options *MigrationsClientValidateOptions) (MigrationsClientValidateResponse, error)`
+- New struct `MigrationValidationDisparity`
+- New struct `MigrationValidationError`
+- New struct `MigrationValidationRequest`
+- New struct `MigrationValidationResponse`
+- New struct `MigrationValidationWarning`
+- New field `ForceMigrate` in struct `AzureCacheForRedisMigrationProperties`
+- New field `MigratedEndpoint` in struct `ClusterCreateProperties`
+- New field `MigratedEndpoint` in struct `ClusterUpdateProperties`
+- New field `NotifyKeyspaceEvents` in struct `DatabaseCreateProperties`
+- New field `NotifyKeyspaceEvents` in struct `DatabaseUpdateProperties`
+
+
 ## 4.0.0-beta.1 (2026-03-19)
 ### Breaking Changes
 

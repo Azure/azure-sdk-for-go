@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -38,7 +38,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseGetPrivateEndpointConnection.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseGetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armredisenterprise.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armredisenterprise.PrivateEndpointConnection{
 	// 		Name: to.Ptr("pectest01"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/privateEndpointConnections/pectest01"),
@@ -76,7 +76,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseListPrivateEndpointConnections.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterprisePutPrivateEndpointConnection.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterprisePutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,6 +163,6 @@ func ExamplePrivateEndpointConnectionsClient_BeginPut() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseAccessPolicyAssignmentCreateUpdate.json
 func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.AccessPolicyAssignmentClientCreateUpdateResponse{
-	// 	AccessPolicyAssignment: &armredisenterprise.AccessPolicyAssignment{
+	// 	AccessPolicyAssignment: armredisenterprise.AccessPolicyAssignment{
 	// 		Name: to.Ptr("defaultTestEntraApp1"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/accessPolicyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default/accessPolicyAssignments/default-TestEntraApp1"),
@@ -57,7 +57,7 @@ func ExampleAccessPolicyAssignmentClient_BeginCreateUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseAccessPolicyAssignmentDelete.json
 func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,11 +74,11 @@ func ExampleAccessPolicyAssignmentClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseAccessPolicyAssignmentGet.json
 func ExampleAccessPolicyAssignmentClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleAccessPolicyAssignmentClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.AccessPolicyAssignmentClientGetResponse{
-	// 	AccessPolicyAssignment: &armredisenterprise.AccessPolicyAssignment{
+	// 	AccessPolicyAssignment: armredisenterprise.AccessPolicyAssignment{
 	// 		Name: to.Ptr("accessPolicyAssignmentName1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis/accessPolicyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1/accessPolicyAssignments/accessPolicyAssignmentName1"),
@@ -112,7 +112,7 @@ func ExampleAccessPolicyAssignmentClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseAccessPolicyAssignmentsList.json
 func ExampleAccessPolicyAssignmentClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

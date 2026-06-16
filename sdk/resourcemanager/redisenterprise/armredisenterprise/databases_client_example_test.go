@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesCreate.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,6 +30,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 			ClusteringPolicy:         to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 			DeferUpgrade:             to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 			EvictionPolicy:           to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+			NotifyKeyspaceEvents:     to.Ptr("KEA"),
 			Modules: []*armredisenterprise.Module{
 				{
 					Name: to.Ptr("RedisBloom"),
@@ -55,13 +56,13 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientCreateResponse{
-	// 	Database: &armredisenterprise.Database{
+	// 	Database: armredisenterprise.Database{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
@@ -71,6 +72,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+	// 			NotifyKeyspaceEvents: to.Ptr("KEA"),
 	// 			Modules: []*armredisenterprise.Module{
 	// 				{
 	// 					Name: to.Ptr("RedisBloom"),
@@ -101,7 +103,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesCreateWithGeoReplication.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesCreateWithGeoReplication.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActiveGeoReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +131,8 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 					},
 				},
 			},
-			Port: to.Ptr[int32](10000),
+			NotifyKeyspaceEvents: to.Ptr("KEA"),
+			Port:                 to.Ptr[int32](10000),
 		},
 	}, nil)
 	if err != nil {
@@ -137,13 +140,13 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientCreateResponse{
-	// 	Database: &armredisenterprise.Database{
+	// 	Database: armredisenterprise.Database{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
@@ -166,6 +169,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	// 					},
 	// 				},
 	// 			},
+	// 			NotifyKeyspaceEvents: to.Ptr("KEA"),
 	// 			Port: to.Ptr[int32](10000),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateUpdating),
 	// 			RedisVersion: to.Ptr("6.0"),
@@ -175,7 +179,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesNoClusterCacheCreate.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesNoClusterCacheCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,10 +192,11 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
 		Properties: &armredisenterprise.DatabaseCreateProperties{
-			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
-			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
-			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
-			Port:             to.Ptr[int32](10000),
+			ClientProtocol:       to.Ptr(armredisenterprise.ProtocolEncrypted),
+			ClusteringPolicy:     to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
+			EvictionPolicy:       to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+			NotifyKeyspaceEvents: to.Ptr(""),
+			Port:                 to.Ptr[int32](10000),
 		},
 	}, nil)
 	if err != nil {
@@ -199,13 +204,13 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientCreateResponse{
-	// 	Database: &armredisenterprise.Database{
+	// 	Database: armredisenterprise.Database{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
@@ -215,6 +220,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+	// 			NotifyKeyspaceEvents: to.Ptr(""),
 	// 			Port: to.Ptr[int32](10000),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateUpdating),
 	// 			RedisVersion: to.Ptr("7.2"),
@@ -224,7 +230,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesDelete.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +247,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -250,7 +256,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesExport.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesExport.json
 func ExampleDatabasesClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +275,7 @@ func ExampleDatabasesClient_BeginExport() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -278,7 +284,7 @@ func ExampleDatabasesClient_BeginExport() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesFlush.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesFlush.json
 func ExampleDatabasesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +306,7 @@ func ExampleDatabasesClient_BeginFlush() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -309,7 +315,7 @@ func ExampleDatabasesClient_BeginFlush() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesForceLink.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesForceLink.json
 func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,11 +344,11 @@ func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesForceUnlink.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesForceUnlink.json
 func ExampleDatabasesClient_BeginForceUnlink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +369,7 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -372,7 +378,7 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesGet.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -391,7 +397,7 @@ func ExampleDatabasesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientGetResponse{
-	// 	Database: &armredisenterprise.Database{
+	// 	Database: armredisenterprise.Database{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
@@ -401,6 +407,7 @@ func ExampleDatabasesClient_Get() {
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+	// 			NotifyKeyspaceEvents: to.Ptr(""),
 	// 			Modules: []*armredisenterprise.Module{
 	// 				{
 	// 					Name: to.Ptr("RediSearch"),
@@ -421,7 +428,7 @@ func ExampleDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesImport.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesImport.json
 func ExampleDatabasesClient_BeginImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,7 +450,7 @@ func ExampleDatabasesClient_BeginImport() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -452,7 +459,7 @@ func ExampleDatabasesClient_BeginImport() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesListByCluster.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesListByCluster.json
 func ExampleDatabasesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,6 +494,7 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 		// 					ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 		// 					DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 		// 					EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+		// 					NotifyKeyspaceEvents: to.Ptr(""),
 		// 					Modules: []*armredisenterprise.Module{
 		// 						{
 		// 							Name: to.Ptr("RediSearch"),
@@ -510,7 +518,7 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesListKeys.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesListKeys.json
 func ExampleDatabasesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,14 +537,14 @@ func ExampleDatabasesClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientListKeysResponse{
-	// 	AccessKeys: &armredisenterprise.AccessKeys{
+	// 	AccessKeys: armredisenterprise.AccessKeys{
 	// 		PrimaryKey: to.Ptr("<primaryKey>"),
 	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesRegenerateKey.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesRegenerateKey.json
 func ExampleDatabasesClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,20 +563,20 @@ func ExampleDatabasesClient_BeginRegenerateKey() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientRegenerateKeyResponse{
-	// 	AccessKeys: &armredisenterprise.AccessKeys{
+	// 	AccessKeys: armredisenterprise.AccessKeys{
 	// 		PrimaryKey: to.Ptr("<primaryKey>"),
 	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClusteringOnNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,10 +589,11 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "rg1", "cache1", "default", armredisenterprise.DatabaseUpdate{
 		Properties: &armredisenterprise.DatabaseUpdateProperties{
-			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
-			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
-			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
-			Port:             to.Ptr[int32](10000),
+			ClientProtocol:       to.Ptr(armredisenterprise.ProtocolEncrypted),
+			ClusteringPolicy:     to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
+			EvictionPolicy:       to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+			NotifyKeyspaceEvents: to.Ptr(""),
+			Port:                 to.Ptr[int32](10000),
 		},
 	}, nil)
 	if err != nil {
@@ -592,13 +601,13 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientUpdateResponse{
-	// 	Database: &armredisenterprise.Database{
+	// 	Database: armredisenterprise.Database{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
@@ -608,6 +617,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+	// 			NotifyKeyspaceEvents: to.Ptr(""),
 	// 			Port: to.Ptr[int32](10000),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateUpdating),
 	// 			RedisVersion: to.Ptr("7.2"),
@@ -617,7 +627,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesUpdate.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesUpdate.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -633,6 +643,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 			AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 			ClientProtocol:           to.Ptr(armredisenterprise.ProtocolEncrypted),
 			EvictionPolicy:           to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+			NotifyKeyspaceEvents:     to.Ptr("KEA"),
 			Persistence: &armredisenterprise.Persistence{
 				RdbEnabled:   to.Ptr(true),
 				RdbFrequency: to.Ptr(armredisenterprise.RdbFrequencyTwelveH),
@@ -644,13 +655,13 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.DatabasesClientUpdateResponse{
-	// 	Database: &armredisenterprise.Database{
+	// 	Database: armredisenterprise.Database{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/databases"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/databases/default"),
@@ -660,6 +671,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+	// 			NotifyKeyspaceEvents: to.Ptr("KEA"),
 	// 			Modules: []*armredisenterprise.Module{
 	// 				{
 	// 					Name: to.Ptr("RediSearch"),
@@ -680,7 +692,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
+// Generated from example definition: 2026-02-01-preview/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
 func ExampleDatabasesClient_BeginUpgradeDBRedisVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -697,6 +709,6 @@ func ExampleDatabasesClient_BeginUpgradeDBRedisVersion() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

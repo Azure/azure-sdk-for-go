@@ -58,8 +58,8 @@ func (c *CapabilitiesByServerServerTransport) dispatchToMethodFake(req *http.Req
 	go func() {
 		var intercepted bool
 		var res result
-		if capabilitiesByServerTransportInterceptor != nil {
-			res.resp, res.err, intercepted = capabilitiesByServerTransportInterceptor.Do(req)
+		if capabilitiesByServerServerTransportInterceptor != nil {
+			res.resp, res.err, intercepted = capabilitiesByServerServerTransportInterceptor.Do(req)
 		}
 		if !intercepted {
 			switch method {
@@ -123,7 +123,7 @@ func (c *CapabilitiesByServerServerTransport) dispatchNewListPager(req *http.Req
 }
 
 // set this to conditionally intercept incoming requests to CapabilitiesByServerServerTransport
-var capabilitiesByServerTransportInterceptor interface {
+var capabilitiesByServerServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)
 }

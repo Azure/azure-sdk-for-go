@@ -49,13 +49,13 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.CachesClientCreateOrUpdateResponse{
-	// 	Cache: &armnetapp.Cache{
+	// 	Cache: armnetapp.Cache{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/caches/cache1"),
 	// 		Name: to.Ptr("account1/pool1/cache1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
@@ -104,7 +104,7 @@ func ExampleCachesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -127,7 +127,7 @@ func ExampleCachesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.CachesClientGetResponse{
-	// 	Cache: &armnetapp.Cache{
+	// 	Cache: armnetapp.Cache{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/caches/cache1"),
 	// 		Name: to.Ptr("account1/pool1/cache1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
@@ -238,7 +238,7 @@ func ExampleCachesClient_ListPeeringPassphrases() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.CachesClientListPeeringPassphrasesResponse{
-	// 	PeeringPassphrases: &armnetapp.PeeringPassphrases{
+	// 	PeeringPassphrases: armnetapp.PeeringPassphrases{
 	// 		ClusterPeeringCommand: to.Ptr("cluster peer create -ipspace replication -encryption-protocol-proposed tls-psk -passphrase passphraseString -peer-addrs 192.0.2.10,192.0.2.11,192.0.2.12,192.0.2.13,192.0.2.14,192.0.2.15"),
 	// 		ClusterPeeringPassphrase: to.Ptr("f@&@B^#r!"),
 	// 		VserverPeeringCommand: to.Ptr("vserver peer accept -vserver {onPremiseSVMName} -peer-vserver {anfSVMName}"),
@@ -265,12 +265,39 @@ func ExampleCachesClient_BeginPoolChange() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.CachesClientPoolChangeResponse{
+	// 	Cache: armnetapp.Cache{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/caches/cache1"),
+	// 		Name: to.Ptr("account1/pool1/cache1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetapp.CacheProperties{
+	// 			FilePath: to.Ptr("cache-west-us2-01"),
+	// 			Size: to.Ptr[int64](107374182400),
+	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
+	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
+	// 			CacheSubnetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/cacheVnet/subnets/cacheSubnet1"),
+	// 			PeeringSubnetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/icLifVnet/subnets/peeringSubnet1"),
+	// 			EncryptionKeySource: to.Ptr(armnetapp.EncryptionKeySourceMicrosoftNetApp),
+	// 			OriginClusterInformation: &armnetapp.OriginClusterInformation{
+	// 				PeerClusterName: to.Ptr("cluster1"),
+	// 				PeerAddresses: []*string{
+	// 					to.Ptr("192.0.2.10"),
+	// 					to.Ptr("192.0.2.10"),
+	// 				},
+	// 				PeerVserverName: to.Ptr("vserver1"),
+	// 				PeerVolumeName: to.Ptr("originvol1"),
+	// 			},
+	// 			CifsChangeNotifications: to.Ptr(armnetapp.CifsChangeNotifyStateDisabled),
+	// 			GlobalFileLocking: to.Ptr(armnetapp.GlobalFileLockingStateDisabled),
+	// 			WriteBack: to.Ptr(armnetapp.EnableWriteBackStateDisabled),
+	// 		},
+	// 	},
 	// }
 }
 
@@ -291,12 +318,35 @@ func ExampleCachesClient_BeginResetSmbPassword() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.CachesClientResetSmbPasswordResponse{
+	// 	Cache: armnetapp.Cache{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/caches/cache1"),
+	// 		Name: to.Ptr("account1/pool1/cache1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetapp.CacheProperties{
+	// 			FilePath: to.Ptr("cache1"),
+	// 			Size: to.Ptr[int64](107374182400),
+	// 			ProvisioningState: to.Ptr(armnetapp.CacheProvisioningStateSucceeded),
+	// 			CacheState: to.Ptr(armnetapp.CacheLifeCycleStateSucceeded),
+	// 			CacheSubnetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/cacheSubnet"),
+	// 			PeeringSubnetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/peeringSubnet"),
+	// 			EncryptionKeySource: to.Ptr(armnetapp.EncryptionKeySourceMicrosoftNetApp),
+	// 			OriginClusterInformation: &armnetapp.OriginClusterInformation{
+	// 				PeerClusterName: to.Ptr("cluster1"),
+	// 				PeerAddresses: []*string{
+	// 					to.Ptr("10.0.0.5"),
+	// 				},
+	// 				PeerVserverName: to.Ptr("vserver1"),
+	// 				PeerVolumeName: to.Ptr("volume1"),
+	// 			},
+	// 		},
+	// 	},
 	// }
 }
 
@@ -321,13 +371,13 @@ func ExampleCachesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.CachesClientUpdateResponse{
-	// 	Cache: &armnetapp.Cache{
+	// 	Cache: armnetapp.Cache{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/caches/cache1"),
 	// 		Name: to.Ptr("account1/pool1/cache1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/caches"),

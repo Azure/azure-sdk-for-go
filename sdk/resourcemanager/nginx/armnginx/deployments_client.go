@@ -18,6 +18,8 @@ import (
 
 // DeploymentsClient contains the methods for the Deployments group.
 // Don't use this type directly, use NewDeploymentsClient() instead.
+//
+// Generated from API version 2025-11-01
 type DeploymentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Create or update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - body - The Nginx deployment
@@ -67,8 +67,6 @@ func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Create or update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, body Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Delete the NGINX deployment resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Delete the NGINX deployment resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - options - DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
@@ -243,8 +235,8 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 }
 
 // NewListPager - List the NGINX deployments resources
-//
-// Generated from API version 2025-11-01
 //   - options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 func (client *DeploymentsClient) NewListPager(options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentsClientListResponse]{
@@ -297,8 +287,8 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, _ *Deplo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -313,8 +303,6 @@ func (client *DeploymentsClient) listHandleResponse(resp *http.Response) (Deploy
 }
 
 // NewListByResourceGroupPager - List all NGINX deployments under the specified resource group.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DeploymentsClientListByResourceGroupOptions contains the optional parameters for the DeploymentsClient.NewListByResourceGroupPager
 //     method.
@@ -357,8 +345,8 @@ func (client *DeploymentsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -374,8 +362,6 @@ func (client *DeploymentsClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // BeginUpdate - Update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - body - The Nginx deployment update parameters
@@ -399,8 +385,6 @@ func (client *DeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupN
 
 // Update - Update the NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *DeploymentsClient) update(ctx context.Context, resourceGroupName string, deploymentName string, body DeploymentUpdateParameters, options *DeploymentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DeploymentsClient.BeginUpdate"
@@ -442,8 +426,8 @@ func (client *DeploymentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

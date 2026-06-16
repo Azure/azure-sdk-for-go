@@ -1,0 +1,27 @@
+{
+  "succeed_to_regenerate": [
+    "armmanagementgroups",
+    "armmaps",
+    "armmarketplace",
+    "armnetapp",
+    "armnginx",
+    "armpeering",
+    "armpolicy",
+    "armpolicyinsights",
+    "armpostgresqlflexibleservers",
+    "armpowerbidedicated",
+    "armprivatedns",
+    "armproviderhub",
+    "armpurview",
+    "armrecoveryservices",
+    "armrecoveryservicesbackup",
+    "armrecoveryservicesdatareplication",
+    "armrecoveryservicessiterecovery"
+  ],
+  "fail_to_regenerate": [
+    "armnetworkfunction"
+  ],
+  "not_found_api_version": [],
+  "time_to_regenerate": "2026-06-16 04:59:13.012939",
+  "typespec_go_commit_hash": "d9189b9ac731386020e6039b16f0220f1e0b0889"
+}

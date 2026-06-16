@@ -18,6 +18,8 @@ import (
 
 // DeploymentWafPoliciesClient contains the methods for the DeploymentWafPolicies group.
 // Don't use this type directly, use NewDeploymentWafPoliciesClient() instead.
+//
+// Generated from API version 2025-11-01
 type DeploymentWafPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDeploymentWafPoliciesClient(subscriptionID string, credential azcore.Tok
 
 // Analysis - Analyze an Nginx Waf Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentName - The name of targeted NGINX deployment
 //   - wafPolicyName - The name of Waf Policy
@@ -94,8 +94,8 @@ func (client *DeploymentWafPoliciesClient) analysisCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

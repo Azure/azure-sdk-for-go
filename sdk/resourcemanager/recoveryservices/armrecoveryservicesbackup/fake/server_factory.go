@@ -66,6 +66,9 @@ type ServerFactory struct {
 	// BackupsServer contains the fakes for client BackupsClient
 	BackupsServer BackupsServer
 
+	// Server contains the fakes for client Client
+	Server Server
+
 	// DeletedProtectionContainersServer contains the fakes for client DeletedProtectionContainersClient
 	DeletedProtectionContainersServer DeletedProtectionContainersServer
 
@@ -147,9 +150,6 @@ type ServerFactory struct {
 	// RecoveryPointsRecommendedForMoveServer contains the fakes for client RecoveryPointsRecommendedForMoveClient
 	RecoveryPointsRecommendedForMoveServer RecoveryPointsRecommendedForMoveServer
 
-	// RecoveryServicesServer contains the fakes for client RecoveryServicesClient
-	RecoveryServicesServer RecoveryServicesServer
-
 	// ResourceGuardProxiesServer contains the fakes for client ResourceGuardProxiesClient
 	ResourceGuardProxiesServer ResourceGuardProxiesServer
 
@@ -206,6 +206,7 @@ type ServerFactoryTransport struct {
 	trBackupUsageSummariesServer                       *BackupUsageSummariesServerTransport
 	trBackupWorkloadItemsServer                        *BackupWorkloadItemsServerTransport
 	trBackupsServer                                    *BackupsServerTransport
+	trServer                                           *ServerTransport
 	trDeletedProtectionContainersServer                *DeletedProtectionContainersServerTransport
 	trExportJobsOperationResultsServer                 *ExportJobsOperationResultsServerTransport
 	trFeatureSupportServer                             *FeatureSupportServerTransport
@@ -233,7 +234,6 @@ type ServerFactoryTransport struct {
 	trProtectionPolicyOperationStatusesServer          *ProtectionPolicyOperationStatusesServerTransport
 	trRecoveryPointsServer                             *RecoveryPointsServerTransport
 	trRecoveryPointsRecommendedForMoveServer           *RecoveryPointsRecommendedForMoveServerTransport
-	trRecoveryServicesServer                           *RecoveryServicesServerTransport
 	trResourceGuardProxiesServer                       *ResourceGuardProxiesServerTransport
 	trResourceGuardProxyServer                         *ResourceGuardProxyServerTransport
 	trRestoresServer                                   *RestoresServerTransport
@@ -336,6 +336,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "BackupsClient":
 		initServer(&s.trMu, &s.trBackupsServer, func() *BackupsServerTransport { return NewBackupsServerTransport(&s.srv.BackupsServer) })
 		resp, err = s.trBackupsServer.Do(req)
+	case "Client":
+		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
+		resp, err = s.trServer.Do(req)
 	case "DeletedProtectionContainersClient":
 		initServer(&s.trMu, &s.trDeletedProtectionContainersServer, func() *DeletedProtectionContainersServerTransport {
 			return NewDeletedProtectionContainersServerTransport(&s.srv.DeletedProtectionContainersServer)
@@ -463,11 +466,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewRecoveryPointsRecommendedForMoveServerTransport(&s.srv.RecoveryPointsRecommendedForMoveServer)
 		})
 		resp, err = s.trRecoveryPointsRecommendedForMoveServer.Do(req)
-	case "RecoveryServicesClient":
-		initServer(&s.trMu, &s.trRecoveryServicesServer, func() *RecoveryServicesServerTransport {
-			return NewRecoveryServicesServerTransport(&s.srv.RecoveryServicesServer)
-		})
-		resp, err = s.trRecoveryServicesServer.Do(req)
 	case "ResourceGuardProxiesClient":
 		initServer(&s.trMu, &s.trResourceGuardProxiesServer, func() *ResourceGuardProxiesServerTransport {
 			return NewResourceGuardProxiesServerTransport(&s.srv.ResourceGuardProxiesServer)

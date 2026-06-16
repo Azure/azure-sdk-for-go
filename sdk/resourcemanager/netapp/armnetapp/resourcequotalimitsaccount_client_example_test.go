@@ -30,7 +30,7 @@ func ExampleResourceQuotaLimitsAccountClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceQuotaLimitsAccountClientGetResponse{
-	// 	SubscriptionQuotaItem: &armnetapp.SubscriptionQuotaItem{
+	// 	SubscriptionQuotaItem: armnetapp.SubscriptionQuotaItem{
 	// 		ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/myAccount/quotaLimits/poolsPerAccount"),
 	// 		Name: to.Ptr("myAccount/poolsPerAccount"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/quotaLimits"),

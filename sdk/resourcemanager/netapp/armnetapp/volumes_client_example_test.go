@@ -29,13 +29,13 @@ func ExampleVolumesClient_BeginAuthorizeExternalReplication() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientAuthorizeExternalReplicationResponse{
-	// 	SvmPeerCommandResponse: &armnetapp.SvmPeerCommandResponse{
+	// 	SvmPeerCommandResponse: armnetapp.SvmPeerCommandResponse{
 	// 		Properties: &armnetapp.SvmPeerCommandResponseProperties{
 	// 			SvmPeeringCommand: to.Ptr("vserver peer accept -vserver OnPremSvm -peer-vserver AnfSvm"),
 	// 		},
@@ -62,7 +62,7 @@ func ExampleVolumesClient_BeginAuthorizeReplication() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -92,7 +92,7 @@ func ExampleVolumesClient_BeginBreakFileLocks() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -121,7 +121,7 @@ func ExampleVolumesClient_BeginBreakReplication() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -155,13 +155,13 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientCreateOrUpdateResponse{
-	// 	Volume: &armnetapp.Volume{
+	// 	Volume: armnetapp.Volume{
 	// 		Name: to.Ptr("account1/pool1/volume1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
@@ -197,7 +197,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -218,7 +218,7 @@ func ExampleVolumesClient_BeginDeleteReplication() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -244,7 +244,7 @@ func ExampleVolumesClient_BeginFinalizeExternalReplication() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -265,7 +265,7 @@ func ExampleVolumesClient_BeginFinalizeRelocation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -293,7 +293,7 @@ func ExampleVolumesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientGetResponse{
-	// 	Volume: &armnetapp.Volume{
+	// 	Volume: armnetapp.Volume{
 	// 		Name: to.Ptr("account1/pool1/volume1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
@@ -382,13 +382,13 @@ func ExampleVolumesClient_BeginListGetGroupIDListForLdapUser() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientListGetGroupIDListForLdapUserResponse{
-	// 	GetGroupIDListForLDAPUserResponse: &armnetapp.GetGroupIDListForLDAPUserResponse{
+	// 	GetGroupIDListForLDAPUserResponse: armnetapp.GetGroupIDListForLDAPUserResponse{
 	// 		GroupIDsForLdapUser: []*string{
 	// 			to.Ptr("123"),
 	// 			to.Ptr("224"),
@@ -414,13 +414,13 @@ func ExampleVolumesClient_BeginListQuotaReport() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientListQuotaReportResponse{
-	// 	ListQuotaReportResult: &armnetapp.ListQuotaReportResult{
+	// 	ListQuotaReportResult: armnetapp.ListQuotaReportResult{
 	// 		Properties: &armnetapp.ListQuotaReportResponse{
 	// 			QuotaReportRecords: []*armnetapp.QuotaReport{
 	// 				{
@@ -513,13 +513,13 @@ func ExampleVolumesClient_BeginPeerExternalCluster() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientPeerExternalClusterResponse{
-	// 	ClusterPeerCommandResponse: &armnetapp.ClusterPeerCommandResponse{
+	// 	ClusterPeerCommandResponse: armnetapp.ClusterPeerCommandResponse{
 	// 		Properties: &armnetapp.ClusterPeerCommandResponseProperties{
 	// 			ClusterPeeringCommand: to.Ptr("cluster peer create -peer-addresses 1.1.1.1,1.1.1.2,1.1.1.3,1.1.1.4,1.1.1.5,1.1.1.6"),
 	// 			Passphrase: to.Ptr("passphraseString"),
@@ -545,7 +545,7 @@ func ExampleVolumesClient_BeginPerformReplicationTransfer() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -568,7 +568,7 @@ func ExampleVolumesClient_BeginPoolChange() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -594,13 +594,13 @@ func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientPopulateAvailabilityZoneResponse{
-	// 	Volume: &armnetapp.Volume{
+	// 	Volume: armnetapp.Volume{
 	// 		Name: to.Ptr("account1/pool1/volume1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
@@ -638,7 +638,7 @@ func ExampleVolumesClient_BeginReInitializeReplication() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -666,7 +666,7 @@ func ExampleVolumesClient_BeginReestablishReplication() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -688,7 +688,7 @@ func ExampleVolumesClient_BeginRelocate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -716,7 +716,7 @@ func ExampleVolumesClient_ReplicationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientReplicationStatusResponse{
-	// 	ReplicationStatus: &armnetapp.ReplicationStatus{
+	// 	ReplicationStatus: armnetapp.ReplicationStatus{
 	// 		ErrorMessage: to.Ptr(""),
 	// 		Healthy: to.Ptr(true),
 	// 		MirrorState: to.Ptr(armnetapp.MirrorStateMirrored),
@@ -743,7 +743,7 @@ func ExampleVolumesClient_BeginResetCifsPassword() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -764,7 +764,7 @@ func ExampleVolumesClient_BeginResyncReplication() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -792,7 +792,7 @@ func ExampleVolumesClient_BeginRevert() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -818,7 +818,7 @@ func ExampleVolumesClient_BeginRevertRelocation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -844,13 +844,13 @@ func ExampleVolumesClient_BeginSplitCloneFromParent() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientSplitCloneFromParentResponse{
-	// 	Volume: &armnetapp.Volume{
+	// 	Volume: armnetapp.Volume{
 	// 		Name: to.Ptr("account1/pool1/volume1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
@@ -890,13 +890,13 @@ func ExampleVolumesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumesClientUpdateResponse{
-	// 	Volume: &armnetapp.Volume{
+	// 	Volume: armnetapp.Volume{
 	// 		Name: to.Ptr("account1/pool1/volume1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),

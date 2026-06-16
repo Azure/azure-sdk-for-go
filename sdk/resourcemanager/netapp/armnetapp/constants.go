@@ -4,6 +4,10 @@
 
 package armnetapp
 
+const (
+	version20260101 string = "2026-01-01"
+)
+
 // AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
 // not have enough space to accommodate the volume after split, it will be automatically resized, which will lead to increased
 // billing. To accept capacity pool size auto grow and create a short term clone volume, set the property as accepted.

@@ -4,6 +4,10 @@
 
 package armpurview
 
+const (
+	version20240401Preview string = "2024-04-01-preview"
+)
+
 // AccountProvisioningState - Gets the account status code.
 type AccountProvisioningState string
 
@@ -196,8 +200,8 @@ const (
 	ManagedIdentityTypeNone ManagedIdentityType = "None"
 	// ManagedIdentityTypeSystemAssigned - SystemAssigned
 	ManagedIdentityTypeSystemAssigned ManagedIdentityType = "SystemAssigned"
-	// ManagedIdentityTypeUserAssigned - UserAssigned
-	ManagedIdentityTypeUserAssigned ManagedIdentityType = "UserAssigned"
+	// ManagedIdentityTypeSystemAssignedUserAssigned - Both SystemAssigned and UserAssigned identities.
+	ManagedIdentityTypeSystemAssignedUserAssigned ManagedIdentityType = "SystemAssigned,UserAssigned"
 )
 
 // PossibleManagedIdentityTypeValues returns the possible values for the ManagedIdentityType const type.
@@ -205,7 +209,7 @@ func PossibleManagedIdentityTypeValues() []ManagedIdentityType {
 	return []ManagedIdentityType{
 		ManagedIdentityTypeNone,
 		ManagedIdentityTypeSystemAssigned,
-		ManagedIdentityTypeUserAssigned,
+		ManagedIdentityTypeSystemAssignedUserAssigned,
 	}
 }
 

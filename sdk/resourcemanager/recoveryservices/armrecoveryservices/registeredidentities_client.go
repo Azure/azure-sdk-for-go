@@ -18,6 +18,8 @@ import (
 
 // RegisteredIdentitiesClient contains the methods for the RegisteredIdentities group.
 // Don't use this type directly, use NewRegisteredIdentitiesClient() instead.
+//
+// Generated from API version 2025-02-01
 type RegisteredIdentitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRegisteredIdentitiesClient(subscriptionID string, credential azcore.Toke
 
 // Delete - Unregisters the given container from your Recovery Services vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - identityName - Name of the protection container to unregister.
@@ -93,7 +93,7 @@ func (client *RegisteredIdentitiesClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

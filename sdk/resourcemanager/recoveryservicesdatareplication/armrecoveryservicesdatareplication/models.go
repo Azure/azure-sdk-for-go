@@ -86,24 +86,6 @@ type CheckNameAvailabilityResponseModel struct {
 	Reason *string
 }
 
-// ConnectionDetails - Private endpoint connection details at member level.
-type ConnectionDetails struct {
-	// Gets or sets group id.
-	GroupID *string
-
-	// Gets or sets id.
-	ID *string
-
-	// Gets or sets link identifier.
-	LinkIdentifier *string
-
-	// Gets or sets member name.
-	MemberName *string
-
-	// Gets or sets private IP address.
-	PrivateIPAddress *string
-}
-
 // DeploymentPreflightModel - Deployment preflight model.
 type DeploymentPreflightModel struct {
 	// Gets or sets the list of resources.
@@ -482,27 +464,6 @@ type FailoverProtectedItemProperties struct {
 
 	// READ-ONLY; Gets or sets the VM name.
 	VMName *string
-}
-
-// GroupConnectivityInformation - Represents of a connection's group information.
-type GroupConnectivityInformation struct {
-	// Gets or sets customer visible FQDNs.
-	CustomerVisibleFqdns []*string
-
-	// Gets or sets group id.
-	GroupID *string
-
-	// Gets or sets Internal Fqdn.
-	InternalFqdn *string
-
-	// Gets or sets member name.
-	MemberName *string
-
-	// Gets or sets the private link service arm region.
-	PrivateLinkServiceArmRegion *string
-
-	// Gets or sets the redirect map id.
-	RedirectMapID *string
 }
 
 // HealthErrorModel - Health error model.
@@ -1363,45 +1324,6 @@ type PrivateEndpointConnectionListResult struct {
 	NextLink *string
 }
 
-// PrivateEndpointConnectionProxy - Represents private endpoint connection proxy request.
-type PrivateEndpointConnectionProxy struct {
-	// Gets or sets ETag.
-	Etag *string
-
-	// The resource-specific properties for this resource.
-	Properties *PrivateEndpointConnectionProxyProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PrivateEndpointConnectionProxyListResult - The response of a PrivateEndpointConnectionProxy list operation.
-type PrivateEndpointConnectionProxyListResult struct {
-	// REQUIRED; The PrivateEndpointConnectionProxy items on this page
-	Value []*PrivateEndpointConnectionProxy
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PrivateEndpointConnectionProxyProperties - Represents private endpoint connection proxy request.
-type PrivateEndpointConnectionProxyProperties struct {
-	// Represent remote private endpoint information for the private endpoint connection proxy.
-	RemotePrivateEndpoint *RemotePrivateEndpoint
-
-	// READ-ONLY; Gets or sets the provisioning state of the private endpoint connection proxy.
-	ProvisioningState *ProvisioningState
-}
-
 // PrivateEndpointConnectionResponseProperties - Represents Private endpoint connection response properties.
 type PrivateEndpointConnectionResponseProperties struct {
 	// Represent private Endpoint network resource that is linked to the Private Endpoint connection.
@@ -1457,18 +1379,6 @@ type PrivateLinkResourceProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
-// PrivateLinkServiceConnection - Represents of an NRP private link service connection.
-type PrivateLinkServiceConnection struct {
-	// Gets or sets group ids.
-	GroupIDs []*string
-
-	// Gets or sets private link service connection name.
-	Name *string
-
-	// Gets or sets the request message for the private link service connection.
-	RequestMessage *string
-}
-
 // PrivateLinkServiceConnectionState - Represents Private link service connection state.
 type PrivateLinkServiceConnectionState struct {
 	// Gets or sets actions required.
@@ -1479,21 +1389,6 @@ type PrivateLinkServiceConnectionState struct {
 
 	// Gets or sets the status.
 	Status *PrivateEndpointConnectionStatus
-}
-
-// PrivateLinkServiceProxy - Represents NRP private link service proxy.
-type PrivateLinkServiceProxy struct {
-	// Gets or sets group connectivity information.
-	GroupConnectivityInformation []*GroupConnectivityInformation
-
-	// Gets or sets private link service proxy id.
-	ID *string
-
-	// Represent remote private endpoint connection.
-	RemotePrivateEndpointConnection *RemotePrivateEndpointConnection
-
-	// Represents Private link service connection state.
-	RemotePrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 }
 
 // ProtectedItemDynamicMemoryConfig - Protected item dynamic memory config.
@@ -1749,30 +1644,6 @@ type RecoveryPointModelProperties struct {
 
 	// READ-ONLY; Gets or sets the provisioning state of the recovery point item.
 	ProvisioningState *ProvisioningState
-}
-
-// RemotePrivateEndpoint - Represent remote private endpoint information for the private endpoint connection proxy.
-type RemotePrivateEndpoint struct {
-	// REQUIRED; Gets or sets private link service proxy id.
-	ID *string
-
-	// Gets or sets the list of Connection Details. This is the connection details for private endpoint.
-	ConnectionDetails []*ConnectionDetails
-
-	// Gets or sets the list of Manual Private Link Service Connections and gets populated for Manual approval flow.
-	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection
-
-	// Gets or sets the list of Private Link Service Connections and gets populated for Auto approval flow.
-	PrivateLinkServiceConnections []*PrivateLinkServiceConnection
-
-	// Gets or sets the list of private link service proxies.
-	PrivateLinkServiceProxies []*PrivateLinkServiceProxy
-}
-
-// RemotePrivateEndpointConnection - Represent remote private endpoint connection.
-type RemotePrivateEndpointConnection struct {
-	// Gets or sets the remote private endpoint connection id.
-	ID *string
 }
 
 // ReplicationExtensionModel - Replication extension model.

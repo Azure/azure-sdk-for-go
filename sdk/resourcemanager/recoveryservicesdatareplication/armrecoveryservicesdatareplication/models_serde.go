@@ -206,49 +206,6 @@ func (c *CheckNameAvailabilityResponseModel) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ConnectionDetails.
-func (c ConnectionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "groupId", c.GroupID)
-	populate(objectMap, "id", c.ID)
-	populate(objectMap, "linkIdentifier", c.LinkIdentifier)
-	populate(objectMap, "memberName", c.MemberName)
-	populate(objectMap, "privateIpAddress", c.PrivateIPAddress)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ConnectionDetails.
-func (c *ConnectionDetails) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", c, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "groupId":
-			err = unpopulate(val, "GroupID", &c.GroupID)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &c.ID)
-			delete(rawMsg, key)
-		case "linkIdentifier":
-			err = unpopulate(val, "LinkIdentifier", &c.LinkIdentifier)
-			delete(rawMsg, key)
-		case "memberName":
-			err = unpopulate(val, "MemberName", &c.MemberName)
-			delete(rawMsg, key)
-		case "privateIpAddress":
-			err = unpopulate(val, "PrivateIPAddress", &c.PrivateIPAddress)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", c, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type DeploymentPreflightModel.
 func (d DeploymentPreflightModel) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1138,53 +1095,6 @@ func (f *FailoverProtectedItemProperties) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", f, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type GroupConnectivityInformation.
-func (g GroupConnectivityInformation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "customerVisibleFqdns", g.CustomerVisibleFqdns)
-	populate(objectMap, "groupId", g.GroupID)
-	populate(objectMap, "internalFqdn", g.InternalFqdn)
-	populate(objectMap, "memberName", g.MemberName)
-	populate(objectMap, "privateLinkServiceArmRegion", g.PrivateLinkServiceArmRegion)
-	populate(objectMap, "redirectMapId", g.RedirectMapID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type GroupConnectivityInformation.
-func (g *GroupConnectivityInformation) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", g, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "customerVisibleFqdns":
-			err = unpopulate(val, "CustomerVisibleFqdns", &g.CustomerVisibleFqdns)
-			delete(rawMsg, key)
-		case "groupId":
-			err = unpopulate(val, "GroupID", &g.GroupID)
-			delete(rawMsg, key)
-		case "internalFqdn":
-			err = unpopulate(val, "InternalFqdn", &g.InternalFqdn)
-			delete(rawMsg, key)
-		case "memberName":
-			err = unpopulate(val, "MemberName", &g.MemberName)
-			delete(rawMsg, key)
-		case "privateLinkServiceArmRegion":
-			err = unpopulate(val, "PrivateLinkServiceArmRegion", &g.PrivateLinkServiceArmRegion)
-			delete(rawMsg, key)
-		case "redirectMapId":
-			err = unpopulate(val, "RedirectMapID", &g.RedirectMapID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", g, err)
 		}
 	}
 	return nil
@@ -2852,115 +2762,6 @@ func (p *PrivateEndpointConnectionListResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProxy.
-func (p PrivateEndpointConnectionProxy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "etag", p.Etag)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "systemData", p.SystemData)
-	populate(objectMap, "type", p.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateEndpointConnectionProxy.
-func (p *PrivateEndpointConnectionProxy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "etag":
-			err = unpopulate(val, "Etag", &p.Etag)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &p.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &p.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &p.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &p.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &p.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProxyListResult.
-func (p PrivateEndpointConnectionProxyListResult) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "nextLink", p.NextLink)
-	populate(objectMap, "value", p.Value)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateEndpointConnectionProxyListResult.
-func (p *PrivateEndpointConnectionProxyListResult) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "nextLink":
-			err = unpopulate(val, "NextLink", &p.NextLink)
-			delete(rawMsg, key)
-		case "value":
-			err = unpopulate(val, "Value", &p.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionProxyProperties.
-func (p PrivateEndpointConnectionProxyProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "provisioningState", p.ProvisioningState)
-	populate(objectMap, "remotePrivateEndpoint", p.RemotePrivateEndpoint)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateEndpointConnectionProxyProperties.
-func (p *PrivateEndpointConnectionProxyProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &p.ProvisioningState)
-			delete(rawMsg, key)
-		case "remotePrivateEndpoint":
-			err = unpopulate(val, "RemotePrivateEndpoint", &p.RemotePrivateEndpoint)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type PrivateEndpointConnectionResponseProperties.
 func (p PrivateEndpointConnectionResponseProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3109,41 +2910,6 @@ func (p *PrivateLinkResourceProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServiceConnection.
-func (p PrivateLinkServiceConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "groupIds", p.GroupIDs)
-	populate(objectMap, "name", p.Name)
-	populate(objectMap, "requestMessage", p.RequestMessage)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateLinkServiceConnection.
-func (p *PrivateLinkServiceConnection) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "groupIds":
-			err = unpopulate(val, "GroupIDs", &p.GroupIDs)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &p.Name)
-			delete(rawMsg, key)
-		case "requestMessage":
-			err = unpopulate(val, "RequestMessage", &p.RequestMessage)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type PrivateLinkServiceConnectionState.
 func (p PrivateLinkServiceConnectionState) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3170,45 +2936,6 @@ func (p *PrivateLinkServiceConnectionState) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &p.Status)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", p, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type PrivateLinkServiceProxy.
-func (p PrivateLinkServiceProxy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "groupConnectivityInformation", p.GroupConnectivityInformation)
-	populate(objectMap, "id", p.ID)
-	populate(objectMap, "remotePrivateEndpointConnection", p.RemotePrivateEndpointConnection)
-	populate(objectMap, "remotePrivateLinkServiceConnectionState", p.RemotePrivateLinkServiceConnectionState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateLinkServiceProxy.
-func (p *PrivateLinkServiceProxy) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", p, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "groupConnectivityInformation":
-			err = unpopulate(val, "GroupConnectivityInformation", &p.GroupConnectivityInformation)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &p.ID)
-			delete(rawMsg, key)
-		case "remotePrivateEndpointConnection":
-			err = unpopulate(val, "RemotePrivateEndpointConnection", &p.RemotePrivateEndpointConnection)
-			delete(rawMsg, key)
-		case "remotePrivateLinkServiceConnectionState":
-			err = unpopulate(val, "RemotePrivateLinkServiceConnectionState", &p.RemotePrivateLinkServiceConnectionState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -3772,76 +3499,6 @@ func (r *RecoveryPointModelProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "recoveryPointType":
 			err = unpopulate(val, "RecoveryPointType", &r.RecoveryPointType)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", r, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RemotePrivateEndpoint.
-func (r RemotePrivateEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "connectionDetails", r.ConnectionDetails)
-	populate(objectMap, "id", r.ID)
-	populate(objectMap, "manualPrivateLinkServiceConnections", r.ManualPrivateLinkServiceConnections)
-	populate(objectMap, "privateLinkServiceConnections", r.PrivateLinkServiceConnections)
-	populate(objectMap, "privateLinkServiceProxies", r.PrivateLinkServiceProxies)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RemotePrivateEndpoint.
-func (r *RemotePrivateEndpoint) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "connectionDetails":
-			err = unpopulate(val, "ConnectionDetails", &r.ConnectionDetails)
-			delete(rawMsg, key)
-		case "id":
-			err = unpopulate(val, "ID", &r.ID)
-			delete(rawMsg, key)
-		case "manualPrivateLinkServiceConnections":
-			err = unpopulate(val, "ManualPrivateLinkServiceConnections", &r.ManualPrivateLinkServiceConnections)
-			delete(rawMsg, key)
-		case "privateLinkServiceConnections":
-			err = unpopulate(val, "PrivateLinkServiceConnections", &r.PrivateLinkServiceConnections)
-			delete(rawMsg, key)
-		case "privateLinkServiceProxies":
-			err = unpopulate(val, "PrivateLinkServiceProxies", &r.PrivateLinkServiceProxies)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", r, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type RemotePrivateEndpointConnection.
-func (r RemotePrivateEndpointConnection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", r.ID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type RemotePrivateEndpointConnection.
-func (r *RemotePrivateEndpointConnection) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", r, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &r.ID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -5325,5 +4982,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

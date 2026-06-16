@@ -18,6 +18,8 @@ import (
 
 // SecurityPINsClient contains the methods for the SecurityPINs group.
 // Don't use this type directly, use NewSecurityPINsClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type SecurityPINsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSecurityPINsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Get - Get the security PIN.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SecurityPINsClientGetOptions contains the optional parameters for the SecurityPINsClient.Get method.
@@ -88,8 +88,8 @@ func (client *SecurityPINsClient) getCreateRequest(ctx context.Context, vaultNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}

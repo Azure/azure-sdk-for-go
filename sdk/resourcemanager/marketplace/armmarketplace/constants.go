@@ -4,10 +4,6 @@
 
 package armmarketplace
 
-const (
-	version20250101 string = "2025-01-01"
-)
-
 // Accessibility - Plan accessibility
 type Accessibility string
 

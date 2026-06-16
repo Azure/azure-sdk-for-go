@@ -7,20 +7,19 @@ package armmarketplace
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // PrivateStoreCollectionOfferClient contains the methods for the PrivateStoreCollectionOffer group.
 // Don't use this type directly, use NewPrivateStoreCollectionOfferClient() instead.
-//
-// Generated from API version 2025-01-01
 type PrivateStoreCollectionOfferClient struct {
 	internal *arm.Client
 }
@@ -41,6 +40,8 @@ func NewPrivateStoreCollectionOfferClient(credential azcore.TokenCredential, opt
 
 // ContextsView - Retrieve offer information with plans under required contexts restrictions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - offerID - The offer ID to update or delete
@@ -88,8 +89,8 @@ func (client *PrivateStoreCollectionOfferClient) contextsViewCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -112,6 +113,8 @@ func (client *PrivateStoreCollectionOfferClient) contextsViewHandleResponse(resp
 
 // CreateOrUpdate - Update or add an offer to a specific collection of the private store.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - offerID - The offer ID to update or delete
@@ -159,8 +162,8 @@ func (client *PrivateStoreCollectionOfferClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, payload); err != nil {
@@ -180,6 +183,8 @@ func (client *PrivateStoreCollectionOfferClient) createOrUpdateHandleResponse(re
 
 // Delete - Deletes an offer from the given collection of private store.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - offerID - The offer ID to update or delete
@@ -226,13 +231,15 @@ func (client *PrivateStoreCollectionOfferClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets information about a specific offer.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - offerID - The offer ID to update or delete
@@ -280,8 +287,8 @@ func (client *PrivateStoreCollectionOfferClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -296,6 +303,8 @@ func (client *PrivateStoreCollectionOfferClient) getHandleResponse(resp *http.Re
 }
 
 // NewListPager - Get a list of all private offers in the given private store and collection
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - options - PrivateStoreCollectionOfferClientListOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.NewListPager
@@ -339,8 +348,8 @@ func (client *PrivateStoreCollectionOfferClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -355,6 +364,8 @@ func (client *PrivateStoreCollectionOfferClient) listHandleResponse(resp *http.R
 }
 
 // NewListByContextsPager - Get a list of all offers in the given collection according to the required contexts.
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - options - PrivateStoreCollectionOfferClientListByContextsOptions contains the optional parameters for the PrivateStoreCollectionOfferClient.NewListByContextsPager
@@ -398,8 +409,8 @@ func (client *PrivateStoreCollectionOfferClient) listByContextsCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -422,6 +433,8 @@ func (client *PrivateStoreCollectionOfferClient) listByContextsHandleResponse(re
 
 // Post - Delete Private store offer. This is a workaround.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - offerID - The offer ID to update or delete
@@ -468,10 +481,10 @@ func (client *PrivateStoreCollectionOfferClient) postCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.Payload != nil {
-		body := streaming.NopCloser(strings.NewReader(*options.Payload))
+		body := streaming.NopCloser(strings.NewReader(string(*options.Payload)))
 		req.Raw().Header["Content-Type"] = []string{"text/plain"}
 		if err := req.SetBody(body, "text/plain"); err != nil {
 			return nil, err
@@ -483,6 +496,8 @@ func (client *PrivateStoreCollectionOfferClient) postCreateRequest(ctx context.C
 
 // UpsertOfferWithMultiContext - Upsert an offer with multiple context details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - collectionID - The collection ID
 //   - offerID - The offer ID to update or delete
@@ -530,8 +545,8 @@ func (client *PrivateStoreCollectionOfferClient) upsertOfferWithMultiContextCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-01-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

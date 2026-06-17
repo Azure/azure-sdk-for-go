@@ -6,11 +6,10 @@ package armnetworkfunction_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction"
+	"log"
 )
 
 // Generated from example definition: 2022-11-01/CollectorPolicyCreate.json
@@ -53,13 +52,13 @@ func ExampleCollectorPoliciesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkfunction.CollectorPoliciesClientCreateOrUpdateResponse{
-	// 	CollectorPolicy: &armnetworkfunction.CollectorPolicy{
+	// 	CollectorPolicy: armnetworkfunction.CollectorPolicy{
 	// 		Name: to.Ptr("cp1"),
 	// 		Type: to.Ptr("Microsoft.NetworkFunction/azureTrafficCollectors/collectorPolicies"),
 	// 		Etag: to.Ptr("w/\\72090554-7e3b-43f2-80ad-99a9020dcb11\\"),
@@ -108,7 +107,7 @@ func ExampleCollectorPoliciesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -136,7 +135,7 @@ func ExampleCollectorPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkfunction.CollectorPoliciesClientGetResponse{
-	// 	CollectorPolicy: &armnetworkfunction.CollectorPolicy{
+	// 	CollectorPolicy: armnetworkfunction.CollectorPolicy{
 	// 		Name: to.Ptr("atc"),
 	// 		Type: to.Ptr("Microsoft.NetworkFunction/azureTrafficCollectors/collectorPolicies"),
 	// 		Etag: to.Ptr("w/\\72090554-7e3b-43f2-80ad-99a9020dcb11\\"),
@@ -252,7 +251,7 @@ func ExampleCollectorPoliciesClient_UpdateTags() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkfunction.CollectorPoliciesClientUpdateTagsResponse{
-	// 	CollectorPolicy: &armnetworkfunction.CollectorPolicy{
+	// 	CollectorPolicy: armnetworkfunction.CollectorPolicy{
 	// 		Name: to.Ptr("atc"),
 	// 		Type: to.Ptr("Microsoft.NetworkFunction/azureTrafficCollectors/collectorPolicies"),
 	// 		Etag: to.Ptr("w/\\72090554-7e3b-43f2-80ad-99a9020dcb11\\"),

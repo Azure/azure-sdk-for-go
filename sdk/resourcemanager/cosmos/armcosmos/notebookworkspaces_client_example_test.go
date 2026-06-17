@@ -7,7 +7,7 @@ package armcosmos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -28,13 +28,13 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientCreateOrUpdateResponse{
-	// 	NotebookWorkspace: &armcosmos.NotebookWorkspace{
+	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
@@ -63,7 +63,7 @@ func ExampleNotebookWorkspacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -86,7 +86,7 @@ func ExampleNotebookWorkspacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientGetResponse{
-	// 	NotebookWorkspace: &armcosmos.NotebookWorkspace{
+	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
@@ -157,7 +157,7 @@ func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientListConnectionInfoResponse{
-	// 	NotebookWorkspaceConnectionInfoResult: &armcosmos.NotebookWorkspaceConnectionInfoResult{
+	// 	NotebookWorkspaceConnectionInfoResult: armcosmos.NotebookWorkspaceConnectionInfoResult{
 	// 		AuthToken: to.Ptr("auth-token"),
 	// 		NotebookServerEndpoint: to.Ptr("notebook endpoint"),
 	// 	},
@@ -181,7 +181,7 @@ func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -207,7 +207,7 @@ func ExampleNotebookWorkspacesClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

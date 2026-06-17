@@ -7,7 +7,7 @@ package armedgeorder_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleOrdersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.OrdersClientGetResponse{
-	// 	OrderResource: &armedgeorder.OrderResource{
+	// 	OrderResource: armedgeorder.OrderResource{
 	// 		Name: to.Ptr("TestOrderName3"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/orders"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/locations/eastus/orders/TestOrderName3"),

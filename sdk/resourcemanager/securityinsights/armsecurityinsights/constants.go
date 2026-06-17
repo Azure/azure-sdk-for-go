@@ -4,6 +4,10 @@
 
 package armsecurityinsights
 
+const (
+	version20250701Preview string = "2025-07-01-preview"
+)
+
 // ActionType - The type of the automation rule action.
 type ActionType string
 

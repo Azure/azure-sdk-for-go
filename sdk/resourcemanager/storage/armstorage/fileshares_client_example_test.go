@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
 	"log"
 	"time"
 )
@@ -309,9 +309,9 @@ func ExampleFileSharesClient_Get_getShareProvisionedV2() {
 	// 			IncludedBurstIops: to.Ptr[int32](15000),
 	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-25T01:50:50.0000000Z"); return t}()),
 	// 			MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-	// 			NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 26 Oct 2024 01:50:50 GMT"); return t}()),
+	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			ProvisionedBandwidthMibps: to.Ptr[int32](200),
 	// 			ProvisionedIops: to.Ptr[int32](5000),
 	// 			ShareQuota: to.Ptr[int32](100),
@@ -670,9 +670,9 @@ func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 		// 					IncludedBurstIops: to.Ptr[int32](15000),
 		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-25T01:50:50.0000000Z"); return t}()),
 		// 					MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-		// 					NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 26 Oct 2024 01:50:50 GMT"); return t}()),
+		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 					NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 		// 					ProvisionedBandwidthMibps: to.Ptr[int32](200),
 		// 					ProvisionedIops: to.Ptr[int32](5000),
 		// 					ShareQuota: to.Ptr[int32](100),
@@ -687,9 +687,9 @@ func ExampleFileSharesClient_NewListPager_listSharesProvisionedV2() {
 		// 					IncludedBurstIops: to.Ptr[int32](15000),
 		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-25T01:50:50.0000000Z"); return t}()),
 		// 					MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-		// 					NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 26 Oct 2024 01:50:50 GMT"); return t}()),
+		// 					NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 					NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 					NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 		// 					ProvisionedBandwidthMibps: to.Ptr[int32](200),
 		// 					ProvisionedIops: to.Ptr[int32](5000),
 		// 					ShareQuota: to.Ptr[int32](100),
@@ -890,9 +890,9 @@ func ExampleFileSharesClient_Update_updateShareProvisionedV2() {
 	// 		FileShareProperties: &armstorage.FileShareProperties{
 	// 			IncludedBurstIops: to.Ptr[int32](15000),
 	// 			MaxBurstCreditsForIops: to.Ptr[int64](36000000),
-	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Fri, 25 Oct 2024 01:48:09 GMT"); return t}()),
-	// 			NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 26 Oct 2024 01:50:50 GMT"); return t}()),
+	// 			NextAllowedProvisionedBandwidthDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			NextAllowedProvisionedIopsDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Fri, 25 Oct 2024 01:48:09 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			NextAllowedQuotaDowngradeTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 26 Oct 2024 01:50:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			ProvisionedBandwidthMibps: to.Ptr[int32](200),
 	// 			ProvisionedIops: to.Ptr[int32](5000),
 	// 			ShareQuota: to.Ptr[int32](100),

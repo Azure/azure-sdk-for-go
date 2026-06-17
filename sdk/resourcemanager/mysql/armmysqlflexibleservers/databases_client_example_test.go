@@ -34,13 +34,13 @@ func ExampleDatabasesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.DatabasesClientCreateOrUpdateResponse{
-	// 	Database: &armmysqlflexibleservers.Database{
+	// 	Database: armmysqlflexibleservers.Database{
 	// 		Name: to.Ptr("db1"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/databases"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/databases/db1"),
@@ -69,7 +69,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -97,7 +97,7 @@ func ExampleDatabasesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.DatabasesClientGetResponse{
-	// 	Database: &armmysqlflexibleservers.Database{
+	// 	Database: armmysqlflexibleservers.Database{
 	// 		Name: to.Ptr("db1"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/databases"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/databases/db1"),

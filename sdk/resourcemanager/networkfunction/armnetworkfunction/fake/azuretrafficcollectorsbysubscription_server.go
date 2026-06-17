@@ -7,14 +7,14 @@ package fake
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction"
+	"net/http"
+	"regexp"
+	"slices"
 )
 
 // AzureTrafficCollectorsBySubscriptionServer is a fake server for instances of the armnetworkfunction.AzureTrafficCollectorsBySubscriptionClient type.
@@ -53,9 +53,7 @@ func (a *AzureTrafficCollectorsBySubscriptionServerTransport) Do(req *http.Reque
 }
 
 func (a *AzureTrafficCollectorsBySubscriptionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (a *AzureTrafficCollectorsBySubscriptionServerTransport) dispatchToMethodFa
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -108,7 +103,7 @@ func (a *AzureTrafficCollectorsBySubscriptionServerTransport) dispatchNewListPag
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

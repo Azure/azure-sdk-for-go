@@ -18,6 +18,8 @@ import (
 
 // PeeringsClient contains the methods for the Peerings group.
 // Don't use this type directly, use NewPeeringsClient() instead.
+//
+// Generated from API version 2025-05-01
 type PeeringsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPeeringsClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Creates a new peering or updates an existing peering with the specified name under the given subscription
 // and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - peering - The properties needed to create or update a peering.
@@ -90,8 +90,8 @@ func (client *PeeringsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, peering); err != nil {
@@ -111,8 +111,6 @@ func (client *PeeringsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes an existing peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - options - PeeringsClientDeleteOptions contains the optional parameters for the PeeringsClient.Delete method.
@@ -157,15 +155,13 @@ func (client *PeeringsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - options - PeeringsClientGetOptions contains the optional parameters for the PeeringsClient.Get method.
@@ -211,8 +207,8 @@ func (client *PeeringsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -227,8 +223,6 @@ func (client *PeeringsClient) getHandleResponse(resp *http.Response) (PeeringsCl
 }
 
 // NewListByResourceGroupPager - Lists all of the peerings under the given subscription and resource group.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PeeringsClientListByResourceGroupOptions contains the optional parameters for the PeeringsClient.NewListByResourceGroupPager
 //     method.
@@ -271,8 +265,8 @@ func (client *PeeringsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -287,8 +281,6 @@ func (client *PeeringsClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionPager - Lists all of the peerings under the given subscription.
-//
-// Generated from API version 2025-05-01
 //   - options - PeeringsClientListBySubscriptionOptions contains the optional parameters for the PeeringsClient.NewListBySubscriptionPager
 //     method.
 func (client *PeeringsClient) NewListBySubscriptionPager(options *PeeringsClientListBySubscriptionOptions) *runtime.Pager[PeeringsClientListBySubscriptionResponse] {
@@ -326,8 +318,8 @@ func (client *PeeringsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -343,8 +335,6 @@ func (client *PeeringsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // Update - Updates tags for a peering with the specified name under the given subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - tags - The resource tags.
@@ -391,8 +381,8 @@ func (client *PeeringsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tags); err != nil {

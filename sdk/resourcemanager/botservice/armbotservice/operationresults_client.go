@@ -18,6 +18,8 @@ import (
 
 // OperationResultsClient contains the methods for the OperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
+//
+// Generated from API version 2023-09-15-preview
 type OperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginGet - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - operationResultID - The ID of the operation result to get.
 //   - options - OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet
 //     method.
@@ -65,8 +65,6 @@ func (client *OperationResultsClient) BeginGet(ctx context.Context, operationRes
 
 // Get - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 func (client *OperationResultsClient) get(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OperationResultsClient.BeginGet"
@@ -104,8 +102,8 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, oper
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

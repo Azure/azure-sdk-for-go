@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armmysqlflexibleservers.PrivateLinkResource{
+	// 	PrivateLinkResource: armmysqlflexibleservers.PrivateLinkResource{
 	// 		Name: to.Ptr("plr"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/servers/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.DBforMySQL/servers/test-svr/privateLinkResources/plr"),

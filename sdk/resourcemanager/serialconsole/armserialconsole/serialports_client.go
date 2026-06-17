@@ -18,6 +18,8 @@ import (
 
 // SerialPortsClient contains the methods for the SerialPorts group.
 // Don't use this type directly, use NewSerialPortsClient() instead.
+//
+// Generated from API version 2024-07-01
 type SerialPortsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSerialPortsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // Connect - Connect to serial port of the target resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group.
 //   - resourceProviderNamespace - The resource provider namespace of the parent resource.
 //   - parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
@@ -103,8 +103,8 @@ func (client *SerialPortsClient) connectCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -120,8 +120,6 @@ func (client *SerialPortsClient) connectHandleResponse(resp *http.Response) (Ser
 
 // Create - Creates or updates a serial port
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group.
 //   - resourceProviderNamespace - The resource provider namespace of the parent resource.
 //   - parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
@@ -183,8 +181,8 @@ func (client *SerialPortsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -204,8 +202,6 @@ func (client *SerialPortsClient) createHandleResponse(resp *http.Response) (Seri
 
 // Get - Gets the configured settings for a serial port
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group.
 //   - resourceProviderNamespace - The resource provider namespace of the parent resource.
 //   - parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
@@ -266,8 +262,8 @@ func (client *SerialPortsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -283,8 +279,6 @@ func (client *SerialPortsClient) getHandleResponse(resp *http.Response) (SerialP
 
 // List - Lists all of the configured serial ports for a parent resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
 //   - resourceGroupName - The name of the resource group.
 //   - resourceProviderNamespace - The resource provider namespace of the parent resource.
 //   - parentResourceType - The resource type of the parent resource. For example: 'virtualMachines' or 'virtualMachineScaleSets'
@@ -340,8 +334,8 @@ func (client *SerialPortsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -357,8 +351,6 @@ func (client *SerialPortsClient) listHandleResponse(resp *http.Response) (Serial
 
 // ListBySubscriptions - Handles requests to list all SerialPort resources in a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01
 //   - options - SerialPortsClientListBySubscriptionsOptions contains the optional parameters for the SerialPortsClient.ListBySubscriptions
 //     method.
 func (client *SerialPortsClient) ListBySubscriptions(ctx context.Context, options *SerialPortsClientListBySubscriptionsOptions) (SerialPortsClientListBySubscriptionsResponse, error) {
@@ -395,8 +387,8 @@ func (client *SerialPortsClient) listBySubscriptionsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

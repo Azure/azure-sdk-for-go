@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultThreatIntelligenceClientVersion string = "2025-07-01-preview"
-
 // ThreatIntelligenceClient contains the methods for the ThreatIntelligence group.
 // Don't use this type directly, use NewThreatIntelligenceClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *ThreatIntelligenceClient) countCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultThreatIntelligenceClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Query != nil {
@@ -171,7 +169,7 @@ func (client *ThreatIntelligenceClient) queryCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultThreatIntelligenceClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Query != nil {

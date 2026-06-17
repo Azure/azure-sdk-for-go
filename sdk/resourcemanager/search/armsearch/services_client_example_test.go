@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleServicesClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: &armsearch.CheckNameAvailabilityOutput{
+	// 	CheckNameAvailabilityOutput: armsearch.CheckNameAvailabilityOutput{
 	// 		IsNameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr(armsearch.UnavailableNameReasonAlreadyExists),
 	// 		Message: to.Ptr(""),
@@ -73,13 +73,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -171,13 +171,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -264,13 +264,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisabl
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -353,13 +353,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -456,13 +456,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -565,13 +565,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -667,13 +667,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -763,13 +763,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -863,13 +863,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -964,13 +964,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/myserverlessservice"),
 	// 		Name: to.Ptr("myserverlessservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1074,13 +1074,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1189,13 +1189,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithKnowledge
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1284,13 +1284,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1388,7 +1388,7 @@ func ExampleServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientGetResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1746,7 +1746,7 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1835,7 +1835,7 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1919,7 +1919,7 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1996,7 +1996,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2089,7 +2089,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2184,7 +2184,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2270,7 +2270,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2355,7 +2355,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2442,7 +2442,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2528,7 +2528,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithKnowledgeRetrieval() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2614,7 +2614,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2699,7 +2699,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2771,13 +2771,13 @@ func ExampleServicesClient_BeginUpgrade() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpgradeResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),

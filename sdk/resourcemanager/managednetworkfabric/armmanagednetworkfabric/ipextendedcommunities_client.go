@@ -18,6 +18,8 @@ import (
 
 // IPExtendedCommunitiesClient contains the methods for the IPExtendedCommunities group.
 // Don't use this type directly, use NewIPExtendedCommunitiesClient() instead.
+//
+// Generated from API version 2025-07-15
 type IPExtendedCommunitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewIPExtendedCommunitiesClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreate - Implements IP Extended Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *IPExtendedCommunitiesClient) BeginCreate(ctx context.Context, reso
 
 // Create - Implements IP Extended Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPExtendedCommunitiesClient) create(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, body IPExtendedCommunity, options *IPExtendedCommunitiesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPExtendedCommunitiesClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *IPExtendedCommunitiesClient) createCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *IPExtendedCommunitiesClient) createCreateRequest(ctx context.Conte
 
 // BeginDelete - Implements IP Extended Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - options - IPExtendedCommunitiesClientBeginDeleteOptions contains the optional parameters for the IPExtendedCommunitiesClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *IPExtendedCommunitiesClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Implements IP Extended Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPExtendedCommunitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, options *IPExtendedCommunitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPExtendedCommunitiesClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *IPExtendedCommunitiesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements IP Extended Community GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - options - IPExtendedCommunitiesClientGetOptions contains the optional parameters for the IPExtendedCommunitiesClient.Get
@@ -245,8 +237,8 @@ func (client *IPExtendedCommunitiesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -261,8 +253,6 @@ func (client *IPExtendedCommunitiesClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByResourceGroupPager - Implements IpExtendedCommunities list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IPExtendedCommunitiesClientListByResourceGroupOptions contains the optional parameters for the IPExtendedCommunitiesClient.NewListByResourceGroupPager
 //     method.
@@ -305,8 +295,8 @@ func (client *IPExtendedCommunitiesClient) listByResourceGroupCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *IPExtendedCommunitiesClient) listByResourceGroupHandleResponse(res
 }
 
 // NewListBySubscriptionPager - Implements IpExtendedCommunities list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - IPExtendedCommunitiesClientListBySubscriptionOptions contains the optional parameters for the IPExtendedCommunitiesClient.NewListBySubscriptionPager
 //     method.
 func (client *IPExtendedCommunitiesClient) NewListBySubscriptionPager(options *IPExtendedCommunitiesClientListBySubscriptionOptions) *runtime.Pager[IPExtendedCommunitiesClientListBySubscriptionResponse] {
@@ -360,8 +348,8 @@ func (client *IPExtendedCommunitiesClient) listBySubscriptionCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -377,8 +365,6 @@ func (client *IPExtendedCommunitiesClient) listBySubscriptionHandleResponse(resp
 
 // BeginUpdate - API to update certain properties of the IP Extended Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipExtendedCommunityName - Name of the IP Extended Community.
 //   - body - IP Extended Community properties to update.
@@ -403,8 +389,6 @@ func (client *IPExtendedCommunitiesClient) BeginUpdate(ctx context.Context, reso
 
 // Update - API to update certain properties of the IP Extended Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPExtendedCommunitiesClient) update(ctx context.Context, resourceGroupName string, ipExtendedCommunityName string, body IPExtendedCommunityPatch, options *IPExtendedCommunitiesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPExtendedCommunitiesClient.BeginUpdate"
@@ -446,8 +430,8 @@ func (client *IPExtendedCommunitiesClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

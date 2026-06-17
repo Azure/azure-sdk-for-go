@@ -16,10 +16,10 @@ func unmarshalBackupPolicyClassification(rawMsg json.RawMessage) (BackupPolicyCl
 	}
 	var b BackupPolicyClassification
 	switch m["type"] {
-	case string(BackupPolicyTypePeriodic):
-		b = &PeriodicModeBackupPolicy{}
 	case string(BackupPolicyTypeContinuous):
 		b = &ContinuousModeBackupPolicy{}
+	case string(BackupPolicyTypePeriodic):
+		b = &PeriodicModeBackupPolicy{}
 	default:
 		b = &BackupPolicy{}
 	}
@@ -39,12 +39,12 @@ func unmarshalBaseCopyJobPropertiesClassification(rawMsg json.RawMessage) (BaseC
 	}
 	var b BaseCopyJobPropertiesClassification
 	switch m["jobType"] {
-	case string(CopyJobTypeCassandraRUToCassandraRU):
-		b = &CassandraRUToCassandraRUCopyJobProperties{}
 	case string(CopyJobTypeAzureBlobStorageToCassandraRU):
 		b = &BlobToCassandraRUCopyJobProperties{}
 	case string(CopyJobTypeCassandraRUToAzureBlobStorage):
 		b = &CassandraRUToBlobCopyJobProperties{}
+	case string(CopyJobTypeCassandraRUToCassandraRU):
+		b = &CassandraRUToCassandraRUCopyJobProperties{}
 	case string(CopyJobTypeMongoRUToMongoRU):
 		b = &MongoRUToMongoRUCopyJobProperties{}
 	case string(CopyJobTypeMongoRUToMongoVCore):
@@ -70,6 +70,8 @@ func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (
 	}
 	var b DataTransferDataSourceSinkClassification
 	switch m["component"] {
+	case string(DataTransferComponentAzureBlobStorage):
+		b = &AzureBlobDataTransferDataSourceSink{}
 	case string(DataTransferComponentBaseCosmosDataTransferDataSourceSink):
 		b = &BaseCosmosDataTransferDataSourceSink{}
 	case string(DataTransferComponentCosmosDBCassandra):
@@ -80,8 +82,6 @@ func unmarshalDataTransferDataSourceSinkClassification(rawMsg json.RawMessage) (
 		b = &MongoVCoreDataTransferDataSourceSink{}
 	case string(DataTransferComponentCosmosDBSQL):
 		b = &SQLDataTransferDataSourceSink{}
-	case string(DataTransferComponentAzureBlobStorage):
-		b = &AzureBlobDataTransferDataSourceSink{}
 	default:
 		b = &DataTransferDataSourceSink{}
 	}
@@ -103,12 +103,12 @@ func unmarshalServiceResourceCreateUpdatePropertiesClassification(rawMsg json.Ra
 	switch m["serviceType"] {
 	case string(ServiceTypeDataTransfer):
 		b = &DataTransferServiceResourceCreateUpdateProperties{}
-	case string(ServiceTypeSQLDedicatedGateway):
-		b = &SQLDedicatedGatewayServiceResourceCreateUpdateProperties{}
 	case string(ServiceTypeGraphAPICompute):
 		b = &GraphAPIComputeServiceResourceCreateUpdateProperties{}
 	case string(ServiceTypeMaterializedViewsBuilder):
 		b = &MaterializedViewsBuilderServiceResourceCreateUpdateProperties{}
+	case string(ServiceTypeSQLDedicatedGateway):
+		b = &SQLDedicatedGatewayServiceResourceCreateUpdateProperties{}
 	default:
 		b = &ServiceResourceCreateUpdateProperties{}
 	}
@@ -130,12 +130,12 @@ func unmarshalServiceResourcePropertiesClassification(rawMsg json.RawMessage) (S
 	switch m["serviceType"] {
 	case string(ServiceTypeDataTransfer):
 		b = &DataTransferServiceResourceProperties{}
-	case string(ServiceTypeSQLDedicatedGateway):
-		b = &SQLDedicatedGatewayServiceResourceProperties{}
 	case string(ServiceTypeGraphAPICompute):
 		b = &GraphAPIComputeServiceResourceProperties{}
 	case string(ServiceTypeMaterializedViewsBuilder):
 		b = &MaterializedViewsBuilderServiceResourceProperties{}
+	case string(ServiceTypeSQLDedicatedGateway):
+		b = &SQLDedicatedGatewayServiceResourceProperties{}
 	default:
 		b = &ServiceResourceProperties{}
 	}

@@ -18,6 +18,8 @@ import (
 
 // PrefixesClient contains the methods for the Prefixes group.
 // Don't use this type directly, use NewPrefixesClient() instead.
+//
+// Generated from API version 2025-05-01
 type PrefixesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPrefixesClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Creates a new prefix with the specified name under the given subscription, resource group and peering
 // service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - prefixName - The name of the prefix.
@@ -95,8 +95,8 @@ func (client *PrefixesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, peeringServicePrefix); err != nil {
@@ -116,8 +116,6 @@ func (client *PrefixesClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes an existing prefix with the specified name under the given subscription, resource group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - prefixName - The name of the prefix.
@@ -167,15 +165,13 @@ func (client *PrefixesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing prefix with the specified name under the given subscription, resource group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - prefixName - The name of the prefix.
@@ -229,8 +225,8 @@ func (client *PrefixesClient) getCreateRequest(ctx context.Context, resourceGrou
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -245,8 +241,6 @@ func (client *PrefixesClient) getHandleResponse(resp *http.Response) (PrefixesCl
 }
 
 // NewListByPeeringServicePager - Lists all prefixes under the given subscription, resource group and peering service.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - options - PrefixesClientListByPeeringServiceOptions contains the optional parameters for the PrefixesClient.NewListByPeeringServicePager
@@ -297,8 +291,8 @@ func (client *PrefixesClient) listByPeeringServiceCreateRequest(ctx context.Cont
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

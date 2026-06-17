@@ -18,6 +18,8 @@ import (
 
 // BackupStatusClient contains the methods for the BackupStatus group.
 // Don't use this type directly, use NewBackupStatusClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type BackupStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredent
 //
 // Get the container backup status
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Container Backup Status Request
 //   - options - BackupStatusClientGetOptions contains the optional parameters for the BackupStatusClient.Get method.
@@ -86,8 +86,8 @@ func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureReg
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

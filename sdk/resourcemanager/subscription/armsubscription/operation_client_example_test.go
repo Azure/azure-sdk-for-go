@@ -7,7 +7,7 @@ package armsubscription_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleOperationClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.OperationClientGetResponse{
-	// 	CreationResult: &armsubscription.CreationResult{
+	// 	CreationResult: armsubscription.CreationResult{
 	// 		SubscriptionLink: to.Ptr("/subscriptions/4df8d5c2-1b7e-4dd5-bc61-640704bde633"),
 	// 	},
 	// }

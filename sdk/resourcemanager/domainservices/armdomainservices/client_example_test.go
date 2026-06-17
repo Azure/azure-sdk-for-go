@@ -8,8 +8,9 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainservices/armdomainservices"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -20,7 +21,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	clientFactory, err := armdomainservices.NewClientFactory(	"1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -28,16 +29,16 @@ func ExampleClient_BeginCreateOrUpdate() {
 		Properties: &armdomainservices.DomainServiceProperties{
 			DomainName: to.Ptr("TestDomainService.com"),
 			DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
-				NtlmV1:                   to.Ptr(armdomainservices.NtlmV1Enabled),
-				SyncNtlmPasswords:        to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
+				NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
+				SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
 				SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameEnabled),
-				TLSV1:                    to.Ptr(armdomainservices.TLSV1Disabled),
+				TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
 			},
 			FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 			LdapsSettings: &armdomainservices.LdapsSettings{
-				ExternalAccess:         to.Ptr(armdomainservices.ExternalAccessEnabled),
-				Ldaps:                  to.Ptr(armdomainservices.LdapsEnabled),
-				PfxCertificate:         to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
+				ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
+				Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
+				PfxCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
 				PfxCertificatePassword: to.Ptr("<pfxCertificatePassword>"),
 			},
 			NotificationSettings: &armdomainservices.NotificationSettings{
@@ -45,7 +46,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 					to.Ptr("jicha@microsoft.com"),
 					to.Ptr("caalmont@microsoft.com"),
 				},
-				NotifyDcAdmins:     to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
+				NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
 				NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
 			},
 			ReplicaSets: []*armdomainservices.ReplicaSet{
@@ -126,7 +127,7 @@ func ExampleClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	clientFactory, err := armdomainservices.NewClientFactory(	"1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -147,7 +148,7 @@ func ExampleClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	clientFactory, err := armdomainservices.NewClientFactory(	"1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -207,7 +208,7 @@ func ExampleClient_Get() {
 	// 							Severity: to.Ptr("2"),
 	// 						},
 	// 					},
-	// 					HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "15 Feb 2018 21:43:21 GMT"); return t}()),
+	// 					HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(15 Feb 2018 21:43:21 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 					HealthMonitors: []*armdomainservices.HealthMonitor{
 	// 						{
 	// 							Name: to.Ptr("Backup"),
@@ -243,7 +244,7 @@ func ExampleClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	clientFactory, err := armdomainservices.NewClientFactory(	"1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -309,7 +310,7 @@ func ExampleClient_NewListPager() {
 		// 									Severity: to.Ptr("2"),
 		// 								},
 		// 							},
-		// 							HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "15 Feb 2018 21:37:04 GMT"); return t}()),
+		// 							HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(15 Feb 2018 21:37:04 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 		// 							HealthMonitors: []*armdomainservices.HealthMonitor{
 		// 								{
 		// 									Name: to.Ptr("Backup"),
@@ -347,7 +348,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	clientFactory, err := armdomainservices.NewClientFactory(	"1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -413,7 +414,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 									Severity: to.Ptr("2"),
 		// 								},
 		// 							},
-		// 							HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "15 Feb 2018 21:43:04 GMT"); return t}()),
+		// 							HealthLastEvaluated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(15 Feb 2018 21:43:04 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 		// 							HealthMonitors: []*armdomainservices.HealthMonitor{
 		// 								{
 		// 									Name: to.Ptr("Backup"),
@@ -451,7 +452,7 @@ func ExampleClient_Unsuspend() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armdomainservices.NewClientFactory(	"00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -476,39 +477,40 @@ func ExampleClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armdomainservices.NewClientFactory("1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
+	clientFactory, err := armdomainservices.NewClientFactory(	"1639790a-76a2-4ac4-98d9-8562f5dfcb4d", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "TestResourceGroup", "TestDomainService.com", armdomainservices.DomainService{
 		Properties: &armdomainservices.DomainServiceProperties{
 			ConfigDiagnostics: &armdomainservices.ConfigDiagnostics{
-				LastExecuted: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "05 May 2021 12:00:23 GMT"); return t }()),
+				LastExecuted: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(05 May 2021 12:00:23 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 				ValidatorResults: []*armdomainservices.ConfigDiagnosticsValidatorResult{
 					{
 						Issues: []*armdomainservices.ConfigDiagnosticsValidatorResultIssue{
 							{
-								DescriptionParams: []*string{},
-								ID:                to.Ptr("AADDS-CFG-DIAG-I20"),
+								DescriptionParams: []*string{
+								},
+								ID: to.Ptr("AADDS-CFG-DIAG-I20"),
 							},
 						},
 						ReplicaSetSubnetDisplayName: to.Ptr("West US/aadds-subnet"),
-						Status:                      to.Ptr(armdomainservices.StatusWarning),
-						ValidatorID:                 to.Ptr("AADDS-CFG-DIAG-V06"),
+						Status: to.Ptr(armdomainservices.StatusWarning),
+						ValidatorID: to.Ptr("AADDS-CFG-DIAG-V06"),
 					},
 				},
 			},
 			DomainSecuritySettings: &armdomainservices.DomainSecuritySettings{
-				NtlmV1:                   to.Ptr(armdomainservices.NtlmV1Enabled),
-				SyncNtlmPasswords:        to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
+				NtlmV1: to.Ptr(armdomainservices.NtlmV1Enabled),
+				SyncNtlmPasswords: to.Ptr(armdomainservices.SyncNtlmPasswordsEnabled),
 				SyncOnPremSamAccountName: to.Ptr(armdomainservices.SyncOnPremSamAccountNameDisabled),
-				TLSV1:                    to.Ptr(armdomainservices.TLSV1Disabled),
+				TLSV1: to.Ptr(armdomainservices.TLSV1Disabled),
 			},
 			FilteredSync: to.Ptr(armdomainservices.FilteredSyncEnabled),
 			LdapsSettings: &armdomainservices.LdapsSettings{
-				ExternalAccess:         to.Ptr(armdomainservices.ExternalAccessEnabled),
-				Ldaps:                  to.Ptr(armdomainservices.LdapsEnabled),
-				PfxCertificate:         to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
+				ExternalAccess: to.Ptr(armdomainservices.ExternalAccessEnabled),
+				Ldaps: to.Ptr(armdomainservices.LdapsEnabled),
+				PfxCertificate: to.Ptr("MIIDPDCCAiSgAwIBAgIQQUI9P6tq2p9OFIJa7DLNvTANBgkqhkiG9w0BAQsFADAgMR4w..."),
 				PfxCertificatePassword: to.Ptr("<pfxCertificatePassword>"),
 			},
 			NotificationSettings: &armdomainservices.NotificationSettings{
@@ -516,7 +518,7 @@ func ExampleClient_BeginUpdate() {
 					to.Ptr("jicha@microsoft.com"),
 					to.Ptr("caalmont@microsoft.com"),
 				},
-				NotifyDcAdmins:     to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
+				NotifyDcAdmins: to.Ptr(armdomainservices.NotifyDcAdminsEnabled),
 				NotifyGlobalAdmins: to.Ptr(armdomainservices.NotifyGlobalAdminsEnabled),
 			},
 			ReplicaSets: []*armdomainservices.ReplicaSet{
@@ -604,3 +606,4 @@ func ExampleClient_BeginUpdate() {
 	// 	},
 	// }
 }
+

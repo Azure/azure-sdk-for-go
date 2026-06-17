@@ -7,7 +7,7 @@ package armsupport_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
 	"log"
 )
 
@@ -47,7 +47,7 @@ func ExampleFileWorkspacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.FileWorkspacesClientGetResponse{
-	// 	FileWorkspaceDetails: &armsupport.FileWorkspaceDetails{
+	// 	FileWorkspaceDetails: armsupport.FileWorkspaceDetails{
 	// 		Name: to.Ptr("testworkspace"),
 	// 		Type: to.Ptr("Microsoft.Support/fileWorkspaces"),
 	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/fileWorkspaces/testworkspace"),

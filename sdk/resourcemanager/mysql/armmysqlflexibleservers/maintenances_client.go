@@ -18,6 +18,8 @@ import (
 
 // MaintenancesClient contains the methods for the Maintenances group.
 // Don't use this type directly, use NewMaintenancesClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type MaintenancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewMaintenancesClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // NewListPager - List maintenances.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - MaintenancesClientListOptions contains the optional parameters for the MaintenancesClient.NewListPager method.
@@ -88,8 +88,8 @@ func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +105,6 @@ func (client *MaintenancesClient) listHandleResponse(resp *http.Response) (Maint
 
 // Read - Read maintenance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - maintenanceName - The name of the maintenance.
@@ -157,8 +155,8 @@ func (client *MaintenancesClient) readCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -174,8 +172,6 @@ func (client *MaintenancesClient) readHandleResponse(resp *http.Response) (Maint
 
 // BeginUpdate - Update maintenances.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - maintenanceName - The name of the maintenance.
@@ -202,8 +198,6 @@ func (client *MaintenancesClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Update maintenances.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 func (client *MaintenancesClient) update(ctx context.Context, resourceGroupName string, serverName string, maintenanceName string, parameters MaintenanceUpdate, options *MaintenancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MaintenancesClient.BeginUpdate"
@@ -249,8 +243,8 @@ func (client *MaintenancesClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

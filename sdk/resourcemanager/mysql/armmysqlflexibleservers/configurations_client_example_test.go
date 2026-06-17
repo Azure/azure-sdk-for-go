@@ -45,13 +45,13 @@ func ExampleConfigurationsClient_BeginBatchUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.ConfigurationsClientBatchUpdateResponse{
-	// 	ConfigurationListResult: &armmysqlflexibleservers.ConfigurationListResult{
+	// 	ConfigurationListResult: armmysqlflexibleservers.ConfigurationListResult{
 	// 		Value: []*armmysqlflexibleservers.Configuration{
 	// 			{
 	// 				Name: to.Ptr("event_scheduler"),
@@ -112,13 +112,13 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.ConfigurationsClientCreateOrUpdateResponse{
-	// 	Configuration: &armmysqlflexibleservers.Configuration{
+	// 	Configuration: armmysqlflexibleservers.Configuration{
 	// 		Name: to.Ptr("event_scheduler"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/servers/configurations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/servers/testserver/configurations/event_scheduler"),
@@ -153,7 +153,7 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.ConfigurationsClientGetResponse{
-	// 	Configuration: &armmysqlflexibleservers.Configuration{
+	// 	Configuration: armmysqlflexibleservers.Configuration{
 	// 		Name: to.Ptr("event_scheduler"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/configurations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/configurations/event_scheduler"),
@@ -355,13 +355,13 @@ func ExampleConfigurationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.ConfigurationsClientUpdateResponse{
-	// 	Configuration: &armmysqlflexibleservers.Configuration{
+	// 	Configuration: armmysqlflexibleservers.Configuration{
 	// 		Name: to.Ptr("event_scheduler"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/configurations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/configurations/event_scheduler"),

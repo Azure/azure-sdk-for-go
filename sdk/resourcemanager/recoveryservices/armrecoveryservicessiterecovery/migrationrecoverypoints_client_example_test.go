@@ -6,10 +6,9 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/MigrationRecoveryPoints_Get.json
@@ -31,7 +30,7 @@ func ExampleMigrationRecoveryPointsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.MigrationRecoveryPointsClientGetResponse{
-	// 	MigrationRecoveryPoint: &armrecoveryservicessiterecovery.MigrationRecoveryPoint{
+	// 	MigrationRecoveryPoint: armrecoveryservicessiterecovery.MigrationRecoveryPoint{
 	// 		Name: to.Ptr("b22134ea-620c-474b-9fa5-3c1cb47708e3"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/migrationRecoveryPoints"),
 	// 		ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/b22134ea-620c-474b-9fa5-3c1cb47708e3"),

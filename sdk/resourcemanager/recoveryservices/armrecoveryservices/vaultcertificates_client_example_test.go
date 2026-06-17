@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v2"
 	"log"
 )
 
@@ -36,7 +36,7 @@ func ExampleVaultCertificatesClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultCertificatesClientCreateResponse{
-	// 	VaultCertificateResponse: &armrecoveryservices.VaultCertificateResponse{
+	// 	VaultCertificateResponse: armrecoveryservices.VaultCertificateResponse{
 	// 		Name: to.Ptr("BCDRIbzVault77777777-d41f-4550-9f70-7708a3a2283b-12-18-2017-vaultcredentials"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/certificates"),
 	// 		ID: to.Ptr("/Subscriptions/77777777-d41f-4550-9f70-7708a3a2283b/resourceGroups/BCDRIbzRG/providers/Microsoft.RecoveryServices/vaults/BCDRIbzVault/certificates/BCDRIbzVault77777777-d41f-4550-9f70-7708a3a2283b-12-18-2017-vaultcredentials"),

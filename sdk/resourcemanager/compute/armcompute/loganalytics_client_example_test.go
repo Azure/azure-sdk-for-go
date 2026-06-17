@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
+// Generated from example definition: 2026-03-01/logAnalyticExamples/LogAnalytics_RequestRateByInterval.json
 func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/logAnalyticExamples/LogAnalytics_ThrottledRequests.json
+// Generated from example definition: 2026-03-01/logAnalyticExamples/LogAnalytics_ThrottledRequests.json
 func ExampleLogAnalyticsClient_BeginExportThrottledRequests() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

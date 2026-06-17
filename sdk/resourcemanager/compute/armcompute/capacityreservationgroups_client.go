@@ -19,7 +19,7 @@ import (
 // CapacityReservationGroupsClient contains the methods for the CapacityReservationGroups group.
 // Don't use this type directly, use NewCapacityReservationGroupsClient() instead.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-03-01
 type CapacityReservationGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *CapacityReservationGroupsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -159,7 +159,7 @@ func (client *CapacityReservationGroupsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -215,7 +215,7 @@ func (client *CapacityReservationGroupsClient) getCreateRequest(ctx context.Cont
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -277,7 +277,7 @@ func (client *CapacityReservationGroupsClient) listByResourceGroupCreateRequest(
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -334,7 +334,7 @@ func (client *CapacityReservationGroupsClient) listBySubscriptionCreateRequest(c
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", string(*options.Expand))
 	}
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	if options != nil && options.ResourceIDsOnly != nil {
 		reqQP.Set("resourceIdsOnly", string(*options.ResourceIDsOnly))
 	}
@@ -402,7 +402,7 @@ func (client *CapacityReservationGroupsClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

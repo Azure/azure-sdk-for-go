@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImageGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImageGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensionImageListTypesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensionImageListTypesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExtensionImageListVersionsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExtensionImageListVersionsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

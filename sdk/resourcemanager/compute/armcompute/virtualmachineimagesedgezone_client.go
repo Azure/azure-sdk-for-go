@@ -20,7 +20,7 @@ import (
 // VirtualMachineImagesEdgeZoneClient contains the methods for the VirtualMachineImagesEdgeZone group.
 // Don't use this type directly, use NewVirtualMachineImagesEdgeZoneClient() instead.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-03-01
 type VirtualMachineImagesEdgeZoneClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -110,7 +110,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,7 +197,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -328,7 +328,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -401,7 +401,7 @@ func (client *VirtualMachineImagesEdgeZoneClient) listSKUsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

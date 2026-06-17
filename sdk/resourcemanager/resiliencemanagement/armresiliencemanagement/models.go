@@ -399,8 +399,7 @@ type DrillRunListResult struct {
 
 // DrillRunProperties - Properties of the Resiliency DrillRun.
 type DrillRunProperties struct {
-	// CONSTANT; Discriminator for the Job object hierarchy.
-	// Field has constant value JobTypeDrillRun, any specified value is ignored.
+	// REQUIRED; Discriminator for the Job object hierarchy.
 	JobType *JobType
 
 	// Details of any errors that occurred during the execution of this job.
@@ -507,8 +506,7 @@ type DrillRunResourceListResult struct {
 
 // DrillRunResourceProperties - Properties of a Drill Run resource.
 type DrillRunResourceProperties struct {
-	// CONSTANT; Discriminator for the Job object hierarchy.
-	// Field has constant value JobResourceTypeDrillRun, any specified value is ignored.
+	// REQUIRED; Discriminator for the Job object hierarchy.
 	JobResourceType *JobResourceType
 
 	// Details of any errors that occurred during the execution of this job.
@@ -1505,8 +1503,7 @@ type RecoveryJobListResult struct {
 
 // RecoveryJobProperties - Definition of recovery job associated with Recovery Orchestration Plan.
 type RecoveryJobProperties struct {
-	// CONSTANT; Discriminator for the Job object hierarchy.
-	// Field has constant value JobTypeRecoveryPlan, any specified value is ignored.
+	// REQUIRED; Discriminator for the Job object hierarchy.
 	JobType *JobType
 
 	// Details of any errors that occurred during the execution of this job.
@@ -1599,8 +1596,7 @@ type RecoveryJobResourceListResult struct {
 // RecoveryJobResourceProperties - Properties of a recovery orchestration job resource associated with a recovery orchestration
 // plan.
 type RecoveryJobResourceProperties struct {
-	// CONSTANT; Discriminator for the Job object hierarchy.
-	// Field has constant value JobResourceTypeRecoveryPlan, any specified value is ignored.
+	// REQUIRED; Discriminator for the Job object hierarchy.
 	JobResourceType *JobResourceType
 
 	// Details of any errors that occurred during the execution of this job.

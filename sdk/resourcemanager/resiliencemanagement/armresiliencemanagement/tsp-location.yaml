@@ -1,4 +1,4 @@
 directory: specification/azureresiliencemanagement/resource-manager/Microsoft.AzureResilienceManagement/AzureResilienceManagement
-commit: 10a2d90aac
+commit: 4e861431a47f20d27bc3606cbda4c64bd5e9cce3
 repo: LavishSingal/azure-rest-api-specs
 additionalDirectories: 

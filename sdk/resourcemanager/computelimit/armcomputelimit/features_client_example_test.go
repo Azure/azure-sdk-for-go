@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/Features_Disable.json
+// Generated from example definition: 2026-07-01/Features_Disable.json
 func ExampleFeaturesClient_BeginDisable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleFeaturesClient_BeginDisable() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_Enable.json
+// Generated from example definition: 2026-07-01/Features_Enable.json
 func ExampleFeaturesClient_BeginEnable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleFeaturesClient_BeginEnable() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_Get.json
+// Generated from example definition: 2026-07-01/Features_Get.json
 func ExampleFeaturesClient_Get_getFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleFeaturesClient_Get_getFeature() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_Get_SharedLimit.json
+// Generated from example definition: 2026-07-01/Features_Get_SharedLimit.json
 func ExampleFeaturesClient_Get_getSharedLimitFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleFeaturesClient_Get_getSharedLimitFeature() {
 	// }
 }
 
-// Generated from example definition: 2026-06-01/Features_List.json
+// Generated from example definition: 2026-07-01/Features_List.json
 func ExampleFeaturesClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

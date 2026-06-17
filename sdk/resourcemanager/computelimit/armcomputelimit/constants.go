@@ -5,7 +5,7 @@
 package armcomputelimit
 
 const (
-	version20260601 string = "2026-06-01"
+	version20260701 string = "2026-07-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

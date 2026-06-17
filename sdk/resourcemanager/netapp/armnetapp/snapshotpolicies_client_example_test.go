@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/SnapshotPolicies_Create.json
+// Generated from example definition: 2026-04-01/SnapshotPolicies_Create.json
 func ExampleSnapshotPoliciesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.SnapshotPoliciesClientCreateResponse{
-	// 	SnapshotPolicy: &armnetapp.SnapshotPolicy{
+	// 	SnapshotPolicy: armnetapp.SnapshotPolicy{
 	// 		Name: to.Ptr("account1/snapshotPolicy1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/snapshotPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
@@ -91,7 +91,7 @@ func ExampleSnapshotPoliciesClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SnapshotPolicies_Delete.json
+// Generated from example definition: 2026-04-01/SnapshotPolicies_Delete.json
 func ExampleSnapshotPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -117,7 +117,7 @@ func ExampleSnapshotPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SnapshotPolicies_Get.json
+// Generated from example definition: 2026-04-01/SnapshotPolicies_Get.json
 func ExampleSnapshotPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.SnapshotPoliciesClientGetResponse{
-	// 	SnapshotPolicy: &armnetapp.SnapshotPolicy{
+	// 	SnapshotPolicy: armnetapp.SnapshotPolicy{
 	// 		Name: to.Ptr("account1/snapshotPolicy1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/snapshotPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
@@ -170,7 +170,7 @@ func ExampleSnapshotPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SnapshotPolicies_List.json
+// Generated from example definition: 2026-04-01/SnapshotPolicies_List.json
 func ExampleSnapshotPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleSnapshotPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/SnapshotPolicies_ListVolumes.json
+// Generated from example definition: 2026-04-01/SnapshotPolicies_ListVolumes.json
 func ExampleSnapshotPoliciesClient_ListVolumes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.SnapshotPoliciesClientListVolumesResponse{
-	// 	SnapshotPolicyVolumeList: &armnetapp.SnapshotPolicyVolumeList{
+	// 	SnapshotPolicyVolumeList: armnetapp.SnapshotPolicyVolumeList{
 	// 		Value: []*armnetapp.Volume{
 	// 			{
 	// 				Name: to.Ptr("account1/pool1/volume1"),
@@ -273,7 +273,7 @@ func ExampleSnapshotPoliciesClient_ListVolumes() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/SnapshotPolicies_Update.json
+// Generated from example definition: 2026-04-01/SnapshotPolicies_Update.json
 func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,13 +316,13 @@ func ExampleSnapshotPoliciesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.SnapshotPoliciesClientUpdateResponse{
-	// 	SnapshotPolicy: &armnetapp.SnapshotPolicy{
+	// 	SnapshotPolicy: armnetapp.SnapshotPolicy{
 	// 		Name: to.Ptr("account1/snapshotPolicy1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/snapshotPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),

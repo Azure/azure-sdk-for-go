@@ -18,6 +18,8 @@ import (
 
 // ResourceRegionInfosClient contains the methods for the ResourceRegionInfos group.
 // Don't use this type directly, use NewResourceRegionInfosClient() instead.
+//
+// Generated from API version 2026-04-01
 type ResourceRegionInfosClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewResourceRegionInfosClient(subscriptionID string, credential azcore.Token
 
 // Get - Provides storage to network proximity and logical zone mapping information.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - location - The name of the Azure region.
 //   - options - ResourceRegionInfosClientGetOptions contains the optional parameters for the ResourceRegionInfosClient.Get method.
 func (client *ResourceRegionInfosClient) Get(ctx context.Context, location string, options *ResourceRegionInfosClientGetOptions) (ResourceRegionInfosClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *ResourceRegionInfosClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *ResourceRegionInfosClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Provides region specific information.
-//
-// Generated from API version 2026-01-01
 //   - location - The name of the Azure region.
 //   - options - ResourceRegionInfosClientListOptions contains the optional parameters for the ResourceRegionInfosClient.NewListPager
 //     method.
@@ -143,8 +141,8 @@ func (client *ResourceRegionInfosClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

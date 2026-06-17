@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/BackupPolicies_Create.json
+// Generated from example definition: 2026-04-01/BackupPolicies_Create.json
 func ExampleBackupPoliciesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BackupPoliciesClientCreateResponse{
-	// 	BackupPolicy: &armnetapp.BackupPolicy{
+	// 	BackupPolicy: armnetapp.BackupPolicy{
 	// 		Name: to.Ptr("account1/backupPolicyName"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/backupPolicyName"),
@@ -59,7 +59,7 @@ func ExampleBackupPoliciesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BackupPolicies_Delete.json
+// Generated from example definition: 2026-04-01/BackupPolicies_Delete.json
 func ExampleBackupPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleBackupPoliciesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -85,7 +85,7 @@ func ExampleBackupPoliciesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BackupPolicies_Get.json
+// Generated from example definition: 2026-04-01/BackupPolicies_Get.json
 func ExampleBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleBackupPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BackupPoliciesClientGetResponse{
-	// 	BackupPolicy: &armnetapp.BackupPolicy{
+	// 	BackupPolicy: armnetapp.BackupPolicy{
 	// 		Name: to.Ptr("account1/backupPolicyName"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/backupPolicyName"),
@@ -127,7 +127,7 @@ func ExampleBackupPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/BackupPolicies_List.json
+// Generated from example definition: 2026-04-01/BackupPolicies_List.json
 func ExampleBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleBackupPoliciesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/BackupPolicies_Update.json
+// Generated from example definition: 2026-04-01/BackupPolicies_Update.json
 func ExampleBackupPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,13 +196,13 @@ func ExampleBackupPoliciesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BackupPoliciesClientUpdateResponse{
-	// 	BackupPolicy: &armnetapp.BackupPolicy{
+	// 	BackupPolicy: armnetapp.BackupPolicy{
 	// 		Name: to.Ptr("account1/backupPolicyName"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/backupPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/backupPolicyName"),

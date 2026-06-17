@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/Accounts_ChangeKeyVault.json
+// Generated from example definition: 2026-04-01/Accounts_ChangeKeyVault.json
 func ExampleAccountsClient_BeginChangeKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,11 +40,11 @@ func ExampleAccountsClient_BeginChangeKeyVault() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Accounts_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Accounts_CreateOrUpdate.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,13 +64,13 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientCreateOrUpdateResponse{
-	// 	Account: &armnetapp.Account{
+	// 	Account: armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -82,7 +82,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Accounts_CreateOrUpdateAD.json
+// Generated from example definition: 2026-04-01/Accounts_CreateOrUpdateAD.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveDirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,13 +117,13 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientCreateOrUpdateResponse{
-	// 	Account: &armnetapp.Account{
+	// 	Account: armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -149,7 +149,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Accounts_Delete.json
+// Generated from example definition: 2026-04-01/Accounts_Delete.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,11 +166,11 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Accounts_Get.json
+// Generated from example definition: 2026-04-01/Accounts_Get.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientGetResponse{
-	// 	Account: &armnetapp.Account{
+	// 	Account: armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),
@@ -216,7 +216,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Accounts_GetChangeKeyVaultInformation.json
+// Generated from example definition: 2026-04-01/Accounts_GetChangeKeyVaultInformation.json
 func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,13 +233,13 @@ func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientGetChangeKeyVaultInformationResponse{
-	// 	GetKeyVaultStatusResponse: &armnetapp.GetKeyVaultStatusResponse{
+	// 	GetKeyVaultStatusResponse: armnetapp.GetKeyVaultStatusResponse{
 	// 		Properties: &armnetapp.GetKeyVaultStatusResponseProperties{
 	// 			KeyName: to.Ptr("rsakey"),
 	// 			KeyVaultPrivateEndpoints: []*armnetapp.KeyVaultPrivateEndpoint{
@@ -255,7 +255,7 @@ func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Accounts_List.json
+// Generated from example definition: 2026-04-01/Accounts_List.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Accounts_ListBySubscription.json
+// Generated from example definition: 2026-04-01/Accounts_ListBySubscription.json
 func ExampleAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -335,7 +335,7 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Accounts_RenewCredentials.json
+// Generated from example definition: 2026-04-01/Accounts_RenewCredentials.json
 func ExampleAccountsClient_BeginRenewCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +352,7 @@ func ExampleAccountsClient_BeginRenewCredentials() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -361,7 +361,7 @@ func ExampleAccountsClient_BeginRenewCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Accounts_TransitionEncryptionKey.json
+// Generated from example definition: 2026-04-01/Accounts_TransitionEncryptionKey.json
 func ExampleAccountsClient_BeginTransitionToCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,11 +382,11 @@ func ExampleAccountsClient_BeginTransitionToCmk() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Accounts_Update.json
+// Generated from example definition: 2026-04-01/Accounts_Update.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,13 +407,13 @@ func ExampleAccountsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.AccountsClientUpdateResponse{
-	// 	Account: &armnetapp.Account{
+	// 	Account: armnetapp.Account{
 	// 		Name: to.Ptr("account1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1"),

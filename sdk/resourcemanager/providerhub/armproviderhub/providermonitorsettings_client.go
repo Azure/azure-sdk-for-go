@@ -18,8 +18,6 @@ import (
 
 // ProviderMonitorSettingsClient contains the methods for the ProviderMonitorSettings group.
 // Don't use this type directly, use NewProviderMonitorSettingsClient() instead.
-//
-// Generated from API version 2024-09-01
 type ProviderMonitorSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewProviderMonitorSettingsClient(subscriptionID string, credential azcore.T
 
 // BeginCreate - Creates the provider monitor setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - properties - The provider monitor setting properties supplied to the create operation.
@@ -67,6 +67,8 @@ func (client *ProviderMonitorSettingsClient) BeginCreate(ctx context.Context, re
 
 // Create - Creates the provider monitor setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 func (client *ProviderMonitorSettingsClient) create(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, properties ProviderMonitorSetting, options *ProviderMonitorSettingsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProviderMonitorSettingsClient.BeginCreate"
@@ -108,8 +110,8 @@ func (client *ProviderMonitorSettingsClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -120,6 +122,8 @@ func (client *ProviderMonitorSettingsClient) createCreateRequest(ctx context.Con
 
 // Delete - Deletes a provider monitor setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - options - ProviderMonitorSettingsClientDeleteOptions contains the optional parameters for the ProviderMonitorSettingsClient.Delete
@@ -165,13 +169,15 @@ func (client *ProviderMonitorSettingsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
 
 // Get - Gets the provider monitor setting details.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - options - ProviderMonitorSettingsClientGetOptions contains the optional parameters for the ProviderMonitorSettingsClient.Get
@@ -218,8 +224,8 @@ func (client *ProviderMonitorSettingsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -234,6 +240,8 @@ func (client *ProviderMonitorSettingsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByResourceGroupPager - Gets the list of the provider monitor settings in the resource group.
+//
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProviderMonitorSettingsClientListByResourceGroupOptions contains the optional parameters for the ProviderMonitorSettingsClient.NewListByResourceGroupPager
 //     method.
@@ -276,8 +284,8 @@ func (client *ProviderMonitorSettingsClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -292,6 +300,8 @@ func (client *ProviderMonitorSettingsClient) listByResourceGroupHandleResponse(r
 }
 
 // NewListBySubscriptionPager - Gets the list of the provider monitor settings in the subscription.
+//
+// Generated from API version 2024-09-01
 //   - options - ProviderMonitorSettingsClientListBySubscriptionOptions contains the optional parameters for the ProviderMonitorSettingsClient.NewListBySubscriptionPager
 //     method.
 func (client *ProviderMonitorSettingsClient) NewListBySubscriptionPager(options *ProviderMonitorSettingsClientListBySubscriptionOptions) *runtime.Pager[ProviderMonitorSettingsClientListBySubscriptionResponse] {
@@ -329,8 +339,8 @@ func (client *ProviderMonitorSettingsClient) listBySubscriptionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -347,6 +357,8 @@ func (client *ProviderMonitorSettingsClient) listBySubscriptionHandleResponse(re
 // Update - Updates the provider monitor setting properties as specified in the request body. Update fails if the specified
 // provider monitor setting does not already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - options - ProviderMonitorSettingsClientUpdateOptions contains the optional parameters for the ProviderMonitorSettingsClient.Update
@@ -393,8 +405,8 @@ func (client *ProviderMonitorSettingsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2024-09-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

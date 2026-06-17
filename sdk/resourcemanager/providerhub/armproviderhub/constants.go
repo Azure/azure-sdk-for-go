@@ -4,10 +4,6 @@
 
 package armproviderhub
 
-const (
-	version20240901 string = "2024-09-01"
-)
-
 // AdditionalOptions - The additional options.
 type AdditionalOptions string
 

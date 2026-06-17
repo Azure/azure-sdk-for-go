@@ -1,6 +1,6 @@
-# Azure Programenrollment Module for Go
+# Azure ProgramEnrollment Module for Go
 
-The `armprogramenrollment` module provides operations for working with Azure Programenrollment.
+The `armprogramenrollment` module provides operations for working with Azure ProgramEnrollment.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/programenrollment/armprogramenrollment)
 

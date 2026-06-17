@@ -18,8 +18,6 @@ import (
 
 // RecoveryPointsRecommendedForMoveClient contains the methods for the RecoveryPointsRecommendedForMove group.
 // Don't use this type directly, use NewRecoveryPointsRecommendedForMoveClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type RecoveryPointsRecommendedForMoveClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewRecoveryPointsRecommendedForMoveClient(subscriptionID string, credential
 }
 
 // NewListPager - Lists the recovery points recommended for move to another tier
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RecoveryPointsRecommendedForMoveClientListOptions contains the optional parameters for the RecoveryPointsRecommendedForMoveClient.NewListPager
 //     method.
@@ -100,8 +100,8 @@ func (client *RecoveryPointsRecommendedForMoveClient) listCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -18,8 +18,6 @@ import (
 
 // JobsClient contains the methods for the Jobs group.
 // Don't use this type directly, use NewJobsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type JobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewJobsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // Export - Triggers export of jobs specified by filters and returns an OperationID to track.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JobsClientExportOptions contains the optional parameters for the JobsClient.Export method.
@@ -90,7 +90,7 @@ func (client *JobsClient) exportCreateRequest(ctx context.Context, vaultName str
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

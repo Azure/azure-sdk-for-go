@@ -137,27 +137,6 @@ type BackupsClientTriggerResponse struct {
 	// placeholder for future response values
 }
 
-// ClientBMSPrepareDataMoveResponse contains the response from method Client.BeginBMSPrepareDataMove.
-type ClientBMSPrepareDataMoveResponse struct {
-	// placeholder for future response values
-}
-
-// ClientBMSTriggerDataMoveResponse contains the response from method Client.BeginBMSTriggerDataMove.
-type ClientBMSTriggerDataMoveResponse struct {
-	// placeholder for future response values
-}
-
-// ClientGetOperationStatusResponse contains the response from method Client.GetOperationStatus.
-type ClientGetOperationStatusResponse struct {
-	// Operation status.
-	OperationStatus
-}
-
-// ClientMoveRecoveryPointResponse contains the response from method Client.BeginMoveRecoveryPoint.
-type ClientMoveRecoveryPointResponse struct {
-	// placeholder for future response values
-}
-
 // DeletedProtectionContainersClientListResponse contains the response from method DeletedProtectionContainersClient.NewListPager.
 type DeletedProtectionContainersClientListResponse struct {
 	// List of ProtectionContainer resources
@@ -400,6 +379,27 @@ type RecoveryPointsClientUpdateResponse struct {
 type RecoveryPointsRecommendedForMoveClientListResponse struct {
 	// List of RecoveryPoint resources
 	RecoveryPointResourceList
+}
+
+// RecoveryServicesClientBMSPrepareDataMoveResponse contains the response from method RecoveryServicesClient.BeginBMSPrepareDataMove.
+type RecoveryServicesClientBMSPrepareDataMoveResponse struct {
+	// placeholder for future response values
+}
+
+// RecoveryServicesClientBMSTriggerDataMoveResponse contains the response from method RecoveryServicesClient.BeginBMSTriggerDataMove.
+type RecoveryServicesClientBMSTriggerDataMoveResponse struct {
+	// placeholder for future response values
+}
+
+// RecoveryServicesClientGetOperationStatusResponse contains the response from method RecoveryServicesClient.GetOperationStatus.
+type RecoveryServicesClientGetOperationStatusResponse struct {
+	// Operation status.
+	OperationStatus
+}
+
+// RecoveryServicesClientMoveRecoveryPointResponse contains the response from method RecoveryServicesClient.BeginMoveRecoveryPoint.
+type RecoveryServicesClientMoveRecoveryPointResponse struct {
+	// placeholder for future response values
 }
 
 // ResourceGuardProxiesClientGetResponse contains the response from method ResourceGuardProxiesClient.NewGetPager.

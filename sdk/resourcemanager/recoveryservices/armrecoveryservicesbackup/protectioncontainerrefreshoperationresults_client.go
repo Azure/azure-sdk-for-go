@@ -19,8 +19,6 @@ import (
 // ProtectionContainerRefreshOperationResultsClient contains the methods for the ProtectionContainerRefreshOperationResults
 // group.
 // Don't use this type directly, use NewProtectionContainerRefreshOperationResultsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type ProtectionContainerRefreshOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewProtectionContainerRefreshOperationResultsClient(subscriptionID string, 
 
 // Get - Provides the result of the refresh operation triggered by the BeginRefresh operation.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - Fabric name associated with the container.
@@ -99,7 +99,7 @@ func (client *ProtectionContainerRefreshOperationResultsClient) getCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

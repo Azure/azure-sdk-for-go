@@ -18,8 +18,6 @@ import (
 
 // BackupUsageSummariesClient contains the methods for the BackupUsageSummaries group.
 // Don't use this type directly, use NewBackupUsageSummariesClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type BackupUsageSummariesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 }
 
 // NewListPager - Fetches the backup management usage summaries of the vault.
+//
+// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.NewListPager
@@ -95,8 +95,8 @@ func (client *BackupUsageSummariesClient) listCreateRequest(ctx context.Context,
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,8 +18,6 @@ import (
 
 // BackupResourceEncryptionConfigsClient contains the methods for the BackupResourceEncryptionConfigs group.
 // Don't use this type directly, use NewBackupResourceEncryptionConfigsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type BackupResourceEncryptionConfigsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewBackupResourceEncryptionConfigsClient(subscriptionID string, credential 
 
 // Get - Fetches Vault Encryption config.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceEncryptionConfigsClientGetOptions contains the optional parameters for the BackupResourceEncryptionConfigsClient.Get
 //     method.
@@ -88,8 +88,8 @@ func (client *BackupResourceEncryptionConfigsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,6 +105,8 @@ func (client *BackupResourceEncryptionConfigsClient) getHandleResponse(resp *htt
 
 // Update - Updates Vault encryption config.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceEncryptionConfigsClientUpdateOptions contains the optional parameters for the BackupResourceEncryptionConfigsClient.Update
 //     method.
@@ -149,8 +151,8 @@ func (client *BackupResourceEncryptionConfigsClient) updateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

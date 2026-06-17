@@ -154,29 +154,6 @@ type BackupsClientTriggerOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the Client.BeginBMSPrepareDataMove method.
-type ClientBeginBMSPrepareDataMoveOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the Client.BeginBMSTriggerDataMove method.
-type ClientBeginBMSTriggerDataMoveOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientBeginMoveRecoveryPointOptions contains the optional parameters for the Client.BeginMoveRecoveryPoint method.
-type ClientBeginMoveRecoveryPointOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ClientGetOperationStatusOptions contains the optional parameters for the Client.GetOperationStatus method.
-type ClientGetOperationStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
 // DeletedProtectionContainersClientListOptions contains the optional parameters for the DeletedProtectionContainersClient.NewListPager
 // method.
 type DeletedProtectionContainersClientListOptions struct {
@@ -423,6 +400,33 @@ type RecoveryPointsClientUpdateOptions struct {
 // RecoveryPointsRecommendedForMoveClientListOptions contains the optional parameters for the RecoveryPointsRecommendedForMoveClient.NewListPager
 // method.
 type RecoveryPointsRecommendedForMoveClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecoveryServicesClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the RecoveryServicesClient.BeginBMSPrepareDataMove
+// method.
+type RecoveryServicesClientBeginBMSPrepareDataMoveOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoveryServicesClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the RecoveryServicesClient.BeginBMSTriggerDataMove
+// method.
+type RecoveryServicesClientBeginBMSTriggerDataMoveOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoveryServicesClientBeginMoveRecoveryPointOptions contains the optional parameters for the RecoveryServicesClient.BeginMoveRecoveryPoint
+// method.
+type RecoveryServicesClientBeginMoveRecoveryPointOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoveryServicesClientGetOperationStatusOptions contains the optional parameters for the RecoveryServicesClient.GetOperationStatus
+// method.
+type RecoveryServicesClientGetOperationStatusOptions struct {
 	// placeholder for future optional parameters
 }
 

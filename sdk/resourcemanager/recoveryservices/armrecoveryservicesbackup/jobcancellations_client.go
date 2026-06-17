@@ -18,8 +18,6 @@ import (
 
 // JobCancellationsClient contains the methods for the JobCancellations group.
 // Don't use this type directly, use NewJobCancellationsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type JobCancellationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,6 +42,8 @@ func NewJobCancellationsClient(subscriptionID string, credential azcore.TokenCre
 // Trigger - Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
 // GetCancelOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JobCancellationsClientTriggerOptions contains the optional parameters for the JobCancellationsClient.Trigger
 //     method.
@@ -92,7 +92,7 @@ func (client *JobCancellationsClient) triggerCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

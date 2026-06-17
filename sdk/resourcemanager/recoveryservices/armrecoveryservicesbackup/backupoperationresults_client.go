@@ -18,8 +18,6 @@ import (
 
 // BackupOperationResultsClient contains the methods for the BackupOperationResults group.
 // Don't use this type directly, use NewBackupOperationResultsClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type BackupOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,6 +44,8 @@ func NewBackupOperationResultsClient(subscriptionID string, credential azcore.To
 // successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID is
 // part of the Location header of the operation response.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - operationID - OperationID which represents the operation.
@@ -96,7 +96,7 @@ func (client *BackupOperationResultsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }

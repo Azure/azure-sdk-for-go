@@ -18,8 +18,6 @@ import (
 
 // DeletedProtectionContainersClient contains the methods for the DeletedProtectionContainers group.
 // Don't use this type directly, use NewDeletedProtectionContainersClient() instead.
-//
-// Generated from API version 2026-01-31-preview
 type DeletedProtectionContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewDeletedProtectionContainersClient(subscriptionID string, credential azco
 }
 
 // NewListPager - Lists the soft deleted containers registered to Recovery Services Vault.
+//
+// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - options - DeletedProtectionContainersClientListOptions contains the optional parameters for the DeletedProtectionContainersClient.NewListPager
@@ -92,8 +92,8 @@ func (client *DeletedProtectionContainersClient) listCreateRequest(ctx context.C
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20260131Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2026-01-31-preview")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

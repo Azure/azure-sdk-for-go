@@ -1,6 +1,6 @@
-# Azure Resiliencemanagement Module for Go
+# Azure Resilience Management Module for Go
 
-The `armresiliencemanagement` module provides operations for working with Azure Resiliencemanagement.
+The `armresiliencemanagement` module provides operations for working with Azure Resilience Management.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/resiliencemanagement/armresiliencemanagement)
 
@@ -15,7 +15,7 @@ The `armresiliencemanagement` module provides operations for working with Azure 
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Resiliencemanagement module:
+Install the Azure Resilience Management module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resiliencemanagement/armresiliencemanagement
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resiliencemanagemen
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Resiliencemanagement.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Resilience Management.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Resiliencemanagement module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Resilience Management module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armresiliencemanagement.NewClientFactory(<subscription ID>, cred, nil)
@@ -68,7 +68,7 @@ Please see https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/samples/fakes
 ## Provide Feedback
 
 If you encounter bugs or have suggestions, please
-[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Resiliencemanagement` label.
+[open an issue](https://github.com/Azure/azure-sdk-for-go/issues) and assign the `Resilience Management` label.
 
 # Contributing
 

@@ -18,6 +18,8 @@ import (
 
 // ElasticPoolOperationsClient contains the methods for the ElasticPoolOperations group.
 // Don't use this type directly, use NewElasticPoolOperationsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ElasticPoolOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewElasticPoolOperationsClient(subscriptionID string, credential azcore.Tok
 
 // Cancel - Cancels the asynchronous operation on the elastic pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - elasticPoolName - The name of the elastic pool.
@@ -98,14 +98,12 @@ func (client *ElasticPoolOperationsClient) cancelCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // NewListByElasticPoolPager - Gets a list of operations performed on the elastic pool.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - elasticPoolName - The name of the elastic pool.
@@ -158,8 +156,8 @@ func (client *ElasticPoolOperationsClient) listByElasticPoolCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

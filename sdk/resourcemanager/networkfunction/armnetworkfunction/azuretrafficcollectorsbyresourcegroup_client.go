@@ -7,18 +7,19 @@ package armnetworkfunction
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // AzureTrafficCollectorsByResourceGroupClient contains the methods for the AzureTrafficCollectorsByResourceGroup group.
 // Don't use this type directly, use NewAzureTrafficCollectorsByResourceGroupClient() instead.
+//
+// Generated from API version 2022-11-01
 type AzureTrafficCollectorsByResourceGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +42,6 @@ func NewAzureTrafficCollectorsByResourceGroupClient(subscriptionID string, crede
 }
 
 // NewListPager - Return list of Azure Traffic Collectors in a Resource Group
-//
-// Generated from API version 2022-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AzureTrafficCollectorsByResourceGroupClientListOptions contains the optional parameters for the AzureTrafficCollectorsByResourceGroupClient.NewListPager
 //     method.
@@ -85,8 +84,8 @@ func (client *AzureTrafficCollectorsByResourceGroupClient) listCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20221101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

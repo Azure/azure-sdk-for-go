@@ -18,6 +18,8 @@ import (
 
 // LogFilesClient contains the methods for the LogFiles group.
 // Don't use this type directly, use NewLogFilesClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type LogFilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewLogFilesClient(subscriptionID string, credential azcore.TokenCredential,
 }
 
 // NewListByServerPager - List all the server log files in a given server.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - LogFilesClientListByServerOptions contains the optional parameters for the LogFilesClient.NewListByServerPager
@@ -89,8 +89,8 @@ func (client *LogFilesClient) listByServerCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

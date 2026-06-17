@@ -119,8 +119,18 @@ type AzureBlobDataTransferDataSourceSink struct {
 	Component *DataTransferComponent
 
 	// REQUIRED
-	ContainerName *string
-	EndpointURL   *string
+	ContainerName     *string
+	EndpointURL       *string
+	RemoteAccountName *string
+}
+
+// GetBaseCosmosDataTransferDataSourceSink implements the BaseCosmosDataTransferDataSourceSinkClassification interface for
+// type AzureBlobDataTransferDataSourceSink.
+func (a *AzureBlobDataTransferDataSourceSink) GetBaseCosmosDataTransferDataSourceSink() *BaseCosmosDataTransferDataSourceSink {
+	return &BaseCosmosDataTransferDataSourceSink{
+		Component:         a.Component,
+		RemoteAccountName: a.RemoteAccountName,
+	}
 }
 
 // GetDataTransferDataSourceSink implements the DataTransferDataSourceSinkClassification interface for type AzureBlobDataTransferDataSourceSink.

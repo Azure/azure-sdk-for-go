@@ -18,6 +18,8 @@ import (
 
 // RecoverableManagedDatabasesClient contains the methods for the RecoverableManagedDatabases group.
 // Don't use this type directly, use NewRecoverableManagedDatabasesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type RecoverableManagedDatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRecoverableManagedDatabasesClient(subscriptionID string, credential azco
 
 // Get - Gets a recoverable managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - RecoverableManagedDatabasesClientGetOptions contains the optional parameters for the RecoverableManagedDatabasesClient.Get
@@ -93,8 +93,8 @@ func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *RecoverableManagedDatabasesClient) getHandleResponse(resp *http.Re
 }
 
 // NewListByInstancePager - Gets a list of recoverable managed databases.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - RecoverableManagedDatabasesClientListByInstanceOptions contains the optional parameters for the RecoverableManagedDatabasesClient.NewListByInstancePager
@@ -158,8 +156,8 @@ func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

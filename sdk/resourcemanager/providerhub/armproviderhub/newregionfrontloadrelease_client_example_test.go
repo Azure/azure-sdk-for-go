@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2"
 	"log"
 )
 
@@ -84,7 +84,7 @@ func ExampleNewRegionFrontloadReleaseClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.NewRegionFrontloadReleaseClientCreateOrUpdateResponse{
-	// 	DefaultRollout: &armproviderhub.DefaultRollout{
+	// 	DefaultRollout: armproviderhub.DefaultRollout{
 	// 		Name: to.Ptr("Microsoft.Contoso/2020week10"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),
@@ -235,7 +235,7 @@ func ExampleNewRegionFrontloadReleaseClient_GenerateManifest() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.NewRegionFrontloadReleaseClientGenerateManifestResponse{
-	// 	ResourceProviderManifest: &armproviderhub.ResourceProviderManifest{
+	// 	ResourceProviderManifest: armproviderhub.ResourceProviderManifest{
 	// 		Capabilities: []*armproviderhub.ResourceProviderCapabilities{
 	// 			{
 	// 				Effect: to.Ptr(armproviderhub.ResourceProviderCapabilitiesEffectAllow),
@@ -387,7 +387,7 @@ func ExampleNewRegionFrontloadReleaseClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.NewRegionFrontloadReleaseClientGetResponse{
-	// 	DefaultRollout: &armproviderhub.DefaultRollout{
+	// 	DefaultRollout: armproviderhub.DefaultRollout{
 	// 		Name: to.Ptr("Microsoft.Contoso/2020week10"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/defaultRollouts"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/defaultRollouts/2020week10"),

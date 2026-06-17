@@ -200,13 +200,13 @@ func (c *CertificateListDescription) UnmarshalJSON(data []byte) error {
 func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificate", c.Certificate)
-	populateTime[datetime.RFC1123](objectMap, "created", c.Created)
-	populateTime[datetime.RFC1123](objectMap, "expiry", c.Expiry)
+	populateTime[datetime.RFC7231](objectMap, "created", c.Created)
+	populateTime[datetime.RFC7231](objectMap, "expiry", c.Expiry)
 	populate(objectMap, "isVerified", c.IsVerified)
 	populate(objectMap, "policyResourceId", c.PolicyResourceID)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateTime[datetime.RFC1123](objectMap, "updated", c.Updated)
+	populateTime[datetime.RFC7231](objectMap, "updated", c.Updated)
 	return json.Marshal(objectMap)
 }
 
@@ -223,10 +223,10 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Certificate", &c.Certificate)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTime[datetime.RFC1123](val, "Created", &c.Created)
+			err = unpopulateTime[datetime.RFC7231](val, "Created", &c.Created)
 			delete(rawMsg, key)
 		case "expiry":
-			err = unpopulateTime[datetime.RFC1123](val, "Expiry", &c.Expiry)
+			err = unpopulateTime[datetime.RFC7231](val, "Expiry", &c.Expiry)
 			delete(rawMsg, key)
 		case "isVerified":
 			err = unpopulate(val, "IsVerified", &c.IsVerified)
@@ -241,7 +241,7 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Thumbprint", &c.Thumbprint)
 			delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTime[datetime.RFC1123](val, "Updated", &c.Updated)
+			err = unpopulateTime[datetime.RFC7231](val, "Updated", &c.Updated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -255,13 +255,13 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 func (c CertificatePropertiesWithNonce) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificate", c.Certificate)
-	populateTime[datetime.RFC1123](objectMap, "created", c.Created)
-	populateTime[datetime.RFC1123](objectMap, "expiry", c.Expiry)
+	populateTime[datetime.RFC7231](objectMap, "created", c.Created)
+	populateTime[datetime.RFC7231](objectMap, "expiry", c.Expiry)
 	populate(objectMap, "isVerified", c.IsVerified)
 	populate(objectMap, "policyResourceId", c.PolicyResourceID)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateTime[datetime.RFC1123](objectMap, "updated", c.Updated)
+	populateTime[datetime.RFC7231](objectMap, "updated", c.Updated)
 	populate(objectMap, "verificationCode", c.VerificationCode)
 	return json.Marshal(objectMap)
 }
@@ -279,10 +279,10 @@ func (c *CertificatePropertiesWithNonce) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Certificate", &c.Certificate)
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTime[datetime.RFC1123](val, "Created", &c.Created)
+			err = unpopulateTime[datetime.RFC7231](val, "Created", &c.Created)
 			delete(rawMsg, key)
 		case "expiry":
-			err = unpopulateTime[datetime.RFC1123](val, "Expiry", &c.Expiry)
+			err = unpopulateTime[datetime.RFC7231](val, "Expiry", &c.Expiry)
 			delete(rawMsg, key)
 		case "isVerified":
 			err = unpopulate(val, "IsVerified", &c.IsVerified)
@@ -297,7 +297,7 @@ func (c *CertificatePropertiesWithNonce) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Thumbprint", &c.Thumbprint)
 			delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTime[datetime.RFC1123](val, "Updated", &c.Updated)
+			err = unpopulateTime[datetime.RFC7231](val, "Updated", &c.Updated)
 			delete(rawMsg, key)
 		case "verificationCode":
 			err = unpopulate(val, "VerificationCode", &c.VerificationCode)
@@ -604,9 +604,9 @@ func (e EndpointHealthData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "endpointId", e.EndpointID)
 	populate(objectMap, "healthStatus", e.HealthStatus)
 	populate(objectMap, "lastKnownError", e.LastKnownError)
-	populateTime[datetime.RFC1123](objectMap, "lastKnownErrorTime", e.LastKnownErrorTime)
-	populateTime[datetime.RFC1123](objectMap, "lastSendAttemptTime", e.LastSendAttemptTime)
-	populateTime[datetime.RFC1123](objectMap, "lastSuccessfulSendAttemptTime", e.LastSuccessfulSendAttemptTime)
+	populateTime[datetime.RFC7231](objectMap, "lastKnownErrorTime", e.LastKnownErrorTime)
+	populateTime[datetime.RFC7231](objectMap, "lastSendAttemptTime", e.LastSendAttemptTime)
+	populateTime[datetime.RFC7231](objectMap, "lastSuccessfulSendAttemptTime", e.LastSuccessfulSendAttemptTime)
 	return json.Marshal(objectMap)
 }
 
@@ -629,13 +629,13 @@ func (e *EndpointHealthData) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "LastKnownError", &e.LastKnownError)
 			delete(rawMsg, key)
 		case "lastKnownErrorTime":
-			err = unpopulateTime[datetime.RFC1123](val, "LastKnownErrorTime", &e.LastKnownErrorTime)
+			err = unpopulateTime[datetime.RFC7231](val, "LastKnownErrorTime", &e.LastKnownErrorTime)
 			delete(rawMsg, key)
 		case "lastSendAttemptTime":
-			err = unpopulateTime[datetime.RFC1123](val, "LastSendAttemptTime", &e.LastSendAttemptTime)
+			err = unpopulateTime[datetime.RFC7231](val, "LastSendAttemptTime", &e.LastSendAttemptTime)
 			delete(rawMsg, key)
 		case "lastSuccessfulSendAttemptTime":
-			err = unpopulateTime[datetime.RFC1123](val, "LastSuccessfulSendAttemptTime", &e.LastSuccessfulSendAttemptTime)
+			err = unpopulateTime[datetime.RFC7231](val, "LastSuccessfulSendAttemptTime", &e.LastSuccessfulSendAttemptTime)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1209,11 +1209,11 @@ func (i *ImportDevicesRequest) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JobResponse.
 func (j JobResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC1123](objectMap, "endTimeUtc", j.EndTimeUTC)
+	populateTime[datetime.RFC7231](objectMap, "endTimeUtc", j.EndTimeUTC)
 	populate(objectMap, "failureReason", j.FailureReason)
 	populate(objectMap, "jobId", j.JobID)
 	populate(objectMap, "parentJobId", j.ParentJobID)
-	populateTime[datetime.RFC1123](objectMap, "startTimeUtc", j.StartTimeUTC)
+	populateTime[datetime.RFC7231](objectMap, "startTimeUtc", j.StartTimeUTC)
 	populate(objectMap, "status", j.Status)
 	populate(objectMap, "statusMessage", j.StatusMessage)
 	populate(objectMap, "type", j.Type)
@@ -1230,7 +1230,7 @@ func (j *JobResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTimeUtc":
-			err = unpopulateTime[datetime.RFC1123](val, "EndTimeUTC", &j.EndTimeUTC)
+			err = unpopulateTime[datetime.RFC7231](val, "EndTimeUTC", &j.EndTimeUTC)
 			delete(rawMsg, key)
 		case "failureReason":
 			err = unpopulate(val, "FailureReason", &j.FailureReason)
@@ -1242,7 +1242,7 @@ func (j *JobResponse) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ParentJobID", &j.ParentJobID)
 			delete(rawMsg, key)
 		case "startTimeUtc":
-			err = unpopulateTime[datetime.RFC1123](val, "StartTimeUTC", &j.StartTimeUTC)
+			err = unpopulateTime[datetime.RFC7231](val, "StartTimeUTC", &j.StartTimeUTC)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &j.Status)
@@ -3402,5 +3402,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

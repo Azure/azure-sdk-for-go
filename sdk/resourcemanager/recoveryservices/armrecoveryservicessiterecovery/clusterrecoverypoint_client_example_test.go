@@ -6,10 +6,9 @@ package armrecoveryservicessiterecovery_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"log"
 )
 
 // Generated from example definition: 2025-08-01/ClusterRecoveryPoint_Get.json
@@ -31,7 +30,7 @@ func ExampleClusterRecoveryPointClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicessiterecovery.ClusterRecoveryPointClientGetResponse{
-	// 	ClusterRecoveryPoint: &armrecoveryservicessiterecovery.ClusterRecoveryPoint{
+	// 	ClusterRecoveryPoint: armrecoveryservicessiterecovery.ClusterRecoveryPoint{
 	// 		Name: to.Ptr("06b9ae7f-f21d-4a76-9897-5cf5d6004d80"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionClusters/recoveryPoints"),
 	// 		ID: to.Ptr("/Subscriptions/7c943c1b-5122-4097-90c8-861411bdd574/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/fabric-pri-eastus/replicationProtectionContainers/pri-cloud-eastus/replicationProtectionClusters/testcluster/recoveryPoints/06b9ae7f-f21d-4a76-9897-5cf5d6004d80"),

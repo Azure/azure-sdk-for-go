@@ -18,6 +18,8 @@ import (
 
 // CloudHsmClusterPrivateLinkResourcesClient contains the methods for the CloudHsmClusterPrivateLinkResources group.
 // Don't use this type directly, use NewCloudHsmClusterPrivateLinkResourcesClient() instead.
+//
+// Generated from API version 2025-03-31
 type CloudHsmClusterPrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewCloudHsmClusterPrivateLinkResourcesClient(subscriptionID string, credent
 }
 
 // NewListByCloudHsmClusterPager - Gets the private link resources supported for the Cloud Hsm Cluster.
-//
-// Generated from API version 2025-03-31
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudHsmClusterName - The name of the Cloud HSM Cluster within the specified resource group. Cloud HSM Cluster names must
 //     be between 3 and 23 characters in length.
@@ -90,8 +90,8 @@ func (client *CloudHsmClusterPrivateLinkResourcesClient) listByCloudHsmClusterCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-31")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250331)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

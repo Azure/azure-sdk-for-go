@@ -8,15 +8,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
 )
 
 // ReplicationProtectableItemsServer is a fake server for instances of the armrecoveryservicessiterecovery.ReplicationProtectableItemsClient type.
@@ -59,9 +59,7 @@ func (r *ReplicationProtectableItemsServerTransport) Do(req *http.Request) (*htt
 }
 
 func (r *ReplicationProtectableItemsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -79,10 +77,7 @@ func (r *ReplicationProtectableItemsServerTransport) dispatchToMethodFake(req *h
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -128,7 +123,7 @@ func (r *ReplicationProtectableItemsServerTransport) dispatchGet(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectableItem, req)
@@ -167,21 +162,9 @@ func (r *ReplicationProtectableItemsServerTransport) dispatchNewListByReplicatio
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		takeUnescaped, err := url.QueryUnescape(qp.Get("$take"))
-		if err != nil {
-			return nil, err
-		}
-		takeParam := getOptional(takeUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		takeParam := getOptional(qp.Get("$take"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armrecoveryservicessiterecovery.ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions
 		if filterParam != nil || takeParam != nil || skipTokenParam != nil {
 			options = &armrecoveryservicessiterecovery.ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions{
@@ -201,7 +184,7 @@ func (r *ReplicationProtectableItemsServerTransport) dispatchNewListByReplicatio
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListByReplicationProtectionContainersPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

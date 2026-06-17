@@ -11,10 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // GetPrivateDNSZoneSuffixClient contains the methods for the GetPrivateDNSZoneSuffix group.
 // Don't use this type directly, use NewGetPrivateDNSZoneSuffixClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type GetPrivateDNSZoneSuffixClient struct {
 	internal *arm.Client
 }
@@ -35,8 +38,6 @@ func NewGetPrivateDNSZoneSuffixClient(credential azcore.TokenCredential, options
 
 // Execute - Get private DNS zone suffix in the cloud.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - options - GetPrivateDNSZoneSuffixClientExecuteOptions contains the optional parameters for the GetPrivateDNSZoneSuffixClient.Execute
 //     method.
 func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, options *GetPrivateDNSZoneSuffixClientExecuteOptions) (GetPrivateDNSZoneSuffixClientExecuteResponse, error) {
@@ -69,8 +70,8 @@ func (client *GetPrivateDNSZoneSuffixClient) executeCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 	"log"
 )
 
@@ -40,7 +40,7 @@ func ExampleChannelsClient_Create_createAlexaChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientCreateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.AlexaChannel{
@@ -85,7 +85,7 @@ func ExampleChannelsClient_Create_createChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientCreateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.EmailChannel{
@@ -129,7 +129,7 @@ func ExampleChannelsClient_Create_createDirectLineSpeechChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientCreateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.DirectLineSpeechChannel{
@@ -173,7 +173,7 @@ func ExampleChannelsClient_Create_createEmailChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientCreateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.EmailChannel{
@@ -220,7 +220,7 @@ func ExampleChannelsClient_Create_createLineChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientCreateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.LineChannel{
@@ -302,7 +302,7 @@ func ExampleChannelsClient_Get_getAlexaChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientGetResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.AlexaChannel{
@@ -337,7 +337,7 @@ func ExampleChannelsClient_Get_getChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientGetResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.EmailChannel{
@@ -371,7 +371,7 @@ func ExampleChannelsClient_Get_getDirectLineSpeechChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientGetResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.DirectLineSpeechChannel{
@@ -407,7 +407,7 @@ func ExampleChannelsClient_Get_getLineChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientGetResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.LineChannel{
@@ -505,7 +505,7 @@ func ExampleChannelsClient_ListWithKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientListWithKeysResponse{
-	// 	ListChannelWithKeysResponse: &armbotservice.ListChannelWithKeysResponse{
+	// 	ListChannelWithKeysResponse: armbotservice.ListChannelWithKeysResponse{
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.EmailChannel{
 	// 			ChannelName: to.Ptr("EmailChannel"),
@@ -599,7 +599,7 @@ func ExampleChannelsClient_Update_updateAlexaChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientUpdateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.AlexaChannel{
@@ -644,7 +644,7 @@ func ExampleChannelsClient_Update_updateChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientUpdateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.EmailChannel{
@@ -688,7 +688,7 @@ func ExampleChannelsClient_Update_updateDirectLineSpeechChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientUpdateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.DirectLineSpeechChannel{
@@ -734,7 +734,7 @@ func ExampleChannelsClient_Update_updateLineChannel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.ChannelsClientUpdateResponse{
-	// 	BotChannel: &armbotservice.BotChannel{
+	// 	BotChannel: armbotservice.BotChannel{
 	// 		ID: to.Ptr("/subscriptions/subscription-id/providers/Microsoft.BotService/botServices"),
 	// 		Location: to.Ptr("global"),
 	// 		Properties: &armbotservice.LineChannel{

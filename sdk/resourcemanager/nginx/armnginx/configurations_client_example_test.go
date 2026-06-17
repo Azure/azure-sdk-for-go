@@ -7,7 +7,7 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleConfigurationsClient_Analysis() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.ConfigurationsClientAnalysisResponse{
-	// 	AnalysisResult: &armnginx.AnalysisResult{
+	// 	AnalysisResult: armnginx.AnalysisResult{
 	// 		Data: &armnginx.AnalysisResultData{
 	// 			Errors: []*armnginx.AnalysisDiagnostic{
 	// 				{
@@ -66,13 +66,13 @@ func ExampleConfigurationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.ConfigurationsClientCreateOrUpdateResponse{
-	// 	Configuration: &armnginx.Configuration{
+	// 	Configuration: armnginx.Configuration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),
@@ -109,7 +109,7 @@ func ExampleConfigurationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -132,7 +132,7 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.ConfigurationsClientGetResponse{
-	// 	Configuration: &armnginx.Configuration{
+	// 	Configuration: armnginx.Configuration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxDeployments/configurations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/configurations/default"),

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 	"log"
 )
 
@@ -37,13 +37,13 @@ func ExampleNetworkBootstrapInterfacesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkBootstrapInterfacesClientCreateResponse{
-	// 	NetworkBootstrapInterface: &armmanagednetworkfabric.NetworkBootstrapInterface{
+	// 	NetworkBootstrapInterface: armmanagednetworkfabric.NetworkBootstrapInterface{
 	// 		Properties: &armmanagednetworkfabric.NetworkBootstrapInterfaceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
@@ -89,7 +89,7 @@ func ExampleNetworkBootstrapInterfacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -112,7 +112,7 @@ func ExampleNetworkBootstrapInterfacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkBootstrapInterfacesClientGetResponse{
-	// 	NetworkBootstrapInterface: &armmanagednetworkfabric.NetworkBootstrapInterface{
+	// 	NetworkBootstrapInterface: armmanagednetworkfabric.NetworkBootstrapInterface{
 	// 		Properties: &armmanagednetworkfabric.NetworkBootstrapInterfaceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
@@ -221,13 +221,13 @@ func ExampleNetworkBootstrapInterfacesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateResponse{
-	// 	NetworkBootstrapInterface: &armmanagednetworkfabric.NetworkBootstrapInterface{
+	// 	NetworkBootstrapInterface: armmanagednetworkfabric.NetworkBootstrapInterface{
 	// 		Properties: &armmanagednetworkfabric.NetworkBootstrapInterfaceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
@@ -278,13 +278,13 @@ func ExampleNetworkBootstrapInterfacesClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkBootstrapInterfacesClientUpdateAdministrativeStateResponse{
-	// 	CommonPostActionResponseForStateUpdate: &armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	CommonPostActionResponseForStateUpdate: armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("400"),
 	// 			Message: to.Ptr("The request is invalid."),

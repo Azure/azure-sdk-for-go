@@ -18,6 +18,8 @@ import (
 
 // RestorableDroppedDatabasesClient contains the methods for the RestorableDroppedDatabases group.
 // Don't use this type directly, use NewRestorableDroppedDatabasesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type RestorableDroppedDatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRestorableDroppedDatabasesClient(subscriptionID string, credential azcor
 
 // Get - Gets a restorable dropped database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - RestorableDroppedDatabasesClientGetOptions contains the optional parameters for the RestorableDroppedDatabasesClient.Get
@@ -99,8 +99,8 @@ func (client *RestorableDroppedDatabasesClient) getCreateRequest(ctx context.Con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -115,8 +115,6 @@ func (client *RestorableDroppedDatabasesClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByServerPager - Gets a list of restorable dropped databases.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - RestorableDroppedDatabasesClientListByServerOptions contains the optional parameters for the RestorableDroppedDatabasesClient.NewListByServerPager
@@ -164,8 +162,8 @@ func (client *RestorableDroppedDatabasesClient) listByServerCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

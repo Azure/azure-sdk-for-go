@@ -18,6 +18,8 @@ import (
 
 // LongRunningBackupsClient contains the methods for the LongRunningBackups group.
 // Don't use this type directly, use NewLongRunningBackupsClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type LongRunningBackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewLongRunningBackupsClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Get backup for a given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - The name of the backup.
@@ -93,8 +93,8 @@ func (client *LongRunningBackupsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *LongRunningBackupsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - List all the backups for a given server.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - LongRunningBackupsClientListOptions contains the optional parameters for the LongRunningBackupsClient.NewListPager
@@ -158,8 +156,8 @@ func (client *LongRunningBackupsClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

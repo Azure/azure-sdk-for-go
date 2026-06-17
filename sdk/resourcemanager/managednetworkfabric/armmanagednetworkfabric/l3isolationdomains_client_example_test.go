@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 	"log"
 )
 
@@ -29,13 +29,13 @@ func ExampleL3IsolationDomainsClient_BeginCommitConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.L3IsolationDomainsClientCommitConfigurationResponse{
-	// 	CommonPostActionResponseForStateUpdate: &armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	CommonPostActionResponseForStateUpdate: armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
 	// 			Message: to.Ptr(""),
@@ -123,13 +123,13 @@ func ExampleL3IsolationDomainsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.L3IsolationDomainsClientCreateResponse{
-	// 	L3IsolationDomain: &armmanagednetworkfabric.L3IsolationDomain{
+	// 	L3IsolationDomain: armmanagednetworkfabric.L3IsolationDomain{
 	// 		Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
@@ -223,7 +223,7 @@ func ExampleL3IsolationDomainsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -246,7 +246,7 @@ func ExampleL3IsolationDomainsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.L3IsolationDomainsClientGetResponse{
-	// 	L3IsolationDomain: &armmanagednetworkfabric.L3IsolationDomain{
+	// 	L3IsolationDomain: armmanagednetworkfabric.L3IsolationDomain{
 	// 		Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
@@ -613,13 +613,13 @@ func ExampleL3IsolationDomainsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.L3IsolationDomainsClientUpdateResponse{
-	// 	L3IsolationDomain: &armmanagednetworkfabric.L3IsolationDomain{
+	// 	L3IsolationDomain: armmanagednetworkfabric.L3IsolationDomain{
 	// 		Properties: &armmanagednetworkfabric.L3IsolationDomainProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			RedistributeConnectedSubnets: to.Ptr(armmanagednetworkfabric.RedistributeConnectedSubnetsTrue),
@@ -718,13 +718,13 @@ func ExampleL3IsolationDomainsClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.L3IsolationDomainsClientUpdateAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: &armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -761,13 +761,13 @@ func ExampleL3IsolationDomainsClient_BeginValidateConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.L3IsolationDomainsClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: &armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
 	// 			Message: to.Ptr(""),

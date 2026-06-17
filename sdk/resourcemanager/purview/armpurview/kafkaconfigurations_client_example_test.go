@@ -6,11 +6,10 @@ package armpurview_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/purview/armpurview"
+	"log"
 )
 
 // Generated from example definition: 2024-04-01-preview/KafkaConfigurations_CreateOrUpdate.json
@@ -45,7 +44,7 @@ func ExampleKafkaConfigurationsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurview.KafkaConfigurationsClientCreateOrUpdateResponse{
-	// 	KafkaConfiguration: &armpurview.KafkaConfiguration{
+	// 	KafkaConfiguration: armpurview.KafkaConfiguration{
 	// 		Name: to.Ptr("kafkaConfigName"),
 	// 		Type: to.Ptr("Microsoft.Purview/accounts/kafkaconfiguration"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/SampleResourceGroup/providers/Microsoft.Purview/accounts/account1/kafkaConfigurations/default"),
@@ -114,7 +113,7 @@ func ExampleKafkaConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpurview.KafkaConfigurationsClientGetResponse{
-	// 	KafkaConfiguration: &armpurview.KafkaConfiguration{
+	// 	KafkaConfiguration: armpurview.KafkaConfiguration{
 	// 		Name: to.Ptr("kafkaConfigName"),
 	// 		Type: to.Ptr("Microsoft.Purview/accounts/kafkaconfiguration"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/SampleResourceGroup/providers/Microsoft.Purview/accounts/account1/kafkaConfigurations/default"),

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns"
 	"log"
 )
 
@@ -40,13 +40,13 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.VirtualNetworkLinksClientCreateOrUpdateResponse{
-	// 	VirtualNetworkLink: &armprivatedns.VirtualNetworkLink{
+	// 	VirtualNetworkLink: armprivatedns.VirtualNetworkLink{
 	// 		Name: to.Ptr("virtualNetworkLink1"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/virtualNetworkLinks"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -84,7 +84,7 @@ func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -112,7 +112,7 @@ func ExampleVirtualNetworkLinksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.VirtualNetworkLinksClientGetResponse{
-	// 	VirtualNetworkLink: &armprivatedns.VirtualNetworkLink{
+	// 	VirtualNetworkLink: armprivatedns.VirtualNetworkLink{
 	// 		Name: to.Ptr("virtualNetworkLink1"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/virtualNetworkLinks"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -225,13 +225,13 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatedns.VirtualNetworkLinksClientUpdateResponse{
-	// 	VirtualNetworkLink: &armprivatedns.VirtualNetworkLink{
+	// 	VirtualNetworkLink: armprivatedns.VirtualNetworkLink{
 	// 		Name: to.Ptr("virtualNetworkLink1"),
 	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/virtualNetworkLinks"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),

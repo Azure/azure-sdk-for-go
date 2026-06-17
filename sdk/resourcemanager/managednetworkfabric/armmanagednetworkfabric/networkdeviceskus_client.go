@@ -18,6 +18,8 @@ import (
 
 // NetworkDeviceSKUsClient contains the methods for the NetworkDeviceSKUs group.
 // Don't use this type directly, use NewNetworkDeviceSKUsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkDeviceSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkDeviceSKUsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get a Network Device SKU details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - networkDeviceSKUName - Name of the Network Device SKU.
 //   - options - NetworkDeviceSKUsClientGetOptions contains the optional parameters for the NetworkDeviceSKUsClient.Get method.
 func (client *NetworkDeviceSKUsClient) Get(ctx context.Context, networkDeviceSKUName string, options *NetworkDeviceSKUsClientGetOptions) (NetworkDeviceSKUsClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *NetworkDeviceSKUsClient) getCreateRequest(ctx context.Context, net
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *NetworkDeviceSKUsClient) getHandleResponse(resp *http.Response) (N
 }
 
 // NewListBySubscriptionPager - List Network Device SKUs for the given subscription.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkDeviceSKUsClientListBySubscriptionOptions contains the optional parameters for the NetworkDeviceSKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkDeviceSKUsClient) NewListBySubscriptionPager(options *NetworkDeviceSKUsClientListBySubscriptionOptions) *runtime.Pager[NetworkDeviceSKUsClientListBySubscriptionResponse] {
@@ -138,8 +136,8 @@ func (client *NetworkDeviceSKUsClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

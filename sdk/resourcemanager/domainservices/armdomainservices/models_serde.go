@@ -16,7 +16,7 @@ import (
 // MarshalJSON implements the json.Marshaller interface for type ConfigDiagnostics.
 func (c ConfigDiagnostics) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC1123](objectMap, "lastExecuted", c.LastExecuted)
+	populateTime[datetime.RFC7231](objectMap, "lastExecuted", c.LastExecuted)
 	populate(objectMap, "validatorResults", c.ValidatorResults)
 	return json.Marshal(objectMap)
 }
@@ -31,7 +31,7 @@ func (c *ConfigDiagnostics) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "lastExecuted":
-			err = unpopulateTime[datetime.RFC1123](val, "LastExecuted", &c.LastExecuted)
+			err = unpopulateTime[datetime.RFC7231](val, "LastExecuted", &c.LastExecuted)
 			delete(rawMsg, key)
 		case "validatorResults":
 			err = unpopulate(val, "ValidatorResults", &c.ValidatorResults)
@@ -926,7 +926,7 @@ func (r ReplicaSet) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "domainControllerIpAddress", r.DomainControllerIPAddress)
 	populate(objectMap, "externalAccessIpAddress", r.ExternalAccessIPAddress)
 	populate(objectMap, "healthAlerts", r.HealthAlerts)
-	populateTime[datetime.RFC1123](objectMap, "healthLastEvaluated", r.HealthLastEvaluated)
+	populateTime[datetime.RFC7231](objectMap, "healthLastEvaluated", r.HealthLastEvaluated)
 	populate(objectMap, "healthMonitors", r.HealthMonitors)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "replicaSetId", r.ReplicaSetID)
@@ -956,7 +956,7 @@ func (r *ReplicaSet) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "HealthAlerts", &r.HealthAlerts)
 			delete(rawMsg, key)
 		case "healthLastEvaluated":
-			err = unpopulateTime[datetime.RFC1123](val, "HealthLastEvaluated", &r.HealthLastEvaluated)
+			err = unpopulateTime[datetime.RFC7231](val, "HealthLastEvaluated", &r.HealthLastEvaluated)
 			delete(rawMsg, key)
 		case "healthMonitors":
 			err = unpopulate(val, "HealthMonitors", &r.HealthMonitors)
@@ -1137,5 +1137,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

@@ -11,10 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // PolicyClient contains the methods for the Policy group.
 // Don't use this type directly, use NewPolicyClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type PolicyClient struct {
 	internal *arm.Client
 }
@@ -35,8 +38,6 @@ func NewPolicyClient(credential azcore.TokenCredential, options *arm.ClientOptio
 
 // AddUpdatePolicyForTenant - Create or Update Subscription tenant policy for user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientAddUpdatePolicyForTenantOptions contains the optional parameters for the PolicyClient.AddUpdatePolicyForTenant
 //     method.
 func (client *PolicyClient) AddUpdatePolicyForTenant(ctx context.Context, body PutTenantPolicyRequestProperties, options *PolicyClientAddUpdatePolicyForTenantOptions) (PolicyClientAddUpdatePolicyForTenantResponse, error) {
@@ -69,8 +70,8 @@ func (client *PolicyClient) addUpdatePolicyForTenantCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -90,8 +91,6 @@ func (client *PolicyClient) addUpdatePolicyForTenantHandleResponse(resp *http.Re
 
 // GetPolicyForTenant - Get the subscription tenant policy for the user's tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientGetPolicyForTenantOptions contains the optional parameters for the PolicyClient.GetPolicyForTenant
 //     method.
 func (client *PolicyClient) GetPolicyForTenant(ctx context.Context, options *PolicyClientGetPolicyForTenantOptions) (PolicyClientGetPolicyForTenantResponse, error) {
@@ -124,8 +123,8 @@ func (client *PolicyClient) getPolicyForTenantCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -140,8 +139,6 @@ func (client *PolicyClient) getPolicyForTenantHandleResponse(resp *http.Response
 }
 
 // NewListPolicyForTenantPager - Get the subscription tenant policy for the user's tenant.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - PolicyClientListPolicyForTenantOptions contains the optional parameters for the PolicyClient.NewListPolicyForTenantPager
 //     method.
 func (client *PolicyClient) NewListPolicyForTenantPager(options *PolicyClientListPolicyForTenantOptions) *runtime.Pager[PolicyClientListPolicyForTenantResponse] {
@@ -175,8 +172,8 @@ func (client *PolicyClient) listPolicyForTenantCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -19,6 +19,8 @@ import (
 
 // PrivateEndpointConnectionClient contains the methods for the PrivateEndpointConnection group.
 // Don't use this type directly, use NewPrivateEndpointConnectionClient() instead.
+//
+// Generated from API version 2025-06-01
 type PrivateEndpointConnectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 
 // BeginDelete - Deletes the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -71,8 +71,6 @@ func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, 
 
 // Delete - Deletes the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionClient.BeginDelete"
@@ -118,15 +116,13 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -180,8 +176,8 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -196,8 +192,6 @@ func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByBatchAccountPager - Lists all of the private endpoint connections in the specified account.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -247,11 +241,11 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.Maxresults != nil {
 		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,8 +261,6 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(
 
 // BeginUpdate - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -298,8 +290,6 @@ func (client *PrivateEndpointConnectionClient) BeginUpdate(ctx context.Context, 
 
 // Update - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionClient.BeginUpdate"
@@ -345,8 +335,8 @@ func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

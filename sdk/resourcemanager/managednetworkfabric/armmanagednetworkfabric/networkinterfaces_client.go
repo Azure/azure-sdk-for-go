@@ -18,6 +18,8 @@ import (
 
 // NetworkInterfacesClient contains the methods for the NetworkInterfaces group.
 // Don't use this type directly, use NewNetworkInterfacesClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkInterfacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkInterfacesClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreate - Create a Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - networkInterfaceName - Name of the Network Interface.
@@ -68,8 +68,6 @@ func (client *NetworkInterfacesClient) BeginCreate(ctx context.Context, resource
 
 // Create - Create a Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkInterfacesClient) create(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body NetworkInterface, options *NetworkInterfacesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkInterfacesClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *NetworkInterfacesClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,8 +125,6 @@ func (client *NetworkInterfacesClient) createCreateRequest(ctx context.Context, 
 
 // BeginDelete - Delete the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - networkInterfaceName - Name of the Network Interface.
@@ -153,8 +149,6 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Delete the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, options *NetworkInterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkInterfacesClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the Network Interface resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - networkInterfaceName - Name of the Network Interface.
@@ -259,8 +251,8 @@ func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *NetworkInterfacesClient) getHandleResponse(resp *http.Response) (N
 }
 
 // NewListByNetworkDevicePager - List all the Network Interface resources in a given resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkInterfacesClientListByNetworkDeviceOptions contains the optional parameters for the NetworkInterfacesClient.NewListByNetworkDevicePager
@@ -324,8 +314,8 @@ func (client *NetworkInterfacesClient) listByNetworkDeviceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +331,6 @@ func (client *NetworkInterfacesClient) listByNetworkDeviceHandleResponse(resp *h
 
 // BeginUpdate - Update certain properties of the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - networkInterfaceName - Name of the Network Interface.
@@ -368,8 +356,6 @@ func (client *NetworkInterfacesClient) BeginUpdate(ctx context.Context, resource
 
 // Update - Update certain properties of the Network Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkInterfacesClient) update(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body NetworkInterfacePatch, options *NetworkInterfacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkInterfacesClient.BeginUpdate"
@@ -415,8 +401,8 @@ func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -427,8 +413,6 @@ func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, 
 
 // BeginUpdateAdministrativeState - Update the admin state of the Network Interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - networkInterfaceName - Name of the Network Interface.
@@ -454,8 +438,6 @@ func (client *NetworkInterfacesClient) BeginUpdateAdministrativeState(ctx contex
 
 // UpdateAdministrativeState - Update the admin state of the Network Interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkInterfacesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkDeviceName string, networkInterfaceName string, body UpdateAdministrativeState, options *NetworkInterfacesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkInterfacesClient.BeginUpdateAdministrativeState"
@@ -501,8 +483,8 @@ func (client *NetworkInterfacesClient) updateAdministrativeStateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

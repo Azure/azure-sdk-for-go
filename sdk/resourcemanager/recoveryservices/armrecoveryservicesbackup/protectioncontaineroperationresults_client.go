@@ -18,6 +18,8 @@ import (
 
 // ProtectionContainerOperationResultsClient contains the methods for the ProtectionContainerOperationResults group.
 // Don't use this type directly, use NewProtectionContainerOperationResultsClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type ProtectionContainerOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewProtectionContainerOperationResultsClient(subscriptionID string, credent
 
 // Get - Fetches the result of any operation on the container.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionContainerOperationResultsClientGetOptions contains the optional parameters for the ProtectionContainerOperationResultsClient.Get
 //     method.
@@ -100,8 +100,8 @@ func (client *ProtectionContainerOperationResultsClient) getCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

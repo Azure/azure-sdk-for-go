@@ -19,6 +19,8 @@ import (
 
 // OrdersClient contains the methods for the Orders group.
 // Don't use this type directly, use NewOrdersClient() instead.
+//
+// Generated from API version 2024-02-01
 type OrdersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewOrdersClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // Get - Get an order.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of the Azure region.
 //   - orderName - The name of the order.
@@ -94,8 +94,8 @@ func (client *OrdersClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +110,6 @@ func (client *OrdersClient) getHandleResponse(resp *http.Response) (OrdersClient
 }
 
 // NewListByResourceGroupPager - List orders at resource group level.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - OrdersClientListByResourceGroupOptions contains the optional parameters for the OrdersClient.NewListByResourceGroupPager
 //     method.
@@ -160,8 +158,8 @@ func (client *OrdersClient) listByResourceGroupCreateRequest(ctx context.Context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -176,8 +174,6 @@ func (client *OrdersClient) listByResourceGroupHandleResponse(resp *http.Respons
 }
 
 // NewListBySubscriptionPager - List orders at subscription level.
-//
-// Generated from API version 2024-02-01
 //   - options - OrdersClientListBySubscriptionOptions contains the optional parameters for the OrdersClient.NewListBySubscriptionPager
 //     method.
 func (client *OrdersClient) NewListBySubscriptionPager(options *OrdersClientListBySubscriptionOptions) *runtime.Pager[OrdersClientListBySubscriptionResponse] {
@@ -221,8 +217,8 @@ func (client *OrdersClient) listBySubscriptionCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

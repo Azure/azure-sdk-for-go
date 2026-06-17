@@ -7,7 +7,7 @@ package armcosmos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleLocationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.LocationsClientGetResponse{
-	// 	LocationGetResult: &armcosmos.LocationGetResult{
+	// 	LocationGetResult: armcosmos.LocationGetResult{
 	// 		Name: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/locations"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/locations/westus"),

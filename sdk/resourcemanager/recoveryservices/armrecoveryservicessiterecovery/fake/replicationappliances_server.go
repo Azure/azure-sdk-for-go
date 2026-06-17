@@ -7,15 +7,15 @@ package fake
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
 )
 
 // ReplicationAppliancesServer is a fake server for instances of the armrecoveryservicessiterecovery.ReplicationAppliancesClient type.
@@ -54,9 +54,7 @@ func (r *ReplicationAppliancesServerTransport) Do(req *http.Request) (*http.Resp
 }
 
 func (r *ReplicationAppliancesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -72,10 +70,7 @@ func (r *ReplicationAppliancesServerTransport) dispatchToMethodFake(req *http.Re
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -107,11 +102,7 @@ func (r *ReplicationAppliancesServerTransport) dispatchNewListPager(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
 		var options *armrecoveryservicessiterecovery.ReplicationAppliancesClientListOptions
 		if filterParam != nil {
 			options = &armrecoveryservicessiterecovery.ReplicationAppliancesClientListOptions{
@@ -129,7 +120,7 @@ func (r *ReplicationAppliancesServerTransport) dispatchNewListPager(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

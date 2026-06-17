@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -61,13 +61,13 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientCreateUpdateResponse{
-	// 	ClusterResource: &armcosmos.ClusterResource{
+	// 	ClusterResource: armcosmos.ClusterResource{
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
@@ -149,7 +149,7 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -170,7 +170,7 @@ func ExampleCassandraClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -193,7 +193,7 @@ func ExampleCassandraClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientGetResponse{
-	// 	ClusterResource: &armcosmos.ClusterResource{
+	// 	ClusterResource: armcosmos.ClusterResource{
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
@@ -277,7 +277,7 @@ func ExampleCassandraClustersClient_GetBackup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientGetBackupResponse{
-	// 	BackupResource: &armcosmos.BackupResource{
+	// 	BackupResource: armcosmos.BackupResource{
 	// 		BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.3841617+00:00"); return t}()),
 	// 		BackupID: to.Ptr("2517222704776158383"),
 	// 		BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
@@ -306,7 +306,7 @@ func ExampleCassandraClustersClient_GetCommandAsync() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientGetCommandAsyncResponse{
-	// 	CommandPublicResource: &armcosmos.CommandPublicResource{
+	// 	CommandPublicResource: armcosmos.CommandPublicResource{
 	// 		Arguments: map[string]any{
 	// 			"status": "",
 	// 		},
@@ -344,7 +344,7 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -371,13 +371,13 @@ func ExampleCassandraClustersClient_BeginInvokeCommandAsync() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientInvokeCommandAsyncResponse{
-	// 	CommandPublicResource: &armcosmos.CommandPublicResource{
+	// 	CommandPublicResource: armcosmos.CommandPublicResource{
 	// 		Arguments: map[string]any{
 	// 			"status": "",
 	// 		},
@@ -693,7 +693,7 @@ func ExampleCassandraClustersClient_BeginStart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -716,7 +716,7 @@ func ExampleCassandraClustersClient_Status() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientStatusResponse{
-	// 	CassandraClusterPublicStatus: &armcosmos.CassandraClusterPublicStatus{
+	// 	CassandraClusterPublicStatus: armcosmos.CassandraClusterPublicStatus{
 	// 		ConnectionErrors: []*armcosmos.ConnectionError{
 	// 		},
 	// 		DataCenters: []*armcosmos.CassandraClusterPublicStatusDataCentersItem{
@@ -894,13 +894,13 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientUpdateResponse{
-	// 	ClusterResource: &armcosmos.ClusterResource{
+	// 	ClusterResource: armcosmos.ClusterResource{
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),

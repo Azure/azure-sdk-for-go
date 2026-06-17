@@ -18,6 +18,8 @@ import (
 
 // CreationSupportedClient contains the methods for the CreationSupported group.
 // Don't use this type directly, use NewCreationSupportedClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type CreationSupportedClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewCreationSupportedClient(subscriptionID string, credential azcore.TokenCr
 //
 // Informs if the current subscription is being already monitored for selected Datadog organization.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - datadogOrganizationID - Datadog Organization Id
 //   - options - CreationSupportedClientGetOptions contains the optional parameters for the CreationSupportedClient.Get method.
 func (client *CreationSupportedClient) Get(ctx context.Context, datadogOrganizationID string, options *CreationSupportedClientGetOptions) (CreationSupportedClientGetResponse, error) {
@@ -81,9 +81,9 @@ func (client *CreationSupportedClient) getCreateRequest(ctx context.Context, dat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
+	reqQP.Set("api-version", version20251226Preview)
 	reqQP.Set("datadogOrganizationId", datadogOrganizationID)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -100,8 +100,6 @@ func (client *CreationSupportedClient) getHandleResponse(resp *http.Response) (C
 // NewListPager - Informs if the current subscription is being already monitored for selected Datadog organization.
 //
 // Informs if the current subscription is being already monitored for selected Datadog organization.
-//
-// Generated from API version 2025-12-26-preview
 //   - datadogOrganizationID - Datadog Organization Id
 //   - options - CreationSupportedClientListOptions contains the optional parameters for the CreationSupportedClient.NewListPager
 //     method.
@@ -140,9 +138,9 @@ func (client *CreationSupportedClient) listCreateRequest(ctx context.Context, da
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
+	reqQP.Set("api-version", version20251226Preview)
 	reqQP.Set("datadogOrganizationId", datadogOrganizationID)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

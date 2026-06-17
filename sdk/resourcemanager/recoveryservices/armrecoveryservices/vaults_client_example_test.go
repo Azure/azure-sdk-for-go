@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservices/v2"
 	"log"
 )
 
@@ -40,13 +40,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateRecoveryServicesVault
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -115,13 +115,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultPerformingCritic
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -200,13 +200,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithCustomerMana
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -284,13 +284,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithMonitoringSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -359,13 +359,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithRedundancySe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -431,13 +431,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithSourceScanCo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2025-02-15T12%3A36%3A51.68Z'\""),
@@ -501,13 +501,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateVaultWithUserAssigned
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -553,7 +553,7 @@ func ExampleVaultsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -576,7 +576,7 @@ func ExampleVaultsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientGetResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -835,13 +835,13 @@ func ExampleVaultsClient_BeginUpdate_updateResource() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -899,13 +899,13 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -978,13 +978,13 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys3() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -1057,13 +1057,13 @@ func ExampleVaultsClient_BeginUpdate_updateVaultWithMonitoringSetting() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -1118,13 +1118,13 @@ func ExampleVaultsClient_BeginUpdate_updateVaultWithRedundancySetting() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -1186,13 +1186,13 @@ func ExampleVaultsClient_BeginUpdate_updateVaultWithSourceScanConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -1257,13 +1257,13 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithUserAssignedIdentity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
@@ -1323,13 +1323,13 @@ func ExampleVaultsClient_BeginUpdate_updateResourceWithCustomerManagedKeys2() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultsClientUpdateResponse{
-	// 	Vault: &armrecoveryservices.Vault{
+	// 	Vault: armrecoveryservices.Vault{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
 	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),

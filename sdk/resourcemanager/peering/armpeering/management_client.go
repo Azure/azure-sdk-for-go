@@ -18,8 +18,6 @@ import (
 
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
-//
-// Generated from API version 2025-05-01
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,6 +41,8 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CheckServiceProviderAvailability - Checks if the peering service provider is present within 1000 miles of customer's location
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-05-01
 //   - checkServiceProviderAvailabilityInput - The request body
 //   - options - ManagementClientCheckServiceProviderAvailabilityOptions contains the optional parameters for the ManagementClient.CheckServiceProviderAvailability
 //     method.
@@ -80,8 +80,8 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	reqQP.Set("api-version", "2025-05-01")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkServiceProviderAvailabilityInput); err != nil {
@@ -93,6 +93,9 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 // checkServiceProviderAvailabilityHandleResponse handles the CheckServiceProviderAvailability response.
 func (client *ManagementClient) checkServiceProviderAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckServiceProviderAvailabilityResponse, error) {
 	result := ManagementClientCheckServiceProviderAvailabilityResponse{}
+	if val := resp.Header.Get("content-type"); val != "" {
+		result.ContentType = &val
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ManagementClientCheckServiceProviderAvailabilityResponse{}, err
 	}

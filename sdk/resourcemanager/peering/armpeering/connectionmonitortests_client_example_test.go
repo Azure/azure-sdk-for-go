@@ -38,7 +38,7 @@ func ExampleConnectionMonitorTestsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.ConnectionMonitorTestsClientCreateOrUpdateResponse{
-	// 	ConnectionMonitorTest: armpeering.ConnectionMonitorTest{
+	// 	ConnectionMonitorTest: &armpeering.ConnectionMonitorTest{
 	// 		Name: to.Ptr("connectionMonitorTestName"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName/connectionMonitorTests/connectionMonitorTestName"),
 	// 		Properties: &armpeering.ConnectionMonitorTestProperties{
@@ -96,7 +96,7 @@ func ExampleConnectionMonitorTestsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.ConnectionMonitorTestsClientGetResponse{
-	// 	ConnectionMonitorTest: armpeering.ConnectionMonitorTest{
+	// 	ConnectionMonitorTest: &armpeering.ConnectionMonitorTest{
 	// 		Name: to.Ptr("connectionMonitorTestName"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peeringServices/peeringServiceName/connectionMonitorTests/connectionMonitorTestName"),
 	// 		Properties: &armpeering.ConnectionMonitorTestProperties{

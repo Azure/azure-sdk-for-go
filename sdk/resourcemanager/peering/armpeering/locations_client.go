@@ -18,8 +18,6 @@ import (
 
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
-//
-// Generated from API version 2025-05-01
 type LocationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +40,8 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 }
 
 // NewListPager - Lists all of the available peering locations for the specified kind of peering.
+//
+// Generated from API version 2025-05-01
 //   - kind - The kind of the peering.
 //   - options - LocationsClientListOptions contains the optional parameters for the LocationsClient.NewListPager method.
 func (client *LocationsClient) NewListPager(kind PeeringLocationsKind, options *LocationsClientListOptions) *runtime.Pager[LocationsClientListResponse] {
@@ -79,12 +79,12 @@ func (client *LocationsClient) listCreateRequest(ctx context.Context, kind Peeri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
+	reqQP.Set("api-version", "2025-05-01")
 	if options != nil && options.DirectPeeringType != nil {
 		reqQP.Set("directPeeringType", string(*options.DirectPeeringType))
 	}
 	reqQP.Set("kind", string(kind))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

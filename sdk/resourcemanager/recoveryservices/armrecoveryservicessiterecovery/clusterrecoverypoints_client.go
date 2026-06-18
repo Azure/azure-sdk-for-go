@@ -7,18 +7,19 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ClusterRecoveryPointsClient contains the methods for the ClusterRecoveryPoints group.
 // Don't use this type directly, use NewClusterRecoveryPointsClient() instead.
+//
+// Generated from API version 2025-08-01
 type ClusterRecoveryPointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +44,6 @@ func NewClusterRecoveryPointsClient(subscriptionID string, credential azcore.Tok
 // NewListByReplicationProtectionClusterPager - Gets the list of cluster recovery points.
 //
 // The list of cluster recovery points.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - fabricName - Fabric name.
@@ -107,8 +106,8 @@ func (client *ClusterRecoveryPointsClient) listByReplicationProtectionClusterCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -48,9 +48,6 @@ type ServerFactory struct {
 	// PolicyServer contains the fakes for client PolicyClient
 	PolicyServer PolicyServer
 
-	// PrivateEndpointConnectionProxiesServer contains the fakes for client PrivateEndpointConnectionProxiesClient
-	PrivateEndpointConnectionProxiesServer PrivateEndpointConnectionProxiesServer
-
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
 
@@ -82,26 +79,25 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armrecoveryservicesdatareplication.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                      *ServerFactory
-	trMu                                     sync.Mutex
-	trCheckNameAvailabilityServer            *CheckNameAvailabilityServerTransport
-	trDeploymentPreflightServer              *DeploymentPreflightServerTransport
-	trEmailConfigurationServer               *EmailConfigurationServerTransport
-	trEventServer                            *EventServerTransport
-	trFabricAgentServer                      *FabricAgentServerTransport
-	trFabricServer                           *FabricServerTransport
-	trJobServer                              *JobServerTransport
-	trLocationBasedOperationResultsServer    *LocationBasedOperationResultsServerTransport
-	trOperationResultsServer                 *OperationResultsServerTransport
-	trOperationsServer                       *OperationsServerTransport
-	trPolicyServer                           *PolicyServerTransport
-	trPrivateEndpointConnectionProxiesServer *PrivateEndpointConnectionProxiesServerTransport
-	trPrivateEndpointConnectionsServer       *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer             *PrivateLinkResourcesServerTransport
-	trProtectedItemServer                    *ProtectedItemServerTransport
-	trRecoveryPointServer                    *RecoveryPointServerTransport
-	trReplicationExtensionServer             *ReplicationExtensionServerTransport
-	trVaultServer                            *VaultServerTransport
+	srv                                   *ServerFactory
+	trMu                                  sync.Mutex
+	trCheckNameAvailabilityServer         *CheckNameAvailabilityServerTransport
+	trDeploymentPreflightServer           *DeploymentPreflightServerTransport
+	trEmailConfigurationServer            *EmailConfigurationServerTransport
+	trEventServer                         *EventServerTransport
+	trFabricAgentServer                   *FabricAgentServerTransport
+	trFabricServer                        *FabricServerTransport
+	trJobServer                           *JobServerTransport
+	trLocationBasedOperationResultsServer *LocationBasedOperationResultsServerTransport
+	trOperationResultsServer              *OperationResultsServerTransport
+	trOperationsServer                    *OperationsServerTransport
+	trPolicyServer                        *PolicyServerTransport
+	trPrivateEndpointConnectionsServer    *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer          *PrivateLinkResourcesServerTransport
+	trProtectedItemServer                 *ProtectedItemServerTransport
+	trRecoveryPointServer                 *RecoveryPointServerTransport
+	trReplicationExtensionServer          *ReplicationExtensionServerTransport
+	trVaultServer                         *VaultServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -160,11 +156,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "PolicyClient":
 		initServer(&s.trMu, &s.trPolicyServer, func() *PolicyServerTransport { return NewPolicyServerTransport(&s.srv.PolicyServer) })
 		resp, err = s.trPolicyServer.Do(req)
-	case "PrivateEndpointConnectionProxiesClient":
-		initServer(&s.trMu, &s.trPrivateEndpointConnectionProxiesServer, func() *PrivateEndpointConnectionProxiesServerTransport {
-			return NewPrivateEndpointConnectionProxiesServerTransport(&s.srv.PrivateEndpointConnectionProxiesServer)
-		})
-		resp, err = s.trPrivateEndpointConnectionProxiesServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)

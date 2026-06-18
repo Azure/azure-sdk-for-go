@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ReplicationUsagesServer is a fake server for instances of the armrecoveryservices.ReplicationUsagesClient type.
@@ -53,9 +54,7 @@ func (r *ReplicationUsagesServerTransport) Do(req *http.Request) (*http.Response
 }
 
 func (r *ReplicationUsagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (r *ReplicationUsagesServerTransport) dispatchToMethodFake(req *http.Reques
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -116,7 +112,7 @@ func (r *ReplicationUsagesServerTransport) dispatchNewListPager(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -6,13 +6,14 @@ package armcomputelimit_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computelimit/armcomputelimit"
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/SharedLimits_Create.json
-func ExampleSharedLimitsClient_Create() {
+// Generated from example definition: 2026-07-01/MemberCapOverrides_CreateOrUpdate.json
+func ExampleMemberCapOverridesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,8 +23,10 @@ func ExampleSharedLimitsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSharedLimitsClient().Create(ctx, "eastus", "StandardDSv3Family", armcomputelimit.SharedLimit{
-		Properties: &armcomputelimit.SharedLimitProperties{},
+	res, err := clientFactory.NewMemberCapOverridesClient().CreateOrUpdate(ctx, "eastus", "StandardDSv3Family", "11111111-1111-1111-1111-111111111111", armcomputelimit.MemberCapOverride{
+		Properties: &armcomputelimit.MemberCapOverrideProperties{
+			Cap: to.Ptr[int32](250),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -31,26 +34,21 @@ func ExampleSharedLimitsClient_Create() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputelimit.SharedLimitsClientCreateResponse{
-	// 	SharedLimit: armcomputelimit.SharedLimit{
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimits/StandardDSv3Family"),
-	// 		Name: to.Ptr("StandardDSv3Family"),
-	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimits"),
-	// 		Properties: &armcomputelimit.SharedLimitProperties{
-	// 			ResourceName: &armcomputelimit.LimitName{
-	// 				Value: to.Ptr("StandardDSv3Family"),
-	// 				LocalizedValue: to.Ptr("Standard DSv3 Family vCPUs"),
-	// 			},
-	// 			Limit: to.Ptr[int32](100),
-	// 			Unit: to.Ptr("Count"),
+	// res = armcomputelimit.MemberCapOverridesClientCreateOrUpdateResponse{
+	// 	MemberCapOverride: armcomputelimit.MemberCapOverride{
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimitCaps/StandardDSv3Family/memberCapOverrides/11111111-1111-1111-1111-111111111111"),
+	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides"),
+	// 		Properties: &armcomputelimit.MemberCapOverrideProperties{
+	// 			Cap: to.Ptr[int32](250),
 	// 			ProvisioningState: to.Ptr(armcomputelimit.ResourceProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-01/SharedLimits_Delete.json
-func ExampleSharedLimitsClient_Delete() {
+// Generated from example definition: 2026-07-01/MemberCapOverrides_Delete.json
+func ExampleMemberCapOverridesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -60,19 +58,19 @@ func ExampleSharedLimitsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSharedLimitsClient().Delete(ctx, "eastus", "StandardDSv3Family", nil)
+	res, err := clientFactory.NewMemberCapOverridesClient().Delete(ctx, "eastus", "StandardDSv3Family", "11111111-1111-1111-1111-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputelimit.SharedLimitsClientDeleteResponse{
+	// res = armcomputelimit.MemberCapOverridesClientDeleteResponse{
 	// }
 }
 
-// Generated from example definition: 2026-07-01/SharedLimits_Get.json
-func ExampleSharedLimitsClient_Get() {
+// Generated from example definition: 2026-07-01/MemberCapOverrides_Get.json
+func ExampleMemberCapOverridesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -82,33 +80,28 @@ func ExampleSharedLimitsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSharedLimitsClient().Get(ctx, "eastus", "StandardDSv3Family", nil)
+	res, err := clientFactory.NewMemberCapOverridesClient().Get(ctx, "eastus", "StandardDSv3Family", "11111111-1111-1111-1111-111111111111", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputelimit.SharedLimitsClientGetResponse{
-	// 	SharedLimit: armcomputelimit.SharedLimit{
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimits/StandardDSv3Family"),
-	// 		Name: to.Ptr("StandardDSv3Family"),
-	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimits"),
-	// 		Properties: &armcomputelimit.SharedLimitProperties{
-	// 			ResourceName: &armcomputelimit.LimitName{
-	// 				Value: to.Ptr("StandardDSv3Family"),
-	// 				LocalizedValue: to.Ptr("Standard DSv3 Family vCPUs"),
-	// 			},
-	// 			Limit: to.Ptr[int32](100),
-	// 			Unit: to.Ptr("Count"),
+	// res = armcomputelimit.MemberCapOverridesClientGetResponse{
+	// 	MemberCapOverride: armcomputelimit.MemberCapOverride{
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimitCaps/StandardDSv3Family/memberCapOverrides/11111111-1111-1111-1111-111111111111"),
+	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 		Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides"),
+	// 		Properties: &armcomputelimit.MemberCapOverrideProperties{
+	// 			Cap: to.Ptr[int32](200),
 	// 			ProvisioningState: to.Ptr(armcomputelimit.ResourceProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-01/SharedLimits_List.json
-func ExampleSharedLimitsClient_NewListBySubscriptionLocationResourcePager() {
+// Generated from example definition: 2026-07-01/MemberCapOverrides_ListByParent.json
+func ExampleMemberCapOverridesClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -118,7 +111,7 @@ func ExampleSharedLimitsClient_NewListBySubscriptionLocationResourcePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSharedLimitsClient().NewListBySubscriptionLocationResourcePager("eastus", nil)
+	pager := clientFactory.NewMemberCapOverridesClient().NewListByParentPager("eastus", "StandardDSv3Family", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -129,34 +122,24 @@ func ExampleSharedLimitsClient_NewListBySubscriptionLocationResourcePager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcomputelimit.SharedLimitsClientListBySubscriptionLocationResourceResponse{
-		// 	SharedLimitListResult: armcomputelimit.SharedLimitListResult{
-		// 		Value: []*armcomputelimit.SharedLimit{
+		// page = armcomputelimit.MemberCapOverridesClientListByParentResponse{
+		// 	MemberCapOverrideListResult: armcomputelimit.MemberCapOverrideListResult{
+		// 		Value: []*armcomputelimit.MemberCapOverride{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimits/StandardDSv3Family"),
-		// 				Name: to.Ptr("StandardDSv3Family"),
-		// 				Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimits"),
-		// 				Properties: &armcomputelimit.SharedLimitProperties{
-		// 					ResourceName: &armcomputelimit.LimitName{
-		// 						Value: to.Ptr("StandardDSv3Family"),
-		// 						LocalizedValue: to.Ptr("Standard DSv3 Family vCPUs"),
-		// 					},
-		// 					Limit: to.Ptr[int32](100),
-		// 					Unit: to.Ptr("Count"),
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimitCaps/StandardDSv3Family/memberCapOverrides/11111111-1111-1111-1111-111111111111"),
+		// 				Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 				Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides"),
+		// 				Properties: &armcomputelimit.MemberCapOverrideProperties{
+		// 					Cap: to.Ptr[int32](200),
 		// 					ProvisioningState: to.Ptr(armcomputelimit.ResourceProvisioningStateSucceeded),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimits/StandardFSv2Family"),
-		// 				Name: to.Ptr("StandardFSv2Family"),
-		// 				Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimits"),
-		// 				Properties: &armcomputelimit.SharedLimitProperties{
-		// 					ResourceName: &armcomputelimit.LimitName{
-		// 						Value: to.Ptr("StandardFSv2Family"),
-		// 						LocalizedValue: to.Ptr("Standard FSv2 Family vCPUs"),
-		// 					},
-		// 					Limit: to.Ptr[int32](50),
-		// 					Unit: to.Ptr("Count"),
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.ComputeLimit/locations/eastus/sharedLimitCaps/StandardDSv3Family/memberCapOverrides/22222222-2222-2222-2222-222222222222"),
+		// 				Name: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 				Type: to.Ptr("Microsoft.ComputeLimit/locations/sharedLimitCaps/memberCapOverrides"),
+		// 				Properties: &armcomputelimit.MemberCapOverrideProperties{
+		// 					Cap: to.Ptr[int32](350),
 		// 					ProvisioningState: to.Ptr(armcomputelimit.ResourceProvisioningStateSucceeded),
 		// 				},
 		// 			},

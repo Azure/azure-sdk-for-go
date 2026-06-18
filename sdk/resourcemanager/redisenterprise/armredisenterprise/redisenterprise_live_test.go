@@ -73,7 +73,7 @@ func (testsuite *RedisenterpriseTestSuite) Prepare() {
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
-		Identity: &armredisenterprise.ManagedServiceIdentityV4{
+		Identity: &armredisenterprise.ManagedServiceIdentity{
 			Type: to.Ptr(armredisenterprise.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armredisenterprise.ClusterCreateProperties{

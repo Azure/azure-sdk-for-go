@@ -6317,6 +6317,71 @@ func TestUploadBufferEvenBlockSize(t *testing.T) {
 	require.Equal(t, int64(len(buffer)), fbb.totalStaged)
 }
 
+// fakeCommitInspector is a transport that records the conditional headers seen on the
+// Put Block List (comp=blocklist) commit request, so a test can assert AccessConditions
+// supplied to UploadBuffer reach the multi-block commit.
+type fakeCommitInspector struct {
+	sawCommit         bool
+	commitIfNoneMatch string
+	commitLeaseID     string
+}
+
+func (f *fakeCommitInspector) Do(req *http.Request) (*http.Response, error) {
+	if req.Body != nil {
+		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	if req.URL.Query().Get("comp") == "blocklist" {
+		f.sawCommit = true
+		// The generated commitBlockListCreateRequest writes these with literal
+		// (non-canonical) map keys, so index the map directly rather than using
+		// Header.Get, which would canonicalize "x-ms-lease-id" to "X-Ms-Lease-Id".
+		if vs := req.Header["If-None-Match"]; len(vs) > 0 {
+			f.commitIfNoneMatch = vs[0]
+		}
+		if vs := req.Header["x-ms-lease-id"]; len(vs) > 0 {
+			f.commitLeaseID = vs[0]
+		}
+	}
+	return &http.Response{
+		Request:    req,
+		Status:     "Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+// Regression test for AccessConditions being dropped on the staged Put Block List
+// commit when the payload exceeds MaxUploadBlobBytes (256 MiB).
+func TestUploadBufferForwardsAccessConditionsToCommit(t *testing.T) {
+	fake := &fakeCommitInspector{}
+	client, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: fake,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, client)
+
+	// Exceed MaxUploadBlobBytes (256 MiB) so the upload takes the staged
+	// Put Block + Put Block List path rather than a single-shot Put Blob.
+	buffer := make([]byte, 256*1024*1024+1)
+
+	star := azcore.ETagAny
+	leaseID := "11111111-1111-1111-1111-111111111111"
+	_, err = client.UploadBuffer(context.Background(), buffer, &blockblob.UploadBufferOptions{
+		Concurrency: 1,
+		AccessConditions: &blob.AccessConditions{
+			ModifiedAccessConditions: &blob.ModifiedAccessConditions{IfNoneMatch: &star},
+			LeaseAccessConditions:    &blob.LeaseAccessConditions{LeaseID: &leaseID},
+		},
+	})
+	require.NoError(t, err)
+	require.True(t, fake.sawCommit, "expected a Put Block List commit request")
+	require.Equal(t, "*", fake.commitIfNoneMatch)
+	require.Equal(t, leaseID, fake.commitLeaseID)
+}
+
 func TestUploadLogEvent(t *testing.T) {
 	listnercalled := false
 	log.SetEvents(azblob.EventUpload, log.EventRequest, log.EventResponse)

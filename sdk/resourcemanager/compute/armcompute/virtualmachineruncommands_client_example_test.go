@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_CreateOrUpdate.json
 func ExampleVirtualMachineRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleVirtualMachineRunCommandsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Delete.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_Delete.json
 func ExampleVirtualMachineRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleVirtualMachineRunCommandsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/RunCommand_Get.json
+// Generated from example definition: 2026-03-01/runCommandExamples/RunCommand_Get.json
 func ExampleVirtualMachineRunCommandsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleVirtualMachineRunCommandsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Get.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_Get.json
 func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleVirtualMachineRunCommandsClient_GetByVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/RunCommand_List.json
+// Generated from example definition: 2026-03-01/runCommandExamples/RunCommand_List.json
 func ExampleVirtualMachineRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleVirtualMachineRunCommandsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_List.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_List.json
 func ExampleVirtualMachineRunCommandsClient_NewListByVirtualMachinePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleVirtualMachineRunCommandsClient_NewListByVirtualMachinePager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand_Update.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand_Update.json
 func ExampleVirtualMachineRunCommandsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

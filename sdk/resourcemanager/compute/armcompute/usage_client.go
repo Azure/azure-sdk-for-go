@@ -19,7 +19,7 @@ import (
 // UsageClient contains the methods for the Usage group.
 // Don't use this type directly, use NewUsageClient() instead.
 //
-// Generated from API version 2025-11-01
+// Generated from API version 2026-03-01
 type UsageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,7 +84,7 @@ func (client *UsageClient) listCreateRequest(ctx context.Context, location strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

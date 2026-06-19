@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Get.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Get.json
 func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_List.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_List.json
 func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Update.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetLifeCycleHookEvent_Update.json
 func ExampleVirtualMachineScaleSetLifeCycleHookEventsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

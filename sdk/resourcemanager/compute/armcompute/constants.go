@@ -8,7 +8,7 @@ const (
 	version20210701 string = "2021-07-01"
 	version20250102 string = "2025-01-02"
 	version20250303 string = "2025-03-03"
-	version20251101 string = "2025-11-01"
+	version20260301 string = "2026-03-01"
 )
 
 // AccessControlRulesMode - This property allows you to specify whether the access control rules are in Audit mode, in Enforce
@@ -1191,6 +1191,21 @@ func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 		InstanceViewTypesInstanceView,
 		InstanceViewTypesResiliencyView,
 		InstanceViewTypesUserData,
+	}
+}
+
+// InterconnectBlockExpandTypes - The expand expression to apply on the operation for an Interconnect Block.
+type InterconnectBlockExpandTypes string
+
+const (
+	// InterconnectBlockExpandTypesInstanceView - Retrieve the runtime instance view of the Interconnect Block.
+	InterconnectBlockExpandTypesInstanceView InterconnectBlockExpandTypes = "instanceView"
+)
+
+// PossibleInterconnectBlockExpandTypesValues returns the possible values for the InterconnectBlockExpandTypes const type.
+func PossibleInterconnectBlockExpandTypesValues() []InterconnectBlockExpandTypes {
+	return []InterconnectBlockExpandTypes{
+		InterconnectBlockExpandTypesInstanceView,
 	}
 }
 

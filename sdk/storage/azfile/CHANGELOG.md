@@ -3,6 +3,7 @@
 ## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
+* Exported `ShareNFSSettings` and `ShareNFSSettingsEncryptionInTransit` types.
 
 ### Breaking Changes
 

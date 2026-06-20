@@ -5,7 +5,7 @@
 package armmongodbatlas
 
 const (
-	version20250601 string = "2025-06-01"
+	version20260301Preview string = "2026-03-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +20,30 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// ClusterTier - Cluster tier options for MongoDB Atlas.
+type ClusterTier string
+
+const (
+	// ClusterTierFLEX - Flex tier cluster.
+	ClusterTierFLEX ClusterTier = "FLEX"
+	// ClusterTierFREE - Free tier cluster.
+	ClusterTierFREE ClusterTier = "FREE"
+	// ClusterTierM10 - M10 tier cluster.
+	ClusterTierM10 ClusterTier = "M10"
+	// ClusterTierM30 - M30 tier cluster.
+	ClusterTierM30 ClusterTier = "M30"
+)
+
+// PossibleClusterTierValues returns the possible values for the ClusterTier const type.
+func PossibleClusterTierValues() []ClusterTier {
+	return []ClusterTier{
+		ClusterTierFLEX,
+		ClusterTierFREE,
+		ClusterTierM10,
+		ClusterTierM30,
 	}
 }
 

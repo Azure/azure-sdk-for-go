@@ -4,6 +4,28 @@
 
 package armmongodbatlas
 
+// ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
+type ClustersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+type ClustersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+type ClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
+type ClustersClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -42,5 +64,38 @@ type OrganizationsClientListByResourceGroupOptions struct {
 // OrganizationsClientListBySubscriptionOptions contains the optional parameters for the OrganizationsClient.NewListBySubscriptionPager
 // method.
 type OrganizationsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectsClient.BeginCreateOrUpdate method.
+type ProjectsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProjectsClientBeginDeleteOptions contains the optional parameters for the ProjectsClient.BeginDelete method.
+type ProjectsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ProjectsClientGetOptions contains the optional parameters for the ProjectsClient.Get method.
+type ProjectsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectsClientListClusterTierRegionsOptions contains the optional parameters for the ProjectsClient.ListClusterTierRegions
+// method.
+type ProjectsClientListClusterTierRegionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectsClientListOptions contains the optional parameters for the ProjectsClient.NewListPager method.
+type ProjectsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ProjectsClientTierLimitReachedOptions contains the optional parameters for the ProjectsClient.TierLimitReached method.
+type ProjectsClientTierLimitReachedOptions struct {
 	// placeholder for future optional parameters
 }

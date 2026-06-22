@@ -11,6 +11,7 @@ pr:
     - "*"
 
     exclude:
+    - sdk/data/azcosmos/
     - .github/skills/azsdk-common-*/**
 
 parameters:

@@ -4,6 +4,10 @@
 
 package armplaywright
 
+const (
+	version20260201Preview string = "2026-02-01-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -97,6 +101,30 @@ func PossibleFreeTrialStateValues() []FreeTrialState {
 		FreeTrialStateActive,
 		FreeTrialStateExpired,
 		FreeTrialStateNotApplicable,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 

@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // AddonsServer is a fake server for instances of the armavs.AddonsClient type.
@@ -70,9 +71,7 @@ func (a *AddonsServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (a *AddonsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -94,10 +93,7 @@ func (a *AddonsServerTransport) dispatchToMethodFake(req *http.Request, method s
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -149,7 +145,7 @@ func (a *AddonsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		a.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -197,7 +193,7 @@ func (a *AddonsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -235,7 +231,7 @@ func (a *AddonsServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Addon, req)
@@ -276,7 +272,7 @@ func (a *AddonsServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

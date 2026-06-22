@@ -18,6 +18,8 @@ import (
 
 // EnterpriseMccCacheNodesOperationsClient contains the methods for the EnterpriseMccCacheNodesOperations group.
 // Don't use this type directly, use NewEnterpriseMccCacheNodesOperationsClient() instead.
+//
+// Generated from API version 2024-11-30-preview
 type EnterpriseMccCacheNodesOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEnterpriseMccCacheNodesOperationsClient(subscriptionID string, credentia
 
 // BeginCreateOrUpdate - This api creates an ispCacheNode with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -68,8 +68,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) BeginCreateOrUpdate(ctx c
 
 // CreateOrUpdate - This api creates an ispCacheNode with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, resource EnterpriseMccCacheNodeResource, options *EnterpriseMccCacheNodesOperationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnterpriseMccCacheNodesOperationsClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdateCreateReque
 
 // BeginDelete - This api deletes an existing ispCacheNode resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -153,8 +149,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) BeginDelete(ctx context.C
 
 // Delete - This api deletes an existing ispCacheNode resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 func (client *EnterpriseMccCacheNodesOperationsClient) deleteOperation(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *EnterpriseMccCacheNodesOperationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EnterpriseMccCacheNodesOperationsClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *EnterpriseMccCacheNodesOperationsClient) deleteCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - This api gets ispCacheNode resource information
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -260,8 +252,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -277,8 +269,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getHandleResponse(resp *h
 
 // GetCacheNodeAutoUpdateHistory - This api gets ispCacheNode resource auto update histrory information
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -330,8 +320,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeAutoUpdateHis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -347,8 +337,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeAutoUpdateHis
 
 // GetCacheNodeInstallDetails - This api gets secrets of the ispCacheNode resource install details
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -400,8 +388,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeInstallDetail
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -417,8 +405,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeInstallDetail
 
 // GetCacheNodeMccIssueDetailsHistory - This api gets ispCacheNode resource issues details histrory information
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -470,8 +456,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeMccIssueDetai
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -487,8 +473,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeMccIssueDetai
 
 // GetCacheNodeTLSCertificateHistory - This api gets ispCacheNode resource tls certificate histrory information
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -540,8 +524,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeTLSCertificat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -557,8 +541,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeTLSCertificat
 
 // NewListByEnterpriseMccCustomerResourcePager - This api retrieves information about all ispCacheNode resources under the
 // given subscription and resource group
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - options - EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceOptions contains the optional parameters
@@ -606,8 +588,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustom
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -623,8 +605,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustom
 
 // Update - This api updates an existing ispCacheNode resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-30-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - customerResourceName - Name of the Customer resource
 //   - cacheNodeResourceName - Name of the ConnectedCache resource
@@ -677,8 +657,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) updateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-30-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241130Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

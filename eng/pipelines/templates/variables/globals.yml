@@ -1,5 +1,5 @@
 variables:
-  GoLintCLIVersion: 'v2.6.2'
+  GoLintCLIVersion: 'v2.11.2'
   Package.EnableSBOMSigning: true
   # Enable go native component governance detection
   # https://docs.opensource.microsoft.com/tools/cg/index.html
@@ -19,5 +19,5 @@ variables:
   skipComponentGovernanceDetection: true
 
   # Supported versions for testing. These variables are referenced in test matrix files.
-  GO_VERSION_LATEST: 1.25.4
-  GO_VERSION_PREVIOUS: 1.24.10
+  GO_VERSION_LATEST: 1.26.1
+  GO_VERSION_PREVIOUS: 1.25.8

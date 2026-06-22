@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/GetOperationResult.json
+// Generated from example definition: 2026-03-01/GetOperationResult.json
 func ExampleOperationResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleOperationResultClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.OperationResultClientGetResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},

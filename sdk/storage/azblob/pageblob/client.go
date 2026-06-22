@@ -37,6 +37,9 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -51,8 +54,12 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{}
+	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -67,6 +74,9 @@ func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCreden
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -172,7 +182,11 @@ func (pb *Client) UploadPages(ctx context.Context, body io.ReadSeekCloser, conte
 	if options != nil && options.TransactionalValidation != nil {
 		body, err = options.TransactionalValidation.Apply(body, uploadPagesOptions)
 		if err != nil {
-			return UploadPagesResponse{}, nil
+			return UploadPagesResponse{}, err
+		}
+		count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+		if err != nil {
+			return UploadPagesResponse{}, err
 		}
 	}
 
@@ -191,11 +205,11 @@ func (pb *Client) UploadPagesFromURL(ctx context.Context, source string, sourceO
 	o *UploadPagesFromURLOptions) (UploadPagesFromURLResponse, error) {
 
 	uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions, sequenceNumberAccessConditions,
-		modifiedAccessConditions, sourceModifiedAccessConditions := o.format()
+		modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo := o.format()
 
 	resp, err := pb.generated().UploadPagesFromURL(ctx, source, shared.RangeToString(sourceOffset, count), 0,
 		shared.RangeToString(destOffset, count), uploadPagesFromURLOptions, cpkInfo, cpkScopeInfo, leaseAccessConditions,
-		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
+		sequenceNumberAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo)
 
 	return resp, err
 }

@@ -6,6 +6,11 @@ package directory
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -20,10 +25,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	"net/http"
-	"net/url"
-	"strings"
-	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -452,6 +453,14 @@ func (d *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 	return resp, err
 }
 
+// GetSystemProperties returns all system defined properties for a directory.
+func (d *Client) GetSystemProperties(ctx context.Context, options *GetSystemPropertiesOptions) (GetSystemPropertiesResponse, error) {
+	opts, lac, mac := path.FormatGetSystemPropertiesOptions(options)
+	resp, err := d.generatedDirClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
 // SetMetadata sets the metadata for a directory.
 func (d *Client) SetMetadata(ctx context.Context, metadata map[string]*string, options *SetMetadataOptions) (SetMetadataResponse, error) {
 	opts := path.FormatSetMetadataOptions(options)
@@ -468,6 +477,25 @@ func (d *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	path.FormatSetHTTPHeadersResponse(&newResp, &resp)
 	err = exported.ConvertToDFSError(err)
 	return newResp, err
+}
+
+// GetTags gets the tags associated with a directory.
+func (d *Client) GetTags(ctx context.Context, options *GetTagsOptions) (GetTagsResponse, error) {
+	opts := path.FormatGetTagsOptions(options)
+	resp, err := d.blobClient().GetTags(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// SetTags sets tags on a directory.
+// A directory can have up to 10 tags. Tag keys must be between 1 and 128 characters. Tag values must be between 0 and 256 characters.
+// Valid tag key and value characters include lower and upper case letters, digits (0-9),
+// space (' '), plus ('+'), minus ('-'), period ('.'), forward slash ('/'), colon (':'), equals ('='), and underscore ('_').
+func (d *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
+	opts := path.FormatSetTagsOptions(options)
+	resp, err := d.blobClient().SetTags(ctx, tags, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at directory.

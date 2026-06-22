@@ -7,12 +7,12 @@ package armcomputeschedule_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
-func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
+// Generated from example definition: 2026-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MaximumSet_Gen.json
+func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager_occurrenceExtensionListOccurrenceByVmsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +22,7 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewOccurrenceExtensionClient().NewListOccurrenceByVMsPager("sazvpabfud", nil)
+	pager := clientFactory.NewOccurrenceExtensionClient().NewListOccurrenceByVMsPager("subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -38,43 +38,79 @@ func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager() {
 		// 		Value: []*armcomputeschedule.OccurrenceExtensionResource{
 		// 			{
 		// 				Properties: &armcomputeschedule.OccurrenceExtensionProperties{
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-15T00:22:10.427Z"); return t}()),
-		// 					ProvisioningState: to.Ptr(armcomputeschedule.ResourceProvisioningState("Created")),
-		// 					ScheduledActionID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
 		// 					ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 		// 					NotificationSettings: []*armcomputeschedule.NotificationProperties{
 		// 						{
-		// 							Destination: to.Ptr("vndtiuhlftssijfoswtfh"),
+		// 							Destination: to.Ptr("admin@contoso.com"),
 		// 							Type: to.Ptr(armcomputeschedule.NotificationTypeEmail),
 		// 							Language: to.Ptr(armcomputeschedule.LanguageEnUs),
 		// 							Disabled: to.Ptr(true),
 		// 						},
 		// 					},
+		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.64Z"); return t}()),
+		// 					ProvisioningState: to.Ptr(armcomputeschedule.ResourceProvisioningStateSucceeded),
 		// 					ErrorDetails: &armcomputeschedule.Error{
-		// 						Code: to.Ptr("cysibinnxdggpgusnwglgwgax"),
-		// 						Message: to.Ptr("g"),
-		// 						Target: to.Ptr("thcruyd"),
+		// 						Code: to.Ptr("ResourceNotFound"),
+		// 						Message: to.Ptr("The specified resource was not found."),
+		// 						Target: to.Ptr("virtualMachines/myVm"),
 		// 						Details: []*armcomputeschedule.Error{
 		// 						},
 		// 						Innererror: &armcomputeschedule.InnerError{
-		// 							Code: to.Ptr("grymlabennz"),
+		// 							Code: to.Ptr("ResourceNotFoundError"),
 		// 						},
 		// 					},
+		// 					ScheduledActionID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
-		// 				Name: to.Ptr("dkmlhpipnlqh"),
-		// 				Type: to.Ptr("xgq"),
+		// 				Name: to.Ptr("myScheduledAction"),
+		// 				Type: to.Ptr("Microsoft.ComputeSchedule/scheduledActions"),
 		// 				SystemData: &armcomputeschedule.SystemData{
-		// 					CreatedBy: to.Ptr("cvryvreuvvjtiamcwhisrt"),
+		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("supbnksztdbgulxgvfmqvriqdlpirh"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcomputeschedule.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-12T02:39:41.641Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/providers/Microsoft.ComputeSchedule/scheduledActions?api-version=2026-04-15-preview&$skiptoken=abc123"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-15-preview/OccurrenceExtension_ListOccurrenceByVms_MinimumSet_Gen.json
+func ExampleOccurrenceExtensionClient_NewListOccurrenceByVMsPager_occurrenceExtensionListOccurrenceByVmsMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputeschedule.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOccurrenceExtensionClient().NewListOccurrenceByVMsPager("subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/myVm", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcomputeschedule.OccurrenceExtensionClientListOccurrenceByVMsResponse{
+		// 	OccurrenceExtensionResourceListResult: armcomputeschedule.OccurrenceExtensionResourceListResult{
+		// 		Value: []*armcomputeschedule.OccurrenceExtensionResource{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/83C27AB3-A7B9-498B-B165-D9440661474F/resourceGroups/myRg/providers/Microsoft.ComputeSchedule/scheduledActions/myScheduledAction"),
+		// 				Name: to.Ptr("myScheduledAction"),
+		// 				Type: to.Ptr("Microsoft.ComputeSchedule/scheduledActions"),
+		// 			},
+		// 		},
 		// 	},
 		// }
 	}

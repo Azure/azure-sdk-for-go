@@ -18,6 +18,8 @@ import (
 
 // CodeSigningAccountsClient contains the methods for the CodeSigningAccounts group.
 // Don't use this type directly, use NewCodeSigningAccountsClient() instead.
+//
+// Generated from API version 2026-05-15-preview
 type CodeSigningAccountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCodeSigningAccountsClient(subscriptionID string, credential azcore.Token
 
 // CheckNameAvailability - Checks if the artifact signing account name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 //   - body - The CheckAvailability request
 //   - options - CodeSigningAccountsClientCheckNameAvailabilityOptions contains the optional parameters for the CodeSigningAccountsClient.CheckNameAvailability
 //     method.
@@ -80,8 +80,8 @@ func (client *CodeSigningAccountsClient) checkNameAvailabilityCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-13")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -101,8 +101,6 @@ func (client *CodeSigningAccountsClient) checkNameAvailabilityHandleResponse(res
 
 // BeginCreate - Create an artifact Signing Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Artifact Signing account name.
 //   - resource - Parameters to create the artifact signing account
@@ -128,8 +126,6 @@ func (client *CodeSigningAccountsClient) BeginCreate(ctx context.Context, resour
 
 // Create - Create an artifact Signing Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 func (client *CodeSigningAccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, resource CodeSigningAccount, options *CodeSigningAccountsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CodeSigningAccountsClient.BeginCreate"
@@ -171,8 +167,8 @@ func (client *CodeSigningAccountsClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-13")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -183,8 +179,6 @@ func (client *CodeSigningAccountsClient) createCreateRequest(ctx context.Context
 
 // BeginDelete - Delete an artifact signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Artifact Signing account name.
 //   - options - CodeSigningAccountsClientBeginDeleteOptions contains the optional parameters for the CodeSigningAccountsClient.BeginDelete
@@ -208,8 +202,6 @@ func (client *CodeSigningAccountsClient) BeginDelete(ctx context.Context, resour
 
 // Delete - Delete an artifact signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 func (client *CodeSigningAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *CodeSigningAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CodeSigningAccountsClient.BeginDelete"
@@ -251,15 +243,13 @@ func (client *CodeSigningAccountsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-13")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get an artifact Signing Account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Artifact Signing account name.
 //   - options - CodeSigningAccountsClientGetOptions contains the optional parameters for the CodeSigningAccountsClient.Get method.
@@ -305,8 +295,8 @@ func (client *CodeSigningAccountsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-13")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *CodeSigningAccountsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByResourceGroupPager - Lists artifact signing accounts within a resource group.
-//
-// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CodeSigningAccountsClientListByResourceGroupOptions contains the optional parameters for the CodeSigningAccountsClient.NewListByResourceGroupPager
 //     method.
@@ -365,8 +353,8 @@ func (client *CodeSigningAccountsClient) listByResourceGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-13")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -381,8 +369,6 @@ func (client *CodeSigningAccountsClient) listByResourceGroupHandleResponse(resp 
 }
 
 // NewListBySubscriptionPager - Lists artifact signing accounts within a subscription.
-//
-// Generated from API version 2025-10-13
 //   - options - CodeSigningAccountsClientListBySubscriptionOptions contains the optional parameters for the CodeSigningAccountsClient.NewListBySubscriptionPager
 //     method.
 func (client *CodeSigningAccountsClient) NewListBySubscriptionPager(options *CodeSigningAccountsClientListBySubscriptionOptions) *runtime.Pager[CodeSigningAccountsClientListBySubscriptionResponse] {
@@ -420,8 +406,8 @@ func (client *CodeSigningAccountsClient) listBySubscriptionCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-13")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -437,8 +423,6 @@ func (client *CodeSigningAccountsClient) listBySubscriptionHandleResponse(resp *
 
 // BeginUpdate - Update an artifact signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Artifact Signing account name.
 //   - properties - Parameters supplied to update the artifact signing account
@@ -463,8 +447,6 @@ func (client *CodeSigningAccountsClient) BeginUpdate(ctx context.Context, resour
 
 // Update - Update an artifact signing account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-13
 func (client *CodeSigningAccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, properties CodeSigningAccountPatch, options *CodeSigningAccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CodeSigningAccountsClient.BeginUpdate"
@@ -506,8 +488,8 @@ func (client *CodeSigningAccountsClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-13")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

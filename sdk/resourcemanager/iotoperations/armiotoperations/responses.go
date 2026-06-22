@@ -4,6 +4,75 @@
 
 package armiotoperations
 
+// AkriConnectorClientCreateOrUpdateResponse contains the response from method AkriConnectorClient.BeginCreateOrUpdate.
+type AkriConnectorClientCreateOrUpdateResponse struct {
+	// AkriConnector resource.
+	AkriConnectorResource
+}
+
+// AkriConnectorClientDeleteResponse contains the response from method AkriConnectorClient.BeginDelete.
+type AkriConnectorClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AkriConnectorClientGetResponse contains the response from method AkriConnectorClient.Get.
+type AkriConnectorClientGetResponse struct {
+	// AkriConnector resource.
+	AkriConnectorResource
+}
+
+// AkriConnectorClientListByTemplateResponse contains the response from method AkriConnectorClient.NewListByTemplatePager.
+type AkriConnectorClientListByTemplateResponse struct {
+	// The response of a AkriConnectorResource list operation.
+	AkriConnectorResourceListResult
+}
+
+// AkriConnectorTemplateClientCreateOrUpdateResponse contains the response from method AkriConnectorTemplateClient.BeginCreateOrUpdate.
+type AkriConnectorTemplateClientCreateOrUpdateResponse struct {
+	// AkriConnectorTemplate resource.
+	AkriConnectorTemplateResource
+}
+
+// AkriConnectorTemplateClientDeleteResponse contains the response from method AkriConnectorTemplateClient.BeginDelete.
+type AkriConnectorTemplateClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AkriConnectorTemplateClientGetResponse contains the response from method AkriConnectorTemplateClient.Get.
+type AkriConnectorTemplateClientGetResponse struct {
+	// AkriConnectorTemplate resource.
+	AkriConnectorTemplateResource
+}
+
+// AkriConnectorTemplateClientListByInstanceResourceResponse contains the response from method AkriConnectorTemplateClient.NewListByInstanceResourcePager.
+type AkriConnectorTemplateClientListByInstanceResourceResponse struct {
+	// The response of a AkriConnectorTemplateResource list operation.
+	AkriConnectorTemplateResourceListResult
+}
+
+// AkriServiceClientCreateOrUpdateResponse contains the response from method AkriServiceClient.BeginCreateOrUpdate.
+type AkriServiceClientCreateOrUpdateResponse struct {
+	// AkriService resource.
+	AkriServiceResource
+}
+
+// AkriServiceClientDeleteResponse contains the response from method AkriServiceClient.BeginDelete.
+type AkriServiceClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AkriServiceClientGetResponse contains the response from method AkriServiceClient.Get.
+type AkriServiceClientGetResponse struct {
+	// AkriService resource.
+	AkriServiceResource
+}
+
+// AkriServiceClientListByInstanceResourceResponse contains the response from method AkriServiceClient.NewListByInstanceResourcePager.
+type AkriServiceClientListByInstanceResourceResponse struct {
+	// The response of a AkriServiceResource list operation.
+	AkriServiceResourceListResult
+}
+
 // BrokerAuthenticationClientCreateOrUpdateResponse contains the response from method BrokerAuthenticationClient.BeginCreateOrUpdate.
 type BrokerAuthenticationClientCreateOrUpdateResponse struct {
 	// Instance broker authentication resource
@@ -142,6 +211,29 @@ type DataflowEndpointClientListByResourceGroupResponse struct {
 	DataflowEndpointResourceListResult
 }
 
+// DataflowGraphClientCreateOrUpdateResponse contains the response from method DataflowGraphClient.BeginCreateOrUpdate.
+type DataflowGraphClientCreateOrUpdateResponse struct {
+	// Instance dataflowEndpoint resource.
+	DataflowGraphResource
+}
+
+// DataflowGraphClientDeleteResponse contains the response from method DataflowGraphClient.BeginDelete.
+type DataflowGraphClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DataflowGraphClientGetResponse contains the response from method DataflowGraphClient.Get.
+type DataflowGraphClientGetResponse struct {
+	// Instance dataflowEndpoint resource.
+	DataflowGraphResource
+}
+
+// DataflowGraphClientListByDataflowProfileResponse contains the response from method DataflowGraphClient.NewListByDataflowProfilePager.
+type DataflowGraphClientListByDataflowProfileResponse struct {
+	// The response of a DataflowGraphResource list operation.
+	DataflowGraphResourceListResult
+}
+
 // DataflowProfileClientCreateOrUpdateResponse contains the response from method DataflowProfileClient.BeginCreateOrUpdate.
 type DataflowProfileClientCreateOrUpdateResponse struct {
 	// Instance dataflowProfile resource
@@ -204,4 +296,27 @@ type InstanceClientUpdateResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// RegistryEndpointClientCreateOrUpdateResponse contains the response from method RegistryEndpointClient.BeginCreateOrUpdate.
+type RegistryEndpointClientCreateOrUpdateResponse struct {
+	// RegistryEndpoint resource
+	RegistryEndpointResource
+}
+
+// RegistryEndpointClientDeleteResponse contains the response from method RegistryEndpointClient.BeginDelete.
+type RegistryEndpointClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RegistryEndpointClientGetResponse contains the response from method RegistryEndpointClient.Get.
+type RegistryEndpointClientGetResponse struct {
+	// RegistryEndpoint resource
+	RegistryEndpointResource
+}
+
+// RegistryEndpointClientListByInstanceResourceResponse contains the response from method RegistryEndpointClient.NewListByInstanceResourcePager.
+type RegistryEndpointClientListByInstanceResourceResponse struct {
+	// The response of a RegistryEndpointResource list operation.
+	RegistryEndpointResourceListResult
 }

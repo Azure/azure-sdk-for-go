@@ -32,6 +32,22 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewArchiveVersionsClient creates a new instance of ArchiveVersionsClient.
+func (c *ClientFactory) NewArchiveVersionsClient() *ArchiveVersionsClient {
+	return &ArchiveVersionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewArchivesClient creates a new instance of ArchivesClient.
+func (c *ClientFactory) NewArchivesClient() *ArchivesClient {
+	return &ArchivesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCacheRulesClient creates a new instance of CacheRulesClient.
 func (c *ClientFactory) NewCacheRulesClient() *CacheRulesClient {
 	return &CacheRulesClient{
@@ -56,10 +72,34 @@ func (c *ClientFactory) NewCredentialSetsClient() *CredentialSetsClient {
 	}
 }
 
+// NewExportPipelinesClient creates a new instance of ExportPipelinesClient.
+func (c *ClientFactory) NewExportPipelinesClient() *ExportPipelinesClient {
+	return &ExportPipelinesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewImportPipelinesClient creates a new instance of ImportPipelinesClient.
+func (c *ClientFactory) NewImportPipelinesClient() *ImportPipelinesClient {
+	return &ImportPipelinesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewPipelineRunsClient creates a new instance of PipelineRunsClient.
+func (c *ClientFactory) NewPipelineRunsClient() *PipelineRunsClient {
+	return &PipelineRunsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleDppResourceGuardProxyClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.DppResourceGuardProxyClientCreateOrUpdateResponse{
-	// 	ResourceGuardProxyBaseResource: &armdataprotection.ResourceGuardProxyBaseResource{
+	// 	ResourceGuardProxyBaseResource: armdataprotection.ResourceGuardProxyBaseResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/vaults/backupResourceGuardProxies"),
 	// 		ID: to.Ptr("/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupResourceGuardProxies/swaggerExample"),
@@ -58,7 +58,7 @@ func ExampleDppResourceGuardProxyClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleDppResourceGuardProxyClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleDppResourceGuardProxyClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.DppResourceGuardProxyClientGetResponse{
-	// 	ResourceGuardProxyBaseResource: &armdataprotection.ResourceGuardProxyBaseResource{
+	// 	ResourceGuardProxyBaseResource: armdataprotection.ResourceGuardProxyBaseResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/vaults/backupResourceGuardProxies"),
 	// 		ID: to.Ptr("/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupResourceGuardProxies/swaggerExample"),
@@ -122,7 +122,7 @@ func ExampleDppResourceGuardProxyClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleDppResourceGuardProxyClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+// Generated from example definition: 2026-03-01/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
 func ExampleDppResourceGuardProxyClient_UnlockDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleDppResourceGuardProxyClient_UnlockDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.DppResourceGuardProxyClientUnlockDeleteResponse{
-	// 	UnlockDeleteResponse: &armdataprotection.UnlockDeleteResponse{
+	// 	UnlockDeleteResponse: armdataprotection.UnlockDeleteResponse{
 	// 		UnlockDeleteExpiryTime: to.Ptr("2022-09-16T12:50:10.7039695Z"),
 	// 	},
 	// }

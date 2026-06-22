@@ -13,8 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -71,7 +71,7 @@ func (testsuite *SearchTestSuite) Prepare() {
 	_, err = servicesClient.CheckNameAvailability(testsuite.ctx, armsearch.CheckNameAvailabilityInput{
 		Name: to.Ptr(testsuite.searchServiceName),
 		Type: to.Ptr("Microsoft.Search/searchServices"),
-	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	}, &armsearch.ServicesClientCheckNameAvailabilityOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 
 	// From step Services_CreateOrUpdate
@@ -89,7 +89,7 @@ func (testsuite *SearchTestSuite) Prepare() {
 		SKU: &armsearch.SKU{
 			Name: to.Ptr(armsearch.SKUNameStandard),
 		},
-	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	}, &armsearch.ServicesClientBeginCreateOrUpdateOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 	var servicesClientCreateOrUpdateResponse *armsearch.ServicesClientCreateOrUpdateResponse
 	servicesClientCreateOrUpdateResponse, err = testutil.PollForTest(testsuite.ctx, servicesClientCreateOrUpdateResponsePoller)
@@ -104,7 +104,7 @@ func (testsuite *SearchTestSuite) TestServices() {
 	fmt.Println("Call operation: Services_ListBySubscription")
 	servicesClient, err := armsearch.NewServicesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	servicesClientNewListBySubscriptionPager := servicesClient.NewListBySubscriptionPager(&armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	servicesClientNewListBySubscriptionPager := servicesClient.NewListBySubscriptionPager(&armsearch.ServicesClientListBySubscriptionOptions{ClientRequestID: nil})
 	for servicesClientNewListBySubscriptionPager.More() {
 		_, err := servicesClientNewListBySubscriptionPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -113,7 +113,7 @@ func (testsuite *SearchTestSuite) TestServices() {
 
 	// From step Services_ListByResourceGroup
 	fmt.Println("Call operation: Services_ListByResourceGroup")
-	servicesClientNewListByResourceGroupPager := servicesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	servicesClientNewListByResourceGroupPager := servicesClient.NewListByResourceGroupPager(testsuite.resourceGroupName, &armsearch.ServicesClientListByResourceGroupOptions{ClientRequestID: nil})
 	for servicesClientNewListByResourceGroupPager.More() {
 		_, err := servicesClientNewListByResourceGroupPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -122,7 +122,7 @@ func (testsuite *SearchTestSuite) TestServices() {
 
 	// From step Services_Get
 	fmt.Println("Call operation: Services_Get")
-	_, err = servicesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = servicesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.ServicesClientGetOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 
 	// From step Services_Update
@@ -135,7 +135,7 @@ func (testsuite *SearchTestSuite) TestServices() {
 			"app-name": to.Ptr("My e-commerce app"),
 			"new-tag":  to.Ptr("Adding a new tag"),
 		},
-	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	}, &armsearch.ServicesClientUpdateOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 }
 
@@ -209,10 +209,10 @@ func (testsuite *SearchTestSuite) TestSharedPrivateLinkResources() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_StorageAccount", &deployment)
@@ -229,14 +229,14 @@ func (testsuite *SearchTestSuite) TestSharedPrivateLinkResources() {
 			PrivateLinkResourceID: to.Ptr(storageAccountId),
 			RequestMessage:        to.Ptr("please approve"),
 		},
-	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	}, &armsearch.SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sharedPrivateLinkResourcesClientCreateOrUpdateResponsePoller)
 	testsuite.Require().NoError(err)
 
 	// From step SharedPrivateLinkResources_ListByService
 	fmt.Println("Call operation: SharedPrivateLinkResources_ListByService")
-	sharedPrivateLinkResourcesClientNewListByServicePager := sharedPrivateLinkResourcesClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	sharedPrivateLinkResourcesClientNewListByServicePager := sharedPrivateLinkResourcesClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SharedPrivateLinkResourcesClientListByServiceOptions{ClientRequestID: nil})
 	for sharedPrivateLinkResourcesClientNewListByServicePager.More() {
 		_, err := sharedPrivateLinkResourcesClientNewListByServicePager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -245,12 +245,12 @@ func (testsuite *SearchTestSuite) TestSharedPrivateLinkResources() {
 
 	// From step SharedPrivateLinkResources_Get
 	fmt.Println("Call operation: SharedPrivateLinkResources_Get")
-	_, err = sharedPrivateLinkResourcesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, testsuite.sharedPrivateLinkResourceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = sharedPrivateLinkResourcesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, testsuite.sharedPrivateLinkResourceName, &armsearch.SharedPrivateLinkResourcesClientGetOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 
 	// From step SharedPrivateLinkResources_Delete
 	fmt.Println("Call operation: SharedPrivateLinkResources_Delete")
-	sharedPrivateLinkResourcesClientDeleteResponsePoller, err := sharedPrivateLinkResourcesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, testsuite.sharedPrivateLinkResourceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	sharedPrivateLinkResourcesClientDeleteResponsePoller, err := sharedPrivateLinkResourcesClient.BeginDelete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, testsuite.sharedPrivateLinkResourceName, &armsearch.SharedPrivateLinkResourcesClientBeginDeleteOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, sharedPrivateLinkResourcesClientDeleteResponsePoller)
 	testsuite.Require().NoError(err)
@@ -391,10 +391,10 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -404,7 +404,7 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 	fmt.Println("Call operation: PrivateEndpointConnections_ListByService")
 	privateEndpointConnectionsClient, err := armsearch.NewPrivateEndpointConnectionsClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	privateEndpointConnectionsClientNewListByServicePager := privateEndpointConnectionsClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	privateEndpointConnectionsClientNewListByServicePager := privateEndpointConnectionsClient.NewListByServicePager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.PrivateEndpointConnectionsClientListByServiceOptions{ClientRequestID: nil})
 	for privateEndpointConnectionsClientNewListByServicePager.More() {
 		nextResult, err := privateEndpointConnectionsClientNewListByServicePager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -422,19 +422,19 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 				Status:      to.Ptr(armsearch.PrivateLinkServiceConnectionStatusRejected),
 			},
 		},
-	}, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	}, &armsearch.PrivateEndpointConnectionsClientUpdateOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 
 	// From step PrivateEndpointConnections_Get
 	fmt.Println("Call operation: PrivateEndpointConnections_Get")
-	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, privateEndpointConnectionName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, privateEndpointConnectionName, &armsearch.PrivateEndpointConnectionsClientGetOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 
 	// From step PrivateLinkResources_ListSupported
 	fmt.Println("Call operation: PrivateLinkResources_ListSupported")
 	privateLinkResourcesClient, err := armsearch.NewPrivateLinkResourcesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	privateLinkResourcesClientNewListSupportedPager := privateLinkResourcesClient.NewListSupportedPager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	privateLinkResourcesClientNewListSupportedPager := privateLinkResourcesClient.NewListSupportedPager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.PrivateLinkResourcesClientListSupportedOptions{ClientRequestID: nil})
 	for privateLinkResourcesClientNewListSupportedPager.More() {
 		_, err := privateLinkResourcesClientNewListSupportedPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -443,7 +443,7 @@ func (testsuite *SearchTestSuite) TestPrivateEndpointConnections() {
 
 	// From step PrivateEndpointConnections_Delete
 	fmt.Println("Call operation: PrivateEndpointConnections_Delete")
-	_, err = privateEndpointConnectionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, privateEndpointConnectionName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = privateEndpointConnectionsClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, privateEndpointConnectionName, &armsearch.PrivateEndpointConnectionsClientDeleteOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 }
 
@@ -471,13 +471,13 @@ func (testsuite *SearchTestSuite) TestQueryKeys() {
 	fmt.Println("Call operation: QueryKeys_Create")
 	queryKeysClient, err := armsearch.NewQueryKeysClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	queryKeysClientCreateResponse, err := queryKeysClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, name, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	queryKeysClientCreateResponse, err := queryKeysClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, name, &armsearch.QueryKeysClientCreateOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 	queryKey = *queryKeysClientCreateResponse.Key
 
 	// From step QueryKeys_ListBySearchService
 	fmt.Println("Call operation: QueryKeys_ListBySearchService")
-	queryKeysClientNewListBySearchServicePager := queryKeysClient.NewListBySearchServicePager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	queryKeysClientNewListBySearchServicePager := queryKeysClient.NewListBySearchServicePager(testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.QueryKeysClientListBySearchServiceOptions{ClientRequestID: nil})
 	for queryKeysClientNewListBySearchServicePager.More() {
 		_, err := queryKeysClientNewListBySearchServicePager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
@@ -486,7 +486,7 @@ func (testsuite *SearchTestSuite) TestQueryKeys() {
 
 	// From step QueryKeys_Delete
 	fmt.Println("Call operation: QueryKeys_Delete")
-	_, err = queryKeysClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, queryKey, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = queryKeysClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, queryKey, &armsearch.QueryKeysClientDeleteOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 }
 
@@ -497,12 +497,12 @@ func (testsuite *SearchTestSuite) TestAdminKeys() {
 	fmt.Println("Call operation: AdminKeys_Get")
 	adminKeysClient, err := armsearch.NewAdminKeysClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = adminKeysClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = adminKeysClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.AdminKeysClientGetOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 
 	// From step AdminKeys_Regenerate
 	fmt.Println("Call operation: AdminKeys_Regenerate")
-	_, err = adminKeysClient.Regenerate(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, armsearch.AdminKeyKindPrimary, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = adminKeysClient.Regenerate(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, armsearch.AdminKeyKindPrimary, &armsearch.AdminKeysClientRegenerateOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 }
 
@@ -512,6 +512,6 @@ func (testsuite *SearchTestSuite) Cleanup() {
 	fmt.Println("Call operation: Services_Delete")
 	servicesClient, err := armsearch.NewServicesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = servicesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.SearchManagementRequestOptions{ClientRequestID: nil}, nil)
+	_, err = servicesClient.Delete(testsuite.ctx, testsuite.resourceGroupName, testsuite.searchServiceName, &armsearch.ServicesClientDeleteOptions{ClientRequestID: nil})
 	testsuite.Require().NoError(err)
 }

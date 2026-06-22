@@ -258,8 +258,9 @@ func ComputeV1(values []interface{}) string {
 	return sb.String()
 }
 
-// ComputeV2Hash computes the V2 EPK for Hash partitioning.
-func ComputeV2Hash(values []interface{}) string {
+// computeV2Hash computes the raw V2 EPK for Hash partitioning (without top-bit masking).
+// Do not use for partition routing — use ComputeV2HashForRouting instead.
+func computeV2Hash(values []interface{}) string {
 	var hashBuf []byte
 	for _, comp := range values {
 		writeForHashingV2(comp, &hashBuf)
@@ -269,8 +270,9 @@ func ComputeV2Hash(values []interface{}) string {
 	return hash128ToEPK(low, high)
 }
 
-// ComputeV2MultiHash computes the V2 EPK for MultiHash partitioning.
-func ComputeV2MultiHash(values []interface{}) string {
+// computeV2MultiHash computes the raw V2 EPK for MultiHash partitioning (without top-bit masking).
+// Do not use for partition routing — use ComputeV2MultiHashForRouting instead.
+func computeV2MultiHash(values []interface{}) string {
 	var sb strings.Builder
 	for _, comp := range values {
 		var hashBuf []byte
@@ -278,6 +280,27 @@ func ComputeV2MultiHash(values []interface{}) string {
 
 		low, high := murmurhash3_128(hashBuf, 0, 0)
 		sb.WriteString(hash128ToEPK(low, high))
+	}
+	return sb.String()
+}
+
+// ComputeV2HashForRouting computes the V2 EPK for routing (with top-2-bit masking).
+// The service uses "FF" as the maximum exclusive partition key range sentinel,
+// so all valid EPK values must have their first byte masked to [0x00, 0x3F].
+func ComputeV2HashForRouting(values []interface{}) string {
+	return maskTopBitsForRouting(computeV2Hash(values))
+}
+
+// ComputeV2MultiHashForRouting computes the V2 MultiHash EPK for routing.
+// Each per-component hash has its top 2 bits masked independently.
+func ComputeV2MultiHashForRouting(values []interface{}) string {
+	var sb strings.Builder
+	for _, comp := range values {
+		var hashBuf []byte
+		writeForHashingV2(comp, &hashBuf)
+
+		low, high := murmurhash3_128(hashBuf, 0, 0)
+		sb.WriteString(maskTopBitsForRouting(hash128ToEPK(low, high)))
 	}
 	return sb.String()
 }
@@ -295,6 +318,87 @@ func hash128ToEPK(low, high uint64) string {
 	}
 
 	return toHexUpper(bytes[:])
+}
+
+// maskTopBitsForRouting clears the two most significant bits of the first byte
+// in an EPK hex string. The Cosmos DB partition key range space uses "FF" as the
+// maximum exclusive sentinel, so all valid EPK values must have their first byte
+// in the range [0x00, 0x3F]. This matches the behavior of other Cosmos DB SDKs.
+func maskTopBitsForRouting(epkHex string) string {
+	if len(epkHex) < 2 {
+		return epkHex
+	}
+	// Parse the first byte (2 hex chars)
+	firstByte := hexCharToNibble(epkHex[0])<<4 | hexCharToNibble(epkHex[1])
+	firstByte &= 0x3F
+	// Replace the first two hex characters
+	return fmt.Sprintf("%02X", firstByte) + epkHex[2:]
+}
+
+func hexCharToNibble(c byte) byte {
+	switch {
+	case c >= '0' && c <= '9':
+		return c - '0'
+	case c >= 'A' && c <= 'F':
+		return c - 'A' + 10
+	case c >= 'a' && c <= 'f':
+		return c - 'a' + 10
+	default:
+		return 0
+	}
+}
+
+// CompareEPK performs length-aware comparison of two effective partition key hex strings.
+//
+// For hierarchical partition key (HPK) containers, the service may return
+// partition key ranges with mixed-length boundaries (e.g., 32-char partial
+// vs 64-char fully specified, zero-padded). This function treats two EPKs
+// as equal when one is a prefix of the other and the remainder is all '0' characters.
+//
+// Returns -1 if a < b, 0 if a == b, +1 if a > b.
+//
+// See: https://github.com/Azure/azure-cosmos-dotnet-v3/pull/5260
+func CompareEPK(a, b string) int {
+	commonLen := len(a)
+	if len(b) < commonLen {
+		commonLen = len(b)
+	}
+
+	// Compare the common prefix
+	prefixA := a[:commonLen]
+	prefixB := b[:commonLen]
+	if prefixA < prefixB {
+		return -1
+	}
+	if prefixA > prefixB {
+		return 1
+	}
+
+	// Common prefixes are equal — check the tail of the longer string
+	var tail string
+	if len(a) > len(b) {
+		tail = a[commonLen:]
+	} else {
+		tail = b[commonLen:]
+	}
+
+	// If the tail is all zeros (or empty), the EPKs are equal
+	allZeros := true
+	for i := 0; i < len(tail); i++ {
+		if tail[i] != '0' {
+			allZeros = false
+			break
+		}
+	}
+	if allZeros {
+		return 0
+	}
+
+	// Non-zero tail: the longer string is greater
+	if len(a) > len(b) {
+		return 1
+	}
+	return -1
 }
 
 // toHexUpper returns uppercase hex encoding of data with no separators.

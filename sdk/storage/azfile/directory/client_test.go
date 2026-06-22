@@ -6,6 +6,11 @@ package directory_test
 import (
 	"context"
 	"fmt"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
@@ -18,9 +23,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
-	"strings"
-	"testing"
-	"time"
 )
 
 func Test(t *testing.T) {
@@ -2541,4 +2543,54 @@ func (d *DirectoryUnrecordedTestsSuite) TestDirectoryAudienceNegative() {
 	_, err = dirClientAudience.Create(context.Background(), nil)
 	_require.Error(err)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.InvalidAuthenticationInfo)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirCreateDirPropertySemantics() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	propertySemanticsValues := []*directory.PropertySemantics{
+		nil,
+		to.Ptr(directory.FilePropertySemanticsNew),
+		to.Ptr(directory.FilePropertySemanticsRestore),
+	}
+
+	for i, ps := range propertySemanticsValues {
+		dirName := testcommon.GenerateDirectoryName(testName) + strconv.Itoa(i)
+		dirClient := shareClient.NewDirectoryClient(dirName)
+
+		opts := &directory.CreateOptions{
+			FilePropertySemantics: ps,
+		}
+
+		if ps != nil && *ps == directory.FilePropertySemanticsRestore {
+			opts.FilePermissions = &file.Permissions{
+				Permission: to.Ptr("O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-188441444-3053964)"),
+			}
+		}
+
+		cResp, err := dirClient.Create(context.Background(), opts)
+		_require.NoError(err)
+		_require.NotNil(cResp.ETag)
+		_require.NotNil(cResp.RequestID)
+
+		fileAttributes, err := file.ParseNTFSFileAttributes(cResp.FileAttributes)
+		_require.NoError(err)
+		_require.NotNil(fileAttributes)
+
+		if ps != nil && *ps == directory.FilePropertySemanticsRestore {
+			// Restore mode should not automatically add Directory attribute
+			_require.False(fileAttributes.Archive)
+		} else {
+			// New mode (or nil/default) should behave as normal create
+			_require.True(fileAttributes.Directory)
+		}
+	}
 }

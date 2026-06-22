@@ -64,6 +64,15 @@ type ListSettingsPageResponse struct {
 	SyncToken SyncToken
 }
 
+// CheckSettingsPageResponse contains the response from the NewCheckSettingsPager method.
+type CheckSettingsPageResponse struct {
+	// An ETag indicating the state of a page of configuration settings within a configuration store.
+	ETag *azcore.ETag
+
+	// SyncToken contains the value returned in the Sync-Token header.
+	SyncToken SyncToken
+}
+
 // SetReadOnlyResponse contains the response from SetReadOnly method.
 type SetReadOnlyResponse struct {
 	Setting

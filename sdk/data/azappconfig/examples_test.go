@@ -449,6 +449,60 @@ func ExampleClient_NewListSettingsPager_matchConditions() {
 	}
 }
 
+func ExampleClient_NewCheckSettingsPager_matchConditions() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Step 1: Use HEAD requests to get initial ETags for each page
+	matchConditions := []azcore.MatchConditions{}
+	pager := client.NewCheckSettingsPager(azappconfig.SettingSelector{
+		KeyFilter: to.Ptr("*"),
+	}, nil)
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			IfNoneMatch: page.ETag,
+		})
+	}
+
+	// Step 2: Use HEAD requests again with the ETags to check if anything changed.
+	// Pages that haven't changed will return 304 Not Modified (empty ETag in response).
+	// Pages that have changed will return 200 OK with a new ETag.
+	pager = client.NewCheckSettingsPager(azappconfig.SettingSelector{
+		KeyFilter: to.Ptr("*"),
+	}, &azappconfig.CheckSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		if page.ETag != nil {
+			// This page has changed, reload with GET request if needed
+			log.Printf("Page changed, new ETag: %s", *page.ETag)
+		}
+	}
+}
+
 func ExampleClient_NewListSettingsPager_usingTags() {
 	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
 	if connectionString == "" {

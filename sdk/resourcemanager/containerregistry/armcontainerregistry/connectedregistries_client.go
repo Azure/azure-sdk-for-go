@@ -18,6 +18,8 @@ import (
 
 // ConnectedRegistriesClient contains the methods for the ConnectedRegistries group.
 // Don't use this type directly, use NewConnectedRegistriesClient() instead.
+//
+// Generated from API version 2026-01-01-preview
 type ConnectedRegistriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewConnectedRegistriesClient(subscriptionID string, credential azcore.Token
 
 // BeginCreate - Creates a connected registry for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -68,8 +68,6 @@ func (client *ConnectedRegistriesClient) BeginCreate(ctx context.Context, resour
 
 // Create - Creates a connected registry for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *ConnectedRegistriesClient) create(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, connectedRegistryCreateParameters ConnectedRegistry, options *ConnectedRegistriesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *ConnectedRegistriesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedRegistryCreateParameters); err != nil {
@@ -127,8 +125,6 @@ func (client *ConnectedRegistriesClient) createCreateRequest(ctx context.Context
 
 // BeginDeactivate - Deactivates the connected registry instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -153,8 +149,6 @@ func (client *ConnectedRegistriesClient) BeginDeactivate(ctx context.Context, re
 
 // Deactivate - Deactivates the connected registry instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *ConnectedRegistriesClient) deactivate(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientBeginDeactivateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginDeactivate"
@@ -200,15 +194,13 @@ func (client *ConnectedRegistriesClient) deactivateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDelete - Deletes a connected registry from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -233,8 +225,6 @@ func (client *ConnectedRegistriesClient) BeginDelete(ctx context.Context, resour
 
 // Delete - Deletes a connected registry from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *ConnectedRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginDelete"
@@ -280,15 +270,13 @@ func (client *ConnectedRegistriesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the properties of the connected registry.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -339,8 +327,8 @@ func (client *ConnectedRegistriesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -355,8 +343,6 @@ func (client *ConnectedRegistriesClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Lists all connected registries for the specified container registry.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - options - ConnectedRegistriesClientListOptions contains the optional parameters for the ConnectedRegistriesClient.NewListPager
@@ -407,8 +393,8 @@ func (client *ConnectedRegistriesClient) listCreateRequest(ctx context.Context, 
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -422,10 +408,76 @@ func (client *ConnectedRegistriesClient) listHandleResponse(resp *http.Response)
 	return result, nil
 }
 
+// Resync - Resync the connected registry instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the container registry.
+//   - connectedRegistryName - The name of the connected registry.
+//   - options - ConnectedRegistriesClientResyncOptions contains the optional parameters for the ConnectedRegistriesClient.Resync
+//     method.
+func (client *ConnectedRegistriesClient) Resync(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, options *ConnectedRegistriesClientResyncOptions) (ConnectedRegistriesClientResyncResponse, error) {
+	var err error
+	const operationName = "ConnectedRegistriesClient.Resync"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.resyncCreateRequest(ctx, resourceGroupName, registryName, connectedRegistryName, options)
+	if err != nil {
+		return ConnectedRegistriesClientResyncResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ConnectedRegistriesClientResyncResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ConnectedRegistriesClientResyncResponse{}, err
+	}
+	resp, err := client.resyncHandleResponse(httpResp)
+	return resp, err
+}
+
+// resyncCreateRequest creates the Resync request.
+func (client *ConnectedRegistriesClient) resyncCreateRequest(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, _ *ConnectedRegistriesClientResyncOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/connectedRegistries/{connectedRegistryName}/resync"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if registryName == "" {
+		return nil, errors.New("parameter registryName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+	if connectedRegistryName == "" {
+		return nil, errors.New("parameter connectedRegistryName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectedRegistryName}", url.PathEscape(connectedRegistryName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// resyncHandleResponse handles the Resync response.
+func (client *ConnectedRegistriesClient) resyncHandleResponse(resp *http.Response) (ConnectedRegistriesClientResyncResponse, error) {
+	result := ConnectedRegistriesClientResyncResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectedRegistry); err != nil {
+		return ConnectedRegistriesClientResyncResponse{}, err
+	}
+	return result, nil
+}
+
 // BeginUpdate - Updates a connected registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - registryName - The name of the container registry.
 //   - connectedRegistryName - The name of the connected registry.
@@ -451,8 +503,6 @@ func (client *ConnectedRegistriesClient) BeginUpdate(ctx context.Context, resour
 
 // Update - Updates a connected registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01
 func (client *ConnectedRegistriesClient) update(ctx context.Context, resourceGroupName string, registryName string, connectedRegistryName string, connectedRegistryUpdateParameters ConnectedRegistryUpdateParameters, options *ConnectedRegistriesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedRegistriesClient.BeginUpdate"
@@ -498,8 +548,8 @@ func (client *ConnectedRegistriesClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedRegistryUpdateParameters); err != nil {

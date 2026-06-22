@@ -62,18 +62,18 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "QuotasClient":
-		initServer(s, &s.trQuotasServer, func() *QuotasServerTransport { return NewQuotasServerTransport(&s.srv.QuotasServer) })
+		initServer(&s.trMu, &s.trQuotasServer, func() *QuotasServerTransport { return NewQuotasServerTransport(&s.srv.QuotasServer) })
 		resp, err = s.trQuotasServer.Do(req)
 	case "WorkspaceQuotasClient":
-		initServer(s, &s.trWorkspaceQuotasServer, func() *WorkspaceQuotasServerTransport {
+		initServer(&s.trMu, &s.trWorkspaceQuotasServer, func() *WorkspaceQuotasServerTransport {
 			return NewWorkspaceQuotasServerTransport(&s.srv.WorkspaceQuotasServer)
 		})
 		resp, err = s.trWorkspaceQuotasServer.Do(req)
 	case "WorkspacesClient":
-		initServer(s, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
+		initServer(&s.trMu, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
 		resp, err = s.trWorkspacesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -84,12 +84,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

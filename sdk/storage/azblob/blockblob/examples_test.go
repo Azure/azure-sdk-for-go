@@ -200,6 +200,33 @@ func Example_blockblob_SetExpiry() {
 	}
 }
 
+// This example shows how to upload a block blob with Structured Message CRC64 content validation.
+// SM CRC64 validation ensures data integrity during upload by computing and verifying CRC64 checksums.
+func Example_blockblob_UploadWithContentValidation() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/validated-blob.txt", accountName)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	handleError(err)
+
+	blockBlobClient, err := blockblob.NewClient(blobURL, cred, nil)
+	handleError(err)
+
+	data := []byte("Hello, content validation with Structured Message CRC64!")
+
+	// Upload with Structured Message CRC64 validation.
+	// Pass 0 for segmentSize to use the default (4 MB).
+	_, err = blockBlobClient.Upload(context.TODO(), streaming.NopCloser(bytes.NewReader(data)), &blockblob.UploadOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	handleError(err)
+
+	fmt.Println("Blob uploaded with SM CRC64 content validation.")
+}
+
 // This example shows how to set up log callback to dump SDK events
 func Example_blockblob_uploadLogs() {
 	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")

@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/atom"
 )
@@ -384,7 +385,7 @@ func (ac *Client) createOrUpdateSubscriptionImpl(ctx context.Context, topicName 
 	}
 
 	if !creating {
-		ctx = runtime.WithHTTPHeader(ctx, http.Header{
+		ctx = policy.WithHTTPHeader(ctx, http.Header{
 			"If-Match": []string{"*"},
 		})
 	}

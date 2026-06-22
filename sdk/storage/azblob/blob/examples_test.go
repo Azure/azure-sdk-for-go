@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -199,6 +200,34 @@ func Example_blob_Client_CreateSnapshot() {
 	// DeleteSnapshotOptionNone produces an error if the base blob has any snapshots.
 	_, err = baseBlobClient.Delete(context.TODO(), &blob.DeleteOptions{DeleteSnapshots: to.Ptr(blob.DeleteSnapshotsOptionTypeInclude)})
 	handleError(err)
+}
+
+// This example shows how to download a blob with Structured Message CRC64 content validation.
+// SM CRC64 validation ensures data integrity during download by verifying CRC64 checksums.
+func Example_blob_DownloadWithContentValidation() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	blobURL := fmt.Sprintf("https://%s.blob.core.windows.net/testcontainer/validated-blob.txt", accountName)
+
+	credential, err := blob.NewSharedKeyCredential(accountName, os.Getenv("AZURE_STORAGE_ACCOUNT_KEY"))
+	handleError(err)
+
+	blobClient, err := blob.NewClientWithSharedKeyCredential(blobURL, credential, nil)
+	handleError(err)
+
+	// Download with Structured Message CRC64 validation.
+	// Pass 0 for segmentSize to use the default (4 MB).
+	resp, err := blobClient.DownloadStream(context.TODO(), &blob.DownloadStreamOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	handleError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	handleError(err)
+
+	fmt.Printf("Downloaded %d bytes with SM CRC64 content validation.\n", len(downloadedData))
 }
 
 // This example shows how to copy a source document on the Internet to a blob.

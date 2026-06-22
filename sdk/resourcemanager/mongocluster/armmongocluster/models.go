@@ -447,6 +447,9 @@ type Properties struct {
 	// The high availability properties of the mongo cluster.
 	HighAvailability *HighAvailabilityProperties
 
+	// The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows Azure Cosmos DB service to bypass network restrictions.
+	NetworkBypassMode *NetworkBypassMode
+
 	// List of private endpoint connections.
 	PreviewFeatures []*PreviewFeature
 
@@ -616,6 +619,9 @@ type UpdateProperties struct {
 
 	// The high availability properties of the mongo cluster.
 	HighAvailability *HighAvailabilityProperties
+
+	// The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows Azure Cosmos DB service to bypass network restrictions.
+	NetworkBypassMode *NetworkBypassMode
 
 	// List of private endpoint connections.
 	PreviewFeatures []*PreviewFeature

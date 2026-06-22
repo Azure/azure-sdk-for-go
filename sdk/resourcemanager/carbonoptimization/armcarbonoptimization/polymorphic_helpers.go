@@ -16,28 +16,28 @@ func unmarshalCarbonEmissionDataClassification(rawMsg json.RawMessage) (CarbonEm
 	}
 	var b CarbonEmissionDataClassification
 	switch m["dataType"] {
-	case string(ResponseDataTypeEnumOverallSummaryData):
-		b = &CarbonEmissionOverallSummaryData{}
-	case string(ResponseDataTypeEnumMonthlySummaryData):
-		b = &CarbonEmissionMonthlySummaryData{}
-	case string(ResponseDataTypeEnumTopItemsSummaryData):
-		b = &CarbonEmissionTopItemsSummaryData{}
-	case string(ResponseDataTypeEnumResourceTopItemsSummaryData):
-		b = &ResourceCarbonEmissionTopItemsSummaryData{}
-	case string(ResponseDataTypeEnumResourceGroupTopItemsSummaryData):
-		b = &ResourceGroupCarbonEmissionTopItemsSummaryData{}
-	case string(ResponseDataTypeEnumTopItemsMonthlySummaryData):
-		b = &CarbonEmissionTopItemMonthlySummaryData{}
-	case string(ResponseDataTypeEnumResourceTopItemsMonthlySummaryData):
-		b = &ResourceCarbonEmissionTopItemMonthlySummaryData{}
-	case string(ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData):
-		b = &ResourceGroupCarbonEmissionTopItemMonthlySummaryData{}
 	case string(ResponseDataTypeEnumItemDetailsData):
 		b = &CarbonEmissionItemDetailData{}
-	case string(ResponseDataTypeEnumResourceItemDetailsData):
-		b = &ResourceCarbonEmissionItemDetailData{}
+	case string(ResponseDataTypeEnumMonthlySummaryData):
+		b = &CarbonEmissionMonthlySummaryData{}
+	case string(ResponseDataTypeEnumOverallSummaryData):
+		b = &CarbonEmissionOverallSummaryData{}
 	case string(ResponseDataTypeEnumResourceGroupItemDetailsData):
 		b = &ResourceGroupCarbonEmissionItemDetailData{}
+	case string(ResponseDataTypeEnumResourceGroupTopItemsMonthlySummaryData):
+		b = &ResourceGroupCarbonEmissionTopItemMonthlySummaryData{}
+	case string(ResponseDataTypeEnumResourceGroupTopItemsSummaryData):
+		b = &ResourceGroupCarbonEmissionTopItemsSummaryData{}
+	case string(ResponseDataTypeEnumResourceItemDetailsData):
+		b = &ResourceCarbonEmissionItemDetailData{}
+	case string(ResponseDataTypeEnumResourceTopItemsMonthlySummaryData):
+		b = &ResourceCarbonEmissionTopItemMonthlySummaryData{}
+	case string(ResponseDataTypeEnumResourceTopItemsSummaryData):
+		b = &ResourceCarbonEmissionTopItemsSummaryData{}
+	case string(ResponseDataTypeEnumTopItemsMonthlySummaryData):
+		b = &CarbonEmissionTopItemMonthlySummaryData{}
+	case string(ResponseDataTypeEnumTopItemsSummaryData):
+		b = &CarbonEmissionTopItemsSummaryData{}
 	default:
 		b = &CarbonEmissionData{}
 	}

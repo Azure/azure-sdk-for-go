@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/ManagedHsm_listPrivateLinkResources.json
+// Generated from example definition: 2026-02-01/ManagedHsm_listPrivateLinkResources.json
 func ExampleMHSMPrivateLinkResourcesClient_ListByMHSMResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleMHSMPrivateLinkResourcesClient_ListByMHSMResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.MHSMPrivateLinkResourcesClientListByMHSMResourceResponse{
-	// 	MHSMPrivateLinkResourceListResult: &armkeyvault.MHSMPrivateLinkResourceListResult{
+	// 	MHSMPrivateLinkResourceListResult: armkeyvault.MHSMPrivateLinkResourceListResult{
 	// 		Value: []*armkeyvault.MHSMPrivateLinkResource{
 	// 			{
 	// 				Name: to.Ptr("managedhsm"),

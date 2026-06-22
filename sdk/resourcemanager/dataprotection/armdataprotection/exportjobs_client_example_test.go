@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/JobCRUD/TriggerExportJobs.json
+// Generated from example definition: 2026-03-01/JobCRUD/TriggerExportJobs.json
 func ExampleExportJobsClient_BeginTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,6 +28,6 @@ func ExampleExportJobsClient_BeginTrigger() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

@@ -46,6 +46,7 @@ type AMQPSender interface {
 	Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error
 	MaxMessageSize() uint64
 	LinkName() string
+	Properties() map[string]any
 }
 
 // AMQPSenderCloser is implemented by [*AMQPSenderWrapper]
@@ -252,6 +253,10 @@ func (sw *AMQPSenderWrapper) MaxMessageSize() uint64 {
 
 func (sw *AMQPSenderWrapper) LinkName() string {
 	return sw.Inner.LinkName()
+}
+
+func (sw *AMQPSenderWrapper) Properties() map[string]any {
+	return sw.Inner.Properties()
 }
 
 func (sw *AMQPSenderWrapper) Close(ctx context.Context) error {

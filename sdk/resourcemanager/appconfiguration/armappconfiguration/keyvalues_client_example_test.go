@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreateKeyValue.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreateKeyValue.json
 func ExampleKeyValuesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleKeyValuesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.KeyValuesClientCreateOrUpdateResponse{
-	// 	KeyValue: &armappconfiguration.KeyValue{
+	// 	KeyValue: armappconfiguration.KeyValue{
 	// 		Name: to.Ptr("myKey$myLabel"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores/keyValues"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso/keyValues/myKey$myLabel"),
@@ -60,7 +60,7 @@ func ExampleKeyValuesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresDeleteKeyValue.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresDeleteKeyValue.json
 func ExampleKeyValuesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleKeyValuesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -86,7 +86,7 @@ func ExampleKeyValuesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresGetKeyValue.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresGetKeyValue.json
 func ExampleKeyValuesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleKeyValuesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.KeyValuesClientGetResponse{
-	// 	KeyValue: &armappconfiguration.KeyValue{
+	// 	KeyValue: armappconfiguration.KeyValue{
 	// 		Name: to.Ptr("myKey$myLabel"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores/keyValues"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso/keyValues/myKey$myLabel"),

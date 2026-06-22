@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_CreateOrUpdate.json
 func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,8 +26,12 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewStandbyVirtualMachinePoolsClient().BeginCreateOrUpdate(ctx, "rgstandbypool", "pool", armstandbypool.StandbyVirtualMachinePoolResource{
 		Properties: &armstandbypool.StandbyVirtualMachinePoolResourceProperties{
 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
-				MaxReadyCapacity: to.Ptr[int64](304),
-				MinReadyCapacity: to.Ptr[int64](300),
+				MaxReadyCapacity:      to.Ptr[int64](304),
+				MinReadyCapacity:      to.Ptr[int64](300),
+				PostProvisioningDelay: to.Ptr("PT2S"),
+				DynamicSizing: &armstandbypool.DynamicSizing{
+					Enabled: to.Ptr(true),
+				},
 			},
 			VirtualMachineState:              to.Ptr(armstandbypool.VirtualMachineStateRunning),
 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -40,17 +44,21 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstandbypool.StandbyVirtualMachinePoolsClientCreateOrUpdateResponse{
-	// 	StandbyVirtualMachinePoolResource: &armstandbypool.StandbyVirtualMachinePoolResource{
+	// 	StandbyVirtualMachinePoolResource: armstandbypool.StandbyVirtualMachinePoolResource{
 	// 		Properties: &armstandbypool.StandbyVirtualMachinePoolResourceProperties{
 	// 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 	// 				MaxReadyCapacity: to.Ptr[int64](304),
 	// 				MinReadyCapacity: to.Ptr[int64](300),
+	// 				PostProvisioningDelay: to.Ptr("PT2S"),
+	// 				DynamicSizing: &armstandbypool.DynamicSizing{
+	// 					Enabled: to.Ptr(true),
+	// 				},
 	// 			},
 	// 			VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 	// 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -74,7 +82,7 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Delete.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_Delete.json
 func ExampleStandbyVirtualMachinePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,11 +99,11 @@ func ExampleStandbyVirtualMachinePoolsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Get.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_Get.json
 func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,11 +122,15 @@ func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstandbypool.StandbyVirtualMachinePoolsClientGetResponse{
-	// 	StandbyVirtualMachinePoolResource: &armstandbypool.StandbyVirtualMachinePoolResource{
+	// 	StandbyVirtualMachinePoolResource: armstandbypool.StandbyVirtualMachinePoolResource{
 	// 		Properties: &armstandbypool.StandbyVirtualMachinePoolResourceProperties{
 	// 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 	// 				MaxReadyCapacity: to.Ptr[int64](304),
 	// 				MinReadyCapacity: to.Ptr[int64](300),
+	// 				PostProvisioningDelay: to.Ptr("PT2S"),
+	// 				DynamicSizing: &armstandbypool.DynamicSizing{
+	// 					Enabled: to.Ptr(true),
+	// 				},
 	// 			},
 	// 			VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 	// 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -142,7 +154,7 @@ func ExampleStandbyVirtualMachinePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_ListByResourceGroup.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_ListByResourceGroup.json
 func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,6 +184,10 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 		// 					ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 		// 						MaxReadyCapacity: to.Ptr[int64](304),
 		// 						MinReadyCapacity: to.Ptr[int64](300),
+		// 						PostProvisioningDelay: to.Ptr("PT2S"),
+		// 						DynamicSizing: &armstandbypool.DynamicSizing{
+		// 							Enabled: to.Ptr(true),
+		// 						},
 		// 					},
 		// 					VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 		// 					AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -199,7 +215,7 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_ListBySubscription.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_ListBySubscription.json
 func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,6 +245,10 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 		// 					ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 		// 						MaxReadyCapacity: to.Ptr[int64](304),
 		// 						MinReadyCapacity: to.Ptr[int64](300),
+		// 						PostProvisioningDelay: to.Ptr("PT2S"),
+		// 						DynamicSizing: &armstandbypool.DynamicSizing{
+		// 							Enabled: to.Ptr(true),
+		// 						},
 		// 					},
 		// 					VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 		// 					AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -256,7 +276,7 @@ func ExampleStandbyVirtualMachinePoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/StandbyVirtualMachinePools_Update.json
+// Generated from example definition: 2025-10-01/StandbyVirtualMachinePools_Update.json
 func ExampleStandbyVirtualMachinePoolsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,8 +291,12 @@ func ExampleStandbyVirtualMachinePoolsClient_Update() {
 		Tags: map[string]*string{},
 		Properties: &armstandbypool.StandbyVirtualMachinePoolResourceUpdateProperties{
 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
-				MaxReadyCapacity: to.Ptr[int64](304),
-				MinReadyCapacity: to.Ptr[int64](300),
+				MaxReadyCapacity:      to.Ptr[int64](304),
+				MinReadyCapacity:      to.Ptr[int64](300),
+				PostProvisioningDelay: to.Ptr("PT2S"),
+				DynamicSizing: &armstandbypool.DynamicSizing{
+					Enabled: to.Ptr(true),
+				},
 			},
 			VirtualMachineState:              to.Ptr(armstandbypool.VirtualMachineStateRunning),
 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),
@@ -285,11 +309,15 @@ func ExampleStandbyVirtualMachinePoolsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstandbypool.StandbyVirtualMachinePoolsClientUpdateResponse{
-	// 	StandbyVirtualMachinePoolResource: &armstandbypool.StandbyVirtualMachinePoolResource{
+	// 	StandbyVirtualMachinePoolResource: armstandbypool.StandbyVirtualMachinePoolResource{
 	// 		Properties: &armstandbypool.StandbyVirtualMachinePoolResourceProperties{
 	// 			ElasticityProfile: &armstandbypool.StandbyVirtualMachinePoolElasticityProfile{
 	// 				MaxReadyCapacity: to.Ptr[int64](304),
 	// 				MinReadyCapacity: to.Ptr[int64](300),
+	// 				PostProvisioningDelay: to.Ptr("PT2S"),
+	// 				DynamicSizing: &armstandbypool.DynamicSizing{
+	// 					Enabled: to.Ptr(true),
+	// 				},
 	// 			},
 	// 			VirtualMachineState: to.Ptr(armstandbypool.VirtualMachineStateRunning),
 	// 			AttachedVirtualMachineScaleSetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000009/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"),

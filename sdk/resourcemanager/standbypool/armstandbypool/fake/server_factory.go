@@ -70,30 +70,30 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "StandbyContainerGroupPoolRuntimeViewsClient":
-		initServer(s, &s.trStandbyContainerGroupPoolRuntimeViewsServer, func() *StandbyContainerGroupPoolRuntimeViewsServerTransport {
+		initServer(&s.trMu, &s.trStandbyContainerGroupPoolRuntimeViewsServer, func() *StandbyContainerGroupPoolRuntimeViewsServerTransport {
 			return NewStandbyContainerGroupPoolRuntimeViewsServerTransport(&s.srv.StandbyContainerGroupPoolRuntimeViewsServer)
 		})
 		resp, err = s.trStandbyContainerGroupPoolRuntimeViewsServer.Do(req)
 	case "StandbyContainerGroupPoolsClient":
-		initServer(s, &s.trStandbyContainerGroupPoolsServer, func() *StandbyContainerGroupPoolsServerTransport {
+		initServer(&s.trMu, &s.trStandbyContainerGroupPoolsServer, func() *StandbyContainerGroupPoolsServerTransport {
 			return NewStandbyContainerGroupPoolsServerTransport(&s.srv.StandbyContainerGroupPoolsServer)
 		})
 		resp, err = s.trStandbyContainerGroupPoolsServer.Do(req)
 	case "StandbyVirtualMachinePoolRuntimeViewsClient":
-		initServer(s, &s.trStandbyVirtualMachinePoolRuntimeViewsServer, func() *StandbyVirtualMachinePoolRuntimeViewsServerTransport {
+		initServer(&s.trMu, &s.trStandbyVirtualMachinePoolRuntimeViewsServer, func() *StandbyVirtualMachinePoolRuntimeViewsServerTransport {
 			return NewStandbyVirtualMachinePoolRuntimeViewsServerTransport(&s.srv.StandbyVirtualMachinePoolRuntimeViewsServer)
 		})
 		resp, err = s.trStandbyVirtualMachinePoolRuntimeViewsServer.Do(req)
 	case "StandbyVirtualMachinePoolsClient":
-		initServer(s, &s.trStandbyVirtualMachinePoolsServer, func() *StandbyVirtualMachinePoolsServerTransport {
+		initServer(&s.trMu, &s.trStandbyVirtualMachinePoolsServer, func() *StandbyVirtualMachinePoolsServerTransport {
 			return NewStandbyVirtualMachinePoolsServerTransport(&s.srv.StandbyVirtualMachinePoolsServer)
 		})
 		resp, err = s.trStandbyVirtualMachinePoolsServer.Do(req)
 	case "StandbyVirtualMachinesClient":
-		initServer(s, &s.trStandbyVirtualMachinesServer, func() *StandbyVirtualMachinesServerTransport {
+		initServer(&s.trMu, &s.trStandbyVirtualMachinesServer, func() *StandbyVirtualMachinesServerTransport {
 			return NewStandbyVirtualMachinesServerTransport(&s.srv.StandbyVirtualMachinesServer)
 		})
 		resp, err = s.trStandbyVirtualMachinesServer.Do(req)
@@ -106,12 +106,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

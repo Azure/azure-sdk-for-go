@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/Images_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Images_Get_MaximumSet_Gen.json
 func ExampleImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleImagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ImagesClientGetResponse{
-	// 	Image: &armdisconnectedoperations.Image{
+	// 	Image: armdisconnectedoperations.Image{
 	// 		Properties: &armdisconnectedoperations.ImageProperties{
 	// 			ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 			ReleaseVersion: to.Ptr("2.0.0"),
@@ -40,6 +40,13 @@ func ExampleImagesClient_Get() {
 	// 			ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-05-14"); return t}()),
 	// 			ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
 	// 			CompatibleVersions: []*string{
+	// 			},
+	// 			UpdateProperties: &armdisconnectedoperations.ImageUpdateProperties{
+	// 				SystemReboot: to.Ptr(armdisconnectedoperations.SystemRebootNotRequired),
+	// 				SecurityUpdates: to.Ptr("security updates info"),
+	// 				OSVersion: to.Ptr("os version info"),
+	// 				AgentVersion: to.Ptr("agent version info"),
+	// 				FeatureUpdates: to.Ptr("feature updates info"),
 	// 			},
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/1F6CACA0-5FFA-47AD-94FD-42368F71E49E/resourceGroups/rgdisconnectedOperations/providers/Microsoft.Edge/disconnectedOperations/demo-resource"),
@@ -57,7 +64,7 @@ func ExampleImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/Images_ListByDisconnectedOperation_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Images_ListByDisconnectedOperation_MaximumSet_Gen.json
 func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,6 +102,13 @@ func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 		// 					ReleaseType: to.Ptr(armdisconnectedoperations.ReleaseTypeInstall),
 		// 					CompatibleVersions: []*string{
 		// 					},
+		// 					UpdateProperties: &armdisconnectedoperations.ImageUpdateProperties{
+		// 						SystemReboot: to.Ptr(armdisconnectedoperations.SystemRebootNotRequired),
+		// 						SecurityUpdates: to.Ptr("security updates info"),
+		// 						OSVersion: to.Ptr("os version info"),
+		// 						AgentVersion: to.Ptr("agent version info"),
+		// 						FeatureUpdates: to.Ptr("feature updates info"),
+		// 					},
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/1F6CACA0-5FFA-47AD-94FD-42368F71E49E/resourceGroups/rgdisconnectedOperations/providers/Microsoft.Edge/disconnectedOperations/demo-resource"),
 		// 				Name: to.Ptr("demo-resource"),
@@ -115,7 +129,7 @@ func ExampleImagesClient_NewListByDisconnectedOperationPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/Images_ListDownloadUri_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Images_ListDownloadUri_MaximumSet_Gen.json
 func ExampleImagesClient_ListDownloadURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,13 +148,20 @@ func ExampleImagesClient_ListDownloadURI() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ImagesClientListDownloadURIResponse{
-	// 	ImageDownloadResult: &armdisconnectedoperations.ImageDownloadResult{
+	// 	ImageDownloadResult: armdisconnectedoperations.ImageDownloadResult{
 	// 		ReleaseVersion: to.Ptr("vbccjpcosofti"),
 	// 		ReleaseDisplayName: to.Ptr("thttwzm"),
 	// 		ReleaseNotes: to.Ptr("jswqauqfnwxk"),
 	// 		ReleaseDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-12-05"); return t}()),
 	// 		CompatibleVersions: []*string{
 	// 			to.Ptr("czxghshqcn"),
+	// 		},
+	// 		UpdateProperties: &armdisconnectedoperations.ImageUpdateProperties{
+	// 			SystemReboot: to.Ptr(armdisconnectedoperations.SystemRebootNotRequired),
+	// 			SecurityUpdates: to.Ptr("security updates info"),
+	// 			OSVersion: to.Ptr("os version info"),
+	// 			AgentVersion: to.Ptr("agent version info"),
+	// 			FeatureUpdates: to.Ptr("feature updates info"),
 	// 		},
 	// 		TransactionID: to.Ptr("337b8e3a-dd7c-4872-a270-5d57632a8aea"),
 	// 		DownloadLink: to.Ptr("https://microsoft.com/akmzb"),

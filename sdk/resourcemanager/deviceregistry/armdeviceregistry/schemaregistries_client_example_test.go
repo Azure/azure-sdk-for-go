@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,13 +38,13 @@ func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaRegistriesClientCreateOrReplaceResponse{
-	// 	SchemaRegistry: &armdeviceregistry.SchemaRegistry{
+	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
@@ -71,7 +71,7 @@ func ExampleSchemaRegistriesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/Delete_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,11 +88,11 @@ func ExampleSchemaRegistriesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/Get_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleSchemaRegistriesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaRegistriesClientGetResponse{
-	// 	SchemaRegistry: &armdeviceregistry.SchemaRegistry{
+	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
@@ -138,7 +138,7 @@ func ExampleSchemaRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_SchemaRegistries_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_SchemaRegistries_ByResourceGroup.json
 func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleSchemaRegistriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/List_SchemaRegistries_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_SchemaRegistries_BySubscription.json
 func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Update_SchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/Update_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,13 +295,13 @@ func ExampleSchemaRegistriesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaRegistriesClientUpdateResponse{
-	// 	SchemaRegistry: &armdeviceregistry.SchemaRegistry{
+	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
 	// 		Name: to.Ptr("my-schema-registry"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),

@@ -7,11 +7,11 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/Certificates_CreateOrUpdate.json
+// Generated from example definition: 2025-11-01/Certificates_CreateOrUpdate.json
 func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,13 +28,13 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.CertificatesClientCreateOrUpdateResponse{
-	// 	Certificate: &armnginx.Certificate{
+	// 	Certificate: armnginx.Certificate{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxdeployments/certificates"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/certificates/default"),
@@ -48,7 +48,7 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Certificates_Delete.json
+// Generated from example definition: 2025-11-01/Certificates_Delete.json
 func ExampleCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,11 +65,11 @@ func ExampleCertificatesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Certificates_Get.json
+// Generated from example definition: 2025-11-01/Certificates_Get.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleCertificatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.CertificatesClientGetResponse{
-	// 	Certificate: &armnginx.Certificate{
+	// 	Certificate: armnginx.Certificate{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("nginx.nginxplus/nginxdeployments/certificates"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment/certificates/default"),
@@ -109,7 +109,7 @@ func ExampleCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Certificates_List.json
+// Generated from example definition: 2025-11-01/Certificates_List.json
 func ExampleCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

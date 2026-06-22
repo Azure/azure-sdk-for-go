@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaceQuotas_Get.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaceQuotas_Get.json
 func ExampleWorkspaceQuotasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleWorkspaceQuotasClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplaywright.WorkspaceQuotasClientGetResponse{
-	// 	WorkspaceQuota: &armplaywright.WorkspaceQuota{
+	// 	WorkspaceQuota: armplaywright.WorkspaceQuota{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace/quotas/ExecutionMinutes"),
 	// 		Name: to.Ptr("ExecutionMinutes"),
 	// 		Type: to.Ptr("Microsoft.LoadTestService/PlaywrightWorkspaces/Quotas"),
@@ -48,7 +48,7 @@ func ExampleWorkspaceQuotasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
+// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaceQuotas_ListByPlaywrightWorkspace.json
 func ExampleWorkspaceQuotasClient_NewListByPlaywrightWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_NamespaceAsset.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,44 +120,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 					},
 				},
 			},
-			EventGroups: []*armdeviceregistry.NamespaceEventGroup{
-				{
-					Name: to.Ptr("default"),
-					Events: []*armdeviceregistry.NamespaceEvent{
-						{
-							Name:               to.Ptr("event1"),
-							DataSource:         to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt5"),
-							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-							Destinations: []armdeviceregistry.EventDestinationClassification{
-								&armdeviceregistry.EventMqttDestination{
-									Target: to.Ptr(armdeviceregistry.EventDestinationTargetMqtt),
-									Configuration: &armdeviceregistry.MqttDestinationConfiguration{
-										Topic:  to.Ptr("/contoso/testEvent1"),
-										Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
-										Qos:    to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
-										TTL:    to.Ptr[int64](7200),
-									},
-								},
-							},
-							TypeRef: to.Ptr("event1Ref"),
-						},
-						{
-							Name:               to.Ptr("event2"),
-							DataSource:         to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt8"),
-							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-							Destinations: []armdeviceregistry.EventDestinationClassification{
-								&armdeviceregistry.EventStorageDestination{
-									Target: to.Ptr(armdeviceregistry.EventDestinationTargetStorage),
-									Configuration: &armdeviceregistry.StorageDestinationConfiguration{
-										Path: to.Ptr("/tmp/event2"),
-									},
-								},
-							},
-							TypeRef: to.Ptr("event2Ref"),
-						},
-					},
-				},
-			},
 			Streams: []*armdeviceregistry.NamespaceStream{
 				{
 					Name:                to.Ptr("stream1"),
@@ -225,13 +187,13 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceAssetsClientCreateOrReplaceResponse{
-	// 	NamespaceAsset: &armdeviceregistry.NamespaceAsset{
+	// 	NamespaceAsset: armdeviceregistry.NamespaceAsset{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/assets/my-asset-1"),
 	// 		Name: to.Ptr("my-asset-1"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/assets"),
@@ -342,44 +304,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 					},
 	// 				},
 	// 			},
-	// 			EventGroups: []*armdeviceregistry.NamespaceEventGroup{
-	// 				{
-	// 					Name: to.Ptr("default"),
-	// 					Events: []*armdeviceregistry.NamespaceEvent{
-	// 						{
-	// 							Name: to.Ptr("event1"),
-	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-	// 							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-	// 							Destinations: []armdeviceregistry.EventDestinationClassification{
-	// 								&armdeviceregistry.EventMqttDestination{
-	// 									Target: to.Ptr(armdeviceregistry.EventDestinationTargetMqtt),
-	// 									Configuration: &armdeviceregistry.MqttDestinationConfiguration{
-	// 										Topic: to.Ptr("/contoso/testEvent1"),
-	// 										Retain: to.Ptr(armdeviceregistry.TopicRetainTypeKeep),
-	// 										Qos: to.Ptr(armdeviceregistry.MqttDestinationQosQos0),
-	// 										TTL: to.Ptr[int64](7200),
-	// 									},
-	// 								},
-	// 							},
-	// 							TypeRef: to.Ptr("event1Ref"),
-	// 						},
-	// 						{
-	// 							Name: to.Ptr("event2"),
-	// 							DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt7"),
-	// 							EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-	// 							Destinations: []armdeviceregistry.EventDestinationClassification{
-	// 								&armdeviceregistry.EventStorageDestination{
-	// 									Target: to.Ptr(armdeviceregistry.EventDestinationTargetStorage),
-	// 									Configuration: &armdeviceregistry.StorageDestinationConfiguration{
-	// 										Path: to.Ptr("/tmp/event2"),
-	// 									},
-	// 								},
-	// 							},
-	// 							TypeRef: to.Ptr("event2Ref"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
 	// 			Streams: []*armdeviceregistry.NamespaceStream{
 	// 				{
 	// 					Name: to.Ptr("stream1"),
@@ -479,33 +403,6 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// 						},
 	// 					},
 	// 				},
-	// 				EventGroups: []*armdeviceregistry.NamespaceAssetStatusEventGroup{
-	// 					{
-	// 						Name: to.Ptr("default"),
-	// 						Events: []*armdeviceregistry.NamespaceAssetStatusEvent{
-	// 							{
-	// 								Name: to.Ptr("event1"),
-	// 								MessageSchemaReference: &armdeviceregistry.NamespaceMessageSchemaReference{
-	// 									SchemaRegistryNamespace: to.Ptr("liagdwhnvlhcptvmufws"),
-	// 									SchemaName: to.Ptr("lytgdlsvivtcrtuvje"),
-	// 									SchemaVersion: to.Ptr("1"),
-	// 								},
-	// 								Error: &armdeviceregistry.StatusError{
-	// 									Code: to.Ptr("400"),
-	// 									Message: to.Ptr("Error"),
-	// 									Details: []*armdeviceregistry.ErrorDetails{
-	// 										{
-	// 											Code: to.Ptr("400.123.456.789"),
-	// 											Message: to.Ptr("Validation error"),
-	// 											Info: to.Ptr("Property is not valid."),
-	// 											CorrelationID: to.Ptr("xqoettlcdlxchoscv"),
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
 	// 				Streams: []*armdeviceregistry.NamespaceAssetStatusStream{
 	// 					{
 	// 						Name: to.Ptr("stream1"),
@@ -592,7 +489,7 @@ func ExampleNamespaceAssetsClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_NamespaceAsset.json
+// Generated from example definition: 2026-03-01-preview/Delete_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -609,11 +506,11 @@ func ExampleNamespaceAssetsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_NamespaceAsset.json
+// Generated from example definition: 2026-03-01-preview/Get_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -632,7 +529,7 @@ func ExampleNamespaceAssetsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceAssetsClientGetResponse{
-	// 	NamespaceAsset: &armdeviceregistry.NamespaceAsset{
+	// 	NamespaceAsset: armdeviceregistry.NamespaceAsset{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/assets/my-asset-1"),
 	// 		Name: to.Ptr("my-asset-1"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/assets"),
@@ -842,6 +739,33 @@ func ExampleNamespaceAssetsClient_Get() {
 	// 						},
 	// 					},
 	// 				},
+	// 				EventGroups: []*armdeviceregistry.NamespaceAssetStatusEventGroup{
+	// 					{
+	// 						Name: to.Ptr("eventGroup1"),
+	// 						Events: []*armdeviceregistry.NamespaceAssetStatusEvent{
+	// 							{
+	// 								Name: to.Ptr("event1"),
+	// 								MessageSchemaReference: &armdeviceregistry.NamespaceMessageSchemaReference{
+	// 									SchemaRegistryNamespace: to.Ptr("liagdwhnvlhcptvmufws"),
+	// 									SchemaName: to.Ptr("lytgdlsvivtcrtuvje"),
+	// 									SchemaVersion: to.Ptr("1"),
+	// 								},
+	// 								Error: &armdeviceregistry.StatusError{
+	// 									Code: to.Ptr("400"),
+	// 									Message: to.Ptr("Error"),
+	// 									Details: []*armdeviceregistry.ErrorDetails{
+	// 										{
+	// 											Code: to.Ptr("400.123.456.789"),
+	// 											Message: to.Ptr("Validation error"),
+	// 											Info: to.Ptr("Property is not valid."),
+	// 											CorrelationID: to.Ptr("xqoettlcdlxchoscv"),
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
 	// 				Streams: []*armdeviceregistry.NamespaceAssetStatusStream{
 	// 					{
 	// 						Name: to.Ptr("stream1"),
@@ -928,7 +852,7 @@ func ExampleNamespaceAssetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_NamespaceAssets_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_NamespaceAssets_ByResourceGroup.json
 func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1020,23 +944,6 @@ func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					EventGroups: []*armdeviceregistry.NamespaceEventGroup{
-		// 						{
-		// 							Name: to.Ptr("default"),
-		// 							Events: []*armdeviceregistry.NamespaceEvent{
-		// 								{
-		// 									Name: to.Ptr("event1"),
-		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt3"),
-		// 									EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":1,\"queueSize\":8}"),
-		// 								},
-		// 								{
-		// 									Name: to.Ptr("event2"),
-		// 									DataSource: to.Ptr("nsu=http://microsoft.com/Opc/OpcPlc/;s=FastUInt4"),
-		// 									EventConfiguration: to.Ptr("{\"publishingInterval\":7,\"samplingInterval\":8,\"queueSize\":4}"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
 		// 					Streams: []*armdeviceregistry.NamespaceStream{
 		// 						{
 		// 							Name: to.Ptr("stream1"),
@@ -1106,7 +1013,7 @@ func ExampleNamespaceAssetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Update_NamespaceAsset.json
+// Generated from example definition: 2026-03-01-preview/Update_NamespaceAsset.json
 func ExampleNamespaceAssetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1129,13 +1036,13 @@ func ExampleNamespaceAssetsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceAssetsClientUpdateResponse{
-	// 	NamespaceAsset: &armdeviceregistry.NamespaceAsset{
+	// 	NamespaceAsset: armdeviceregistry.NamespaceAsset{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/assets/my-asset-1"),
 	// 		Name: to.Ptr("my-asset-1"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/assets"),

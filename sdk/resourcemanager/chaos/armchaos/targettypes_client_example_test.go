@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/TargetTypes_Get.json
+// Generated from example definition: 2026-05-01-preview/TargetTypes_Get.json
 func ExampleTargetTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleTargetTypesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.TargetTypesClientGetResponse{
-	// 	TargetType: &armchaos.TargetType{
+	// 	TargetType: armchaos.TargetType{
 	// 		Name: to.Ptr("Microsoft-Agent"),
 	// 		Type: to.Ptr("Microsoft.Chaos/locations/targetTypes"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes/Microsoft-Agent"),
@@ -47,7 +47,7 @@ func ExampleTargetTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/TargetTypes_List.json
+// Generated from example definition: 2026-05-01-preview/TargetTypes_List.json
 func ExampleTargetTypesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleTargetTypesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.TargetTypesClientListResponse{
 		// 	TargetTypeListResult: armchaos.TargetTypeListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes?continuationToken=&api-version=2024-11-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/targetTypes?continuationToken=&api-version=2026-05-01-preview"),
 		// 		Value: []*armchaos.TargetType{
 		// 			{
 		// 				Name: to.Ptr("Microsoft-Agent"),

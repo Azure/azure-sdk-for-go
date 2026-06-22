@@ -1,5 +1,16 @@
 # Release History
 
+## 2.1.0-beta.3 (2026-05-20)
+### Features Added
+
+- New enum type `ServiceExtensionPublicNetworkAccess` with values `ServiceExtensionPublicNetworkAccessDisabled`, `ServiceExtensionPublicNetworkAccessEnabled`
+- New struct `ServiceExtension`
+- New field `NextLink` in struct `ExtensionValueListResult`
+- New field `SystemData` in struct `NetworkSecurityPerimeterConfiguration`
+- New field `NextLink` in struct `OperationListResult`
+- New field `ServiceExtensions` in struct `PrivateLinkScopeProperties`
+
+
 ## 2.1.0-beta.2 (2025-06-10)
 ### Breaking Changes
 

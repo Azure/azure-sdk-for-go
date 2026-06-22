@@ -42,7 +42,7 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 		panic("isFatalFn is nil, errors would panic")
 	}
 
-	var ro exported.RetryOptions = o
+	var ro = o
 	setDefaults(&ro)
 
 	var err error

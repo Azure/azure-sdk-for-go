@@ -5,11 +5,12 @@ package sas
 
 import (
 	"errors"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"net"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 )
 
 // TimeFormat represents the format of a SAS start or expiry time. Use it when formatting/parsing a time.Time.
@@ -108,34 +109,38 @@ func (ipr *IPRange) String() string {
 // This type defines the components used by all Azure Storage resources (Containers, Blobs, Files, & Queues).
 type QueryParameters struct {
 	// All members are immutable or values so copies of this struct are goroutine-safe.
-	version              string    `param:"sv"`
-	services             string    `param:"ss"`
-	resourceTypes        string    `param:"srt"`
-	protocol             Protocol  `param:"spr"`
-	startTime            time.Time `param:"st"`
-	expiryTime           time.Time `param:"se"`
-	snapshotTime         time.Time `param:"snapshot"`
-	ipRange              IPRange   `param:"sip"`
-	identifier           string    `param:"si"`
-	resource             string    `param:"sr"`
-	permissions          string    `param:"sp"`
-	signature            string    `param:"sig"`
-	cacheControl         string    `param:"rscc"`
-	contentDisposition   string    `param:"rscd"`
-	contentEncoding      string    `param:"rsce"`
-	contentLanguage      string    `param:"rscl"`
-	contentType          string    `param:"rsct"`
-	signedOID            string    `param:"skoid"`
-	signedTID            string    `param:"sktid"`
-	signedStart          time.Time `param:"skt"`
-	signedService        string    `param:"sks"`
-	signedExpiry         time.Time `param:"ske"`
-	signedVersion        string    `param:"skv"`
-	signedDirectoryDepth string    `param:"sdd"`
-	authorizedObjectID   string    `param:"saoid"`
-	unauthorizedObjectID string    `param:"suoid"`
-	correlationID        string    `param:"scid"`
-	encryptionScope      string    `param:"ses"`
+	version                      string    `param:"sv"`
+	services                     string    `param:"ss"`
+	resourceTypes                string    `param:"srt"`
+	protocol                     Protocol  `param:"spr"`
+	startTime                    time.Time `param:"st"`
+	expiryTime                   time.Time `param:"se"`
+	snapshotTime                 time.Time `param:"snapshot"`
+	ipRange                      IPRange   `param:"sip"`
+	identifier                   string    `param:"si"`
+	resource                     string    `param:"sr"`
+	permissions                  string    `param:"sp"`
+	signature                    string    `param:"sig"`
+	cacheControl                 string    `param:"rscc"`
+	contentDisposition           string    `param:"rscd"`
+	contentEncoding              string    `param:"rsce"`
+	contentLanguage              string    `param:"rscl"`
+	contentType                  string    `param:"rsct"`
+	signedOID                    string    `param:"skoid"`
+	signedTID                    string    `param:"sktid"`
+	signedStart                  time.Time `param:"skt"`
+	signedService                string    `param:"sks"`
+	signedExpiry                 time.Time `param:"ske"`
+	signedVersion                string    `param:"skv"`
+	signedDirectoryDepth         string    `param:"sdd"`
+	authorizedObjectID           string    `param:"saoid"`
+	unauthorizedObjectID         string    `param:"suoid"`
+	correlationID                string    `param:"scid"`
+	encryptionScope              string    `param:"ses"`
+	signedDelegatedUserObjectID  string    `param:"sduoid"`
+	signedDelegatedUserTenantID  string    `param:"skdutid"`
+	signedRequestHeaders         string    `param:"srh"`
+	signedRequestQueryParameters string    `param:"srq"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
@@ -281,6 +286,26 @@ func (p *QueryParameters) SignedEncryptionScope() string {
 	return p.encryptionScope
 }
 
+// SignedDelegatedUserObjectID returns SignedDelegatedUserObjectID
+func (p *QueryParameters) SignedDelegatedUserObjectID() string {
+	return p.signedDelegatedUserObjectID
+}
+
+// SignedDelegatedUserTenantID returns SignedDelegatedUserTenantID
+func (p *QueryParameters) SignedDelegatedUserTenantID() string {
+	return p.signedDelegatedUserTenantID
+}
+
+// SignedRequestHeaders returns signedRequestHeaders.
+func (p *QueryParameters) SignedRequestHeaders() string {
+	return p.signedRequestHeaders
+}
+
+// SignedRequestQueryParameters returns signedRequestQueryParameters.
+func (p *QueryParameters) SignedRequestQueryParameters() string {
+	return p.signedRequestQueryParameters
+}
+
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.
 func (p *QueryParameters) Encode() string {
 	v := url.Values{}
@@ -356,6 +381,18 @@ func (p *QueryParameters) Encode() string {
 	if p.encryptionScope != "" {
 		v.Add("ses", p.encryptionScope)
 	}
+	if p.signedDelegatedUserObjectID != "" {
+		v.Add("sduoid", p.signedDelegatedUserObjectID)
+	}
+	if p.signedDelegatedUserTenantID != "" {
+		v.Add("skdutid", p.signedDelegatedUserTenantID)
+	}
+	if p.signedRequestHeaders != "" {
+		v.Add("srh", p.signedRequestHeaders)
+	}
+	if p.signedRequestQueryParameters != "" {
+		v.Add("srq", p.signedRequestQueryParameters)
+	}
 
 	return v.Encode()
 }
@@ -427,6 +464,14 @@ func NewQueryParameters(values url.Values) QueryParameters {
 			p.correlationID = val
 		case "ses":
 			p.encryptionScope = val
+		case "sduoid":
+			p.signedDelegatedUserObjectID = val
+		case "skdutid":
+			p.signedDelegatedUserTenantID = val
+		case "srh":
+			p.signedRequestHeaders = val
+		case "srq":
+			p.signedRequestQueryParameters = val
 		default:
 			continue // query param didn't get recognized
 		}
@@ -504,6 +549,14 @@ func newQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.correlationID = val
 		case "ses":
 			p.encryptionScope = val
+		case "sduoid":
+			p.signedDelegatedUserObjectID = val
+		case "skdutid":
+			p.signedDelegatedUserTenantID = val
+		case "srh":
+			p.signedRequestHeaders = val
+		case "srq":
+			p.signedRequestQueryParameters = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}

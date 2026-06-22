@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // FabricServer is a fake server for instances of the armrecoveryservicesdatareplication.FabricClient type.
@@ -82,9 +83,7 @@ func (f *FabricServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (f *FabricServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -110,10 +109,7 @@ func (f *FabricServerTransport) dispatchToMethodFake(req *http.Request, method s
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -161,7 +157,7 @@ func (f *FabricServerTransport) dispatchBeginCreate(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		f.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -205,7 +201,7 @@ func (f *FabricServerTransport) dispatchBeginDelete(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		f.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -239,7 +235,7 @@ func (f *FabricServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FabricModel, req)
@@ -266,11 +262,7 @@ func (f *FabricServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 		if err != nil {
 			return nil, err
 		}
-		continuationTokenUnescaped, err := url.QueryUnescape(qp.Get("continuationToken"))
-		if err != nil {
-			return nil, err
-		}
-		continuationTokenParam := getOptional(continuationTokenUnescaped)
+		continuationTokenParam := getOptional(qp.Get("continuationToken"))
 		var options *armrecoveryservicesdatareplication.FabricClientListOptions
 		if continuationTokenParam != nil {
 			options = &armrecoveryservicesdatareplication.FabricClientListOptions{
@@ -288,7 +280,7 @@ func (f *FabricServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -321,7 +313,7 @@ func (f *FabricServerTransport) dispatchNewListBySubscriptionPager(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		f.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -368,7 +360,7 @@ func (f *FabricServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		f.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

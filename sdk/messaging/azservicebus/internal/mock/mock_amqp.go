@@ -438,6 +438,20 @@ func (mr *MockAMQPSenderMockRecorder) MaxMessageSize() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxMessageSize", reflect.TypeOf((*MockAMQPSender)(nil).MaxMessageSize))
 }
 
+// Properties mocks base method.
+func (m *MockAMQPSender) Properties() map[string]any {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Properties")
+	ret0, _ := ret[0].(map[string]any)
+	return ret0
+}
+
+// Properties indicates an expected call of Properties.
+func (mr *MockAMQPSenderMockRecorder) Properties() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Properties", reflect.TypeOf((*MockAMQPSender)(nil).Properties))
+}
+
 // Send mocks base method.
 func (m *MockAMQPSender) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 	m.ctrl.T.Helper()
@@ -515,6 +529,20 @@ func (m *MockAMQPSenderCloser) MaxMessageSize() uint64 {
 func (mr *MockAMQPSenderCloserMockRecorder) MaxMessageSize() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MaxMessageSize", reflect.TypeOf((*MockAMQPSenderCloser)(nil).MaxMessageSize))
+}
+
+// Properties mocks base method.
+func (m *MockAMQPSenderCloser) Properties() map[string]any {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Properties")
+	ret0, _ := ret[0].(map[string]any)
+	return ret0
+}
+
+// Properties indicates an expected call of Properties.
+func (mr *MockAMQPSenderCloserMockRecorder) Properties() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Properties", reflect.TypeOf((*MockAMQPSenderCloser)(nil).Properties))
 }
 
 // Send mocks base method.

@@ -30,7 +30,7 @@ func ExampleHostsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.HostsClientGetResponse{
-	// 	Host: &armavs.Host{
+	// 	Host: armavs.Host{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/clusters/cluster1/Hosts/esx03-r52.1111111111111111111.westcentralus.prod.azure.com"),
 	// 		Name: to.Ptr("esx03-r52.1111111111111111111.westcentralus.prod.azure.com"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/clusters/hosts"),

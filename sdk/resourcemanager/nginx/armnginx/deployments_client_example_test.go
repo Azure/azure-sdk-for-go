@@ -7,11 +7,11 @@ package armnginx_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Create.json
+// Generated from example definition: 2025-11-01/Deployments_Create.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,13 +28,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.DeploymentsClientCreateOrUpdateResponse{
-	// 	Deployment: &armnginx.Deployment{
+	// 	Deployment: armnginx.Deployment{
 	// 		Name: to.Ptr("myDeployment"),
 	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
@@ -100,7 +100,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Delete.json
+// Generated from example definition: 2025-11-01/Deployments_Delete.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,11 +117,11 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Get.json
+// Generated from example definition: 2025-11-01/Deployments_Get.json
 func ExampleDeploymentsClient_Get_deploymentsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.DeploymentsClientGetResponse{
-	// 	Deployment: &armnginx.Deployment{
+	// 	Deployment: armnginx.Deployment{
 	// 		Name: to.Ptr("myDeployment"),
 	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
@@ -205,7 +205,7 @@ func ExampleDeploymentsClient_Get_deploymentsGet() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Get_AutoScale.json
+// Generated from example definition: 2025-11-01/Deployments_Get_AutoScale.json
 func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.DeploymentsClientGetResponse{
-	// 	Deployment: &armnginx.Deployment{
+	// 	Deployment: armnginx.Deployment{
 	// 		Name: to.Ptr("myDeployment"),
 	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
@@ -275,7 +275,7 @@ func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_List.json
+// Generated from example definition: 2025-11-01/Deployments_List.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_ListByResourceGroup.json
+// Generated from example definition: 2025-11-01/Deployments_ListByResourceGroup.json
 func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +457,7 @@ func ExampleDeploymentsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_Update.json
+// Generated from example definition: 2025-11-01/Deployments_Update.json
 func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -474,13 +474,13 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.DeploymentsClientUpdateResponse{
-	// 	Deployment: &armnginx.Deployment{
+	// 	Deployment: armnginx.Deployment{
 	// 		Name: to.Ptr("myDeployment"),
 	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
@@ -549,7 +549,7 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01-preview/Deployments_UpdateSubnet.json
+// Generated from example definition: 2025-11-01/Deployments_UpdateSubnet.json
 func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -566,13 +566,13 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateSubnet() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnginx.DeploymentsClientUpdateResponse{
-	// 	Deployment: &armnginx.Deployment{
+	// 	Deployment: armnginx.Deployment{
 	// 		Name: to.Ptr("myDeployment"),
 	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),

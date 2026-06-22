@@ -556,12 +556,12 @@ func (t *TypeSpecCommonGenerator) AfterGenerate(generateParam *GenerateParam) (*
 	}
 
 	if !generateParam.SkipUpdateDep {
-		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.24.0 in %s\n", t.ModulePath)
-		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.24.0"); err != nil {
+		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azcore toolchain@none go@1.25.0 in %s\n", t.ModulePath)
+		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azcore", "toolchain@none", "go@1.25.0"); err != nil {
 			return nil, err
 		}
-		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.24.0 in %s\n", t.ModulePath)
-		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.24.0"); err != nil {
+		log.Printf("##[command]Executing go get github.com/Azure/azure-sdk-for-go/sdk/azidentity toolchain@none go@1.25.0 in %s\n", t.ModulePath)
+		if err := ExecuteGo(t.ModulePath, "get", "github.com/Azure/azure-sdk-for-go/sdk/azidentity", "toolchain@none", "go@1.25.0"); err != nil {
 			return nil, err
 		}
 	}
@@ -635,6 +635,22 @@ func (t *TypeSpecOnBoardGenerator) AfterGenerate(generateParam *GenerateParam) (
 	}, nil
 }
 
+func (t *TypeSpecUpdateGenerator) PreGenerate(generateParam *GenerateParam) error {
+	// When migrating from Swagger to TypeSpec for the first time, the generated comment
+	// header in the previous swagger-generated files differs from the one written by the
+	// TypeSpec emitter, so the emitter's cleanup logic won't remove them. Detect this
+	// migration case via the presence of autorest.md and clean up the previously
+	// generated files before regenerating.
+	autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
+	if _, err := os.Stat(autorestMdPath); err == nil {
+		log.Printf("Detected migration from Swagger to TypeSpec, remove all the previously generated files ...")
+		if err := CleanSDKGeneratedFiles(t.PackagePath); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 	err := t.TypeSpecCommonGenerator.Generate(generateParam)
 	if err != nil {
@@ -648,6 +664,14 @@ func (t *TypeSpecUpdateGenerator) Generate(generateParam *GenerateParam) error {
 		override = new(bool)
 		*override = true
 	case utils.SDKReleaseTypeStable:
+		isPreview, err := version.IsCurrentPreviewVersion(t.PackagePath, *t.SDKRepo, nil)
+		if err != nil {
+			return err
+		}
+		if isPreview {
+			return fmt.Errorf("SDK release type is stable, but the generated code contains preview API versions. " +
+				"Please specify a stable API version or use beta release type")
+		}
 		override = new(bool)
 		*override = false
 	}
@@ -694,7 +718,7 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 
 	generationType := "TypeSpecUpdate"
 
-	// remove autorest.md and build.go
+	// remove autorest.md and build.go (build.go only for ARM packages)
 	autorestMdPath := filepath.Join(t.PackagePath, "autorest.md")
 	if _, err := os.Stat(autorestMdPath); !os.IsNotExist(err) {
 		log.Println("Remove autorest.md...")
@@ -703,11 +727,15 @@ func (t *TypeSpecUpdateGenerator) AfterGenerate(generateParam *GenerateParam) (*
 		}
 		generationType = "MigrateToTypeSpec"
 	}
-	buildGoPath := filepath.Join(t.PackagePath, "build.go")
-	if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
-		log.Println("Remove build.go...")
-		if err = os.Remove(buildGoPath); err != nil {
-			return nil, err
+	// only delete build.go for ARM packages when migrating from Swagger to TypeSpec,
+	// data plane packages may use build.go for customization
+	if generationType == "MigrateToTypeSpec" && strings.HasPrefix(t.PackageRelativePath, "sdk/resourcemanager/") {
+		buildGoPath := filepath.Join(t.PackagePath, "build.go")
+		if _, err := os.Stat(buildGoPath); !os.IsNotExist(err) {
+			log.Println("Remove build.go...")
+			if err = os.Remove(buildGoPath); err != nil {
+				return nil, err
+			}
 		}
 	}
 

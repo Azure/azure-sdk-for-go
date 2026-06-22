@@ -19,6 +19,8 @@ import (
 
 // DbVersionsClient contains the methods for the DbVersions group.
 // Don't use this type directly, use NewDbVersionsClient() instead.
+//
+// Generated from API version 2025-09-01
 type DbVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDbVersionsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Get a DbVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - dbversionsname - DbVersion name
 //   - options - DbVersionsClientGetOptions contains the optional parameters for the DbVersionsClient.Get method.
@@ -89,8 +89,8 @@ func (client *DbVersionsClient) getCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +105,6 @@ func (client *DbVersionsClient) getHandleResponse(resp *http.Response) (DbVersio
 }
 
 // NewListByLocationPager - List DbVersion resources by SubscriptionLocationResource
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - DbVersionsClientListByLocationOptions contains the optional parameters for the DbVersionsClient.NewListByLocationPager
 //     method.
@@ -149,7 +147,7 @@ func (client *DbVersionsClient) listByLocationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", version20250901)
 	if options != nil && options.DbSystemID != nil {
 		reqQP.Set("dbSystemId", *options.DbSystemID)
 	}
@@ -168,7 +166,7 @@ func (client *DbVersionsClient) listByLocationCreateRequest(ctx context.Context,
 	if options != nil && options.StorageManagement != nil {
 		reqQP.Set("storageManagement", string(*options.StorageManagement))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

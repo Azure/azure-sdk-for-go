@@ -18,6 +18,19 @@ func PossibleFilePermissionFormatValues() []FilePermissionFormat {
 	return generated.PossibleFilePermissionFormatValues()
 }
 
+// PropertySemantics has two values - New and Restore, SMB only
+type PropertySemantics = generated.FilePropertySemantics
+
+const (
+	FilePropertySemanticsNew     PropertySemantics = "New"
+	FilePropertySemanticsRestore PropertySemantics = "Restore"
+)
+
+// PossiblePropertySemanticsValues returns the possible values for the PropertySemantics const type.
+func PossiblePropertySemanticsValues() []PropertySemantics {
+	return generated.PossibleFilePropertySemanticsValues()
+}
+
 // ListFilesIncludeType defines values for ListFilesIncludeType
 type ListFilesIncludeType = generated.ListFilesIncludeType
 

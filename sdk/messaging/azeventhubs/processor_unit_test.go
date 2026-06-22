@@ -573,6 +573,31 @@ func TestUnit_Processor_addPartitionClient(t *testing.T) {
 		require.Nil(t, pc)
 	})
 
+	t.Run("getStartPositionFailure", func(t *testing.T) {
+		// A bad checkpoint (no Offset or SequenceNumber) causes getStartPosition()
+		// to fail. Without the fix from #24983, the stale consumer entry in the
+		// sync.Map would block future consumer creation for the partition.
+		processor.nextClients = make(chan *ProcessorPartitionClient, 1)
+		consumers := &sync.Map{}
+
+		badCheckpoints := map[string]Checkpoint{
+			"0": {PartitionID: "0"},
+		}
+
+		err = processor.addPartitionClient(context.Background(), Ownership{PartitionID: "0"}, func() (map[string]Checkpoint, error) {
+			return badCheckpoints, nil
+		}, func(ctx context.Context, partitionID string, startPosition StartPosition) (*PartitionClient, error) {
+			t.Fatal("openPartitionClient should not be called when getStartPosition fails")
+			return nil, nil
+		}, consumers)
+
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "invalid checkpoint")
+
+		pc, _ := consumers.Load("0")
+		require.Nil(t, pc, "consumer entry should be cleaned up so future attempts aren't blocked")
+	})
+
 	t.Run("GeoDR failure", func(t *testing.T) {
 		processor.nextClients = make(chan *ProcessorPartitionClient, 1)
 

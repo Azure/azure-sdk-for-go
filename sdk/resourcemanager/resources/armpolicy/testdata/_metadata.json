@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Authorization": "2026-01-01-preview"
+  },
+  "emitterVersion": "0.14.2"
+}

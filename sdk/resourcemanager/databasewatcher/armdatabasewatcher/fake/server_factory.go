@@ -70,28 +70,28 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AlertRuleResourcesClient":
-		initServer(s, &s.trAlertRuleResourcesServer, func() *AlertRuleResourcesServerTransport {
+		initServer(&s.trMu, &s.trAlertRuleResourcesServer, func() *AlertRuleResourcesServerTransport {
 			return NewAlertRuleResourcesServerTransport(&s.srv.AlertRuleResourcesServer)
 		})
 		resp, err = s.trAlertRuleResourcesServer.Do(req)
 	case "HealthValidationsClient":
-		initServer(s, &s.trHealthValidationsServer, func() *HealthValidationsServerTransport {
+		initServer(&s.trMu, &s.trHealthValidationsServer, func() *HealthValidationsServerTransport {
 			return NewHealthValidationsServerTransport(&s.srv.HealthValidationsServer)
 		})
 		resp, err = s.trHealthValidationsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "SharedPrivateLinkResourcesClient":
-		initServer(s, &s.trSharedPrivateLinkResourcesServer, func() *SharedPrivateLinkResourcesServerTransport {
+		initServer(&s.trMu, &s.trSharedPrivateLinkResourcesServer, func() *SharedPrivateLinkResourcesServerTransport {
 			return NewSharedPrivateLinkResourcesServerTransport(&s.srv.SharedPrivateLinkResourcesServer)
 		})
 		resp, err = s.trSharedPrivateLinkResourcesServer.Do(req)
 	case "TargetsClient":
-		initServer(s, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
+		initServer(&s.trMu, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
 		resp, err = s.trTargetsServer.Do(req)
 	case "WatchersClient":
-		initServer(s, &s.trWatchersServer, func() *WatchersServerTransport { return NewWatchersServerTransport(&s.srv.WatchersServer) })
+		initServer(&s.trMu, &s.trWatchersServer, func() *WatchersServerTransport { return NewWatchersServerTransport(&s.srv.WatchersServer) })
 		resp, err = s.trWatchersServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -102,12 +102,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

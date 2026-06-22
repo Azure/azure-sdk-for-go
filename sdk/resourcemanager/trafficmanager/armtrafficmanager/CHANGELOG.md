@@ -1,5 +1,20 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-05-08)
+### Breaking Changes
+
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New enum type `HeatMapType` with values `HeatMapTypeDefault`
+- New enum type `RecordType` with values `RecordTypeA`, `RecordTypeAAAA`, `RecordTypeCNAME`
+- New field `NextLink` in struct `ProfileListResult`
+- New field `RecordType` in struct `ProfileProperties`
+
+
 ## 1.3.0 (2023-11-24)
 ### Features Added
 

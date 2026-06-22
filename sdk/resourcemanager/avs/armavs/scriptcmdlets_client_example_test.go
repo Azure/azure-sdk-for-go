@@ -30,7 +30,7 @@ func ExampleScriptCmdletsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.ScriptCmdletsClientGetResponse{
-	// 	ScriptCmdlet: &armavs.ScriptCmdlet{
+	// 	ScriptCmdlet: armavs.ScriptCmdlet{
 	// 		Name: to.Ptr("New-ExternalSsoDomain"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/{privateCloudName}/scriptPackages/package@1.0.2/scriptCmdlets/New-ExternalSsoDomain"),
 	// 		Properties: &armavs.ScriptCmdletProperties{

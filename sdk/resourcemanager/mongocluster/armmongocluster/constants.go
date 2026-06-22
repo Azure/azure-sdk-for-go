@@ -4,6 +4,10 @@
 
 package armmongocluster
 
+const (
+	version20260201Preview string = "2026-02-01-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -215,6 +219,24 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// NetworkBypassMode - The network bypass mode for the Mongo cluster.
+type NetworkBypassMode string
+
+const (
+	// NetworkBypassModeAzureCosmosDB - Allows Azure Cosmos DB service to bypass network restrictions.
+	NetworkBypassModeAzureCosmosDB NetworkBypassMode = "AzureCosmosDB"
+	// NetworkBypassModeNone - No network bypass is enabled.
+	NetworkBypassModeNone NetworkBypassMode = "None"
+)
+
+// PossibleNetworkBypassModeValues returns the possible values for the NetworkBypassMode const type.
+func PossibleNetworkBypassModeValues() []NetworkBypassMode {
+	return []NetworkBypassMode{
+		NetworkBypassModeAzureCosmosDB,
+		NetworkBypassModeNone,
 	}
 }
 

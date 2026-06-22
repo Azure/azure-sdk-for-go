@@ -1,5 +1,26 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-05-20)
+### Breaking Changes
+
+- Function `*ClientFactory.NewOuContainerOperationsClient` has been removed
+- Function `NewOuContainerOperationsClient` has been removed
+- Function `*OuContainerOperationsClient.NewListPager` has been removed
+- Struct `Resource` has been removed
+
+### Features Added
+
+- New enum type `ChannelBinding` with values `ChannelBindingDisabled`, `ChannelBindingEnabled`
+- New enum type `LdapSigning` with values `LdapSigningDisabled`, `LdapSigningEnabled`
+- New enum type `SyncOnPremSamAccountName` with values `SyncOnPremSamAccountNameDisabled`, `SyncOnPremSamAccountNameEnabled`
+- New enum type `SyncScope` with values `SyncScopeAll`, `SyncScopeCloudOnly`
+- New function `*Client.Unsuspend(ctx context.Context, resourceGroupName string, domainServiceName string, options *ClientUnsuspendOptions) (ClientUnsuspendResponse, error)`
+- New struct `UnsuspendDomainServiceResponse`
+- New field `ChannelBinding`, `LdapSigning`, `SyncOnPremSamAccountName` in struct `DomainSecuritySettings`
+- New field `SyncApplicationID`, `SyncScope` in struct `DomainServiceProperties`
+- New field `SelfUnsuspendCounter` in struct `ReplicaSet`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Provider HUB module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3
 ```
 
 ## Authorization

@@ -45,7 +45,7 @@ func TestAMQPLinksRetriesUnit(t *testing.T) {
 	}
 
 	for _, testData := range tests {
-		var testName string = ""
+		var testName = ""
 
 		if testData.Err != nil {
 			testName = testData.Err.Error()

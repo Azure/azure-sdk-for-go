@@ -6,15 +6,17 @@ package armservicebus_test
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -58,6 +60,30 @@ func (testsuite *NamespaceTestSuite) TearDownSuite() {
 
 func TestNamespaceTestSuite(t *testing.T) {
 	suite.Run(t, new(NamespaceTestSuite))
+}
+
+// SetupTest waits for the namespace to leave any transitioning state before each test
+// method runs. Sub-resource PUTs return 429 NamespaceInTransition while the namespace
+// status is still "Updating" from a prior operation.
+func (testsuite *NamespaceTestSuite) SetupTest() {
+	if testsuite.namespaceId == "" {
+		return
+	}
+	testsuite.waitForNamespaceActive()
+}
+
+func (testsuite *NamespaceTestSuite) waitForNamespaceActive() {
+	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	for i := 0; i < 60; i++ {
+		resp, err := namespacesClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.namespaceName, nil)
+		if err == nil && resp.Properties != nil && resp.Properties.Status != nil &&
+			!strings.EqualFold(*resp.Properties.Status, "Updating") &&
+			!strings.EqualFold(*resp.Properties.Status, "Creating") {
+			return
+		}
+		recording.Sleep(15 * time.Second)
+	}
 }
 
 func (testsuite *NamespaceTestSuite) Prepare() {
@@ -115,7 +141,7 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -129,6 +155,7 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 							"name": "default",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.0.0/24",
+								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Enabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -138,6 +165,7 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 							"name": "networkruleset",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.1.0/24",
+								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -211,10 +239,10 @@ func (testsuite *NamespaceTestSuite) Prepare() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -406,6 +434,7 @@ func (testsuite *NamespaceTestSuite) TestPrivateEndpointConnections() {
 
 func (testsuite *NamespaceTestSuite) Cleanup() {
 	var err error
+	testsuite.waitForNamespaceActive()
 	// From step Namespaces_Delete
 	fmt.Println("Call operation: Namespaces_Delete")
 	namespacesClient, err := armservicebus.NewNamespacesClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)

@@ -58,17 +58,17 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AppServiceCertificateOrdersClient":
-		initServer(s, &s.trAppServiceCertificateOrdersServer, func() *AppServiceCertificateOrdersServerTransport {
+		initServer(&s.trMu, &s.trAppServiceCertificateOrdersServer, func() *AppServiceCertificateOrdersServerTransport {
 			return NewAppServiceCertificateOrdersServerTransport(&s.srv.AppServiceCertificateOrdersServer)
 		})
 		resp, err = s.trAppServiceCertificateOrdersServer.Do(req)
 	case "CertificateOrdersDiagnosticsClient":
-		initServer(s, &s.trCertificateOrdersDiagnosticsServer, func() *CertificateOrdersDiagnosticsServerTransport {
+		initServer(&s.trMu, &s.trCertificateOrdersDiagnosticsServer, func() *CertificateOrdersDiagnosticsServerTransport {
 			return NewCertificateOrdersDiagnosticsServerTransport(&s.srv.CertificateOrdersDiagnosticsServer)
 		})
 		resp, err = s.trCertificateOrdersDiagnosticsServer.Do(req)
 	case "ProviderClient":
-		initServer(s, &s.trProviderServer, func() *ProviderServerTransport { return NewProviderServerTransport(&s.srv.ProviderServer) })
+		initServer(&s.trMu, &s.trProviderServer, func() *ProviderServerTransport { return NewProviderServerTransport(&s.srv.ProviderServer) })
 		resp, err = s.trProviderServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -79,12 +79,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -4,6 +4,58 @@
 
 package armcontainerregistry
 
+// ArchiveVersionsClientCreateResponse contains the response from method ArchiveVersionsClient.BeginCreate.
+type ArchiveVersionsClientCreateResponse struct {
+	// An object that represents an export pipeline for a container registry.
+	ArchiveVersion
+}
+
+// ArchiveVersionsClientDeleteResponse contains the response from method ArchiveVersionsClient.BeginDelete.
+type ArchiveVersionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArchiveVersionsClientGetResponse contains the response from method ArchiveVersionsClient.Get.
+type ArchiveVersionsClientGetResponse struct {
+	// An object that represents an export pipeline for a container registry.
+	ArchiveVersion
+}
+
+// ArchiveVersionsClientListResponse contains the response from method ArchiveVersionsClient.NewListPager.
+type ArchiveVersionsClientListResponse struct {
+	// The result of a request to list archive versions for a container registry.
+	ArchiveVersionListResult
+}
+
+// ArchivesClientCreateResponse contains the response from method ArchivesClient.BeginCreate.
+type ArchivesClientCreateResponse struct {
+	// An object that represents a archive for a container registry.
+	Archive
+}
+
+// ArchivesClientDeleteResponse contains the response from method ArchivesClient.BeginDelete.
+type ArchivesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArchivesClientGetResponse contains the response from method ArchivesClient.Get.
+type ArchivesClientGetResponse struct {
+	// An object that represents a archive for a container registry.
+	Archive
+}
+
+// ArchivesClientListResponse contains the response from method ArchivesClient.NewListPager.
+type ArchivesClientListResponse struct {
+	// The result of a request to list archives for a container registry.
+	ArchiveListResult
+}
+
+// ArchivesClientUpdateResponse contains the response from method ArchivesClient.Update.
+type ArchivesClientUpdateResponse struct {
+	// An object that represents a archive for a container registry.
+	Archive
+}
+
 // CacheRulesClientCreateResponse contains the response from method CacheRulesClient.BeginCreate.
 type CacheRulesClientCreateResponse struct {
 	// An object that represents a cache rule for a container registry.
@@ -61,6 +113,12 @@ type ConnectedRegistriesClientListResponse struct {
 	ConnectedRegistryListResult
 }
 
+// ConnectedRegistriesClientResyncResponse contains the response from method ConnectedRegistriesClient.Resync.
+type ConnectedRegistriesClientResyncResponse struct {
+	// An object that represents a connected registry for a container registry.
+	ConnectedRegistry
+}
+
 // ConnectedRegistriesClientUpdateResponse contains the response from method ConnectedRegistriesClient.BeginUpdate.
 type ConnectedRegistriesClientUpdateResponse struct {
 	// An object that represents a connected registry for a container registry.
@@ -96,10 +154,79 @@ type CredentialSetsClientUpdateResponse struct {
 	CredentialSet
 }
 
+// ExportPipelinesClientCreateResponse contains the response from method ExportPipelinesClient.BeginCreate.
+type ExportPipelinesClientCreateResponse struct {
+	// An object that represents an export pipeline for a container registry.
+	ExportPipeline
+}
+
+// ExportPipelinesClientDeleteResponse contains the response from method ExportPipelinesClient.BeginDelete.
+type ExportPipelinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ExportPipelinesClientGetResponse contains the response from method ExportPipelinesClient.Get.
+type ExportPipelinesClientGetResponse struct {
+	// An object that represents an export pipeline for a container registry.
+	ExportPipeline
+}
+
+// ExportPipelinesClientListResponse contains the response from method ExportPipelinesClient.NewListPager.
+type ExportPipelinesClientListResponse struct {
+	// The result of a request to list export pipelines for a container registry.
+	ExportPipelineListResult
+}
+
+// ImportPipelinesClientCreateResponse contains the response from method ImportPipelinesClient.BeginCreate.
+type ImportPipelinesClientCreateResponse struct {
+	// An object that represents an import pipeline for a container registry.
+	ImportPipeline
+}
+
+// ImportPipelinesClientDeleteResponse contains the response from method ImportPipelinesClient.BeginDelete.
+type ImportPipelinesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ImportPipelinesClientGetResponse contains the response from method ImportPipelinesClient.Get.
+type ImportPipelinesClientGetResponse struct {
+	// An object that represents an import pipeline for a container registry.
+	ImportPipeline
+}
+
+// ImportPipelinesClientListResponse contains the response from method ImportPipelinesClient.NewListPager.
+type ImportPipelinesClientListResponse struct {
+	// The result of a request to list import pipelines for a container registry.
+	ImportPipelineListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// The result of a request to list container registry operations.
 	OperationListResult
+}
+
+// PipelineRunsClientCreateResponse contains the response from method PipelineRunsClient.BeginCreate.
+type PipelineRunsClientCreateResponse struct {
+	// An object that represents a pipeline run for a container registry.
+	PipelineRun
+}
+
+// PipelineRunsClientDeleteResponse contains the response from method PipelineRunsClient.BeginDelete.
+type PipelineRunsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PipelineRunsClientGetResponse contains the response from method PipelineRunsClient.Get.
+type PipelineRunsClientGetResponse struct {
+	// An object that represents a pipeline run for a container registry.
+	PipelineRun
+}
+
+// PipelineRunsClientListResponse contains the response from method PipelineRunsClient.NewListPager.
+type PipelineRunsClientListResponse struct {
+	// The result of a request to list pipeline runs for a container registry.
+	PipelineRunListResult
 }
 
 // PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.

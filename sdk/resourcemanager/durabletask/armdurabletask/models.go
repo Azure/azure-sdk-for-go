@@ -57,6 +57,94 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// OptionalPropertiesUpdateableProperties - The template for adding optional properties.
+type OptionalPropertiesUpdateableProperties struct {
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+}
+
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The resource identifier of the private endpoint
+	ID *string
+}
+
+// PrivateEndpointConnection - A private endpoint connection resource
+type PrivateEndpointConnection struct {
+	// The private endpoint connection properties
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - The response of a PrivateEndpointConnection list operation.
+type PrivateEndpointConnectionListResult struct {
+	// REQUIRED; The PrivateEndpointConnection items on this page
+	Value []*PrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateEndpointConnectionUpdate - PATCH model for private endpoint connections
+type PrivateEndpointConnectionUpdate struct {
+	// The private endpoint connection properties
+	Properties *OptionalPropertiesUpdateableProperties
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
 // RetentionPolicy - A retention policy resource belonging to the scheduler
 type RetentionPolicy struct {
 	// The resource-specific properties for this resource.
@@ -135,6 +223,33 @@ type SchedulerListResult struct {
 	NextLink *string
 }
 
+// SchedulerPrivateLinkResource - A private link resource.
+type SchedulerPrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SchedulerPrivateLinkResourceListResult - The response of a SchedulerPrivateLinkResource list operation.
+type SchedulerPrivateLinkResourceListResult struct {
+	// REQUIRED; The SchedulerPrivateLinkResource items on this page
+	Value []*SchedulerPrivateLinkResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // SchedulerProperties - Details of the Scheduler
 type SchedulerProperties struct {
 	// REQUIRED; IP allow list for durable task scheduler. Values can be IPv4, IPv6 or CIDR
@@ -143,8 +258,14 @@ type SchedulerProperties struct {
 	// REQUIRED; SKU of the durable task scheduler
 	SKU *SchedulerSKU
 
+	// Allow or disallow public network access to durable task scheduler
+	PublicNetworkAccess *PublicNetworkAccess
+
 	// READ-ONLY; URL of the durable task scheduler
 	Endpoint *string
+
+	// READ-ONLY; The private endpoints exposed by this resource
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The status of the last operation
 	ProvisioningState *ProvisioningState
@@ -154,6 +275,9 @@ type SchedulerProperties struct {
 type SchedulerPropertiesUpdate struct {
 	// IP allow list for durable task scheduler. Values can be IPv4, IPv6 or CIDR
 	IPAllowlist []*string
+
+	// Allow or disallow public network access to durable task scheduler
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// SKU of the durable task scheduler
 	SKU *SchedulerSKUUpdate

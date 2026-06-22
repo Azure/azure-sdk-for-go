@@ -304,6 +304,10 @@ func (tester *rpcTester) LinkName() string {
 	return "hello"
 }
 
+func (tester *rpcTester) Properties() map[string]any {
+	return nil
+}
+
 // receiver functions
 
 func (tester *rpcTester) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {

@@ -86,3 +86,19 @@ func (c *ClientFactory) NewStoragePoolsClient() *StoragePoolsClient {
 		internal:       c.internal,
 	}
 }
+
+// NewVolumeGroupsClient creates a new instance of VolumeGroupsClient.
+func (c *ClientFactory) NewVolumeGroupsClient() *VolumeGroupsClient {
+	return &VolumeGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewVolumesClient creates a new instance of VolumesClient.
+func (c *ClientFactory) NewVolumesClient() *VolumesClient {
+	return &VolumesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}

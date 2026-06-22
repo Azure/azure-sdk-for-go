@@ -1,0 +1,4 @@
+directory: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/PostgresqlHsc
+commit: 4028b9648fe461789124f3c92f8deda0403dda94
+repo: Azure/azure-rest-api-specs
+additionalDirectories: 

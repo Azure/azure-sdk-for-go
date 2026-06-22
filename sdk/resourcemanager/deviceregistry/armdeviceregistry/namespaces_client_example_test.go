@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Namespace_With_Endpoints.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Namespace_With_Endpoints.json
 func ExampleNamespacesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,19 +28,16 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 		Properties: &armdeviceregistry.NamespaceProperties{
 			Messaging: &armdeviceregistry.Messaging{
 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-					"eventGridEndpoint": {
-						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-						Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
+					"iothubEndpoint": {
+						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+						Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
 					},
-					"anotherEventGridEndpoint": {
-						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-						Address:      to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events"),
+					"anotherIothubEndpoint": {
+						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+						Address:      to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
 					},
 				},
 			},
-		},
-		Identity: &armdeviceregistry.SystemAssignedServiceIdentity{
-			Type: to.Ptr(armdeviceregistry.SystemAssignedServiceIdentityTypeSystemAssigned),
 		},
 	}, nil)
 	if err != nil {
@@ -48,13 +45,13 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespacesClientCreateOrReplaceResponse{
-	// 	Namespace: &armdeviceregistry.Namespace{
+	// 	Namespace: armdeviceregistry.Namespace{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk0925-n01"),
 	// 		Name: to.Ptr("adr-namespace-gbk0925-n01"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),
@@ -76,13 +73,13 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 			Messaging: &armdeviceregistry.Messaging{
 	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-	// 					"eventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net"),
 	// 					},
-	// 					"anotherEventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"anotherIothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
 	// 					},
 	// 				},
 	// 			},
@@ -91,7 +88,7 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_Namespace.json
+// Generated from example definition: 2026-03-01-preview/Delete_Namespace.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,11 +105,11 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_Namespace.json
+// Generated from example definition: 2026-03-01-preview/Get_Namespace.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +128,7 @@ func ExampleNamespacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespacesClientGetResponse{
-	// 	Namespace: &armdeviceregistry.Namespace{
+	// 	Namespace: armdeviceregistry.Namespace{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk1001-n01"),
 	// 		Name: to.Ptr("adr-namespace-gbk1001-n01"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),
@@ -153,13 +150,13 @@ func ExampleNamespacesClient_Get() {
 	// 			UUID: to.Ptr("cfbef47a-6971-4c90-a7a9-99be82dea167"),
 	// 			Messaging: &armdeviceregistry.Messaging{
 	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-	// 					"myPrimaryEventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						Address: to.Ptr("https://myeventgridtopic1.westeurope-1.eventgrid.azure.net"),
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
+	// 					"myPrimaryIothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net"),
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
 	// 					},
-	// 					"mySecondaryEventGridEndpoint": &armdeviceregistry.MessagingEndpoint{
-	// 						Address: to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net"),
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
+	// 					"mySecondaryIothubEndpoint": &armdeviceregistry.MessagingEndpoint{
+	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
 	// 					},
 	// 				},
 	// 			},
@@ -169,7 +166,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_Namespace_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_Namespace_ByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,7 +232,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/List_Namespace_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_Namespace_BySubscription.json
 func ExampleNamespacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +299,7 @@ func ExampleNamespacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Migrate_Assets_Namespace.json
+// Generated from example definition: 2026-03-01-preview/Migrate_Assets_Namespace.json
 func ExampleNamespacesClient_BeginMigrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +323,7 @@ func ExampleNamespacesClient_BeginMigrate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -335,7 +332,7 @@ func ExampleNamespacesClient_BeginMigrate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Update_Namespace_Endpoints.json
+// Generated from example definition: 2026-03-01-preview/Update_Namespace_Endpoints.json
 func ExampleNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,9 +347,9 @@ func ExampleNamespacesClient_BeginUpdate() {
 		Properties: &armdeviceregistry.NamespaceUpdateProperties{
 			Messaging: &armdeviceregistry.Messaging{
 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-					"eventGridEndpoint": {
-						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-						Address:      to.Ptr("https://myeventgridtopic.westeurope-1.eventgrid.azure.net/api/events"),
+					"iothubEndpoint": {
+						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+						Address:      to.Ptr("https://iothub-for-dps.azure-devices.net"),
 					},
 				},
 			},
@@ -363,13 +360,13 @@ func ExampleNamespacesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespacesClientUpdateResponse{
-	// 	Namespace: &armdeviceregistry.Namespace{
+	// 	Namespace: armdeviceregistry.Namespace{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk0925-n01"),
 	// 		Name: to.Ptr("adr-namespace-gbk0925-n01"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),
@@ -392,17 +389,17 @@ func ExampleNamespacesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
 	// 			Messaging: &armdeviceregistry.Messaging{
 	// 				Endpoints: map[string]*armdeviceregistry.MessagingEndpoint{
-	// 					"eventGridEndpoint1": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic1.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint1": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps.azure-devices.net/api/events"),
 	// 					},
-	// 					"eventGridEndpoint2": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic2.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint2": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-2.azure-devices.net"),
 	// 					},
-	// 					"eventGridEndpoint3": &armdeviceregistry.MessagingEndpoint{
-	// 						EndpointType: to.Ptr("Microsoft.Devices/IoTHubs"),
-	// 						Address: to.Ptr("https://myeventgridtopic3.westeurope-1.eventgrid.azure.net/api/events"),
+	// 					"iothubEndpoint3": &armdeviceregistry.MessagingEndpoint{
+	// 						EndpointType: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 						Address: to.Ptr("https://iothub-for-dps-3.azure-devices.net"),
 	// 					},
 	// 				},
 	// 			},

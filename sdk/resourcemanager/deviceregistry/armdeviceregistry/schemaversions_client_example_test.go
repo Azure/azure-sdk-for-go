@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_SchemaVersion.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_SchemaVersion.json
 func ExampleSchemaVersionsClient_CreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleSchemaVersionsClient_CreateOrReplace() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaVersionsClientCreateOrReplaceResponse{
-	// 	SchemaVersion: &armdeviceregistry.SchemaVersion{
+	// 	SchemaVersion: armdeviceregistry.SchemaVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry/schemas/my-schema/schemaVersions/1"),
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries/schemas/schemaVersions"),
@@ -59,7 +59,7 @@ func ExampleSchemaVersionsClient_CreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_SchemaVersion.json
+// Generated from example definition: 2026-03-01-preview/Delete_SchemaVersion.json
 func ExampleSchemaVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,11 +76,11 @@ func ExampleSchemaVersionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_SchemaVersion.json
+// Generated from example definition: 2026-03-01-preview/Get_SchemaVersion.json
 func ExampleSchemaVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleSchemaVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemaVersionsClientGetResponse{
-	// 	SchemaVersion: &armdeviceregistry.SchemaVersion{
+	// 	SchemaVersion: armdeviceregistry.SchemaVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry/schemas/my-schema/schemaVersions/1"),
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries/schemas/schemaVersions"),
@@ -122,7 +122,7 @@ func ExampleSchemaVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_SchemaVersions_BySchema.json
+// Generated from example definition: 2026-03-01-preview/List_SchemaVersions_BySchema.json
 func ExampleSchemaVersionsClient_NewListBySchemaPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

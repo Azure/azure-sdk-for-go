@@ -4,265 +4,94 @@
 package azcosmos
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/stretchr/testify/require"
 )
 
-func TestChangeFeedOptionsToHeaders(t *testing.T) {
+// TestChangeFeedOptions_BuildRequestHeaders_Defaults verifies the minimum
+// header set produced for an empty options value: only the change-feed AIM
+// header is set; no MaxItemCount, no IfModifiedSince, no PartitionKey.
+func TestChangeFeedOptions_BuildRequestHeaders_Defaults(t *testing.T) {
 	options := &ChangeFeedOptions{}
-	headers := options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-
-	h := *headers
-	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
-		t.Errorf("Expected default AIM to be %v, got %v", cosmosHeaderValuesChangeFeed, h[cosmosHeaderChangeFeed])
-	}
-
-	options.MaxItemCount = 10
-	headers = options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-	h = *headers
-	if h[cosmosHeaderMaxItemCount] != "10" {
-		t.Errorf("Expected MaxItemCount to be 10, got %v", h[cosmosHeaderMaxItemCount])
-	}
-
-	continuation := "test-etag"
-	options.Continuation = &continuation
-	headers = options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-	h = *headers
-	if h[headerIfNoneMatch] != "test-etag" {
-		t.Errorf("Expected IfNoneMatch to be \"test-etag\", got %v", h[headerIfNoneMatch])
-	}
-
-	now := time.Now().UTC()
-	options.StartFrom = &now
-	headers = options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-	h = *headers
-	expectedIfModifiedSince := now.Format(time.RFC1123)
-	if h[cosmosHeaderIfModifiedSince] != expectedIfModifiedSince {
-		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])
-	}
-
-	pk := NewPartitionKeyString("pkvalue")
-	options.PartitionKey = &pk
-	headers = options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-	h = *headers
-	pkJSON, _ := pk.toJsonString()
-	if h[cosmosHeaderPartitionKey] != string(pkJSON) {
-		t.Errorf("Expected PartitionKey to be %v, got %v", string(pkJSON), h[cosmosHeaderPartitionKey])
-	}
-
-	feedRange := &FeedRange{
-		MinInclusive: "00",
-		MaxExclusive: "FF",
-	}
-	options.FeedRange = feedRange
-
-	partitionKeyRanges := []partitionKeyRange{
-		{
-			ID:           "0",
-			MinInclusive: "00",
-			MaxExclusive: "FF",
-		},
-	}
-
-	headers = options.toHeaders(partitionKeyRanges)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-	h = *headers
-	if h[headerXmsDocumentDbPartitionKeyRangeId] != "0" {
-		t.Errorf("Expected partition key range ID to be 0, got %v", h[headerXmsDocumentDbPartitionKeyRangeId])
-	}
-
-	partitionKeyRangesNoMatch := []partitionKeyRange{
-		{
-			ID:           "1",
-			MinInclusive: "AA",
-			MaxExclusive: "BB",
-		},
-	}
-
-	headers = options.toHeaders(partitionKeyRangesNoMatch)
-	if headers != nil {
-		t.Errorf("Expected nil headers when no matching partition key range found")
-	}
-
-	options.FeedRange = nil
-
-	emptyContinuation := ""
-	options.Continuation = &emptyContinuation
-	headers = options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-	h = *headers
-	if _, exists := h[headerIfNoneMatch]; exists {
-		t.Errorf("Expected no IfNoneMatch header for empty continuation")
-	}
-
-	options.Continuation = nil
-	headers = options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-	h = *headers
-	if _, exists := h[headerIfNoneMatch]; exists {
-		t.Errorf("Expected no IfNoneMatch header for nil continuation")
-	}
+	headers, err := options.buildRequestHeaders(changeFeedRange{}, "")
+	require.NoError(t, err)
+	require.Equal(t, cosmosHeaderValuesChangeFeed, headers[cosmosHeaderChangeFeed])
+	_, hasMaxItem := headers[cosmosHeaderMaxItemCount]
+	require.False(t, hasMaxItem, "MaxItemCount header must be omitted when 0")
+	_, hasIfModified := headers[cosmosHeaderIfModifiedSince]
+	require.False(t, hasIfModified, "IfModifiedSince must be omitted when StartFrom is nil")
+	_, hasPK := headers[cosmosHeaderPartitionKey]
+	require.False(t, hasPK, "PartitionKey header must be omitted when PartitionKey is nil")
+	_, hasIfNoneMatch := headers[headerIfNoneMatch]
+	require.False(t, hasIfNoneMatch, "IfNoneMatch must be omitted when head ContinuationToken is nil")
+	_, hasPKRangeID := headers[headerXmsDocumentDbPartitionKeyRangeId]
+	require.False(t, hasPKRangeID, "PK-range-id header must be omitted when resolvedPKRangeID is empty")
 }
 
-func TestChangeFeedOptionsToHeadersWithAllFields(t *testing.T) {
+// TestChangeFeedOptions_BuildRequestHeaders_AllFields verifies that every
+// supported field of ChangeFeedOptions plus the resolved head/PK-range ID
+// is materialized into the expected header.
+func TestChangeFeedOptions_BuildRequestHeaders_AllFields(t *testing.T) {
 	now := time.Now().UTC()
 	pk := NewPartitionKeyString("testPK")
-	continuation := "test-continuation"
-	feedRange := &FeedRange{
-		MinInclusive: "10",
-		MaxExclusive: "20",
-	}
+	etag := azcore.ETag("\"etag-12345\"")
 
 	options := &ChangeFeedOptions{
 		MaxItemCount: 25,
 		StartFrom:    &now,
 		PartitionKey: &pk,
-		FeedRange:    feedRange,
-		Continuation: &continuation,
+	}
+	head := changeFeedRange{
+		MinInclusive:      "10",
+		MaxExclusive:      "20",
+		ContinuationToken: &etag,
 	}
 
-	partitionKeyRanges := []partitionKeyRange{
-		{
-			ID:           "range1",
-			MinInclusive: "10",
-			MaxExclusive: "20",
-		},
-	}
+	headers, err := options.buildRequestHeaders(head, "range1")
+	require.NoError(t, err)
 
-	headers := options.toHeaders(partitionKeyRanges)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-
-	h := *headers
-	if h[cosmosHeaderMaxItemCount] != "25" {
-		t.Errorf("Expected MaxItemCount to be 25, got %v", h[cosmosHeaderMaxItemCount])
-	}
-
-	expectedIfModifiedSince := now.Format(time.RFC1123)
-	if h[cosmosHeaderIfModifiedSince] != expectedIfModifiedSince {
-		t.Errorf("Expected IfModifiedSince to be %v, got %v", expectedIfModifiedSince, h[cosmosHeaderIfModifiedSince])
-	}
+	require.Equal(t, cosmosHeaderValuesChangeFeed, headers[cosmosHeaderChangeFeed])
+	require.Equal(t, "25", headers[cosmosHeaderMaxItemCount])
+	require.Equal(t, now.Format(time.RFC1123), headers[cosmosHeaderIfModifiedSince])
 
 	pkJSON, _ := pk.toJsonString()
-	if h[cosmosHeaderPartitionKey] != string(pkJSON) {
-		t.Errorf("Expected PartitionKey to be %v, got %v", string(pkJSON), h[cosmosHeaderPartitionKey])
-	}
+	require.Equal(t, string(pkJSON), headers[cosmosHeaderPartitionKey])
 
-	if h[headerXmsDocumentDbPartitionKeyRangeId] != "range1" {
-		t.Errorf("Expected partition key range ID to be range1, got %v", h[headerXmsDocumentDbPartitionKeyRangeId])
-	}
-
-	if h[headerIfNoneMatch] != continuation {
-		t.Errorf("Expected IfNoneMatch to be %v, got %v", continuation, h[headerIfNoneMatch])
-	}
-
-	if h[cosmosHeaderChangeFeed] != cosmosHeaderValuesChangeFeed {
-		t.Errorf("Expected AIM to be %v, got %v", cosmosHeaderValuesChangeFeed, h[cosmosHeaderChangeFeed])
-	}
+	require.Equal(t, "range1", headers[headerXmsDocumentDbPartitionKeyRangeId])
+	require.Equal(t, string(etag), headers[headerIfNoneMatch])
 }
 
-func TestChangeFeedOptionsCompositeContinuationToken(t *testing.T) {
-	etag := azcore.ETag("test-etag")
-	cfRange := newChangeFeedRange("00", "FF", &ChangeFeedRangeOptions{
-		ContinuationToken: &etag,
-	})
-	compositeToken := newCompositeContinuationToken("test-resource-id", []changeFeedRange{cfRange})
-
-	tokenBytes, err := json.Marshal(compositeToken)
-	if err != nil {
-		t.Fatalf("Failed to marshal composite token: %v", err)
-	}
-	tokenString := string(tokenBytes)
-
-	options := &ChangeFeedOptions{
-		Continuation: &tokenString,
+// TestChangeFeedOptions_BuildRequestHeaders_EmptyContinuationOmitsIfNoneMatch
+// verifies that an explicitly-set-but-empty continuation token does not
+// produce an IfNoneMatch header (would otherwise cause the server to treat
+// every read as conditional against the empty string).
+func TestChangeFeedOptions_BuildRequestHeaders_EmptyContinuationOmitsIfNoneMatch(t *testing.T) {
+	emptyETag := azcore.ETag("")
+	head := changeFeedRange{
+		MinInclusive:      "00",
+		MaxExclusive:      "FF",
+		ContinuationToken: &emptyETag,
 	}
 
-	headers := options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-
-	h := *headers
-
-	if h[headerIfNoneMatch] != string(etag) {
-		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
-	}
-
-	if options.FeedRange == nil {
-		t.Fatal("Expected FeedRange to be set from composite token")
-	}
-	if options.FeedRange.MinInclusive != "00" {
-		t.Errorf("Expected FeedRange.MinInclusive to be 00, got %v", options.FeedRange.MinInclusive)
-	}
-	if options.FeedRange.MaxExclusive != "FF" {
-		t.Errorf("Expected FeedRange.MaxExclusive to be FF, got %v", options.FeedRange.MaxExclusive)
-	}
+	headers, err := (&ChangeFeedOptions{}).buildRequestHeaders(head, "0")
+	require.NoError(t, err)
+	_, exists := headers[headerIfNoneMatch]
+	require.False(t, exists, "empty ContinuationToken must NOT produce an IfNoneMatch header")
 }
 
-func TestChangeFeedOptionsCompositeContinuationTokenWithExistingFeedRange(t *testing.T) {
-	etag := azcore.ETag("test-etag")
-	cfRange := newChangeFeedRange("00", "FF", &ChangeFeedRangeOptions{
-		ContinuationToken: &etag,
-	})
-	compositeToken := newCompositeContinuationToken("test-resource-id", []changeFeedRange{cfRange})
+// TestChangeFeedOptions_BuildRequestHeaders_PartitionKeySerializationError
+// exercises the new error-returning contract: a PartitionKey whose
+// serialization fails is surfaced to the caller rather than silently
+// dropped (the original-bug pattern from toHeaders).
+func TestChangeFeedOptions_BuildRequestHeaders_PartitionKeySerializationError(t *testing.T) {
+	// json.Marshal cannot serialize a channel; toJsonString surfaces that error.
+	pk := NewPartitionKey()
+	pk.values = []interface{}{make(chan int)}
+	options := &ChangeFeedOptions{PartitionKey: &pk}
 
-	tokenBytes, err := json.Marshal(compositeToken)
-	if err != nil {
-		t.Fatalf("Failed to marshal composite token: %v", err)
-	}
-	tokenString := string(tokenBytes)
-
-	explicitFeedRange := &FeedRange{
-		MinInclusive: "AA",
-		MaxExclusive: "BB",
-	}
-
-	options := &ChangeFeedOptions{
-		Continuation: &tokenString,
-		FeedRange:    explicitFeedRange,
-	}
-
-	headers := options.toHeaders(nil)
-	if headers == nil {
-		t.Fatal("toHeaders should return non-nil")
-	}
-
-	h := *headers
-
-	if h[headerIfNoneMatch] != string(etag) {
-		t.Errorf("Expected IfNoneMatch to be %v, got %v", string(etag), h[headerIfNoneMatch])
-	}
-
-	if options.FeedRange.MinInclusive != "AA" {
-		t.Errorf("Expected FeedRange.MinInclusive to remain AA, got %v", options.FeedRange.MinInclusive)
-	}
-	if options.FeedRange.MaxExclusive != "BB" {
-		t.Errorf("Expected FeedRange.MaxExclusive to remain BB, got %v", options.FeedRange.MaxExclusive)
-	}
+	_, err := options.buildRequestHeaders(changeFeedRange{}, "")
+	require.Error(t, err, "buildRequestHeaders must surface PartitionKey serialization errors")
 }

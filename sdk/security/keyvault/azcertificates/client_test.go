@@ -733,5 +733,59 @@ func TestSubjectAlternativeNames(t *testing.T) {
 	require.NotNil(t, getResp.Policy)
 	require.NotNil(t, getResp.Policy.X509CertificateProperties)
 	require.NotNil(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
-	testSerde(t, getResp.Policy.X509CertificateProperties.SubjectAlternativeNames)
+
+	sans := getResp.Policy.X509CertificateProperties.SubjectAlternativeNames
+	require.Equal(t, 2, len(sans.DNSNames))
+	require.Equal(t, to.Ptr("localhost"), sans.DNSNames[0])
+	require.Equal(t, to.Ptr("example.com"), sans.DNSNames[1])
+	require.Equal(t, 1, len(sans.Emails))
+	require.Equal(t, to.Ptr("admin@example.com"), sans.Emails[0])
+	require.Equal(t, 2, len(sans.IPAddresses))
+	require.Equal(t, to.Ptr("192.168.1.1"), sans.IPAddresses[0])
+	require.Equal(t, to.Ptr("2001:0db8::1"), sans.IPAddresses[1])
+	require.Equal(t, 2, len(sans.URIs))
+	require.Equal(t, to.Ptr("https://example.com"), sans.URIs[0])
+	require.Equal(t, to.Ptr("https://test.com/path"), sans.URIs[1])
+	require.Equal(t, 1, len(sans.UserPrincipalNames))
+	require.Equal(t, to.Ptr("user@domain.com"), sans.UserPrincipalNames[0])
+
+	testSerde(t, sans)
+}
+
+// TestPlatformManaged exercises the experimental PlatformManaged property on
+// CertificatePolicy. The feature is intended for internal Azure Key Vault usage
+// only and requires a valid OneCert-managed domain; this test issues a
+// PublicTLSServerAuth certificate for a OneCert-owned host and verifies the
+// PlatformManaged configuration round-trips through Create + Get.
+func TestPlatformManaged(t *testing.T) {
+	client := startTest(t)
+
+	certName := getName(t, "platformmanaged")
+	dnsName := "sanitized.example.invalid"
+	policy := azcertificates.CertificatePolicy{
+		PlatformManaged: azcertificates.NewPlatformManaged("PublicTLSServerAuth", map[string]any{
+			"sans": map[string]any{
+				"dns_names": []string{dnsName},
+			},
+		}),
+	}
+	createParams := azcertificates.CreateCertificateParameters{CertificatePolicy: &policy}
+	testSerde(t, &createParams)
+
+	_, err := client.CreateCertificate(ctx, certName, createParams, nil)
+	require.NoError(t, err)
+	defer cleanUpCert(t, client, certName)
+
+	policyResp, err := client.GetCertificatePolicy(ctx, certName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, policyResp.PlatformManaged)
+	require.NotNil(t, policyResp.PlatformManaged.CertificateUsage)
+	require.Equal(t, "PublicTLSServerAuth", *policyResp.PlatformManaged.CertificateUsage)
+	require.NotNil(t, policyResp.PlatformManaged.Metadata)
+
+	sansRaw, ok := policyResp.PlatformManaged.Metadata["sans"].(map[string]any)
+	require.True(t, ok, "expected metadata.sans to round-trip as object, got %T", policyResp.PlatformManaged.Metadata["sans"])
+	dnsNamesRaw, ok := sansRaw["dns_names"].([]any)
+	require.True(t, ok, "expected metadata.sans.dns_names to round-trip as array, got %T", sansRaw["dns_names"])
+	require.Contains(t, dnsNamesRaw, dnsName)
 }

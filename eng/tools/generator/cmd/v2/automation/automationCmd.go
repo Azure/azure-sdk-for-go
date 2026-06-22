@@ -99,9 +99,7 @@ func (ctx *automationContext) generate(input *pipeline.GenerateInput) (*pipeline
 				return nil, fmt.Errorf("SDK release type is stable, but API version: %s is preview", input.ApiVersion)
 			}
 		}
-		if (input.ApiVersion != "" && input.SdkReleaseType == "") || (input.ApiVersion == "" && input.SdkReleaseType != "") {
-			return nil, fmt.Errorf("both APIVersion and SDKReleaseType parameters are required for self-serve SDK generation")
-		}
+
 	} else {
 		// ignore sdk release type and api version for spec-pull-request and batch mode
 		input.SdkReleaseType = ""

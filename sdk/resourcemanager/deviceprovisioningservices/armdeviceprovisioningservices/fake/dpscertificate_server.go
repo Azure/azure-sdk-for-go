@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 	"time"
 )
@@ -72,9 +73,7 @@ func (d *DpsCertificateServerTransport) Do(req *http.Request) (*http.Response, e
 }
 
 func (d *DpsCertificateServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -100,10 +99,7 @@ func (d *DpsCertificateServerTransport) dispatchToMethodFake(req *http.Request, 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -152,7 +148,7 @@ func (d *DpsCertificateServerTransport) dispatchCreateOrUpdate(req *http.Request
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CertificateResponse, req)
@@ -185,61 +181,29 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	certificateName1Unescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
+	certificateName1Param := getOptional(qp.Get("certificate.name"))
+	certificateRawBytesParam, err := base64.StdEncoding.DecodeString(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
 	}
-	certificateName1Param := getOptional(certificateName1Unescaped)
-	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
+	certificateIsVerifiedParam, err := parseOptional(qp.Get("certificate.isVerified"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	certificateRawBytesParam, err := base64.StdEncoding.DecodeString(certificateRawBytesUnescaped)
+	certificatePurposeParam := getOptional(armdeviceprovisioningservices.CertificatePurpose(qp.Get("certificate.purpose")))
+	certificateCreatedParam, err := parseOptional(qp.Get("certificate.created"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	certificateIsVerifiedUnescaped, err := url.QueryUnescape(qp.Get("certificate.isVerified"))
+	certificateLastUpdatedParam, err := parseOptional(qp.Get("certificate.lastUpdated"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	certificateIsVerifiedParam, err := parseOptional(certificateIsVerifiedUnescaped, strconv.ParseBool)
+	certificateHasPrivateKeyParam, err := parseOptional(qp.Get("certificate.hasPrivateKey"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	certificatePurposeUnescaped, err := url.QueryUnescape(qp.Get("certificate.purpose"))
-	if err != nil {
-		return nil, err
-	}
-	certificatePurposeParam := getOptional(armdeviceprovisioningservices.CertificatePurpose(certificatePurposeUnescaped))
-	certificateCreatedUnescaped, err := url.QueryUnescape(qp.Get("certificate.created"))
-	if err != nil {
-		return nil, err
-	}
-	certificateCreatedParam, err := parseOptional(certificateCreatedUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-	if err != nil {
-		return nil, err
-	}
-	certificateLastUpdatedUnescaped, err := url.QueryUnescape(qp.Get("certificate.lastUpdated"))
-	if err != nil {
-		return nil, err
-	}
-	certificateLastUpdatedParam, err := parseOptional(certificateLastUpdatedUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-	if err != nil {
-		return nil, err
-	}
-	certificateHasPrivateKeyUnescaped, err := url.QueryUnescape(qp.Get("certificate.hasPrivateKey"))
-	if err != nil {
-		return nil, err
-	}
-	certificateHasPrivateKeyParam, err := parseOptional(certificateHasPrivateKeyUnescaped, strconv.ParseBool)
-	if err != nil {
-		return nil, err
-	}
-	certificateNonceUnescaped, err := url.QueryUnescape(qp.Get("certificate.nonce"))
-	if err != nil {
-		return nil, err
-	}
-	certificateNonceParam := getOptional(certificateNonceUnescaped)
+	certificateNonceParam := getOptional(qp.Get("certificate.nonce"))
 	var options *armdeviceprovisioningservices.DpsCertificateClientDeleteOptions
 	if certificateName1Param != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientDeleteOptions{
@@ -258,7 +222,7 @@ func (d *DpsCertificateServerTransport) dispatchDelete(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -291,61 +255,29 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 	if err != nil {
 		return nil, err
 	}
-	certificateName1Unescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
+	certificateName1Param := getOptional(qp.Get("certificate.name"))
+	certificateRawBytesParam, err := base64.StdEncoding.DecodeString(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
 	}
-	certificateName1Param := getOptional(certificateName1Unescaped)
-	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
+	certificateIsVerifiedParam, err := parseOptional(qp.Get("certificate.isVerified"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	certificateRawBytesParam, err := base64.StdEncoding.DecodeString(certificateRawBytesUnescaped)
+	certificatePurposeParam := getOptional(armdeviceprovisioningservices.CertificatePurpose(qp.Get("certificate.purpose")))
+	certificateCreatedParam, err := parseOptional(qp.Get("certificate.created"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	certificateIsVerifiedUnescaped, err := url.QueryUnescape(qp.Get("certificate.isVerified"))
+	certificateLastUpdatedParam, err := parseOptional(qp.Get("certificate.lastUpdated"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	certificateIsVerifiedParam, err := parseOptional(certificateIsVerifiedUnescaped, strconv.ParseBool)
+	certificateHasPrivateKeyParam, err := parseOptional(qp.Get("certificate.hasPrivateKey"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	certificatePurposeUnescaped, err := url.QueryUnescape(qp.Get("certificate.purpose"))
-	if err != nil {
-		return nil, err
-	}
-	certificatePurposeParam := getOptional(armdeviceprovisioningservices.CertificatePurpose(certificatePurposeUnescaped))
-	certificateCreatedUnescaped, err := url.QueryUnescape(qp.Get("certificate.created"))
-	if err != nil {
-		return nil, err
-	}
-	certificateCreatedParam, err := parseOptional(certificateCreatedUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-	if err != nil {
-		return nil, err
-	}
-	certificateLastUpdatedUnescaped, err := url.QueryUnescape(qp.Get("certificate.lastUpdated"))
-	if err != nil {
-		return nil, err
-	}
-	certificateLastUpdatedParam, err := parseOptional(certificateLastUpdatedUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-	if err != nil {
-		return nil, err
-	}
-	certificateHasPrivateKeyUnescaped, err := url.QueryUnescape(qp.Get("certificate.hasPrivateKey"))
-	if err != nil {
-		return nil, err
-	}
-	certificateHasPrivateKeyParam, err := parseOptional(certificateHasPrivateKeyUnescaped, strconv.ParseBool)
-	if err != nil {
-		return nil, err
-	}
-	certificateNonceUnescaped, err := url.QueryUnescape(qp.Get("certificate.nonce"))
-	if err != nil {
-		return nil, err
-	}
-	certificateNonceParam := getOptional(certificateNonceUnescaped)
+	certificateNonceParam := getOptional(qp.Get("certificate.nonce"))
 	var options *armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions
 	if certificateName1Param != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeOptions{
@@ -364,7 +296,7 @@ func (d *DpsCertificateServerTransport) dispatchGenerateVerificationCode(req *ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VerificationCodeResponse, req)
@@ -408,7 +340,7 @@ func (d *DpsCertificateServerTransport) dispatchGet(req *http.Request) (*http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CertificateResponse, req)
@@ -441,7 +373,7 @@ func (d *DpsCertificateServerTransport) dispatchList(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CertificateListDescription, req)
@@ -478,61 +410,29 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	certificateName1Unescaped, err := url.QueryUnescape(qp.Get("certificate.name"))
+	certificateName1Param := getOptional(qp.Get("certificate.name"))
+	certificateRawBytesParam, err := base64.StdEncoding.DecodeString(qp.Get("certificate.rawBytes"))
 	if err != nil {
 		return nil, err
 	}
-	certificateName1Param := getOptional(certificateName1Unescaped)
-	certificateRawBytesUnescaped, err := url.QueryUnescape(qp.Get("certificate.rawBytes"))
+	certificateIsVerifiedParam, err := parseOptional(qp.Get("certificate.isVerified"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	certificateRawBytesParam, err := base64.StdEncoding.DecodeString(certificateRawBytesUnescaped)
+	certificatePurposeParam := getOptional(armdeviceprovisioningservices.CertificatePurpose(qp.Get("certificate.purpose")))
+	certificateCreatedParam, err := parseOptional(qp.Get("certificate.created"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	certificateIsVerifiedUnescaped, err := url.QueryUnescape(qp.Get("certificate.isVerified"))
+	certificateLastUpdatedParam, err := parseOptional(qp.Get("certificate.lastUpdated"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 	if err != nil {
 		return nil, err
 	}
-	certificateIsVerifiedParam, err := parseOptional(certificateIsVerifiedUnescaped, strconv.ParseBool)
+	certificateHasPrivateKeyParam, err := parseOptional(qp.Get("certificate.hasPrivateKey"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	certificatePurposeUnescaped, err := url.QueryUnescape(qp.Get("certificate.purpose"))
-	if err != nil {
-		return nil, err
-	}
-	certificatePurposeParam := getOptional(armdeviceprovisioningservices.CertificatePurpose(certificatePurposeUnescaped))
-	certificateCreatedUnescaped, err := url.QueryUnescape(qp.Get("certificate.created"))
-	if err != nil {
-		return nil, err
-	}
-	certificateCreatedParam, err := parseOptional(certificateCreatedUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-	if err != nil {
-		return nil, err
-	}
-	certificateLastUpdatedUnescaped, err := url.QueryUnescape(qp.Get("certificate.lastUpdated"))
-	if err != nil {
-		return nil, err
-	}
-	certificateLastUpdatedParam, err := parseOptional(certificateLastUpdatedUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-	if err != nil {
-		return nil, err
-	}
-	certificateHasPrivateKeyUnescaped, err := url.QueryUnescape(qp.Get("certificate.hasPrivateKey"))
-	if err != nil {
-		return nil, err
-	}
-	certificateHasPrivateKeyParam, err := parseOptional(certificateHasPrivateKeyUnescaped, strconv.ParseBool)
-	if err != nil {
-		return nil, err
-	}
-	certificateNonceUnescaped, err := url.QueryUnescape(qp.Get("certificate.nonce"))
-	if err != nil {
-		return nil, err
-	}
-	certificateNonceParam := getOptional(certificateNonceUnescaped)
+	certificateNonceParam := getOptional(qp.Get("certificate.nonce"))
 	var options *armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions
 	if certificateName1Param != nil || certificateRawBytesParam != nil || certificateIsVerifiedParam != nil || certificatePurposeParam != nil || certificateCreatedParam != nil || certificateLastUpdatedParam != nil || certificateHasPrivateKeyParam != nil || certificateNonceParam != nil {
 		options = &armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateOptions{
@@ -551,7 +451,7 @@ func (d *DpsCertificateServerTransport) dispatchVerifyCertificate(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CertificateResponse, req)

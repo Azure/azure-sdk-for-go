@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_Schema.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_Schema.json
 func ExampleSchemasClient_CreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleSchemasClient_CreateOrReplace() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemasClientCreateOrReplaceResponse{
-	// 	Schema: &armdeviceregistry.Schema{
+	// 	Schema: armdeviceregistry.Schema{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry/schemas/my-schema"),
 	// 		Name: to.Ptr("my-schema"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries/schemas"),
@@ -68,7 +68,7 @@ func ExampleSchemasClient_CreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_Schema.json
+// Generated from example definition: 2026-03-01-preview/Delete_Schema.json
 func ExampleSchemasClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,11 +85,11 @@ func ExampleSchemasClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_Schema.json
+// Generated from example definition: 2026-03-01-preview/Get_Schema.json
 func ExampleSchemasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleSchemasClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.SchemasClientGetResponse{
-	// 	Schema: &armdeviceregistry.Schema{
+	// 	Schema: armdeviceregistry.Schema{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry/schemas/my-schema"),
 	// 		Name: to.Ptr("my-schema"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries/schemas"),
@@ -135,7 +135,7 @@ func ExampleSchemasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_Schemas_BySchemaRegistry.json
+// Generated from example definition: 2026-03-01-preview/List_Schemas_BySchemaRegistry.json
 func ExampleSchemasClient_NewListBySchemaRegistryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

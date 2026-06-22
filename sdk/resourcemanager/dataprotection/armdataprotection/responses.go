@@ -206,6 +206,18 @@ type DeletedBackupInstancesClientUndeleteResponse struct {
 	// placeholder for future response values
 }
 
+// DeletedBackupVaultsClientGetResponse contains the response from method DeletedBackupVaultsClient.Get.
+type DeletedBackupVaultsClientGetResponse struct {
+	// Deleted Backup Vault Resource (available from version 2025-09-01)
+	DeletedBackupVaultResource
+}
+
+// DeletedBackupVaultsClientListByLocationResponse contains the response from method DeletedBackupVaultsClient.NewListByLocationPager.
+type DeletedBackupVaultsClientListByLocationResponse struct {
+	// The response of a DeletedBackupVaultResource list operation.
+	DeletedBackupVaultResourceListResult
+}
+
 // DppResourceGuardProxyClientCreateOrUpdateResponse contains the response from method DppResourceGuardProxyClient.CreateOrUpdate.
 type DppResourceGuardProxyClientCreateOrUpdateResponse struct {
 	// ResourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs

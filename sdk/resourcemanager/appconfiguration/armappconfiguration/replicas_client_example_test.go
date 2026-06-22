@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreateReplica.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreateReplica.json
 func ExampleReplicasClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,13 +31,13 @@ func ExampleReplicasClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ReplicasClientCreateResponse{
-	// 	Replica: &armappconfiguration.Replica{
+	// 	Replica: armappconfiguration.Replica{
 	// 		Name: to.Ptr("myReplicaEus"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores/replicas"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso/replicas/myReplicaEus"),
@@ -58,7 +58,7 @@ func ExampleReplicasClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresDeleteReplica.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresDeleteReplica.json
 func ExampleReplicasClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleReplicasClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -84,7 +84,7 @@ func ExampleReplicasClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresGetReplica.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresGetReplica.json
 func ExampleReplicasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleReplicasClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ReplicasClientGetResponse{
-	// 	Replica: &armappconfiguration.Replica{
+	// 	Replica: armappconfiguration.Replica{
 	// 		Name: to.Ptr("myReplicaEus"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores/replicas"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso/replicas/myReplicaEus"),
@@ -124,7 +124,7 @@ func ExampleReplicasClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresListReplicas.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresListReplicas.json
 func ExampleReplicasClient_NewListByConfigurationStorePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -4,6 +4,28 @@
 
 package armchaos
 
+// ActionVersionsClientGetOptions contains the optional parameters for the ActionVersionsClient.Get method.
+type ActionVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionVersionsClientListOptions contains the optional parameters for the ActionVersionsClient.NewListPager method.
+type ActionVersionsClientListOptions struct {
+	// String that sets the continuation token.
+	ContinuationToken *string
+}
+
+// ActionsClientGetOptions contains the optional parameters for the ActionsClient.Get method.
+type ActionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ActionsClientListOptions contains the optional parameters for the ActionsClient.NewListPager method.
+type ActionsClientListOptions struct {
+	// String that sets the continuation token.
+	ContinuationToken *string
+}
+
 // CapabilitiesClientCreateOrUpdateOptions contains the optional parameters for the CapabilitiesClient.CreateOrUpdate method.
 type CapabilitiesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -34,6 +56,17 @@ type CapabilityTypesClientGetOptions struct {
 type CapabilityTypesClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
+}
+
+// DiscoveredResourcesClientGetOptions contains the optional parameters for the DiscoveredResourcesClient.Get method.
+type DiscoveredResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DiscoveredResourcesClientListByWorkspaceOptions contains the optional parameters for the DiscoveredResourcesClient.NewListByWorkspacePager
+// method.
+type DiscoveredResourcesClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ExperimentsClientBeginCancelOptions contains the optional parameters for the ExperimentsClient.BeginCancel method.
@@ -118,6 +151,151 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PrivateAccessesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateAccessesClient.BeginCreateOrUpdate
+// method.
+type PrivateAccessesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions contains the optional parameters for the PrivateAccessesClient.BeginDeleteAPrivateEndpointConnection
+// method.
+type PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateAccessesClientBeginDeleteOptions contains the optional parameters for the PrivateAccessesClient.BeginDelete method.
+type PrivateAccessesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateAccessesClientBeginUpdateOptions contains the optional parameters for the PrivateAccessesClient.BeginUpdate method.
+type PrivateAccessesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateAccessesClientGetAPrivateEndpointConnectionOptions contains the optional parameters for the PrivateAccessesClient.GetAPrivateEndpointConnection
+// method.
+type PrivateAccessesClientGetAPrivateEndpointConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateAccessesClientGetOptions contains the optional parameters for the PrivateAccessesClient.Get method.
+type PrivateAccessesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateAccessesClientGetPrivateLinkResourcesOptions contains the optional parameters for the PrivateAccessesClient.GetPrivateLinkResources
+// method.
+type PrivateAccessesClientGetPrivateLinkResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateAccessesClientListAllOptions contains the optional parameters for the PrivateAccessesClient.NewListAllPager method.
+type PrivateAccessesClientListAllOptions struct {
+	// String that sets the continuation token.
+	ContinuationToken *string
+}
+
+// PrivateAccessesClientListOptions contains the optional parameters for the PrivateAccessesClient.NewListPager method.
+type PrivateAccessesClientListOptions struct {
+	// String that sets the continuation token.
+	ContinuationToken *string
+}
+
+// PrivateAccessesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateAccessesClient.NewListPrivateEndpointConnectionsPager
+// method.
+type PrivateAccessesClientListPrivateEndpointConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenarioConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginCreateOrUpdate
+// method.
+type ScenarioConfigurationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ScenarioConfigurationsClientBeginDeleteOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginDelete
+// method.
+type ScenarioConfigurationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ScenarioConfigurationsClientBeginExecuteOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginExecute
+// method.
+type ScenarioConfigurationsClientBeginExecuteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ScenarioConfigurationsClientBeginFixResourcePermissionsOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginFixResourcePermissions
+// method.
+type ScenarioConfigurationsClientBeginFixResourcePermissionsOptions struct {
+	Body *FixResourcePermissionsRequest
+
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ScenarioConfigurationsClientBeginValidateOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginValidate
+// method.
+type ScenarioConfigurationsClientBeginValidateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ScenarioConfigurationsClientGetOptions contains the optional parameters for the ScenarioConfigurationsClient.Get method.
+type ScenarioConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenarioConfigurationsClientListAllOptions contains the optional parameters for the ScenarioConfigurationsClient.NewListAllPager
+// method.
+type ScenarioConfigurationsClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenarioRunsClientBeginCancelOptions contains the optional parameters for the ScenarioRunsClient.BeginCancel method.
+type ScenarioRunsClientBeginCancelOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ScenarioRunsClientGetOptions contains the optional parameters for the ScenarioRunsClient.Get method.
+type ScenarioRunsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenarioRunsClientListAllOptions contains the optional parameters for the ScenarioRunsClient.NewListAllPager method.
+type ScenarioRunsClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenariosClientCreateOrUpdateOptions contains the optional parameters for the ScenariosClient.CreateOrUpdate method.
+type ScenariosClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenariosClientDeleteOptions contains the optional parameters for the ScenariosClient.Delete method.
+type ScenariosClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenariosClientGetOptions contains the optional parameters for the ScenariosClient.Get method.
+type ScenariosClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenariosClientListAllOptions contains the optional parameters for the ScenariosClient.NewListAllPager method.
+type ScenariosClientListAllOptions struct {
+	// placeholder for future optional parameters
+}
+
 // TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
 type TargetTypesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -146,6 +324,49 @@ type TargetsClientGetOptions struct {
 
 // TargetsClientListOptions contains the optional parameters for the TargetsClient.NewListPager method.
 type TargetsClientListOptions struct {
+	// String that sets the continuation token.
+	ContinuationToken *string
+}
+
+// WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
+// method.
+type WorkspacesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
+type WorkspacesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginRefreshRecommendationsOptions contains the optional parameters for the WorkspacesClient.BeginRefreshRecommendations
+// method.
+type WorkspacesClientBeginRefreshRecommendationsOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientBeginUpdateOptions contains the optional parameters for the WorkspacesClient.BeginUpdate method.
+type WorkspacesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
+type WorkspacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspacesClientListAllOptions contains the optional parameters for the WorkspacesClient.NewListAllPager method.
+type WorkspacesClientListAllOptions struct {
+	// String that sets the continuation token.
+	ContinuationToken *string
+}
+
+// WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.NewListPager method.
+type WorkspacesClientListOptions struct {
 	// String that sets the continuation token.
 	ContinuationToken *string
 }

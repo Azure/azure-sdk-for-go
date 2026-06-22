@@ -12,9 +12,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -134,10 +134,10 @@ func (testsuite *BatchManagementTestSuite) Prepare() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_StorageAccount", &deployment)
@@ -166,14 +166,14 @@ func (testsuite *BatchManagementTestSuite) Prepare() {
 	fmt.Println("Call operation: Application_Create")
 	applicationClient, err := armbatch.NewApplicationClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = applicationClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.applicationName, &armbatch.ApplicationClientCreateOptions{
-		Parameters: &armbatch.Application{
-			Properties: &armbatch.ApplicationProperties{
-				AllowUpdates: to.Ptr(false),
-				DisplayName:  to.Ptr("myAppName"),
-			},
+	_, err = applicationClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.applicationName, armbatch.Application{
+		Properties: &armbatch.ApplicationProperties{
+			AllowUpdates: to.Ptr(false),
+			DisplayName:  to.Ptr("myAppName"),
 		},
-	})
+	},
+		&armbatch.ApplicationClientCreateOptions{},
+	)
 	testsuite.Require().NoError(err)
 }
 
@@ -398,7 +398,7 @@ func (testsuite *BatchManagementTestSuite) TestApplicationPackage() {
 	fmt.Println("Call operation: ApplicationPackage_Create")
 	applicationPackageClient, err := armbatch.NewApplicationPackageClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = applicationPackageClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.applicationName, testsuite.versionName, &armbatch.ApplicationPackageClientCreateOptions{})
+	_, err = applicationPackageClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, testsuite.applicationName, testsuite.versionName, armbatch.ApplicationPackage{}, &armbatch.ApplicationPackageClientCreateOptions{})
 	testsuite.Require().NoError(err)
 
 	// From step ApplicationPackage_List
@@ -572,10 +572,10 @@ func (testsuite *BatchManagementTestSuite) TestPrivateEndpointConnection() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)

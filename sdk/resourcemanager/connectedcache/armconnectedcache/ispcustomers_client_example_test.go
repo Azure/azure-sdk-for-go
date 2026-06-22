@@ -68,13 +68,13 @@ func ExampleIspCustomersClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCustomersClientCreateOrUpdateResponse{
-	// 	IspCustomerResource: &armconnectedcache.IspCustomerResource{
+	// 	IspCustomerResource: armconnectedcache.IspCustomerResource{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest2"),
 	// 		Name: to.Ptr("MCCTPTest2"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/ispCustomers"),
@@ -175,7 +175,7 @@ func ExampleIspCustomersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -198,7 +198,7 @@ func ExampleIspCustomersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCustomersClientGetResponse{
-	// 	IspCustomerResource: &armconnectedcache.IspCustomerResource{
+	// 	IspCustomerResource: armconnectedcache.IspCustomerResource{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest2"),
 	// 		Name: to.Ptr("MCCTPTest2"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/ispCustomers"),
@@ -692,7 +692,7 @@ func ExampleIspCustomersClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCustomersClientUpdateResponse{
-	// 	IspCustomerResource: &armconnectedcache.IspCustomerResource{
+	// 	IspCustomerResource: armconnectedcache.IspCustomerResource{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest2"),
 	// 		Name: to.Ptr("MCCTPTest2"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/ispCustomers"),

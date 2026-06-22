@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/StorageMovers_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01/StorageMovers_CreateOrUpdate.json
 func ExampleStorageMoversClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleStorageMoversClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.StorageMoversClientCreateOrUpdateResponse{
-	// 	StorageMover: &armstoragemover.StorageMover{
+	// 	StorageMover: armstoragemover.StorageMover{
 	// 		Name: to.Ptr("examples-storageMoverName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName"),
@@ -64,7 +64,7 @@ func ExampleStorageMoversClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_Delete.json
+// Generated from example definition: 2025-12-01/StorageMovers_Delete.json
 func ExampleStorageMoversClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleStorageMoversClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -90,7 +90,7 @@ func ExampleStorageMoversClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_Get.json
+// Generated from example definition: 2025-12-01/StorageMovers_Get.json
 func ExampleStorageMoversClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleStorageMoversClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.StorageMoversClientGetResponse{
-	// 	StorageMover: &armstoragemover.StorageMover{
+	// 	StorageMover: armstoragemover.StorageMover{
 	// 		Name: to.Ptr("examples-storageMoverName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName"),
@@ -133,7 +133,7 @@ func ExampleStorageMoversClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_List.json
+// Generated from example definition: 2025-12-01/StorageMovers_List.json
 func ExampleStorageMoversClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleStorageMoversClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_ListBySubscription.json
+// Generated from example definition: 2025-12-01/StorageMovers_ListBySubscription.json
 func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleStorageMoversClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/StorageMovers_Update.json
+// Generated from example definition: 2025-12-01/StorageMovers_Update.json
 func ExampleStorageMoversClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,7 +346,7 @@ func ExampleStorageMoversClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.StorageMoversClientUpdateResponse{
-	// 	StorageMover: &armstoragemover.StorageMover{
+	// 	StorageMover: armstoragemover.StorageMover{
 	// 		Name: to.Ptr("examples-storageMoverName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName"),

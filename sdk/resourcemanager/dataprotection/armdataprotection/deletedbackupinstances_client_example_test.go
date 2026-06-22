@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
+// Generated from example definition: 2026-03-01/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
 func ExampleDeletedBackupInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleDeletedBackupInstancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.DeletedBackupInstancesClientGetResponse{
-	// 	DeletedBackupInstanceResource: &armdataprotection.DeletedBackupInstanceResource{
+	// 	DeletedBackupInstanceResource: armdataprotection.DeletedBackupInstanceResource{
 	// 		Name: to.Ptr("testInstance1"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/deletedBackupInstances"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/deletedBackupInstances/testInstance1"),
@@ -73,7 +73,7 @@ func ExampleDeletedBackupInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DeletedBackupInstanceOperations/ListDeletedBackupInstances.json
+// Generated from example definition: 2026-03-01/DeletedBackupInstanceOperations/ListDeletedBackupInstances.json
 func ExampleDeletedBackupInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleDeletedBackupInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
+// Generated from example definition: 2026-03-01/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
 func ExampleDeletedBackupInstancesClient_BeginUndelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleDeletedBackupInstancesClient_BeginUndelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res

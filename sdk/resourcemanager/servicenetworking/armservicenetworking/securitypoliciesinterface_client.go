@@ -18,6 +18,8 @@ import (
 
 // SecurityPoliciesInterfaceClient contains the methods for the SecurityPoliciesInterface group.
 // Don't use this type directly, use NewSecurityPoliciesInterfaceClient() instead.
+//
+// Generated from API version 2025-03-01-preview
 type SecurityPoliciesInterfaceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSecurityPoliciesInterfaceClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - Create a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - securityPolicyName - SecurityPolicy
@@ -69,8 +69,6 @@ func (client *SecurityPoliciesInterfaceClient) BeginCreateOrUpdate(ctx context.C
 
 // CreateOrUpdate - Create a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 func (client *SecurityPoliciesInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, resource SecurityPolicy, options *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPoliciesInterfaceClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *SecurityPoliciesInterfaceClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -128,8 +126,6 @@ func (client *SecurityPoliciesInterfaceClient) createOrUpdateCreateRequest(ctx c
 
 // BeginDelete - Delete a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - securityPolicyName - SecurityPolicy
@@ -154,8 +150,6 @@ func (client *SecurityPoliciesInterfaceClient) BeginDelete(ctx context.Context, 
 
 // Delete - Delete a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 func (client *SecurityPoliciesInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPoliciesInterfaceClient.BeginDelete"
@@ -201,15 +195,13 @@ func (client *SecurityPoliciesInterfaceClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - securityPolicyName - SecurityPolicy
@@ -261,8 +253,8 @@ func (client *SecurityPoliciesInterfaceClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -277,8 +269,6 @@ func (client *SecurityPoliciesInterfaceClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByTrafficControllerPager - List SecurityPolicy resources by TrafficController
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - options - SecurityPoliciesInterfaceClientListByTrafficControllerOptions contains the optional parameters for the SecurityPoliciesInterfaceClient.NewListByTrafficControllerPager
@@ -326,8 +316,8 @@ func (client *SecurityPoliciesInterfaceClient) listByTrafficControllerCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -343,8 +333,6 @@ func (client *SecurityPoliciesInterfaceClient) listByTrafficControllerHandleResp
 
 // Update - Update a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - trafficControllerName - traffic controller name for path
 //   - securityPolicyName - SecurityPolicy
@@ -397,8 +385,8 @@ func (client *SecurityPoliciesInterfaceClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

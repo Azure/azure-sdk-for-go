@@ -18,6 +18,8 @@ import (
 
 // WorkspacesClient contains the methods for the Workspaces group.
 // Don't use this type directly, use NewWorkspacesClient() instead.
+//
+// Generated from API version 2025-09-01
 type WorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Create a StorageDiscoveryWorkspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageDiscoveryWorkspaceName - The name of the StorageDiscoveryWorkspace
 //   - resource - Resource create parameters.
@@ -90,8 +90,8 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -111,8 +111,6 @@ func (client *WorkspacesClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Delete a StorageDiscoveryWorkspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageDiscoveryWorkspaceName - The name of the StorageDiscoveryWorkspace
 //   - options - WorkspacesClientDeleteOptions contains the optional parameters for the WorkspacesClient.Delete method.
@@ -157,15 +155,13 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a StorageDiscoveryWorkspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageDiscoveryWorkspaceName - The name of the StorageDiscoveryWorkspace
 //   - options - WorkspacesClientGetOptions contains the optional parameters for the WorkspacesClient.Get method.
@@ -211,8 +207,8 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -227,8 +223,6 @@ func (client *WorkspacesClient) getHandleResponse(resp *http.Response) (Workspac
 }
 
 // NewListByResourceGroupPager - List StorageDiscoveryWorkspace resources by resource group
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - WorkspacesClientListByResourceGroupOptions contains the optional parameters for the WorkspacesClient.NewListByResourceGroupPager
 //     method.
@@ -271,8 +265,8 @@ func (client *WorkspacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -287,8 +281,6 @@ func (client *WorkspacesClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - List StorageDiscoveryWorkspace resources by subscription ID
-//
-// Generated from API version 2025-09-01
 //   - options - WorkspacesClientListBySubscriptionOptions contains the optional parameters for the WorkspacesClient.NewListBySubscriptionPager
 //     method.
 func (client *WorkspacesClient) NewListBySubscriptionPager(options *WorkspacesClientListBySubscriptionOptions) *runtime.Pager[WorkspacesClientListBySubscriptionResponse] {
@@ -326,8 +318,8 @@ func (client *WorkspacesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -343,8 +335,6 @@ func (client *WorkspacesClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // Update - Update a StorageDiscoveryWorkspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageDiscoveryWorkspaceName - The name of the StorageDiscoveryWorkspace
 //   - properties - The resource properties to be updated.
@@ -391,8 +381,8 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

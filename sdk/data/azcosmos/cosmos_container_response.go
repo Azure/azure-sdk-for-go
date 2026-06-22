@@ -23,7 +23,7 @@ func newContainerResponse(resp *http.Response) (ContainerResponse, error) {
 	properties := &ContainerProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
-		return response, err
+		return response, wrapResponseError(err, response.Response)
 	}
 	response.ContainerProperties = properties
 	return response, nil

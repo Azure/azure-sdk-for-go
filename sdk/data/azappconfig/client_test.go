@@ -5,6 +5,7 @@ package azappconfig_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 	"testing"
@@ -42,6 +43,11 @@ func TestClient(t *testing.T) {
 	contentType := "content-type"
 	value := "value"
 	client := NewClientFromConnectionString(t)
+
+	// Clean up any leftover setting from a previous test run
+	_, _ = client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+		Label: to.Ptr(label),
+	})
 
 	addResp, err2 := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
 		Label:       to.Ptr(label),
@@ -219,10 +225,11 @@ func TestClient(t *testing.T) {
 	require.False(t, *roResp6.IsReadOnly)
 	require.NotNil(t, setResp.SyncToken)
 
-	any := "*"
+	keyFilter := key
+	labelFilter := label
 	revPgr := client.NewListRevisionsPager(azappconfig.SettingSelector{
-		KeyFilter:   &any,
-		LabelFilter: &any,
+		KeyFilter:   &keyFilter,
+		LabelFilter: &labelFilter,
 		Fields:      azappconfig.AllSettingFields(),
 	}, nil)
 	require.NotEmpty(t, revPgr)
@@ -235,8 +242,8 @@ func TestClient(t *testing.T) {
 	require.Equal(t, label, *revResp.Settings[0].Label)
 
 	settsPgr := client.NewListSettingsPager(azappconfig.SettingSelector{
-		KeyFilter:   &any,
-		LabelFilter: &any,
+		KeyFilter:   &keyFilter,
+		LabelFilter: &labelFilter,
 		Fields:      azappconfig.AllSettingFields(),
 	}, nil)
 	require.NotEmpty(t, settsPgr)
@@ -412,7 +419,7 @@ func TestSnapshotListConfigurationSettings(t *testing.T) {
 
 		settingMap[key] = append(settingMap[key], mapV)
 
-		_, err := client.AddSetting(context.Background(), key, value, nil)
+		_, err := client.SetSetting(context.Background(), key, value, nil)
 
 		require.NoError(t, err)
 	}
@@ -537,10 +544,16 @@ func TestSnapshotArchive(t *testing.T) {
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 	require.NoError(t, err)
 
-	// Snapshot must exist
-	_, err = client.GetSnapshot(context.Background(), snapshotName, nil)
+	// If snapshot was archived from a previous run, recover it first
+	if *snapshot.Status == azappconfig.SnapshotStatusArchived {
+		_, err = client.RecoverSnapshot(context.Background(), snapshotName, nil)
+		require.NoError(t, err)
+	}
+
+	// Snapshot must exist and be ready
+	existing, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
-	require.Equal(t, azappconfig.SnapshotStatusReady, *snapshot.Status)
+	require.Equal(t, azappconfig.SnapshotStatusReady, *existing.Status)
 
 	// Archive the snapshot
 	archiveSnapshot, err := client.ArchiveSnapshot(context.Background(), snapshotName, nil)
@@ -562,11 +575,14 @@ func TestSnapshotRecover(t *testing.T) {
 	_, err = client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
 
-	_, err = client.ArchiveSnapshot(context.Background(), snapshotName, nil)
-	require.NoError(t, err)
+	// Only archive if not already archived
+	if *snapshot.Status != azappconfig.SnapshotStatusArchived {
+		_, err = client.ArchiveSnapshot(context.Background(), snapshotName, nil)
+		require.NoError(t, err)
+	}
 
 	// Check that snapshot is archived
-	archivedSnapshot, err := client.GetSnapshot(context.Background(), *snapshot.Name, nil)
+	archivedSnapshot, err := client.GetSnapshot(context.Background(), snapshotName, nil)
 	require.NoError(t, err)
 	require.Equal(t, azappconfig.SnapshotStatusArchived, *archivedSnapshot.Status)
 
@@ -584,7 +600,7 @@ func TestSnapshotCreate(t *testing.T) {
 
 	client := NewClientFromConnectionString(t)
 
-	// Create a snapshot
+	// Create a snapshot (handles already-exists case)
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 
 	require.NoError(t, err)
@@ -705,6 +721,123 @@ func TestListSettingsPagerWithETagModifiedPage(t *testing.T) {
 	require.EqualValues(t, 2, countPages)
 }
 
+func TestCheckSettingsPager(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestCheckSettingsPager", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// Use HEAD requests to get page ETags without response body
+	checkPager := client.NewCheckSettingsPager(selector, nil)
+	countPages := 0
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, page.ETag, "ETag should be present in HEAD response")
+		require.NotEmpty(t, page.SyncToken, "SyncToken should be present in HEAD response")
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+}
+
+func TestCheckSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestCheckSettingsPagerWithETagUnmodifiedPage", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// First pass: use HEAD requests to get page ETags
+	checkPager := client.NewCheckSettingsPager(selector, nil)
+	matchConditions := []azcore.MatchConditions{}
+	countPages := 0
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.NotNil(t, page.ETag)
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			IfNoneMatch: page.ETag,
+		})
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+
+	// Second pass: use HEAD requests with ETags - should get 304 Not Modified (empty ETags)
+	countPages = 0
+	checkPager = client.NewCheckSettingsPager(selector, &azappconfig.CheckSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		// When not modified, ETag is nil (304 response doesn't include new ETag)
+		require.Nil(t, page.ETag)
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+}
+
+func TestCheckSettingsPagerWithETagModifiedPage(t *testing.T) {
+	client := NewClientFromConnectionString(t)
+
+	key := createMultipleKeys(t, client, "TestCheckSettingsPagerWithETagModifiedPage", 105)
+
+	selector := azappconfig.SettingSelector{
+		KeyFilter: &key,
+	}
+
+	// First pass: use GET to get settings and ETags (need the setting data for modification)
+	var lastSetting azappconfig.Setting
+	pager := client.NewListSettingsPager(selector, nil)
+	matchConditions := []azcore.MatchConditions{}
+	countPages := 0
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		for _, setting := range page.Settings {
+			lastSetting = setting
+		}
+		matchConditions = append(matchConditions, azcore.MatchConditions{
+			IfNoneMatch: page.ETag,
+		})
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+
+	// Modify the last setting so the second page changes
+	require.NotNil(t, lastSetting.Key)
+	require.NotNil(t, lastSetting.Value)
+	lastSetting.Value = to.Ptr(fmt.Sprintf("%s-1", *lastSetting.Value))
+	_, err := client.SetSetting(context.Background(), *lastSetting.Key, lastSetting.Value, &azappconfig.SetSettingOptions{
+		Label: lastSetting.Label,
+	})
+	require.NoError(t, err)
+
+	// Second pass: use HEAD requests with ETags - first page unmodified, second page modified
+	countPages = 0
+	checkPager := client.NewCheckSettingsPager(selector, &azappconfig.CheckSettingsOptions{
+		MatchConditions: matchConditions,
+	})
+	for checkPager.More() {
+		page, err := checkPager.NextPage(context.Background())
+		require.NoError(t, err)
+		if countPages == 0 {
+			// First page is not modified, ETag should be nil (304)
+			require.Nil(t, page.ETag)
+		} else {
+			// Second page is modified, should have a new ETag (200)
+			require.NotNil(t, page.ETag)
+		}
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
+}
+
 func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig.SettingFilter) (azappconfig.CreateSnapshotResponse, error) {
 	if sf == nil {
 		all := "*"
@@ -723,6 +856,15 @@ func CreateSnapshot(c *azappconfig.Client, snapshotName string, sf []azappconfig
 	resp, err := c.BeginCreateSnapshot(context.Background(), snapshotName, sf, opts)
 
 	if err != nil {
+		// If snapshot already exists (409 Conflict), return the existing one
+		var respErr *azcore.ResponseError
+		if errors.As(err, &respErr) && respErr.StatusCode == 409 {
+			existing, getErr := c.GetSnapshot(context.Background(), snapshotName, nil)
+			if getErr != nil {
+				return azappconfig.CreateSnapshotResponse{}, getErr
+			}
+			return azappconfig.CreateSnapshotResponse{Snapshot: existing.Snapshot}, nil
+		}
 		return azappconfig.CreateSnapshotResponse{}, err
 	}
 

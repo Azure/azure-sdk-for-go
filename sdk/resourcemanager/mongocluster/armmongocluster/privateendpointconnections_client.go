@@ -18,6 +18,8 @@ import (
 
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
+//
+// Generated from API version 2026-02-01-preview
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // BeginCreate - Create a Private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -69,8 +69,6 @@ func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context,
 
 // Create - Create a Private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginCreate"
@@ -116,8 +114,8 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -128,8 +126,6 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 
 // BeginDelete - Delete the private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -154,8 +150,6 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 
 // Delete - Delete the private endpoint connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -201,15 +195,13 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific private connection
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -261,8 +253,8 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -277,8 +269,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByMongoClusterPager - List existing private connections
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mongoClusterName - The name of the mongo cluster.
 //   - options - PrivateEndpointConnectionsClientListByMongoClusterOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByMongoClusterPager
@@ -326,8 +316,8 @@ func (client *PrivateEndpointConnectionsClient) listByMongoClusterCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

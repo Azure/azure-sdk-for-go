@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CapabilityTypesServer is a fake server for instances of the armchaos.CapabilityTypesClient type.
@@ -58,9 +59,7 @@ func (c *CapabilityTypesServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (c *CapabilityTypesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (c *CapabilityTypesServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -119,7 +115,7 @@ func (c *CapabilityTypesServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CapabilityType, req)
@@ -150,11 +146,7 @@ func (c *CapabilityTypesServerTransport) dispatchNewListPager(req *http.Request)
 		if err != nil {
 			return nil, err
 		}
-		continuationTokenUnescaped, err := url.QueryUnescape(qp.Get("continuationToken"))
-		if err != nil {
-			return nil, err
-		}
-		continuationTokenParam := getOptional(continuationTokenUnescaped)
+		continuationTokenParam := getOptional(qp.Get("continuationToken"))
 		var options *armchaos.CapabilityTypesClientListOptions
 		if continuationTokenParam != nil {
 			options = &armchaos.CapabilityTypesClientListOptions{
@@ -172,7 +164,7 @@ func (c *CapabilityTypesServerTransport) dispatchNewListPager(req *http.Request)
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
@@ -198,7 +197,7 @@ func (l *FakeAMQPLinks) Get(ctx context.Context) (*LinksWithID, error) {
 	}
 }
 
-func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error {
+func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName azlog.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error {
 	lwr, err := l.Get(ctx)
 
 	if err != nil {
@@ -209,7 +208,7 @@ func (l *FakeAMQPLinks) Retry(ctx context.Context, eventName log.Event, operatio
 }
 
 func (l *FakeAMQPLinks) Writef(evt azlog.Event, format string, args ...any) {
-	log.Writef(evt, "[prefix] "+format, args...)
+	azlog.Writef(evt, "[prefix] "+format, args...)
 }
 
 func (l *FakeAMQPLinks) Prefix() string {
@@ -236,6 +235,10 @@ func (l *FakeAMQPLinks) ClosedPermanently() bool {
 
 func (s *FakeAMQPSender) LinkName() string {
 	return "sender-link-name"
+}
+
+func (s *FakeAMQPSender) Properties() map[string]any {
+	return nil
 }
 
 func (s *FakeAMQPSender) Close(ctx context.Context) error {

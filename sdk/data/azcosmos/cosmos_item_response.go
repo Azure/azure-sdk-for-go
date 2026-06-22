@@ -29,7 +29,7 @@ func newItemResponse(resp *http.Response) (ItemResponse, error) {
 	defer func() { _ = resp.Body.Close() }()
 	body, err := azruntime.Payload(resp)
 	if err != nil {
-		return response, err
+		return response, wrapResponseError(err, response.Response)
 	}
 	response.Value = body
 	return response, nil

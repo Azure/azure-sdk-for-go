@@ -8,7 +8,15 @@
 
 ### Bugs Fixed
 
+- Read `com.microsoft:max-message-batch-size` vendor property from the AMQP sender link to correctly limit batch size on Premium large-message entities, where `max-message-size` can be up to 100 MB but the batch limit is 1 MB.
+
 ### Other Changes
+
+- Cleaned up accumulated `golangci-lint` findings in `azservicebus` (deprecated
+  `runtime.WithHTTPHeader` calls switched to `policy.WithHTTPHeader`, duplicate
+  `log` package imports consolidated under the `azlog` alias, unchecked `Close`
+  errors wrapped with the `_ = ...` ignore pattern, and assorted `staticcheck`
+  style nits). No behavioral changes.
 
 ## 1.10.0 (2025-08-05)
 

@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"sort"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
@@ -183,6 +184,36 @@ func TestGetPreviousVersionTag(t *testing.T) {
 	// Test stable - should return latest stable
 	result = getPreviousVersionTag(false, tags)
 	require.Equal(t, "v1.0.0", result)
+
+	// Issue scenario: both 2.0.0-beta.1 and 2.0.0 exist (sorted descending by semver)
+	// For preview, previousVersion should be the stable 2.0.0, NOT the beta
+	tags = []string{"v2.0.0", "v2.0.0-beta.1", "v1.0.0"}
+
+	result = getPreviousVersionTag(true, tags)
+	require.Equal(t, "v2.0.0", result)
+
+	result = getPreviousVersionTag(false, tags)
+	require.Equal(t, "v2.0.0", result)
+}
+
+func TestSemverSortOrder(t *testing.T) {
+	// Verify that semver sorting puts stable versions before pre-release versions
+	// This is critical for GetAllVersionTags to return correctly ordered tags
+	versions := []string{"1.0.0", "2.0.0-beta.1", "2.0.0", "2.0.0-beta.2"}
+	vs := make([]*semver.Version, len(versions))
+	for i, r := range versions {
+		v, err := semver.NewVersion(r)
+		require.NoError(t, err)
+		vs[i] = v
+	}
+	sort.Sort(sort.Reverse(semver.Collection(vs)))
+
+	// After descending sort: 2.0.0 should come before any 2.0.0-beta.x
+	sorted := make([]string, len(vs))
+	for i, v := range vs {
+		sorted[i] = v.Original()
+	}
+	require.Equal(t, []string{"2.0.0", "2.0.0-beta.2", "2.0.0-beta.1", "1.0.0"}, sorted)
 }
 
 func TestUpdateLatestChangelogVersion(t *testing.T) {

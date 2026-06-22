@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAssetEndpointProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,13 +45,13 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.AssetEndpointProfilesClientCreateOrReplaceResponse{
-	// 	AssetEndpointProfile: &armdeviceregistry.AssetEndpointProfile{
+	// 	AssetEndpointProfile: armdeviceregistry.AssetEndpointProfile{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
 	// 		Name: to.Ptr("my-assetendpointprofile"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
@@ -84,7 +84,7 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
+// Generated from example definition: 2026-03-01-preview/CreateOrReplace_AssetEndpointProfile_With_DiscoveredAepRef.json
 func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAssetEndpointProfileWithDiscoveredAepRef() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,13 +118,13 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.AssetEndpointProfilesClientCreateOrReplaceResponse{
-	// 	AssetEndpointProfile: &armdeviceregistry.AssetEndpointProfile{
+	// 	AssetEndpointProfile: armdeviceregistry.AssetEndpointProfile{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
 	// 		Name: to.Ptr("my-assetendpointprofile"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
@@ -158,7 +158,7 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Delete_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/Delete_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,11 +175,11 @@ func ExampleAssetEndpointProfilesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-01/Get_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/Get_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.AssetEndpointProfilesClientGetResponse{
-	// 	AssetEndpointProfile: &armdeviceregistry.AssetEndpointProfile{
+	// 	AssetEndpointProfile: armdeviceregistry.AssetEndpointProfile{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
 	// 		Name: to.Ptr("my-assetendpointprofile"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
@@ -235,7 +235,7 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/Get_AssetEndpointProfile_With_SyncStatus.json
+// Generated from example definition: 2026-03-01-preview/Get_AssetEndpointProfile_With_SyncStatus.json
 func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfileWithSyncStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfileWithSyncStatu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.AssetEndpointProfilesClientGetResponse{
-	// 	AssetEndpointProfile: &armdeviceregistry.AssetEndpointProfile{
+	// 	AssetEndpointProfile: armdeviceregistry.AssetEndpointProfile{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
 	// 		Name: to.Ptr("my-assetendpointprofile"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),
@@ -299,7 +299,7 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfileWithSyncStatu
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_AssetEndpointProfiles_ByResourceGroup.json
+// Generated from example definition: 2026-03-01-preview/List_AssetEndpointProfiles_ByResourceGroup.json
 func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/List_AssetEndpointProfiles_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_AssetEndpointProfiles_BySubscription.json
 func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +555,7 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/Update_AssetEndpointProfile.json
+// Generated from example definition: 2026-03-01-preview/Update_AssetEndpointProfile.json
 func ExampleAssetEndpointProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -576,13 +576,13 @@ func ExampleAssetEndpointProfilesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.AssetEndpointProfilesClientUpdateResponse{
-	// 	AssetEndpointProfile: &armdeviceregistry.AssetEndpointProfile{
+	// 	AssetEndpointProfile: armdeviceregistry.AssetEndpointProfile{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/assetEndpointProfiles/my-assetendpointprofile"),
 	// 		Name: to.Ptr("my-assetendpointprofile"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/assetEndpointProfiles"),

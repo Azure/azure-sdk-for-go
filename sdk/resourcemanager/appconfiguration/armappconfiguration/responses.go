@@ -88,6 +88,23 @@ type KeyValuesClientGetResponse struct {
 	KeyValue
 }
 
+// NetworkSecurityPerimeterConfigurationsClientGetResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.Get.
+type NetworkSecurityPerimeterConfigurationsClientGetResponse struct {
+	// Network security perimeter (NSP) configuration resource
+	NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.NewListByConfigurationStorePager.
+type NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse struct {
+	// The response of a NetworkSecurityPerimeterConfiguration list operation.
+	NetworkSecurityPerimeterConfigurationListResult
+}
+
+// NetworkSecurityPerimeterConfigurationsClientReconcileResponse contains the response from method NetworkSecurityPerimeterConfigurationsClient.BeginReconcile.
+type NetworkSecurityPerimeterConfigurationsClientReconcileResponse struct {
+	// placeholder for future response values
+}
+
 // OperationsClientCheckNameAvailabilityResponse contains the response from method OperationsClient.CheckNameAvailability.
 type OperationsClientCheckNameAvailabilityResponse struct {
 	// The result of a request to check the availability of a resource name.

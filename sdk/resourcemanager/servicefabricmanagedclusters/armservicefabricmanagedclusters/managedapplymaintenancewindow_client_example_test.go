@@ -6,12 +6,13 @@ package armservicefabricmanagedclusters_test
 
 import (
 	"context"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabricmanagedclusters/armservicefabricmanagedclusters"
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/ManagedApplyMaintenanceWindowPost_example.json
+// Generated from example definition: 2026-05-01-preview/ManagedApplyMaintenanceWindowPost_example.json
 func ExampleManagedApplyMaintenanceWindowClient_Post() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +23,12 @@ func ExampleManagedApplyMaintenanceWindowClient_Post() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewManagedApplyMaintenanceWindowClient().Post(ctx, "resourceGroup1", "mycluster1", nil)
+	res, err := clientFactory.NewManagedApplyMaintenanceWindowClient().Post(ctx, "resourceGroup1", "mycluster1", &armservicefabricmanagedclusters.ManagedApplyMaintenanceWindowClientPostOptions{
+		Body: &armservicefabricmanagedclusters.ApplyMaintenanceWindowRequest{
+			StartDateTime: to.Ptr("2026-04-07 13:00"),
+			Duration:      to.Ptr("08:30"),
+			TimeZone:      to.Ptr("Pacific Standard Time"),
+		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

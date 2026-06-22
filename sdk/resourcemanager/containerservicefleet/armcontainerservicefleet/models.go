@@ -128,12 +128,85 @@ type AutoUpgradeProfileStatus struct {
 	LastTriggeredAt *time.Time
 }
 
+// CiliumProperties - The Cilium specific properties of the member cluster.
+type CiliumProperties struct {
+	// READ-ONLY; Cilium requires each cluster to be assigned a unique numeric cluster id from 1 - 255. The id is managed by Fleet
+	// and cannot be set by the user.
+	ID *int32
+
+	// READ-ONLY; Cilium requires each cluster to be assigned a unique human-readable name. The name is managed by Fleet, based
+	// on the Fleet Member name, and cannot be set by the user.
+	Name *string
+}
+
 // ClusterAffinity contains cluster affinity scheduling rules for the selected resources.
 type ClusterAffinity struct {
 	// If the affinity requirements specified by this field are not met at scheduling time, the resource will not be scheduled
 	// onto the cluster. If the affinity requirements specified by this field cease to be met at some point after the placement
 	// (e.g. due to an update), the system may or may not try to eventually remove the resource from the cluster.
 	RequiredDuringSchedulingIgnoredDuringExecution *ClusterSelector
+}
+
+// ClusterMeshProfile - A cluster mesh profile stores the general information about the mesh.
+type ClusterMeshProfile struct {
+	// The resource-specific properties for this resource.
+	Properties *ClusterMeshProfileProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterMeshProfileListResult - The response of a ClusterMeshProfile list operation.
+type ClusterMeshProfileListResult struct {
+	// REQUIRED; The ClusterMeshProfile items on this page
+	Value []*ClusterMeshProfile
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ClusterMeshProfileProperties - A cluster mesh profile stores the general information about the mesh.
+type ClusterMeshProfileProperties struct {
+	// Select the members of the mesh.
+	// * Only key/value pairs with the `=` operator are accepted in the label selector.
+	// * If empty or not specified, no Fleet members will be selected to join the mesh.
+	MemberSelector *MemberSelector
+
+	// READ-ONLY; The provisioning state of the cluster mesh profile.
+	ProvisioningState *ClusterMeshProfileProvisioningState
+
+	// READ-ONLY; The cluster mesh profile status.
+	Status *ClusterMeshProfileStatus
+}
+
+// ClusterMeshProfileStatus - Status of the cluster mesh.
+type ClusterMeshProfileStatus struct {
+	// READ-ONLY; The state of the cluster mesh.
+	State *ClusterMeshState
+
+	// READ-ONLY; The last applied MemberSelector for the cluster mesh profile.
+	LastAppliedMemberSelector *MemberSelector
+
+	// READ-ONLY; The last operation error of the cluster mesh profile.
+	LastOperationError *ErrorDetail
+
+	// READ-ONLY; The last operation ID for the cluster mesh profile.
+	LastOperationID *string
 }
 
 // ClusterResourcePlacementSpec defines the desired state of ClusterResourcePlacement.
@@ -388,6 +461,9 @@ type FleetMemberProperties struct {
 
 	// The labels for the fleet member.
 	Labels map[string]*string
+
+	// READ-ONLY; The Mesh Member Properties associated with this Fleet Member.
+	MeshProperties *MeshProperties
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *FleetMemberProvisioningState
@@ -654,6 +730,12 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
+// MemberSelector - Select members of a fleet.
+type MemberSelector struct {
+	// REQUIRED; Kubernetes-style label selector for selecting Fleet members, e.g. `env=production`.
+	ByLabel *string
+}
+
 // MemberUpdateStatus - The status of a member update operation.
 type MemberUpdateStatus struct {
 	// READ-ONLY; The Azure resource id of the target Kubernetes cluster.
@@ -670,6 +752,33 @@ type MemberUpdateStatus struct {
 
 	// READ-ONLY; The status of the MemberUpdate operation.
 	Status *UpdateStatus
+}
+
+// MeshMemberStatus - Status of the mesh member.
+type MeshMemberStatus struct {
+	// READ-ONLY; The mesh member state.
+	State *MeshMemberState
+
+	// READ-ONLY; The error affecting this member.
+	Error *ErrorDetail
+
+	// READ-ONLY; The last operation ID that affected the mesh properties of the fleet member.
+	LastOperationID *string
+
+	// READ-ONLY; When the status was last updated.
+	LastUpdatedAt *time.Time
+}
+
+// MeshProperties - The Mesh Member data for a Fleet Member resource.
+type MeshProperties struct {
+	// READ-ONLY; The Cilium cluster properties.
+	CiliumProperties *CiliumProperties
+
+	// READ-ONLY; Resource id of the cluster mesh profile associated with this mesh member.
+	ClusterMeshProfileResourceID *string
+
+	// READ-ONLY; The status of the mesh member.
+	Status *MeshMemberStatus
 }
 
 // NetworkPolicy - The network policy for the managed namespace.
@@ -898,6 +1007,21 @@ type UpdateGroup struct {
 
 	// A list of Gates that will be created before this Group is executed.
 	BeforeGates []*GateConfiguration
+
+	// The max number of upgrades that can run concurrently in this specific group.
+	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate at a time.
+	// Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
+	// Group maxConcurrency has a min value of "1". The max value is min(number of clusters in the group, the stage maxConcurrency).
+	// If no value is provided, defaults to 1.
+	// Accepts either:
+	// • A fixed count, e.g. "3"
+	// • A percentage, e.g. "25%" (range 1–100). Percentage is of the number of clusters in the group.
+	// Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+	// Examples:
+	// • "3" --> up to 3 members from this group upgrade at once.
+	// • "100%" --> “all at once”, up to all members for this group upgrade at the same time.
+	// • "25%" --> up to 25% of the members in the group will be upgraded at the same time.
+	MaxConcurrency *string
 }
 
 // UpdateGroupStatus - The status of a UpdateGroup.
@@ -907,6 +1031,10 @@ type UpdateGroupStatus struct {
 
 	// READ-ONLY; The list of Gates that will run before this UpdateGroup.
 	BeforeGates []*UpdateRunGateStatus
+
+	// READ-ONLY; The max number of upgrades that can run concurrently in this group, resolved from the UpdateStrategy.UpdateGroup.maxConcurrency
+	// value. If no value was provided, this value defaults to "1".
+	MaxConcurrency *int32
 
 	// READ-ONLY; The list of member this UpdateGroup updates.
 	Members []*MemberUpdateStatus
@@ -1053,6 +1181,20 @@ type UpdateStage struct {
 
 	// Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
 	Groups []*UpdateGroup
+
+	// The max number of upgrades that can run concurrently across all groups in this stage.
+	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate at a time.
+	// Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
+	// Stage maxConcurrency has a min value of "1".
+	// Accepts either:
+	// • A fixed count, e.g., "3"
+	// • A percentage, e.g., "25%" (range 1–100). Percentage is of the total number of clusters across all groups in the stage.
+	// Fractional results are rounded down. A minimum of 1 upgrade is enforced.
+	// Examples:
+	// • "3" --> up to 3 clusters from this stage upgrade at once (across all groups).
+	// • "100%" --> “all at once”; up to all clusters in this stage upgrade at the same time.
+	// • "25%" --> up to 25% of the stage’s total clusters upgrade at the same time.
+	MaxConcurrency *string
 }
 
 // UpdateStageStatus - The status of a UpdateStage.
@@ -1068,6 +1210,10 @@ type UpdateStageStatus struct {
 
 	// READ-ONLY; The list of groups to be updated as part of this UpdateStage.
 	Groups []*UpdateGroupStatus
+
+	// READ-ONLY; The max number of upgrades that can run concurrently across all groups in this stage, resolved from the UpdateStrategy.UpdateStage.maxConcurrency
+	// value.
+	MaxConcurrency *int32
 
 	// READ-ONLY; The name of the UpdateStage.
 	Name *string

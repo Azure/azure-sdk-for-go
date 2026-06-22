@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreate.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreate.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientCreateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -85,7 +85,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreateWithAzureFrontDoor.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreateWithAzureFrontDoor.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithAzureFrontDoor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,13 +115,13 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithA
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientCreateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
 	// 			ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
@@ -165,7 +165,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithA
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreateWithDataPlaneProxy.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreateWithDataPlaneProxy.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithDataPlaneProxy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,13 +193,13 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithD
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientCreateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -237,7 +237,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithD
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreateWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreateWithIdentity.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,13 +268,13 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientCreateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -327,7 +327,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithI
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreateWithLocalAuthDisabled.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreateWithLocalAuthDisabled.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithLocalAuthDisabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,13 +356,13 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithL
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientCreateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -403,7 +403,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithL
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresCreateWithTelemetry.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresCreateWithTelemetry.json
 func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithTelemetry() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,13 +433,13 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithT
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientCreateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -483,7 +483,7 @@ func ExampleConfigurationStoresClient_BeginCreate_configurationStoresCreateWithT
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresDelete.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresDelete.json
 func ExampleConfigurationStoresClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -500,7 +500,7 @@ func ExampleConfigurationStoresClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -509,7 +509,7 @@ func ExampleConfigurationStoresClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresGet.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresGet.json
 func ExampleConfigurationStoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -528,7 +528,7 @@ func ExampleConfigurationStoresClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientGetResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -575,7 +575,7 @@ func ExampleConfigurationStoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/DeletedConfigurationStoresGet.json
+// Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresGet.json
 func ExampleConfigurationStoresClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -594,7 +594,7 @@ func ExampleConfigurationStoresClient_GetDeleted() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientGetDeletedResponse{
-	// 	DeletedConfigurationStore: &armappconfiguration.DeletedConfigurationStore{
+	// 	DeletedConfigurationStore: armappconfiguration.DeletedConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/deletedConfigurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/locations/westus/deletedConfigurationStores/contoso"),
@@ -611,7 +611,7 @@ func ExampleConfigurationStoresClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresList.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresList.json
 func ExampleConfigurationStoresClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -730,7 +730,7 @@ func ExampleConfigurationStoresClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresListByResourceGroup.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresListByResourceGroup.json
 func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -839,7 +839,7 @@ func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/DeletedConfigurationStoresList.json
+// Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresList.json
 func ExampleConfigurationStoresClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -885,7 +885,7 @@ func ExampleConfigurationStoresClient_NewListDeletedPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresListKeys.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresListKeys.json
 func ExampleConfigurationStoresClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -948,7 +948,7 @@ func ExampleConfigurationStoresClient_NewListKeysPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/DeletedConfigurationStoresPurge.json
+// Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresPurge.json
 func ExampleConfigurationStoresClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -965,7 +965,7 @@ func ExampleConfigurationStoresClient_BeginPurgeDeleted() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -974,7 +974,7 @@ func ExampleConfigurationStoresClient_BeginPurgeDeleted() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresRegenerateKey.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresRegenerateKey.json
 func ExampleConfigurationStoresClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -995,7 +995,7 @@ func ExampleConfigurationStoresClient_RegenerateKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientRegenerateKeyResponse{
-	// 	APIKey: &armappconfiguration.APIKey{
+	// 	APIKey: armappconfiguration.APIKey{
 	// 		Name: to.Ptr("Primary"),
 	// 		ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 	// 		ID: to.Ptr("439AD01B4BE67DB1"),
@@ -1006,7 +1006,7 @@ func ExampleConfigurationStoresClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresUpdate.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresUpdate.json
 func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1030,13 +1030,13 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientUpdateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -1079,7 +1079,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresUpdateDisableLocalAuth.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresUpdateDisableLocalAuth.json
 func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1103,13 +1103,13 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateDisab
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientUpdateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
@@ -1151,7 +1151,7 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateDisab
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/ConfigurationStoresUpdateWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresUpdateWithIdentity.json
 func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1181,13 +1181,13 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientUpdateResponse{
-	// 	ConfigurationStore: &armappconfiguration.ConfigurationStore{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
 	// 		Name: to.Ptr("contoso"),
 	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
 	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),

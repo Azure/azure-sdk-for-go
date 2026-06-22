@@ -4,13 +4,13 @@
 
 package armcloudhealth
 
-// AuthenticationSettingsClientCreateOrUpdateResponse contains the response from method AuthenticationSettingsClient.CreateOrUpdate.
+// AuthenticationSettingsClientCreateOrUpdateResponse contains the response from method AuthenticationSettingsClient.BeginCreateOrUpdate.
 type AuthenticationSettingsClientCreateOrUpdateResponse struct {
 	// An authentication setting in a health model
 	AuthenticationSetting
 }
 
-// AuthenticationSettingsClientDeleteResponse contains the response from method AuthenticationSettingsClient.Delete.
+// AuthenticationSettingsClientDeleteResponse contains the response from method AuthenticationSettingsClient.BeginDelete.
 type AuthenticationSettingsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -27,14 +27,14 @@ type AuthenticationSettingsClientListByHealthModelResponse struct {
 	AuthenticationSettingListResult
 }
 
-// DiscoveryRulesClientCreateOrUpdateResponse contains the response from method DiscoveryRulesClient.CreateOrUpdate.
+// DiscoveryRulesClientCreateOrUpdateResponse contains the response from method DiscoveryRulesClient.BeginCreateOrUpdate.
 type DiscoveryRulesClientCreateOrUpdateResponse struct {
 	// A discovery rule which automatically finds entities and relationships in a health model based on an Azure Resource Graph
 	// query
 	DiscoveryRule
 }
 
-// DiscoveryRulesClientDeleteResponse contains the response from method DiscoveryRulesClient.Delete.
+// DiscoveryRulesClientDeleteResponse contains the response from method DiscoveryRulesClient.BeginDelete.
 type DiscoveryRulesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -52,21 +52,38 @@ type DiscoveryRulesClientListByHealthModelResponse struct {
 	DiscoveryRuleListResult
 }
 
-// EntitiesClientCreateOrUpdateResponse contains the response from method EntitiesClient.CreateOrUpdate.
+// EntitiesClientCreateOrUpdateResponse contains the response from method EntitiesClient.BeginCreateOrUpdate.
 type EntitiesClientCreateOrUpdateResponse struct {
 	// An entity (aka node) of a health model
 	Entity
 }
 
-// EntitiesClientDeleteResponse contains the response from method EntitiesClient.Delete.
+// EntitiesClientDeleteResponse contains the response from method EntitiesClient.BeginDelete.
 type EntitiesClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// EntitiesClientGetHistoryResponse contains the response from method EntitiesClient.GetHistory.
+type EntitiesClientGetHistoryResponse struct {
+	// Response containing entity health state transitions
+	EntityHistoryResponse
 }
 
 // EntitiesClientGetResponse contains the response from method EntitiesClient.Get.
 type EntitiesClientGetResponse struct {
 	// An entity (aka node) of a health model
 	Entity
+}
+
+// EntitiesClientGetSignalHistoryResponse contains the response from method EntitiesClient.GetSignalHistory.
+type EntitiesClientGetSignalHistoryResponse struct {
+	// Response containing signal history
+	SignalHistoryResponse
+}
+
+// EntitiesClientIngestHealthReportResponse contains the response from method EntitiesClient.IngestHealthReport.
+type EntitiesClientIngestHealthReportResponse struct {
+	// placeholder for future response values
 }
 
 // EntitiesClientListByHealthModelResponse contains the response from method EntitiesClient.NewListByHealthModelPager.
@@ -116,13 +133,13 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// RelationshipsClientCreateOrUpdateResponse contains the response from method RelationshipsClient.CreateOrUpdate.
+// RelationshipsClientCreateOrUpdateResponse contains the response from method RelationshipsClient.BeginCreateOrUpdate.
 type RelationshipsClientCreateOrUpdateResponse struct {
 	// A relationship (aka edge) between two entities in a health model
 	Relationship
 }
 
-// RelationshipsClientDeleteResponse contains the response from method RelationshipsClient.Delete.
+// RelationshipsClientDeleteResponse contains the response from method RelationshipsClient.BeginDelete.
 type RelationshipsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -139,13 +156,13 @@ type RelationshipsClientListByHealthModelResponse struct {
 	RelationshipListResult
 }
 
-// SignalDefinitionsClientCreateOrUpdateResponse contains the response from method SignalDefinitionsClient.CreateOrUpdate.
+// SignalDefinitionsClientCreateOrUpdateResponse contains the response from method SignalDefinitionsClient.BeginCreateOrUpdate.
 type SignalDefinitionsClientCreateOrUpdateResponse struct {
 	// A signal definition in a health model
 	SignalDefinition
 }
 
-// SignalDefinitionsClientDeleteResponse contains the response from method SignalDefinitionsClient.Delete.
+// SignalDefinitionsClientDeleteResponse contains the response from method SignalDefinitionsClient.BeginDelete.
 type SignalDefinitionsClientDeleteResponse struct {
 	// placeholder for future response values
 }

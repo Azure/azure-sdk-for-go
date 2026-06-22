@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01/PolicyCRUD/CreateOrUpdateBackupPolicy.json
+// Generated from example definition: 2026-03-01/PolicyCRUD/CreateOrUpdateBackupPolicy.json
 func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupPoliciesClientCreateOrUpdateResponse{
-	// 	BaseBackupPolicyResource: &armdataprotection.BaseBackupPolicyResource{
+	// 	BaseBackupPolicyResource: armdataprotection.BaseBackupPolicyResource{
 	// 		Name: to.Ptr("OSSDBPolicy"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupPolicies"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PrivatePreviewVault/backupPolicies/OSSDBPolicy"),
@@ -221,7 +221,7 @@ func ExampleBackupPoliciesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/PolicyCRUD/DeleteBackupPolicy.json
+// Generated from example definition: 2026-03-01/PolicyCRUD/DeleteBackupPolicy.json
 func ExampleBackupPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleBackupPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/PolicyCRUD/GetBackupPolicy.json
+// Generated from example definition: 2026-03-01/PolicyCRUD/GetBackupPolicy.json
 func ExampleBackupPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleBackupPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupPoliciesClientGetResponse{
-	// 	BaseBackupPolicyResource: &armdataprotection.BaseBackupPolicyResource{
+	// 	BaseBackupPolicyResource: armdataprotection.BaseBackupPolicyResource{
 	// 		Name: to.Ptr("OSSDBPolicy"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupPolicies"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PrivatePreviewVault/backupPolicies/OSSDBPolicy"),
@@ -361,7 +361,7 @@ func ExampleBackupPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/PolicyCRUD/ListBackupPolicy.json
+// Generated from example definition: 2026-03-01/PolicyCRUD/ListBackupPolicy.json
 func ExampleBackupPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

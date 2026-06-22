@@ -36,6 +36,22 @@ type FreeTrialProperties struct {
 	WorkspaceID *string
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // Operation - REST API Operation
 //
 // Details of a REST API operation, returned from the Resource Provider Operations API
@@ -144,10 +160,22 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
 // Workspace - Playwright workspace resource.
 type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
 	Properties *WorkspaceProperties
@@ -205,6 +233,13 @@ type WorkspaceProperties struct {
 	// was created.
 	RegionalAffinity *EnablementStatus
 
+	// Indicates whether reporting is enabled for the workspace. When set to true, reports will be generated and available for
+	// the workspace.
+	Reporting *EnablementStatus
+
+	// The URI of the Azure storage account used to store workspace artifacts, test results, and reports.
+	StorageURI *string
+
 	// READ-ONLY; The workspace data plane service API URI.
 	DataplaneURI *string
 
@@ -253,6 +288,9 @@ type WorkspaceQuotaProperties struct {
 
 // WorkspaceUpdate - The type used for update operations of the PlaywrightWorkspace.
 type WorkspaceUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
 	// The resource-specific properties for this resource.
 	Properties *WorkspaceUpdateProperties
 
@@ -269,4 +307,11 @@ type WorkspaceUpdateProperties struct {
 	// the closest Azure region for lower latency. When disabled, workers connect to browsers in the Azure region where the workspace
 	// was created.
 	RegionalAffinity *EnablementStatus
+
+	// Indicates whether reporting is enabled for the workspace. When set to true, reports will be generated and available for
+	// the workspace.
+	Reporting *EnablementStatus
+
+	// The URI of the Azure storage account used to store workspace artifacts, test results, and reports.
+	StorageURI *string
 }

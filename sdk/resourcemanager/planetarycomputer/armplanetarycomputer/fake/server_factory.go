@@ -50,7 +50,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "GeoCatalogsClient":
-		initServer(s, &s.trGeoCatalogsServer, func() *GeoCatalogsServerTransport { return NewGeoCatalogsServerTransport(&s.srv.GeoCatalogsServer) })
+		initServer(&s.trMu, &s.trGeoCatalogsServer, func() *GeoCatalogsServerTransport { return NewGeoCatalogsServerTransport(&s.srv.GeoCatalogsServer) })
 		resp, err = s.trGeoCatalogsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -61,12 +61,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

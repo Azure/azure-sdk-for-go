@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/WebhookCreate.json
+// Generated from example definition: 2026-01-01-preview/WebhookCreate.json
 func ExampleWebhooksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,13 +45,13 @@ func ExampleWebhooksClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.WebhooksClientCreateResponse{
-	// 	Webhook: &armcontainerregistry.Webhook{
+	// 	Webhook: armcontainerregistry.Webhook{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/webhooks/myWebhook"),
 	// 		Name: to.Ptr("myWebhook"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/webhooks"),
@@ -71,7 +71,7 @@ func ExampleWebhooksClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookDelete.json
+// Generated from example definition: 2026-01-01-preview/WebhookDelete.json
 func ExampleWebhooksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleWebhooksClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -97,7 +97,7 @@ func ExampleWebhooksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookGet.json
+// Generated from example definition: 2026-01-01-preview/WebhookGet.json
 func ExampleWebhooksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleWebhooksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.WebhooksClientGetResponse{
-	// 	Webhook: &armcontainerregistry.Webhook{
+	// 	Webhook: armcontainerregistry.Webhook{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/webhooks/myWebhook"),
 	// 		Name: to.Ptr("myWebhook"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/webhooks"),
@@ -136,7 +136,7 @@ func ExampleWebhooksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookGetCallbackConfig.json
+// Generated from example definition: 2026-01-01-preview/WebhookGetCallbackConfig.json
 func ExampleWebhooksClient_GetCallbackConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleWebhooksClient_GetCallbackConfig() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.WebhooksClientGetCallbackConfigResponse{
-	// 	CallbackConfig: &armcontainerregistry.CallbackConfig{
+	// 	CallbackConfig: armcontainerregistry.CallbackConfig{
 	// 		ServiceURI: to.Ptr("http://myservice.com"),
 	// 		CustomHeaders: map[string]*string{
 	// 			"Authorization": to.Ptr("******"),
@@ -164,7 +164,7 @@ func ExampleWebhooksClient_GetCallbackConfig() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookList.json
+// Generated from example definition: 2026-01-01-preview/WebhookList.json
 func ExampleWebhooksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleWebhooksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/WebhookListEvents.json
+// Generated from example definition: 2026-01-01-preview/WebhookListEvents.json
 func ExampleWebhooksClient_NewListEventsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,7 +290,7 @@ func ExampleWebhooksClient_NewListEventsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/WebhookPing.json
+// Generated from example definition: 2026-01-01-preview/WebhookPing.json
 func ExampleWebhooksClient_Ping() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,13 +309,13 @@ func ExampleWebhooksClient_Ping() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.WebhooksClientPingResponse{
-	// 	EventInfo: &armcontainerregistry.EventInfo{
+	// 	EventInfo: armcontainerregistry.EventInfo{
 	// 		ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/WebhookUpdate.json
+// Generated from example definition: 2026-01-01-preview/WebhookUpdate.json
 func ExampleWebhooksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -347,13 +347,13 @@ func ExampleWebhooksClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.WebhooksClientUpdateResponse{
-	// 	Webhook: &armcontainerregistry.Webhook{
+	// 	Webhook: armcontainerregistry.Webhook{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/webhooks/myWebhook"),
 	// 		Name: to.Ptr("myWebhook"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/webhooks"),

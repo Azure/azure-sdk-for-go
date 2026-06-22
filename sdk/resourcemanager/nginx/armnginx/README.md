@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Nginx module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v4
 ```
 
 ## Authorization

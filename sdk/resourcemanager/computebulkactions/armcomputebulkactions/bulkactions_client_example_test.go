@@ -29,7 +29,7 @@ func ExampleBulkActionsClient_BeginCancel() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -534,13 +534,13 @@ func ExampleBulkActionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientCreateOrUpdateResponse{
-	// 	LocationBasedLaunchBulkInstancesOperation: &armcomputebulkactions.LocationBasedLaunchBulkInstancesOperation{
+	// 	LocationBasedLaunchBulkInstancesOperation: armcomputebulkactions.LocationBasedLaunchBulkInstancesOperation{
 	// 		Properties: &armcomputebulkactions.LaunchBulkInstancesOperationProperties{
 	// 			Capacity: to.Ptr[int32](24),
 	// 			CapacityType: to.Ptr(armcomputebulkactions.CapacityTypeVM),
@@ -1063,7 +1063,7 @@ func ExampleBulkActionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1086,7 +1086,7 @@ func ExampleBulkActionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientGetResponse{
-	// 	LocationBasedLaunchBulkInstancesOperation: &armcomputebulkactions.LocationBasedLaunchBulkInstancesOperation{
+	// 	LocationBasedLaunchBulkInstancesOperation: armcomputebulkactions.LocationBasedLaunchBulkInstancesOperation{
 	// 		Properties: &armcomputebulkactions.LaunchBulkInstancesOperationProperties{
 	// 			Capacity: to.Ptr[int32](24),
 	// 			CapacityType: to.Ptr(armcomputebulkactions.CapacityTypeVM),
@@ -1611,7 +1611,7 @@ func ExampleBulkActionsClient_GetOperationStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientGetOperationStatusResponse{
-	// 	OperationStatusResult: &armcomputebulkactions.OperationStatusResult{
+	// 	OperationStatusResult: armcomputebulkactions.OperationStatusResult{
 	// 		Status: to.Ptr("Succeeded"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-11-25T22:19:26.906Z"); return t}()),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-11-25T22:19:26.906Z"); return t}()),
@@ -2838,7 +2838,7 @@ func ExampleBulkActionsClient_VirtualMachinesCancelOperations_bulkActionsVirtual
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesCancelOperationsResponse{
-	// 	CancelOperationsResponse: &armcomputebulkactions.CancelOperationsResponse{
+	// 	CancelOperationsResponse: armcomputebulkactions.CancelOperationsResponse{
 	// 		Results: []*armcomputebulkactions.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
@@ -2893,7 +2893,7 @@ func ExampleBulkActionsClient_VirtualMachinesCancelOperations_bulkActionsVirtual
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesCancelOperationsResponse{
-	// 	CancelOperationsResponse: &armcomputebulkactions.CancelOperationsResponse{
+	// 	CancelOperationsResponse: armcomputebulkactions.CancelOperationsResponse{
 	// 		Results: []*armcomputebulkactions.ResourceOperation{
 	// 			{
 	// 			},
@@ -3023,7 +3023,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteCreate_bulkActionsVirtualMac
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteCreateResponse{
-	// 	CreateResourceOperationResponse: &armcomputebulkactions.CreateResourceOperationResponse{
+	// 	CreateResourceOperationResponse: armcomputebulkactions.CreateResourceOperationResponse{
 	// 		Type: to.Ptr("VirtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Create Resource Request"),
@@ -3081,7 +3081,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteCreate_bulkActionsVirtualMac
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteCreateResponse{
-	// 	CreateResourceOperationResponse: &armcomputebulkactions.CreateResourceOperationResponse{
+	// 	CreateResourceOperationResponse: armcomputebulkactions.CreateResourceOperationResponse{
 	// 		Type: to.Ptr("VirtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Create Resource Request"),
@@ -3121,7 +3121,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteDeallocate_bulkActionsVirtua
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteDeallocateResponse{
-	// 	DeallocateResourceOperationResponse: &armcomputebulkactions.DeallocateResourceOperationResponse{
+	// 	DeallocateResourceOperationResponse: armcomputebulkactions.DeallocateResourceOperationResponse{
 	// 		Type: to.Ptr("VirtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Results: []*armcomputebulkactions.ResourceOperation{
@@ -3182,7 +3182,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteDeallocate_bulkActionsVirtua
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteDeallocateResponse{
-	// 	DeallocateResourceOperationResponse: &armcomputebulkactions.DeallocateResourceOperationResponse{
+	// 	DeallocateResourceOperationResponse: armcomputebulkactions.DeallocateResourceOperationResponse{
 	// 		Type: to.Ptr("VirtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Deallocate Resource Request"),
@@ -3224,7 +3224,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteDelete_bulkActionsVirtualMac
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteDeleteResponse{
-	// 	DeleteResourceOperationResponse: &armcomputebulkactions.DeleteResourceOperationResponse{
+	// 	DeleteResourceOperationResponse: armcomputebulkactions.DeleteResourceOperationResponse{
 	// 		Type: to.Ptr("virtualmachines"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Delete Resource response"),
@@ -3302,7 +3302,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteDelete_bulkActionsVirtualMac
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteDeleteResponse{
-	// 	DeleteResourceOperationResponse: &armcomputebulkactions.DeleteResourceOperationResponse{
+	// 	DeleteResourceOperationResponse: armcomputebulkactions.DeleteResourceOperationResponse{
 	// 		Type: to.Ptr("virtualmachines"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Delete Resource Request"),
@@ -3342,7 +3342,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteHibernate_bulkActionsVirtual
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteHibernateResponse{
-	// 	HibernateResourceOperationResponse: &armcomputebulkactions.HibernateResourceOperationResponse{
+	// 	HibernateResourceOperationResponse: armcomputebulkactions.HibernateResourceOperationResponse{
 	// 		Type: to.Ptr("VirtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Results: []*armcomputebulkactions.ResourceOperation{
@@ -3403,7 +3403,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteHibernate_bulkActionsVirtual
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteHibernateResponse{
-	// 	HibernateResourceOperationResponse: &armcomputebulkactions.HibernateResourceOperationResponse{
+	// 	HibernateResourceOperationResponse: armcomputebulkactions.HibernateResourceOperationResponse{
 	// 		Type: to.Ptr("VirtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Hibernate Resource Request"),
@@ -3443,7 +3443,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteStart_bulkActionsVirtualMach
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteStartResponse{
-	// 	StartResourceOperationResponse: &armcomputebulkactions.StartResourceOperationResponse{
+	// 	StartResourceOperationResponse: armcomputebulkactions.StartResourceOperationResponse{
 	// 		Type: to.Ptr("virtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Results: []*armcomputebulkactions.ResourceOperation{
@@ -3504,7 +3504,7 @@ func ExampleBulkActionsClient_VirtualMachinesExecuteStart_bulkActionsVirtualMach
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesExecuteStartResponse{
-	// 	StartResourceOperationResponse: &armcomputebulkactions.StartResourceOperationResponse{
+	// 	StartResourceOperationResponse: armcomputebulkactions.StartResourceOperationResponse{
 	// 		Type: to.Ptr("virtualMachine"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Start Resource Request"),
@@ -3536,7 +3536,7 @@ func ExampleBulkActionsClient_VirtualMachinesGetOperationStatus_bulkActionsVirtu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesGetOperationStatusResponse{
-	// 	GetOperationStatusResponse: &armcomputebulkactions.GetOperationStatusResponse{
+	// 	GetOperationStatusResponse: armcomputebulkactions.GetOperationStatusResponse{
 	// 		Results: []*armcomputebulkactions.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3"),
@@ -3591,7 +3591,7 @@ func ExampleBulkActionsClient_VirtualMachinesGetOperationStatus_bulkActionsVirtu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcomputebulkactions.BulkActionsClientVirtualMachinesGetOperationStatusResponse{
-	// 	GetOperationStatusResponse: &armcomputebulkactions.GetOperationStatusResponse{
+	// 	GetOperationStatusResponse: armcomputebulkactions.GetOperationStatusResponse{
 	// 		Results: []*armcomputebulkactions.ResourceOperation{
 	// 			{
 	// 			},

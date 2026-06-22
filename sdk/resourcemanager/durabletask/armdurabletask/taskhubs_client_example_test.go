@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/TaskHubs_CreateOrUpdate.json
+// Generated from example definition: 2026-02-01/TaskHubs_CreateOrUpdate.json
 func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,13 +30,13 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdurabletask.TaskHubsClientCreateOrUpdateResponse{
-	// 	TaskHub: &armdurabletask.TaskHub{
+	// 	TaskHub: armdurabletask.TaskHub{
 	// 		Properties: &armdurabletask.TaskHubProperties{
 	// 			ProvisioningState: to.Ptr(armdurabletask.ProvisioningStateSucceeded),
 	// 			DashboardURL: to.Ptr("https://test-db.northcentralus.1.durabletask.io/taskhubs/testtaskhub"),
@@ -56,7 +56,7 @@ func ExampleTaskHubsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TaskHubs_Delete.json
+// Generated from example definition: 2026-02-01/TaskHubs_Delete.json
 func ExampleTaskHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,11 +73,11 @@ func ExampleTaskHubsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/TaskHubs_Get.json
+// Generated from example definition: 2026-02-01/TaskHubs_Get.json
 func ExampleTaskHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleTaskHubsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdurabletask.TaskHubsClientGetResponse{
-	// 	TaskHub: &armdurabletask.TaskHub{
+	// 	TaskHub: armdurabletask.TaskHub{
 	// 		Properties: &armdurabletask.TaskHubProperties{
 	// 			ProvisioningState: to.Ptr(armdurabletask.ProvisioningStateSucceeded),
 	// 			DashboardURL: to.Ptr("https://test-db.northcentralus.1.durabletask.io/taskhubs/testtaskhub"),
@@ -116,7 +116,7 @@ func ExampleTaskHubsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/TaskHubs_ListByScheduler.json
+// Generated from example definition: 2026-02-01/TaskHubs_ListByScheduler.json
 func ExampleTaskHubsClient_NewListBySchedulerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

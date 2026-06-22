@@ -59,7 +59,7 @@ extends:
 
           - task: GoTool@0
             inputs:
-              version: '1.22.0'
+              version: '1.26.1'
             displayName: "Select Go Version"
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
@@ -68,7 +68,7 @@ extends:
             parameters:
               ServiceDirectory: 'data/azcosmos'
               Image: $(vm.image)
-              GoVersion: '1.22.0'
+              GoVersion: '1.26.1'
               EnableRaceDetector: true
               EnvVars:
                 EMULATOR: 'true'

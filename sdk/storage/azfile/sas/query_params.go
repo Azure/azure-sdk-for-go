@@ -142,6 +142,7 @@ type QueryParameters struct {
 	unauthorizedObjectID        string    `param:"suoid"`
 	correlationID               string    `param:"scid"`
 	signedDelegatedUserObjectID string    `param:"sduoid"`
+	signedDelegatedUserTenantID string    `param:"skdutid"`
 	// private member used for startTime and expiryTime formatting.
 	stTimeFormat string
 	seTimeFormat string
@@ -237,6 +238,16 @@ func (p *QueryParameters) ContentType() string {
 	return p.contentType
 }
 
+// SignedDelegatedUserObjectID returns SignedDelegatedUserObjectID
+func (p *QueryParameters) SignedDelegatedUserObjectID() string {
+	return p.signedDelegatedUserObjectID
+}
+
+// SignedDelegatedUserTenantID returns SignedDelegatedUserTenantID
+func (p *QueryParameters) SignedDelegatedUserTenantID() string {
+	return p.signedDelegatedUserTenantID
+}
+
 // Encode encodes the SAS query parameters into URL encoded form sorted by key.
 func (p *QueryParameters) Encode() string {
 	v := url.Values{}
@@ -311,6 +322,9 @@ func (p *QueryParameters) Encode() string {
 	}
 	if p.signedDelegatedUserObjectID != "" {
 		v.Add("sduoid", p.signedDelegatedUserObjectID)
+	}
+	if p.signedDelegatedUserTenantID != "" {
+		v.Add("skdutid", p.signedDelegatedUserTenantID)
 	}
 
 	return v.Encode()
@@ -388,6 +402,8 @@ func NewQueryParameters(values url.Values, deleteSASParametersFromValues bool) Q
 			p.correlationID = val
 		case "sduoid":
 			p.signedDelegatedUserObjectID = val
+		case "skdutid":
+			p.signedDelegatedUserTenantID = val
 		default:
 			isSASKey = false // We didn't recognize the query parameter
 		}

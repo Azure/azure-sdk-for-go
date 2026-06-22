@@ -21,19 +21,26 @@ type Response struct {
 	ActivityID string
 	// ETag contains the value from the ETag header.
 	ETag azcore.ETag
+	// Diagnostics contains request diagnostics for the operation.
+	Diagnostics Diagnostics
 }
 
 func newResponse(resp *http.Response) Response {
 	response := Response{}
 	response.RawResponse = resp
-	response.RequestCharge = response.readRequestCharge()
+	response.RequestCharge = readRequestCharge(resp)
 	response.ActivityID = resp.Header.Get(cosmosHeaderActivityId)
 	response.ETag = azcore.ETag(resp.Header.Get(cosmosHeaderEtag))
+	response.Diagnostics = diagnosticsFromResponse(resp)
 	return response
 }
 
-func (c *Response) readRequestCharge() float32 {
-	requestChargeString := c.RawResponse.Header.Get(cosmosHeaderRequestCharge)
+func readRequestCharge(resp *http.Response) float32 {
+	if resp == nil {
+		return 0
+	}
+
+	requestChargeString := resp.Header.Get(cosmosHeaderRequestCharge)
 	if requestChargeString == "" {
 		return 0
 	}

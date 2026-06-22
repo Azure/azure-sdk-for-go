@@ -125,13 +125,91 @@ func TestComputeEPK_Baseline(t *testing.T) {
 			t.Run(category+"/V2/"+tc.Input.Description, func(t *testing.T) {
 				var actual string
 				if spec.multiHash {
-					actual = ComputeV2MultiHash(values)
+					actual = computeV2MultiHash(values)
 				} else {
-					actual = ComputeV2Hash(values)
+					actual = computeV2Hash(values)
 				}
 				require.Equal(t, expectedV2, actual,
 					"V2 hash mismatch for %s (value: %s)", tc.Input.Description, tc.Input.PartitionKeyValue)
 			})
 		}
+	}
+}
+
+func TestCompareEPK_EqualSameLength(t *testing.T) {
+	require.Equal(t, 0, CompareEPK("06AB34CFE4E48223", "06AB34CFE4E48223"))
+}
+
+func TestCompareEPK_LessThan(t *testing.T) {
+	require.Equal(t, -1, CompareEPK("06AB34CFE4E48223", "06AB34CFE4E48224"))
+}
+
+func TestCompareEPK_GreaterThan(t *testing.T) {
+	require.Equal(t, 1, CompareEPK("06AB34CFE4E48224", "06AB34CFE4E48223"))
+}
+
+func TestCompareEPK_ZeroPaddedTailEqual(t *testing.T) {
+	// A 32-char partial EPK should equal its 64-char zero-padded equivalent
+	partial := "06AB34CFE4E482236BCACBBF50E234AB"
+	full := "06AB34CFE4E482236BCACBBF50E234AB00000000000000000000000000000000"
+	require.Equal(t, 0, CompareEPK(partial, full))
+	require.Equal(t, 0, CompareEPK(full, partial))
+}
+
+func TestCompareEPK_NonZeroTailNotEqual(t *testing.T) {
+	partial := "06AB34CFE4E482236BCACBBF50E234AB"
+	full := "06AB34CFE4E482236BCACBBF50E234AB00000000000000000000000000000001"
+	require.Equal(t, -1, CompareEPK(partial, full))
+	require.Equal(t, 1, CompareEPK(full, partial))
+}
+
+func TestCompareEPK_EmptyStrings(t *testing.T) {
+	require.Equal(t, 0, CompareEPK("", ""))
+	require.Equal(t, 0, CompareEPK("", "00000"))
+	require.Equal(t, -1, CompareEPK("", "00001"))
+}
+
+func TestCompareEPK_FFSentinel(t *testing.T) {
+	// "FF" should be greater than any masked EPK (first hex digit in [0-3])
+	require.Equal(t, 1, CompareEPK("FF", "3FFFFFFFFFFFFFFF"))
+	require.Equal(t, -1, CompareEPK("3FFFFFFFFFFFFFFF", "FF"))
+}
+
+func TestMaskTopBitsForRouting(t *testing.T) {
+	// Already valid (first byte ≤ 0x3F) — unchanged
+	require.Equal(t, "3FAABBCC", maskTopBitsForRouting("3FAABBCC"))
+	// 0xFF & 0x3F = 0x3F
+	require.Equal(t, "3FAABBCC", maskTopBitsForRouting("FFAABBCC"))
+	// 0xC0 & 0x3F = 0x00
+	require.Equal(t, "00AABBCC", maskTopBitsForRouting("C0AABBCC"))
+	// 0x80 & 0x3F = 0x00
+	require.Equal(t, "00112233", maskTopBitsForRouting("80112233"))
+	// 0x40 & 0x3F = 0x00
+	require.Equal(t, "00112233", maskTopBitsForRouting("40112233"))
+	// Edge: empty string
+	require.Equal(t, "", maskTopBitsForRouting(""))
+	// Edge: single char
+	require.Equal(t, "A", maskTopBitsForRouting("A"))
+}
+
+func TestComputeV2HashForRouting_MaskingApplied(t *testing.T) {
+	// null produces a raw V2 hash with first byte 0x77, which should be masked to 0x37
+	result := ComputeV2HashForRouting([]interface{}{nil})
+	require.True(t, len(result) >= 2, "result should be at least 2 hex chars")
+	// After masking, the first hex digit must be in [0-3]
+	firstDigit := result[0]
+	require.True(t, firstDigit >= '0' && firstDigit <= '3',
+		"first hex digit should be in [0-3] after masking, got %c", firstDigit)
+}
+
+func TestComputeV2MultiHashForRouting_MaskingApplied(t *testing.T) {
+	// Each 32-char component should have its first byte masked independently
+	result := ComputeV2MultiHashForRouting([]interface{}{"hello", "world"})
+	require.Equal(t, 64, len(result), "two components should produce 64 hex chars")
+	// Check first byte of each 32-char component is in [0x00, 0x3F]
+	for i := 0; i < 2; i++ {
+		firstDigit := result[i*32]
+		require.True(t, firstDigit >= '0' && firstDigit <= '3',
+			"component %d first hex digit should be in [0-3] after masking, got %c", i, firstDigit)
 	}
 }

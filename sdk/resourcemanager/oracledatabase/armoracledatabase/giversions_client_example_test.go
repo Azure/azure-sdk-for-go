@@ -31,7 +31,7 @@ func ExampleGiVersionsClient_Get_getAGiVersionByNameGeneratedByMaximumSetRule() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.GiVersionsClientGetResponse{
-	// 	GiVersion: &armoracledatabase.GiVersion{
+	// 	GiVersion: armoracledatabase.GiVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
 	// 		Type: to.Ptr("Oracle.Database/locations/giVersions"),
 	// 		Properties: &armoracledatabase.GiVersionProperties{
@@ -69,7 +69,7 @@ func ExampleGiVersionsClient_Get_getAGiVersionByNameGeneratedByMinimumSetRule() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.GiVersionsClientGetResponse{
-	// 	GiVersion: &armoracledatabase.GiVersion{
+	// 	GiVersion: armoracledatabase.GiVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
 	// 	},
 	// }
@@ -94,7 +94,7 @@ func ExampleGiVersionsClient_Get_giVersionsGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.GiVersionsClientGetResponse{
-	// 	GiVersion: &armoracledatabase.GiVersion{
+	// 	GiVersion: armoracledatabase.GiVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/giVersions/19.0.0.0"),
 	// 		Type: to.Ptr("Oracle.Database/locations/giVersions"),
 	// 		Properties: &armoracledatabase.GiVersionProperties{

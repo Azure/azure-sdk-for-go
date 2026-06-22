@@ -1,5 +1,32 @@
 # Release History
 
+## 3.1.0-beta.2 (2026-04-28)
+### Features Added
+
+- New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `IssueType` with values `IssueTypeConfigurationPropagationFailure`, `IssueTypeMissingIdentityConfiguration`, `IssueTypeMissingPerimeterConfiguration`, `IssueTypeUnknown`
+- New enum type `NetworkSecurityPerimeterConfigurationProvisioningState` with values `NetworkSecurityPerimeterConfigurationProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigurationProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigurationProvisioningStateCreating`, `NetworkSecurityPerimeterConfigurationProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigurationProvisioningStateFailed`, `NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigurationProvisioningStateUpdating`
+- New enum type `ResourceAssociationAccessMode` with values `ResourceAssociationAccessModeAudit`, `ResourceAssociationAccessModeEnforced`, `ResourceAssociationAccessModeLearning`
+- New enum type `Severity` with values `SeverityError`, `SeverityWarning`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.Get(ctx context.Context, resourceGroupName string, configStoreName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientGetOptions) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListByConfigurationStorePager(resourceGroupName string, configStoreName string, options *NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListByConfigurationStoreResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.BeginReconcile(ctx context.Context, resourceGroupName string, configStoreName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*runtime.Poller[NetworkSecurityPerimeterConfigurationsClientReconcileResponse], error)`
+- New struct `AccessRule`
+- New struct `AccessRuleProperties`
+- New struct `AccessRulePropertiesSubscription`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityProfile`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New struct `ResourceAssociation`
+
+
 ## 3.1.0-beta.1 (2026-01-16)
 ### Features Added
 

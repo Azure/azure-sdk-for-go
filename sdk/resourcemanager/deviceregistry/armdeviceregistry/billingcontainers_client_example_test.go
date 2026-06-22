@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/Get_BillingContainer.json
+// Generated from example definition: 2026-03-01-preview/Get_BillingContainer.json
 func ExampleBillingContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleBillingContainersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.BillingContainersClientGetResponse{
-	// 	BillingContainer: &armdeviceregistry.BillingContainer{
+	// 	BillingContainer: armdeviceregistry.BillingContainer{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DeviceRegistry/billingContainers/my-billingContainer"),
 	// 		Name: to.Ptr("my-billingContainer"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/billingcontainers"),
@@ -50,7 +50,7 @@ func ExampleBillingContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/List_BillingContainers_BySubscription.json
+// Generated from example definition: 2026-03-01-preview/List_BillingContainers_BySubscription.json
 func ExampleBillingContainersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

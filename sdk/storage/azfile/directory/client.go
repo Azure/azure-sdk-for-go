@@ -40,6 +40,7 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 		InsecureAllowCredentialWithHTTP: conOptions.InsecureAllowCredentialWithHTTP,
 	})
 	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -58,7 +59,7 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(directoryURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{}
+	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
@@ -77,6 +78,7 @@ func NewClientWithSharedKeyCredential(directoryURL string, cred *SharedKeyCreden
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewRangePolicy()},
 		PerRetry: []policy.Policy{authPolicy},
 	}
 	base.SetPipelineOptions((*base.ClientOptions)(conOptions), &plOpts)
@@ -151,18 +153,16 @@ func (d *Client) NewFileClient(fileName string) *file.Client {
 // file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-directory.
 func (d *Client) Create(ctx context.Context, options *CreateOptions) (CreateResponse, error) {
-	opts := options.format()
-	resp, err := d.generated().Create(ctx, opts)
-	return resp, err
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot)
+	return d.generated().Create(ctx, opts)
 }
 
 // Delete operation removes the specified empty directory. Note that the directory must be empty before it can be deleted.
 // Deleting directories that aren't empty returns error 409 (Directory Not Empty).
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/delete-directory.
 func (d *Client) Delete(ctx context.Context, options *DeleteOptions) (DeleteResponse, error) {
-	opts := options.format()
-	resp, err := d.generated().Delete(ctx, opts)
-	return resp, err
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot)
+	return d.generated().Delete(ctx, opts)
 }
 
 // Rename operation renames a directory, and can optionally set system properties for the directory.
@@ -175,7 +175,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, errors.New("destination path must not be empty")
 	}
 
-	opts, destLease, smbInfo := options.format()
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot, d.getClientOptions().AllowSourceTrailingDot)
 
 	urlParts, err := sas.ParseURL(d.URL())
 	if err != nil {
@@ -198,7 +198,7 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 
 	destDirClient := (*Client)(base.NewDirectoryClient(destURL, d.generated().InternalClient(), d.sharedKey(), d.getClientOptions()))
 
-	resp, err := destDirClient.generated().Rename(ctx, d.URL(), opts, nil, destLease, smbInfo)
+	resp, err := destDirClient.generated().Rename(ctx, d.URL(), opts)
 	return RenameResponse{
 		DirectoryClientRenameResponse: resp,
 	}, err
@@ -208,26 +208,23 @@ func (d *Client) Rename(ctx context.Context, destinationPath string, options *Re
 // file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-directory-properties.
 func (d *Client) GetProperties(ctx context.Context, options *GetPropertiesOptions) (GetPropertiesResponse, error) {
-	opts := options.format()
-	resp, err := d.generated().GetProperties(ctx, opts)
-	return resp, err
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot)
+	return d.generated().GetProperties(ctx, opts)
 }
 
 // SetProperties operation sets system properties for the specified directory.
 // file.ParseNTFSFileAttributes method can be used to convert the file attributes returned in response to NTFSFileAttributes.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-directory-properties.
 func (d *Client) SetProperties(ctx context.Context, options *SetPropertiesOptions) (SetPropertiesResponse, error) {
-	opts := options.format()
-	resp, err := d.generated().SetProperties(ctx, opts)
-	return resp, err
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot)
+	return d.generated().SetProperties(ctx, opts)
 }
 
 // SetMetadata operation sets user-defined metadata for the specified directory.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-directory-metadata.
 func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (SetMetadataResponse, error) {
-	opts := options.format()
-	resp, err := d.generated().SetMetadata(ctx, opts)
-	return resp, err
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot)
+	return d.generated().SetMetadata(ctx, opts)
 }
 
 // ForceCloseHandles operation closes a handle or handles opened on a directory.
@@ -235,23 +232,23 @@ func (d *Client) SetMetadata(ctx context.Context, options *SetMetadataOptions) (
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/force-close-handles.
 func (d *Client) ForceCloseHandles(ctx context.Context, handleID string, options *ForceCloseHandlesOptions) (ForceCloseHandlesResponse, error) {
-	opts := options.format()
-	resp, err := d.generated().ForceCloseHandles(ctx, handleID, opts)
-	return resp, err
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot)
+	return d.generated().ForceCloseHandles(ctx, handleID, opts)
 }
 
 // ListHandles operation returns a list of open handles on a directory.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-handles.
 func (d *Client) ListHandles(ctx context.Context, options *ListHandlesOptions) (ListHandlesResponse, error) {
-	opts := options.format()
-	resp, err := d.generated().ListHandles(ctx, opts)
-	return resp, err
+	opts := options.format(d.getClientOptions().FileRequestIntent, d.getClientOptions().AllowTrailingDot)
+	return d.generated().ListHandles(ctx, opts)
 }
 
 // NewListFilesAndDirectoriesPager operation returns a pager for the files and directories starting from the specified Marker.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-directories-and-files.
 func (d *Client) NewListFilesAndDirectoriesPager(options *ListFilesAndDirectoriesOptions) *runtime.Pager[ListFilesAndDirectoriesResponse] {
 	listOptions := generated.DirectoryClientListFilesAndDirectoriesSegmentOptions{}
+	listOptions.FileRequestIntent = d.getClientOptions().FileRequestIntent
+	listOptions.AllowTrailingDot = d.getClientOptions().AllowTrailingDot
 	if options != nil {
 		listOptions.Include = options.Include.format()
 		listOptions.IncludeExtendedInfo = options.IncludeExtendedInfo
@@ -259,6 +256,8 @@ func (d *Client) NewListFilesAndDirectoriesPager(options *ListFilesAndDirectorie
 		listOptions.Maxresults = options.MaxResults
 		listOptions.Prefix = options.Prefix
 		listOptions.Sharesnapshot = options.ShareSnapshot
+		listOptions.FileRequestIntent = d.getClientOptions().FileRequestIntent
+		listOptions.AllowTrailingDot = d.getClientOptions().AllowTrailingDot
 	}
 
 	return runtime.NewPager(runtime.PagingHandler[ListFilesAndDirectoriesResponse]{

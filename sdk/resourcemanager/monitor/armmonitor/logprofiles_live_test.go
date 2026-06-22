@@ -14,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitor"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -35,7 +35,7 @@ func (testsuite *LogprofilesTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), pathToPackage)
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.storageAccountName = "monitorsana"
+	testsuite.storageAccountName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "monitorsana", 18, true)
 	testsuite.location = recording.GetEnvVariable("LOCATION", "eastus")
 	testsuite.resourceGroupName = recording.GetEnvVariable("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
 	testsuite.subscriptionId = recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
@@ -120,14 +120,14 @@ func (testsuite *LogprofilesTestSuite) Prepare() {
 		},
 		"variables": map[string]interface{}{},
 	}
-	params := map[string]interface{}{
-		"storageAccountName": map[string]interface{}{"value": testsuite.storageAccountName},
+	params := map[string]*armdeployments.DeploymentParameter{
+		"storageAccountName": {Value: testsuite.storageAccountName},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template:   template,
 			Parameters: params,
-			Mode:       to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:       to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "StorageAccount_Create", &deployment)

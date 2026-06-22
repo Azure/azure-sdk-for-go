@@ -4,6 +4,10 @@
 
 package armdataprotection
 
+const (
+	version20260301 string = "2026-03-01"
+)
+
 type AKSVolumeTypes string
 
 const (
@@ -89,6 +93,34 @@ func PossibleBCDRSecurityLevelValues() []BCDRSecurityLevel {
 		BCDRSecurityLevelGood,
 		BCDRSecurityLevelNotSupported,
 		BCDRSecurityLevelPoor,
+	}
+}
+
+// BlobBackupPatternType - Pattern type. Only Prefix supported for now.
+type BlobBackupPatternType string
+
+const (
+	BlobBackupPatternTypePrefix BlobBackupPatternType = "Prefix"
+)
+
+// PossibleBlobBackupPatternTypeValues returns the possible values for the BlobBackupPatternType const type.
+func PossibleBlobBackupPatternTypeValues() []BlobBackupPatternType {
+	return []BlobBackupPatternType{
+		BlobBackupPatternTypePrefix,
+	}
+}
+
+// BlobBackupRuleMode - Rule mode (Only Exclude supported for now).
+type BlobBackupRuleMode string
+
+const (
+	BlobBackupRuleModeExclude BlobBackupRuleMode = "Exclude"
+)
+
+// PossibleBlobBackupRuleModeValues returns the possible values for the BlobBackupRuleMode const type.
+func PossibleBlobBackupRuleModeValues() []BlobBackupRuleMode {
+	return []BlobBackupRuleMode{
+		BlobBackupRuleModeExclude,
 	}
 }
 

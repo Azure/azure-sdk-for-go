@@ -6,6 +6,27 @@ package armservicefabricmanagedclusters
 
 import "encoding/json"
 
+func unmarshalFaultSimulationContentClassification(rawMsg json.RawMessage) (FaultSimulationContentClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b FaultSimulationContentClassification
+	switch m["faultKind"] {
+	case string(FaultKindZone):
+		b = &ZoneFaultSimulationContent{}
+	default:
+		b = &FaultSimulationContent{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalPartitionClassification(rawMsg json.RawMessage) (PartitionClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -16,12 +37,12 @@ func unmarshalPartitionClassification(rawMsg json.RawMessage) (PartitionClassifi
 	}
 	var b PartitionClassification
 	switch m["partitionScheme"] {
-	case string(PartitionSchemeUniformInt64Range):
-		b = &UniformInt64RangePartitionScheme{}
-	case string(PartitionSchemeSingleton):
-		b = &SingletonPartitionScheme{}
 	case string(PartitionSchemeNamed):
 		b = &NamedPartitionScheme{}
+	case string(PartitionSchemeSingleton):
+		b = &SingletonPartitionScheme{}
+	case string(PartitionSchemeUniformInt64Range):
+		b = &UniformInt64RangePartitionScheme{}
 	default:
 		b = &Partition{}
 	}
@@ -89,14 +110,14 @@ func unmarshalServicePlacementPolicyClassification(rawMsg json.RawMessage) (Serv
 	switch m["type"] {
 	case string(ServicePlacementPolicyTypeInvalidDomain):
 		b = &ServicePlacementInvalidDomainPolicy{}
-	case string(ServicePlacementPolicyTypeRequiredDomain):
-		b = &ServicePlacementRequiredDomainPolicy{}
-	case string(ServicePlacementPolicyTypePreferredPrimaryDomain):
-		b = &ServicePlacementPreferPrimaryDomainPolicy{}
-	case string(ServicePlacementPolicyTypeRequiredDomainDistribution):
-		b = &ServicePlacementRequireDomainDistributionPolicy{}
 	case string(ServicePlacementPolicyTypeNonPartiallyPlaceService):
 		b = &ServicePlacementNonPartiallyPlaceServicePolicy{}
+	case string(ServicePlacementPolicyTypePreferredPrimaryDomain):
+		b = &ServicePlacementPreferPrimaryDomainPolicy{}
+	case string(ServicePlacementPolicyTypeRequiredDomain):
+		b = &ServicePlacementRequiredDomainPolicy{}
+	case string(ServicePlacementPolicyTypeRequiredDomainDistribution):
+		b = &ServicePlacementRequireDomainDistributionPolicy{}
 	default:
 		b = &ServicePlacementPolicy{}
 	}

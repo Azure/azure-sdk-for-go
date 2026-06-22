@@ -18,6 +18,8 @@ import (
 
 // AutonomousDatabaseVersionsClient contains the methods for the AutonomousDatabaseVersions group.
 // Don't use this type directly, use NewAutonomousDatabaseVersionsClient() instead.
+//
+// Generated from API version 2025-09-01
 type AutonomousDatabaseVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAutonomousDatabaseVersionsClient(subscriptionID string, credential azcor
 
 // Get - Get a AutonomousDbVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - autonomousdbversionsname - AutonomousDbVersion name
 //   - options - AutonomousDatabaseVersionsClientGetOptions contains the optional parameters for the AutonomousDatabaseVersionsClient.Get
@@ -89,8 +89,8 @@ func (client *AutonomousDatabaseVersionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +105,6 @@ func (client *AutonomousDatabaseVersionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByLocationPager - List AutonomousDbVersion resources by SubscriptionLocationResource
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - AutonomousDatabaseVersionsClientListByLocationOptions contains the optional parameters for the AutonomousDatabaseVersionsClient.NewListByLocationPager
 //     method.
@@ -149,8 +147,8 @@ func (client *AutonomousDatabaseVersionsClient) listByLocationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

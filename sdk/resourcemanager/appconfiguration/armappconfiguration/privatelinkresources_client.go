@@ -18,6 +18,8 @@ import (
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
+//
+// Generated from API version 2025-08-01-preview
 type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Gets a private link resource that need to be created for a configuration store.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - groupName - The name of the private link resource group.
@@ -94,8 +94,8 @@ func (client *PrivateLinkResourcesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +110,6 @@ func (client *PrivateLinkResourcesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByConfigurationStorePager - Gets the private link resources that need to be created for a configuration store.
-//
-// Generated from API version 2025-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configStoreName - The name of the configuration store.
 //   - options - PrivateLinkResourcesClientListByConfigurationStoreOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByConfigurationStorePager
@@ -159,8 +157,8 @@ func (client *PrivateLinkResourcesClient) listByConfigurationStoreCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

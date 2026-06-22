@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/CrossRegionRestore/FetchCrossRegionRestoreJobs.json
+// Generated from example definition: 2026-03-01/CrossRegionRestore/FetchCrossRegionRestoreJobs.json
 func ExampleFetchCrossRegionRestoreJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

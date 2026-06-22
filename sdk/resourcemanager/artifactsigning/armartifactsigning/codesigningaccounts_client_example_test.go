@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-13/CodeSigningAccounts_CheckNameAvailability.json
+// Generated from example definition: 2026-05-15-preview/CodeSigningAccounts_CheckNameAvailability.json
 func ExampleCodeSigningAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,13 +34,13 @@ func ExampleCodeSigningAccountsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armartifactsigning.CodeSigningAccountsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armartifactsigning.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armartifactsigning.CheckNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-13/CodeSigningAccounts_Create.json
+// Generated from example definition: 2026-05-15-preview/CodeSigningAccounts_Create.json
 func ExampleCodeSigningAccountsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,13 +64,13 @@ func ExampleCodeSigningAccountsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armartifactsigning.CodeSigningAccountsClientCreateResponse{
-	// 	CodeSigningAccount: &armartifactsigning.CodeSigningAccount{
+	// 	CodeSigningAccount: armartifactsigning.CodeSigningAccount{
 	// 		Name: to.Ptr("MyAccount"),
 	// 		Type: to.Ptr("Microsoft.CodeSigning/codeSigningAccounts"),
 	// 		ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/MyResourceGroup/providers/Microsoft.CodeSigning/codeSigningAccounts/MyAccount"),
@@ -85,7 +85,7 @@ func ExampleCodeSigningAccountsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-13/CodeSigningAccounts_Delete.json
+// Generated from example definition: 2026-05-15-preview/CodeSigningAccounts_Delete.json
 func ExampleCodeSigningAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,11 +102,11 @@ func ExampleCodeSigningAccountsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-10-13/CodeSigningAccounts_Get.json
+// Generated from example definition: 2026-05-15-preview/CodeSigningAccounts_Get.json
 func ExampleCodeSigningAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleCodeSigningAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armartifactsigning.CodeSigningAccountsClientGetResponse{
-	// 	CodeSigningAccount: &armartifactsigning.CodeSigningAccount{
+	// 	CodeSigningAccount: armartifactsigning.CodeSigningAccount{
 	// 		Name: to.Ptr("MyAccount"),
 	// 		Type: to.Ptr("Microsoft.CodeSigning/codeSigningAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.CodeSigning/codeSigningAccounts/MyAccount"),
@@ -143,7 +143,7 @@ func ExampleCodeSigningAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-13/CodeSigningAccounts_ListByResourceGroup.json
+// Generated from example definition: 2026-05-15-preview/CodeSigningAccounts_ListByResourceGroup.json
 func ExampleCodeSigningAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleCodeSigningAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-13/CodeSigningAccounts_ListBySubscription.json
+// Generated from example definition: 2026-05-15-preview/CodeSigningAccounts_ListBySubscription.json
 func ExampleCodeSigningAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleCodeSigningAccountsClient_NewListBySubscriptionPager() {
 		// 	CodeSigningAccountListResult: armartifactsigning.CodeSigningAccountListResult{
 		// 		Value: []*armartifactsigning.CodeSigningAccount{
 		// 			{
-		// 				Name: to.Ptr("alpha"),
+		// 				Name: to.Ptr("MyAccount"),
 		// 				Type: to.Ptr("Microsoft.CodeSigning/codeSigningAccounts"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.CodeSigning/codeSigningAccounts/MyAccount"),
 		// 				Location: to.Ptr("westus"),
@@ -235,7 +235,7 @@ func ExampleCodeSigningAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-13/CodeSigningAccounts_Update.json
+// Generated from example definition: 2026-05-15-preview/CodeSigningAccounts_Update.json
 func ExampleCodeSigningAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,13 +256,13 @@ func ExampleCodeSigningAccountsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armartifactsigning.CodeSigningAccountsClientUpdateResponse{
-	// 	CodeSigningAccount: &armartifactsigning.CodeSigningAccount{
+	// 	CodeSigningAccount: armartifactsigning.CodeSigningAccount{
 	// 		Name: to.Ptr("MyAccount"),
 	// 		Type: to.Ptr("Microsoft.CodeSigning/codeSigningAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/MyResourceGroup/providers/Microsoft.CodeSigning/codeSigningAccounts/MyAccount"),

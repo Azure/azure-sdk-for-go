@@ -86,6 +86,40 @@ type BillingContainersClientListBySubscriptionResponse struct {
 	BillingContainerListResult
 }
 
+// CredentialsClientCreateOrUpdateResponse contains the response from method CredentialsClient.BeginCreateOrUpdate.
+type CredentialsClientCreateOrUpdateResponse struct {
+	// A Credential Resource
+	Credential
+}
+
+// CredentialsClientDeleteResponse contains the response from method CredentialsClient.BeginDelete.
+type CredentialsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CredentialsClientGetResponse contains the response from method CredentialsClient.Get.
+type CredentialsClientGetResponse struct {
+	// A Credential Resource
+	Credential
+}
+
+// CredentialsClientListByResourceGroupResponse contains the response from method CredentialsClient.NewListByResourceGroupPager.
+type CredentialsClientListByResourceGroupResponse struct {
+	// The response of a Credential list operation.
+	CredentialListResult
+}
+
+// CredentialsClientSynchronizeResponse contains the response from method CredentialsClient.BeginSynchronize.
+type CredentialsClientSynchronizeResponse struct {
+	// placeholder for future response values
+}
+
+// CredentialsClientUpdateResponse contains the response from method CredentialsClient.BeginUpdate.
+type CredentialsClientUpdateResponse struct {
+	// A Credential Resource
+	Credential
+}
+
 // NamespaceAssetsClientCreateOrReplaceResponse contains the response from method NamespaceAssetsClient.BeginCreateOrReplace.
 type NamespaceAssetsClientCreateOrReplaceResponse struct {
 	// Asset definition.
@@ -136,6 +170,11 @@ type NamespaceDevicesClientGetResponse struct {
 type NamespaceDevicesClientListByResourceGroupResponse struct {
 	// The response of a NamespaceDevice list operation.
 	NamespaceDeviceListResult
+}
+
+// NamespaceDevicesClientRevokeResponse contains the response from method NamespaceDevicesClient.BeginRevoke.
+type NamespaceDevicesClientRevokeResponse struct {
+	// placeholder for future response values
 }
 
 // NamespaceDevicesClientUpdateResponse contains the response from method NamespaceDevicesClient.BeginUpdate.
@@ -252,6 +291,45 @@ type OperationStatusClientGetResponse struct {
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// PoliciesClientActivateBringYourOwnRootResponse contains the response from method PoliciesClient.BeginActivateBringYourOwnRoot.
+type PoliciesClientActivateBringYourOwnRootResponse struct {
+	// placeholder for future response values
+}
+
+// PoliciesClientCreateOrUpdateResponse contains the response from method PoliciesClient.BeginCreateOrUpdate.
+type PoliciesClientCreateOrUpdateResponse struct {
+	// A Credential Policy
+	Policy
+}
+
+// PoliciesClientDeleteResponse contains the response from method PoliciesClient.BeginDelete.
+type PoliciesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PoliciesClientGetResponse contains the response from method PoliciesClient.Get.
+type PoliciesClientGetResponse struct {
+	// A Credential Policy
+	Policy
+}
+
+// PoliciesClientListByResourceGroupResponse contains the response from method PoliciesClient.NewListByResourceGroupPager.
+type PoliciesClientListByResourceGroupResponse struct {
+	// The response of a Policy list operation.
+	PolicyListResult
+}
+
+// PoliciesClientRevokeIssuerResponse contains the response from method PoliciesClient.BeginRevokeIssuer.
+type PoliciesClientRevokeIssuerResponse struct {
+	// placeholder for future response values
+}
+
+// PoliciesClientUpdateResponse contains the response from method PoliciesClient.BeginUpdate.
+type PoliciesClientUpdateResponse struct {
+	// A Credential Policy
+	Policy
 }
 
 // SchemaRegistriesClientCreateOrReplaceResponse contains the response from method SchemaRegistriesClient.BeginCreateOrReplace.

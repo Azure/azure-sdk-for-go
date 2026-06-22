@@ -18,6 +18,8 @@ import (
 
 // VolumeSnapshotsClient contains the methods for the VolumeSnapshots group.
 // Don't use this type directly, use NewVolumeSnapshotsClient() instead.
+//
+// Generated from API version 2025-09-01
 type VolumeSnapshotsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewVolumeSnapshotsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Create a Volume Snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -69,8 +69,6 @@ func (client *VolumeSnapshotsClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Create a Volume Snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *VolumeSnapshotsClient) create(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, snapshotName string, parameters Snapshot, options *VolumeSnapshotsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VolumeSnapshotsClient.BeginCreate"
@@ -120,8 +118,8 @@ func (client *VolumeSnapshotsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -132,8 +130,6 @@ func (client *VolumeSnapshotsClient) createCreateRequest(ctx context.Context, re
 
 // BeginDelete - Delete a Volume Snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -159,8 +155,6 @@ func (client *VolumeSnapshotsClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Delete a Volume Snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *VolumeSnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, elasticSanName string, volumeGroupName string, snapshotName string, options *VolumeSnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VolumeSnapshotsClient.BeginDelete"
@@ -210,15 +204,13 @@ func (client *VolumeSnapshotsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Volume Snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -274,8 +266,8 @@ func (client *VolumeSnapshotsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -290,8 +282,6 @@ func (client *VolumeSnapshotsClient) getHandleResponse(resp *http.Response) (Vol
 }
 
 // NewListByVolumeGroupPager - List Snapshots in a VolumeGroup or List Snapshots by Volume (name) in a VolumeGroup using filter
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - elasticSanName - The name of the ElasticSan.
 //   - volumeGroupName - The name of the VolumeGroup.
@@ -347,8 +337,8 @@ func (client *VolumeSnapshotsClient) listByVolumeGroupCreateRequest(ctx context.
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

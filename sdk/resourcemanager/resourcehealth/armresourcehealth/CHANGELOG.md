@@ -1,5 +1,22 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-05-20)
+### Breaking Changes
+
+- Field `MaintenanceEndTime`, `MaintenanceStartTime`, `ResourceGroup`, `ResourceName`, `Status` of struct `EventImpactedResourceProperties` has been removed
+- Field `ArgQuery`, `MaintenanceID`, `MaintenanceType` of struct `EventProperties` has been removed
+
+### Features Added
+
+- New value `EventSubTypeValuesForeignExchangeRateChange`, `EventSubTypeValuesMeterIDChanges`, `EventSubTypeValuesOverbilling`, `EventSubTypeValuesPriceChanges`, `EventSubTypeValuesTaxChanges`, `EventSubTypeValuesUnauthorizedPartyAbuse`, `EventSubTypeValuesUnderbilling` added to enum type `EventSubTypeValues`
+- New value `EventTypeValuesBilling` added to enum type `EventTypeValues`
+- New function `*EventClient.FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID(ctx context.Context, eventTrackingID string, options *EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDOptions) (EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse, error)`
+- New field `BillingID`, `CurrencyType`, `EventTags`, `IsEventSensitive`, `NewRate`, `OldRate` in struct `EventProperties`
+- New field `ImpactedServiceGUID` in struct `Impact`
+- New field `PreviousID`, `Priority`, `ServiceGUID` in struct `MetadataSupportedValueDetail`
+- New field `EventTags` in struct `Update`
+
+
 ## 1.4.0-beta.2 (2024-02-07)
 ### Bugs Fixed
 

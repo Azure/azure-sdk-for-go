@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CertificateProfilesServer is a fake server for instances of the armartifactsigning.CertificateProfilesClient type.
@@ -36,9 +37,9 @@ type CertificateProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByCodeSigningAccountPager func(resourceGroupName string, accountName string, options *armartifactsigning.CertificateProfilesClientListByCodeSigningAccountOptions) (resp azfake.PagerResponder[armartifactsigning.CertificateProfilesClientListByCodeSigningAccountResponse])
 
-	// RevokeCertificate is the fake for method CertificateProfilesClient.RevokeCertificate
+	// RevokeCertificates is the fake for method CertificateProfilesClient.RevokeCertificates
 	// HTTP status codes to indicate success: http.StatusNoContent
-	RevokeCertificate func(ctx context.Context, resourceGroupName string, accountName string, profileName string, body armartifactsigning.RevokeCertificate, options *armartifactsigning.CertificateProfilesClientRevokeCertificateOptions) (resp azfake.Responder[armartifactsigning.CertificateProfilesClientRevokeCertificateResponse], errResp azfake.ErrorResponder)
+	RevokeCertificates func(ctx context.Context, resourceGroupName string, accountName string, profileName string, body armartifactsigning.RevokeCertificateList, options *armartifactsigning.CertificateProfilesClientRevokeCertificatesOptions) (resp azfake.Responder[armartifactsigning.CertificateProfilesClientRevokeCertificatesResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCertificateProfilesServerTransport creates a new instance of CertificateProfilesServerTransport with the provided implementation.
@@ -74,9 +75,7 @@ func (c *CertificateProfilesServerTransport) Do(req *http.Request) (*http.Respon
 }
 
 func (c *CertificateProfilesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -93,17 +92,14 @@ func (c *CertificateProfilesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = c.dispatchGet(req)
 			case "CertificateProfilesClient.NewListByCodeSigningAccountPager":
 				res.resp, res.err = c.dispatchNewListByCodeSigningAccountPager(req)
-			case "CertificateProfilesClient.RevokeCertificate":
-				res.resp, res.err = c.dispatchRevokeCertificate(req)
+			case "CertificateProfilesClient.RevokeCertificates":
+				res.resp, res.err = c.dispatchRevokeCertificates(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -155,7 +151,7 @@ func (c *CertificateProfilesServerTransport) dispatchBeginCreate(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		c.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -203,7 +199,7 @@ func (c *CertificateProfilesServerTransport) dispatchBeginDelete(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -241,7 +237,7 @@ func (c *CertificateProfilesServerTransport) dispatchGet(req *http.Request) (*ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CertificateProfile, req)
@@ -282,7 +278,7 @@ func (c *CertificateProfilesServerTransport) dispatchNewListByCodeSigningAccount
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListByCodeSigningAccountPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -292,17 +288,17 @@ func (c *CertificateProfilesServerTransport) dispatchNewListByCodeSigningAccount
 	return resp, nil
 }
 
-func (c *CertificateProfilesServerTransport) dispatchRevokeCertificate(req *http.Request) (*http.Response, error) {
-	if c.srv.RevokeCertificate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method RevokeCertificate not implemented")}
+func (c *CertificateProfilesServerTransport) dispatchRevokeCertificates(req *http.Request) (*http.Response, error) {
+	if c.srv.RevokeCertificates == nil {
+		return nil, &nonRetriableError{errors.New("fake for method RevokeCertificates not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CodeSigning/codeSigningAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificateProfiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revokeCertificate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CodeSigning/codeSigningAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/certificateProfiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/revokeCertificates`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armartifactsigning.RevokeCertificate](req)
+	body, err := server.UnmarshalRequestAsJSON[armartifactsigning.RevokeCertificateList](req)
 	if err != nil {
 		return nil, err
 	}
@@ -318,12 +314,12 @@ func (c *CertificateProfilesServerTransport) dispatchRevokeCertificate(req *http
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := c.srv.RevokeCertificate(req.Context(), resourceGroupNameParam, accountNameParam, profileNameParam, body, nil)
+	respr, errRespr := c.srv.RevokeCertificates(req.Context(), resourceGroupNameParam, accountNameParam, profileNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)

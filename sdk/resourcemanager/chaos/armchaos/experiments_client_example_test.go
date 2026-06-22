@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01/Experiments_Cancel.json
+// Generated from example definition: 2026-05-01-preview/Experiments_Cancel.json
 func ExampleExperimentsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,11 +29,11 @@ func ExampleExperimentsClient_BeginCancel() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-01-01/Experiments_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01-preview/Experiments_CreateOrUpdate.json
 func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,6 +54,10 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 		},
 		Location: to.Ptr("eastus2euap"),
 		Properties: &armchaos.ExperimentProperties{
+			CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+				BlobContainerName:        to.Ptr("azurechaosstudioexperiments"),
+				StorageAccountResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+			},
 			Selectors: []armchaos.TargetSelectorClassification{
 				&armchaos.TargetListSelector{
 					Type: to.Ptr(armchaos.SelectorTypeList),
@@ -97,13 +101,13 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.ExperimentsClientCreateOrUpdateResponse{
-	// 	Experiment: &armchaos.Experiment{
+	// 	Experiment: armchaos.Experiment{
 	// 		Name: to.Ptr("exampleExperiment"),
 	// 		Type: to.Ptr("Microsoft.Chaos/experiments"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
@@ -118,6 +122,10 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armchaos.ExperimentProperties{
+	// 			CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+	// 				BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+	// 				StorageAccountResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
 	// 			Selectors: []armchaos.TargetSelectorClassification{
 	// 				&armchaos.TargetListSelector{
@@ -168,7 +176,7 @@ func ExampleExperimentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/Experiments_Delete.json
+// Generated from example definition: 2026-05-01-preview/Experiments_Delete.json
 func ExampleExperimentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,11 +193,11 @@ func ExampleExperimentsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-01-01/Experiments_ExecutionDetails.json
+// Generated from example definition: 2026-05-01-preview/Experiments_ExecutionDetails.json
 func ExampleExperimentsClient_ExecutionDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +216,7 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.ExperimentsClientExecutionDetailsResponse{
-	// 	ExperimentExecutionDetails: &armchaos.ExperimentExecutionDetails{
+	// 	ExperimentExecutionDetails: armchaos.ExperimentExecutionDetails{
 	// 		Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
 	// 		Type: to.Ptr("Microsoft.Chaos/experiments/executions/getExecutionDetails"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333/getExecutionDetails"),
@@ -262,7 +270,7 @@ func ExampleExperimentsClient_ExecutionDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/Experiments_Get.json
+// Generated from example definition: 2026-05-01-preview/Experiments_Get.json
 func ExampleExperimentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +289,7 @@ func ExampleExperimentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.ExperimentsClientGetResponse{
-	// 	Experiment: &armchaos.Experiment{
+	// 	Experiment: armchaos.Experiment{
 	// 		Name: to.Ptr("exampleExperiment"),
 	// 		Type: to.Ptr("Microsoft.Chaos/experiments"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
@@ -292,6 +300,10 @@ func ExampleExperimentsClient_Get() {
 	// 		},
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armchaos.ExperimentProperties{
+	// 			CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+	// 				BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+	// 				StorageAccountResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+	// 			},
 	// 			Selectors: []armchaos.TargetSelectorClassification{
 	// 				&armchaos.TargetListSelector{
 	// 					Type: to.Ptr(armchaos.SelectorTypeList),
@@ -341,7 +353,7 @@ func ExampleExperimentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/Experiments_GetExecution.json
+// Generated from example definition: 2026-05-01-preview/Experiments_GetExecution.json
 func ExampleExperimentsClient_GetExecution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -360,7 +372,7 @@ func ExampleExperimentsClient_GetExecution() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.ExperimentsClientGetExecutionResponse{
-	// 	ExperimentExecution: &armchaos.ExperimentExecution{
+	// 	ExperimentExecution: armchaos.ExperimentExecution{
 	// 		Name: to.Ptr("f24500ad-744e-4a26-864b-b76199eac333"),
 	// 		Type: to.Ptr("Microsoft.Chaos/experiments/executions"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment/executions/f24500ad-744e-4a26-864b-b76199eac333"),
@@ -373,7 +385,7 @@ func ExampleExperimentsClient_GetExecution() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01/Experiments_List.json
+// Generated from example definition: 2026-05-01-preview/Experiments_List.json
 func ExampleExperimentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +409,7 @@ func ExampleExperimentsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ExperimentsClientListResponse{
 		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2024-11-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-05-01-preview"),
 		// 		Value: []*armchaos.Experiment{
 		// 			{
 		// 				Name: to.Ptr("exampleExperiment"),
@@ -410,6 +422,10 @@ func ExampleExperimentsClient_NewListPager() {
 		// 				},
 		// 				Location: to.Ptr("centraluseuap"),
 		// 				Properties: &armchaos.ExperimentProperties{
+		// 					CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+		// 						BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+		// 						StorageAccountResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+		// 					},
 		// 					Selectors: []armchaos.TargetSelectorClassification{
 		// 						&armchaos.TargetListSelector{
 		// 							Type: to.Ptr(armchaos.SelectorTypeList),
@@ -462,7 +478,7 @@ func ExampleExperimentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/Experiments_ListAll.json
+// Generated from example definition: 2026-05-01-preview/Experiments_ListAll.json
 func ExampleExperimentsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -486,7 +502,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ExperimentsClientListAllResponse{
 		// 	ExperimentListResult: armchaos.ExperimentListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2024-11-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/experiments?continuationToken=&api-version=2026-05-01-preview"),
 		// 		Value: []*armchaos.Experiment{
 		// 			{
 		// 				Name: to.Ptr("exampleExperiment"),
@@ -499,6 +515,10 @@ func ExampleExperimentsClient_NewListAllPager() {
 		// 				},
 		// 				Location: to.Ptr("centraluseuap"),
 		// 				Properties: &armchaos.ExperimentProperties{
+		// 					CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+		// 						BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+		// 						StorageAccountResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+		// 					},
 		// 					Selectors: []armchaos.TargetSelectorClassification{
 		// 						&armchaos.TargetListSelector{
 		// 							Type: to.Ptr(armchaos.SelectorTypeList),
@@ -551,7 +571,7 @@ func ExampleExperimentsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/Experiments_ListAllExecutions.json
+// Generated from example definition: 2026-05-01-preview/Experiments_ListAllExecutions.json
 func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -603,7 +623,7 @@ func ExampleExperimentsClient_NewListAllExecutionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01/Experiments_Start.json
+// Generated from example definition: 2026-05-01-preview/Experiments_Start.json
 func ExampleExperimentsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,11 +640,11 @@ func ExampleExperimentsClient_BeginStart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-01-01/Experiments_Update.json
+// Generated from example definition: 2026-05-01-preview/Experiments_Update.json
 func ExampleExperimentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,13 +672,13 @@ func ExampleExperimentsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.ExperimentsClientUpdateResponse{
-	// 	Experiment: &armchaos.Experiment{
+	// 	Experiment: armchaos.Experiment{
 	// 		Name: to.Ptr("exampleExperiment"),
 	// 		Type: to.Ptr("Microsoft.Chaos/experiments"),
 	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/experiments/exampleExperiment"),
@@ -673,6 +693,10 @@ func ExampleExperimentsClient_BeginUpdate() {
 	// 		},
 	// 		Location: to.Ptr("centraluseuap"),
 	// 		Properties: &armchaos.ExperimentProperties{
+	// 			CustomerDataStorage: &armchaos.CustomerDataStorageProperties{
+	// 				BlobContainerName: to.Ptr("azurechaosstudioexperiments"),
+	// 				StorageAccountResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/exampleStorage"),
+	// 			},
 	// 			Selectors: []armchaos.TargetSelectorClassification{
 	// 				&armchaos.TargetListSelector{
 	// 					Type: to.Ptr(armchaos.SelectorTypeList),

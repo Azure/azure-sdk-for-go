@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/Artifacts_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Artifacts_Get_MaximumSet_Gen.json
 func ExampleArtifactsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleArtifactsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ArtifactsClientGetResponse{
-	// 	Artifact: &armdisconnectedoperations.Artifact{
+	// 	Artifact: armdisconnectedoperations.Artifact{
 	// 		Properties: &armdisconnectedoperations.ArtifactProperties{
 	// 			ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 			ArtifactOrder: to.Ptr[int32](1),
@@ -53,7 +53,7 @@ func ExampleArtifactsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/Artifact_ListByParent_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Artifact_ListByParent_MaximumSet_Gen.json
 func ExampleArtifactsClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleArtifactsClient_NewListByParentPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/Artifact_ListDownloadUri_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-15/Artifact_ListDownloadUri_MaximumSet_Gen.json
 func ExampleArtifactsClient_ListDownloadURI() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleArtifactsClient_ListDownloadURI() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ArtifactsClientListDownloadURIResponse{
-	// 	ArtifactDownloadResult: &armdisconnectedoperations.ArtifactDownloadResult{
+	// 	ArtifactDownloadResult: armdisconnectedoperations.ArtifactDownloadResult{
 	// 		ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 		ArtifactOrder: to.Ptr[int32](1),
 	// 		Title: to.Ptr("artifact pat 1"),

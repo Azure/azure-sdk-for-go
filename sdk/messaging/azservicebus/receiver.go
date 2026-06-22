@@ -523,9 +523,10 @@ func (e *entity) String() (string, error) {
 		return "", errors.New("a queue or subscription was not specified")
 	}
 
-	if e.subqueue == SubQueueDeadLetter {
+	switch e.subqueue {
+	case SubQueueDeadLetter:
 		entityPath += "/$DeadLetterQueue"
-	} else if e.subqueue == SubQueueTransfer {
+	case SubQueueTransfer:
 		entityPath += "/$Transfer/$DeadLetterQueue"
 	}
 
@@ -533,9 +534,10 @@ func (e *entity) String() (string, error) {
 }
 
 func (e *entity) SetSubQueue(subQueue SubQueue) error {
-	if subQueue == 0 {
+	switch subQueue {
+	case 0:
 		return nil
-	} else if subQueue == SubQueueDeadLetter || subQueue == SubQueueTransfer {
+	case SubQueueDeadLetter, SubQueueTransfer:
 		e.subqueue = subQueue
 		return nil
 	}

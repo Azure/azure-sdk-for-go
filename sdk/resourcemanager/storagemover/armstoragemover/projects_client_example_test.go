@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/Projects_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01/Projects_CreateOrUpdate.json
 func ExampleProjectsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleProjectsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ProjectsClientCreateOrUpdateResponse{
-	// 	Project: &armstoragemover.Project{
+	// 	Project: armstoragemover.Project{
 	// 		Name: to.Ptr("examples-projectName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName"),
@@ -46,7 +46,7 @@ func ExampleProjectsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Projects_Delete.json
+// Generated from example definition: 2025-12-01/Projects_Delete.json
 func ExampleProjectsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleProjectsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -72,7 +72,7 @@ func ExampleProjectsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Projects_Get.json
+// Generated from example definition: 2025-12-01/Projects_Get.json
 func ExampleProjectsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleProjectsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ProjectsClientGetResponse{
-	// 	Project: &armstoragemover.Project{
+	// 	Project: armstoragemover.Project{
 	// 		Name: to.Ptr("examples-projectName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName"),
@@ -102,7 +102,7 @@ func ExampleProjectsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/Projects_List.json
+// Generated from example definition: 2025-12-01/Projects_List.json
 func ExampleProjectsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleProjectsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/Projects_Update.json
+// Generated from example definition: 2025-12-01/Projects_Update.json
 func ExampleProjectsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleProjectsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ProjectsClientUpdateResponse{
-	// 	Project: &armstoragemover.Project{
+	// 	Project: armstoragemover.Project{
 	// 		Name: to.Ptr("examples-projectName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projectName"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/examples-projectName"),

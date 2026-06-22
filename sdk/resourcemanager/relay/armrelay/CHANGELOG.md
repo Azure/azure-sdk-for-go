@@ -1,5 +1,28 @@
 # Release History
 
+## 2.0.0-beta.1 (2026-03-19)
+### Breaking Changes
+
+- Type of `Operation.Origin` has been changed from `*string` to `*Origin`
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `ProxyResource` has been removed
+- Struct `Resource` has been removed
+- Struct `ResourceNamespacePatch` has been removed
+- Struct `TrackedResource` has been removed
+- Field `Properties` of struct `Operation` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New field `PublicNetworkAccess`, `TrustedServiceAccessEnabled` in struct `NetworkRuleSetProperties`
+- New field `ActionType` in struct `Operation`
+- New field `SystemData` in struct `PrivateLinkResource`
+- New field `SystemData` in struct `UpdateParameters`
+
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

@@ -427,11 +427,11 @@ type MHSMPrivateEndpointConnectionsListResult struct {
 
 // MHSMPrivateLinkResource - A private link resource
 type MHSMPrivateLinkResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
 	// Managed service identity (system assigned and/or user assigned identities)
 	Identity *ManagedServiceIdentity
-
-	// The supported Azure location where the managed HSM Pool should be created.
-	Location *string
 
 	// Resource properties.
 	Properties *MHSMPrivateLinkResourceProperties
@@ -439,19 +439,19 @@ type MHSMPrivateLinkResource struct {
 	// SKU details
 	SKU *ManagedHsmSKU
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
 
-	// READ-ONLY; The Azure Resource Manager resource ID for the managed HSM Pool.
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
 
-	// READ-ONLY; The name of the managed HSM Pool.
+	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the key vault resource.
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
-	// READ-ONLY; The resource type of the managed HSM Pool.
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 

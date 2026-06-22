@@ -90,47 +90,47 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "KeysClient":
-		initServer(s, &s.trKeysServer, func() *KeysServerTransport { return NewKeysServerTransport(&s.srv.KeysServer) })
+		initServer(&s.trMu, &s.trKeysServer, func() *KeysServerTransport { return NewKeysServerTransport(&s.srv.KeysServer) })
 		resp, err = s.trKeysServer.Do(req)
 	case "MHSMPrivateEndpointConnectionsClient":
-		initServer(s, &s.trMHSMPrivateEndpointConnectionsServer, func() *MHSMPrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trMHSMPrivateEndpointConnectionsServer, func() *MHSMPrivateEndpointConnectionsServerTransport {
 			return NewMHSMPrivateEndpointConnectionsServerTransport(&s.srv.MHSMPrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trMHSMPrivateEndpointConnectionsServer.Do(req)
 	case "MHSMPrivateLinkResourcesClient":
-		initServer(s, &s.trMHSMPrivateLinkResourcesServer, func() *MHSMPrivateLinkResourcesServerTransport {
+		initServer(&s.trMu, &s.trMHSMPrivateLinkResourcesServer, func() *MHSMPrivateLinkResourcesServerTransport {
 			return NewMHSMPrivateLinkResourcesServerTransport(&s.srv.MHSMPrivateLinkResourcesServer)
 		})
 		resp, err = s.trMHSMPrivateLinkResourcesServer.Do(req)
 	case "MHSMRegionsClient":
-		initServer(s, &s.trMHSMRegionsServer, func() *MHSMRegionsServerTransport { return NewMHSMRegionsServerTransport(&s.srv.MHSMRegionsServer) })
+		initServer(&s.trMu, &s.trMHSMRegionsServer, func() *MHSMRegionsServerTransport { return NewMHSMRegionsServerTransport(&s.srv.MHSMRegionsServer) })
 		resp, err = s.trMHSMRegionsServer.Do(req)
 	case "ManagedHsmKeysClient":
-		initServer(s, &s.trManagedHsmKeysServer, func() *ManagedHsmKeysServerTransport {
+		initServer(&s.trMu, &s.trManagedHsmKeysServer, func() *ManagedHsmKeysServerTransport {
 			return NewManagedHsmKeysServerTransport(&s.srv.ManagedHsmKeysServer)
 		})
 		resp, err = s.trManagedHsmKeysServer.Do(req)
 	case "ManagedHsmsClient":
-		initServer(s, &s.trManagedHsmsServer, func() *ManagedHsmsServerTransport { return NewManagedHsmsServerTransport(&s.srv.ManagedHsmsServer) })
+		initServer(&s.trMu, &s.trManagedHsmsServer, func() *ManagedHsmsServerTransport { return NewManagedHsmsServerTransport(&s.srv.ManagedHsmsServer) })
 		resp, err = s.trManagedHsmsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "PrivateLinkResourcesClient":
-		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+		initServer(&s.trMu, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "SecretsClient":
-		initServer(s, &s.trSecretsServer, func() *SecretsServerTransport { return NewSecretsServerTransport(&s.srv.SecretsServer) })
+		initServer(&s.trMu, &s.trSecretsServer, func() *SecretsServerTransport { return NewSecretsServerTransport(&s.srv.SecretsServer) })
 		resp, err = s.trSecretsServer.Do(req)
 	case "VaultsClient":
-		initServer(s, &s.trVaultsServer, func() *VaultsServerTransport { return NewVaultsServerTransport(&s.srv.VaultsServer) })
+		initServer(&s.trMu, &s.trVaultsServer, func() *VaultsServerTransport { return NewVaultsServerTransport(&s.srv.VaultsServer) })
 		resp, err = s.trVaultsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -141,12 +141,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

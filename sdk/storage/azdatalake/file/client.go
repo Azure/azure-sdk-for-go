@@ -339,6 +339,14 @@ func (f *Client) GetAccessControl(ctx context.Context, options *GetAccessControl
 	return resp, err
 }
 
+// GetSystemProperties returns all system defined properties for a file.
+func (f *Client) GetSystemProperties(ctx context.Context, options *GetSystemPropertiesOptions) (GetSystemPropertiesResponse, error) {
+	opts, lac, mac := path.FormatGetSystemPropertiesOptions(options)
+	resp, err := f.generatedFileClientWithDFS().GetProperties(ctx, opts, lac, mac)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
 // RemoveAccessControl removes the owner, owning group, and permissions for a file.
 func (f *Client) RemoveAccessControl(ctx context.Context, acl string, options *RemoveAccessControlOptions) (RemoveAccessControlResponse, error) {
 	opts, mode := options.format(acl)
@@ -363,6 +371,25 @@ func (f *Client) SetHTTPHeaders(ctx context.Context, httpHeaders HTTPHeaders, op
 	path.FormatSetHTTPHeadersResponse(&newResp, &resp)
 	err = exported.ConvertToDFSError(err)
 	return newResp, err
+}
+
+// GetTags gets the tags associated with a file.
+func (f *Client) GetTags(ctx context.Context, options *GetTagsOptions) (GetTagsResponse, error) {
+	opts := path.FormatGetTagsOptions(options)
+	resp, err := f.blobClient().GetTags(ctx, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
+}
+
+// SetTags sets tags on a file.
+// A file can have up to 10 tags. Tag keys must be between 1 and 128 characters. Tag values must be between 0 and 256 characters.
+// Valid tag key and value characters include lower and upper case letters, digits (0-9),
+// space (' '), plus ('+'), minus ('-'), period ('.'), forward slash ('/'), colon (':'), equals ('='), and underscore ('_').
+func (f *Client) SetTags(ctx context.Context, tags map[string]string, options *SetTagsOptions) (SetTagsResponse, error) {
+	opts := path.FormatSetTagsOptions(options)
+	resp, err := f.blobClient().SetTags(ctx, tags, opts)
+	err = exported.ConvertToDFSError(err)
+	return resp, err
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at file.

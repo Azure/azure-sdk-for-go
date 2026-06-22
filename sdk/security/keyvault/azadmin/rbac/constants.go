@@ -4,6 +4,10 @@
 
 package rbac
 
+const (
+	version20260101Preview string = "2026-01-01-preview"
+)
+
 // DataAction - Supported permissions for data actions.
 type DataAction string
 

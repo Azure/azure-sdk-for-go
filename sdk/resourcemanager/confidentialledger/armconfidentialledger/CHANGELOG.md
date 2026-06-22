@@ -1,5 +1,11 @@
 # Release History
 
+## 1.3.0-beta.4 (2026-05-15)
+### Features Added
+
+- New field `ScittConfiguration` in struct `LedgerProperties`
+
+
 ## 1.3.0-beta.3 (2025-05-23)
 ### Features Added
 

@@ -6,6 +6,75 @@ package armcomputelimit
 
 import "time"
 
+// ErrorAdditionalInfo - The resource management error additional info.
+type ErrorAdditionalInfo struct {
+	// READ-ONLY; The additional info.
+	Info any
+
+	// READ-ONLY; The additional info type.
+	Type *string
+}
+
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// Feature - Compute limit feature.
+type Feature struct {
+	// The resource-specific properties for this resource.
+	Properties *FeatureProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FeatureEnableRequest - Request body for feature enable action.
+type FeatureEnableRequest struct {
+	// The Service Tree identifier associated with this feature action.
+	ServiceTreeID *string
+}
+
+// FeatureListResult - The response of a Feature list operation.
+type FeatureListResult struct {
+	// REQUIRED; The Feature items on this page
+	Value []*Feature
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// FeatureProperties - Properties of the compute limit feature.
+type FeatureProperties struct {
+	// The current state of the feature (for example, Enabled, Disabled).
+	State *FeatureState
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}
+
 // GuestSubscription - Guest subscription that consumes shared compute limits.
 type GuestSubscription struct {
 	// The resource-specific properties for this resource.
@@ -46,6 +115,53 @@ type LimitName struct {
 
 	// READ-ONLY; The localized limit name.
 	LocalizedValue *string
+}
+
+// MemberCap - Per-member cap override. Pairs a member subscription with its cap value.
+type MemberCap struct {
+	// REQUIRED; The cap value in count units for this member subscription.
+	Cap *int32
+
+	// REQUIRED; The member subscription identifier this cap applies to.
+	SubscriptionID *string
+}
+
+// MemberCapOverride - Member cap override as a standalone child resource of `SharedLimitCap`.
+// Use this resource to read or modify a single member's cap without
+// resending the entire `memberCapOverrides` array on the parent.
+type MemberCapOverride struct {
+	// The resource-specific properties for this resource.
+	Properties *MemberCapOverrideProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MemberCapOverrideListResult - The response of a MemberCapOverride list operation.
+type MemberCapOverrideListResult struct {
+	// REQUIRED; The MemberCapOverride items on this page
+	Value []*MemberCapOverride
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MemberCapOverrideProperties - Properties of a per-member cap override.
+type MemberCapOverrideProperties struct {
+	// REQUIRED; The cap value in count units for this member subscription.
+	Cap *int32
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
 }
 
 // Operation - REST API Operation
@@ -99,6 +215,50 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// OperationStatusResult - The current status of an async operation.
+type OperationStatusResult struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetail
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float64
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
+}
+
+// SetMemberCapOverridesRequest - Request body for the `setMemberCapOverrides` action.
+type SetMemberCapOverridesRequest struct {
+	// REQUIRED; The full set of per-member cap overrides to persist for this resource.
+	// This call replaces the existing set entirely; supply an empty array
+	// (`[]`) to clear all overrides.
+	MemberCapOverrides []*MemberCap
+}
+
+// SetMemberCapOverridesResult - Response body for the `setMemberCapOverrides` action.
+type SetMemberCapOverridesResult struct {
+	// REQUIRED; The per-member cap overrides as persisted after the action completed.
+	MemberCapOverrides []*MemberCap
+}
+
 // SharedLimit - Compute limits shared by the subscription.
 type SharedLimit struct {
 	// The resource-specific properties for this resource.
@@ -115,6 +275,59 @@ type SharedLimit struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SharedLimitCap - Shared limit cap configuration for a VM family, owned by a host subscription
+// and propagated to its member subscriptions. The same resource type is
+// readable by host and member subscriptions, but write operations (PUT/DELETE)
+// are scoped to the caller's subscription as the host.
+type SharedLimitCap struct {
+	// The resource-specific properties for this resource.
+	Properties *SharedLimitCapProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// SharedLimitCapListResult - The response of a SharedLimitCap list operation.
+type SharedLimitCapListResult struct {
+	// REQUIRED; The SharedLimitCap items on this page
+	Value []*SharedLimitCap
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// SharedLimitCapProperties - Properties of a shared limit cap resource.
+type SharedLimitCapProperties struct {
+	// REQUIRED; Controls whether the service validates the aggregate cap against the
+	// group limit for the VM family.
+	// SUM(caps) is the sum of all per-member overrides' cap values plus
+	// `defaultMemberCap` multiplied by the number of member subscriptions without an override.
+	// When true, the service rejects any configuration where SUM(caps)
+	// exceeds the group limit. When false, SUM(caps) is permitted to exceed
+	// the group limit.
+	// Enabling this flag is rejected if the current configuration already breaches the group limit;
+	// reduce caps first, then enable.
+	IsBoundedCap *bool
+
+	// The default member cap value (in count units).
+	// Set to a non-negative integer to apply a cap to all member subscriptions
+	// that do not have a per-member override. Omit the property to leave no
+	// default cap in effect.
+	DefaultMemberCap *int32
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
 }
 
 // SharedLimitListResult - The response of a SharedLimit list operation.
@@ -160,4 +373,40 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// VMFamily - VM family resource representing a virtual machine family and its category.
+type VMFamily struct {
+	// The resource-specific properties for this resource.
+	Properties *VMFamilyProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VMFamilyListResult - The response of a VmFamily list operation.
+type VMFamilyListResult struct {
+	// REQUIRED; The VmFamily items on this page
+	Value []*VMFamily
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// VMFamilyProperties - Properties of a VM family resource.
+type VMFamilyProperties struct {
+	// The category of the VM family (for example, GeneralPurpose, ComputeOptimized).
+	Category *string
+
+	// READ-ONLY; The provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
 }

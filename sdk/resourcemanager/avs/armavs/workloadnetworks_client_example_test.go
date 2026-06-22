@@ -40,13 +40,13 @@ func ExampleWorkloadNetworksClient_BeginCreateDNSService() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientCreateDNSServiceResponse{
-	// 	WorkloadNetworkDNSService: &armavs.WorkloadNetworkDNSService{
+	// 	WorkloadNetworkDNSService: armavs.WorkloadNetworkDNSService{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
 	// 		Name: to.Ptr("dnsService1"),
 	// 		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
@@ -92,13 +92,13 @@ func ExampleWorkloadNetworksClient_BeginCreateDNSZone() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientCreateDNSZoneResponse{
-	// 	WorkloadNetworkDNSZone: &armavs.WorkloadNetworkDNSZone{
+	// 	WorkloadNetworkDNSZone: armavs.WorkloadNetworkDNSZone{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
 	// 		Name: to.Ptr("dnsZone1"),
 	// 		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
@@ -142,13 +142,13 @@ func ExampleWorkloadNetworksClient_BeginCreateDhcp() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientCreateDhcpResponse{
-	// 	WorkloadNetworkDhcp: &armavs.WorkloadNetworkDhcp{
+	// 	WorkloadNetworkDhcp: armavs.WorkloadNetworkDhcp{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
 	// 		Name: to.Ptr("dhcp1"),
 	// 		Properties: &armavs.WorkloadNetworkDhcpServer{
@@ -192,13 +192,13 @@ func ExampleWorkloadNetworksClient_BeginCreatePortMirroring() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientCreatePortMirroringResponse{
-	// 	WorkloadNetworkPortMirroring: &armavs.WorkloadNetworkPortMirroring{
+	// 	WorkloadNetworkPortMirroring: armavs.WorkloadNetworkPortMirroring{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
 	// 		Name: to.Ptr("portMirroring1"),
 	// 		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
@@ -236,13 +236,13 @@ func ExampleWorkloadNetworksClient_BeginCreatePublicIP() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientCreatePublicIPResponse{
-	// 	WorkloadNetworkPublicIP: &armavs.WorkloadNetworkPublicIP{
+	// 	WorkloadNetworkPublicIP: armavs.WorkloadNetworkPublicIP{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
 	// 		Name: to.Ptr("publicIP1"),
 	// 		Properties: &armavs.WorkloadNetworkPublicIPProperties{
@@ -283,13 +283,13 @@ func ExampleWorkloadNetworksClient_BeginCreateSegments() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientCreateSegmentsResponse{
-	// 	WorkloadNetworkSegment: &armavs.WorkloadNetworkSegment{
+	// 	WorkloadNetworkSegment: armavs.WorkloadNetworkSegment{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/segments/segment1"),
 	// 		Name: to.Ptr("segment1"),
 	// 		Properties: &armavs.WorkloadNetworkSegmentProperties{
@@ -336,13 +336,13 @@ func ExampleWorkloadNetworksClient_BeginCreateVMGroup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientCreateVMGroupResponse{
-	// 	WorkloadNetworkVMGroup: &armavs.WorkloadNetworkVMGroup{
+	// 	WorkloadNetworkVMGroup: armavs.WorkloadNetworkVMGroup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/vmGroups/vmGroup1"),
 	// 		Name: to.Ptr("vmGroup1"),
 	// 		Properties: &armavs.WorkloadNetworkVMGroupProperties{
@@ -375,7 +375,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteDNSService() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -401,7 +401,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteDNSZone() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -427,7 +427,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteDhcp() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -453,7 +453,7 @@ func ExampleWorkloadNetworksClient_BeginDeletePortMirroring() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -479,7 +479,7 @@ func ExampleWorkloadNetworksClient_BeginDeletePublicIP() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -505,7 +505,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteSegment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -531,7 +531,7 @@ func ExampleWorkloadNetworksClient_BeginDeleteVMGroup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -559,7 +559,7 @@ func ExampleWorkloadNetworksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetResponse{
-	// 	WorkloadNetwork: &armavs.WorkloadNetwork{
+	// 	WorkloadNetwork: armavs.WorkloadNetwork{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/workloadNetworks"),
@@ -586,7 +586,7 @@ func ExampleWorkloadNetworksClient_GetDNSService() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetDNSServiceResponse{
-	// 	WorkloadNetworkDNSService: &armavs.WorkloadNetworkDNSService{
+	// 	WorkloadNetworkDNSService: armavs.WorkloadNetworkDNSService{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
 	// 		Name: to.Ptr("portMirroring1"),
 	// 		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
@@ -624,7 +624,7 @@ func ExampleWorkloadNetworksClient_GetDNSZone() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetDNSZoneResponse{
-	// 	WorkloadNetworkDNSZone: &armavs.WorkloadNetworkDNSZone{
+	// 	WorkloadNetworkDNSZone: armavs.WorkloadNetworkDNSZone{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
 	// 		Name: to.Ptr("portMirroring1"),
 	// 		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
@@ -662,7 +662,7 @@ func ExampleWorkloadNetworksClient_GetDhcp() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetDhcpResponse{
-	// 	WorkloadNetworkDhcp: &armavs.WorkloadNetworkDhcp{
+	// 	WorkloadNetworkDhcp: armavs.WorkloadNetworkDhcp{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
 	// 		Name: to.Ptr("dhcp1"),
 	// 		Properties: &armavs.WorkloadNetworkDhcpServer{
@@ -700,7 +700,7 @@ func ExampleWorkloadNetworksClient_GetGateway() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetGatewayResponse{
-	// 	WorkloadNetworkGateway: &armavs.WorkloadNetworkGateway{
+	// 	WorkloadNetworkGateway: armavs.WorkloadNetworkGateway{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/gateways/gateway1"),
 	// 		Name: to.Ptr("gateway1"),
 	// 		Properties: &armavs.WorkloadNetworkGatewayProperties{
@@ -731,7 +731,7 @@ func ExampleWorkloadNetworksClient_GetPortMirroring() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetPortMirroringResponse{
-	// 	WorkloadNetworkPortMirroring: &armavs.WorkloadNetworkPortMirroring{
+	// 	WorkloadNetworkPortMirroring: armavs.WorkloadNetworkPortMirroring{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
 	// 		Name: to.Ptr("portMirroring1"),
 	// 		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
@@ -766,7 +766,7 @@ func ExampleWorkloadNetworksClient_GetPublicIP() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetPublicIPResponse{
-	// 	WorkloadNetworkPublicIP: &armavs.WorkloadNetworkPublicIP{
+	// 	WorkloadNetworkPublicIP: armavs.WorkloadNetworkPublicIP{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/publicIPs/publicIP1"),
 	// 		Name: to.Ptr("publicIP1"),
 	// 		Properties: &armavs.WorkloadNetworkPublicIPProperties{
@@ -797,7 +797,7 @@ func ExampleWorkloadNetworksClient_GetSegment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetSegmentResponse{
-	// 	WorkloadNetworkSegment: &armavs.WorkloadNetworkSegment{
+	// 	WorkloadNetworkSegment: armavs.WorkloadNetworkSegment{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/segments/segment1"),
 	// 		Name: to.Ptr("segment1"),
 	// 		Properties: &armavs.WorkloadNetworkSegmentProperties{
@@ -841,7 +841,7 @@ func ExampleWorkloadNetworksClient_GetVMGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetVMGroupResponse{
-	// 	WorkloadNetworkVMGroup: &armavs.WorkloadNetworkVMGroup{
+	// 	WorkloadNetworkVMGroup: armavs.WorkloadNetworkVMGroup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/vmGroups/vmGroup1"),
 	// 		Name: to.Ptr("cloud1"),
 	// 		Properties: &armavs.WorkloadNetworkVMGroupProperties{
@@ -876,7 +876,7 @@ func ExampleWorkloadNetworksClient_GetVirtualMachine() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientGetVirtualMachineResponse{
-	// 	WorkloadNetworkVirtualMachine: &armavs.WorkloadNetworkVirtualMachine{
+	// 	WorkloadNetworkVirtualMachine: armavs.WorkloadNetworkVirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/virtualMachines/vm1"),
 	// 		Name: to.Ptr("vm1"),
 	// 		Properties: &armavs.WorkloadNetworkVirtualMachineProperties{
@@ -1354,13 +1354,13 @@ func ExampleWorkloadNetworksClient_BeginUpdateDNSService() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientUpdateDNSServiceResponse{
-	// 	WorkloadNetworkDNSService: &armavs.WorkloadNetworkDNSService{
+	// 	WorkloadNetworkDNSService: armavs.WorkloadNetworkDNSService{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsServices/dnsService1"),
 	// 		Name: to.Ptr("dnsService1"),
 	// 		Properties: &armavs.WorkloadNetworkDNSServiceProperties{
@@ -1406,13 +1406,13 @@ func ExampleWorkloadNetworksClient_BeginUpdateDNSZone() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientUpdateDNSZoneResponse{
-	// 	WorkloadNetworkDNSZone: &armavs.WorkloadNetworkDNSZone{
+	// 	WorkloadNetworkDNSZone: armavs.WorkloadNetworkDNSZone{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dnsZones/dnsZone1"),
 	// 		Name: to.Ptr("dnsZone1"),
 	// 		Properties: &armavs.WorkloadNetworkDNSZoneProperties{
@@ -1455,13 +1455,13 @@ func ExampleWorkloadNetworksClient_BeginUpdateDhcp() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientUpdateDhcpResponse{
-	// 	WorkloadNetworkDhcp: &armavs.WorkloadNetworkDhcp{
+	// 	WorkloadNetworkDhcp: armavs.WorkloadNetworkDhcp{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/dhcpConfigurations/dhcpConfigurations1"),
 	// 		Name: to.Ptr("dhcp1"),
 	// 		Properties: &armavs.WorkloadNetworkDhcpServer{
@@ -1504,13 +1504,13 @@ func ExampleWorkloadNetworksClient_BeginUpdatePortMirroring() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientUpdatePortMirroringResponse{
-	// 	WorkloadNetworkPortMirroring: &armavs.WorkloadNetworkPortMirroring{
+	// 	WorkloadNetworkPortMirroring: armavs.WorkloadNetworkPortMirroring{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/portMirroringProfiles/portMirroring1"),
 	// 		Name: to.Ptr("portMirroring1"),
 	// 		Properties: &armavs.WorkloadNetworkPortMirroringProperties{
@@ -1554,13 +1554,13 @@ func ExampleWorkloadNetworksClient_BeginUpdateSegments() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientUpdateSegmentsResponse{
-	// 	WorkloadNetworkSegment: &armavs.WorkloadNetworkSegment{
+	// 	WorkloadNetworkSegment: armavs.WorkloadNetworkSegment{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/segments/segment1"),
 	// 		Name: to.Ptr("segment1"),
 	// 		Properties: &armavs.WorkloadNetworkSegmentProperties{
@@ -1609,13 +1609,13 @@ func ExampleWorkloadNetworksClient_BeginUpdateVMGroup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.WorkloadNetworksClientUpdateVMGroupResponse{
-	// 	WorkloadNetworkVMGroup: &armavs.WorkloadNetworkVMGroup{
+	// 	WorkloadNetworkVMGroup: armavs.WorkloadNetworkVMGroup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/workloadNetworks/default/vmGroups/vmGroup1"),
 	// 		Name: to.Ptr("cloud1"),
 	// 		Properties: &armavs.WorkloadNetworkVMGroupProperties{

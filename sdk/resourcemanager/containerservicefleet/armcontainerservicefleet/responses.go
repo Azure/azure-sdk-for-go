@@ -8,9 +8,6 @@ package armcontainerservicefleet
 type AutoUpgradeProfileOperationsClientGenerateUpdateRunResponse struct {
 	// GenerateResponse is the response of a generate request.
 	GenerateResponse
-
-	// The request should only proceed if an entity matches this string.
-	IfMatch *string
 }
 
 // AutoUpgradeProfilesClientCreateOrUpdateResponse contains the response from method AutoUpgradeProfilesClient.BeginCreateOrUpdate.
@@ -34,6 +31,35 @@ type AutoUpgradeProfilesClientGetResponse struct {
 type AutoUpgradeProfilesClientListByFleetResponse struct {
 	// The response of a AutoUpgradeProfile list operation.
 	AutoUpgradeProfileListResult
+}
+
+// ClusterMeshProfilesClientApplyResponse contains the response from method ClusterMeshProfilesClient.BeginApply.
+type ClusterMeshProfilesClientApplyResponse struct {
+	// A cluster mesh profile stores the general information about the mesh.
+	ClusterMeshProfile
+}
+
+// ClusterMeshProfilesClientCreateOrUpdateResponse contains the response from method ClusterMeshProfilesClient.BeginCreateOrUpdate.
+type ClusterMeshProfilesClientCreateOrUpdateResponse struct {
+	// A cluster mesh profile stores the general information about the mesh.
+	ClusterMeshProfile
+}
+
+// ClusterMeshProfilesClientDeleteResponse contains the response from method ClusterMeshProfilesClient.BeginDelete.
+type ClusterMeshProfilesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClusterMeshProfilesClientGetResponse contains the response from method ClusterMeshProfilesClient.Get.
+type ClusterMeshProfilesClientGetResponse struct {
+	// A cluster mesh profile stores the general information about the mesh.
+	ClusterMeshProfile
+}
+
+// ClusterMeshProfilesClientListByFleetResponse contains the response from method ClusterMeshProfilesClient.NewListByFleetPager.
+type ClusterMeshProfilesClientListByFleetResponse struct {
+	// The response of a ClusterMeshProfile list operation.
+	ClusterMeshProfileListResult
 }
 
 // FleetManagedNamespacesClientCreateOrUpdateResponse contains the response from method FleetManagedNamespacesClient.BeginCreateOrUpdate.

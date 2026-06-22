@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/PrivateEndpointConnectionCreateOrUpdate.json
+// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionCreateOrUpdate.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.PrivateEndpointConnectionsClientCreateOrUpdateResponse{
-	// 	PrivateEndpointConnection: &armcontainerregistry.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armcontainerregistry.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/privateEndpointConnections/myConnection"),
 	// 		Name: to.Ptr("myConnection"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/privateEndpointConnections"),
@@ -61,7 +61,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/PrivateEndpointConnectionDelete.json
+// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -87,7 +87,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/PrivateEndpointConnectionGet.json
+// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armcontainerregistry.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armcontainerregistry.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/privateEndpointConnections/myConnection"),
 	// 		Name: to.Ptr("myConnection"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/privateEndpointConnections"),
@@ -125,7 +125,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/PrivateEndpointConnectionList.json
+// Generated from example definition: 2026-01-01-preview/PrivateEndpointConnectionList.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

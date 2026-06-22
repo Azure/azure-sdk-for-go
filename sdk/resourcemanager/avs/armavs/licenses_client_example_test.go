@@ -28,13 +28,13 @@ func ExampleLicensesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.LicensesClientCreateOrUpdateResponse{
-	// 	License: &armavs.License{
+	// 	License: armavs.License{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/licenses/VmwareFirewall"),
 	// 		Name: to.Ptr("VmwareFirewall"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/licenses"),
@@ -67,7 +67,7 @@ func ExampleLicensesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -90,7 +90,7 @@ func ExampleLicensesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.LicensesClientGetResponse{
-	// 	License: &armavs.License{
+	// 	License: armavs.License{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/licenses/VmwareFirewall"),
 	// 		Name: to.Ptr("VmwareFirewall"),
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/licenses"),
@@ -125,7 +125,7 @@ func ExampleLicensesClient_GetProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.LicensesClientGetPropertiesResponse{
-	// 	VmwareFirewallLicenseProperties: &armavs.VmwareFirewallLicenseProperties{
+	// 	LicensePropertiesClassification: &armavs.VmwareFirewallLicenseProperties{
 	// 		LicenseKey: to.Ptr("12345-12345-12345-12345-12345"),
 	// 		EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
 	// 		Cores: to.Ptr[int32](16),

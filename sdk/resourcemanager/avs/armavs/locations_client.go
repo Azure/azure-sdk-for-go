@@ -18,6 +18,8 @@ import (
 
 // LocationsClient contains the methods for the Locations group.
 // Don't use this type directly, use NewLocationsClient() instead.
+//
+// Generated from API version 2025-09-01
 type LocationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewLocationsClient(subscriptionID string, credential azcore.TokenCredential
 
 // CheckQuotaAvailability - Return quota for subscription by region
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - location - A location in a subscription
 //   - options - LocationsClientCheckQuotaAvailabilityOptions contains the optional parameters for the LocationsClient.CheckQuotaAvailability
 //     method.
@@ -84,8 +84,8 @@ func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -101,8 +101,6 @@ func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.R
 
 // CheckTrialAvailability - Return trial status for subscription by region
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - location - A location in a subscription
 //   - options - LocationsClientCheckTrialAvailabilityOptions contains the optional parameters for the LocationsClient.CheckTrialAvailability
 //     method.
@@ -144,8 +142,8 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.SKU != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

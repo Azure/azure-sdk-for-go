@@ -22,6 +22,7 @@ func NewPathClient(endpoint string, azClient *azcore.Client) *PathClient {
 	client := &PathClient{
 		internal: azClient,
 		endpoint: endpoint,
+		version:  ServiceVersion,
 	}
 	return client
 }

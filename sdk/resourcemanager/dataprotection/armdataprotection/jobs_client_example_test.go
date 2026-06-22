@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/JobCRUD/GetJob.json
+// Generated from example definition: 2026-03-01/JobCRUD/GetJob.json
 func ExampleJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.JobsClientGetResponse{
-	// 	AzureBackupJobResource: &armdataprotection.AzureBackupJobResource{
+	// 	AzureBackupJobResource: armdataprotection.AzureBackupJobResource{
 	// 		Name: to.Ptr("3c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/Backupvaults/backupJobs"),
 	// 		ID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/BugBash1/providers/Microsoft.DataProtection/Backupvaults/BugBashVaultForCCYv11/backupJobs/3c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
@@ -77,7 +77,7 @@ func ExampleJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/JobCRUD/ListJobs.json
+// Generated from example definition: 2026-03-01/JobCRUD/ListJobs.json
 func ExampleJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

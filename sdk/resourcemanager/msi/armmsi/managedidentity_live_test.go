@@ -126,8 +126,8 @@ func (testsuite *ManagedIdentityTestSuite) TestFederatedIdentityCredentials() {
 		Properties: &armmsi.FederatedIdentityCredentialProperties{
 			Audiences: []*string{
 				to.Ptr("api://AzureADTokenExchange")},
-			Issuer:  to.Ptr("https://oidc.prod-aks.azure.com/TenantGUID/IssuerGUID"),
-			Subject: to.Ptr("system:serviceaccount:ns:svcaccount"),
+			Issuer:  to.Ptr("https://token.actions.githubusercontent.com"),
+			Subject: to.Ptr("repo:Azure/azure-sdk-for-go:ref:refs/heads/main"),
 		},
 	}, nil)
 	testsuite.Require().NoError(err)

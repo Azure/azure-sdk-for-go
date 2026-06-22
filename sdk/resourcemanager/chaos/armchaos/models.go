@@ -6,6 +6,78 @@ package armchaos
 
 import "time"
 
+// Action - Model that represents an Action resource.
+type Action struct {
+	// REQUIRED; The properties of the action resource.
+	Properties *ActionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ActionDependency - Model that represents an action dependency.
+type ActionDependency struct {
+	// REQUIRED; Name of the action this depends on.
+	Name *string
+
+	// REQUIRED; The type of dependency.
+	Type *ActionDependencyType
+
+	// The lifecycle state of the dependency action that triggers this action to start.
+	OnActionLifecycle *ActionLifecycle
+}
+
+// ActionListResult - Model that represents a list of Action resources and a link for pagination.
+type ActionListResult struct {
+	// REQUIRED; The Action items on this page
+	Value []*Action
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ActionProperties - Model that represents the properties of an Action resource.
+type ActionProperties struct {
+	// READ-ONLY; The short name of the action (e.g., "Shutdown").
+	ActionName *string
+
+	// READ-ONLY; The type of the action.
+	ActionType *ActionKind
+
+	// READ-ONLY; Canonical identifier of the action (e.g., "microsoft-compute-shutdown/1.0").
+	CanonicalID *string
+
+	// READ-ONLY; Description of what this action does.
+	Description *string
+
+	// READ-ONLY; Human-readable display name of the action.
+	DisplayName *string
+
+	// READ-ONLY; JSON Schema describing the parameters for this action.
+	ParametersSchema *ActionPropertiesParametersSchema
+
+	// READ-ONLY; Recommended Azure RBAC role definition GUIDs for this action.
+	RecommendedRoles []*string
+
+	// READ-ONLY; List of target types supported by this action.
+	SupportedTargetTypes []*ActionSupportedTargetType
+
+	// READ-ONLY; The version of the action (e.g., "1.0.0").
+	Version *string
+}
+
+type ActionPropertiesParametersSchema struct {
+}
+
 // ActionStatus - Model that represents the an action and its status.
 type ActionStatus struct {
 	// READ-ONLY; The id of the action status.
@@ -25,6 +97,42 @@ type ActionStatus struct {
 
 	// READ-ONLY; The array of targets.
 	Targets []*ExperimentExecutionActionTargetDetailsProperties
+}
+
+// ActionSupportedTargetType - Model that represents a target type supported by an action.
+type ActionSupportedTargetType struct {
+	// List of Azure permissions required for this target type.
+	RequiredPermissions []*string
+
+	// The Azure resource type (e.g., "Microsoft.Compute/virtualMachines").
+	TargetType *string
+}
+
+// ActionVersion - Model that represents an Action Version resource.
+type ActionVersion struct {
+	// REQUIRED; The properties of the action version resource.
+	Properties *ActionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ActionVersionListResult - Model that represents a list of Action Version resources and a link for pagination.
+type ActionVersionListResult struct {
+	// REQUIRED; The ActionVersion items on this page
+	Value []*ActionVersion
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // BranchStatus - Model that represents the a list of actions and action statuses.
@@ -76,6 +184,9 @@ type CapabilityProperties struct {
 
 	// READ-ONLY; URL to retrieve JSON schema of the Capability parameters.
 	ParametersSchema *string
+
+	// READ-ONLY; Resource provisioning state. Not currently in use because resource is created synchronously.
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; String of the Publisher that this Capability extends.
 	Publisher *string
@@ -156,6 +267,45 @@ type CapabilityTypePropertiesRuntimeProperties struct {
 	Kind *string
 }
 
+// ConfigurationExclusions - Model that represents exclusion criteria for protecting resources from fault injection.
+// Uses union (OR) logic - a resource is excluded if it matches ANY criteria.
+type ConfigurationExclusions struct {
+	// Array of specific resource IDs to exclude from fault injection.
+	Resources []*string
+
+	// Array of tag key-value pairs. Resources with matching tags are excluded.
+	Tags []*KeyValuePair
+
+	// Array of resource types. All resources of these types are excluded.
+	Types []*string
+}
+
+// ConfigurationFilters - Model that represents filter criteria for constraining which discovered
+// resources participate in fault injection.
+// Uses intersection (AND) logic — a resource is included only if it matches all criteria.
+type ConfigurationFilters struct {
+	// Array of Azure location strings. Only resources in these locations are included.
+	// Null or omitted means all locations (no filter). Empty array means include nothing.
+	Locations []*string
+
+	// Array of physical availability zone identifiers in `{region}-az{N}` format
+	// (e.g., `"westus2-az1"`). Only resources in the corresponding logical zone
+	// for each subscription are included.
+	// At execution time, each physical zone is resolved to per-subscription
+	// logical zones via the Azure locations API. The resolved mapping is surfaced
+	// on the scenario run response (`zoneResolution`).
+	// Null or omitted means physical zone targeting is not used.
+	// Only one physical zone is supported in preview.
+	// Mutually exclusive with `zones` — set one or the other, not both.
+	PhysicalZones []*string
+
+	// Array of availability zone identifiers ("1", "2", "3", "zone-redundant").
+	// Only resources whose zones intersect this list are included.
+	// Null or omitted means all zones (including non-zonal). Empty array means include nothing.
+	// Mutually exclusive with `physicalZones` — set one or the other, not both.
+	Zones []*string
+}
+
 // ContinuousAction - Model that represents a continuous action.
 type ContinuousAction struct {
 	// REQUIRED; ISO8601 formatted string that represents a duration.
@@ -183,6 +333,15 @@ func (c *ContinuousAction) GetExperimentAction() *ExperimentAction {
 	}
 }
 
+// CustomerDataStorageProperties - Model that represents the Customer Managed Storage for an Experiment.
+type CustomerDataStorageProperties struct {
+	// Name of the Azure Blob Storage container to use or create.
+	BlobContainerName *string
+
+	// Azure Resource ID of the Storage account to use for Customer Data storage.
+	StorageAccountResourceID *string
+}
+
 // DelayAction - Model that represents a delay action.
 type DelayAction struct {
 	// REQUIRED; ISO8601 formatted string that represents a duration.
@@ -202,6 +361,54 @@ func (d *DelayAction) GetExperimentAction() *ExperimentAction {
 		Name: d.Name,
 		Type: d.Type,
 	}
+}
+
+// DiscoveredResource - Model that represents a discovered resource.
+type DiscoveredResource struct {
+	// The properties of the discovered resource.
+	Properties *DiscoveredResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DiscoveredResourceListResult - Model that represents a list of discovered resources and a link for pagination.
+type DiscoveredResourceListResult struct {
+	// REQUIRED; The DiscoveredResource items on this page
+	Value []*DiscoveredResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DiscoveredResourceProperties - Model that represents the properties of a discovered resource.
+type DiscoveredResourceProperties struct {
+	// READ-ONLY; The date and time when the resource was discovered.
+	DiscoveredAt *time.Time
+
+	// READ-ONLY; The fully qualified identifier of the discovered resource.
+	FullyQualifiedIdentifier *string
+
+	// READ-ONLY; The name of the discovered resource.
+	ResourceName *string
+
+	// READ-ONLY; The namespace of the discovered resource.
+	ResourceNamespace *string
+
+	// READ-ONLY; The resource type of the discovered resource.
+	ResourceType *string
+
+	// READ-ONLY; The scope of the discovered resource.
+	Scope *string
 }
 
 // DiscreteAction - Model that represents a discrete action.
@@ -226,6 +433,15 @@ func (d *DiscreteAction) GetExperimentAction() *ExperimentAction {
 		Name: d.Name,
 		Type: d.Type,
 	}
+}
+
+// EntraIdentity - Model that represents the Azure Entra identity.
+type EntraIdentity struct {
+	// READ-ONLY; The identity object id.
+	ObjectID *string
+
+	// READ-ONLY; The identity tenant id.
+	TenantID *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -372,6 +588,9 @@ type ExperimentExecutionDetailsProperties struct {
 	// READ-ONLY; String that represents the last action date time.
 	LastActionAt *time.Time
 
+	// READ-ONLY; Resource provisioning state. Not currently in use for executions.
+	ProvisioningState *ProvisioningState
+
 	// READ-ONLY; The information of the experiment run.
 	RunInformation *ExperimentExecutionDetailsPropertiesRunInformation
 
@@ -402,6 +621,9 @@ type ExperimentExecutionListResult struct {
 
 // ExperimentExecutionProperties - Model that represents the execution properties of an Experiment.
 type ExperimentExecutionProperties struct {
+	// READ-ONLY; Resource provisioning state. Not currently in use for executions.
+	ProvisioningState *ProvisioningState
+
 	// READ-ONLY; String that represents the start date time.
 	StartedAt *time.Time
 
@@ -429,6 +651,9 @@ type ExperimentProperties struct {
 	// REQUIRED; List of steps.
 	Steps []*ExperimentStep
 
+	// Optional customer-managed Storage account where Experiment schema will be stored.
+	CustomerDataStorage *CustomerDataStorageProperties
+
 	// READ-ONLY; Most recent provisioning state for the given experiment resource.
 	ProvisioningState *ProvisioningState
 }
@@ -451,7 +676,19 @@ type ExperimentUpdate struct {
 	Tags map[string]*string
 }
 
-// KeyValuePair - A map to describe the settings of an action.
+// ExternalResource - Model that represents an external resource reference.
+type ExternalResource struct {
+	// The resource ID of the external resource.
+	ResourceID *string
+}
+
+// FixResourcePermissionsRequest - Request body for fixing resource permissions.
+type FixResourcePermissionsRequest struct {
+	// Optional value that indicates whether to run a "dry run" of fixing resource permissions.
+	WhatIf *bool
+}
+
+// KeyValuePair - A key-value pair used to describe parameters for actions or configurations.
 type KeyValuePair struct {
 	// REQUIRED; The name of the setting for the action.
 	Key *string
@@ -517,6 +754,15 @@ type OperationDisplay struct {
 	Resource *string
 }
 
+// OperationError - Represents a system or infrastructure error encountered during an async operation.
+type OperationError struct {
+	// REQUIRED; The error code identifying the type of system error.
+	ErrorCode *string
+
+	// REQUIRED; A human-readable description of the system error.
+	ErrorMessage *string
+}
+
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
@@ -555,6 +801,580 @@ type OperationStatusResult struct {
 
 	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
 	ResourceID *string
+}
+
+// PermissionError - Model that represents the permission error.
+type PermissionError struct {
+	// READ-ONLY; The missing permissions.
+	MissingPermissions []*string
+
+	// READ-ONLY; The recommended roles.
+	RecommendedRoles []*string
+
+	// READ-ONLY; The required permissions.
+	RequiredPermissions []*string
+
+	// READ-ONLY; The resource id for the affected resource.
+	ResourceID *string
+
+	// READ-ONLY; The identity.
+	Identity *EntraIdentity
+}
+
+// PermissionsFix - Model that represents the fix resource permissions result.
+type PermissionsFix struct {
+	// The resource-specific properties for this resource.
+	Properties *PermissionsFixProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PermissionsFixProperties - Model that represents the properties of the permission fix operation.
+type PermissionsFixProperties struct {
+	// READ-ONLY; The list of role assignment results.
+	RoleAssignments []*RoleAssignmentResult
+
+	// READ-ONLY; The permission fix UTC start time.
+	StartedAt *time.Time
+
+	// READ-ONLY; The permission fix state.
+	State *PermissionsFixState
+
+	// READ-ONLY; Summary of the permission fix operation.
+	Summary *PermissionsFixSummary
+
+	// READ-ONLY; Whether this was a what-if (dry run) operation.
+	WhatIfMode *bool
+
+	// READ-ONLY; The permission fix UTC end time.
+	CompletedAt *time.Time
+}
+
+// PermissionsFixSummary - Summary of the permission fix operation.
+type PermissionsFixSummary struct {
+	// READ-ONLY; Number of failed role assignments.
+	Failed *int32
+
+	// READ-ONLY; Number of skipped role assignments (already existed).
+	Skipped *int32
+
+	// READ-ONLY; Number of successful role assignments.
+	Succeeded *int32
+
+	// READ-ONLY; Total number of role assignments required.
+	TotalRequired *int32
+}
+
+// PhysicalToLogicalZoneMapping - Maps a physical zone to the resolved logical zone for a given subscription.
+type PhysicalToLogicalZoneMapping struct {
+	// READ-ONLY; The logical availability zone resolved for this subscription
+	// (e.g., `"1"`, `"2"`, `"3"`).
+	LogicalZone *string
+
+	// READ-ONLY; The physical availability zone (e.g., `"westus2-az1"`).
+	PhysicalZone *string
+}
+
+// PrivateAccesses tracked resource.
+type PrivateAccess struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *PrivateAccessProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateAccessListResult - Model that represents a list of private access resources and a link for pagination.
+type PrivateAccessListResult struct {
+	// REQUIRED; The PrivateAccess items on this page
+	Value []*PrivateAccess
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateAccessPatch - Describes a private access update.
+type PrivateAccessPatch struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// PrivateAccessProperties - The properties of a private access resource
+type PrivateAccessProperties struct {
+	// Public Network Access Control for PrivateAccess resource.
+	PublicNetworkAccess *PublicNetworkAccessOption
+
+	// READ-ONLY; A readonly collection of private endpoint connection. Currently only one endpoint connection is supported.
+	PrivateEndpointConnections []*PrivateEndpointConnection
+
+	// READ-ONLY; Most recent provisioning state for the given privateAccess resource.
+	ProvisioningState *ProvisioningState
+}
+
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The Azure identifier for private endpoint.
+	ID *string
+}
+
+// PrivateEndpointConnection - The private endpoint connection resource.
+type PrivateEndpointConnection struct {
+	// Resource properties.
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - A list of private link resources
+type PrivateEndpointConnectionListResult struct {
+	// REQUIRED; The PrivateEndpointConnection items on this page
+	Value []*PrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *ProvisioningState
+}
+
+// PrivateLinkResource - A private link resource.
+type PrivateLinkResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *PrivateLinkResourceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - A list of private link resources
+type PrivateLinkResourceListResult struct {
+	// REQUIRED; The PrivateLinkResource items on this page
+	Value []*PrivateLinkResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; Resource provisioning state. Not currently in use.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// Recommendation - Model that represents a scenario recommendation.
+type Recommendation struct {
+	// READ-ONLY; The recommendation status.
+	RecommendationStatus *RecommendationStatus
+
+	// READ-ONLY; The UTC time when the recommendation was evaluated.
+	EvaluationRunAt *time.Time
+}
+
+// ResourceStateError - Model that represents the resource state error.
+type ResourceStateError struct {
+	// READ-ONLY; The error code.
+	ErrorCode *int32
+
+	// READ-ONLY; The error message.
+	ErrorMessage *string
+
+	// READ-ONLY; The remediation uri.
+	RemediationURI *string
+
+	// READ-ONLY; The resource id for the affected resource.
+	ResourceID *string
+}
+
+// RoleAssignmentError - Error details for a failed role assignment.
+type RoleAssignmentError struct {
+	// READ-ONLY; Azure error code.
+	Code *string
+
+	// READ-ONLY; Error message.
+	Message *string
+}
+
+// RoleAssignmentResult - Result of a single role assignment operation.
+type RoleAssignmentResult struct {
+	// READ-ONLY; The managed identity principal ID.
+	PrincipalID *string
+
+	// READ-ONLY; The Azure RBAC role definition ID.
+	RoleDefinitionID *string
+
+	// READ-ONLY; Human-readable role name.
+	RoleDefinitionName *string
+
+	// READ-ONLY; The scope at which the role was/will be assigned.
+	Scope *string
+
+	// READ-ONLY; The status of the role assignment operation.
+	Status *RoleAssignmentStatus
+
+	// READ-ONLY; The target Azure resource ID.
+	TargetResourceID *string
+
+	// READ-ONLY; Error details if the assignment failed.
+	Error *RoleAssignmentError
+
+	// READ-ONLY; The created role assignment resource ID (null if failed or what-if mode).
+	RoleAssignmentID *string
+}
+
+// RunAfter - Model that represents action dependencies.
+type RunAfter struct {
+	// REQUIRED; Array of action dependencies.
+	Items []*ActionDependency
+
+	// Defines how multiple dependencies are evaluated.
+	Behavior *RunAfterBehavior
+}
+
+// Scenario - Model that represents the scenario.
+type Scenario struct {
+	// The properties of scenario.
+	Properties *ScenarioProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScenarioAction - Model that represents a scenario action.
+type ScenarioAction struct {
+	// REQUIRED; Identifier of the action and version (e.g., "microsoft-compute-shutdown/1.0").
+	ActionID *string
+
+	// REQUIRED; ISO 8601 duration for how long the action runs (e.g., PT30M for 30 minutes). Supports template macro syntax (%%\{parameters.\<name\>\}%%).
+	Duration *string
+
+	// REQUIRED; Unique name for the action.
+	Name *string
+
+	// Human-readable description of what this action does.
+	Description *string
+
+	// External resource reference for the action.
+	ExternalResource *ExternalResource
+
+	// Action-specific parameter values.
+	Parameters []*KeyValuePair
+
+	// Action dependencies that control when this action starts.
+	RunAfter *RunAfter
+
+	// ISO 8601 duration for maximum action execution time. Supports template macro syntax.
+	Timeout *string
+
+	// ISO 8601 duration to wait before action starts (e.g., PT30S for 30 seconds). Supports template macro syntax.
+	WaitBefore *string
+}
+
+// ScenarioConfiguration - Model that represents the scenario.
+type ScenarioConfiguration struct {
+	// The properties of scenario definition.
+	Properties *ScenarioConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScenarioConfigurationListResult - Model that represents a list of scenario configurations and a link for pagination.
+type ScenarioConfigurationListResult struct {
+	// REQUIRED; The ScenarioConfiguration items on this page
+	Value []*ScenarioConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ScenarioConfigurationProperties - Model that represents the properties of the scenario configuration.
+type ScenarioConfigurationProperties struct {
+	// REQUIRED; Resource ID of the scenario this configuration applies to.
+	ScenarioID *string
+
+	// Exclusion criteria for protecting resources from fault injection.
+	Exclusions *ConfigurationExclusions
+
+	// Filter criteria used to constrain which discovered resources participate in fault injection.
+	Filters *ConfigurationFilters
+
+	// Runtime parameter values for the scenario. Keys must match parameter names defined in the scenario.
+	Parameters []*KeyValuePair
+
+	// READ-ONLY; Most recent provisioning state for the given scenario resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ScenarioErrors - Model that represents the scenario run errors.
+type ScenarioErrors struct {
+	// READ-ONLY; Any permission errors associated with the scenario run.
+	Permission []*PermissionError
+
+	// READ-ONLY; Any resource state errors associated with the scenario run.
+	Resource []*ResourceStateError
+
+	// Error code for internal server errors.
+	ErrorCode *string
+
+	// Error message for internal server errors.
+	ErrorMessage *string
+}
+
+// ScenarioEvaluationResultItem - Model that represents a single scenario evaluation result.
+type ScenarioEvaluationResultItem struct {
+	// REQUIRED; The evaluation result for this scenario.
+	EvaluationResult *RecommendationStatus
+
+	// REQUIRED; The name of the scenario that was evaluated.
+	ScenarioName *string
+}
+
+// ScenarioListResult - Model that represents a list of scenarios and a link for pagination.
+type ScenarioListResult struct {
+	// REQUIRED; The Scenario items on this page
+	Value []*Scenario
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ScenarioParameter - Model that represents a single scenario parameter definition.
+type ScenarioParameter struct {
+	// REQUIRED; The name of the parameter.
+	Name *string
+
+	// REQUIRED; Parameter data type.
+	Type *ParameterType
+
+	// Default value for the parameter.
+	Default *string
+
+	// Description of the parameter.
+	Description *string
+
+	// Whether this parameter is required.
+	Required *bool
+}
+
+// ScenarioProperties - Model that represents the properties of the scenario.
+type ScenarioProperties struct {
+	// REQUIRED; Array of actions that define the scenario's orchestration.
+	Actions []*ScenarioAction
+
+	// REQUIRED; Parameter definitions for the scenario.
+	Parameters []*ScenarioParameter
+
+	// Description of what this scenario does (optional).
+	Description *string
+
+	// READ-ONLY; Resource ID of the template version this scenario was created from (optional).
+	CreatedFrom *string
+
+	// READ-ONLY; Most recent provisioning state for the given scenario resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The recommendation information for this scenario.
+	Recommendation *Recommendation
+
+	// READ-ONLY; Version of the scenario.
+	Version *string
+}
+
+// ScenarioRun - Model that represents the scenario run.
+type ScenarioRun struct {
+	// The properties of scenario run.
+	Properties *ScenarioRunProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScenarioRunListResult - Model that represents a list of scenario runs and a link for pagination.
+type ScenarioRunListResult struct {
+	// REQUIRED; The ScenarioRun items on this page
+	Value []*ScenarioRun
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ScenarioRunProperties - Model that represents the properties of the scenario run.
+type ScenarioRunProperties struct {
+	// READ-ONLY; The principal id for the managed identity used for the run.
+	ManagedIdentityPrincipalID *string
+
+	// READ-ONLY; All resources discovered for the scenario run.
+	Resources []*ScenarioRunResource
+
+	// READ-ONLY; The scenario configuration name.
+	ScenarioConfigurationName *string
+
+	// READ-ONLY; The scenario name.
+	ScenarioName *string
+
+	// READ-ONLY; When the scenario run was started.
+	StartTime *time.Time
+
+	// READ-ONLY; The scenario run status.
+	Status *ScenarioRunState
+
+	// READ-ONLY; The workspace name.
+	WorkspaceName *string
+
+	// READ-ONLY; When the scenario run was completed.
+	EndTime *time.Time
+
+	// READ-ONLY; System or infrastructure errors encountered during the scenario run.
+	Errors []*OperationError
+
+	// READ-ONLY; Business errors from fault injection — permission and resource state issues.
+	ExecutionErrors *ScenarioErrors
+
+	// READ-ONLY; The scenario run json.
+	ScenarioRunJSON *string
+
+	// READ-ONLY; The scenario run summary.
+	ScenarioRunSummary []*ScenarioRunSummaryAction
+
+	// READ-ONLY; Zone resolution information. Present when the scenario configuration
+	// used physical zone targeting (`physicalZones`). Contains the mode,
+	// requested physical zones, and per-subscription logical zone mappings.
+	ZoneResolution *ZoneResolutionInfo
+}
+
+// ScenarioRunResource - Model that represents the scenario run resource.
+type ScenarioRunResource struct {
+	// READ-ONLY; The resource id.
+	ID *string
+}
+
+// ScenarioRunSummaryAction - Model that represents the scenario run action.
+type ScenarioRunSummaryAction struct {
+	// READ-ONLY; The urn for the given chaos action.
+	ActionUrn *string
+
+	// READ-ONLY; The resources associated with the specified action.
+	Resources []*ScenarioRunResource
+
+	// READ-ONLY; The state of the action.
+	State *ScenarioSummaryState
+
+	// READ-ONLY; When the action was completed.
+	CompletedAt *time.Time
+
+	// READ-ONLY; When the action was started.
+	StartedAt *time.Time
 }
 
 // StepStatus - Model that represents the a list of branches and branch statuses.
@@ -781,4 +1601,183 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+// Validation - Concrete proxy resource types can be created by aliasing this type using a specific property type.
+type Validation struct {
+	// The resource-specific properties for this resource.
+	Properties *ValidationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ValidationProperties - Model that represents the properties of the scenario validation.
+type ValidationProperties struct {
+	// READ-ONLY; The scenario validation UTC start time.
+	StartTime *time.Time
+
+	// READ-ONLY; The scenario validation status.
+	Status *ScenarioValidationState
+
+	// Execution plan created from validation. This plan will be executed as-is on next scenario execution.
+	ExecutionPlanJSON *string
+
+	// Business errors from validation — permission and resource state issues.
+	ValidationErrors *ScenarioErrors
+
+	// READ-ONLY; The scenario validation UTC end time.
+	EndTime *time.Time
+
+	// READ-ONLY; System or infrastructure errors encountered during validation.
+	Errors []*OperationError
+}
+
+// Workspace - Model that represents a Workspace resource.
+type Workspace struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; The properties of the Workspace resource.
+	Properties *WorkspaceProperties
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceEvaluation - Model that represents the latest workspace evaluation result.
+type WorkspaceEvaluation struct {
+	// The resource-specific properties for this resource.
+	Properties *WorkspaceEvaluationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceEvaluationProperties - Model that represents the properties of the workspace evaluation.
+type WorkspaceEvaluationProperties struct {
+	// READ-ONLY; The evaluation status.
+	Status *WorkspaceEvaluationStatus
+
+	// READ-ONLY; The workspace ID this evaluation belongs to.
+	WorkspaceID *string
+
+	// READ-ONLY; The evaluation UTC end time.
+	EndTime *time.Time
+
+	// READ-ONLY; System or infrastructure errors encountered during evaluation.
+	Errors []*OperationError
+
+	// READ-ONLY; The overall evaluation result.
+	EvaluationResult *RecommendationStatus
+
+	// READ-ONLY; The number of scenarios that were cancelled during evaluation.
+	NumScenariosEvaluatedCancelled *int32
+
+	// READ-ONLY; The number of scenarios that failed evaluation.
+	NumScenariosEvaluatedFailed *int32
+
+	// READ-ONLY; The number of scenarios that evaluated successfully.
+	NumScenariosEvaluatedSucceeded *int32
+
+	// READ-ONLY; The number of scenarios to evaluate.
+	NumScenariosToEvaluate *int32
+
+	// READ-ONLY; Per-scenario evaluation results.
+	Results []*ScenarioEvaluationResultItem
+
+	// READ-ONLY; The evaluation UTC start time.
+	StartTime *time.Time
+}
+
+// WorkspaceListResult - Model that represents a list of Workspace resources and a link for pagination.
+type WorkspaceListResult struct {
+	// REQUIRED; The Workspace items on this page
+	Value []*Workspace
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// WorkspaceProperties - Model that represents the Workspace properties model.
+type WorkspaceProperties struct {
+	// REQUIRED; The intended workspace-level resource scope to be used by child scenarios.
+	Scopes []*string
+
+	// READ-ONLY; The communication endpoint used to connect and communicate with the workspace for fault-injection orchestration.
+	CommunicationEndpoint *string
+
+	// READ-ONLY; Most recent provisioning state for the given Workspace resource.
+	ProvisioningState *ProvisioningState
+}
+
+// WorkspaceUpdate - Describes a workspace update.
+type WorkspaceUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ZoneResolutionInfo - Information about how physical zones were resolved to logical zones
+// for each subscription during scenario execution.
+type ZoneResolutionInfo struct {
+	// READ-ONLY; The zone targeting mode used for this run.
+	// `logical` — customer specified logical zone identifiers directly.
+	// `physical` — customer specified physical zone identifiers; the system
+	// resolved them to per-subscription logical zones at execution time.
+	Mode *ZoneResolutionMode
+
+	// READ-ONLY; The physical zone identifiers requested by the customer in the
+	// scenario configuration (e.g., `["westus2-az1"]`).
+	// Empty array when `mode` is `logical`.
+	RequestedPhysicalZones []*string
+
+	// READ-ONLY; Per-subscription zone resolution results. Each entry maps a subscription
+	// to the logical zone resolved from the requested physical zone.
+	// Empty when `mode` is `logical`.
+	SubscriptionZoneMappings []*ZoneResolutionMapping
+}
+
+// ZoneResolutionMapping - Maps a single subscription to its physical-to-logical zone resolutions.
+type ZoneResolutionMapping struct {
+	// READ-ONLY; The subscription ID (e.g., `"6b052e15-03d3-4f17-b2e1-be7f07588291"`).
+	SubscriptionID *string
+
+	// READ-ONLY; The physical-to-logical zone mappings for this subscription.
+	ZoneMappings []*PhysicalToLogicalZoneMapping
 }

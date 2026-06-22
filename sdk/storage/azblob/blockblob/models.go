@@ -97,6 +97,9 @@ type UploadBlobFromURLOptions struct {
 	// Optional. Indicates the tier to be set on the blob.
 	Tier *blob.AccessTier
 
+	// Optional. Specifies the customer-provided encryption key to use to decrypt the source blob.
+	SourceCustomerProvidedKey *blob.SourceCPKInfo
+
 	// Additional optional headers
 	HTTPHeaders                    *blob.HTTPHeaders
 	AccessConditions               *blob.AccessConditions
@@ -107,9 +110,9 @@ type UploadBlobFromURLOptions struct {
 
 func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFromURLOptions, *generated.BlobHTTPHeaders,
 	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.ModifiedAccessConditions,
-	*generated.SourceModifiedAccessConditions) {
+	*generated.SourceModifiedAccessConditions, *generated.SourceCPKInfo) {
 	if o == nil {
-		return nil, nil, nil, nil, nil, nil, nil
+		return nil, nil, nil, nil, nil, nil, nil, nil
 	}
 
 	options := generated.BlockBlobClientPutBlobFromURLOptions{
@@ -124,7 +127,8 @@ func (o *UploadBlobFromURLOptions) format() (*generated.BlockBlobClientPutBlobFr
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions, o.SourceModifiedAccessConditions
+	return &options, o.HTTPHeaders, leaseAccessConditions, o.CPKInfo, o.CPKScopeInfo, modifiedAccessConditions,
+		o.SourceModifiedAccessConditions, o.SourceCustomerProvidedKey
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -174,11 +178,14 @@ type StageBlockFromURLOptions struct {
 	CPKInfo *blob.CPKInfo
 
 	CPKScopeInfo *blob.CPKScopeInfo
+
+	// Optional. Specifies the customer-provided encryption key to use to decrypt the source blob.
+	SourceCustomerProvidedKey *blob.SourceCPKInfo
 }
 
-func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions) {
+func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBlockFromURLOptions, *generated.CPKInfo, *generated.CPKScopeInfo, *generated.LeaseAccessConditions, *generated.SourceModifiedAccessConditions, *generated.SourceCPKInfo) {
 	if o == nil {
-		return nil, nil, nil, nil, nil
+		return nil, nil, nil, nil, nil, nil
 	}
 
 	options := &generated.BlockBlobClientStageBlockFromURLOptions{
@@ -191,7 +198,8 @@ func (o *StageBlockFromURLOptions) format() (*generated.BlockBlobClientStageBloc
 		o.SourceContentValidation.Apply(options)
 	}
 
-	return options, o.CPKInfo, o.CPKScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions
+	return options, o.CPKInfo, o.CPKScopeInfo, o.LeaseAccessConditions, o.SourceModifiedAccessConditions,
+		o.SourceCustomerProvidedKey
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -265,7 +273,8 @@ type uploadFromReaderOptions struct {
 	CPKInfo      *blob.CPKInfo
 	CPKScopeInfo *blob.CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to upload in parallel (0=default)
+	// Concurrency indicates the maximum number of blocks to upload in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	TransactionalValidation blob.TransferValidationType
@@ -296,13 +305,14 @@ func (o *uploadFromReaderOptions) getStageBlockOptions() *StageBlockOptions {
 
 func (o *uploadFromReaderOptions) getUploadBlockBlobOptions() *UploadOptions {
 	return &UploadOptions{
-		Tags:             o.Tags,
-		Metadata:         o.Metadata,
-		Tier:             o.AccessTier,
-		HTTPHeaders:      o.HTTPHeaders,
-		AccessConditions: o.AccessConditions,
-		CPKInfo:          o.CPKInfo,
-		CPKScopeInfo:     o.CPKScopeInfo,
+		Tags:                    o.Tags,
+		Metadata:                o.Metadata,
+		Tier:                    o.AccessTier,
+		HTTPHeaders:             o.HTTPHeaders,
+		AccessConditions:        o.AccessConditions,
+		CPKInfo:                 o.CPKInfo,
+		CPKScopeInfo:            o.CPKScopeInfo,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -325,7 +335,8 @@ type UploadStreamOptions struct {
 	BlockSize int64
 
 	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.
-	// Each concurrent upload will create a buffer of size BlockSize.  The default value is one.
+	// Each concurrent upload will create a buffer of size BlockSize.  The default is based on
+	// CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency int
 
 	TransactionalValidation blob.TransferValidationType
@@ -341,7 +352,7 @@ type UploadStreamOptions struct {
 
 func (u *UploadStreamOptions) setDefaults() {
 	if u.Concurrency == 0 {
-		u.Concurrency = 1
+		u.Concurrency = int(shared.DefaultStreamConcurrencyValue())
 	}
 
 	if u.BlockSize < _1MiB {
@@ -385,13 +396,14 @@ func (u *UploadStreamOptions) getUploadOptions() *UploadOptions {
 	}
 
 	return &UploadOptions{
-		Tags:             u.Tags,
-		Metadata:         u.Metadata,
-		Tier:             u.AccessTier,
-		HTTPHeaders:      u.HTTPHeaders,
-		CPKInfo:          u.CPKInfo,
-		CPKScopeInfo:     u.CPKScopeInfo,
-		AccessConditions: u.AccessConditions,
+		Tags:                    u.Tags,
+		Metadata:                u.Metadata,
+		Tier:                    u.AccessTier,
+		HTTPHeaders:             u.HTTPHeaders,
+		CPKInfo:                 u.CPKInfo,
+		CPKScopeInfo:            u.CPKScopeInfo,
+		AccessConditions:        u.AccessConditions,
+		TransactionalValidation: u.TransactionalValidation,
 	}
 }
 

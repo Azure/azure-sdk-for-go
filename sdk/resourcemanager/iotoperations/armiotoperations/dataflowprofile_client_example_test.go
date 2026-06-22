@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/DataflowProfile_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 			InstanceCount: to.Ptr[int32](14),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 	}, nil)
@@ -45,13 +45,13 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowProfileClientCreateOrUpdateResponse{
-	// 	DataflowProfileResource: &armiotoperations.DataflowProfileResource{
+	// 	DataflowProfileResource: armiotoperations.DataflowProfileResource{
 	// 		Properties: &armiotoperations.DataflowProfileProperties{
 	// 			Diagnostics: &armiotoperations.ProfileDiagnostics{
 	// 				Logs: &armiotoperations.DiagnosticsLogs{
@@ -65,17 +65,17 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/dataflowProfiles/resource-name123"),
 	// 		Name: to.Ptr("bwhcjsnnfnrmbixamyxjau"),
-	// 		Type: to.Ptr("ejvancsomtbapgztnerhlvx"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/dataflowProfiles"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -83,7 +83,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2024-11-01/DataflowProfile_CreateOrUpdate_Minimal.json
+// Generated from example definition: 2026-03-01/DataflowProfile_CreateOrUpdate_Minimal.json
 func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpdateMinimal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 			InstanceCount: to.Ptr[int32](1),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 	}, nil)
@@ -108,29 +108,29 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowProfileClientCreateOrUpdateResponse{
-	// 	DataflowProfileResource: &armiotoperations.DataflowProfileResource{
+	// 	DataflowProfileResource: armiotoperations.DataflowProfileResource{
 	// 		Properties: &armiotoperations.DataflowProfileProperties{
 	// 			InstanceCount: to.Ptr[int32](1),
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/dataflowProfiles/resource-name123"),
 	// 		Name: to.Ptr("bwhcjsnnfnrmbixamyxjau"),
-	// 		Type: to.Ptr("ejvancsomtbapgztnerhlvx"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/dataflowProfiles"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -138,7 +138,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2024-11-01/DataflowProfile_CreateOrUpdate_Multi.json
+// Generated from example definition: 2026-03-01/DataflowProfile_CreateOrUpdate_Multi.json
 func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpdateMulti() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 			InstanceCount: to.Ptr[int32](3),
 		},
 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		},
 	}, nil)
@@ -163,29 +163,29 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowProfileClientCreateOrUpdateResponse{
-	// 	DataflowProfileResource: &armiotoperations.DataflowProfileResource{
+	// 	DataflowProfileResource: armiotoperations.DataflowProfileResource{
 	// 		Properties: &armiotoperations.DataflowProfileProperties{
 	// 			InstanceCount: to.Ptr[int32](3),
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/dataflowProfiles/resource-name123"),
 	// 		Name: to.Ptr("bwhcjsnnfnrmbixamyxjau"),
-	// 		Type: to.Ptr("ejvancsomtbapgztnerhlvx"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/dataflowProfiles"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -193,7 +193,7 @@ func ExampleDataflowProfileClient_BeginCreateOrUpdate_dataflowProfileCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2024-11-01/DataflowProfile_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/DataflowProfile_Delete_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,11 +210,11 @@ func ExampleDataflowProfileClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2024-11-01/DataflowProfile_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/DataflowProfile_Get_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleDataflowProfileClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowProfileClientGetResponse{
-	// 	DataflowProfileResource: &armiotoperations.DataflowProfileResource{
+	// 	DataflowProfileResource: armiotoperations.DataflowProfileResource{
 	// 		Properties: &armiotoperations.DataflowProfileProperties{
 	// 			Diagnostics: &armiotoperations.ProfileDiagnostics{
 	// 				Logs: &armiotoperations.DiagnosticsLogs{
@@ -247,17 +247,17 @@ func ExampleDataflowProfileClient_Get() {
 	// 			ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 	// 		},
 	// 		ExtendedLocation: &armiotoperations.ExtendedLocation{
-	// 			Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+	// 			Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 	// 			Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/dataflowProfiles/resource-name123"),
 	// 		Name: to.Ptr("bwhcjsnnfnrmbixamyxjau"),
-	// 		Type: to.Ptr("ejvancsomtbapgztnerhlvx"),
+	// 		Type: to.Ptr("Microsoft.IoTOperations/instances/dataflowProfiles"),
 	// 		SystemData: &armiotoperations.SystemData{
-	// 			CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+	// 			CreatedBy: to.Ptr("contosouser"),
 	// 			CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("gnicpuszwd"),
+	// 			LastModifiedBy: to.Ptr("contosouser"),
 	// 			LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 	// 		},
@@ -265,7 +265,7 @@ func ExampleDataflowProfileClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/DataflowProfile_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleDataflowProfileClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,17 +304,17 @@ func ExampleDataflowProfileClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armiotoperations.ProvisioningStateSucceeded),
 		// 				},
 		// 				ExtendedLocation: &armiotoperations.ExtendedLocation{
-		// 					Name: to.Ptr("qmbrfwcpwwhggszhrdjv"),
+		// 					Name: to.Ptr("/subscriptions/F8C729F9-DF9C-4743-848F-96EE433D8E53/resourceGroups/rgiotoperations/providers/Microsoft.ExtendedLocation/customLocations/resource-123"),
 		// 					Type: to.Ptr(armiotoperations.ExtendedLocationTypeCustomLocation),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/0000000-0000-0000-0000-000000000000/resourceGroups/resourceGroup123/providers/Microsoft.IoTOperations/instances/resource-name123/dataflowProfiles/resource-name123"),
 		// 				Name: to.Ptr("bwhcjsnnfnrmbixamyxjau"),
-		// 				Type: to.Ptr("ejvancsomtbapgztnerhlvx"),
+		// 				Type: to.Ptr("Microsoft.IoTOperations/instances/dataflowProfiles"),
 		// 				SystemData: &armiotoperations.SystemData{
-		// 					CreatedBy: to.Ptr("ssvaslsmudloholronopqyxjcu"),
+		// 					CreatedBy: to.Ptr("contosouser"),
 		// 					CreatedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("gnicpuszwd"),
+		// 					LastModifiedBy: to.Ptr("contosouser"),
 		// 					LastModifiedByType: to.Ptr(armiotoperations.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-09T18:13:29.389Z"); return t}()),
 		// 				},

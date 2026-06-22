@@ -7,7 +7,7 @@ package armdeploymentmanager
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deploymentmanager/armdeploymentmanager"
-	moduleVersion = "v0.6.0"
+	moduleVersion = "v0.6.1"
 )
 
 // DeploymentMode - Describes the type of ARM deployment to be performed on the resource.

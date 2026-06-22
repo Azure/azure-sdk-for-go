@@ -8,11 +8,10 @@ pr:
     - pullrequest*
   paths:
     include:
-    - "*"
-
+      - "*"
     exclude:
-    - sdk/data/azcosmos/
-    - .github/skills/azsdk-common-*/**
+      - sdk/data/azcosmos/
+      - .github/skills/azsdk-common-*/**
 
 parameters:
   - name: Service

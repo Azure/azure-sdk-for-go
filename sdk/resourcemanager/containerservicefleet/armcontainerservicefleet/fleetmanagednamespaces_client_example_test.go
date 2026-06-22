@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_CreateOrUpdate.json
+// Generated from example definition: 2026-03-02-preview/FleetManagedNamespaces_CreateOrUpdate.json
 func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,13 +110,13 @@ func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetManagedNamespacesClientCreateOrUpdateResponse{
-	// 	FleetManagedNamespace: &armcontainerservicefleet.FleetManagedNamespace{
+	// 	FleetManagedNamespace: armcontainerservicefleet.FleetManagedNamespace{
 	// 		Properties: &armcontainerservicefleet.FleetManagedNamespaceProperties{
 	// 			ManagedNamespaceProperties: &armcontainerservicefleet.ManagedNamespaceProperties{
 	// 				Labels: map[string]*string{
@@ -214,7 +214,7 @@ func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_Delete.json
+// Generated from example definition: 2026-03-02-preview/FleetManagedNamespaces_Delete.json
 func ExampleFleetManagedNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,11 +231,11 @@ func ExampleFleetManagedNamespacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_Get.json
+// Generated from example definition: 2026-03-02-preview/FleetManagedNamespaces_Get.json
 func ExampleFleetManagedNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleFleetManagedNamespacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetManagedNamespacesClientGetResponse{
-	// 	FleetManagedNamespace: &armcontainerservicefleet.FleetManagedNamespace{
+	// 	FleetManagedNamespace: armcontainerservicefleet.FleetManagedNamespace{
 	// 		Properties: &armcontainerservicefleet.FleetManagedNamespaceProperties{
 	// 			ManagedNamespaceProperties: &armcontainerservicefleet.ManagedNamespaceProperties{
 	// 				Labels: map[string]*string{
@@ -356,7 +356,7 @@ func ExampleFleetManagedNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_ListByFleet.json
+// Generated from example definition: 2026-03-02-preview/FleetManagedNamespaces_ListByFleet.json
 func ExampleFleetManagedNamespacesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleFleetManagedNamespacesClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/FleetManagedNamespaces_Update.json
+// Generated from example definition: 2026-03-02-preview/FleetManagedNamespaces_Update.json
 func ExampleFleetManagedNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,13 +505,13 @@ func ExampleFleetManagedNamespacesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservicefleet.FleetManagedNamespacesClientUpdateResponse{
-	// 	FleetManagedNamespace: &armcontainerservicefleet.FleetManagedNamespace{
+	// 	FleetManagedNamespace: armcontainerservicefleet.FleetManagedNamespace{
 	// 		Properties: &armcontainerservicefleet.FleetManagedNamespaceProperties{
 	// 			ManagedNamespaceProperties: &armcontainerservicefleet.ManagedNamespaceProperties{
 	// 				Labels: map[string]*string{

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01/createSecret.json
+// Generated from example definition: 2026-02-01/createSecret.json
 func ExampleSecretsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleSecretsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.SecretsClientCreateOrUpdateResponse{
-	// 	Secret: &armkeyvault.Secret{
+	// 	Secret: armkeyvault.Secret{
 	// 		Name: to.Ptr("secret-name"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults/secrets"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault/secrets/secret-name"),
@@ -53,7 +53,7 @@ func ExampleSecretsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/getSecret.json
+// Generated from example definition: 2026-02-01/getSecret.json
 func ExampleSecretsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleSecretsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.SecretsClientGetResponse{
-	// 	Secret: &armkeyvault.Secret{
+	// 	Secret: armkeyvault.Secret{
 	// 		Name: to.Ptr("secret-name"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults/secrets"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault/secrets/secret-name"),
@@ -90,7 +90,7 @@ func ExampleSecretsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/listSecrets.json
+// Generated from example definition: 2026-02-01/listSecrets.json
 func ExampleSecretsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleSecretsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/updateSecret.json
+// Generated from example definition: 2026-02-01/updateSecret.json
 func ExampleSecretsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleSecretsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.SecretsClientUpdateResponse{
-	// 	Secret: &armkeyvault.Secret{
+	// 	Secret: armkeyvault.Secret{
 	// 		Name: to.Ptr("secret-name"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults/secrets"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault/secrets/secret-name"),

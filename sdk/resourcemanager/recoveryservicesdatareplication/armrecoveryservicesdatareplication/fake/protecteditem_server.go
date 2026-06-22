@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -83,9 +84,7 @@ func (p *ProtectedItemServerTransport) Do(req *http.Request) (*http.Response, er
 }
 
 func (p *ProtectedItemServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -111,10 +110,7 @@ func (p *ProtectedItemServerTransport) dispatchToMethodFake(req *http.Request, m
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -166,7 +162,7 @@ func (p *ProtectedItemServerTransport) dispatchBeginCreate(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		p.beginCreate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -194,11 +190,7 @@ func (p *ProtectedItemServerTransport) dispatchBeginDelete(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		forceDeleteUnescaped, err := url.QueryUnescape(qp.Get("forceDelete"))
-		if err != nil {
-			return nil, err
-		}
-		forceDeleteParam, err := parseOptional(forceDeleteUnescaped, strconv.ParseBool)
+		forceDeleteParam, err := parseOptional(qp.Get("forceDelete"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -229,7 +221,7 @@ func (p *ProtectedItemServerTransport) dispatchBeginDelete(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -267,7 +259,7 @@ func (p *ProtectedItemServerTransport) dispatchGet(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ProtectedItemModel, req)
@@ -294,21 +286,9 @@ func (p *ProtectedItemServerTransport) dispatchNewListPager(req *http.Request) (
 		if err != nil {
 			return nil, err
 		}
-		oDataOptionsUnescaped, err := url.QueryUnescape(qp.Get("odataOptions"))
-		if err != nil {
-			return nil, err
-		}
-		oDataOptionsParam := getOptional(oDataOptionsUnescaped)
-		continuationTokenUnescaped, err := url.QueryUnescape(qp.Get("continuationToken"))
-		if err != nil {
-			return nil, err
-		}
-		continuationTokenParam := getOptional(continuationTokenUnescaped)
-		pageSizeUnescaped, err := url.QueryUnescape(qp.Get("pageSize"))
-		if err != nil {
-			return nil, err
-		}
-		pageSizeParam, err := parseOptional(pageSizeUnescaped, func(v string) (int32, error) {
+		oDataOptionsParam := getOptional(qp.Get("odataOptions"))
+		continuationTokenParam := getOptional(qp.Get("continuationToken"))
+		pageSizeParam, err := parseOptional(qp.Get("pageSize"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -341,7 +321,7 @@ func (p *ProtectedItemServerTransport) dispatchNewListPager(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -392,7 +372,7 @@ func (p *ProtectedItemServerTransport) dispatchBeginPlannedFailover(req *http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		p.beginPlannedFailover.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -444,7 +424,7 @@ func (p *ProtectedItemServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		p.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

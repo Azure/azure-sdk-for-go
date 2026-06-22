@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/TriggerBackup.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/TriggerBackup.json
 func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,20 +36,20 @@ func ExampleBackupInstancesClient_BeginAdhocBackup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientAdhocBackupResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/PutBackupInstance.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/PutBackupInstance.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,13 +113,13 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
-	// 	BackupInstanceResource: &armdataprotection.BackupInstanceResource{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
 	// 		Name: to.Ptr("harshitbi2"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
@@ -166,7 +166,143 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupAutoProtection.json
+func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAdlsBlobBackupAutoProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginCreateOrUpdate(ctx, "adlsrg", "adlsvault", "adlsstorageaccount-adlsstorageaccount-3a76f8a-c176-4f7d-819e-95157e2b0071", armdataprotection.BackupInstanceResource{
+		Properties: &armdataprotection.BackupInstance{
+			DataSourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+				ResourceLocation: to.Ptr("centraluseuap"),
+				ResourceName:     to.Ptr("adlsstorageaccount"),
+				ResourceType:     to.Ptr("microsoft.storage/storageAccounts"),
+				ResourceURI:      to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+			},
+			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+				ResourceLocation: to.Ptr("centraluseuap"),
+				ResourceName:     to.Ptr("adlsstorageaccount"),
+				ResourceType:     to.Ptr("microsoft.storage/storageAccounts"),
+				ResourceURI:      to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+			},
+			FriendlyName: to.Ptr("adlsstorageaccount\\adlsbackupinstance"),
+			ObjectType:   to.Ptr("BackupInstance"),
+			PolicyInfo: &armdataprotection.PolicyInfo{
+				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy"),
+				PolicyParameters: &armdataprotection.PolicyParameters{
+					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+						&armdataprotection.AdlsBlobBackupDatasourceParametersForAutoProtection{
+							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+								Enabled:    to.Ptr(true),
+								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+									{
+										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+										Mode:       to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+										Type:       to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+										Pattern:    to.Ptr("temp-"),
+									},
+									{
+										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+										Mode:       to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+										Type:       to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+										Pattern:    to.Ptr("test-"),
+									},
+								},
+							},
+							ObjectType: to.Ptr("AdlsBlobBackupDatasourceParametersForAutoProtection"),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("3a76f8a-c176-4f7d-819e-95157e2b0077"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/3a76f8a-c176-4f7d-819e-95157e2b0077"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adlsstorageaccount"),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adlsstorageaccount"),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			FriendlyName: to.Ptr("adlsstorageaccount\\adlsbackupinstance"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.AdlsBlobBackupDatasourceParametersForAutoProtection{
+	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+	// 								Enabled: to.Ptr(true),
+	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("temp-"),
+	// 									},
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("test-"),
+	// 									},
+	// 								},
+	// 							},
+	// 							ObjectType: to.Ptr("AdlsBlobBackupDatasourceParametersForAutoProtection"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.Status("NotProtected")),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Provisioned"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/PutBackupInstance_ADLSBlobBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAdlsBlobBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,13 +355,13 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
-	// 	BackupInstanceResource: &armdataprotection.BackupInstanceResource{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
 	// 		Name: to.Ptr("19a76f8a-c176-4f7d-819e-95157e2b0077"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
 	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/19a76f8a-c176-4f7d-819e-95157e2b0077"),
@@ -272,7 +408,143 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithAd
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/PutBackupInstance_BlobBackupAutoProtection.json
+func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithBlobBackupAutoProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewBackupInstancesClient().BeginCreateOrUpdate(ctx, "blobrg", "blobvault", "blobstorageaccount-blobstorageaccount-2a76f8a-c176-4f7d-819e-95157e2b0071", armdataprotection.BackupInstanceResource{
+		Properties: &armdataprotection.BackupInstance{
+			DataSourceInfo: &armdataprotection.Datasource{
+				DatasourceType:   to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+				ObjectType:       to.Ptr("Datasource"),
+				ResourceID:       to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+				ResourceLocation: to.Ptr("centraluseuap"),
+				ResourceName:     to.Ptr("blobstorageaccount"),
+				ResourceType:     to.Ptr("microsoft.storage/storageAccounts"),
+				ResourceURI:      to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+			},
+			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+				DatasourceType:   to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+				ObjectType:       to.Ptr("DatasourceSet"),
+				ResourceID:       to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+				ResourceLocation: to.Ptr("centraluseuap"),
+				ResourceName:     to.Ptr("blobstorageaccount"),
+				ResourceType:     to.Ptr("microsoft.storage/storageAccounts"),
+				ResourceURI:      to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+			},
+			FriendlyName: to.Ptr("blobstorageaccount\\blobbackupinstance"),
+			ObjectType:   to.Ptr("BackupInstance"),
+			PolicyInfo: &armdataprotection.PolicyInfo{
+				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupPolicies/blobpolicy"),
+				PolicyParameters: &armdataprotection.PolicyParameters{
+					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+						&armdataprotection.BlobBackupDatasourceParametersForAutoProtection{
+							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+								Enabled:    to.Ptr(true),
+								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+									{
+										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+										Mode:       to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+										Type:       to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+										Pattern:    to.Ptr("temp-"),
+									},
+									{
+										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+										Mode:       to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+										Type:       to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+										Pattern:    to.Ptr("test-"),
+									},
+								},
+							},
+							ObjectType: to.Ptr("BlobBackupDatasourceParametersForAutoProtection"),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("2a76f8a-c176-4f7d-819e-95157e2b0077"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupInstances/2a76f8a-c176-4f7d-819e-95157e2b0077"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("blobstorageaccount"),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("blobstorageaccount"),
+	// 				ResourceType: to.Ptr("microsoft.storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 			},
+	// 			FriendlyName: to.Ptr("blobstorageaccount\\blobbackupinstance"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupPolicies/blobpolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.BlobBackupDatasourceParametersForAutoProtection{
+	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+	// 								Enabled: to.Ptr(true),
+	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("temp-"),
+	// 									},
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("test-"),
+	// 									},
+	// 								},
+	// 							},
+	// 							ObjectType: to.Ptr("BlobBackupDatasourceParametersForAutoProtection"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.Status("NotProtected")),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Provisioned"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/PutBackupInstance_KubernetesClusterBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithKubernetesClusterBackupDatasourceParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,13 +618,13 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithKu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
-	// 	BackupInstanceResource: &armdataprotection.BackupInstanceResource{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
 	// 		Name: to.Ptr("aksbi"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
 	// 		ID: to.Ptr("/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/aksrg/providers/Microsoft.DataProtection/backupVaults/aksvault/backupInstances/aksbi"),
@@ -420,7 +692,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceWithKu
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/PutBackupInstance_ResourceGuardEnabled.json
 func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerformCriticalOperationWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,13 +755,13 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerf
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientCreateOrUpdateResponse{
-	// 	BackupInstanceResource: &armdataprotection.BackupInstanceResource{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
 	// 		Name: to.Ptr("harshitbi2"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
@@ -536,7 +808,7 @@ func ExampleBackupInstancesClient_BeginCreateOrUpdate_createBackupInstanceToPerf
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/DeleteBackupInstance.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/DeleteBackupInstance.json
 func ExampleBackupInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,7 +825,7 @@ func ExampleBackupInstancesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -562,7 +834,7 @@ func ExampleBackupInstancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/GetBackupInstance.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/GetBackupInstance.json
 func ExampleBackupInstancesClient_Get_getBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,7 +853,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstance() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientGetResponse{
-	// 	BackupInstanceResource: &armdataprotection.BackupInstanceResource{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
 	// 		Name: to.Ptr("harshitbi2"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/000pikumar/providers/Microsoft.DataProtection/backupVaults/PratikPrivatePreviewVault1/backupInstances/harshitbi2"),
@@ -623,7 +895,89 @@ func ExampleBackupInstancesClient_Get_getBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupAutoProtection.json
+func ExampleBackupInstancesClient_Get_getBackupInstanceWithAdlsBlobBackupAutoProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "adlsrg", "adlsvault", "adlsbackupinstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientGetResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("adlsbackupinstance"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/adlsbackupinstance"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adlsstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/adlsBlobServices"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("adlsstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.Storage/storageAccounts/adlsstorageaccount"),
+	// 			},
+	// 			FriendlyName: to.Ptr("adlsbackupinstance"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupPolicies/adlspolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.AdlsBlobBackupDatasourceParametersForAutoProtection{
+	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+	// 								Enabled: to.Ptr(true),
+	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("temp-"),
+	// 									},
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("test-"),
+	// 									},
+	// 								},
+	// 							},
+	// 							ObjectType: to.Ptr("AdlsBlobBackupDatasourceParametersForAutoProtection"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/GetBackupInstance_ADLSBlobBackupDatasourceParameters.json
 func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -642,7 +996,7 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientGetResponse{
-	// 	BackupInstanceResource: &armdataprotection.BackupInstanceResource{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
 	// 		Name: to.Ptr("adlsbackupinstance"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
 	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/adlsrg/providers/Microsoft.DataProtection/backupVaults/adlsvault/backupInstances/adlsbackupinstance"),
@@ -691,7 +1045,89 @@ func ExampleBackupInstancesClient_Get_getBackupInstanceForAdlsBlob() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/GetBackupInstance_BlobBackupAutoProtection.json
+func ExampleBackupInstancesClient_Get_getBackupInstanceWithBlobBackupAutoProtection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataprotection.NewClientFactory("54707983-993e-43de-8d94-074451394eda", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewBackupInstancesClient().Get(ctx, "blobrg", "blobvault", "blobbackupinstance", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataprotection.BackupInstancesClientGetResponse{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
+	// 		Name: to.Ptr("blobbackupinstance"),
+	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
+	// 		ID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupInstances/blobbackupinstance"),
+	// 		Properties: &armdataprotection.BackupInstance{
+	// 			CurrentProtectionState: to.Ptr(armdataprotection.CurrentProtectionStateProtectionConfigured),
+	// 			DataSourceInfo: &armdataprotection.Datasource{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+	// 				ObjectType: to.Ptr("Datasource"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("blobstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 			},
+	// 			DataSourceSetInfo: &armdataprotection.DatasourceSet{
+	// 				DatasourceType: to.Ptr("Microsoft.Storage/storageAccounts/blobServices"),
+	// 				ObjectType: to.Ptr("DatasourceSet"),
+	// 				ResourceID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 				ResourceLocation: to.Ptr("centraluseuap"),
+	// 				ResourceName: to.Ptr("blobstorageaccount"),
+	// 				ResourceType: to.Ptr("Microsoft.Storage/storageAccounts"),
+	// 				ResourceURI: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.Storage/storageAccounts/blobstorageaccount"),
+	// 			},
+	// 			FriendlyName: to.Ptr("blobbackupinstance"),
+	// 			ObjectType: to.Ptr("BackupInstance"),
+	// 			PolicyInfo: &armdataprotection.PolicyInfo{
+	// 				PolicyID: to.Ptr("/subscriptions/54707983-993e-43de-8d94-074451394eda/resourceGroups/blobrg/providers/Microsoft.DataProtection/backupVaults/blobvault/backupPolicies/blobpolicy"),
+	// 				PolicyParameters: &armdataprotection.PolicyParameters{
+	// 					BackupDatasourceParametersList: []armdataprotection.BackupDatasourceParametersClassification{
+	// 						&armdataprotection.BlobBackupDatasourceParametersForAutoProtection{
+	// 							AutoProtectionSettings: &armdataprotection.BlobBackupRuleBasedAutoProtectionSettings{
+	// 								Enabled: to.Ptr(true),
+	// 								ObjectType: to.Ptr("BlobBackupRuleBasedAutoProtectionSettings"),
+	// 								Rules: []*armdataprotection.BlobBackupAutoProtectionRule{
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("temp-"),
+	// 									},
+	// 									{
+	// 										ObjectType: to.Ptr("BlobBackupAutoProtectionRule"),
+	// 										Mode: to.Ptr(armdataprotection.BlobBackupRuleModeExclude),
+	// 										Type: to.Ptr(armdataprotection.BlobBackupPatternTypePrefix),
+	// 										Pattern: to.Ptr("test-"),
+	// 									},
+	// 								},
+	// 							},
+	// 							ObjectType: to.Ptr("BlobBackupDatasourceParametersForAutoProtection"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProtectionStatus: &armdataprotection.ProtectionStatusDetails{
+	// 				Status: to.Ptr(armdataprotection.StatusProtectionConfigured),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/GetBackupInstanceOperationResult.json
 func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +1146,7 @@ func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientGetBackupInstanceOperationResultResponse{
-	// 	BackupInstanceResource: &armdataprotection.BackupInstanceResource{
+	// 	BackupInstanceResource: armdataprotection.BackupInstanceResource{
 	// 		Name: to.Ptr("testInstance1"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/swaggerExample/backupInstances/testInstance1"),
@@ -748,7 +1184,7 @@ func ExampleBackupInstancesClient_GetBackupInstanceOperationResult() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/ListBackupInstances.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/ListBackupInstances.json
 func ExampleBackupInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -814,7 +1250,7 @@ func ExampleBackupInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/ResumeBackups.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/ResumeBackups.json
 func ExampleBackupInstancesClient_BeginResumeBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -831,7 +1267,7 @@ func ExampleBackupInstancesClient_BeginResumeBackups() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -840,7 +1276,7 @@ func ExampleBackupInstancesClient_BeginResumeBackups() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/ResumeProtection.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/ResumeProtection.json
 func ExampleBackupInstancesClient_BeginResumeProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -857,7 +1293,7 @@ func ExampleBackupInstancesClient_BeginResumeProtection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -866,7 +1302,7 @@ func ExampleBackupInstancesClient_BeginResumeProtection() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/StopProtection.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/StopProtection.json
 func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -883,7 +1319,7 @@ func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -892,7 +1328,7 @@ func ExampleBackupInstancesClient_BeginStopProtection_stopProtection() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/StopProtection_ResourceGuardEnabled.json
 func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -914,7 +1350,7 @@ func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -923,7 +1359,7 @@ func ExampleBackupInstancesClient_BeginStopProtection_stopProtectionWithMua() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/SuspendBackup_ResourceGuardEnabled.json
 func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -945,7 +1381,7 @@ func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -954,7 +1390,7 @@ func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackupsWithMua() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/SuspendBackups.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/SuspendBackups.json
 func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -971,7 +1407,7 @@ func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -980,7 +1416,7 @@ func ExampleBackupInstancesClient_BeginSuspendBackups_suspendBackups() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/SyncBackupInstance.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/SyncBackupInstance.json
 func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -999,7 +1435,7 @@ func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1008,7 +1444,7 @@ func ExampleBackupInstancesClient_BeginSyncBackupInstance() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/CrossRegionRestore/TriggerCrossRegionRestore.json
+// Generated from example definition: 2026-03-01/CrossRegionRestore/TriggerCrossRegionRestore.json
 func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1066,20 +1502,20 @@ func ExampleBackupInstancesClient_BeginTriggerCrossRegionRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientTriggerCrossRegionRestoreResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/TriggerRehydrate.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/TriggerRehydrate.json
 func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1100,11 +1536,11 @@ func ExampleBackupInstancesClient_BeginTriggerRehydrate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/TriggerRestore.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/TriggerRestore.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1160,20 +1596,20 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/TriggerRestoreAsFiles.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1205,20 +1641,20 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreAsFiles() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/TriggerRestoreWithRehydration.json
 func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1265,20 +1701,20 @@ func ExampleBackupInstancesClient_BeginTriggerRestore_triggerRestoreWithRehydrat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientTriggerRestoreResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/CrossRegionRestore/ValidateCrossRegionRestore.json
+// Generated from example definition: 2026-03-01/CrossRegionRestore/ValidateCrossRegionRestore.json
 func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1336,20 +1772,20 @@ func ExampleBackupInstancesClient_BeginValidateCrossRegionRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientValidateCrossRegionRestoreResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/ValidateForBackup.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/ValidateForBackup.json
 func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1403,20 +1839,20 @@ func ExampleBackupInstancesClient_BeginValidateForBackup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientValidateForBackupResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/ValidateForModifyBackup.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/ValidateForModifyBackup.json
 func ExampleBackupInstancesClient_BeginValidateForModifyBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1470,11 +1906,11 @@ func ExampleBackupInstancesClient_BeginValidateForModifyBackup() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-07-01/BackupInstanceOperations/ValidateRestore.json
+// Generated from example definition: 2026-03-01/BackupInstanceOperations/ValidateRestore.json
 func ExampleBackupInstancesClient_BeginValidateForRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1532,13 +1968,13 @@ func ExampleBackupInstancesClient_BeginValidateForRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.BackupInstancesClientValidateForRestoreResponse{
-	// 	OperationJobExtendedInfo: &armdataprotection.OperationJobExtendedInfo{
+	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),
 	// 	},

@@ -24,6 +24,9 @@ type ServerFactory struct {
 	// BillingContainersServer contains the fakes for client BillingContainersClient
 	BillingContainersServer BillingContainersServer
 
+	// CredentialsServer contains the fakes for client CredentialsClient
+	CredentialsServer CredentialsServer
+
 	// NamespaceAssetsServer contains the fakes for client NamespaceAssetsClient
 	NamespaceAssetsServer NamespaceAssetsServer
 
@@ -44,6 +47,9 @@ type ServerFactory struct {
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// PoliciesServer contains the fakes for client PoliciesClient
+	PoliciesServer PoliciesServer
 
 	// SchemaRegistriesServer contains the fakes for client SchemaRegistriesClient
 	SchemaRegistriesServer SchemaRegistriesServer
@@ -72,6 +78,7 @@ type ServerFactoryTransport struct {
 	trAssetEndpointProfilesServer      *AssetEndpointProfilesServerTransport
 	trAssetsServer                     *AssetsServerTransport
 	trBillingContainersServer          *BillingContainersServerTransport
+	trCredentialsServer                *CredentialsServerTransport
 	trNamespaceAssetsServer            *NamespaceAssetsServerTransport
 	trNamespaceDevicesServer           *NamespaceDevicesServerTransport
 	trNamespaceDiscoveredAssetsServer  *NamespaceDiscoveredAssetsServerTransport
@@ -79,6 +86,7 @@ type ServerFactoryTransport struct {
 	trNamespacesServer                 *NamespacesServerTransport
 	trOperationStatusServer            *OperationStatusServerTransport
 	trOperationsServer                 *OperationsServerTransport
+	trPoliciesServer                   *PoliciesServerTransport
 	trSchemaRegistriesServer           *SchemaRegistriesServerTransport
 	trSchemaVersionsServer             *SchemaVersionsServerTransport
 	trSchemasServer                    *SchemasServerTransport
@@ -98,61 +106,67 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AssetEndpointProfilesClient":
-		initServer(s, &s.trAssetEndpointProfilesServer, func() *AssetEndpointProfilesServerTransport {
+		initServer(&s.trMu, &s.trAssetEndpointProfilesServer, func() *AssetEndpointProfilesServerTransport {
 			return NewAssetEndpointProfilesServerTransport(&s.srv.AssetEndpointProfilesServer)
 		})
 		resp, err = s.trAssetEndpointProfilesServer.Do(req)
 	case "AssetsClient":
-		initServer(s, &s.trAssetsServer, func() *AssetsServerTransport { return NewAssetsServerTransport(&s.srv.AssetsServer) })
+		initServer(&s.trMu, &s.trAssetsServer, func() *AssetsServerTransport { return NewAssetsServerTransport(&s.srv.AssetsServer) })
 		resp, err = s.trAssetsServer.Do(req)
 	case "BillingContainersClient":
-		initServer(s, &s.trBillingContainersServer, func() *BillingContainersServerTransport {
+		initServer(&s.trMu, &s.trBillingContainersServer, func() *BillingContainersServerTransport {
 			return NewBillingContainersServerTransport(&s.srv.BillingContainersServer)
 		})
 		resp, err = s.trBillingContainersServer.Do(req)
+	case "CredentialsClient":
+		initServer(&s.trMu, &s.trCredentialsServer, func() *CredentialsServerTransport { return NewCredentialsServerTransport(&s.srv.CredentialsServer) })
+		resp, err = s.trCredentialsServer.Do(req)
 	case "NamespaceAssetsClient":
-		initServer(s, &s.trNamespaceAssetsServer, func() *NamespaceAssetsServerTransport {
+		initServer(&s.trMu, &s.trNamespaceAssetsServer, func() *NamespaceAssetsServerTransport {
 			return NewNamespaceAssetsServerTransport(&s.srv.NamespaceAssetsServer)
 		})
 		resp, err = s.trNamespaceAssetsServer.Do(req)
 	case "NamespaceDevicesClient":
-		initServer(s, &s.trNamespaceDevicesServer, func() *NamespaceDevicesServerTransport {
+		initServer(&s.trMu, &s.trNamespaceDevicesServer, func() *NamespaceDevicesServerTransport {
 			return NewNamespaceDevicesServerTransport(&s.srv.NamespaceDevicesServer)
 		})
 		resp, err = s.trNamespaceDevicesServer.Do(req)
 	case "NamespaceDiscoveredAssetsClient":
-		initServer(s, &s.trNamespaceDiscoveredAssetsServer, func() *NamespaceDiscoveredAssetsServerTransport {
+		initServer(&s.trMu, &s.trNamespaceDiscoveredAssetsServer, func() *NamespaceDiscoveredAssetsServerTransport {
 			return NewNamespaceDiscoveredAssetsServerTransport(&s.srv.NamespaceDiscoveredAssetsServer)
 		})
 		resp, err = s.trNamespaceDiscoveredAssetsServer.Do(req)
 	case "NamespaceDiscoveredDevicesClient":
-		initServer(s, &s.trNamespaceDiscoveredDevicesServer, func() *NamespaceDiscoveredDevicesServerTransport {
+		initServer(&s.trMu, &s.trNamespaceDiscoveredDevicesServer, func() *NamespaceDiscoveredDevicesServerTransport {
 			return NewNamespaceDiscoveredDevicesServerTransport(&s.srv.NamespaceDiscoveredDevicesServer)
 		})
 		resp, err = s.trNamespaceDiscoveredDevicesServer.Do(req)
 	case "NamespacesClient":
-		initServer(s, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
+		initServer(&s.trMu, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
 		resp, err = s.trNamespacesServer.Do(req)
 	case "OperationStatusClient":
-		initServer(s, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
+		initServer(&s.trMu, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
 			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)
 		})
 		resp, err = s.trOperationStatusServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PoliciesClient":
+		initServer(&s.trMu, &s.trPoliciesServer, func() *PoliciesServerTransport { return NewPoliciesServerTransport(&s.srv.PoliciesServer) })
+		resp, err = s.trPoliciesServer.Do(req)
 	case "SchemaRegistriesClient":
-		initServer(s, &s.trSchemaRegistriesServer, func() *SchemaRegistriesServerTransport {
+		initServer(&s.trMu, &s.trSchemaRegistriesServer, func() *SchemaRegistriesServerTransport {
 			return NewSchemaRegistriesServerTransport(&s.srv.SchemaRegistriesServer)
 		})
 		resp, err = s.trSchemaRegistriesServer.Do(req)
 	case "SchemaVersionsClient":
-		initServer(s, &s.trSchemaVersionsServer, func() *SchemaVersionsServerTransport {
+		initServer(&s.trMu, &s.trSchemaVersionsServer, func() *SchemaVersionsServerTransport {
 			return NewSchemaVersionsServerTransport(&s.srv.SchemaVersionsServer)
 		})
 		resp, err = s.trSchemaVersionsServer.Do(req)
 	case "SchemasClient":
-		initServer(s, &s.trSchemasServer, func() *SchemasServerTransport { return NewSchemasServerTransport(&s.srv.SchemasServer) })
+		initServer(&s.trMu, &s.trSchemasServer, func() *SchemasServerTransport { return NewSchemasServerTransport(&s.srv.SchemasServer) })
 		resp, err = s.trSchemasServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -163,12 +177,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

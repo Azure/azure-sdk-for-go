@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Create.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Create.json
 func ExampleGeoCatalogsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,13 +44,13 @@ func ExampleGeoCatalogsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplanetarycomputer.GeoCatalogsClientCreateResponse{
-	// 	GeoCatalog: &armplanetarycomputer.GeoCatalog{
+	// 	GeoCatalog: armplanetarycomputer.GeoCatalog{
 	// 		Properties: &armplanetarycomputer.GeoCatalogProperties{
 	// 			Tier: to.Ptr(armplanetarycomputer.CatalogTierBasic),
 	// 			CatalogURI: to.Ptr("https://mycatalog-0123456789abcdef.geocatalog.spatio.azure.com/"),
@@ -85,7 +85,7 @@ func ExampleGeoCatalogsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Delete.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Delete.json
 func ExampleGeoCatalogsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,11 +102,11 @@ func ExampleGeoCatalogsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Get.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Get.json
 func ExampleGeoCatalogsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleGeoCatalogsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplanetarycomputer.GeoCatalogsClientGetResponse{
-	// 	GeoCatalog: &armplanetarycomputer.GeoCatalog{
+	// 	GeoCatalog: armplanetarycomputer.GeoCatalog{
 	// 		Properties: &armplanetarycomputer.GeoCatalogProperties{
 	// 			Tier: to.Ptr(armplanetarycomputer.CatalogTierBasic),
 	// 			CatalogURI: to.Ptr("https://mycatalog-0123456789abcdef.geocatalog.spatio.azure.com/"),
@@ -160,7 +160,7 @@ func ExampleGeoCatalogsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_ListByResourceGroup.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_ListByResourceGroup.json
 func ExampleGeoCatalogsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleGeoCatalogsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_ListBySubscription.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_ListBySubscription.json
 func ExampleGeoCatalogsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleGeoCatalogsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-11-preview/GeoCatalogs_Update.json
+// Generated from example definition: 2026-04-15/GeoCatalogs_Update.json
 func ExampleGeoCatalogsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,13 +315,13 @@ func ExampleGeoCatalogsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplanetarycomputer.GeoCatalogsClientUpdateResponse{
-	// 	GeoCatalog: &armplanetarycomputer.GeoCatalog{
+	// 	GeoCatalog: armplanetarycomputer.GeoCatalog{
 	// 		Properties: &armplanetarycomputer.GeoCatalogProperties{
 	// 			Tier: to.Ptr(armplanetarycomputer.CatalogTierBasic),
 	// 			CatalogURI: to.Ptr("https://mycatalog-0123456789abcdef.geocatalog.spatio.azure.com/"),

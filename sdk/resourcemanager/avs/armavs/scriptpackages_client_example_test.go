@@ -30,7 +30,7 @@ func ExampleScriptPackagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.ScriptPackagesClientGetResponse{
-	// 	ScriptPackage: &armavs.ScriptPackage{
+	// 	ScriptPackage: armavs.ScriptPackage{
 	// 		Name: to.Ptr("Microsoft.AVS.Management@3.0.48"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/scriptPackages/Microsoft.AVS.Management@3.0.48"),
 	// 		Properties: &armavs.ScriptPackageProperties{

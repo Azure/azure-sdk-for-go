@@ -4,6 +4,10 @@
 
 package armazurestackhcivm
 
+const (
+	version20250601Preview string = "2025-06-01-preview"
+)
+
 // AttestBootIntegrityPropertyEnum - The status of whether the list of boot integrity properties is validated.
 type AttestBootIntegrityPropertyEnum string
 

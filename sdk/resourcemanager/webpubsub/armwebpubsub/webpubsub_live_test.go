@@ -6,6 +6,7 @@ package armwebpubsub_test
 import (
 	"context"
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -13,7 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
 	"github.com/stretchr/testify/suite"
 )
@@ -273,7 +274,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -287,6 +288,7 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 							"name": "default",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.0.0/24",
+								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -360,12 +362,13 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
 					"addressPrefix":                     "10.0.0.0/24",
+					"defaultOutboundAccess":             false,
 					"delegations":                       []any{},
 					"privateEndpointNetworkPolicies":    "Disabled",
 					"privateLinkServiceNetworkPolicies": "Enabled",
@@ -374,10 +377,10 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -426,81 +429,83 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubPrivateEndpointConnections() {
 
 // Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}
 func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
-	var webAppId string
+	var storageAccountID string
 	var err error
-	// From step Create_WebApp
+	// From step Create_StorageAccount
 	template := map[string]any{
 		"$schema":        "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 		"contentVersion": "1.0.0.0",
 		"outputs": map[string]any{
-			"webAppId": map[string]any{
+			"storageAccountId": map[string]any{
 				"type":  "string",
-				"value": "[resourceId('Microsoft.Web/sites', parameters('sitesName'))]",
+				"value": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
 			},
 		},
 		"parameters": map[string]any{
-			"serverfarmsName": map[string]any{
+			"storageAccountName": map[string]any{
 				"type":         "string",
-				"defaultValue": testsuite.serverfarmsName,
+				"defaultValue": strings.ToLower(testsuite.resourceName + "sa"),
 			},
-			"sitesName": map[string]any{
+			"location": map[string]any{
 				"type":         "string",
-				"defaultValue": testsuite.sitesName,
+				"defaultValue": testsuite.location,
 			},
 		},
 		"resources": []any{
 			map[string]any{
-				"name":       "[parameters('serverfarmsName')]",
-				"type":       "Microsoft.Web/serverfarms",
+				"name":       "[parameters('storageAccountName')]",
+				"type":       "Microsoft.Storage/storageAccounts",
 				"apiVersion": "2022-09-01",
-				"kind":       "linux",
-				"location":   "East US",
+				"kind":       "StorageV2",
+				"location":   "[parameters('location')]",
 				"properties": map[string]any{
-					"elasticScaleEnabled":       false,
-					"hyperV":                    false,
-					"isSpot":                    false,
-					"isXenon":                   false,
-					"maximumElasticWorkerCount": float64(1),
-					"perSiteScaling":            false,
-					"reserved":                  true,
-					"targetWorkerCount":         float64(0),
-					"targetWorkerSizeId":        float64(0),
-					"zoneRedundant":             false,
+					"accessTier":                   "Hot",
+					"allowBlobPublicAccess":        true,
+					"allowCrossTenantReplication":  true,
+					"allowSharedKeyAccess":         true,
+					"defaultToOAuthAuthentication": false,
+					"dnsEndpointType":              "Standard",
+					"encryption": map[string]any{
+						"keySource":                       "Microsoft.Storage",
+						"requireInfrastructureEncryption": false,
+						"services": map[string]any{
+							"blob": map[string]any{
+								"enabled": true,
+								"keyType": "Account",
+							},
+							"file": map[string]any{
+								"enabled": true,
+								"keyType": "Account",
+							},
+						},
+					},
+					"minimumTlsVersion": "TLS1_2",
+					"networkAcls": map[string]any{
+						"bypass":              "AzureServices",
+						"defaultAction":       "Allow",
+						"ipRules":             []any{},
+						"virtualNetworkRules": []any{},
+					},
+					"publicNetworkAccess":      "Enabled",
+					"supportsHttpsTrafficOnly": true,
 				},
 				"sku": map[string]any{
-					"name":     "P1v3",
-					"capacity": float64(1),
-					"family":   "Pv3",
-					"size":     "P1v3",
-					"tier":     "PremiumV3",
-				},
-			},
-			map[string]any{
-				"name":       "[parameters('sitesName')]",
-				"type":       "Microsoft.Web/sites",
-				"apiVersion": "2022-09-01",
-				"dependsOn": []any{
-					"[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmsName'))]",
-				},
-				"kind":     "app",
-				"location": "East US",
-				"properties": map[string]any{
-					"enabled":      true,
-					"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarmsName'))]",
+					"name": "Standard_RAGRS",
+					"tier": "Standard",
 				},
 			},
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
-	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_WebApp", &deployment)
+	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_StorageAccount", &deployment)
 	testsuite.Require().NoError(err)
-	webAppId = deploymentExtend.Properties.Outputs.(map[string]interface{})["webAppId"].(map[string]interface{})["value"].(string)
+	storageAccountID = deploymentExtend.Properties.Outputs.(map[string]interface{})["storageAccountId"].(map[string]interface{})["value"].(string)
 
 	// From step WebPubSubSharedPrivateLinkResources_CreateOrUpdate
 	fmt.Println("Call operation: WebPubSubSharedPrivateLinkResources_CreateOrUpdate")
@@ -508,8 +513,8 @@ func (testsuite *WebpubsubTestSuite) TestWebPubSubSharedPrivateLinkResources() {
 	testsuite.Require().NoError(err)
 	sharedPrivateLinkResourcesClientCreateOrUpdateResponsePoller, err := sharedPrivateLinkResourcesClient.BeginCreateOrUpdate(testsuite.ctx, testsuite.sharedPrivateLinkResourceName, testsuite.resourceGroupName, testsuite.resourceName, armwebpubsub.SharedPrivateLinkResource{
 		Properties: &armwebpubsub.SharedPrivateLinkResourceProperties{
-			GroupID:               to.Ptr("sites"),
-			PrivateLinkResourceID: to.Ptr(webAppId),
+			GroupID:               to.Ptr("table"),
+			PrivateLinkResourceID: to.Ptr(storageAccountID),
 			RequestMessage:        to.Ptr("Please approve"),
 		},
 	}, nil)

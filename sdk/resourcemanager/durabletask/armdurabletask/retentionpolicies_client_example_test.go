@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
+// Generated from example definition: 2026-02-01/RetentionPolicies_CreateOrReplace_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,13 +41,13 @@ func ExampleRetentionPoliciesClient_BeginCreateOrReplace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdurabletask.RetentionPoliciesClientCreateOrReplaceResponse{
-	// 	RetentionPolicy: &armdurabletask.RetentionPolicy{
+	// 	RetentionPolicy: armdurabletask.RetentionPolicy{
 	// 		Properties: &armdurabletask.RetentionPolicyProperties{
 	// 			ProvisioningState: to.Ptr(armdurabletask.ProvisioningStateSucceeded),
 	// 			RetentionPolicies: []*armdurabletask.RetentionPolicyDetails{
@@ -75,7 +75,7 @@ func ExampleRetentionPoliciesClient_BeginCreateOrReplace() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/RetentionPolicies_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-02-01/RetentionPolicies_Delete_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,11 +92,11 @@ func ExampleRetentionPoliciesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/RetentionPolicies_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-02-01/RetentionPolicies_Get_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleRetentionPoliciesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdurabletask.RetentionPoliciesClientGetResponse{
-	// 	RetentionPolicy: &armdurabletask.RetentionPolicy{
+	// 	RetentionPolicy: armdurabletask.RetentionPolicy{
 	// 		Properties: &armdurabletask.RetentionPolicyProperties{
 	// 			ProvisioningState: to.Ptr(armdurabletask.ProvisioningStateSucceeded),
 	// 			RetentionPolicies: []*armdurabletask.RetentionPolicyDetails{
@@ -143,7 +143,7 @@ func ExampleRetentionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
+// Generated from example definition: 2026-02-01/RetentionPolicies_ListByScheduler_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_NewListBySchedulerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleRetentionPoliciesClient_NewListBySchedulerPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/RetentionPolicies_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-02-01/RetentionPolicies_Update_MaximumSet_Gen.json
 func ExampleRetentionPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,13 +233,13 @@ func ExampleRetentionPoliciesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdurabletask.RetentionPoliciesClientUpdateResponse{
-	// 	RetentionPolicy: &armdurabletask.RetentionPolicy{
+	// 	RetentionPolicy: armdurabletask.RetentionPolicy{
 	// 		Properties: &armdurabletask.RetentionPolicyProperties{
 	// 			RetentionPolicies: []*armdurabletask.RetentionPolicyDetails{
 	// 				{

@@ -1,5 +1,12 @@
 # Release History
 
+## 0.2.0 (2026-03-09)
+### Features Added
+
+- New field `NextLink` in struct `PrivateEndpointConnectionListResult`
+- New field `NextLink` in struct `PrivateLinkResourceListResult`
+
+
 ## 0.1.0 (2025-06-18)
 ### Other Changes
 

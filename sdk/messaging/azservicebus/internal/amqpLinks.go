@@ -11,7 +11,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
@@ -43,7 +42,7 @@ type AMQPLinks interface {
 	Get(ctx context.Context) (*LinksWithID, error)
 
 	// Retry will run your callback, recovering links when necessary.
-	Retry(ctx context.Context, name log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error
+	Retry(ctx context.Context, name azlog.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error
 
 	// RecoverIfNeeded will check if an error requires recovery, and will recover
 	// the link or, possibly, the connection.
@@ -215,7 +214,8 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 
 	rk := links.getRecoveryKindFunc(origErr)
 
-	if rk == RecoveryKindLink {
+	switch rk {
+	case RecoveryKindLink:
 		oldPrefix := links.Prefix()
 
 		if err := links.recoverLink(ctx, theirID); err != nil {
@@ -225,7 +225,7 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 
 		links.Writef(exported.EventConn, "Recovered links (old: %s)", oldPrefix)
 		return nil
-	} else if rk == RecoveryKindConn {
+	case RecoveryKindConn:
 		oldPrefix := links.Prefix()
 
 		if err := links.recoverConnection(ctx, theirID); err != nil {
@@ -328,7 +328,7 @@ func (l *AMQPLinksImpl) Get(ctx context.Context) (*LinksWithID, error) {
 	}, nil
 }
 
-func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName log.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error {
+func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName azlog.Event, operation string, fn RetryWithLinksFn, o exported.RetryOptions) error {
 	var lastID LinkID
 
 	didQuickRetry := false

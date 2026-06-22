@@ -32,7 +32,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionDataAvailableDateRange() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{
-	// 	CarbonEmissionDataAvailableDateRange: &armcarbonoptimization.CarbonEmissionDataAvailableDateRange{
+	// 	CarbonEmissionDataAvailableDateRange: armcarbonoptimization.CarbonEmissionDataAvailableDateRange{
 	// 		StartDate: to.Ptr("2023-01-01"),
 	// 		EndDate: to.Ptr("2023-05-01"),
 	// 	},
@@ -83,7 +83,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionLo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -206,7 +206,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -289,7 +289,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionMo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -361,7 +361,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -424,7 +424,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionOv
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -488,7 +488,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -633,7 +633,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -795,7 +795,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -955,7 +955,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionRe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1090,7 +1090,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionSu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1223,7 +1223,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1371,7 +1371,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1504,7 +1504,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1664,7 +1664,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1807,7 +1807,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1973,7 +1973,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2121,7 +2121,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2269,7 +2269,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2402,7 +2402,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2550,7 +2550,7 @@ func ExampleCarbonServiceClient_QueryCarbonEmissionReports_queryCarbonEmissionTo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcarbonoptimization.CarbonServiceClientQueryCarbonEmissionReportsResponse{
-	// 	CarbonEmissionDataListResult: &armcarbonoptimization.CarbonEmissionDataListResult{
+	// 	CarbonEmissionDataListResult: armcarbonoptimization.CarbonEmissionDataListResult{
 	// 		SubscriptionAccessDecisionList: []*armcarbonoptimization.SubscriptionAccessDecision{
 	// 			{
 	// 				SubscriptionID: to.Ptr("00000000-0000-0000-0000-000000000000"),

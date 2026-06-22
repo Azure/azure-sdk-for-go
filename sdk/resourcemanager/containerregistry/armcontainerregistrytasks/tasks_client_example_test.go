@@ -106,7 +106,7 @@ func ExampleTasksClient_Create_tasksCreateWithLoginIdentity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientCreateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -280,7 +280,7 @@ func ExampleTasksClient_Create_tasksCreateWithSystemAndUserIdentities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientCreateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -451,7 +451,7 @@ func ExampleTasksClient_Create_tasksCreateWithUserIdentitiesWithSystemIdentity()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientCreateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -621,7 +621,7 @@ func ExampleTasksClient_Create_tasksCreateWithUserIdentities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientCreateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -797,7 +797,7 @@ func ExampleTasksClient_Create_tasksCreate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientCreateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -903,7 +903,7 @@ func ExampleTasksClient_Create_tasksCreateQuickTask() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientCreateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("quicktask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -963,7 +963,7 @@ func ExampleTasksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientGetResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -1062,7 +1062,7 @@ func ExampleTasksClient_GetDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientGetDetailsResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Identity: &armcontainerregistrytasks.IdentityProperties{
 	// 			Type: to.Ptr(armcontainerregistrytasks.ResourceIdentityTypeSystemAssigned),
 	// 			PrincipalID: to.Ptr("fa153151-b9fd-46f4-9088-5e6600f2689v"),
@@ -1333,7 +1333,7 @@ func ExampleTasksClient_Update_tasksUpdateWithKeyVaultCustomCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientUpdateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -1470,7 +1470,7 @@ func ExampleTasksClient_Update_tasksUpdateWithLoginIdentity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientUpdateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -1608,7 +1608,7 @@ func ExampleTasksClient_Update_tasksUpdateWithMsiCustomCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientUpdateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -1754,7 +1754,7 @@ func ExampleTasksClient_Update_tasksUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientUpdateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -1861,7 +1861,7 @@ func ExampleTasksClient_Update_tasksUpdateQuickTask() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientUpdateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),
@@ -1945,7 +1945,7 @@ func ExampleTasksClient_Update_tasksUpdateWithOpaqueCustomCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TasksClientUpdateResponse{
-	// 	Task: &armcontainerregistrytasks.Task{
+	// 	Task: armcontainerregistrytasks.Task{
 	// 		Name: to.Ptr("myTask"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/tasks"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/tasks/myTask"),

@@ -1,5 +1,13 @@
 # Release History
 
+## 1.2.0-beta.1 (2026-05-01)
+### Features Added
+
+- New enum type `NetworkBypassMode` with values `NetworkBypassModeAzureCosmosDB`, `NetworkBypassModeNone`
+- New field `NetworkBypassMode` in struct `Properties`
+- New field `NetworkBypassMode` in struct `UpdateProperties`
+
+
 ## 1.1.0 (2025-10-15)
 ### Features Added
 

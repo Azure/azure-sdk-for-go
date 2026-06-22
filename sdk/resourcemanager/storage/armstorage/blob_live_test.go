@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v4"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -50,7 +50,7 @@ func (testsuite *BlobTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TTestBlobTestSuite(t *testing.T) {
+func TestBlobTestSuite(t *testing.T) {
 	suite.Run(t, new(BlobTestSuite))
 }
 
@@ -65,7 +65,7 @@ func (testsuite *BlobTestSuite) Prepare() {
 		Location: to.Ptr(testsuite.location),
 		Properties: &armstorage.AccountPropertiesCreateParameters{
 			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
+			AllowSharedKeyAccess:         to.Ptr(false),
 			DefaultToOAuthAuthentication: to.Ptr(false),
 			Encryption: &armstorage.Encryption{
 				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -215,14 +215,12 @@ func (testsuite *BlobTestSuite) TestBlobContainers() {
 
 	// From step BlobContainers_CreateOrUpdateImmutabilityPolicy
 	fmt.Println("Call operation: BlobContainers_CreateOrUpdateImmutabilityPolicy")
-	blobContainersClientCreateOrUpdateImmutabilityPolicyResponse, err := blobContainersClient.CreateOrUpdateImmutabilityPolicy(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, containerName, &armstorage.BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions{
-		Parameters: &armstorage.ImmutabilityPolicy{
-			Properties: &armstorage.ImmutabilityPolicyProperty{
-				AllowProtectedAppendWrites:            to.Ptr(true),
-				ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](3),
-			},
+	blobContainersClientCreateOrUpdateImmutabilityPolicyResponse, err := blobContainersClient.CreateOrUpdateImmutabilityPolicy(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, containerName, armstorage.ImmutabilityPolicy{
+		Properties: &armstorage.ImmutabilityPolicyProperty{
+			AllowProtectedAppendWrites:            to.Ptr(true),
+			ImmutabilityPeriodSinceCreationInDays: to.Ptr[int32](3),
 		},
-	})
+	}, nil)
 	testsuite.Require().NoError(err)
 	etag = *blobContainersClientCreateOrUpdateImmutabilityPolicyResponse.Etag
 

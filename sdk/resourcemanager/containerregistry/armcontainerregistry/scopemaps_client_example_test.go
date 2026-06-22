@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/ScopeMapCreate.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapCreate.json
 func ExampleScopeMapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExampleScopeMapsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ScopeMapsClientCreateResponse{
-	// 	ScopeMap: &armcontainerregistry.ScopeMap{
+	// 	ScopeMap: armcontainerregistry.ScopeMap{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap"),
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
@@ -60,7 +60,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapDelete.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapDelete.json
 func ExampleScopeMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleScopeMapsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -86,7 +86,7 @@ func ExampleScopeMapsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapGet.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapGet.json
 func ExampleScopeMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleScopeMapsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ScopeMapsClientGetResponse{
-	// 	ScopeMap: &armcontainerregistry.ScopeMap{
+	// 	ScopeMap: armcontainerregistry.ScopeMap{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap"),
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
@@ -122,7 +122,7 @@ func ExampleScopeMapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapList.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapList.json
 func ExampleScopeMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleScopeMapsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/ScopeMapUpdate.json
+// Generated from example definition: 2026-01-01-preview/ScopeMapUpdate.json
 func ExampleScopeMapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,13 +192,13 @@ func ExampleScopeMapsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ScopeMapsClientUpdateResponse{
-	// 	ScopeMap: &armcontainerregistry.ScopeMap{
+	// 	ScopeMap: armcontainerregistry.ScopeMap{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/scopeMaps/myScopeMap"),
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),

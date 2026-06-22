@@ -1,5 +1,64 @@
 # Release History
 
+## 0.11.0 (2026-03-13)
+### Breaking Changes
+
+- The following resource clients and their associated types/enums have been split into dedicated packages. Please migrate to the new packages:
+  - `AlertProcessingRulesClient` → [`armalertprocessingrules.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertprocessingrules/armalertprocessingrules)
+  - `TenantActivityLogAlertsClient` → [`armtenantactivitylogalerts.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/tenantactivitylogalerts/armtenantactivitylogalerts)
+  - `AlertRuleRecommendationsClient` → [`armalertrulerecommendations.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/alertrulerecommendations/armalertrulerecommendations)
+  - `PrometheusRuleGroupsClient` → [`armprometheusrulegroups.Client`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/prometheusrulegroups/armprometheusrulegroups)
+- `SmartGroupsClient` and all related types/enums have been removed
+- `AlertModificationEventActionRuleSuppressed`, `AlertModificationEventActionRuleTriggered`, `AlertModificationEventActionsFailed` from enum `AlertModificationEvent` have been removed
+- Function `NewAlertsClient` parameter(s) have been changed from `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)` to `(scope string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Function `NewClientFactory` parameter(s) have been changed from `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)` to `(scope string, credential azcore.TokenCredential, options *arm.ClientOptions)`
+- Type of `Operation.Origin` has been changed from `*string` to `*Origin`
+- Struct `OperationsList` has been renamed to `OperationListResult`; field `OperationsList` of struct `OperationsClientListResponse` has been replaced by `OperationListResult`
+
+### Features Added
+
+- New value `ActionTypeInternal` added to enum type `ActionType`
+- New value `MonitorServiceResourceHealth` added to enum type `MonitorService`
+- New enum type `AlertModificationType` with values `AlertModificationTypeActionsSuppressed`, `AlertModificationTypeActionsTriggered`, `AlertModificationTypePropertyChange`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `ResultStatus` with values `ResultStatusFailed`, `ResultStatusInline`, `ResultStatusNone`, `ResultStatusThrottled`, `ResultStatusThrottledByAlertRule`, `ResultStatusThrottledBySubscription`
+- New enum type `RuleType` with values `RuleTypeActionRule`, `RuleTypeAlertRule`
+- New enum type `Status` with values `StatusFailed`, `StatusSucceeded`
+- New enum type `Type` with values `TypePrometheusEnrichmentItem`, `TypePrometheusInstantQuery`, `TypePrometheusRangeQuery`
+- New function `*ActionSuppressedDetails.GetBaseDetails() *BaseDetails`
+- New function `*ActionTriggeredDetails.GetBaseDetails() *BaseDetails`
+- New function `*AlertEnrichmentItem.GetAlertEnrichmentItem() *AlertEnrichmentItem`
+- New function `*AlertsClient.ChangeStateTenant(ctx context.Context, alertID string, newState AlertState, options *AlertsClientChangeStateTenantOptions) (AlertsClientChangeStateTenantResponse, error)`
+- New function `*AlertsClient.NewGetAllTenantPager(options *AlertsClientGetAllTenantOptions) *runtime.Pager[AlertsClientGetAllTenantResponse]`
+- New function `*AlertsClient.GetByIDTenant(ctx context.Context, alertID string, options *AlertsClientGetByIDTenantOptions) (AlertsClientGetByIDTenantResponse, error)`
+- New function `*AlertsClient.NewGetEnrichmentsPager(alertID string, options *AlertsClientGetEnrichmentsOptions) *runtime.Pager[AlertsClientGetEnrichmentsResponse]`
+- New function `*AlertsClient.GetHistoryTenant(ctx context.Context, alertID string, options *AlertsClientGetHistoryTenantOptions) (AlertsClientGetHistoryTenantResponse, error)`
+- New function `*BaseDetails.GetBaseDetails() *BaseDetails`
+- New function `*PrometheusEnrichmentItem.GetAlertEnrichmentItem() *AlertEnrichmentItem`
+- New function `*PrometheusEnrichmentItem.GetPrometheusEnrichmentItem() *PrometheusEnrichmentItem`
+- New function `*PrometheusInstantQuery.GetAlertEnrichmentItem() *AlertEnrichmentItem`
+- New function `*PrometheusInstantQuery.GetPrometheusEnrichmentItem() *PrometheusEnrichmentItem`
+- New function `*PrometheusRangeQuery.GetAlertEnrichmentItem() *AlertEnrichmentItem`
+- New function `*PrometheusRangeQuery.GetPrometheusEnrichmentItem() *PrometheusEnrichmentItem`
+- New function `*PropertyChangeDetails.GetBaseDetails() *BaseDetails`
+- New struct `ActionSuppressedDetails`
+- New struct `ActionTriggeredDetails`
+- New struct `AlertEnrichmentProperties`
+- New struct `AlertEnrichmentResponse`
+- New struct `AlertEnrichmentsList`
+- New struct `NotificationResult`
+- New struct `OperationListResult`
+- New struct `PrometheusInstantQuery`
+- New struct `PrometheusRangeQuery`
+- New struct `PropertyChangeDetails`
+- New struct `TriggeredRule`
+- New field `SystemData` in struct `Alert`
+- New field `Details` in struct `AlertModificationItem`
+- New field `CustomProperties` in struct `AlertProperties`
+- New field `ActionType`, `IsDataAction` in struct `Operation`
+- New anonymous field `OperationListResult` in struct `OperationsClientListResponse`
+
+
 ## 0.10.0 (2024-03-01)
 ### Breaking Changes
 

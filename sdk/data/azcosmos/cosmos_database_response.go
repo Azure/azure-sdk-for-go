@@ -23,7 +23,7 @@ func newDatabaseResponse(resp *http.Response) (DatabaseResponse, error) {
 	properties := &DatabaseProperties{}
 	err := azruntime.UnmarshalAsJSON(resp, properties)
 	if err != nil {
-		return response, err
+		return response, wrapResponseError(err, response.Response)
 	}
 	response.DatabaseProperties = properties
 	return response, nil

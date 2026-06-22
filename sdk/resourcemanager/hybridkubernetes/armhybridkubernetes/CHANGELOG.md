@@ -1,5 +1,23 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-03-16)
+### Breaking Changes
+
+- Type of `SystemData.LastModifiedByType` has been changed from `*LastModifiedByType` to `*CreatedByType`
+- Enum `LastModifiedByType` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
+- Struct `ErrorResponse` has been removed
+- Struct `Resource` has been removed
+- Struct `TrackedResource` has been removed
+
+### Features Added
+
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New field `ActionType`, `IsDataAction`, `Origin` in struct `Operation`
+
+
 ## 2.0.0-beta.1 (2025-03-17)
 ### Breaking Changes
 

@@ -14,6 +14,7 @@ import (
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -22,14 +23,13 @@ import (
 type AppendBlobClient struct {
 	internal *azcore.Client
 	endpoint string
+	version  string
 }
 
 // AppendBlock - The Append Block operation commits a new block of data to the end of an existing append blob. The Append
 // Block operation is permitted only if the blob was created with x-ms-blob-type set to
 // AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - contentLength - The length of the request.
 //   - body - Initial data
 //   - options - AppendBlobClientAppendBlockOptions contains the optional parameters for the AppendBlobClient.AppendBlock method.
@@ -68,7 +68,7 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -122,7 +122,7 @@ func (client *AppendBlobClient) appendBlockCreateRequest(ctx context.Context, co
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
 	}
@@ -206,8 +206,6 @@ func (client *AppendBlobClient) appendBlockHandleResponse(resp *http.Response) (
 // the contents are read from a source url. The Append Block operation is permitted only if the blob was
 // created with x-ms-blob-type set to AppendBlob. Append Block is supported only on version 2015-02-21 version or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - sourceURL - Specify a URL to the copy source.
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientAppendBlockFromURLOptions contains the optional parameters for the AppendBlobClient.AppendBlockFromURL
@@ -220,9 +218,10 @@ func (client *AppendBlobClient) appendBlockHandleResponse(resp *http.Response) (
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
 //   - SourceModifiedAccessConditions - SourceModifiedAccessConditions contains a group of parameters for the BlobClient.StartCopyFromURL
 //     method.
-func (client *AppendBlobClient) AppendBlockFromURL(ctx context.Context, sourceURL string, contentLength int64, options *AppendBlobClientAppendBlockFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (AppendBlobClientAppendBlockFromURLResponse, error) {
+//   - SourceCPKInfo - SourceCPKInfo contains a group of parameters for the PageBlobClient.UploadPagesFromURL method.
+func (client *AppendBlobClient) AppendBlockFromURL(ctx context.Context, sourceURL string, contentLength int64, options *AppendBlobClientAppendBlockFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, sourceCPKInfo *SourceCPKInfo) (AppendBlobClientAppendBlockFromURLResponse, error) {
 	var err error
-	req, err := client.appendBlockFromURLCreateRequest(ctx, sourceURL, contentLength, options, cpkInfo, cpkScopeInfo, leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions)
+	req, err := client.appendBlockFromURLCreateRequest(ctx, sourceURL, contentLength, options, cpkInfo, cpkScopeInfo, leaseAccessConditions, appendPositionAccessConditions, modifiedAccessConditions, sourceModifiedAccessConditions, sourceCPKInfo)
 	if err != nil {
 		return AppendBlobClientAppendBlockFromURLResponse{}, err
 	}
@@ -239,7 +238,7 @@ func (client *AppendBlobClient) AppendBlockFromURL(ctx context.Context, sourceUR
 }
 
 // appendBlockFromURLCreateRequest creates the AppendBlockFromURL request.
-func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Context, sourceURL string, contentLength int64, options *AppendBlobClientAppendBlockFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions) (*policy.Request, error) {
+func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Context, sourceURL string, contentLength int64, options *AppendBlobClientAppendBlockFromURLOptions, cpkInfo *CPKInfo, cpkScopeInfo *CPKScopeInfo, leaseAccessConditions *LeaseAccessConditions, appendPositionAccessConditions *AppendPositionAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, sourceCPKInfo *SourceCPKInfo) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -249,7 +248,7 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if options != nil && options.TransactionalContentMD5 != nil {
@@ -307,6 +306,15 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if options != nil && options.SourceContentMD5 != nil {
 		req.Raw().Header["x-ms-source-content-md5"] = []string{base64.StdEncoding.EncodeToString(options.SourceContentMD5)}
 	}
+	if sourceCPKInfo != nil && sourceCPKInfo.SourceEncryptionAlgorithm != nil {
+		req.Raw().Header["x-ms-source-encryption-algorithm"] = []string{string(*sourceCPKInfo.SourceEncryptionAlgorithm)}
+	}
+	if sourceCPKInfo != nil && sourceCPKInfo.SourceEncryptionKey != nil {
+		req.Raw().Header["x-ms-source-encryption-key"] = []string{*sourceCPKInfo.SourceEncryptionKey}
+	}
+	if sourceCPKInfo != nil && sourceCPKInfo.SourceEncryptionKeySHA256 != nil {
+		req.Raw().Header["x-ms-source-encryption-key-sha256"] = []string{*sourceCPKInfo.SourceEncryptionKeySHA256}
+	}
 	if sourceModifiedAccessConditions != nil && sourceModifiedAccessConditions.SourceIfMatch != nil {
 		req.Raw().Header["x-ms-source-if-match"] = []string{string(*sourceModifiedAccessConditions.SourceIfMatch)}
 	}
@@ -322,7 +330,7 @@ func (client *AppendBlobClient) appendBlockFromURLCreateRequest(ctx context.Cont
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -395,8 +403,6 @@ func (client *AppendBlobClient) appendBlockFromURLHandleResponse(resp *http.Resp
 
 // Create - The Create Append Blob operation creates a new append blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - contentLength - The length of the request.
 //   - options - AppendBlobClientCreateOptions contains the optional parameters for the AppendBlobClient.Create method.
 //   - BlobHTTPHeaders - BlobHTTPHeaders contains a group of parameters for the BlobClient.SetHTTPHeaders method.
@@ -432,7 +438,7 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	req.Raw().Header["Content-Length"] = []string{strconv.FormatInt(contentLength, 10)}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
@@ -506,7 +512,7 @@ func (client *AppendBlobClient) createCreateRequest(ctx context.Context, content
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 
@@ -568,8 +574,6 @@ func (client *AppendBlobClient) createHandleResponse(resp *http.Response) (Appen
 // Seal - The Seal operation seals the Append Blob to make it read-only. Seal is supported only on version 2019-12-12 version
 // or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-06
 //   - options - AppendBlobClientSealOptions contains the optional parameters for the AppendBlobClient.Seal method.
 //   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
 //   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
@@ -604,7 +608,7 @@ func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
@@ -627,7 +631,7 @@ func (client *AppendBlobClient) sealCreateRequest(ctx context.Context, options *
 	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
 	return req, nil
 }
 

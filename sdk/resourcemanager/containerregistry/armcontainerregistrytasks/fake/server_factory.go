@@ -66,19 +66,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AgentPoolsClient":
-		initServer(s, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
+		initServer(&s.trMu, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
 	case "RegistriesClient":
-		initServer(s, &s.trRegistriesServer, func() *RegistriesServerTransport { return NewRegistriesServerTransport(&s.srv.RegistriesServer) })
+		initServer(&s.trMu, &s.trRegistriesServer, func() *RegistriesServerTransport { return NewRegistriesServerTransport(&s.srv.RegistriesServer) })
 		resp, err = s.trRegistriesServer.Do(req)
 	case "RunsClient":
-		initServer(s, &s.trRunsServer, func() *RunsServerTransport { return NewRunsServerTransport(&s.srv.RunsServer) })
+		initServer(&s.trMu, &s.trRunsServer, func() *RunsServerTransport { return NewRunsServerTransport(&s.srv.RunsServer) })
 		resp, err = s.trRunsServer.Do(req)
 	case "TaskRunsClient":
-		initServer(s, &s.trTaskRunsServer, func() *TaskRunsServerTransport { return NewTaskRunsServerTransport(&s.srv.TaskRunsServer) })
+		initServer(&s.trMu, &s.trTaskRunsServer, func() *TaskRunsServerTransport { return NewTaskRunsServerTransport(&s.srv.TaskRunsServer) })
 		resp, err = s.trTaskRunsServer.Do(req)
 	case "TasksClient":
-		initServer(s, &s.trTasksServer, func() *TasksServerTransport { return NewTasksServerTransport(&s.srv.TasksServer) })
+		initServer(&s.trMu, &s.trTasksServer, func() *TasksServerTransport { return NewTasksServerTransport(&s.srv.TasksServer) })
 		resp, err = s.trTasksServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -89,12 +89,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

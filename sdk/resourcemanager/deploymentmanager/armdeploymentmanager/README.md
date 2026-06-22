@@ -1,5 +1,7 @@
 # Azure Deployment manager Module for Go
 
+> Deprecated: deprecate deploymentmanager as service has been decommissioned
+
 The `armdeploymentmanager` module provides operations for working with Azure Deployment manager.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/deploymentmanager/armdeploymentmanager)

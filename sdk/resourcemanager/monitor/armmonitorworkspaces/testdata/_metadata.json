@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Monitor": "2025-10-03"
+  },
+  "emitterVersion": "0.11.0"
+}

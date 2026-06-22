@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// AgentsServer contains the fakes for client AgentsClient
 	AgentsServer AgentsServer
 
+	// ConnectionsServer contains the fakes for client ConnectionsClient
+	ConnectionsServer ConnectionsServer
+
 	// EndpointsServer contains the fakes for client EndpointsClient
 	EndpointsServer EndpointsServer
 
@@ -52,6 +55,7 @@ type ServerFactoryTransport struct {
 	srv                    *ServerFactory
 	trMu                   sync.Mutex
 	trAgentsServer         *AgentsServerTransport
+	trConnectionsServer    *ConnectionsServerTransport
 	trEndpointsServer      *EndpointsServerTransport
 	trJobDefinitionsServer *JobDefinitionsServerTransport
 	trJobRunsServer        *JobRunsServerTransport
@@ -74,27 +78,30 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AgentsClient":
-		initServer(s, &s.trAgentsServer, func() *AgentsServerTransport { return NewAgentsServerTransport(&s.srv.AgentsServer) })
+		initServer(&s.trMu, &s.trAgentsServer, func() *AgentsServerTransport { return NewAgentsServerTransport(&s.srv.AgentsServer) })
 		resp, err = s.trAgentsServer.Do(req)
+	case "ConnectionsClient":
+		initServer(&s.trMu, &s.trConnectionsServer, func() *ConnectionsServerTransport { return NewConnectionsServerTransport(&s.srv.ConnectionsServer) })
+		resp, err = s.trConnectionsServer.Do(req)
 	case "EndpointsClient":
-		initServer(s, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
+		initServer(&s.trMu, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
 		resp, err = s.trEndpointsServer.Do(req)
 	case "JobDefinitionsClient":
-		initServer(s, &s.trJobDefinitionsServer, func() *JobDefinitionsServerTransport {
+		initServer(&s.trMu, &s.trJobDefinitionsServer, func() *JobDefinitionsServerTransport {
 			return NewJobDefinitionsServerTransport(&s.srv.JobDefinitionsServer)
 		})
 		resp, err = s.trJobDefinitionsServer.Do(req)
 	case "JobRunsClient":
-		initServer(s, &s.trJobRunsServer, func() *JobRunsServerTransport { return NewJobRunsServerTransport(&s.srv.JobRunsServer) })
+		initServer(&s.trMu, &s.trJobRunsServer, func() *JobRunsServerTransport { return NewJobRunsServerTransport(&s.srv.JobRunsServer) })
 		resp, err = s.trJobRunsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ProjectsClient":
-		initServer(s, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
+		initServer(&s.trMu, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)
 	case "StorageMoversClient":
-		initServer(s, &s.trStorageMoversServer, func() *StorageMoversServerTransport {
+		initServer(&s.trMu, &s.trStorageMoversServer, func() *StorageMoversServerTransport {
 			return NewStorageMoversServerTransport(&s.srv.StorageMoversServer)
 		})
 		resp, err = s.trStorageMoversServer.Do(req)
@@ -107,12 +114,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

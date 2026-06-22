@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure HDInsight module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hdinsight/armhdinsight/v2
 ```
 
 ## Authorization

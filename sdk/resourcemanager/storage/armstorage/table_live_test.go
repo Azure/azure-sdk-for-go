@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage/v4"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -50,7 +50,7 @@ func (testsuite *TableTestSuite) TearDownSuite() {
 	testutil.StopRecording(testsuite.T())
 }
 
-func TTestTableTestSuite(t *testing.T) {
+func TestTableTestSuite(t *testing.T) {
 	suite.Run(t, new(TableTestSuite))
 }
 
@@ -65,7 +65,7 @@ func (testsuite *TableTestSuite) Prepare() {
 		Location: to.Ptr(testsuite.location),
 		Properties: &armstorage.AccountPropertiesCreateParameters{
 			AllowBlobPublicAccess:        to.Ptr(false),
-			AllowSharedKeyAccess:         to.Ptr(true),
+			AllowSharedKeyAccess:         to.Ptr(false),
 			DefaultToOAuthAuthentication: to.Ptr(false),
 			Encryption: &armstorage.Encryption{
 				KeySource:                       to.Ptr(armstorage.KeySourceMicrosoftStorage),
@@ -139,7 +139,7 @@ func (testsuite *TableTestSuite) TestTable() {
 	fmt.Println("Call operation: Table_Create")
 	tableClient, err := armstorage.NewTableClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
 	testsuite.Require().NoError(err)
-	_, err = tableClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, &armstorage.TableClientCreateOptions{})
+	_, err = tableClient.Create(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, armstorage.Table{}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Table_List
@@ -158,7 +158,7 @@ func (testsuite *TableTestSuite) TestTable() {
 
 	// From step Table_Update
 	fmt.Println("Call operation: Table_Update")
-	_, err = tableClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, &armstorage.TableClientUpdateOptions{})
+	_, err = tableClient.Update(testsuite.ctx, testsuite.resourceGroupName, testsuite.accountName, tableName, armstorage.Table{}, nil)
 	testsuite.Require().NoError(err)
 
 	// From step Table_Delete

@@ -6,5 +6,5 @@ package armcosmos
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
-	moduleVersion = "v3.4.0"
+	moduleVersion = "v4.0.0-beta.3"
 )

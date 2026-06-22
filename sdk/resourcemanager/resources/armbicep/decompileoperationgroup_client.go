@@ -18,6 +18,8 @@ import (
 
 // DecompileOperationGroupClient contains the methods for the DecompileOperationGroup group.
 // Don't use this type directly, use NewDecompileOperationGroupClient() instead.
+//
+// Generated from API version 2023-11-01
 type DecompileOperationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDecompileOperationGroupClient(subscriptionID string, credential azcore.T
 
 // Bicep - Decompiles an ARM json template into a Bicep template
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - decompileOperationRequest - The request body
 //   - options - DecompileOperationGroupClientBicepOptions contains the optional parameters for the DecompileOperationGroupClient.Bicep
 //     method.
@@ -80,8 +80,8 @@ func (client *DecompileOperationGroupClient) bicepCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, decompileOperationRequest); err != nil {

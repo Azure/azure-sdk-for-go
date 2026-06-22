@@ -62,18 +62,18 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "RetentionPoliciesClient":
-		initServer(s, &s.trRetentionPoliciesServer, func() *RetentionPoliciesServerTransport {
+		initServer(&s.trMu, &s.trRetentionPoliciesServer, func() *RetentionPoliciesServerTransport {
 			return NewRetentionPoliciesServerTransport(&s.srv.RetentionPoliciesServer)
 		})
 		resp, err = s.trRetentionPoliciesServer.Do(req)
 	case "SchedulersClient":
-		initServer(s, &s.trSchedulersServer, func() *SchedulersServerTransport { return NewSchedulersServerTransport(&s.srv.SchedulersServer) })
+		initServer(&s.trMu, &s.trSchedulersServer, func() *SchedulersServerTransport { return NewSchedulersServerTransport(&s.srv.SchedulersServer) })
 		resp, err = s.trSchedulersServer.Do(req)
 	case "TaskHubsClient":
-		initServer(s, &s.trTaskHubsServer, func() *TaskHubsServerTransport { return NewTaskHubsServerTransport(&s.srv.TaskHubsServer) })
+		initServer(&s.trMu, &s.trTaskHubsServer, func() *TaskHubsServerTransport { return NewTaskHubsServerTransport(&s.srv.TaskHubsServer) })
 		resp, err = s.trTaskHubsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -84,12 +84,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

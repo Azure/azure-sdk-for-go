@@ -16,7 +16,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedcache/armconnectedcache"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -49,7 +48,6 @@ func (testsuite *ConnectedCacheTestSuite) SetupSuite() {
 	testsuite.Require().NoError(err)
 	testsuite.resourceGroupName = *resourceGroup.Name
 	fmt.Println("testsuite.resourceGroupName:", testsuite.resourceGroupName)
-	testsuite.Prepare()
 }
 
 func (testsuite *ConnectedCacheTestSuite) TearDownSuite() {
@@ -119,30 +117,4 @@ func (testsuite *ConnectedCacheTestSuite) TestIspCustomersGet() {
 		log.Fatalf("failed to finish the request: %v", err1)
 	}
 	fmt.Println("TestGetIspCustomersClient over")
-}
-
-func (testsuite *ConnectedCacheTestSuite) Prepare() {
-	// get default credential
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	testsuite.Require().NoError(err)
-	// new client factory
-
-	fmt.Println("subscriptionId", testsuite.subscriptionId, "groupName", testsuite.resourceGroupName, "location", testsuite.location)
-	clientFactory, err := armresources.NewClientFactory(testsuite.subscriptionId, cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	client := clientFactory.NewResourceGroupsClient()
-	ctx := context.Background()
-
-	testsuite.Require().NoError(err)
-	// check whether create new group successfully
-	res, err := client.CheckExistence(ctx, testsuite.resourceGroupName, nil)
-	testsuite.Require().NoError(err)
-	if !res.Success {
-		_, err = client.CreateOrUpdate(ctx, testsuite.resourceGroupName, armresources.ResourceGroup{
-			Location: to.Ptr(testsuite.location),
-		}, nil)
-		testsuite.Require().NoError(err)
-	}
-
-	fmt.Println("create new resource group ", testsuite.resourceGroupName, " of ", testsuite.subscriptionId, "successfully")
 }

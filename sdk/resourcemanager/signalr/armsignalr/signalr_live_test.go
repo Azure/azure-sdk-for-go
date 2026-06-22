@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/signalr/armsignalr"
 	"github.com/stretchr/testify/suite"
 )
@@ -359,7 +359,7 @@ func (testsuite *SignalrTestSuite) TestSignalRPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -373,6 +373,7 @@ func (testsuite *SignalrTestSuite) TestSignalRPrivateEndpointConnections() {
 							"name": "default",
 							"properties": map[string]any{
 								"addressPrefix":                     "10.0.0.0/24",
+								"defaultOutboundAccess":             false,
 								"delegations":                       []any{},
 								"privateEndpointNetworkPolicies":    "Disabled",
 								"privateLinkServiceNetworkPolicies": "Enabled",
@@ -446,12 +447,13 @@ func (testsuite *SignalrTestSuite) TestSignalRPrivateEndpointConnections() {
 			map[string]any{
 				"name":       "[concat(parameters('virtualNetworksName'), '/default')]",
 				"type":       "Microsoft.Network/virtualNetworks/subnets",
-				"apiVersion": "2020-11-01",
+				"apiVersion": "2024-07-01",
 				"dependsOn": []any{
 					"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworksName'))]",
 				},
 				"properties": map[string]any{
 					"addressPrefix":                     "10.0.0.0/24",
+					"defaultOutboundAccess":             false,
 					"delegations":                       []any{},
 					"privateEndpointNetworkPolicies":    "Disabled",
 					"privateLinkServiceNetworkPolicies": "Enabled",
@@ -460,10 +462,10 @@ func (testsuite *SignalrTestSuite) TestSignalRPrivateEndpointConnections() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	_, err = testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_PrivateEndpoint", &deployment)
@@ -580,10 +582,10 @@ func (testsuite *SignalrTestSuite) TestSignalRSharedPrivateLinkResources() {
 		},
 		"variables": map[string]any{},
 	}
-	deployment := armresources.Deployment{
-		Properties: &armresources.DeploymentProperties{
+	deployment := armdeployments.Deployment{
+		Properties: &armdeployments.DeploymentProperties{
 			Template: template,
-			Mode:     to.Ptr(armresources.DeploymentModeIncremental),
+			Mode:     to.Ptr(armdeployments.DeploymentModeIncremental),
 		},
 	}
 	deploymentExtend, err := testutil.CreateDeployment(testsuite.ctx, testsuite.subscriptionId, testsuite.cred, testsuite.options, testsuite.resourceGroupName, "Create_StorageAccount", &deployment)

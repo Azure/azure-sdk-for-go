@@ -18,6 +18,8 @@ import (
 
 // ChatTranscriptsClient contains the methods for the ChatTranscripts group.
 // Don't use this type directly, use NewChatTranscriptsClient() instead.
+//
+// Generated from API version 2024-04-01
 type ChatTranscriptsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewChatTranscriptsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Returns chatTranscript details for a support ticket under a subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01
 //   - supportTicketName - The name of the SupportTicketDetails
 //   - chatTranscriptName - The name of the ChatTranscriptDetails
 //   - options - ChatTranscriptsClientGetOptions contains the optional parameters for the ChatTranscriptsClient.Get method.
@@ -88,8 +88,8 @@ func (client *ChatTranscriptsClient) getCreateRequest(ctx context.Context, suppo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *ChatTranscriptsClient) getHandleResponse(resp *http.Response) (Cha
 }
 
 // NewListPager - Lists all chat transcripts for a support ticket under subscription
-//
-// Generated from API version 2024-04-01
 //   - supportTicketName - The name of the SupportTicketDetails
 //   - options - ChatTranscriptsClientListOptions contains the optional parameters for the ChatTranscriptsClient.NewListPager
 //     method.
@@ -148,8 +146,8 @@ func (client *ChatTranscriptsClient) listCreateRequest(ctx context.Context, supp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

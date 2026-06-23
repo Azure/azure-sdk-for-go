@@ -1,0 +1,21 @@
+{
+  "succeed_to_regenerate": [
+    "armredisenterprise",
+    "armsearch",
+    "armserialconsole",
+    "armservicefabric",
+    "armservicefabricmanagedclusters",
+    "armstorage",
+    "armstorageactions",
+    "armstoragecache",
+    "armstoragediscovery",
+    "armstoragemover",
+    "armstoragesync",
+    "armsupport",
+    "armtrafficmanager"
+  ],
+  "fail_to_regenerate": [],
+  "not_found_api_version": [],
+  "time_to_regenerate": "2026-06-23 01:53:08.226586",
+  "typespec_go_commit_hash": "5dec91993c0e8d0fbf66956266e5aadea51e4481"
+}

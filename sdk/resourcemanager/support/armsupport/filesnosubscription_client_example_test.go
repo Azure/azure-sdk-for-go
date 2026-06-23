@@ -54,7 +54,7 @@ func ExampleFilesNoSubscriptionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.FilesNoSubscriptionClientGetResponse{
-	// 	FileDetails: &armsupport.FileDetails{
+	// 	FileDetails: armsupport.FileDetails{
 	// 		Name: to.Ptr("test.txt"),
 	// 		Type: to.Ptr("Microsoft.Support/files"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test.txt"),

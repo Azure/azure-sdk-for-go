@@ -17,6 +17,8 @@ import (
 
 // ScopeAccessReviewDefaultSettingsClient contains the methods for the ScopeAccessReviewDefaultSettings group.
 // Don't use this type directly, use NewScopeAccessReviewDefaultSettingsClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewDefaultSettingsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +39,6 @@ func NewScopeAccessReviewDefaultSettingsClient(credential azcore.TokenCredential
 
 // Get - Get access review default settings for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - options - ScopeAccessReviewDefaultSettingsClientGetOptions contains the optional parameters for the ScopeAccessReviewDefaultSettingsClient.Get
 //     method.
@@ -76,8 +76,8 @@ func (client *ScopeAccessReviewDefaultSettingsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -93,8 +93,6 @@ func (client *ScopeAccessReviewDefaultSettingsClient) getHandleResponse(resp *ht
 
 // Put - Get access review default settings for the subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - properties - Access review schedule settings.
 //   - options - ScopeAccessReviewDefaultSettingsClientPutOptions contains the optional parameters for the ScopeAccessReviewDefaultSettingsClient.Put
@@ -133,8 +131,8 @@ func (client *ScopeAccessReviewDefaultSettingsClient) putCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

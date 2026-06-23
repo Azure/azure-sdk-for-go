@@ -18,6 +18,8 @@ import (
 
 // RoleDefinitionsClient contains the methods for the RoleDefinitions group.
 // Don't use this type directly, use NewRoleDefinitionsClient() instead.
+//
+// Generated from API version 2022-05-01-preview
 type RoleDefinitionsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewRoleDefinitionsClient(credential azcore.TokenCredential, options *arm.Cl
 
 // CreateOrUpdate - Creates or updates a role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-05-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleDefinitionID - The ID of the role definition.
 //   - roleDefinition - The values for the role definition.
@@ -83,8 +83,8 @@ func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, roleDefinition); err != nil {
@@ -104,8 +104,6 @@ func (client *RoleDefinitionsClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Deletes a role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-05-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleDefinitionID - The ID of the role definition.
 //   - options - RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
@@ -147,8 +145,8 @@ func (client *RoleDefinitionsClient) deleteCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -164,8 +162,6 @@ func (client *RoleDefinitionsClient) deleteHandleResponse(resp *http.Response) (
 
 // Get - Get role definition by ID (GUID).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-05-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleDefinitionID - The ID of the role definition.
 //   - options - RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
@@ -207,8 +203,8 @@ func (client *RoleDefinitionsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -224,8 +220,6 @@ func (client *RoleDefinitionsClient) getHandleResponse(resp *http.Response) (Rol
 
 // GetByID - Gets a role definition by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2022-05-01-preview
 //   - roleID - The fully qualified role definition ID. Use the format, /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}
 //     for subscription level role definitions, or /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant
 //     level role definitions.
@@ -264,8 +258,8 @@ func (client *RoleDefinitionsClient) getByIDCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -280,8 +274,6 @@ func (client *RoleDefinitionsClient) getByIDHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get all role definitions that are applicable at scope and above.
-//
-// Generated from API version 2022-05-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.NewListPager
 //     method.
@@ -323,8 +315,8 @@ func (client *RoleDefinitionsClient) listCreateRequest(ctx context.Context, scop
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2022-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20220501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

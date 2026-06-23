@@ -250,12 +250,14 @@ type CachesClientListResponse struct {
 
 // CachesClientPoolChangeResponse contains the response from method CachesClient.BeginPoolChange.
 type CachesClientPoolChangeResponse struct {
-	// placeholder for future response values
+	// Cache resource
+	Cache
 }
 
 // CachesClientResetSmbPasswordResponse contains the response from method CachesClient.BeginResetSmbPassword.
 type CachesClientResetSmbPasswordResponse struct {
-	// placeholder for future response values
+	// Cache resource
+	Cache
 }
 
 // CachesClientUpdateResponse contains the response from method CachesClient.BeginUpdate.

@@ -21,8 +21,14 @@ type ServerFactory struct {
 	// GuestSubscriptionsServer contains the fakes for client GuestSubscriptionsClient
 	GuestSubscriptionsServer GuestSubscriptionsServer
 
+	// MemberCapOverridesServer contains the fakes for client MemberCapOverridesClient
+	MemberCapOverridesServer MemberCapOverridesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// SharedLimitCapsServer contains the fakes for client SharedLimitCapsClient
+	SharedLimitCapsServer SharedLimitCapsServer
 
 	// SharedLimitsServer contains the fakes for client SharedLimitsClient
 	SharedLimitsServer SharedLimitsServer
@@ -47,7 +53,9 @@ type ServerFactoryTransport struct {
 	trMu                       sync.Mutex
 	trFeaturesServer           *FeaturesServerTransport
 	trGuestSubscriptionsServer *GuestSubscriptionsServerTransport
+	trMemberCapOverridesServer *MemberCapOverridesServerTransport
 	trOperationsServer         *OperationsServerTransport
+	trSharedLimitCapsServer    *SharedLimitCapsServerTransport
 	trSharedLimitsServer       *SharedLimitsServerTransport
 	trVMFamiliesServer         *VMFamiliesServerTransport
 }
@@ -73,9 +81,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGuestSubscriptionsServerTransport(&s.srv.GuestSubscriptionsServer)
 		})
 		resp, err = s.trGuestSubscriptionsServer.Do(req)
+	case "MemberCapOverridesClient":
+		initServer(&s.trMu, &s.trMemberCapOverridesServer, func() *MemberCapOverridesServerTransport {
+			return NewMemberCapOverridesServerTransport(&s.srv.MemberCapOverridesServer)
+		})
+		resp, err = s.trMemberCapOverridesServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SharedLimitCapsClient":
+		initServer(&s.trMu, &s.trSharedLimitCapsServer, func() *SharedLimitCapsServerTransport {
+			return NewSharedLimitCapsServerTransport(&s.srv.SharedLimitCapsServer)
+		})
+		resp, err = s.trSharedLimitCapsServer.Do(req)
 	case "SharedLimitsClient":
 		initServer(&s.trMu, &s.trSharedLimitsServer, func() *SharedLimitsServerTransport { return NewSharedLimitsServerTransport(&s.srv.SharedLimitsServer) })
 		resp, err = s.trSharedLimitsServer.Do(req)

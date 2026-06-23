@@ -18,6 +18,8 @@ import (
 
 // AccountsClient contains the methods for the Accounts group.
 // Don't use this type directly, use NewAccountsClient() instead.
+//
+// Generated from API version 2026-04-01
 type AccountsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential,
 // BeginChangeKeyVault - Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports
 // HSM to Key Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - AccountsClientBeginChangeKeyVaultOptions contains the optional parameters for the AccountsClient.BeginChangeKeyVault
@@ -68,8 +68,6 @@ func (client *AccountsClient) BeginChangeKeyVault(ctx context.Context, resourceG
 // ChangeKeyVault - Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM
 // to Key Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *AccountsClient) changeKeyVault(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginChangeKeyVaultOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginChangeKeyVault"
@@ -111,8 +109,8 @@ func (client *AccountsClient) changeKeyVaultCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
@@ -125,8 +123,6 @@ func (client *AccountsClient) changeKeyVaultCreateRequest(ctx context.Context, r
 
 // BeginCreateOrUpdate - Create or update the specified NetApp account within the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - body - NetApp Account object supplied in the body of the operation.
@@ -151,8 +147,6 @@ func (client *AccountsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create or update the specified NetApp account within the resource group
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *AccountsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, body Account, options *AccountsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginCreateOrUpdate"
@@ -194,8 +188,8 @@ func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -206,8 +200,6 @@ func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete the specified NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
@@ -230,8 +222,6 @@ func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete the specified NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginDelete"
@@ -273,15 +263,13 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
@@ -327,8 +315,8 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -346,8 +334,6 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 // private endpoint is used by each encryption sibling set. Response from this endpoint can be modified and used as request
 // body for POST request.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - AccountsClientBeginGetChangeKeyVaultInformationOptions contains the optional parameters for the AccountsClient.BeginGetChangeKeyVaultInformation
@@ -374,8 +360,6 @@ func (client *AccountsClient) BeginGetChangeKeyVaultInformation(ctx context.Cont
 // endpoint is used by each encryption sibling set. Response from this endpoint can be modified and used as request body for
 // POST request.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *AccountsClient) getChangeKeyVaultInformation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginGetChangeKeyVaultInformationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginGetChangeKeyVaultInformation"
@@ -417,15 +401,13 @@ func (client *AccountsClient) getChangeKeyVaultInformationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListPager - List and describe all NetApp accounts in the resource group.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AccountsClientListOptions contains the optional parameters for the AccountsClient.NewListPager method.
 func (client *AccountsClient) NewListPager(resourceGroupName string, options *AccountsClientListOptions) *runtime.Pager[AccountsClientListResponse] {
@@ -467,8 +449,8 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -483,8 +465,6 @@ func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsC
 }
 
 // NewListBySubscriptionPager - List and describe all NetApp accounts in the subscription.
-//
-// Generated from API version 2026-01-01
 //   - options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
 //     method.
 func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
@@ -522,8 +502,8 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -540,8 +520,6 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 // BeginRenewCredentials - Renew identity credentials that are used to authenticate to key vault, for customer-managed key
 // encryption. If encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - AccountsClientBeginRenewCredentialsOptions contains the optional parameters for the AccountsClient.BeginRenewCredentials
@@ -566,8 +544,6 @@ func (client *AccountsClient) BeginRenewCredentials(ctx context.Context, resourc
 // RenewCredentials - Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption.
 // If encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *AccountsClient) renewCredentials(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginRenewCredentialsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginRenewCredentials"
@@ -609,16 +585,14 @@ func (client *AccountsClient) renewCredentialsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginTransitionToCmk - Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or
 // Azure Key Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - options - AccountsClientBeginTransitionToCmkOptions contains the optional parameters for the AccountsClient.BeginTransitionToCmk
@@ -643,8 +617,6 @@ func (client *AccountsClient) BeginTransitionToCmk(ctx context.Context, resource
 // TransitionToCmk - Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure
 // Key Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *AccountsClient) transitionToCmk(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginTransitionToCmkOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginTransitionToCmk"
@@ -686,8 +658,8 @@ func (client *AccountsClient) transitionToCmkCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
@@ -700,8 +672,6 @@ func (client *AccountsClient) transitionToCmkCreateRequest(ctx context.Context, 
 
 // BeginUpdate - Patch the specified NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the NetApp account
 //   - body - NetApp Account object supplied in the body of the operation.
@@ -725,8 +695,6 @@ func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Patch the specified NetApp account
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01
 func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, body AccountPatch, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginUpdate"
@@ -768,8 +736,8 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

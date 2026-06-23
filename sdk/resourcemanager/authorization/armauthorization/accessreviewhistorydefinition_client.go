@@ -18,6 +18,8 @@ import (
 
 // AccessReviewHistoryDefinitionClient contains the methods for the AccessReviewHistoryDefinition group.
 // Don't use this type directly, use NewAccessReviewHistoryDefinitionClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type AccessReviewHistoryDefinitionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAccessReviewHistoryDefinitionClient(subscriptionID string, credential az
 
 // Create - Create a scheduled or one-time Access Review History Definition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - historyDefinitionID - The id of the access review history definition.
 //   - properties - Access review history definition properties.
 //   - options - AccessReviewHistoryDefinitionClientCreateOptions contains the optional parameters for the AccessReviewHistoryDefinitionClient.Create
@@ -85,8 +85,8 @@ func (client *AccessReviewHistoryDefinitionClient) createCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -106,8 +106,6 @@ func (client *AccessReviewHistoryDefinitionClient) createHandleResponse(resp *ht
 
 // DeleteByID - Delete an access review history definition
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-12-01-preview
 //   - historyDefinitionID - The id of the access review history definition.
 //   - options - AccessReviewHistoryDefinitionClientDeleteByIDOptions contains the optional parameters for the AccessReviewHistoryDefinitionClient.DeleteByID
 //     method.
@@ -148,7 +146,7 @@ func (client *AccessReviewHistoryDefinitionClient) deleteByIDCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

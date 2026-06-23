@@ -18,7 +18,6 @@ import (
 	"reflect"
 	"regexp"
 	"slices"
-	"strconv"
 )
 
 // ScenarioConfigurationsServer is a fake server for instances of the armchaos.ScenarioConfigurationsClient type.
@@ -31,9 +30,9 @@ type ScenarioConfigurationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *armchaos.ScenarioConfigurationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armchaos.ScenarioConfigurationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Execute is the fake for method ScenarioConfigurationsClient.Execute
-	// HTTP status codes to indicate success: http.StatusAccepted
-	Execute func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *armchaos.ScenarioConfigurationsClientExecuteOptions) (resp azfake.Responder[armchaos.ScenarioConfigurationsClientExecuteResponse], errResp azfake.ErrorResponder)
+	// BeginExecute is the fake for method ScenarioConfigurationsClient.BeginExecute
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginExecute func(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *armchaos.ScenarioConfigurationsClientBeginExecuteOptions) (resp azfake.PollerResponder[armchaos.ScenarioConfigurationsClientExecuteResponse], errResp azfake.ErrorResponder)
 
 	// BeginFixResourcePermissions is the fake for method ScenarioConfigurationsClient.BeginFixResourcePermissions
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -60,6 +59,7 @@ func NewScenarioConfigurationsServerTransport(srv *ScenarioConfigurationsServer)
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientDeleteResponse]](),
+		beginExecute:                newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientExecuteResponse]](),
 		beginFixResourcePermissions: newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientFixResourcePermissionsResponse]](),
 		newListAllPager:             newTracker[azfake.PagerResponder[armchaos.ScenarioConfigurationsClientListAllResponse]](),
 		beginValidate:               newTracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientValidateResponse]](),
@@ -72,6 +72,7 @@ type ScenarioConfigurationsServerTransport struct {
 	srv                         *ScenarioConfigurationsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientDeleteResponse]]
+	beginExecute                *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientExecuteResponse]]
 	beginFixResourcePermissions *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientFixResourcePermissionsResponse]]
 	newListAllPager             *tracker[azfake.PagerResponder[armchaos.ScenarioConfigurationsClientListAllResponse]]
 	beginValidate               *tracker[azfake.PollerResponder[armchaos.ScenarioConfigurationsClientValidateResponse]]
@@ -102,8 +103,8 @@ func (s *ScenarioConfigurationsServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "ScenarioConfigurationsClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "ScenarioConfigurationsClient.Execute":
-				res.resp, res.err = s.dispatchExecute(req)
+			case "ScenarioConfigurationsClient.BeginExecute":
+				res.resp, res.err = s.dispatchBeginExecute(req)
 			case "ScenarioConfigurationsClient.BeginFixResourcePermissions":
 				res.resp, res.err = s.dispatchBeginFixResourcePermissions(req)
 			case "ScenarioConfigurationsClient.Get":
@@ -236,50 +237,55 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginDelete(req *http.Re
 	return resp, nil
 }
 
-func (s *ScenarioConfigurationsServerTransport) dispatchExecute(req *http.Request) (*http.Response, error) {
-	if s.srv.Execute == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Execute not implemented")}
+func (s *ScenarioConfigurationsServerTransport) dispatchBeginExecute(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginExecute == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginExecute not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginExecute := s.beginExecute.get(req)
+	if beginExecute == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Chaos/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/scenarios/(?P<scenarioName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurations/(?P<scenarioConfigurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/execute`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		scenarioNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioName")])
+		if err != nil {
+			return nil, err
+		}
+		scenarioConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioConfigurationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginExecute(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, scenarioConfigurationNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginExecute = &respr
+		s.beginExecute.add(req, beginExecute)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginExecute, req)
 	if err != nil {
 		return nil, err
 	}
-	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-	if err != nil {
-		return nil, err
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginExecute.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
-	scenarioNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginExecute) {
+		s.beginExecute.remove(req)
 	}
-	scenarioConfigurationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("scenarioConfigurationName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Execute(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, scenarioConfigurationNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusAccepted}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusAccepted", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("Location", *val)
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
-	}
+
 	return resp, nil
 }
 

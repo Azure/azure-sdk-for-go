@@ -102,7 +102,7 @@ func TestWorkloadIdentityCredential_Recorded(t *testing.T) {
 				ClientID:                 liveSP.clientID,
 				ClientOptions:            co,
 				DisableInstanceDiscovery: b,
-				EnableAzureProxy:         true,
+				enableAzureProxy:         true,
 				TenantID:                 liveSP.tenantID,
 				TokenFilePath:            f,
 			})
@@ -141,7 +141,7 @@ func TestWorkloadIdentityCredential(t *testing.T) {
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         fakeClientID,
 		ClientOptions:    policy.ClientOptions{Transport: &sts},
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
 	})
@@ -173,7 +173,7 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         fakeClientID,
 		ClientOptions:    policy.ClientOptions{Transport: &sts},
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
 	})
@@ -231,7 +231,7 @@ func TestWorkloadIdentityCredential_NoFile(t *testing.T) {
 	}
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientOptions:    policy.ClientOptions{Transport: &mockSTS{}},
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -282,7 +282,7 @@ func TestWorkloadIdentityCredential_Options(t *testing.T) {
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         clientID,
 		ClientOptions:    policy.ClientOptions{Transport: &sts},
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 		TenantID:         tenantID,
 		TokenFilePath:    rightFile,
 	})
@@ -427,7 +427,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAData(t *testing.T)
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         fakeClientID,
 		ClientOptions:    clientOptions,
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
 	})
@@ -443,7 +443,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_InvalidSettings(t *testi
 	t.Setenv(customtokenproxy.AzureKubernetesTokenProxy, "invalid-token-endpoint")
 	_, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         fakeClientID,
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    filepath.Join(t.TempDir(), "test-workload-token-file"),
 	})
@@ -492,7 +492,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_WithCAFile(t *testing.T)
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         fakeClientID,
 		ClientOptions:    clientOptions,
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
 	})
@@ -552,7 +552,7 @@ func TestWorkloadIdentityCredential_CustomTokenEndpoint_AKSSetup(t *testing.T) {
 	cred, err := NewWorkloadIdentityCredential(&WorkloadIdentityCredentialOptions{
 		ClientID:         fakeClientID,
 		ClientOptions:    clientOptions,
-		EnableAzureProxy: true,
+		enableAzureProxy: true,
 		TenantID:         fakeTenantID,
 		TokenFilePath:    tempFile,
 	})

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGenerateReservationDetailsReportClientVersion string = "2025-03-01"
-
 // GenerateReservationDetailsReportClient contains the methods for the GenerateReservationDetailsReport group.
 // Don't use this type directly, use NewGenerateReservationDetailsReportClient() instead.
 //
@@ -101,7 +99,7 @@ func (client *GenerateReservationDetailsReportClient) byBillingAccountIDCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGenerateReservationDetailsReportClientVersion)
+	reqQP.Set("api-version", version20250301)
 	reqQP.Set("endDate", endDate)
 	reqQP.Set("startDate", startDate)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
@@ -177,7 +175,7 @@ func (client *GenerateReservationDetailsReportClient) byBillingProfileIDCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGenerateReservationDetailsReportClientVersion)
+	reqQP.Set("api-version", version20250301)
 	reqQP.Set("endDate", endDate)
 	reqQP.Set("startDate", startDate)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")

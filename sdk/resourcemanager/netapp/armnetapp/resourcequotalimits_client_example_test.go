@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NetAppResourceQuotaLimits_Get.json
+// Generated from example definition: 2026-04-01/NetAppResourceQuotaLimits_Get.json
 func ExampleResourceQuotaLimitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleResourceQuotaLimitsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.ResourceQuotaLimitsClientGetResponse{
-	// 	SubscriptionQuotaItem: &armnetapp.SubscriptionQuotaItem{
+	// 	SubscriptionQuotaItem: armnetapp.SubscriptionQuotaItem{
 	// 		Name: to.Ptr("eastus/totalCoolAccessVolumesPerSubscription"),
 	// 		Type: to.Ptr("Microsoft.NetApp/locations/quotaLimits"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.NetApp/locations/eastus/quotaLimits/totalCoolAccessVolumesPerSubscription"),
@@ -42,7 +42,7 @@ func ExampleResourceQuotaLimitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NetAppResourceQuotaLimits_List.json
+// Generated from example definition: 2026-04-01/NetAppResourceQuotaLimits_List.json
 func ExampleResourceQuotaLimitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

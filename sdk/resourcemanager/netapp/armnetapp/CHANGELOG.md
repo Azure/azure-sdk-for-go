@@ -1,5 +1,14 @@
 # Release History
 
+## 10.1.0 (2026-06-10)
+### Features Added
+
+- New enum type `CacheFileAccessLogs` with values `CacheFileAccessLogsDisabled`, `CacheFileAccessLogsEnabled`
+- New field `FileAccessLogs` in struct `CacheProperties`
+- New anonymous field `Cache` in struct `CachesClientPoolChangeResponse`
+- New anonymous field `Cache` in struct `CachesClientResetSmbPasswordResponse`
+
+
 ## 10.0.0 (2026-04-20)
 ### Breaking Changes
 

@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // RoleAssignmentsServer is a fake server for instances of the armauthorization.RoleAssignmentsClient type.
@@ -96,9 +97,7 @@ func (r *RoleAssignmentsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (r *RoleAssignmentsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -132,10 +131,7 @@ func (r *RoleAssignmentsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -173,7 +169,7 @@ func (r *RoleAssignmentsServerTransport) dispatchCreate(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
@@ -206,7 +202,7 @@ func (r *RoleAssignmentsServerTransport) dispatchCreateByID(req *http.Request) (
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
@@ -231,11 +227,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDelete(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-	if err != nil {
-		return nil, err
-	}
-	tenantIDParam := getOptional(tenantIDUnescaped)
+	tenantIDParam := getOptional(qp.Get("tenantId"))
 	roleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -251,7 +243,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDelete(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
@@ -276,11 +268,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByID(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-	if err != nil {
-		return nil, err
-	}
-	tenantIDParam := getOptional(tenantIDUnescaped)
+	tenantIDParam := getOptional(qp.Get("tenantId"))
 	var options *armauthorization.RoleAssignmentsClientDeleteByIDOptions
 	if tenantIDParam != nil {
 		options = &armauthorization.RoleAssignmentsClientDeleteByIDOptions{
@@ -292,7 +280,7 @@ func (r *RoleAssignmentsServerTransport) dispatchDeleteByID(req *http.Request) (
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
@@ -317,11 +305,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-	if err != nil {
-		return nil, err
-	}
-	tenantIDParam := getOptional(tenantIDUnescaped)
+	tenantIDParam := getOptional(qp.Get("tenantId"))
 	roleAssignmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("roleAssignmentName")])
 	if err != nil {
 		return nil, err
@@ -337,7 +321,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
@@ -362,11 +346,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByID(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-	if err != nil {
-		return nil, err
-	}
-	tenantIDParam := getOptional(tenantIDUnescaped)
+	tenantIDParam := getOptional(qp.Get("tenantId"))
 	var options *armauthorization.RoleAssignmentsClientGetByIDOptions
 	if tenantIDParam != nil {
 		options = &armauthorization.RoleAssignmentsClientGetByIDOptions{
@@ -378,7 +358,7 @@ func (r *RoleAssignmentsServerTransport) dispatchGetByID(req *http.Request) (*ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleAssignment, req)
@@ -417,16 +397,8 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForResourcePager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		tenantIDParam := getOptional(qp.Get("tenantId"))
 		var options *armauthorization.RoleAssignmentsClientListForResourceOptions
 		if filterParam != nil || tenantIDParam != nil {
 			options = &armauthorization.RoleAssignmentsClientListForResourceOptions{
@@ -445,7 +417,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForResourcePager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListForResourcePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -472,16 +444,8 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForResourceGroupPager(re
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		tenantIDParam := getOptional(qp.Get("tenantId"))
 		var options *armauthorization.RoleAssignmentsClientListForResourceGroupOptions
 		if filterParam != nil || tenantIDParam != nil {
 			options = &armauthorization.RoleAssignmentsClientListForResourceGroupOptions{
@@ -500,7 +464,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForResourceGroupPager(re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListForResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -527,21 +491,9 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForScopePager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		tenantIDParam := getOptional(qp.Get("tenantId"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armauthorization.RoleAssignmentsClientListForScopeOptions
 		if filterParam != nil || tenantIDParam != nil || skipTokenParam != nil {
 			options = &armauthorization.RoleAssignmentsClientListForScopeOptions{
@@ -561,7 +513,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForScopePager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListForScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -584,16 +536,8 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForSubscriptionPager(req
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		tenantIDUnescaped, err := url.QueryUnescape(qp.Get("tenantId"))
-		if err != nil {
-			return nil, err
-		}
-		tenantIDParam := getOptional(tenantIDUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		tenantIDParam := getOptional(qp.Get("tenantId"))
 		var options *armauthorization.RoleAssignmentsClientListForSubscriptionOptions
 		if filterParam != nil || tenantIDParam != nil {
 			options = &armauthorization.RoleAssignmentsClientListForSubscriptionOptions{
@@ -612,7 +556,7 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListForSubscriptionPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListForSubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

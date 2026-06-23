@@ -27,6 +27,9 @@ type ServerFactory struct {
 	// MigrationServer contains the fakes for client MigrationClient
 	MigrationServer MigrationServer
 
+	// MigrationsServer contains the fakes for client MigrationsClient
+	MigrationsServer MigrationsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -58,6 +61,7 @@ type ServerFactoryTransport struct {
 	trServer                           *ServerTransport
 	trDatabasesServer                  *DatabasesServerTransport
 	trMigrationServer                  *MigrationServerTransport
+	trMigrationsServer                 *MigrationsServerTransport
 	trOperationsServer                 *OperationsServerTransport
 	trOperationsStatusServer           *OperationsStatusServerTransport
 	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
@@ -91,6 +95,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "MigrationClient":
 		initServer(&s.trMu, &s.trMigrationServer, func() *MigrationServerTransport { return NewMigrationServerTransport(&s.srv.MigrationServer) })
 		resp, err = s.trMigrationServer.Do(req)
+	case "MigrationsClient":
+		initServer(&s.trMu, &s.trMigrationsServer, func() *MigrationsServerTransport { return NewMigrationsServerTransport(&s.srv.MigrationsServer) })
+		resp, err = s.trMigrationsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

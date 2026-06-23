@@ -48,10 +48,26 @@ func (c *ClientFactory) NewGuestSubscriptionsClient() *GuestSubscriptionsClient 
 	}
 }
 
+// NewMemberCapOverridesClient creates a new instance of MemberCapOverridesClient.
+func (c *ClientFactory) NewMemberCapOverridesClient() *MemberCapOverridesClient {
+	return &MemberCapOverridesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewSharedLimitCapsClient creates a new instance of SharedLimitCapsClient.
+func (c *ClientFactory) NewSharedLimitCapsClient() *SharedLimitCapsClient {
+	return &SharedLimitCapsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }
 

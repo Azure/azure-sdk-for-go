@@ -18,6 +18,8 @@ import (
 
 // RoleEligibilityScheduleRequestsClient contains the methods for the RoleEligibilityScheduleRequests group.
 // Don't use this type directly, use NewRoleEligibilityScheduleRequestsClient() instead.
+//
+// Generated from API version 2024-09-01-preview
 type RoleEligibilityScheduleRequestsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewRoleEligibilityScheduleRequestsClient(credential azcore.TokenCredential,
 
 // Cancel - Cancels a pending role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleEligibilityScheduleRequestName - The name (guid) of the role eligibility schedule request to get.
 //   - options - RoleEligibilityScheduleRequestsClientCancelOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Cancel
@@ -81,15 +81,13 @@ func (client *RoleEligibilityScheduleRequestsClient) cancelCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Create - Creates a role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleEligibilityScheduleRequestName - The name (guid) of the role eligibility schedule request to get.
 //   - parameters - Parameters for the role eligibility schedule request.
@@ -133,8 +131,8 @@ func (client *RoleEligibilityScheduleRequestsClient) createCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -154,8 +152,6 @@ func (client *RoleEligibilityScheduleRequestsClient) createHandleResponse(resp *
 
 // Get - Get the specified role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleEligibilityScheduleRequestName - The name (guid) of the role eligibility schedule request to get.
 //   - options - RoleEligibilityScheduleRequestsClientGetOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.Get
@@ -198,8 +194,8 @@ func (client *RoleEligibilityScheduleRequestsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -214,8 +210,6 @@ func (client *RoleEligibilityScheduleRequestsClient) getHandleResponse(resp *htt
 }
 
 // NewListForScopePager - Gets role eligibility schedule requests for a scope.
-//
-// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - RoleEligibilityScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleEligibilityScheduleRequestsClient.NewListForScopePager
 //     method.
@@ -257,8 +251,8 @@ func (client *RoleEligibilityScheduleRequestsClient) listForScopeCreateRequest(c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -274,8 +268,6 @@ func (client *RoleEligibilityScheduleRequestsClient) listForScopeHandleResponse(
 
 // Validate - Validates a new role eligibility schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - roleEligibilityScheduleRequestName - The name (guid) of the role eligibility schedule request to get.
 //   - parameters - Parameters for the role eligibility schedule request.
@@ -319,8 +311,8 @@ func (client *RoleEligibilityScheduleRequestsClient) validateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -31,7 +31,7 @@ func ExampleAggregatedCostClient_GetByManagementGroup_aggregatedCostByManagement
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.AggregatedCostClientGetByManagementGroupResponse{
-	// 	ManagementGroupAggregatedCostResult: &armconsumption.ManagementGroupAggregatedCostResult{
+	// 	ManagementGroupAggregatedCostResult: armconsumption.ManagementGroupAggregatedCostResult{
 	// 		Name: to.Ptr("aggregatedcostId1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/aggregatedcost"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/managementGroupForTest/providers/Microsoft.Consumption/aggregatedcostId1"),
@@ -88,7 +88,7 @@ func ExampleAggregatedCostClient_GetByManagementGroup_aggregatedCostByManagement
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.AggregatedCostClientGetByManagementGroupResponse{
-	// 	ManagementGroupAggregatedCostResult: &armconsumption.ManagementGroupAggregatedCostResult{
+	// 	ManagementGroupAggregatedCostResult: armconsumption.ManagementGroupAggregatedCostResult{
 	// 		Name: to.Ptr("aggregatedcostId1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/aggregatedcost"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/managementGroupForTest/providers/Microsoft.Consumption/aggregatedcostId1"),
@@ -144,7 +144,7 @@ func ExampleAggregatedCostClient_GetForBillingPeriodByManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{
-	// 	ManagementGroupAggregatedCostResult: &armconsumption.ManagementGroupAggregatedCostResult{
+	// 	ManagementGroupAggregatedCostResult: armconsumption.ManagementGroupAggregatedCostResult{
 	// 		Name: to.Ptr("aggregatedcostId1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/aggregatedcost"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/managementGroupForTest/providers/Microsoft.Consumption/aggregatedcostId1"),

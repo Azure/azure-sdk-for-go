@@ -157,35 +157,6 @@ type PolicyClientListResponse struct {
 	PolicyModelListResult
 }
 
-// PrivateEndpointConnectionProxiesClientCreateResponse contains the response from method PrivateEndpointConnectionProxiesClient.Create.
-type PrivateEndpointConnectionProxiesClientCreateResponse struct {
-	// Represents private endpoint connection proxy request.
-	PrivateEndpointConnectionProxy
-}
-
-// PrivateEndpointConnectionProxiesClientDeleteResponse contains the response from method PrivateEndpointConnectionProxiesClient.BeginDelete.
-type PrivateEndpointConnectionProxiesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// PrivateEndpointConnectionProxiesClientGetResponse contains the response from method PrivateEndpointConnectionProxiesClient.Get.
-type PrivateEndpointConnectionProxiesClientGetResponse struct {
-	// Represents private endpoint connection proxy request.
-	PrivateEndpointConnectionProxy
-}
-
-// PrivateEndpointConnectionProxiesClientListResponse contains the response from method PrivateEndpointConnectionProxiesClient.NewListPager.
-type PrivateEndpointConnectionProxiesClientListResponse struct {
-	// The response of a PrivateEndpointConnectionProxy list operation.
-	PrivateEndpointConnectionProxyListResult
-}
-
-// PrivateEndpointConnectionProxiesClientValidateResponse contains the response from method PrivateEndpointConnectionProxiesClient.Validate.
-type PrivateEndpointConnectionProxiesClientValidateResponse struct {
-	// Represents private endpoint connection proxy request.
-	PrivateEndpointConnectionProxy
-}
-
 // PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values

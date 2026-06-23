@@ -40,13 +40,13 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientCreateResponse{
-	// 	Volume: &armelasticsan.Volume{
+	// 	Volume: armelasticsan.Volume{
 	// 		Name: to.Ptr("hxm"),
 	// 		Type: to.Ptr("sxsbsdhngvbcpxxcuvyt"),
 	// 		ID: to.Ptr("sipsx"),
@@ -102,13 +102,13 @@ func ExampleVolumesClient_BeginCreate_volumesCreateMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientCreateResponse{
-	// 	Volume: &armelasticsan.Volume{
+	// 	Volume: armelasticsan.Volume{
 	// 		Name: to.Ptr("o"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}"),
@@ -162,7 +162,7 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -188,7 +188,7 @@ func ExampleVolumesClient_BeginDelete_volumesDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -216,7 +216,7 @@ func ExampleVolumesClient_Get_volumesGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientGetResponse{
-	// 	Volume: &armelasticsan.Volume{
+	// 	Volume: armelasticsan.Volume{
 	// 		Name: to.Ptr("wrrvufwzhwd"),
 	// 		Type: to.Ptr("kzaqluwzgssofiulhkxmzafsdhcno"),
 	// 		ID: to.Ptr("xsqrx"),
@@ -270,7 +270,7 @@ func ExampleVolumesClient_Get_volumesGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientGetResponse{
-	// 	Volume: &armelasticsan.Volume{
+	// 	Volume: armelasticsan.Volume{
 	// 		Name: to.Ptr("o"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
 	// 		ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),
@@ -421,13 +421,13 @@ func ExampleVolumesClient_BeginPreBackup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientPreBackupResponse{
-	// 	PreValidationResponse: &armelasticsan.PreValidationResponse{
+	// 	PreValidationResponse: armelasticsan.PreValidationResponse{
 	// 		ValidationStatus: to.Ptr("success"),
 	// 	},
 	// }
@@ -454,13 +454,13 @@ func ExampleVolumesClient_BeginPreRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientPreRestoreResponse{
-	// 	PreValidationResponse: &armelasticsan.PreValidationResponse{
+	// 	PreValidationResponse: armelasticsan.PreValidationResponse{
 	// 		ValidationStatus: to.Ptr("success"),
 	// 	},
 	// }
@@ -490,13 +490,13 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientUpdateResponse{
-	// 	Volume: &armelasticsan.Volume{
+	// 	Volume: armelasticsan.Volume{
 	// 		Name: to.Ptr("hxm"),
 	// 		Type: to.Ptr("sxsbsdhngvbcpxxcuvyt"),
 	// 		ID: to.Ptr("sipsx"),
@@ -548,13 +548,13 @@ func ExampleVolumesClient_BeginUpdate_volumesUpdateMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumesClientUpdateResponse{
-	// 	Volume: &armelasticsan.Volume{
+	// 	Volume: armelasticsan.Volume{
 	// 		Name: to.Ptr("o"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups/volumes"),
 	// 		ID: to.Ptr("swkcmwglncgtsnejzvldnbpsifxez"),

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/computeRPCommonExamples/VirtualMachineSizes_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/computeRPCommonExamples/VirtualMachineSizes_List_MaximumSet_Gen.json
 func ExampleVirtualMachineSizesClient_NewListPager_virtualMachineSizesListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleVirtualMachineSizesClient_NewListPager_virtualMachineSizesListMaximu
 	}
 }
 
-// Generated from example definition: 2025-11-01/computeRPCommonExamples/VirtualMachineSizes_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/computeRPCommonExamples/VirtualMachineSizes_List_MinimumSet_Gen.json
 func ExampleVirtualMachineSizesClient_NewListPager_virtualMachineSizesListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

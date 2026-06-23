@@ -4,6 +4,10 @@
 
 package armredisenterprise
 
+const (
+	version20250801Preview string = "2025-08-01-preview"
+)
+
 // AccessKeyType - Which access key to regenerate.
 type AccessKeyType string
 
@@ -310,7 +314,7 @@ const (
 	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
 	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
 	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
-	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned, UserAssigned"
 	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
 	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
 )
@@ -331,6 +335,8 @@ type MigrationProvisioningState string
 const (
 	// MigrationProvisioningStateAccepted - The request has been accepted and the migration operation is being initialized.
 	MigrationProvisioningStateAccepted MigrationProvisioningState = "Accepted"
+	// MigrationProvisioningStateCancellationFailed - The migration operation cancellation has failed.
+	MigrationProvisioningStateCancellationFailed MigrationProvisioningState = "CancellationFailed"
 	// MigrationProvisioningStateCancelled - The migration operation has been cancelled.
 	MigrationProvisioningStateCancelled MigrationProvisioningState = "Cancelled"
 	// MigrationProvisioningStateCancelling - The migration operation is being cancelled.
@@ -350,6 +356,7 @@ const (
 func PossibleMigrationProvisioningStateValues() []MigrationProvisioningState {
 	return []MigrationProvisioningState{
 		MigrationProvisioningStateAccepted,
+		MigrationProvisioningStateCancellationFailed,
 		MigrationProvisioningStateCancelled,
 		MigrationProvisioningStateCancelling,
 		MigrationProvisioningStateFailed,

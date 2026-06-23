@@ -8,17 +8,19 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type FullBackupOperation.
 func (f FullBackupOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "azureStorageBlobContainerUri", f.AzureStorageBlobContainerURI)
-	populateTimeUnix(objectMap, "endTime", f.EndTime)
+	populateTime[datetime.Unix](objectMap, "endTime", f.EndTime)
 	populate(objectMap, "error", f.Error)
 	populate(objectMap, "jobId", f.JobID)
-	populateTimeUnix(objectMap, "startTime", f.StartTime)
+	populateTime[datetime.Unix](objectMap, "startTime", f.StartTime)
 	populate(objectMap, "status", f.Status)
 	populate(objectMap, "statusDetails", f.StatusDetails)
 	return json.Marshal(objectMap)
@@ -37,7 +39,7 @@ func (f *FullBackupOperation) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "AzureStorageBlobContainerURI", &f.AzureStorageBlobContainerURI)
 			delete(rawMsg, key)
 		case "endTime":
-			err = unpopulateTimeUnix(val, "EndTime", &f.EndTime)
+			err = unpopulateTime[datetime.Unix](val, "EndTime", &f.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &f.Error)
@@ -46,7 +48,7 @@ func (f *FullBackupOperation) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "JobID", &f.JobID)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeUnix(val, "StartTime", &f.StartTime)
+			err = unpopulateTime[datetime.Unix](val, "StartTime", &f.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &f.Status)
@@ -131,10 +133,10 @@ func (p *PreRestoreOperationParameters) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RestoreOperation.
 func (r RestoreOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeUnix(objectMap, "endTime", r.EndTime)
+	populateTime[datetime.Unix](objectMap, "endTime", r.EndTime)
 	populate(objectMap, "error", r.Error)
 	populate(objectMap, "jobId", r.JobID)
-	populateTimeUnix(objectMap, "startTime", r.StartTime)
+	populateTime[datetime.Unix](objectMap, "startTime", r.StartTime)
 	populate(objectMap, "status", r.Status)
 	populate(objectMap, "statusDetails", r.StatusDetails)
 	return json.Marshal(objectMap)
@@ -150,7 +152,7 @@ func (r *RestoreOperation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeUnix(val, "EndTime", &r.EndTime)
+			err = unpopulateTime[datetime.Unix](val, "EndTime", &r.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &r.Error)
@@ -159,7 +161,7 @@ func (r *RestoreOperation) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "JobID", &r.JobID)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeUnix(val, "StartTime", &r.StartTime)
+			err = unpopulateTime[datetime.Unix](val, "StartTime", &r.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &r.Status)
@@ -244,10 +246,10 @@ func (s *SASTokenParameters) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SelectiveKeyRestoreOperation.
 func (s SelectiveKeyRestoreOperation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTimeUnix(objectMap, "endTime", s.EndTime)
+	populateTime[datetime.Unix](objectMap, "endTime", s.EndTime)
 	populate(objectMap, "error", s.Error)
 	populate(objectMap, "jobId", s.JobID)
-	populateTimeUnix(objectMap, "startTime", s.StartTime)
+	populateTime[datetime.Unix](objectMap, "startTime", s.StartTime)
 	populate(objectMap, "status", s.Status)
 	populate(objectMap, "statusDetails", s.StatusDetails)
 	return json.Marshal(objectMap)
@@ -263,7 +265,7 @@ func (s *SelectiveKeyRestoreOperation) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "endTime":
-			err = unpopulateTimeUnix(val, "EndTime", &s.EndTime)
+			err = unpopulateTime[datetime.Unix](val, "EndTime", &s.EndTime)
 			delete(rawMsg, key)
 		case "error":
 			err = unpopulate(val, "Error", &s.Error)
@@ -272,7 +274,7 @@ func (s *SelectiveKeyRestoreOperation) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "JobID", &s.JobID)
 			delete(rawMsg, key)
 		case "startTime":
-			err = unpopulateTimeUnix(val, "StartTime", &s.StartTime)
+			err = unpopulateTime[datetime.Unix](val, "StartTime", &s.StartTime)
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &s.Status)
@@ -329,6 +331,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -337,4 +350,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

@@ -21,7 +21,9 @@ func newCallTypeLatencyCollector() *callTypeLatencyCollector {
 }
 
 func (c *callTypeLatencyCollector) Add(callType string, duration time.Duration) {
-	if duration <= 0 {
+	// A zero-duration operation is legitimate (an op can complete within the
+	// timer's resolution), so only negative samples are discarded.
+	if duration < 0 {
 		return
 	}
 	if callType == "" {
@@ -29,6 +31,27 @@ func (c *callTypeLatencyCollector) Add(callType string, duration time.Duration) 
 	}
 	c.mu.Lock()
 	c.values[callType] = append(c.values[callType], duration)
+	c.mu.Unlock()
+}
+
+// MergeFrom folds all per-call-type samples from other into c. It is used to
+// merge a per-worker collector into the shared runner collector after the
+// measurement phase completes.
+func (c *callTypeLatencyCollector) MergeFrom(other *callTypeLatencyCollector) {
+	if other == nil {
+		return
+	}
+	other.mu.Lock()
+	copied := make(map[string][]time.Duration, len(other.values))
+	for k, v := range other.values {
+		copied[k] = append([]time.Duration(nil), v...)
+	}
+	other.mu.Unlock()
+
+	c.mu.Lock()
+	for k, v := range copied {
+		c.values[k] = append(c.values[k], v...)
+	}
 	c.mu.Unlock()
 }
 

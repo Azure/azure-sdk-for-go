@@ -16,11 +16,29 @@ type latencyCollector struct {
 }
 
 func (l *latencyCollector) Add(d time.Duration) {
-	if d <= 0 {
+	// A zero-duration operation is legitimate (an op can complete within the
+	// timer's resolution), so only negative samples are discarded.
+	if d < 0 {
 		return
 	}
 	l.mu.Lock()
 	l.durations = append(l.durations, d)
+	l.mu.Unlock()
+}
+
+// MergeFrom appends all samples from other into l. It is used to fold a
+// per-worker collector (populated lock-free during the hot loop) into the
+// shared runner collector after the measurement phase completes.
+func (l *latencyCollector) MergeFrom(other *latencyCollector) {
+	if other == nil {
+		return
+	}
+	other.mu.Lock()
+	samples := append([]time.Duration(nil), other.durations...)
+	other.mu.Unlock()
+
+	l.mu.Lock()
+	l.durations = append(l.durations, samples...)
 	l.mu.Unlock()
 }
 

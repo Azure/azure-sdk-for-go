@@ -56,6 +56,7 @@ func registerFlags(fs *flag.FlagSet) {
 	fs.BoolVar(&noCleanup, "no-cleanup", false, "Disables test cleanup")
 	fs.BoolVar(&insecureSkipVerify, "insecure", false, "Allow untrusted SSL certs")
 	fs.StringVar(&resultsFilePath, "results-file", "", "File path location to store the results for the test run.")
+	fs.IntVar(&maxResults, "max-results", defaultMaxOperationResults, "Max per-operation records retained for --results-file; beyond this a uniform random sample is kept. 0 = unbounded.")
 	fs.StringVar(&workloadConfigPath, "config", "", "Path to workload config JSON file.")
 	fs.StringVar(&workloadName, "workload", "", "Workload name from config JSON.")
 	fs.StringVar(&outputFilePrefix, "output-file-prefix", "", "Write run artifacts to <prefix>.json/.csv/.txt/.md.")

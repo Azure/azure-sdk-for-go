@@ -4,16 +4,12 @@
 package main
 
 import (
-	"bufio"
 	"crypto/rand"
 	"flag"
 	"fmt"
 	"io"
 	"math"
-	"os"
-	"runtime"
 	"strconv"
-	"strings"
 )
 
 type nopCloser struct {
@@ -177,40 +173,6 @@ func (r *randomStream) Seek(offset int64, whence int) (int64, error) {
 
 func (r *randomStream) Close() error { return nil }
 
-// availableSystemMemoryBytes returns the amount of physical memory the kernel
-// believes is currently available to user processes, in bytes. Returns 0 if
-// the value can't be determined (e.g. non-Linux OS, restricted container).
-//
-// On Linux it parses /proc/meminfo's MemAvailable line. On other platforms it
-// returns 0 so callers should treat 0 as "unknown" rather than "no memory".
-func availableSystemMemoryBytes() uint64 {
-	if runtime.GOOS != "linux" {
-		return 0
-	}
-	f, err := os.Open("/proc/meminfo")
-	if err != nil {
-		return 0
-	}
-	defer f.Close()
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if !strings.HasPrefix(line, "MemAvailable:") {
-			continue
-		}
-		fields := strings.Fields(line)
-		if len(fields) < 2 {
-			return 0
-		}
-		kb, err := strconv.ParseUint(fields[1], 10, 64)
-		if err != nil {
-			return 0
-		}
-		return kb * 1024
-	}
-	return 0
-}
-
 // checkBufferMemoryBudget returns an error when the caller requests an
 // in-memory buffer for upload or download whose total size would exceed a
 // safe fraction (80%) of available system memory. This guards against the
@@ -225,6 +187,10 @@ func availableSystemMemoryBytes() uint64 {
 // across all goroutines (upload shares one payload across --parallel, so the
 // caller passes the per-payload size; download allocates one buffer per
 // goroutine, so the caller passes size * parallel).
+//
+// availableSystemMemoryBytes is resolved per platform (see memory_*.go) and
+// returns 0 when the value can't be determined, in which case the check is
+// skipped rather than guessed.
 func checkBufferMemoryBudget(flagLabel string, sizeBytes int64) error {
 	if sizeBytes <= 0 {
 		return nil

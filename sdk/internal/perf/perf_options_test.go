@@ -38,6 +38,7 @@ func snapshotFlags(t *testing.T) func() {
 		insecureSkipVerify     bool
 		testProxyURLs          string
 		resultsFilePath        string
+		maxResults             int
 		workloadConfigPath     string
 		workloadName           string
 		outputFilePrefix       string
@@ -49,7 +50,7 @@ func snapshotFlags(t *testing.T) func() {
 		duration, warmUpDuration, parallelInstances, iterations, targetRate, statusInterval,
 		jobStatistics, numProcesses, debug, syncMode, resourceTelemetry,
 		enableOperationLatency, noCleanup, insecureSkipVerify, testProxyURLs,
-		resultsFilePath, workloadConfigPath, workloadName, outputFilePrefix,
+		resultsFilePath, maxResults, workloadConfigPath, workloadName, outputFilePrefix,
 		maxIOCompletionThreads, maxWorkerThreads, minIOCompletionThreads, minWorkerThreads,
 	}
 	return func() {
@@ -69,6 +70,7 @@ func snapshotFlags(t *testing.T) func() {
 		insecureSkipVerify = saved.insecureSkipVerify
 		testProxyURLs = saved.testProxyURLs
 		resultsFilePath = saved.resultsFilePath
+		maxResults = saved.maxResults
 		workloadConfigPath = saved.workloadConfigPath
 		workloadName = saved.workloadName
 		outputFilePrefix = saved.outputFilePrefix
@@ -109,6 +111,7 @@ func TestDefaults(t *testing.T) {
 	require.False(t, resourceTelemetry, "--resource-telemetry default")
 	require.Equal(t, "", testProxyURLs, "--test-proxies default")
 	require.Equal(t, "", resultsFilePath, "--results-file default")
+	require.Equal(t, defaultMaxOperationResults, maxResults, "--max-results default")
 	require.Equal(t, "", outputFilePrefix, "--output-file-prefix default")
 	require.Equal(t, 0, maxIOCompletionThreads, "--max-io-completion-threads default")
 	require.Equal(t, 0, maxWorkerThreads, "--max-worker-threads default")
@@ -142,6 +145,7 @@ func TestFlagLongForms(t *testing.T) {
 			require.Equal(t, []string{"http://a", "http://b"}, parseProxyURLS())
 		}},
 		{"results-file", []string{"--results-file", "/tmp/out.json"}, func(t *testing.T) { require.Equal(t, "/tmp/out.json", resultsFilePath) }},
+		{"max-results", []string{"--max-results", "500"}, func(t *testing.T) { require.Equal(t, 500, maxResults) }},
 		{"output-file-prefix", []string{"--output-file-prefix", "/tmp/run"}, func(t *testing.T) { require.Equal(t, "/tmp/run", outputFilePrefix) }},
 		{"config", []string{"--config", "wl.json"}, func(t *testing.T) { require.Equal(t, "wl.json", workloadConfigPath) }},
 		{"workload", []string{"--workload", "wl-upload"}, func(t *testing.T) { require.Equal(t, "wl-upload", workloadName) }},
@@ -267,6 +271,146 @@ func TestOperationResultsWriteJSON(t *testing.T) {
 	require.Equal(t, "UploadBlobTest", rows[0].Operation)
 	require.InDelta(t, 12.0, rows[0].LatencyMs, 0.001)
 	require.Equal(t, int64(1024), rows[0].SizeBytes)
+}
+
+// TestOperationResultsReservoirCap verifies that --max-results bounds the
+// number of retained records: once the cap is reached the collector keeps a
+// uniform random sample instead of growing without bound.
+func TestOperationResultsReservoirCap(t *testing.T) {
+	c := newOperationResultsCollector(10)
+	for i := 0; i < 10_000; i++ {
+		c.Add("op", time.Millisecond, 0)
+	}
+	require.Len(t, c.results, 10, "retained records must not exceed the cap")
+	require.Equal(t, int64(10_000), c.seen, "seen must count every observed record")
+
+	// A cap of 0 means unbounded retention.
+	u := newOperationResultsCollector(0)
+	for i := 0; i < 1_000; i++ {
+		u.Add("op", time.Millisecond, 0)
+	}
+	require.Len(t, u.results, 1_000, "cap of 0 must retain every record")
+}
+
+// TestOperationResultsMergeBounded verifies that merging per-worker collectors
+// keeps the shared collector within its cap.
+func TestOperationResultsMergeBounded(t *testing.T) {
+	shared := newOperationResultsCollector(50)
+	for w := 0; w < 4; w++ {
+		worker := newOperationResultsCollector(50)
+		for i := 0; i < 1_000; i++ {
+			worker.Add("op", time.Millisecond, 0)
+		}
+		shared.MergeFrom(worker)
+	}
+	require.LessOrEqual(t, len(shared.results), 50, "merged records must not exceed the cap")
+	require.Equal(t, int64(4_000), shared.seen, "seen must aggregate every worker's observed count")
+}
+
+// TestCollectorsAcceptZeroRejectNegative verifies the collectors record
+// legitimate zero-duration operations (an op can complete within the timer's
+// resolution) and ignore only negative samples.
+func TestCollectorsAcceptZeroRejectNegative(t *testing.T) {
+	lat := &latencyCollector{}
+	lat.Add(0)
+	lat.Add(-time.Millisecond)
+	require.Len(t, lat.durations, 1, "zero accepted, negative rejected")
+
+	ct := newCallTypeLatencyCollector()
+	ct.Add("operation", 0)
+	ct.Add("operation", -time.Millisecond)
+	require.Len(t, ct.values["operation"], 1, "zero accepted, negative rejected")
+
+	res := newOperationResultsCollector(0)
+	res.Add("op", 0, 0)
+	res.Add("op", -time.Millisecond, 0)
+	require.Len(t, res.results, 1, "zero accepted, negative rejected")
+}
+
+// TestLatencyCollectorMergeFrom verifies per-worker latency samples fold into
+// the shared collector and that a nil source is a no-op.
+func TestLatencyCollectorMergeFrom(t *testing.T) {
+	shared := &latencyCollector{}
+	w1 := &latencyCollector{}
+	w1.Add(time.Millisecond)
+	w1.Add(2 * time.Millisecond)
+	w2 := &latencyCollector{}
+	w2.Add(3 * time.Millisecond)
+
+	shared.MergeFrom(w1)
+	shared.MergeFrom(w2)
+	shared.MergeFrom(nil)
+
+	require.Len(t, shared.durations, 3)
+	// The source collectors must be left intact (MergeFrom copies).
+	require.Len(t, w1.durations, 2)
+}
+
+// TestCallTypeCollectorMergeFrom verifies per-worker call-type buckets fold
+// into the shared collector with bucket keys preserved.
+func TestCallTypeCollectorMergeFrom(t *testing.T) {
+	shared := newCallTypeLatencyCollector()
+	w1 := newCallTypeLatencyCollector()
+	w1.Add("operation", time.Millisecond)
+	w1.Add("proxy-live", 2*time.Millisecond)
+	w2 := newCallTypeLatencyCollector()
+	w2.Add("operation", 3*time.Millisecond)
+
+	shared.MergeFrom(w1)
+	shared.MergeFrom(w2)
+	shared.MergeFrom(nil)
+
+	require.Len(t, shared.values["operation"], 2)
+	require.Len(t, shared.values["proxy-live"], 1)
+}
+
+// TestOperationResultsMergeUnbounded verifies that, with no cap, MergeFrom
+// preserves every record and aggregates the observed count.
+func TestOperationResultsMergeUnbounded(t *testing.T) {
+	shared := newOperationResultsCollector(0)
+	w := newOperationResultsCollector(0)
+	for i := 0; i < 100; i++ {
+		w.Add("op", time.Millisecond, 0)
+	}
+	shared.MergeFrom(w)
+	shared.MergeFrom(nil)
+	require.Len(t, shared.results, 100)
+	require.Equal(t, int64(100), shared.seen)
+}
+
+// TestRunSummaryTotalElapsedSeconds verifies the renamed TotalElapsedSec field
+// is computed as totalOperations/opsPerSecond, serialized as
+// "totalElapsedSeconds", and that the old "weightedAverageSeconds" key is gone.
+func TestRunSummaryTotalElapsedSeconds(t *testing.T) {
+	s := newRunSummary("T", 200, 50.0, "", "", "")
+	require.InDelta(t, 4.0, s.TotalElapsedSec, 0.001, "200 ops / 50 ops-per-sec == 4s")
+	require.InDelta(t, 0.02, s.SecondsPerOp, 0.0001)
+
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	require.Contains(t, string(b), `"totalElapsedSeconds"`)
+	require.NotContains(t, string(b), "weightedAverageSeconds")
+
+	// Zero throughput must not divide by zero.
+	z := newRunSummary("T", 0, 0.0, "", "", "")
+	require.Equal(t, 0.0, z.TotalElapsedSec)
+	require.Equal(t, 0.0, z.SecondsPerOp)
+}
+
+// TestRunArtifactsContainTotalElapsedSeconds asserts the renamed field reaches
+// the CSV, text, and markdown artifacts (not just JSON).
+func TestRunArtifactsContainTotalElapsedSeconds(t *testing.T) {
+	prefix := filepath.Join(t.TempDir(), "run")
+	require.NoError(t, writeRunArtifacts(prefix, newRunSummary("T", 200, 50.0, "", "", "")))
+
+	for _, ext := range []string{".csv", ".txt", ".md"} {
+		raw, err := os.ReadFile(prefix + ext)
+		require.NoError(t, err)
+		require.NotContains(t, strings.ToLower(string(raw)), "weighted", "%s must not reference the old name", ext)
+	}
+	csv, err := os.ReadFile(prefix + ".csv")
+	require.NoError(t, err)
+	require.Contains(t, string(csv), "totalElapsedSeconds")
 }
 
 // TestOutputFilePrefixWritesAllArtifacts drives the --output-file-prefix

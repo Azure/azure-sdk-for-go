@@ -61,9 +61,12 @@ type perfRunner struct {
 	warmupFinished int32
 	warmupPrinted  bool
 
-	latencyCollector      *latencyCollector
-	callTypeCollector     *callTypeLatencyCollector
-	operationResults      *operationResultsCollector
+	latencyCollector  *latencyCollector
+	callTypeCollector *callTypeLatencyCollector
+	operationResults  *operationResultsCollector
+	// mergeMu guards folding per-worker collectors into the shared collectors
+	// above after each measurement phase completes.
+	mergeMu               sync.Mutex
 	resourceBeforeRun     resourceTelemetrySnapshot
 	resourceAfterRun      resourceTelemetrySnapshot
 	resourceTelemetryDone bool
@@ -92,7 +95,7 @@ func newPerfRunner(p PerfMethods, name string) *perfRunner {
 		warmupPrinted:                warmupPrinted,
 		latencyCollector:             &latencyCollector{},
 		callTypeCollector:            newCallTypeLatencyCollector(),
-		operationResults:             &operationResultsCollector{},
+		operationResults:             newOperationResultsCollector(maxResults),
 	}
 }
 
@@ -240,8 +243,29 @@ func (r *perfRunner) runWorkerPhase(p PerfTest, index int, warmup bool, rateCh <
 	opts := r.allOptions.opts[index]
 	r.allOptions.mu.Unlock()
 
-	if err := r.runTestForDuration(p, opts, warmup, rateCh); err != nil {
+	// During the measurement phase each worker accumulates latency samples
+	// into goroutine-local collectors so the hot loop never contends on a
+	// shared mutex. The locals are merged into the shared collectors once,
+	// after the loop completes. Warmup does not record latency samples.
+	var localLatency *latencyCollector
+	var localCallType *callTypeLatencyCollector
+	var localResults *operationResultsCollector
+	if !warmup {
+		localLatency = &latencyCollector{}
+		localCallType = newCallTypeLatencyCollector()
+		localResults = newOperationResultsCollector(maxResults)
+	}
+
+	if err := r.runTestForDuration(p, opts, warmup, rateCh, localLatency, localCallType, localResults); err != nil {
 		panic(err)
+	}
+
+	if !warmup {
+		r.mergeMu.Lock()
+		r.latencyCollector.MergeFrom(localLatency)
+		r.callTypeCollector.MergeFrom(localCallType)
+		r.operationResults.MergeFrom(localResults)
+		r.mergeMu.Unlock()
 	}
 
 	if warmup {
@@ -268,7 +292,7 @@ func (r *perfRunner) resetMeasurementState() {
 	r.operationStatusTracker = -1
 	r.latencyCollector = &latencyCollector{}
 	r.callTypeCollector = newCallTypeLatencyCollector()
-	r.operationResults = &operationResultsCollector{}
+	r.operationResults = newOperationResultsCollector(maxResults)
 }
 
 // bootstrapProxies performs the one-time live -> record -> playback dance
@@ -614,8 +638,10 @@ func (r *perfRunner) printFinalUpdate(warmup bool) error {
 // runTestForDuration runs a single warmup or measurement pass for one worker
 // for the configured duration. When rateCh is non-nil each iteration waits to
 // receive a token from it before invoking p.Run, throttling the aggregate
-// throughput to the value of --rate.
-func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmup bool, rateCh <-chan struct{}) error {
+// throughput to the value of --rate. During the measurement phase latency
+// samples are recorded into the goroutine-local collectors passed in by the
+// caller (nil during warmup) so the hot loop never contends on shared state.
+func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmup bool, rateCh <-chan struct{}, localLatency *latencyCollector, localCallType *callTypeLatencyCollector, localResults *operationResultsCollector) error {
 	if warmup && warmUpDuration <= 0 {
 		return nil
 	}
@@ -669,10 +695,10 @@ func (r *perfRunner) runTestForDuration(p PerfTest, opts *PerfTestOptions, warmu
 		opts.increment(warmup)
 
 		if !warmup {
-			r.latencyCollector.Add(operationDuration)
-			r.callTypeCollector.Add("operation", operationDuration)
+			localLatency.Add(operationDuration)
+			localCallType.Add("operation", operationDuration)
 			if resultsFilePath != "" && enableOperationLatency {
-				r.operationResults.Add(r.name, operationDuration, 0)
+				localResults.Add(r.name, operationDuration, 0)
 			}
 		}
 

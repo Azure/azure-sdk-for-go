@@ -20,7 +20,7 @@ type runSummary struct {
 	TotalOperations  int64   `json:"totalOperations"`
 	OpsPerSecond     float64 `json:"opsPerSecond"`
 	SecondsPerOp     float64 `json:"secondsPerOp"`
-	WeightedAvgSec   float64 `json:"weightedAverageSeconds"`
+	TotalElapsedSec  float64 `json:"totalElapsedSeconds"`
 	TimestampUTC     string  `json:"timestampUtc"`
 	LatencySummary   string  `json:"latencySummary,omitempty"`
 	CallTypeSummary  string  `json:"callTypeSummary,omitempty"`
@@ -80,7 +80,7 @@ func writeCSV(path string, summary runSummary) error {
 		{"totalOperations", fmt.Sprintf("%d", summary.TotalOperations)},
 		{"opsPerSecond", fmt.Sprintf("%.6f", summary.OpsPerSecond)},
 		{"secondsPerOp", fmt.Sprintf("%.6f", summary.SecondsPerOp)},
-		{"weightedAverageSeconds", fmt.Sprintf("%.6f", summary.WeightedAvgSec)},
+		{"totalElapsedSeconds", fmt.Sprintf("%.6f", summary.TotalElapsedSec)},
 		{"timestampUtc", summary.TimestampUTC},
 		{"latencySummary", summary.LatencySummary},
 		{"callTypeSummary", summary.CallTypeSummary},
@@ -122,7 +122,7 @@ func renderText(summary runSummary) string {
 		fmt.Sprintf("TotalOperations: %d", summary.TotalOperations),
 		fmt.Sprintf("OpsPerSecond: %.6f", summary.OpsPerSecond),
 		fmt.Sprintf("SecondsPerOp: %.6f", summary.SecondsPerOp),
-		fmt.Sprintf("WeightedAverageSeconds: %.6f", summary.WeightedAvgSec),
+		fmt.Sprintf("TotalElapsedSeconds: %.6f", summary.TotalElapsedSec),
 		fmt.Sprintf("TimestampUTC: %s", summary.TimestampUTC),
 	}
 	if summary.LatencySummary != "" {
@@ -163,7 +163,7 @@ func renderMarkdown(summary runSummary) string {
 		fmt.Sprintf("| Total Operations | %d |", summary.TotalOperations),
 		fmt.Sprintf("| Ops/s | %.6f |", summary.OpsPerSecond),
 		fmt.Sprintf("| Seconds/op | %.6f |", summary.SecondsPerOp),
-		fmt.Sprintf("| Weighted Avg (s) | %.6f |", summary.WeightedAvgSec),
+		fmt.Sprintf("| Total Elapsed (s) | %.6f |", summary.TotalElapsedSec),
 		fmt.Sprintf("| Timestamp (UTC) | %s |", summary.TimestampUTC),
 		fmt.Sprintf("| Average CPU (%%) | %.2f |", summary.AverageCPUPercent),
 		fmt.Sprintf("| Average Memory (bytes) | %d |", summary.AverageMemoryBytes),
@@ -191,10 +191,13 @@ func renderMarkdown(summary runSummary) string {
 
 func newRunSummary(testName string, totalOperations int64, opsPerSecond float64, latencySummary string, callTypeSummary string, resourceSummary string) runSummary {
 	secondsPerOp := 0.0
-	weightedAvg := 0.0
+	// totalElapsedSec is the total wall-clock time of the measurement phase.
+	// Because opsPerSecond = totalOperations / totalElapsedSeconds, the value
+	// totalOperations / opsPerSecond reduces exactly to that elapsed time.
+	totalElapsedSec := 0.0
 	if opsPerSecond > 0 {
 		secondsPerOp = 1.0 / opsPerSecond
-		weightedAvg = float64(totalOperations) / opsPerSecond
+		totalElapsedSec = float64(totalOperations) / opsPerSecond
 	}
 
 	return runSummary{
@@ -205,7 +208,7 @@ func newRunSummary(testName string, totalOperations int64, opsPerSecond float64,
 		TotalOperations:  totalOperations,
 		OpsPerSecond:     opsPerSecond,
 		SecondsPerOp:     secondsPerOp,
-		WeightedAvgSec:   weightedAvg,
+		TotalElapsedSec:  totalElapsedSec,
 		TimestampUTC:     time.Now().UTC().Format(time.RFC3339),
 		LatencySummary:   latencySummary,
 		CallTypeSummary:  callTypeSummary,

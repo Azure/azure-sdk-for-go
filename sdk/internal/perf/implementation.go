@@ -41,6 +41,12 @@ var (
 	// resultsFilePath points to the file where per-operation results should be written
 	resultsFilePath string
 
+	// maxResults bounds how many per-operation records --results-file retains in
+	// memory. Beyond the cap a uniform random sample is kept (reservoir
+	// sampling) so a long, high-throughput run cannot grow memory without
+	// bound. 0 disables the cap (unbounded retention).
+	maxResults int = defaultMaxOperationResults
+
 	// workloadConfigPath points to a workload configuration JSON file
 	workloadConfigPath string
 

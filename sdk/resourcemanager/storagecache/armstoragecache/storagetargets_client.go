@@ -134,7 +134,7 @@ func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*runtime.Poller[StorageTargetsClientDNSRefreshResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.dnsRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		resp, err := client.dNSRefresh(ctx, resourceGroupName, cacheName, storageTargetName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -152,7 +152,7 @@ func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourc
 
 // DNSRefresh - Tells a storage target to refresh its DNS information.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StorageTargetsClient) dnsRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
+func (client *StorageTargetsClient) dNSRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StorageTargetsClient.BeginDNSRefresh"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)

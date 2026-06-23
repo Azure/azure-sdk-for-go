@@ -5,6 +5,7 @@
 ### Bugs Fixed
 
 - Fixed missing `consumers.Delete()` call when checkpoint initialization fails, which could block future consumer creation for the affected partition. (#24983)
+- Propagate the caller's `context.Context` through to the underlying `azcore.TokenCredential.GetToken` call instead of using `context.TODO()`. Credentials that rely on the context (for cancellation, deadlines, or values used to fetch the token) now behave correctly during authentication.
 
 ## 2.0.2 (2026-03-10)
 

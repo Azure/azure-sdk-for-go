@@ -365,7 +365,7 @@ func (ns *Namespace) startNegotiateClaimRenewer(ctx context.Context,
 			return time.Time{}, err
 		}
 
-		token, expiration, err := ns.TokenProvider.GetTokenAsTokenProvider(audience)
+		token, expiration, err := ns.TokenProvider.GetTokenAsTokenProvider(ctx, audience)
 
 		if err != nil {
 			log.Writef(exported.EventAuth, "(%s) negotiate claim, failed getting token: %s", entityPath, err.Error())

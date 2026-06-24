@@ -10,6 +10,9 @@ permissions:
   pull-requests: read
   actions: read
   checks: read
+  # Authenticate Copilot inference via the GitHub Actions token (org Copilot
+  # billing) instead of a COPILOT_GITHUB_TOKEN PAT/secret.
+  copilot-requests: write
 strict: false
 tools:
   github:

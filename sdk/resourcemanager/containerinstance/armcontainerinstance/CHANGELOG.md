@@ -1,24 +1,9 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-05-20)
+## 3.0.0 (2026-06-24)
 ### Breaking Changes
 
-- Type of `ContainerGroupProfile.Properties` has been changed from `*ContainerGroupProfilePropertiesProperties` to `*ContainerGroupProfileProperties`
-- Function `*ClientFactory.NewContainerGroupProfileClient` has been removed
-- Function `*ClientFactory.NewContainerGroupProfilesClient` has been removed
-- Function `NewContainerGroupProfileClient` has been removed
-- Function `*ContainerGroupProfileClient.GetByRevisionNumber` has been removed
-- Function `*ContainerGroupProfileClient.NewListAllRevisionsPager` has been removed
-- Function `NewContainerGroupProfilesClient` has been removed
-- Function `*ContainerGroupProfilesClient.CreateOrUpdate` has been removed
-- Function `*ContainerGroupProfilesClient.Delete` has been removed
-- Function `*ContainerGroupProfilesClient.Get` has been removed
-- Function `*ContainerGroupProfilesClient.NewListByResourceGroupPager` has been removed
-- Function `*ContainerGroupProfilesClient.NewListPager` has been removed
-- Function `*ContainerGroupProfilesClient.Patch` has been removed
-- Struct `ContainerGroupProfilePropertiesProperties` has been removed
 - Struct `ContainerGroupProperties` has been removed
-- Field `Properties` of struct `ContainerGroupProfileProperties` has been removed
 
 ### Features Added
 
@@ -55,6 +40,12 @@
 - New struct `APIEntityReference`
 - New struct `ApplicationGateway`
 - New struct `ApplicationGatewayBackendAddressPool`
+- New struct `ConfigMap`
+- New struct `ContainerGroupProfile`
+- New struct `ContainerGroupProfileListResult`
+- New struct `ContainerGroupProfilePatch`
+- New struct `ContainerGroupProfileProperties`
+- New struct `ContainerGroupProfileReferenceDefinition`
 - New struct `ContainerGroupProfileStub`
 - New struct `ElasticProfile`
 - New struct `ElasticProfileContainerGroupNamingPolicy`
@@ -77,15 +68,15 @@
 - New struct `NetworkProfile`
 - New struct `PlacementProfile`
 - New struct `SecretReference`
+- New struct `StandbyPoolProfileDefinition`
 - New struct `StorageProfile`
 - New struct `SystemData`
 - New struct `UpdateProfile`
 - New struct `UpdateProfileRollingUpdateProfile`
 - New field `StorageAccountKeyReference` in struct `AzureFileVolume`
 - New field `SystemData` in struct `ContainerGroup`
-- New field `SystemData` in struct `ContainerGroupProfile`
-- New field `ConfidentialComputeProperties`, `Containers`, `Diagnostics`, `EncryptionProperties`, `Extensions`, `IPAddress`, `ImageRegistryCredentials`, `InitContainers`, `OSType`, `Priority`, `RegisteredRevisions`, `RestartPolicy`, `Revision`, `SKU`, `SecurityContext`, `ShutdownGracePeriod`, `TimeToLive`, `UseKrypton`, `Volumes` in struct `ContainerGroupProfileProperties`
-- New field `IdentityACLs`, `SecretReferences` in struct `ContainerGroupPropertiesProperties`
+- New field `ContainerGroupProfile`, `IdentityACLs`, `IsCreatedFromStandbyPool`, `SecretReferences`, `StandbyPoolProfile` in struct `ContainerGroupPropertiesProperties`
+- New field `ConfigMap` in struct `ContainerProperties`
 - New field `SecureValueReference` in struct `EnvironmentVariable`
 - New field `PasswordReference` in struct `ImageRegistryCredential`
 - New field `NextLink` in struct `UsageListResult`

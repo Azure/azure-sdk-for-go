@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/ApplicationGroup/ApplicationGroupCreate.json
+// Generated from example definition: 2026-01-01/ApplicationGroup/ApplicationGroupCreate.json
 func ExampleApplicationGroupClient_CreateOrUpdateApplicationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleApplicationGroupClient_CreateOrUpdateApplicationGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ApplicationGroup/ApplicationGroupDelete.json
+// Generated from example definition: 2026-01-01/ApplicationGroup/ApplicationGroupDelete.json
 func ExampleApplicationGroupClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleApplicationGroupClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ApplicationGroup/ApplicationGroupGet.json
+// Generated from example definition: 2026-01-01/ApplicationGroup/ApplicationGroupGet.json
 func ExampleApplicationGroupClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleApplicationGroupClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ApplicationGroup/ApplicationGroupListByNamespace.json
+// Generated from example definition: 2026-01-01/ApplicationGroup/ApplicationGroupListByNamespace.json
 func ExampleApplicationGroupClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

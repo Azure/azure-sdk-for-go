@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasBreakPairing.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasBreakPairing.json
 func ExampleDisasterRecoveryConfigsClient_BreakPairing() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleDisasterRecoveryConfigsClient_BreakPairing() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasCheckNameAvailability.json
 func ExampleDisasterRecoveryConfigsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleDisasterRecoveryConfigsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasCreate.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasCreate.json
 func ExampleDisasterRecoveryConfigsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleDisasterRecoveryConfigsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasDelete.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasDelete.json
 func ExampleDisasterRecoveryConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleDisasterRecoveryConfigsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasFailOver.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasFailOver.json
 func ExampleDisasterRecoveryConfigsClient_FailOver() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleDisasterRecoveryConfigsClient_FailOver() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasGet.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasGet.json
 func ExampleDisasterRecoveryConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleDisasterRecoveryConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasAuthorizationRuleGet.json
 func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +209,7 @@ func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasList.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasList.json
 func ExampleDisasterRecoveryConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleDisasterRecoveryConfigsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
 func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +326,7 @@ func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
 func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

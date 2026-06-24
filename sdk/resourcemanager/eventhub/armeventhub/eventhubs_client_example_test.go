@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubCreate.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubCreate.json
 func ExampleEventHubsClient_CreateOrUpdate_ehEventHubCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleEventHubsClient_CreateOrUpdate_ehEventHubCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubWithCompactPolicyCreate.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubWithCompactPolicyCreate.json
 func ExampleEventHubsClient_CreateOrUpdate_ehEventHubWithCompactPolicyCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleEventHubsClient_CreateOrUpdate_ehEventHubWithCompactPolicyCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubWithDeleteOrCompactPolicyCreate.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubWithDeleteOrCompactPolicyCreate.json
 func ExampleEventHubsClient_CreateOrUpdate_ehEventHubWithDeleteOrCompactPolicyCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleEventHubsClient_CreateOrUpdate_ehEventHubWithDeleteOrCompactPolicyCr
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubWithDeletePolicyCreate.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubWithDeletePolicyCreate.json
 func ExampleEventHubsClient_CreateOrUpdate_ehEventHubWithDeletePolicyCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExampleEventHubsClient_CreateOrUpdate_ehEventHubWithDeletePolicyCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleCreate.json
 func ExampleEventHubsClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,7 +443,7 @@ func ExampleEventHubsClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubDelete.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubDelete.json
 func ExampleEventHubsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,7 +465,7 @@ func ExampleEventHubsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleDelete.json
 func ExampleEventHubsClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleEventHubsClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubGet.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubGet.json
 func ExampleEventHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -546,7 +546,7 @@ func ExampleEventHubsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleGet.json
 func ExampleEventHubsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -579,7 +579,7 @@ func ExampleEventHubsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleListAll.json
 func ExampleEventHubsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -621,7 +621,7 @@ func ExampleEventHubsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubListByNameSpace.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubListByNameSpace.json
 func ExampleEventHubsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -689,7 +689,7 @@ func ExampleEventHubsClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleListKey.json
 func ExampleEventHubsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -718,7 +718,7 @@ func ExampleEventHubsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
 func ExampleEventHubsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.2 (Unreleased)
+### Features Added
+
+- Added support for the 2026-01-01 API version.
+- New field `IPAddressType` (IPv4 / DualStack) in the Event Hubs namespace properties.
+
 ## 2.0.0-beta.1 (2026-05-21)
 ### Breaking Changes
 

@@ -5,7 +5,7 @@
 package armeventhub
 
 const (
-	version20250501Preview string = "2025-05-01-preview"
+	version20260101 string = "2026-01-01"
 )
 
 type AccessRights string
@@ -211,6 +211,25 @@ func PossibleGeoDRRoleTypeValues() []GeoDRRoleType {
 	return []GeoDRRoleType{
 		GeoDRRoleTypePrimary,
 		GeoDRRoleTypeSecondary,
+	}
+}
+
+// IPAddressType - The IP address type for the namespace. Determines whether the namespace supports IPv4 only or both IPv4
+// and IPv6 (dual stack).
+type IPAddressType string
+
+const (
+	// IPAddressTypeDualStack - The namespace supports both IPv4 and IPv6 addresses (dual stack).
+	IPAddressTypeDualStack IPAddressType = "DualStack"
+	// IPAddressTypeIPv4 - The namespace supports IPv4 addresses only.
+	IPAddressTypeIPv4 IPAddressType = "IPv4"
+)
+
+// PossibleIPAddressTypeValues returns the possible values for the IPAddressType const type.
+func PossibleIPAddressTypeValues() []IPAddressType {
+	return []IPAddressType{
+		IPAddressTypeDualStack,
+		IPAddressTypeIPv4,
 	}
 }
 

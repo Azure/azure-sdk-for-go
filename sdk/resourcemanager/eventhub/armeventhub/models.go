@@ -276,6 +276,9 @@ type ClusterProperties struct {
 	// A value that indicates whether Scaling is Supported.
 	SupportsScaling *bool
 
+	// A value that indicates whether the cluster is zone redundant.
+	ZoneRedundant *bool
+
 	// READ-ONLY; The UTC time when the Event Hubs Cluster was created.
 	CreatedAt *string
 
@@ -466,6 +469,10 @@ type EHNamespaceProperties struct {
 
 	// Geo Data Replication settings for the namespace
 	GeoDataReplication *GeoDataReplicationProperties
+
+	// The IP address type for the namespace. Determines whether the namespace supports IPv4 only or both IPv4 and IPv6 (dual
+	// stack).
+	IPAddressType *IPAddressType
 
 	// Value that indicates whether AutoInflate is enabled for eventhub namespace.
 	IsAutoInflateEnabled *bool

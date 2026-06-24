@@ -7,11 +7,11 @@ package armeventhub_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: 2026-01-01/NameSpaces/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

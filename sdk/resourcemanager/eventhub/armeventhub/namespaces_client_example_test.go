@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceCheckNameAvailability.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceCheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,154 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/NamespaceWithGeoDRCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNamespaceCreateWithIpAddressTypeDualStack.json
+func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreateWithIPAddressTypeDualStack() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("SampleSubscription", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginCreateOrUpdate(ctx, "ResurceGroupSample", "NamespaceSample", armeventhub.EHNamespace{
+		Identity: &armeventhub.Identity{
+			Type: to.Ptr(armeventhub.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armeventhub.UserAssignedIdentity{
+				"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1": {},
+				"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2": {},
+			},
+		},
+		Location: to.Ptr("East US"),
+		Properties: &armeventhub.EHNamespaceProperties{
+			ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
+			Encryption: &armeventhub.Encryption{
+				KeySource: to.Ptr("Microsoft.KeyVault"),
+				KeyVaultProperties: []*armeventhub.KeyVaultProperties{
+					{
+						Identity: &armeventhub.UserAssignedIdentityProperties{
+							UserAssignedIdentity: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1"),
+						},
+						KeyName:     to.Ptr("Samplekey"),
+						KeyVaultURI: to.Ptr("https://aprao-keyvault-user.vault-int.azure-int.net/"),
+					},
+				},
+			},
+			GeoDataReplication: &armeventhub.GeoDataReplicationProperties{
+				Locations: []*armeventhub.NamespaceReplicaLocation{
+					{
+						LocationName: to.Ptr("eastus"),
+						RoleType:     to.Ptr(armeventhub.GeoDRRoleTypePrimary),
+					},
+					{
+						LocationName: to.Ptr("southcentralus"),
+						RoleType:     to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+					},
+				},
+				MaxReplicationLagDurationInSeconds: to.Ptr[int32](300),
+			},
+			IPAddressType:       to.Ptr(armeventhub.IPAddressTypeDualStack),
+			PublicNetworkAccess: to.Ptr(armeventhub.PublicNetworkAccessEnabled),
+		},
+		SKU: &armeventhub.SKU{
+			Name:     to.Ptr(armeventhub.SKUNameStandard),
+			Capacity: to.Ptr[int32](1),
+			Tier:     to.Ptr(armeventhub.SKUTierStandard),
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.NamespacesClientCreateOrUpdateResponse{
+	// 	EHNamespace: armeventhub.EHNamespace{
+	// 		Name: to.Ptr("NamespaceSample"),
+	// 		Type: to.Ptr("Microsoft.EventHub/Namespaces"),
+	// 		ID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/namespaces/NamespaceSample"),
+	// 		Identity: &armeventhub.Identity{
+	// 			Type: to.Ptr(armeventhub.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("PrincipalIdGUID"),
+	// 			TenantID: to.Ptr("TenantIdGUID"),
+	// 			UserAssignedIdentities: map[string]*armeventhub.UserAssignedIdentity{
+	// 				"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1": &armeventhub.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("ClientIdGUID"),
+	// 					PrincipalID: to.Ptr("PrincipalIdGUID"),
+	// 				},
+	// 				"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2": &armeventhub.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("6a35400f-6ccb-4817-8f1a-ce19ea4523bc"),
+	// 					PrincipalID: to.Ptr("ce2d5953-5c15-40ca-9d51-cc3f4a63b0f5"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("East US"),
+	// 		Properties: &armeventhub.EHNamespaceProperties{
+	// 			ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:36:06.107Z"); return t}()),
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			Encryption: &armeventhub.Encryption{
+	// 				KeySource: to.Ptr("Microsoft.KeyVault"),
+	// 				KeyVaultProperties: []*armeventhub.KeyVaultProperties{
+	// 					{
+	// 						Identity: &armeventhub.UserAssignedIdentityProperties{
+	// 							UserAssignedIdentity: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1"),
+	// 						},
+	// 						KeyName: to.Ptr("Samplekey"),
+	// 						KeyVaultURI: to.Ptr("https://sample-keyvault-user.vault-int.azure-int.net"),
+	// 						KeyVersion: to.Ptr(""),
+	// 					},
+	// 				},
+	// 				RequireInfrastructureEncryption: to.Ptr(false),
+	// 			},
+	// 			GeoDataReplication: &armeventhub.GeoDataReplicationProperties{
+	// 				Locations: []*armeventhub.NamespaceReplicaLocation{
+	// 					{
+	// 						LocationName: to.Ptr("eastus"),
+	// 						RoleType: to.Ptr(armeventhub.GeoDRRoleTypePrimary),
+	// 					},
+	// 					{
+	// 						LocationName: to.Ptr("southcentralus"),
+	// 						RoleType: to.Ptr(armeventhub.GeoDRRoleTypeSecondary),
+	// 					},
+	// 				},
+	// 				MaxReplicationLagDurationInSeconds: to.Ptr[int32](300),
+	// 			},
+	// 			IPAddressType: to.Ptr(armeventhub.IPAddressTypeDualStack),
+	// 			IsAutoInflateEnabled: to.Ptr(false),
+	// 			KafkaEnabled: to.Ptr(false),
+	// 			MaximumThroughputUnits: to.Ptr[int32](0),
+	// 			MetricID: to.Ptr("MetricGUID:NamespaceSample"),
+	// 			MinimumTLSVersion: to.Ptr(armeventhub.TLSVersionOne2),
+	// 			PlatformCapabilities: &armeventhub.PlatformCapabilities{
+	// 				ConfidentialCompute: &armeventhub.ConfidentialCompute{
+	// 					Mode: to.Ptr(armeventhub.ModeDisabled),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			PublicNetworkAccess: to.Ptr(armeventhub.PublicNetworkAccessEnabled),
+	// 			ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
+	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:37:42.29Z"); return t}()),
+	// 			ZoneRedundant: to.Ptr(false),
+	// 		},
+	// 		SKU: &armeventhub.SKU{
+	// 			Name: to.Ptr(armeventhub.SKUNameStandard),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Tier: to.Ptr(armeventhub.SKUTierStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/NameSpaces/NamespaceWithGeoDRCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceWithGeoDrCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +419,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceWithGeoDrCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +459,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetCreate.json
 func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -430,7 +577,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceDelete.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceDelete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -456,7 +603,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +625,7 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNamespaceFailover.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNamespaceFailover.json
 func ExampleNamespacesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,7 +651,7 @@ func ExampleNamespacesClient_BeginFailover() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceGet.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -603,7 +750,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceAuthorizationRuleGet.json
 func ExampleNamespacesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +783,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetGet.json
 func ExampleNamespacesClient_GetNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -708,7 +855,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceList.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceList.json
 func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -794,7 +941,7 @@ func ExampleNamespacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceAuthorizationRuleListAll.json
 func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -848,7 +995,7 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceListByResourceGroup.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -933,7 +1080,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
 func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -962,7 +1109,7 @@ func ExampleNamespacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetList.json
+// Generated from example definition: 2026-01-01/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetList.json
 func ExampleNamespacesClient_ListNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1038,7 +1185,7 @@ func ExampleNamespacesClient_ListNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceAuthorizationRuleRegenerateKey.json
 func ExampleNamespacesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1069,7 +1216,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceUpdate.json
+// Generated from example definition: 2026-01-01/NameSpaces/EHNameSpaceUpdate.json
 func ExampleNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

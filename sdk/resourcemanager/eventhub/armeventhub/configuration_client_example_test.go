@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterQuotaConfigurationGet.json
+// Generated from example definition: 2026-01-01/Clusters/ClusterQuotaConfigurationGet.json
 func ExampleConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleConfigurationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterQuotaConfigurationPatch.json
+// Generated from example definition: 2026-01-01/Clusters/ClusterQuotaConfigurationPatch.json
 func ExampleConfigurationClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

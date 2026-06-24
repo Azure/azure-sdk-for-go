@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterPut.json
+// Generated from example definition: 2026-01-01/Clusters/ClusterPut.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterDelete.json
+// Generated from example definition: 2026-01-01/Clusters/ClusterDelete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleClustersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterGet.json
+// Generated from example definition: 2026-01-01/Clusters/ClusterGet.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ListAvailableClustersGet.json
+// Generated from example definition: 2026-01-01/Clusters/ListAvailableClustersGet.json
 func ExampleClustersClient_ListAvailableClusterRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleClustersClient_ListAvailableClusterRegion() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClustersListByResourceGroup.json
+// Generated from example definition: 2026-01-01/Clusters/ClustersListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClustersListBySubscription.json
+// Generated from example definition: 2026-01-01/Clusters/ClustersListBySubscription.json
 func ExampleClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ListNamespacesInClusterGet.json
+// Generated from example definition: 2026-01-01/Clusters/ListNamespacesInClusterGet.json
 func ExampleClustersClient_ListNamespaces() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,7 +304,7 @@ func ExampleClustersClient_ListNamespaces() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterPatch.json
+// Generated from example definition: 2026-01-01/Clusters/ClusterPatch.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

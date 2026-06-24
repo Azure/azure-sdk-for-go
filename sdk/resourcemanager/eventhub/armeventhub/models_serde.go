@@ -724,6 +724,7 @@ func (c ClusterProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "status", c.Status)
 	populate(objectMap, "supportsScaling", c.SupportsScaling)
 	populate(objectMap, "updatedAt", c.UpdatedAt)
+	populate(objectMap, "zoneRedundant", c.ZoneRedundant)
 	return json.Marshal(objectMap)
 }
 
@@ -756,6 +757,9 @@ func (c *ClusterProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "updatedAt":
 			err = unpopulate(val, "UpdatedAt", &c.UpdatedAt)
+			delete(rawMsg, key)
+		case "zoneRedundant":
+			err = unpopulate(val, "ZoneRedundant", &c.ZoneRedundant)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1229,6 +1233,7 @@ func (e EHNamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "disableLocalAuth", e.DisableLocalAuth)
 	populate(objectMap, "encryption", e.Encryption)
 	populate(objectMap, "geoDataReplication", e.GeoDataReplication)
+	populate(objectMap, "ipAddressType", e.IPAddressType)
 	populate(objectMap, "isAutoInflateEnabled", e.IsAutoInflateEnabled)
 	populate(objectMap, "kafkaEnabled", e.KafkaEnabled)
 	populate(objectMap, "maximumThroughputUnits", e.MaximumThroughputUnits)
@@ -1271,6 +1276,9 @@ func (e *EHNamespaceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "geoDataReplication":
 			err = unpopulate(val, "GeoDataReplication", &e.GeoDataReplication)
+			delete(rawMsg, key)
+		case "ipAddressType":
+			err = unpopulate(val, "IPAddressType", &e.IPAddressType)
 			delete(rawMsg, key)
 		case "isAutoInflateEnabled":
 			err = unpopulate(val, "IsAutoInflateEnabled", &e.IsAutoInflateEnabled)
@@ -3163,5 +3171,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

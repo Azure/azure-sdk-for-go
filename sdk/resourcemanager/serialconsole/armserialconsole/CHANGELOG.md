@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-05-12)
+## 2.0.0 (2026-06-24)
 ### Breaking Changes
 
 - Function `*SerialPortsClient.Delete` has been removed
@@ -18,7 +18,6 @@
 
 - New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
 - New enum type `SerialPortConnectionState` with values `SerialPortConnectionStateActive`, `SerialPortConnectionStateInactive`
-- New function `*MicrosoftSerialConsoleClient.NewSerialPortsClient() *SerialPortsClient`
 - New struct `DisableSerialConsoleResultProperties`
 - New struct `EnableSerialConsoleResultProperties`
 - New struct `StatusProperties`

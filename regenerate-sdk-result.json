@@ -1,9 +1,0 @@
-{
-  "succeed_to_regenerate": [
-    "armhardwaresecuritymodules"
-  ],
-  "fail_to_regenerate": [],
-  "not_found_api_version": [],
-  "time_to_regenerate": "2026-06-24 06:38:11.837152",
-  "typespec_go_commit_hash": "5dec91993c0e8d0fbf66956266e5aadea51e4481"
-}

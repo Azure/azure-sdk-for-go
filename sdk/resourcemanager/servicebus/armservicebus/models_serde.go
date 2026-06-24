@@ -890,7 +890,6 @@ func (n *NamespaceFailoverProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NamespaceReplicaLocation.
 func (n NamespaceReplicaLocation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "clusterArmId", n.ClusterArmID)
 	populate(objectMap, "locationName", n.LocationName)
 	populate(objectMap, "roleType", n.RoleType)
 	return json.Marshal(objectMap)
@@ -905,9 +904,6 @@ func (n *NamespaceReplicaLocation) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "clusterArmId":
-			err = unpopulate(val, "ClusterArmID", &n.ClusterArmID)
-			delete(rawMsg, key)
 		case "locationName":
 			err = unpopulate(val, "LocationName", &n.LocationName)
 			delete(rawMsg, key)
@@ -2223,6 +2219,7 @@ func (s SBNamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "disableLocalAuth", s.DisableLocalAuth)
 	populate(objectMap, "encryption", s.Encryption)
 	populate(objectMap, "geoDataReplication", s.GeoDataReplication)
+	populate(objectMap, "ipAddressType", s.IPAddressType)
 	populate(objectMap, "metricId", s.MetricID)
 	populate(objectMap, "minimumTlsVersion", s.MinimumTLSVersion)
 	populate(objectMap, "platformCapabilities", s.PlatformCapabilities)
@@ -2260,6 +2257,9 @@ func (s *SBNamespaceProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "geoDataReplication":
 			err = unpopulate(val, "GeoDataReplication", &s.GeoDataReplication)
+			delete(rawMsg, key)
+		case "ipAddressType":
+			err = unpopulate(val, "IPAddressType", &s.IPAddressType)
 			delete(rawMsg, key)
 		case "metricId":
 			err = unpopulate(val, "MetricID", &s.MetricID)
@@ -3228,5 +3228,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

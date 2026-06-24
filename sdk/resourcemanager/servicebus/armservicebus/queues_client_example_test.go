@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueCreate.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueCreate.json
 func ExampleQueuesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleQueuesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueAuthorizationRuleCreate.json
 func ExampleQueuesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleQueuesClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueDelete.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueDelete.json
 func ExampleQueuesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleQueuesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueAuthorizationRuleDelete.json
 func ExampleQueuesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleQueuesClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueGet.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueGet.json
 func ExampleQueuesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleQueuesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueAuthorizationRuleGet.json
 func ExampleQueuesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleQueuesClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueAuthorizationRuleListAll.json
 func ExampleQueuesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleQueuesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueListByNameSpace.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueListByNameSpace.json
 func ExampleQueuesClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func ExampleQueuesClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueAuthorizationRuleListKey.json
 func ExampleQueuesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,7 +351,7 @@ func ExampleQueuesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Queues/SBQueueAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/Queues/SBQueueAuthorizationRuleRegenerateKey.json
 func ExampleQueuesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,5 +1,15 @@
 # Release History
 
+## 2.0.0-beta.5 (Unreleased)
+### Features Added
+
+- Added support for the 2026-01-01 API version.
+- New field `IPAddressType` (IPv4 / DualStack) in the Service Bus namespace properties.
+
+### Breaking Changes
+
+- Removed `ClusterArmID` from the Service Bus namespace replica location (no effect for Service Bus).
+
 ## 2.0.0-beta.4 (2026-05-25)
 ### Breaking Changes
 

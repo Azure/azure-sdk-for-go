@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicCreate.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicCreate.json
 func ExampleTopicsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleTopicsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicAuthorizationRuleCreate.json
 func ExampleTopicsClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleTopicsClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicDelete.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicDelete.json
 func ExampleTopicsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleTopicsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicAuthorizationRuleDelete.json
 func ExampleTopicsClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleTopicsClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicGet.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicGet.json
 func ExampleTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicAuthorizationRuleGet.json
 func ExampleTopicsClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleTopicsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicAuthorizationRuleListAll.json
 func ExampleTopicsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleTopicsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicListByNameSpace.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicListByNameSpace.json
 func ExampleTopicsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +319,7 @@ func ExampleTopicsClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicAuthorizationRuleListKey.json
 func ExampleTopicsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleTopicsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Topics/SBTopicAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/Topics/SBTopicAuthorizationRuleRegenerateKey.json
 func ExampleTopicsClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

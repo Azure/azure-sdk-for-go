@@ -7,11 +7,11 @@ package armservicebus_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/NetworkSecurityPerimeterConfigurationAssociationproxy.json
+// Generated from example definition: 2026-01-01/NameSpaces/NetworkSecurityPerimeterConfigurationAssociationproxy.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_GetResourceAssociationName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_GetResourceAssociationN
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/NetworkSecurityPerimeterConfigurationReconcile.json
+// Generated from example definition: 2026-01-01/NameSpaces/NetworkSecurityPerimeterConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_Reconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

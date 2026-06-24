@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceCheckNameAvailability.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceCheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,8 +41,8 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceCreate.json
-func ExampleNamespacesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceCreate.json
+func ExampleNamespacesClient_BeginCreateOrUpdate_nameSpaceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -136,7 +136,106 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNamespaceCreateWithIpAddressTypeDualStack.json
+func ExampleNamespacesClient_BeginCreateOrUpdate_nameSpaceCreateWithIPAddressTypeDualStack() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicebus.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginCreateOrUpdate(ctx, "ArunMonocle", "sdk-Namespace2924", armservicebus.SBNamespace{
+		Location: to.Ptr("South Central US"),
+		Properties: &armservicebus.SBNamespaceProperties{
+			GeoDataReplication: &armservicebus.GeoDataReplicationProperties{
+				Locations: []*armservicebus.NamespaceReplicaLocation{
+					{
+						LocationName: to.Ptr("eastus"),
+						RoleType:     to.Ptr(armservicebus.GeoDRRoleTypePrimary),
+					},
+					{
+						LocationName: to.Ptr("southcentralus"),
+						RoleType:     to.Ptr(armservicebus.GeoDRRoleTypeSecondary),
+					},
+				},
+				MaxReplicationLagDurationInSeconds: to.Ptr[int32](300),
+			},
+			IPAddressType:              to.Ptr(armservicebus.IPAddressTypeDualStack),
+			PremiumMessagingPartitions: to.Ptr[int32](2),
+			PublicNetworkAccess:        to.Ptr(armservicebus.PublicNetworkAccessEnabled),
+		},
+		SKU: &armservicebus.SBSKU{
+			Name:     to.Ptr(armservicebus.SKUNamePremium),
+			Capacity: to.Ptr[int32](4),
+			Tier:     to.Ptr(armservicebus.SKUTierPremium),
+		},
+		Tags: map[string]*string{
+			"tag1": to.Ptr("value1"),
+			"tag2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicebus.NamespacesClientCreateOrUpdateResponse{
+	// 	SBNamespace: armservicebus.SBNamespace{
+	// 		Name: to.Ptr("sdk-Namespace-2924"),
+	// 		Type: to.Ptr("Microsoft.ServiceBus/Namespaces"),
+	// 		ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-2924"),
+	// 		Location: to.Ptr("South Central US"),
+	// 		Properties: &armservicebus.SBNamespaceProperties{
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
+	// 			GeoDataReplication: &armservicebus.GeoDataReplicationProperties{
+	// 				Locations: []*armservicebus.NamespaceReplicaLocation{
+	// 					{
+	// 						LocationName: to.Ptr("eastus"),
+	// 						RoleType: to.Ptr(armservicebus.GeoDRRoleTypePrimary),
+	// 					},
+	// 					{
+	// 						LocationName: to.Ptr("southcentralus"),
+	// 						RoleType: to.Ptr(armservicebus.GeoDRRoleTypeSecondary),
+	// 					},
+	// 				},
+	// 				MaxReplicationLagDurationInSeconds: to.Ptr[int32](300),
+	// 			},
+	// 			IPAddressType: to.Ptr(armservicebus.IPAddressTypeDualStack),
+	// 			MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-2924"),
+	// 			MinimumTLSVersion: to.Ptr(armservicebus.TLSVersionOne2),
+	// 			PlatformCapabilities: &armservicebus.PlatformCapabilities{
+	// 				ConfidentialCompute: &armservicebus.ConfidentialCompute{
+	// 					Mode: to.Ptr(armservicebus.ModeDisabled),
+	// 				},
+	// 			},
+	// 			PremiumMessagingPartitions: to.Ptr[int32](2),
+	// 			ProvisioningState: to.Ptr("Created"),
+	// 			PublicNetworkAccess: to.Ptr(armservicebus.PublicNetworkAccessEnabled),
+	// 			ServiceBusEndpoint: to.Ptr("https://sdk-Namespace-2924.servicebus.windows-int.net:443/"),
+	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
+	// 		},
+	// 		SKU: &armservicebus.SBSKU{
+	// 			Name: to.Ptr(armservicebus.SKUNamePremium),
+	// 			Capacity: to.Ptr[int32](4),
+	// 			Tier: to.Ptr(armservicebus.SKUTierPremium),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"tag1": to.Ptr("value1"),
+	// 			"tag2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +275,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetCreate.json
 func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +394,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceDelete.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceDelete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +420,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +442,7 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNamespaceFailover.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNamespaceFailover.json
 func ExampleNamespacesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +468,7 @@ func ExampleNamespacesClient_BeginFailover() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceGet.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +535,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleGet.json
 func ExampleNamespacesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,7 +568,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetGet.json
 func ExampleNamespacesClient_GetNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -542,7 +641,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceList.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceList.json
 func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1482,7 +1581,7 @@ func ExampleNamespacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleListAll.json
 func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1536,7 +1635,7 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceListByResourceGroup.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1589,7 +1688,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleListKey.json
 func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1618,7 +1717,7 @@ func ExampleNamespacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetList.json
+// Generated from example definition: 2026-01-01/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetList.json
 func ExampleNamespacesClient_NewListNetworkRuleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1699,7 +1798,7 @@ func ExampleNamespacesClient_NewListNetworkRuleSetsPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceAuthorizationRuleRegenerateKey.json
 func ExampleNamespacesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1730,7 +1829,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/SBNameSpaceUpdate.json
+// Generated from example definition: 2026-01-01/NameSpaces/SBNameSpaceUpdate.json
 func ExampleNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

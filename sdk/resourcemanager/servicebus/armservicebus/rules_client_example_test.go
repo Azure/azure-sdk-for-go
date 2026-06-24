@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Rules/RuleCreate.json
+// Generated from example definition: 2026-01-01/Rules/RuleCreate.json
 func ExampleRulesClient_CreateOrUpdate_rulesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleRulesClient_CreateOrUpdate_rulesCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Rules/RuleCreate_CorrelationFilter.json
+// Generated from example definition: 2026-01-01/Rules/RuleCreate_CorrelationFilter.json
 func ExampleRulesClient_CreateOrUpdate_rulesCreateCorrelationFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleRulesClient_CreateOrUpdate_rulesCreateCorrelationFilter() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Rules/RuleCreate_SqlFilter.json
+// Generated from example definition: 2026-01-01/Rules/RuleCreate_SqlFilter.json
 func ExampleRulesClient_CreateOrUpdate_rulesCreateSqlFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleRulesClient_CreateOrUpdate_rulesCreateSqlFilter() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Rules/RuleDelete.json
+// Generated from example definition: 2026-01-01/Rules/RuleDelete.json
 func ExampleRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Rules/RuleGet.json
+// Generated from example definition: 2026-01-01/Rules/RuleGet.json
 func ExampleRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Rules/RuleListBySubscription.json
+// Generated from example definition: 2026-01-01/Rules/RuleListBySubscription.json
 func ExampleRulesClient_NewListBySubscriptionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -38,7 +38,7 @@ func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse{
-	// 	PrivateEndpointConnection: &armhardwaresecuritymodules.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armhardwaresecuritymodules.PrivateEndpointConnection{
 	// 		Name: to.Ptr("sample-pec"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcloudhsm/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/chsm1/privateEndpointConnections/sample-pec"),
@@ -82,7 +82,7 @@ func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -105,7 +105,7 @@ func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClusterPrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armhardwaresecuritymodules.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armhardwaresecuritymodules.PrivateEndpointConnection{
 	// 		Name: to.Ptr("sample-pec"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/cloudHsmClusters/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcloudhsm/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/chsm1/privateEndpointConnections/sample-pec"),

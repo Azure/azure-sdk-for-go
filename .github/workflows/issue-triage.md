@@ -19,20 +19,7 @@ on:
   reaction: eyes
 
 permissions:
-  # Equivalent to the previous `read-all` for the inspection workflow, while
-  # also granting the Copilot-requests permission so the built-in GitHub
-  # Actions token is used for Copilot inference (org Copilot billing) instead
-  # of a COPILOT_GITHUB_TOKEN PAT/secret.
-  contents: read
-  issues: read
-  pull-requests: read
-  discussions: read
-  actions: read
-  checks: read
-  deployments: read
-  packages: read
-  pages: read
-  statuses: read
+  all: read
   copilot-requests: write
 
 network:

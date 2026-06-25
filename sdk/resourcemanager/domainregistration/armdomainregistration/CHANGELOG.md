@@ -1,7 +1,10 @@
 # Release History
 
 ## 1.0.0 (2026-06-24)
+
 ### Other Changes
+
+- General availability of the `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/domainregistration/armdomainregistration` package.
 
 
 ## 0.1.0 (2026-02-14)

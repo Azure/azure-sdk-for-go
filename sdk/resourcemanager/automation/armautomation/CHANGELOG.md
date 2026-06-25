@@ -3,6 +3,7 @@
 ## 1.0.0 (2026-06-24)
 ### Other Changes
 
+- General availability of the `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/automation/armautomation` package.
 
 ## 0.10.0 (2026-05-22)
 ### Breaking Changes

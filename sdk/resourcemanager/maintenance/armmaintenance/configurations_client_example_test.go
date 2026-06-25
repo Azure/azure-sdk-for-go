@@ -45,7 +45,7 @@ func ExampleConfigurationsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationsClientCreateOrUpdateResponse{
-	// 	Configuration: &armmaintenance.Configuration{
+	// 	Configuration: armmaintenance.Configuration{
 	// 		Name: to.Ptr("configuration1"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourceGroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 		Location: to.Ptr("westus2"),
@@ -84,7 +84,7 @@ func ExampleConfigurationsClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationsClientDeleteResponse{
-	// 	Configuration: &armmaintenance.Configuration{
+	// 	Configuration: armmaintenance.Configuration{
 	// 		Name: to.Ptr("configuration1"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 		Location: to.Ptr("westus2"),
@@ -114,7 +114,7 @@ func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationsClientGetResponse{
-	// 	Configuration: &armmaintenance.Configuration{
+	// 	Configuration: armmaintenance.Configuration{
 	// 		Name: to.Ptr("configuration1"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 		Location: to.Ptr("westus2"),
@@ -153,7 +153,7 @@ func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGues
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationsClientGetResponse{
-	// 	Configuration: &armmaintenance.Configuration{
+	// 	Configuration: armmaintenance.Configuration{
 	// 		Name: to.Ptr("configuration1"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 		Location: to.Ptr("westus2"),
@@ -208,7 +208,7 @@ func ExampleConfigurationsClient_Get_maintenanceConfigurationsGetForResourceGues
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationsClientGetResponse{
-	// 	Configuration: &armmaintenance.Configuration{
+	// 	Configuration: armmaintenance.Configuration{
 	// 		Name: to.Ptr("configuration1"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 		Location: to.Ptr("westus2"),
@@ -324,7 +324,7 @@ func ExampleConfigurationsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationsClientUpdateResponse{
-	// 	Configuration: &armmaintenance.Configuration{
+	// 	Configuration: armmaintenance.Configuration{
 	// 		Name: to.Ptr("configuration1"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1"),
 	// 		Location: to.Ptr("westus2"),

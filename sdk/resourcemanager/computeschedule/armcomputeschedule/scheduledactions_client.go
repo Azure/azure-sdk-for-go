@@ -19,7 +19,7 @@ import (
 // ScheduledActionsClient contains the methods for the ScheduledActions group.
 // Don't use this type directly, use NewScheduledActionsClient() instead.
 //
-// Generated from API version 2025-04-15-preview
+// Generated from API version 2026-04-15-preview
 type ScheduledActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *ScheduledActionsClient) attachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,7 +158,7 @@ func (client *ScheduledActionsClient) cancelNextOccurrenceCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -244,7 +244,7 @@ func (client *ScheduledActionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -320,7 +320,7 @@ func (client *ScheduledActionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -374,7 +374,7 @@ func (client *ScheduledActionsClient) detachResourcesCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -440,7 +440,7 @@ func (client *ScheduledActionsClient) disableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -491,7 +491,7 @@ func (client *ScheduledActionsClient) enableCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -543,7 +543,7 @@ func (client *ScheduledActionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -601,7 +601,7 @@ func (client *ScheduledActionsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -654,7 +654,7 @@ func (client *ScheduledActionsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -717,7 +717,7 @@ func (client *ScheduledActionsClient) listResourcesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -781,7 +781,7 @@ func (client *ScheduledActionsClient) patchResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -848,7 +848,7 @@ func (client *ScheduledActionsClient) triggerManualOccurrenceCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -911,7 +911,7 @@ func (client *ScheduledActionsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -937,7 +937,7 @@ func (client *ScheduledActionsClient) updateHandleResponse(resp *http.Response) 
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesCancelOperationsOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesCancelOperations
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (ScheduledActionsClientVirtualMachinesCancelOperationsResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, options *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (ScheduledActionsClientVirtualMachinesCancelOperationsResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesCancelOperations"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -960,7 +960,7 @@ func (client *ScheduledActionsClient) VirtualMachinesCancelOperations(ctx contex
 }
 
 // virtualMachinesCancelOperationsCreateRequest creates the VirtualMachinesCancelOperations request.
-func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateRequest(ctx context.Context, locationparameter string, requestBody CancelOperationsContent, _ *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateRequest(ctx context.Context, locationparameter string, requestBody CancelOperationsRequest, _ *ScheduledActionsClientVirtualMachinesCancelOperationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesCancelOperations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -975,7 +975,7 @@ func (client *ScheduledActionsClient) virtualMachinesCancelOperationsCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1001,7 +1001,7 @@ func (client *ScheduledActionsClient) virtualMachinesCancelOperationsHandleRespo
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteCreateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteCreate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1024,7 +1024,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteCreate(ctx context.C
 }
 
 // virtualMachinesExecuteCreateCreateRequest creates the VirtualMachinesExecuteCreate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteCreateContent, _ *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteCreateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1039,7 +1039,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1058,6 +1058,70 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateHandleResponse
 	return result, nil
 }
 
+// VirtualMachinesExecuteCreateFlex - VirtualMachinesExecuteCreateFlex: Execute create operation for a batch of virtual machines
+// with flex properties, this operation is triggered as soon as Computeschedule receives it.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - locationparameter - The location name.
+//   - body - The request body
+//   - options - ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteCreateFlex
+//     method.
+func (client *ScheduledActionsClient) VirtualMachinesExecuteCreateFlex(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, options *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error) {
+	var err error
+	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteCreateFlex"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.virtualMachinesExecuteCreateFlexCreateRequest(ctx, locationparameter, body, options)
+	if err != nil {
+		return ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{}, err
+	}
+	resp, err := client.virtualMachinesExecuteCreateFlexHandleResponse(httpResp)
+	return resp, err
+}
+
+// virtualMachinesExecuteCreateFlexCreateRequest creates the VirtualMachinesExecuteCreateFlex request.
+func (client *ScheduledActionsClient) virtualMachinesExecuteCreateFlexCreateRequest(ctx context.Context, locationparameter string, body ExecuteCreateFlexRequest, _ *ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteCreateFlex"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if locationparameter == "" {
+		return nil, errors.New("parameter locationparameter cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{locationparameter}", url.PathEscape(locationparameter))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260415Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// virtualMachinesExecuteCreateFlexHandleResponse handles the VirtualMachinesExecuteCreateFlex response.
+func (client *ScheduledActionsClient) virtualMachinesExecuteCreateFlexHandleResponse(resp *http.Response) (ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse, error) {
+	result := ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CreateFlexResourceOperationResponse); err != nil {
+		return ScheduledActionsClientVirtualMachinesExecuteCreateFlexResponse{}, err
+	}
+	return result, nil
+}
+
 // VirtualMachinesExecuteDeallocate - VirtualMachinesExecuteDeallocate: Execute deallocate operation for a batch of virtual
 // machines, this operation is triggered as soon as Computeschedule receives it.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -1065,7 +1129,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteCreateHandleResponse
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteDeallocate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (ScheduledActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteDeallocate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1088,7 +1152,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDeallocate(ctx conte
 }
 
 // virtualMachinesExecuteDeallocateCreateRequest creates the VirtualMachinesExecuteDeallocate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateContent, _ *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeallocateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDeallocate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1103,7 +1167,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1129,7 +1193,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeallocateHandleResp
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteDeleteOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteDelete
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (ScheduledActionsClientVirtualMachinesExecuteDeleteResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, options *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (ScheduledActionsClientVirtualMachinesExecuteDeleteResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1152,7 +1216,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteDelete(ctx context.C
 }
 
 // virtualMachinesExecuteDeleteCreateRequest creates the VirtualMachinesExecuteDelete request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeleteContent, _ *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteDeleteRequest, _ *ScheduledActionsClientVirtualMachinesExecuteDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteDelete"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1167,7 +1231,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1193,7 +1257,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteDeleteHandleResponse
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteHibernateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteHibernate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (ScheduledActionsClientVirtualMachinesExecuteHibernateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, options *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (ScheduledActionsClientVirtualMachinesExecuteHibernateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteHibernate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1216,7 +1280,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteHibernate(ctx contex
 }
 
 // virtualMachinesExecuteHibernateCreateRequest creates the VirtualMachinesExecuteHibernate request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteHibernateContent, _ *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteHibernateRequest, _ *ScheduledActionsClientVirtualMachinesExecuteHibernateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteHibernate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1231,7 +1295,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1257,7 +1321,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteHibernateHandleRespo
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesExecuteStartOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteStart
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (ScheduledActionsClientVirtualMachinesExecuteStartResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, options *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (ScheduledActionsClientVirtualMachinesExecuteStartResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesExecuteStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1280,7 +1344,7 @@ func (client *ScheduledActionsClient) VirtualMachinesExecuteStart(ctx context.Co
 }
 
 // virtualMachinesExecuteStartCreateRequest creates the VirtualMachinesExecuteStart request.
-func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteStartContent, _ *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(ctx context.Context, locationparameter string, requestBody ExecuteStartRequest, _ *ScheduledActionsClientVirtualMachinesExecuteStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesExecuteStart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1295,7 +1359,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteStartCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1321,7 +1385,7 @@ func (client *ScheduledActionsClient) virtualMachinesExecuteStartHandleResponse(
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesGetOperationErrors
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, options *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (ScheduledActionsClientVirtualMachinesGetOperationErrorsResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesGetOperationErrors"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1344,7 +1408,7 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationErrors(ctx cont
 }
 
 // virtualMachinesGetOperationErrorsCreateRequest creates the VirtualMachinesGetOperationErrors request.
-func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationErrorsContent, _ *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationErrorsRequest, _ *ScheduledActionsClientVirtualMachinesGetOperationErrorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationErrors"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1359,7 +1423,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1385,7 +1449,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationErrorsHandleRes
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesGetOperationStatus
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (ScheduledActionsClientVirtualMachinesGetOperationStatusResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, options *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (ScheduledActionsClientVirtualMachinesGetOperationStatusResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesGetOperationStatus"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1408,7 +1472,7 @@ func (client *ScheduledActionsClient) VirtualMachinesGetOperationStatus(ctx cont
 }
 
 // virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
-func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationStatusContent, _ *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, locationparameter string, requestBody GetOperationStatusRequest, _ *ScheduledActionsClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesGetOperationStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1423,7 +1487,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1449,7 +1513,7 @@ func (client *ScheduledActionsClient) virtualMachinesGetOperationStatusHandleRes
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitDeallocate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, options *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (ScheduledActionsClientVirtualMachinesSubmitDeallocateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitDeallocate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1472,7 +1536,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitDeallocate(ctx contex
 }
 
 // virtualMachinesSubmitDeallocateCreateRequest creates the VirtualMachinesSubmitDeallocate request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitDeallocateContent, _ *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitDeallocateRequest, _ *ScheduledActionsClientVirtualMachinesSubmitDeallocateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitDeallocate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1487,7 +1551,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1513,7 +1577,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitDeallocateHandleRespo
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitHibernateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitHibernate
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (ScheduledActionsClientVirtualMachinesSubmitHibernateResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, options *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (ScheduledActionsClientVirtualMachinesSubmitHibernateResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitHibernate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1536,7 +1600,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitHibernate(ctx context
 }
 
 // virtualMachinesSubmitHibernateCreateRequest creates the VirtualMachinesSubmitHibernate request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitHibernateContent, _ *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitHibernateRequest, _ *ScheduledActionsClientVirtualMachinesSubmitHibernateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitHibernate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1551,7 +1615,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1577,7 +1641,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitHibernateHandleRespon
 //   - requestBody - The request body
 //   - options - ScheduledActionsClientVirtualMachinesSubmitStartOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesSubmitStart
 //     method.
-func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Context, locationparameter string, requestBody SubmitStartContent, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (ScheduledActionsClientVirtualMachinesSubmitStartResponse, error) {
+func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, options *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (ScheduledActionsClientVirtualMachinesSubmitStartResponse, error) {
 	var err error
 	const operationName = "ScheduledActionsClient.VirtualMachinesSubmitStart"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -1600,7 +1664,7 @@ func (client *ScheduledActionsClient) VirtualMachinesSubmitStart(ctx context.Con
 }
 
 // virtualMachinesSubmitStartCreateRequest creates the VirtualMachinesSubmitStart request.
-func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitStartContent, _ *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (*policy.Request, error) {
+func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ctx context.Context, locationparameter string, requestBody SubmitStartRequest, _ *ScheduledActionsClientVirtualMachinesSubmitStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeSchedule/locations/{locationparameter}/virtualMachinesSubmitStart"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -1615,7 +1679,7 @@ func (client *ScheduledActionsClient) virtualMachinesSubmitStartCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250415Preview)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

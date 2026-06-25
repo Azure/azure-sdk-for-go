@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/AdministratorsMicrosoftEntraAdd.json
+// Generated from example definition: 2026-04-01-preview/AdministratorsMicrosoftEntraAdd.json
 func ExampleAdministratorsMicrosoftEntraClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,11 +35,11 @@ func ExampleAdministratorsMicrosoftEntraClient_BeginCreateOrUpdate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AdministratorsMicrosoftEntraDelete.json
+// Generated from example definition: 2026-04-01-preview/AdministratorsMicrosoftEntraDelete.json
 func ExampleAdministratorsMicrosoftEntraClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,11 +56,11 @@ func ExampleAdministratorsMicrosoftEntraClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/AdministratorsMicrosoftEntraGet.json
+// Generated from example definition: 2026-04-01-preview/AdministratorsMicrosoftEntraGet.json
 func ExampleAdministratorsMicrosoftEntraClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleAdministratorsMicrosoftEntraClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.AdministratorsMicrosoftEntraClientGetResponse{
-	// 	AdministratorMicrosoftEntra: &armpostgresqlflexibleservers.AdministratorMicrosoftEntra{
+	// 	AdministratorMicrosoftEntra: armpostgresqlflexibleservers.AdministratorMicrosoftEntra{
 	// 		Name: to.Ptr("exampleuser@contoso.com"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/administrators"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/administrators/oooooooo-oooo-oooo-oooo-oooooooooooo"),
@@ -93,7 +93,7 @@ func ExampleAdministratorsMicrosoftEntraClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/AdministratorsMicrosoftEntraListByServer.json
+// Generated from example definition: 2026-04-01-preview/AdministratorsMicrosoftEntraListByServer.json
 func ExampleAdministratorsMicrosoftEntraClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

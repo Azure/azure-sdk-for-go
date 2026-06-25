@@ -2,7 +2,7 @@
 
 >**Note:** The Administration module only works with [Managed HSM][managed_hsm] – functions targeting a Key Vault will fail.
 
-* Managed HSM administration (this module) - role-based access control (RBAC), settings, and vault-level backup and restore options
+* Managed HSM administration (this module) - role-based access control (RBAC), settings, vault-level backup and restore options, and External Key Manager (EKM) connection management
 * Certificate management ([azcertificates](https://aka.ms/azsdk/go/keyvault-certificates/docs)) - create, manage, and deploy public and private SSL/TLS certificates
 * Cryptographic key management ([azkeys](https://aka.ms/azsdk/go/keyvault-keys/docs)) - create, store, and control access to the keys used to encrypt your data
 * Secrets management ([azsecrets](https://aka.ms/azsdk/go/keyvault-secrets/docs)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
@@ -10,9 +10,9 @@
 Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant, standards-compliant cloud service that enables you to safeguard
 cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
 
-The Azure Key Vault administration library clients support administrative tasks such as full backup / restore, key-level role-based access control (RBAC), and settings management.
+The Azure Key Vault administration library clients support administrative tasks such as full backup / restore, key-level role-based access control (RBAC), settings management, and External Key Manager (EKM) connection management.
 
-[Source code][azadmin_repo] | [Package (pkg.go.dev)][azadmin_pkg_go]| [Product documentation][managed_hsm_docs] | Samples ([backup][azadmin_pkg_go_samples_backup], [rbac][azadmin_pkg_go_samples_rbac], [settings][azadmin_pkg_go_samples_settings])
+[Source code][azadmin_repo] | [Package (pkg.go.dev)][azadmin_pkg_go]| [Product documentation][managed_hsm_docs] | Samples ([backup][azadmin_pkg_go_samples_backup], [rbac][azadmin_pkg_go_samples_rbac], [settings][azadmin_pkg_go_samples_settings], ekm - TBD)
 
 ## Getting started
 
@@ -45,6 +45,7 @@ Constructing the client also requires your Managed HSM's URL, which you can get 
 - [Example backup client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/backup#example-NewClient)
 - [Example rbac client][azadmin_pkg_go_samples_rbac]
 - [Example settings client](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azadmin/settings#example-NewClient)
+- Example ekm client - TBD
 
 ## Key concepts
 
@@ -70,12 +71,17 @@ A `backup.Client` performs full key backups, full key restores, and selective ke
 
 A `settings.Client` provides methods to update, get, and list settings for a Managed HSM.
 
+### ekm.KeyVaultClient
+
+An `ekm.KeyVaultClient` manages the External Key Manager (EKM) connection on a Managed HSM. Use it to configure the proxy through which the HSM accesses externally-managed keys, to retrieve the client certificate the HSM presents to the proxy, and to verify connectivity to the proxy.
+
 ## Examples
 
 Get started with our examples:
 - [backup][azadmin_pkg_go_samples_backup]  
 - [rbac][azadmin_pkg_go_samples_rbac]
 - [settings][azadmin_pkg_go_samples_settings]
+- ekm - TBD
 
 ## Troubleshooting
 

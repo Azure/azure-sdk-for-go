@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/StorageAccountGetEncryptionScope.json
+// Generated from example definition: 2026-04-01/StorageAccountGetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEncryptionScopeList.json
+// Generated from example definition: 2026-04-01/StorageAccountEncryptionScopeList.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleEncryptionScopesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPatchEncryptionScope.json
+// Generated from example definition: 2026-04-01/StorageAccountPatchEncryptionScope.json
 func ExampleEncryptionScopesClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleEncryptionScopesClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPutEncryptionScope.json
+// Generated from example definition: 2026-04-01/StorageAccountPutEncryptionScope.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScope() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
+// Generated from example definition: 2026-04-01/StorageAccountPutEncryptionScopeWithInfrastructureEncryption.json
 func ExampleEncryptionScopesClient_Put_storageAccountPutEncryptionScopeWithInfrastructureEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

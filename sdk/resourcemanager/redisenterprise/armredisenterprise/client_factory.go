@@ -64,6 +64,14 @@ func (c *ClientFactory) NewMigrationClient() *MigrationClient {
 	}
 }
 
+// NewMigrationsClient creates a new instance of MigrationsClient.
+func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
+	return &MigrationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

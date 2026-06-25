@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.SqlVirtualMachine": "2023-10-01"
   },
-  "emitterVersion": "0.10.2"
+  "emitterVersion": "0.14.1"
 }

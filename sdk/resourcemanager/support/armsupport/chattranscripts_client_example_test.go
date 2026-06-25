@@ -30,7 +30,7 @@ func ExampleChatTranscriptsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.ChatTranscriptsClientGetResponse{
-	// 	ChatTranscriptDetails: &armsupport.ChatTranscriptDetails{
+	// 	ChatTranscriptDetails: armsupport.ChatTranscriptDetails{
 	// 		Name: to.Ptr("testmessage"),
 	// 		Type: to.Ptr("Microsoft.Support/chatTranscripts"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket/chatTranscripts/69586795-45e9-45b5-bd9e-c9bb237d3e44"),

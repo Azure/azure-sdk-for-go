@@ -19,7 +19,7 @@ import (
 // FleetsClient contains the methods for the Fleets group.
 // Don't use this type directly, use NewFleetsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2026-04-01-preview
 type FleetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -39,76 +39,6 @@ func NewFleetsClient(subscriptionID string, credential azcore.TokenCredential, o
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// BeginCancel - Cancels an instance Fleet creation that is in progress.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - fleetName - The name of the Compute Fleet
-//   - options - FleetsClientBeginCancelOptions contains the optional parameters for the FleetsClient.BeginCancel method.
-func (client *FleetsClient) BeginCancel(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientBeginCancelOptions) (*runtime.Poller[FleetsClientCancelResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.cancel(ctx, resourceGroupName, fleetName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetsClientCancelResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetsClientCancelResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Cancel - Cancels an instance Fleet creation that is in progress.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *FleetsClient) cancel(ctx context.Context, resourceGroupName string, fleetName string, options *FleetsClientBeginCancelOptions) (*http.Response, error) {
-	var err error
-	const operationName = "FleetsClient.BeginCancel"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.cancelCreateRequest(ctx, resourceGroupName, fleetName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// cancelCreateRequest creates the Cancel request.
-func (client *FleetsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *FleetsClientBeginCancelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}/cancel"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fleetName == "" {
-		return nil, errors.New("parameter fleetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // BeginCreateOrUpdate - Create a Fleet
@@ -179,7 +109,7 @@ func (client *FleetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -254,7 +184,7 @@ func (client *FleetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -306,7 +236,7 @@ func (client *FleetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -364,7 +294,7 @@ func (client *FleetsClient) listByResourceGroupCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -417,7 +347,7 @@ func (client *FleetsClient) listBySubscriptionCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -480,7 +410,7 @@ func (client *FleetsClient) listVirtualMachineScaleSetsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -495,7 +425,7 @@ func (client *FleetsClient) listVirtualMachineScaleSetsHandleResponse(resp *http
 	return result, nil
 }
 
-// NewListVirtualMachinesPager - List VirtualMachine resources of an instance Fleet.
+// NewListVirtualMachinesPager - List VirtualMachine resources of a Launch mode Fleet.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the Fleet
 //   - options - FleetsClientListVirtualMachinesOptions contains the optional parameters for the FleetsClient.NewListVirtualMachinesPager
@@ -549,7 +479,7 @@ func (client *FleetsClient) listVirtualMachinesCreateRequest(ctx context.Context
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -630,7 +560,7 @@ func (client *FleetsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20260401Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

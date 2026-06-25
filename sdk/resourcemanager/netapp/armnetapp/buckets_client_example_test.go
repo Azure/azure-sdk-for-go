@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/Buckets_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Buckets_CreateOrUpdate.json
 func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,13 +45,13 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientCreateOrUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
@@ -78,7 +78,7 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Buckets_CreateOrUpdateWithAkv.json
+// Generated from example definition: 2026-04-01/Buckets_CreateOrUpdateWithAkv.json
 func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdateWithAkv() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,13 +120,13 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdateWithAkv() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientCreateOrUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
@@ -162,7 +162,7 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdateWithAkv() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Buckets_Delete.json
+// Generated from example definition: 2026-04-01/Buckets_Delete.json
 func ExampleBucketsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,11 +179,11 @@ func ExampleBucketsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Buckets_GenerateAkvCredentials.json
+// Generated from example definition: 2026-04-01/Buckets_GenerateAkvCredentials.json
 func ExampleBucketsClient_BeginGenerateAkvCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,11 +202,11 @@ func ExampleBucketsClient_BeginGenerateAkvCredentials() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Buckets_GenerateCredentials.json
+// Generated from example definition: 2026-04-01/Buckets_GenerateCredentials.json
 func ExampleBucketsClient_GenerateCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleBucketsClient_GenerateCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientGenerateCredentialsResponse{
-	// 	BucketGenerateCredentials: &armnetapp.BucketGenerateCredentials{
+	// 	BucketGenerateCredentials: armnetapp.BucketGenerateCredentials{
 	// 		AccessKey: to.Ptr("<REDACTED>"),
 	// 		KeyPairExpiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:33Z"); return t}()),
 	// 		SecretKey: to.Ptr("<REDACTED>"),
@@ -235,7 +235,7 @@ func ExampleBucketsClient_GenerateCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Buckets_Get.json
+// Generated from example definition: 2026-04-01/Buckets_Get.json
 func ExampleBucketsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleBucketsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientGetResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
@@ -290,7 +290,7 @@ func ExampleBucketsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Buckets_List.json
+// Generated from example definition: 2026-04-01/Buckets_List.json
 func ExampleBucketsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,7 @@ func ExampleBucketsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Buckets_RefreshCertificate.json
+// Generated from example definition: 2026-04-01/Buckets_RefreshCertificate.json
 func ExampleBucketsClient_BeginRefreshCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -371,11 +371,11 @@ func ExampleBucketsClient_BeginRefreshCertificate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Buckets_Update.json
+// Generated from example definition: 2026-04-01/Buckets_Update.json
 func ExampleBucketsClient_BeginUpdate_bucketsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,13 +401,13 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),
@@ -433,7 +433,7 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Buckets_UpdateWithAkv.json
+// Generated from example definition: 2026-04-01/Buckets_UpdateWithAkv.json
 func ExampleBucketsClient_BeginUpdate_bucketsUpdateWithAkv() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,13 +468,13 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdateWithAkv() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.BucketsClientUpdateResponse{
-	// 	Bucket: &armnetapp.Bucket{
+	// 	Bucket: armnetapp.Bucket{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/buckets/bucket1"),
 	// 		Name: to.Ptr("account1/pool1/volume1/bucket1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/buckets"),

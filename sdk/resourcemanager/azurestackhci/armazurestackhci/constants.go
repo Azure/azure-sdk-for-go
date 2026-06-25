@@ -4,6 +4,10 @@
 
 package armazurestackhci
 
+const (
+	version20260430 string = "2026-04-30"
+)
+
 // AccessLevel - Remote Support Access Level
 type AccessLevel string
 

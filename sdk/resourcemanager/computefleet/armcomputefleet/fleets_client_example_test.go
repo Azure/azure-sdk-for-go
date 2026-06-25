@@ -12,28 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/Fleets_Cancel.json
-func ExampleFleetsClient_BeginCancel() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputefleet.NewClientFactory("3453D930-6DDF-4466-B3B3-E1AEE9BD448C", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewFleetsClient().BeginCancel(ctx, "rgazurefleet", "myFleet", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-07-01-preview/Fleets_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,8 +380,8 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 					HibernationEnabled: to.Ptr(true),
 				},
 			},
-			Mode:         to.Ptr(armcomputefleet.FleetModeInstance),
-			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVCPU),
+			Mode:         to.Ptr(armcomputefleet.FleetModeLaunch),
+			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyPrioritized),
 				ZonePreferences: []*armcomputefleet.ZonePreference{
@@ -1198,8 +1177,9 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// 					HibernationEnabled: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			Mode: to.Ptr(armcomputefleet.FleetModeInstance),
-	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVCPU),
+	// 			Mode: to.Ptr(armcomputefleet.FleetModeLaunch),
+	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
+	// 			VMNamePrefix: to.Ptr("test-vm"),
 	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
 	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyPrioritized),
 	// 				ZonePreferences: []*armcomputefleet.ZonePreference{
@@ -1648,7 +1628,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Fleets_Delete.json
+// Generated from example definition: 2026-04-01-preview/Fleets_Delete_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1669,7 +1649,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Fleets_Get.json
+// Generated from example definition: 2026-04-01-preview/Fleets_Get_MaximumSet_Gen.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2045,8 +2025,9 @@ func ExampleFleetsClient_Get() {
 	// 					HibernationEnabled: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			Mode: to.Ptr(armcomputefleet.FleetModeInstance),
-	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVCPU),
+	// 			Mode: to.Ptr(armcomputefleet.FleetModeLaunch),
+	// 			VMNamePrefix: to.Ptr("test-vm"),
+	// 			CapacityType: to.Ptr(armcomputefleet.CapacityTypeVM),
 	// 			ZoneAllocationPolicy: &armcomputefleet.ZoneAllocationPolicy{
 	// 				DistributionStrategy: to.Ptr(armcomputefleet.ZoneDistributionStrategyBestEffortSingleZone),
 	// 			},
@@ -2486,7 +2467,7 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/Fleets_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2910,7 +2891,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Fleets_ListBySubscription.json
+// Generated from example definition: 2026-04-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3334,7 +3315,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Fleets_ListVirtualMachineScaleSets.json
+// Generated from example definition: 2026-04-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3387,20 +3368,20 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Fleets_ListVirtualMachines.json
+// Generated from example definition: 2026-04-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcomputefleet.NewClientFactory("3453D930-6DDF-4466-B3B3-E1AEE9BD448C", cred, nil)
+	clientFactory, err := armcomputefleet.NewClientFactory("8F7446E8-AD7B-4D50-989A-2504374B8462", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFleetsClient().NewListVirtualMachinesPager("rgazurefleet", "myFleet", &armcomputefleet.FleetsClientListVirtualMachinesOptions{
-		Filter:    to.Ptr("xzcepyottghqa"),
-		Skiptoken: to.Ptr("hydepbmwuypaprlphcdecsz")})
+	pager := clientFactory.NewFleetsClient().NewListVirtualMachinesPager("rgazurefleet", "testFleet", &armcomputefleet.FleetsClientListVirtualMachinesOptions{
+		Filter:    to.Ptr("qppsnaauhedxu"),
+		Skiptoken: to.Ptr("jxgpugummyphgx")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -3415,9 +3396,27 @@ func ExampleFleetsClient_NewListVirtualMachinesPager() {
 		// 	VirtualMachineListResult: armcomputefleet.VirtualMachineListResult{
 		// 		Value: []*armcomputefleet.VirtualMachine{
 		// 			{
-		// 				Name: to.Ptr("kfkaqnskgrugdneuebvrwhnflri"),
-		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/myVirtualMachine"),
+		// 				Name: to.Ptr("test-vm_aef123_0"),
+		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_0"),
+		// 				Type: to.Ptr("lmzwlqfgyp"),
+		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusLaunching),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("test-vm_aef123_1"),
+		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_1"),
+		// 				Type: to.Ptr("lmzwlqfgyp"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusCreating),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("test-vm_aef123_2"),
+		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_2"),
+		// 				Type: to.Ptr("lmzwlqfgyp"),
+		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusSucceeded),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("test-vm_aef123_3"),
+		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_3"),
+		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusFailed),
 		// 				Error: &armcomputefleet.APIError{
 		// 					Code: to.Ptr("obrkfckgffjphilhxacxdmrvbcrg"),
 		// 					Target: to.Ptr("rnjvbpwlqnicuuyk"),
@@ -3442,7 +3441,7 @@ func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/Fleets_Update.json
+// Generated from example definition: 2026-04-01-preview/Fleets_Update_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

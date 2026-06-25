@@ -19,6 +19,8 @@ import (
 
 // PriceSheetClient contains the methods for the PriceSheet group.
 // Don't use this type directly, use NewPriceSheetClient() instead.
+//
+// Generated from API version 2024-08-01
 type PriceSheetClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewPriceSheetClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginDownloadByBillingAccountPeriod - Generates the pricesheet for the provided billing period asynchronously based on
 // the enrollment id
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - billingPeriodName - Billing Period Name.
 //   - options - PriceSheetClientBeginDownloadByBillingAccountPeriodOptions contains the optional parameters for the PriceSheetClient.BeginDownloadByBillingAccountPeriod
@@ -69,8 +69,6 @@ func (client *PriceSheetClient) BeginDownloadByBillingAccountPeriod(ctx context.
 // DownloadByBillingAccountPeriod - Generates the pricesheet for the provided billing period asynchronously based on the enrollment
 // id
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 func (client *PriceSheetClient) downloadByBillingAccountPeriod(ctx context.Context, billingAccountID string, billingPeriodName string, options *PriceSheetClientBeginDownloadByBillingAccountPeriodOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PriceSheetClient.BeginDownloadByBillingAccountPeriod"
@@ -108,16 +106,14 @@ func (client *PriceSheetClient) downloadByBillingAccountPeriodCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the price sheet for a subscription. Price sheet is available via this API only for May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - options - PriceSheetClientGetOptions contains the optional parameters for the PriceSheetClient.Get method.
 func (client *PriceSheetClient) Get(ctx context.Context, options *PriceSheetClientGetOptions) (PriceSheetClientGetResponse, error) {
 	var err error
@@ -162,8 +158,8 @@ func (client *PriceSheetClient) getCreateRequest(ctx context.Context, options *P
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -180,8 +176,6 @@ func (client *PriceSheetClient) getHandleResponse(resp *http.Response) (PriceShe
 // GetByBillingPeriod - Get the price sheet for a scope by subscriptionId and billing period. Price sheet is available via
 // this API only for May 1, 2014 or later.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - billingPeriodName - Billing Period Name.
 //   - options - PriceSheetClientGetByBillingPeriodOptions contains the optional parameters for the PriceSheetClient.GetByBillingPeriod
 //     method.
@@ -232,8 +226,8 @@ func (client *PriceSheetClient) getByBillingPeriodCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

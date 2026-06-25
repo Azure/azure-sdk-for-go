@@ -25,7 +25,6 @@ func ExampleOrganizationClient_BeginCreate() {
 	}
 	poller, err := clientFactory.NewOrganizationClient().BeginCreate(ctx, "rgconfluent", "qcqrbyx", armconfluent.OrganizationResource{
 		Properties: &armconfluent.OrganizationResourceProperties{
-			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 			OfferDetail: &armconfluent.OfferDetail{
 				PublisherID:    to.Ptr("jvmchwpbqvavlgmuwquhqrnacgpvlobkkavwppwvhjfqcy"),
 				ID:             to.Ptr("ufewkfngssvswmxfurnchnvgmnjuzzsoys"),
@@ -37,7 +36,6 @@ func ExampleOrganizationClient_BeginCreate() {
 				PrivateOfferIDs: []*string{
 					to.Ptr("nrbzkbcpvsakewlgubfmej"),
 				},
-				Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
 			},
 			UserDetail: &armconfluent.UserDetail{
 				FirstName:         to.Ptr("gqxqhtniapwvnsliaifhvmbtvvrciebktpeadanapfcqzflomz"),
@@ -60,13 +58,13 @@ func ExampleOrganizationClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientCreateResponse{
-	// 	OrganizationResource: &armconfluent.OrganizationResource{
+	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
 	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
@@ -136,7 +134,7 @@ func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMaximumSet()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientCreateAPIKeyResponse{
-	// 	APIKeyRecord: &armconfluent.APIKeyRecord{
+	// 	APIKeyRecord: armconfluent.APIKeyRecord{
 	// 		Kind: to.Ptr("g"),
 	// 		ID: to.Ptr("byr"),
 	// 		Properties: &armconfluent.APIKeyProperties{
@@ -188,7 +186,7 @@ func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMinimumSet()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientCreateAPIKeyResponse{
-	// 	APIKeyRecord: &armconfluent.APIKeyRecord{
+	// 	APIKeyRecord: armconfluent.APIKeyRecord{
 	// 	},
 	// }
 }
@@ -210,7 +208,7 @@ func ExampleOrganizationClient_BeginDelete_organizationDeleteMaximumSet() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -236,7 +234,7 @@ func ExampleOrganizationClient_BeginDelete_organizationDeleteMinimumSet() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -308,7 +306,7 @@ func ExampleOrganizationClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientGetResponse{
-	// 	OrganizationResource: &armconfluent.OrganizationResource{
+	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
 	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
@@ -375,7 +373,7 @@ func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMaxi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientGetClusterAPIKeyResponse{
-	// 	APIKeyRecord: &armconfluent.APIKeyRecord{
+	// 	APIKeyRecord: armconfluent.APIKeyRecord{
 	// 		Kind: to.Ptr("g"),
 	// 		ID: to.Ptr("byr"),
 	// 		Properties: &armconfluent.APIKeyProperties{
@@ -427,7 +425,7 @@ func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMini
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientGetClusterAPIKeyResponse{
-	// 	APIKeyRecord: &armconfluent.APIKeyRecord{
+	// 	APIKeyRecord: armconfluent.APIKeyRecord{
 	// 	},
 	// }
 }
@@ -451,7 +449,7 @@ func ExampleOrganizationClient_GetClusterByID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientGetClusterByIDResponse{
-	// 	SCClusterRecord: &armconfluent.SCClusterRecord{
+	// 	SCClusterRecord: armconfluent.SCClusterRecord{
 	// 		Kind: to.Ptr("eroxushslwhufo"),
 	// 		Properties: &armconfluent.ClusterProperties{
 	// 			Metadata: &armconfluent.SCMetadataEntity{
@@ -531,7 +529,7 @@ func ExampleOrganizationClient_GetEnvironmentByID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientGetEnvironmentByIDResponse{
-	// 	SCEnvironmentRecord: &armconfluent.SCEnvironmentRecord{
+	// 	SCEnvironmentRecord: armconfluent.SCEnvironmentRecord{
 	// 		Kind: to.Ptr("qhwbkvelujjbojvhrgiikildjdrqox"),
 	// 		Properties: &armconfluent.EnvironmentProperties{
 	// 			StreamGovernanceConfig: &armconfluent.StreamGovernanceConfig{
@@ -579,7 +577,7 @@ func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchem
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientGetSchemaRegistryClusterByIDResponse{
-	// 	SchemaRegistryClusterRecord: &armconfluent.SchemaRegistryClusterRecord{
+	// 	SchemaRegistryClusterRecord: armconfluent.SchemaRegistryClusterRecord{
 	// 		Kind: to.Ptr("vlwwdyfvefryzszqpimeyghwbg"),
 	// 		ID: to.Ptr("gpfxwmqatynchrxjdgvr"),
 	// 		Properties: &armconfluent.SchemaRegistryClusterProperties{
@@ -633,7 +631,7 @@ func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchem
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientGetSchemaRegistryClusterByIDResponse{
-	// 	SchemaRegistryClusterRecord: &armconfluent.SchemaRegistryClusterRecord{
+	// 	SchemaRegistryClusterRecord: armconfluent.SchemaRegistryClusterRecord{
 	// 	},
 	// }
 }
@@ -967,7 +965,7 @@ func ExampleOrganizationClient_ListRegions_organizationListRegionsMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientListRegionsResponse{
-	// 	ListRegionsSuccessResponse: &armconfluent.ListRegionsSuccessResponse{
+	// 	ListRegionsSuccessResponse: armconfluent.ListRegionsSuccessResponse{
 	// 		Data: []*armconfluent.RegionRecord{
 	// 			{
 	// 				Kind: to.Ptr("muabtqsllrtrsecdvjgvntpke"),
@@ -1014,7 +1012,7 @@ func ExampleOrganizationClient_ListRegions_organizationListRegionsMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientListRegionsResponse{
-	// 	ListRegionsSuccessResponse: &armconfluent.ListRegionsSuccessResponse{
+	// 	ListRegionsSuccessResponse: armconfluent.ListRegionsSuccessResponse{
 	// 	},
 	// }
 }
@@ -1141,7 +1139,7 @@ func ExampleOrganizationClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.OrganizationClientUpdateResponse{
-	// 	OrganizationResource: &armconfluent.OrganizationResource{
+	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
 	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),

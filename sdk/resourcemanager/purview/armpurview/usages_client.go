@@ -7,18 +7,19 @@ package armpurview
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
+//
+// Generated from API version 2024-04-01-preview
 type UsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,9 +45,7 @@ func NewUsagesClient(subscriptionID string, credential azcore.TokenCredential, o
 //
 // Get the usage quota configuration
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - options - UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
 func (client *UsagesClient) Get(ctx context.Context, location string, options *UsagesClientGetOptions) (UsagesClientGetResponse, error) {
 	var err error
@@ -89,8 +88,8 @@ func (client *UsagesClient) getCreateRequest(ctx context.Context, location strin
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // RecoveryPointClient contains the methods for the RecoveryPoint group.
 // Don't use this type directly, use NewRecoveryPointClient() instead.
+//
+// Generated from API version 2024-09-01
 type RecoveryPointClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRecoveryPointClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Gets the details of the recovery point of a protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - protectedItemName - The protected item name.
@@ -98,8 +98,8 @@ func (client *RecoveryPointClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -114,8 +114,6 @@ func (client *RecoveryPointClient) getHandleResponse(resp *http.Response) (Recov
 }
 
 // NewListPager - Gets the list of recovery points of the given protected item.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - protectedItemName - The protected item name.
@@ -167,8 +165,8 @@ func (client *RecoveryPointClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -34,13 +34,13 @@ func ExampleDependencyOfRelationshipsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelationships.DependencyOfRelationshipsClientCreateOrUpdateResponse{
-	// 	DependencyOfRelationship: &armrelationships.DependencyOfRelationship{
+	// 	DependencyOfRelationship: armrelationships.DependencyOfRelationship{
 	// 		Properties: &armrelationships.DependencyOfRelationshipProperties{
 	// 			SourceID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
 	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg123/providers/Microsoft.Web/staticSites/test-site"),
@@ -79,7 +79,7 @@ func ExampleDependencyOfRelationshipsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -102,7 +102,7 @@ func ExampleDependencyOfRelationshipsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelationships.DependencyOfRelationshipsClientGetResponse{
-	// 	DependencyOfRelationship: &armrelationships.DependencyOfRelationship{
+	// 	DependencyOfRelationship: armrelationships.DependencyOfRelationship{
 	// 		Properties: &armrelationships.DependencyOfRelationshipProperties{
 	// 			SourceID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
 	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg123/providers/Microsoft.Web/staticSites/test-site"),

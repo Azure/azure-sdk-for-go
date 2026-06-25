@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateObjectReplicationPolicyOnDestination.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateObjectReplicationPolicyOnDestination.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateObjectReplicationPolicyOnDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateObjectReplicationPolicyOnSource.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateObjectReplicationPolicyOnSource.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateObjectReplicationPolicyOnSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountCreateO
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateObjectReplicationPolicyOnDestination.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateObjectReplicationPolicyOnDestination() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateObjectReplicationPolicyOnSource.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateObjectReplicationPolicyOnSource.json
 func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateObjectReplicationPolicyOnSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func ExampleObjectReplicationPoliciesClient_CreateOrUpdate_storageAccountUpdateO
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountDeleteObjectReplicationPolicy.json
+// Generated from example definition: 2026-04-01/StorageAccountDeleteObjectReplicationPolicy.json
 func ExampleObjectReplicationPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +380,7 @@ func ExampleObjectReplicationPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetObjectReplicationPolicy.json
+// Generated from example definition: 2026-04-01/StorageAccountGetObjectReplicationPolicy.json
 func ExampleObjectReplicationPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleObjectReplicationPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListObjectReplicationPolicies.json
+// Generated from example definition: 2026-04-01/StorageAccountListObjectReplicationPolicies.json
 func ExampleObjectReplicationPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -102,10 +102,10 @@ func unmarshalAkriConnectorsRegistrySettingsClassification(rawMsg json.RawMessag
 	}
 	var b AkriConnectorsRegistrySettingsClassification
 	switch m["registrySettingsType"] {
-	case string(AkriConnectorsRegistrySettingsTypeRegistryEndpointRef):
-		b = &AkriConnectorsRegistryEndpointRef{}
 	case string(AkriConnectorsRegistrySettingsTypeContainerRegistry):
 		b = &AkriConnectorsContainerRegistry{}
+	case string(AkriConnectorsRegistrySettingsTypeRegistryEndpointRef):
+		b = &AkriConnectorsRegistryEndpointRef{}
 	default:
 		b = &AkriConnectorsRegistrySettings{}
 	}
@@ -125,10 +125,10 @@ func unmarshalAkriConnectorsTagDigestSettingsClassification(rawMsg json.RawMessa
 	}
 	var b AkriConnectorsTagDigestSettingsClassification
 	switch m["tagDigestType"] {
-	case string(AkriConnectorsTagDigestTypeTag):
-		b = &AkriConnectorsTag{}
 	case string(AkriConnectorsTagDigestTypeDigest):
 		b = &AkriConnectorsDigest{}
+	case string(AkriConnectorsTagDigestTypeTag):
+		b = &AkriConnectorsTag{}
 	default:
 		b = &AkriConnectorsTagDigestSettings{}
 	}
@@ -213,10 +213,10 @@ func unmarshalDataflowDestinationHeaderActionClassification(rawMsg json.RawMessa
 	switch m["actionType"] {
 	case string(DataflowHeaderActionTypeAddIfNotPresent):
 		b = &DataflowDestinationAddIfNotPresentHeaderAction{}
-	case string(DataflowHeaderActionTypeRemove):
-		b = &DataflowDestinationRemoveHeaderAction{}
 	case string(DataflowHeaderActionTypeAddOrReplace):
 		b = &DataflowDestinationAddOrReplaceHeaderAction{}
+	case string(DataflowHeaderActionTypeRemove):
+		b = &DataflowDestinationRemoveHeaderAction{}
 	default:
 		b = &DataflowDestinationHeaderAction{}
 	}
@@ -257,10 +257,10 @@ func unmarshalDataflowGraphDestinationHeaderActionClassification(rawMsg json.Raw
 	switch m["actionType"] {
 	case string(DataflowGraphDestinationHeaderActionTypeAddIfNotPresent):
 		b = &DataflowGraphDestinationAddIfNotPresentHeaderAction{}
-	case string(DataflowGraphDestinationHeaderActionTypeRemove):
-		b = &DataflowGraphDestinationRemoveHeaderAction{}
 	case string(DataflowGraphDestinationHeaderActionTypeAddOrReplace):
 		b = &DataflowGraphDestinationAddOrReplaceHeaderAction{}
+	case string(DataflowGraphDestinationHeaderActionTypeRemove):
+		b = &DataflowGraphDestinationRemoveHeaderAction{}
 	default:
 		b = &DataflowGraphDestinationHeaderAction{}
 	}
@@ -299,12 +299,12 @@ func unmarshalDataflowGraphNodeClassification(rawMsg json.RawMessage) (DataflowG
 	}
 	var b DataflowGraphNodeClassification
 	switch m["nodeType"] {
-	case string(DataflowGraphNodeTypeSource):
-		b = &DataflowGraphSourceNode{}
-	case string(DataflowGraphNodeTypeGraph):
-		b = &DataflowGraphGraphNode{}
 	case string(DataflowGraphNodeTypeDestination):
 		b = &DataflowGraphDestinationNode{}
+	case string(DataflowGraphNodeTypeGraph):
+		b = &DataflowGraphGraphNode{}
+	case string(DataflowGraphNodeTypeSource):
+		b = &DataflowGraphSourceNode{}
 	default:
 		b = &DataflowGraphNode{}
 	}
@@ -343,12 +343,12 @@ func unmarshalDataflowOpenTelemetryAuthenticationClassification(rawMsg json.RawM
 	}
 	var b DataflowOpenTelemetryAuthenticationClassification
 	switch m["method"] {
+	case string(DataflowOpenTelemetryAuthenticationMethodAnonymous):
+		b = &DataflowOpenTelemetryAnonymousAuthentication{}
 	case string(DataflowOpenTelemetryAuthenticationMethodServiceAccountToken):
 		b = &DataflowOpenTelemetryServiceAccountAuthentication{}
 	case string(DataflowOpenTelemetryAuthenticationMethodX509Certificate):
 		b = &DataflowOpenTelemetryX509CertificateAuthentication{}
-	case string(DataflowOpenTelemetryAuthenticationMethodAnonymous):
-		b = &DataflowOpenTelemetryAnonymousAuthentication{}
 	default:
 		b = &DataflowOpenTelemetryAuthentication{}
 	}
@@ -368,14 +368,14 @@ func unmarshalRegistryEndpointAuthenticationClassification(rawMsg json.RawMessag
 	}
 	var b RegistryEndpointAuthenticationClassification
 	switch m["method"] {
-	case string(RegistryEndpointAuthenticationMethodSystemAssignedManagedIdentity):
-		b = &RegistryEndpointSystemAssignedIdentityAuthentication{}
-	case string(RegistryEndpointAuthenticationMethodUserAssignedManagedIdentity):
-		b = &RegistryEndpointUserAssignedIdentityAuthentication{}
 	case string(RegistryEndpointAuthenticationMethodAnonymous):
 		b = &RegistryEndpointAnonymousAuthentication{}
 	case string(RegistryEndpointAuthenticationMethodArtifactPullSecret):
 		b = &RegistryEndpointArtifactPullSecretAuthentication{}
+	case string(RegistryEndpointAuthenticationMethodSystemAssignedManagedIdentity):
+		b = &RegistryEndpointSystemAssignedIdentityAuthentication{}
+	case string(RegistryEndpointAuthenticationMethodUserAssignedManagedIdentity):
+		b = &RegistryEndpointUserAssignedIdentityAuthentication{}
 	default:
 		b = &RegistryEndpointAuthentication{}
 	}
@@ -395,10 +395,10 @@ func unmarshalRegistryEndpointTrustedSigningKeyClassification(rawMsg json.RawMes
 	}
 	var b RegistryEndpointTrustedSigningKeyClassification
 	switch m["type"] {
-	case string(RegistryEndpointTrustedSigningKeyTypeSecret):
-		b = &RegistryEndpointTrustedSigningKeySecret{}
 	case string(RegistryEndpointTrustedSigningKeyTypeConfigMap):
 		b = &RegistryEndpointTrustedSigningKeyConfigMap{}
+	case string(RegistryEndpointTrustedSigningKeyTypeSecret):
+		b = &RegistryEndpointTrustedSigningKeySecret{}
 	default:
 		b = &RegistryEndpointTrustedSigningKey{}
 	}

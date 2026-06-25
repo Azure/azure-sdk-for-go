@@ -30,7 +30,7 @@ func ExampleCreditsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.CreditsClientGetResponse{
-	// 	CreditSummary: &armconsumption.CreditSummary{
+	// 	CreditSummary: armconsumption.CreditSummary{
 	// 		Name: to.Ptr("balanceSummary1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/credits/balanceSummary"),
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:5678/billingProfiles/2468/providers/Microsoft.Consumption/credits/balanceSummary1"),

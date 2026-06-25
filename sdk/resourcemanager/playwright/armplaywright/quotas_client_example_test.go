@@ -30,7 +30,7 @@ func ExampleQuotasClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armplaywright.QuotasClientGetResponse{
-	// 	Quota: &armplaywright.Quota{
+	// 	Quota: armplaywright.Quota{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.LoadTestService/locations/eastus/PlaywrightQuotas/ExecutionMinutes"),
 	// 		Name: to.Ptr("ExecutionMinutes"),
 	// 		Type: to.Ptr("Microsoft.LoadTestService/Locations/PlaywrightQuotas"),

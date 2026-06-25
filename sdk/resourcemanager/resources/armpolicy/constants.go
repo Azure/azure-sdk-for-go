@@ -4,6 +4,122 @@
 
 package armpolicy
 
+const (
+	version20260101Preview string = "2026-01-01-preview"
+)
+
+// AliasPathAttributes - The attributes of the token that the alias path is referring to.
+type AliasPathAttributes string
+
+const (
+	// AliasPathAttributesModifiable - The token that the alias path is referring to is modifiable by policies with 'modify' effect.
+	AliasPathAttributesModifiable AliasPathAttributes = "Modifiable"
+	// AliasPathAttributesNone - The token that the alias path is referring to has no attributes.
+	AliasPathAttributesNone AliasPathAttributes = "None"
+)
+
+// PossibleAliasPathAttributesValues returns the possible values for the AliasPathAttributes const type.
+func PossibleAliasPathAttributesValues() []AliasPathAttributes {
+	return []AliasPathAttributes{
+		AliasPathAttributesModifiable,
+		AliasPathAttributesNone,
+	}
+}
+
+// AliasPathTokenType - The type of the token that the alias path is referring to.
+type AliasPathTokenType string
+
+const (
+	// AliasPathTokenTypeAny - The token type can be anything.
+	AliasPathTokenTypeAny AliasPathTokenType = "Any"
+	// AliasPathTokenTypeArray - The token type is array.
+	AliasPathTokenTypeArray AliasPathTokenType = "Array"
+	// AliasPathTokenTypeBoolean - The token type is boolean.
+	AliasPathTokenTypeBoolean AliasPathTokenType = "Boolean"
+	// AliasPathTokenTypeInteger - The token type is integer.
+	AliasPathTokenTypeInteger AliasPathTokenType = "Integer"
+	// AliasPathTokenTypeNotSpecified - The token type is not specified.
+	AliasPathTokenTypeNotSpecified AliasPathTokenType = "NotSpecified"
+	// AliasPathTokenTypeNumber - The token type is number.
+	AliasPathTokenTypeNumber AliasPathTokenType = "Number"
+	// AliasPathTokenTypeObject - The token type is object.
+	AliasPathTokenTypeObject AliasPathTokenType = "Object"
+	// AliasPathTokenTypeString - The token type is string.
+	AliasPathTokenTypeString AliasPathTokenType = "String"
+)
+
+// PossibleAliasPathTokenTypeValues returns the possible values for the AliasPathTokenType const type.
+func PossibleAliasPathTokenTypeValues() []AliasPathTokenType {
+	return []AliasPathTokenType{
+		AliasPathTokenTypeAny,
+		AliasPathTokenTypeArray,
+		AliasPathTokenTypeBoolean,
+		AliasPathTokenTypeInteger,
+		AliasPathTokenTypeNotSpecified,
+		AliasPathTokenTypeNumber,
+		AliasPathTokenTypeObject,
+		AliasPathTokenTypeString,
+	}
+}
+
+// AliasPatternType - The type of alias pattern.
+type AliasPatternType string
+
+const (
+	// AliasPatternTypeExtract - Extract is the only allowed value.
+	AliasPatternTypeExtract AliasPatternType = "Extract"
+	// AliasPatternTypeNotSpecified - NotSpecified is not allowed.
+	AliasPatternTypeNotSpecified AliasPatternType = "NotSpecified"
+)
+
+// PossibleAliasPatternTypeValues returns the possible values for the AliasPatternType const type.
+func PossibleAliasPatternTypeValues() []AliasPatternType {
+	return []AliasPatternType{
+		AliasPatternTypeExtract,
+		AliasPatternTypeNotSpecified,
+	}
+}
+
+// AliasType - The type of the alias.
+type AliasType string
+
+const (
+	// AliasTypeMask - Alias value is secret.
+	AliasTypeMask AliasType = "Mask"
+	// AliasTypeNotSpecified - Alias type is unknown (same as not providing alias type).
+	AliasTypeNotSpecified AliasType = "NotSpecified"
+	// AliasTypePlainText - Alias value is not secret.
+	AliasTypePlainText AliasType = "PlainText"
+)
+
+// PossibleAliasTypeValues returns the possible values for the AliasType const type.
+func PossibleAliasTypeValues() []AliasType {
+	return []AliasType{
+		AliasTypeMask,
+		AliasTypeNotSpecified,
+		AliasTypePlainText,
+	}
+}
+
+// AssignmentScopeValidation - The option to validate whether the exemption or enrollment is at or under the assignment scope.
+type AssignmentScopeValidation string
+
+const (
+	// AssignmentScopeValidationDefault - This option will validate the exemption is at or under the assignment scope.
+	AssignmentScopeValidationDefault AssignmentScopeValidation = "Default"
+	// AssignmentScopeValidationDoNotValidate - This option will bypass the validation the exemption scope is at or under the
+	// policy assignment scope.
+	AssignmentScopeValidationDoNotValidate AssignmentScopeValidation = "DoNotValidate"
+)
+
+// PossibleAssignmentScopeValidationValues returns the possible values for the AssignmentScopeValidation const type.
+func PossibleAssignmentScopeValidationValues() []AssignmentScopeValidation {
+	return []AssignmentScopeValidation{
+		AssignmentScopeValidationDefault,
+		AssignmentScopeValidationDoNotValidate,
+	}
+}
+
 // AssignmentType - The type of policy assignment. Possible values are NotSpecified, System, SystemHidden, and Custom. Immutable.
 type AssignmentType string
 
@@ -71,6 +187,25 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 		EnforcementModeDefault,
 		EnforcementModeDoNotEnforce,
 		EnforcementModeEnroll,
+	}
+}
+
+// ExemptionCategory - The policy exemption category. Possible values are Waiver and Mitigated.
+type ExemptionCategory string
+
+const (
+	// ExemptionCategoryMitigated - This category of exemptions usually means the mitigation actions have been applied to the
+	// scope.
+	ExemptionCategoryMitigated ExemptionCategory = "Mitigated"
+	// ExemptionCategoryWaiver - This category of exemptions usually means the scope is not applicable for the policy.
+	ExemptionCategoryWaiver ExemptionCategory = "Waiver"
+)
+
+// PossibleExemptionCategoryValues returns the possible values for the ExemptionCategory const type.
+func PossibleExemptionCategoryValues() []ExemptionCategory {
+	return []ExemptionCategory{
+		ExemptionCategoryMitigated,
+		ExemptionCategoryWaiver,
 	}
 }
 
@@ -143,6 +278,34 @@ func PossibleParameterTypeValues() []ParameterType {
 	}
 }
 
+// PolicyAction - The effective outcome of the policy evaluation based on both the policy effect and evaluation result. Possible
+// values are Unknown, Allow, Audit, Deny, Error.
+type PolicyAction string
+
+const (
+	// PolicyActionAllow - The effective outcome of policy evaluation is to allow the request.
+	PolicyActionAllow PolicyAction = "Allow"
+	// PolicyActionAudit - The effective outcome of policy evaluation is to audit the request.
+	PolicyActionAudit PolicyAction = "Audit"
+	// PolicyActionDeny - The effective outcome of policy evaluation is to deny the request.
+	PolicyActionDeny PolicyAction = "Deny"
+	// PolicyActionError - The policy evaluation resulted in an error.
+	PolicyActionError PolicyAction = "Error"
+	// PolicyActionUnknown - The effective outcome of policy evaluation is unknown.
+	PolicyActionUnknown PolicyAction = "Unknown"
+)
+
+// PossiblePolicyActionValues returns the possible values for the PolicyAction const type.
+func PossiblePolicyActionValues() []PolicyAction {
+	return []PolicyAction{
+		PolicyActionAllow,
+		PolicyActionAudit,
+		PolicyActionDeny,
+		PolicyActionError,
+		PolicyActionUnknown,
+	}
+}
+
 // PolicyTokenResult - The result of the completed token acquisition operation. Possible values are Succeeded and Failed.
 type PolicyTokenResult string
 
@@ -212,6 +375,8 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type SelectorKind string
 
 const (
+	// SelectorKindGroupPrincipalID - The selector kind to filter policies by the security group membership ID.
+	SelectorKindGroupPrincipalID SelectorKind = "groupPrincipalId"
 	// SelectorKindPolicyDefinitionReferenceID - The selector kind to filter policies by the policy definition reference ID.
 	SelectorKindPolicyDefinitionReferenceID SelectorKind = "policyDefinitionReferenceId"
 	// SelectorKindResourceLocation - The selector kind to filter policies by the resource location.
@@ -220,14 +385,18 @@ const (
 	SelectorKindResourceType SelectorKind = "resourceType"
 	// SelectorKindResourceWithoutLocation - The selector kind to filter policies by the resource without location.
 	SelectorKindResourceWithoutLocation SelectorKind = "resourceWithoutLocation"
+	// SelectorKindUserPrincipalID - The selector kind to filter policies by the user principal ID.
+	SelectorKindUserPrincipalID SelectorKind = "userPrincipalId"
 )
 
 // PossibleSelectorKindValues returns the possible values for the SelectorKind const type.
 func PossibleSelectorKindValues() []SelectorKind {
 	return []SelectorKind{
+		SelectorKindGroupPrincipalID,
 		SelectorKindPolicyDefinitionReferenceID,
 		SelectorKindResourceLocation,
 		SelectorKindResourceType,
 		SelectorKindResourceWithoutLocation,
+		SelectorKindUserPrincipalID,
 	}
 }

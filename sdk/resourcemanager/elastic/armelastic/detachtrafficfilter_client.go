@@ -18,6 +18,8 @@ import (
 
 // DetachTrafficFilterClient contains the methods for the DetachTrafficFilter group.
 // Don't use this type directly, use NewDetachTrafficFilterClient() instead.
+//
+// Generated from API version 2025-06-01
 type DetachTrafficFilterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDetachTrafficFilterClient(subscriptionID string, credential azcore.Token
 // BeginUpdate - Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control
 // capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - DetachTrafficFilterClientBeginUpdateOptions contains the optional parameters for the DetachTrafficFilterClient.BeginUpdate
@@ -67,8 +67,6 @@ func (client *DetachTrafficFilterClient) BeginUpdate(ctx context.Context, resour
 
 // Update - Detach an existing traffic filter from your Elastic monitor resource, removing its network traffic control capabilities.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *DetachTrafficFilterClient) update(ctx context.Context, resourceGroupName string, monitorName string, options *DetachTrafficFilterClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DetachTrafficFilterClient.BeginUpdate"
@@ -110,10 +108,10 @@ func (client *DetachTrafficFilterClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
+	reqQP.Set("api-version", version20250601)
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // ConnectionsClient contains the methods for the Connections group.
 // Don't use this type directly, use NewConnectionsClient() instead.
+//
+// Generated from API version 2025-12-01
 type ConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewConnectionsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // CreateOrUpdate - Creates or updates a Connection resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - connectionName - The name of the Connection resource.
@@ -94,8 +94,8 @@ func (client *ConnectionsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connection); err != nil {
@@ -116,8 +116,6 @@ func (client *ConnectionsClient) createOrUpdateHandleResponse(resp *http.Respons
 // BeginDelete - Deletes a Connection resource.
 // Returns 409 if there are active jobs using this connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - connectionName - The name of the Connection resource.
@@ -142,8 +140,6 @@ func (client *ConnectionsClient) BeginDelete(ctx context.Context, resourceGroupN
 // Delete - Deletes a Connection resource.
 // Returns 409 if there are active jobs using this connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01
 func (client *ConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, connectionName string, options *ConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectionsClient.BeginDelete"
@@ -189,15 +185,13 @@ func (client *ConnectionsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a Connection resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - connectionName - The name of the Connection resource.
@@ -248,8 +242,8 @@ func (client *ConnectionsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,8 +258,6 @@ func (client *ConnectionsClient) getHandleResponse(resp *http.Response) (Connect
 }
 
 // NewListPager - Lists all Connections in a Storage Mover.
-//
-// Generated from API version 2025-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - options - ConnectionsClientListOptions contains the optional parameters for the ConnectionsClient.NewListPager method.
@@ -312,8 +304,8 @@ func (client *ConnectionsClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

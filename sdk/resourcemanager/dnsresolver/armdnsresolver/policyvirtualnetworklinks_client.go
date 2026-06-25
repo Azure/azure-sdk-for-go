@@ -19,6 +19,8 @@ import (
 
 // PolicyVirtualNetworkLinksClient contains the methods for the PolicyVirtualNetworkLinks group.
 // Don't use this type directly, use NewPolicyVirtualNetworkLinksClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type PolicyVirtualNetworkLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPolicyVirtualNetworkLinksClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - Creates or updates a DNS resolver policy virtual network link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
@@ -70,8 +70,6 @@ func (client *PolicyVirtualNetworkLinksClient) BeginCreateOrUpdate(ctx context.C
 
 // CreateOrUpdate - Creates or updates a DNS resolver policy virtual network link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *PolicyVirtualNetworkLinksClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLink, options *PolicyVirtualNetworkLinksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PolicyVirtualNetworkLinksClient.BeginCreateOrUpdate"
@@ -117,8 +115,8 @@ func (client *PolicyVirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -135,8 +133,6 @@ func (client *PolicyVirtualNetworkLinksClient) createOrUpdateCreateRequest(ctx c
 
 // BeginDelete - Deletes a DNS resolver policy virtual network link. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
@@ -162,8 +158,6 @@ func (client *PolicyVirtualNetworkLinksClient) BeginDelete(ctx context.Context, 
 
 // Delete - Deletes a DNS resolver policy virtual network link. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *PolicyVirtualNetworkLinksClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, options *PolicyVirtualNetworkLinksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PolicyVirtualNetworkLinksClient.BeginDelete"
@@ -209,8 +203,8 @@ func (client *PolicyVirtualNetworkLinksClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
 	}
@@ -219,8 +213,6 @@ func (client *PolicyVirtualNetworkLinksClient) deleteCreateRequest(ctx context.C
 
 // Get - Gets properties of a DNS resolver policy virtual network link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
@@ -273,8 +265,8 @@ func (client *PolicyVirtualNetworkLinksClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -289,8 +281,6 @@ func (client *PolicyVirtualNetworkLinksClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Lists DNS resolver policy virtual network links.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - options - PolicyVirtualNetworkLinksClientListOptions contains the optional parameters for the PolicyVirtualNetworkLinksClient.NewListPager
@@ -341,8 +331,8 @@ func (client *PolicyVirtualNetworkLinksClient) listCreateRequest(ctx context.Con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -358,8 +348,6 @@ func (client *PolicyVirtualNetworkLinksClient) listHandleResponse(resp *http.Res
 
 // BeginUpdate - Updates a DNS resolver policy virtual network link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsResolverPolicyVirtualNetworkLinkName - The name of the DNS resolver policy virtual network link for the DNS resolver
@@ -386,8 +374,6 @@ func (client *PolicyVirtualNetworkLinksClient) BeginUpdate(ctx context.Context, 
 
 // Update - Updates a DNS resolver policy virtual network link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *PolicyVirtualNetworkLinksClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsResolverPolicyVirtualNetworkLinkName string, parameters PolicyVirtualNetworkLinkPatch, options *PolicyVirtualNetworkLinksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PolicyVirtualNetworkLinksClient.BeginUpdate"
@@ -433,8 +419,8 @@ func (client *PolicyVirtualNetworkLinksClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}

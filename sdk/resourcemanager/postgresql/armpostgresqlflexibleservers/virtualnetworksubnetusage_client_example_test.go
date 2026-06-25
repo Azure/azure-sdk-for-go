@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/VirtualNetworkSubnetUsageList.json
+// Generated from example definition: 2026-04-01-preview/VirtualNetworkSubnetUsageList.json
 func ExampleVirtualNetworkSubnetUsageClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleVirtualNetworkSubnetUsageClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.VirtualNetworkSubnetUsageClientListResponse{
-	// 	VirtualNetworkSubnetUsageModel: &armpostgresqlflexibleservers.VirtualNetworkSubnetUsageModel{
+	// 	VirtualNetworkSubnetUsageModel: armpostgresqlflexibleservers.VirtualNetworkSubnetUsageModel{
 	// 		DelegatedSubnetsUsage: []*armpostgresqlflexibleservers.DelegatedSubnetUsage{
 	// 			{
 	// 				SubnetName: to.Ptr("examplesubnet1"),

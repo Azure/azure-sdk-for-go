@@ -4,6 +4,10 @@
 
 package armnetworkcloud
 
+const (
+	version20260501Preview string = "2026-05-01-preview"
+)
+
 // AccessBridgeAllowedName - The allowed names for the access bridge.
 type AccessBridgeAllowedName string
 

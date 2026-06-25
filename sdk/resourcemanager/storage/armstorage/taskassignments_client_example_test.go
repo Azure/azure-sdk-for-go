@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignment() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentMockRun.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentMockRun.json
 func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentMockRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentMockRun() 
 	// }
 }
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsCrud/PutStorageTaskAssignmentRequiredProperties.json
 func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentRequiredProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleTaskAssignmentsClient_BeginCreate_putStorageTaskAssignmentRequiredPr
 	// }
 }
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/DeleteStorageTaskAssignment.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsCrud/DeleteStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleTaskAssignmentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/GetStorageTaskAssignment.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsCrud/GetStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +306,7 @@ func ExampleTaskAssignmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsForAccount.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsList/ListStorageTaskAssignmentsForAccount.json
 func ExampleTaskAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -397,7 +397,7 @@ func ExampleTaskAssignmentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/StopStorageTaskAssignment.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsCrud/StopStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_BeginStopAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -418,7 +418,7 @@ func ExampleTaskAssignmentsClient_BeginStopAssignment() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/storageTaskAssignmentsCrud/PatchStorageTaskAssignment.json
+// Generated from example definition: 2026-04-01/storageTaskAssignmentsCrud/PatchStorageTaskAssignment.json
 func ExampleTaskAssignmentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

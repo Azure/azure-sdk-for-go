@@ -4,6 +4,10 @@
 
 package armkeyvault
 
+const (
+	version20260201 string = "2026-02-01"
+)
+
 type AccessPolicyUpdateKind string
 
 const (

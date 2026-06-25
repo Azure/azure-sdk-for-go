@@ -18,6 +18,8 @@ import (
 
 // DeploymentInfoClient contains the methods for the DeploymentInfo group.
 // Don't use this type directly, use NewDeploymentInfoClient() instead.
+//
+// Generated from API version 2025-06-01
 type DeploymentInfoClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDeploymentInfoClient(subscriptionID string, credential azcore.TokenCrede
 
 // List - Fetch detailed information about Elastic cloud deployments corresponding to the Elastic monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - DeploymentInfoClientListOptions contains the optional parameters for the DeploymentInfoClient.List method.
@@ -88,8 +88,8 @@ func (client *DeploymentInfoClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -20,7 +20,7 @@ import (
 // DiscoveryRulesClient contains the methods for the DiscoveryRules group.
 // Don't use this type directly, use NewDiscoveryRulesClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-01-01-preview
 type DiscoveryRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,38 +42,56 @@ func NewDiscoveryRulesClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// CreateOrUpdate - Create a DiscoveryRule
+// BeginCreateOrUpdate - Create a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - discoveryRuleName - Name of the discovery rule. Must be unique within a health model.
 //   - resource - Resource create parameters.
-//   - options - DiscoveryRulesClientCreateOrUpdateOptions contains the optional parameters for the DiscoveryRulesClient.CreateOrUpdate
+//   - options - DiscoveryRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the DiscoveryRulesClient.BeginCreateOrUpdate
 //     method.
-func (client *DiscoveryRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, options *DiscoveryRulesClientCreateOrUpdateOptions) (DiscoveryRulesClientCreateOrUpdateResponse, error) {
+func (client *DiscoveryRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, options *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*runtime.Poller[DiscoveryRulesClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, healthModelName, discoveryRuleName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiscoveryRulesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiscoveryRulesClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create a DiscoveryRule
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiscoveryRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, options *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DiscoveryRulesClient.CreateOrUpdate"
+	const operationName = "DiscoveryRulesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, healthModelName, discoveryRuleName, resource, options)
 	if err != nil {
-		return DiscoveryRulesClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DiscoveryRulesClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return DiscoveryRulesClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, _ *DiscoveryRulesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, resource DiscoveryRule, _ *DiscoveryRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -96,7 +114,7 @@ func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -106,44 +124,55 @@ func (client *DiscoveryRulesClient) createOrUpdateCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DiscoveryRulesClient) createOrUpdateHandleResponse(resp *http.Response) (DiscoveryRulesClientCreateOrUpdateResponse, error) {
-	result := DiscoveryRulesClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DiscoveryRule); err != nil {
-		return DiscoveryRulesClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
-// Delete - Delete a DiscoveryRule
+// BeginDelete - Delete a DiscoveryRule
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - discoveryRuleName - Name of the discovery rule. Must be unique within a health model.
-//   - options - DiscoveryRulesClientDeleteOptions contains the optional parameters for the DiscoveryRulesClient.Delete method.
-func (client *DiscoveryRulesClient) Delete(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *DiscoveryRulesClientDeleteOptions) (DiscoveryRulesClientDeleteResponse, error) {
+//   - options - DiscoveryRulesClientBeginDeleteOptions contains the optional parameters for the DiscoveryRulesClient.BeginDelete
+//     method.
+func (client *DiscoveryRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *DiscoveryRulesClientBeginDeleteOptions) (*runtime.Poller[DiscoveryRulesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, healthModelName, discoveryRuleName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiscoveryRulesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiscoveryRulesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete a DiscoveryRule
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiscoveryRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, options *DiscoveryRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DiscoveryRulesClient.Delete"
+	const operationName = "DiscoveryRulesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, healthModelName, discoveryRuleName, options)
 	if err != nil {
-		return DiscoveryRulesClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DiscoveryRulesClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return DiscoveryRulesClientDeleteResponse{}, err
+		return nil, err
 	}
-	return DiscoveryRulesClientDeleteResponse{}, nil
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *DiscoveryRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, _ *DiscoveryRulesClientDeleteOptions) (*policy.Request, error) {
+func (client *DiscoveryRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, discoveryRuleName string, _ *DiscoveryRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/discoveryrules/{discoveryRuleName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -166,7 +195,7 @@ func (client *DiscoveryRulesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -223,7 +252,7 @@ func (client *DiscoveryRulesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,7 +315,7 @@ func (client *DiscoveryRulesClient) listByHealthModelCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	if options != nil && options.Timestamp != nil {
 		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
 	}

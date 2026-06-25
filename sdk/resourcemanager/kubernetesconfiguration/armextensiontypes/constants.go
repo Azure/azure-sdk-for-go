@@ -4,6 +4,10 @@
 
 package armextensiontypes
 
+const (
+	version20241101Preview string = "2024-11-01-preview"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

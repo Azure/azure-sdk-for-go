@@ -30,7 +30,7 @@ func ExamplePublicMaintenanceConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.PublicMaintenanceConfigurationsClientGetResponse{
-	// 	Configuration: &armmaintenance.Configuration{
+	// 	Configuration: armmaintenance.Configuration{
 	// 		Name: to.Ptr("configuration1"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/configuration1"),
 	// 		Location: to.Ptr("westus2"),

@@ -5,11 +5,10 @@
 package fake
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"net/http"
 	"reflect"
 	"sync"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 )
 
 type result struct {
@@ -25,15 +24,6 @@ func (nonRetriableError) NonRetriable() {
 	// marker method
 }
 
-func contains[T comparable](s []T, v T) bool {
-	for _, vv := range s {
-		if vv == v {
-			return true
-		}
-	}
-	return false
-}
-
 func getOptional[T any](v T) *T {
 	if reflect.ValueOf(v).IsZero() {
 		return nil
@@ -47,14 +37,6 @@ func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
 		*dst = src()
 	}
 	mu.Unlock()
-}
-
-func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
-	t, err := parse(v)
-	if err != nil {
-		return *new(T), err
-	}
-	return t, err
 }
 
 func newTracker[T any]() *tracker[T] {

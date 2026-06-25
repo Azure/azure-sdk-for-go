@@ -18,6 +18,8 @@ import (
 
 // StandbyContainerGroupPoolRuntimeViewsClient contains the methods for the StandbyContainerGroupPoolRuntimeViews group.
 // Don't use this type directly, use NewStandbyContainerGroupPoolRuntimeViewsClient() instead.
+//
+// Generated from API version 2025-10-01
 type StandbyContainerGroupPoolRuntimeViewsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewStandbyContainerGroupPoolRuntimeViewsClient(subscriptionID string, crede
 
 // Get - Get a StandbyContainerGroupPoolRuntimeViewResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyContainerGroupPoolName - Name of the standby container group pool
 //   - runtimeView - The unique identifier for the runtime view. The input string should be the word 'latest', which will get
@@ -95,8 +95,8 @@ func (client *StandbyContainerGroupPoolRuntimeViewsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -111,8 +111,6 @@ func (client *StandbyContainerGroupPoolRuntimeViewsClient) getHandleResponse(res
 }
 
 // NewListByStandbyPoolPager - List StandbyContainerGroupPoolRuntimeViewResource resources by StandbyContainerGroupPoolResource
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - standbyContainerGroupPoolName - Name of the standby container group pool
 //   - options - StandbyContainerGroupPoolRuntimeViewsClientListByStandbyPoolOptions contains the optional parameters for the
@@ -160,8 +158,8 @@ func (client *StandbyContainerGroupPoolRuntimeViewsClient) listByStandbyPoolCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

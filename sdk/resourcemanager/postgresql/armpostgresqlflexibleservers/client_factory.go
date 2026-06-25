@@ -112,6 +112,22 @@ func (c *ClientFactory) NewFirewallRulesClient() *FirewallRulesClient {
 	}
 }
 
+// NewMaintenanceEventsClient creates a new instance of MaintenanceEventsClient.
+func (c *ClientFactory) NewMaintenanceEventsClient() *MaintenanceEventsClient {
+	return &MaintenanceEventsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMajorVersionUpgradePrecheckClient creates a new instance of MajorVersionUpgradePrecheckClient.
+func (c *ClientFactory) NewMajorVersionUpgradePrecheckClient() *MajorVersionUpgradePrecheckClient {
+	return &MajorVersionUpgradePrecheckClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewMigrationsClient creates a new instance of MigrationsClient.
 func (c *ClientFactory) NewMigrationsClient() *MigrationsClient {
 	return &MigrationsClient{

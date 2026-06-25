@@ -26,6 +26,11 @@ type ClientOptions struct {
 }
 
 // NewPlatformManaged creates a PlatformManaged certificate policy configuration.
+//
+// PlatformManaged is in preview as of API version 2026-03-01-preview and is currently
+// intended for first-party Microsoft Azure Key Vault internal usage only. Calls using
+// this property will fail for external customers and the shape may change before GA.
+// It is not recommended for use at this point.
 func NewPlatformManaged(certificateUsage string, metadata map[string]any) *PlatformManaged {
 	return &PlatformManaged{
 		CertificateUsage: &certificateUsage,

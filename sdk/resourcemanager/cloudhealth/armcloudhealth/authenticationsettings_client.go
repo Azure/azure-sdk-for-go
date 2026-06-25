@@ -19,7 +19,7 @@ import (
 // AuthenticationSettingsClient contains the methods for the AuthenticationSettings group.
 // Don't use this type directly, use NewAuthenticationSettingsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-01-01-preview
 type AuthenticationSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,38 +41,56 @@ func NewAuthenticationSettingsClient(subscriptionID string, credential azcore.To
 	return client, nil
 }
 
-// CreateOrUpdate - Create a AuthenticationSetting
+// BeginCreateOrUpdate - Create a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - authenticationSettingName - Name of the authentication setting. Must be unique within a health model.
 //   - resource - Resource create parameters.
-//   - options - AuthenticationSettingsClientCreateOrUpdateOptions contains the optional parameters for the AuthenticationSettingsClient.CreateOrUpdate
+//   - options - AuthenticationSettingsClientBeginCreateOrUpdateOptions contains the optional parameters for the AuthenticationSettingsClient.BeginCreateOrUpdate
 //     method.
-func (client *AuthenticationSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, options *AuthenticationSettingsClientCreateOrUpdateOptions) (AuthenticationSettingsClientCreateOrUpdateResponse, error) {
+func (client *AuthenticationSettingsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, options *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AuthenticationSettingsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, healthModelName, authenticationSettingName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AuthenticationSettingsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AuthenticationSettingsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create a AuthenticationSetting
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AuthenticationSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, options *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AuthenticationSettingsClient.CreateOrUpdate"
+	const operationName = "AuthenticationSettingsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, healthModelName, authenticationSettingName, resource, options)
 	if err != nil {
-		return AuthenticationSettingsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AuthenticationSettingsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return AuthenticationSettingsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, _ *AuthenticationSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, resource AuthenticationSetting, _ *AuthenticationSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -95,7 +113,7 @@ func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -105,45 +123,55 @@ func (client *AuthenticationSettingsClient) createOrUpdateCreateRequest(ctx cont
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AuthenticationSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (AuthenticationSettingsClientCreateOrUpdateResponse, error) {
-	result := AuthenticationSettingsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AuthenticationSetting); err != nil {
-		return AuthenticationSettingsClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
-// Delete - Delete a AuthenticationSetting
+// BeginDelete - Delete a AuthenticationSetting
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - authenticationSettingName - Name of the authentication setting. Must be unique within a health model.
-//   - options - AuthenticationSettingsClientDeleteOptions contains the optional parameters for the AuthenticationSettingsClient.Delete
+//   - options - AuthenticationSettingsClientBeginDeleteOptions contains the optional parameters for the AuthenticationSettingsClient.BeginDelete
 //     method.
-func (client *AuthenticationSettingsClient) Delete(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, options *AuthenticationSettingsClientDeleteOptions) (AuthenticationSettingsClientDeleteResponse, error) {
+func (client *AuthenticationSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, options *AuthenticationSettingsClientBeginDeleteOptions) (*runtime.Poller[AuthenticationSettingsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, healthModelName, authenticationSettingName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AuthenticationSettingsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AuthenticationSettingsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete a AuthenticationSetting
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AuthenticationSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, options *AuthenticationSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AuthenticationSettingsClient.Delete"
+	const operationName = "AuthenticationSettingsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, healthModelName, authenticationSettingName, options)
 	if err != nil {
-		return AuthenticationSettingsClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AuthenticationSettingsClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return AuthenticationSettingsClientDeleteResponse{}, err
+		return nil, err
 	}
-	return AuthenticationSettingsClientDeleteResponse{}, nil
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, _ *AuthenticationSettingsClientDeleteOptions) (*policy.Request, error) {
+func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, authenticationSettingName string, _ *AuthenticationSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/authenticationsettings/{authenticationSettingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -166,7 +194,7 @@ func (client *AuthenticationSettingsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -224,7 +252,7 @@ func (client *AuthenticationSettingsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -287,7 +315,7 @@ func (client *AuthenticationSettingsClient) listByHealthModelCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

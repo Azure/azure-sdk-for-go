@@ -18,6 +18,8 @@ import (
 
 // DeploymentPreflightClient contains the methods for the DeploymentPreflight group.
 // Don't use this type directly, use NewDeploymentPreflightClient() instead.
+//
+// Generated from API version 2024-09-01
 type DeploymentPreflightClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewDeploymentPreflightClient(subscriptionID string, credential azcore.Token
 //
 // Performs resource deployment preflight validation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - deploymentID - Deployment Id.
 //   - options - DeploymentPreflightClientPostOptions contains the optional parameters for the DeploymentPreflightClient.Post
@@ -91,8 +91,8 @@ func (client *DeploymentPreflightClient) postCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

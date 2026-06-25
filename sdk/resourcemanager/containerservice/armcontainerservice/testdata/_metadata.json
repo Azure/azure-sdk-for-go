@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.ContainerService": "2026-03-02-preview"
+    "Microsoft.ContainerService": "2026-04-02-preview"
   },
-  "emitterVersion": "0.13.0"
+  "emitterVersion": "0.14.1"
 }

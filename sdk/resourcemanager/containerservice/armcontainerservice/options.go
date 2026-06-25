@@ -200,6 +200,42 @@ type MaintenanceConfigurationsClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MaintenanceWindowsClientBeginCreateOrUpdateOptions contains the optional parameters for the MaintenanceWindowsClient.BeginCreateOrUpdate
+// method.
+type MaintenanceWindowsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceWindowsClientBeginDeleteOptions contains the optional parameters for the MaintenanceWindowsClient.BeginDelete
+// method.
+type MaintenanceWindowsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceWindowsClientGetOptions contains the optional parameters for the MaintenanceWindowsClient.Get method.
+type MaintenanceWindowsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindowsClientListBySubscriptionOptions contains the optional parameters for the MaintenanceWindowsClient.NewListBySubscriptionPager
+// method.
+type MaintenanceWindowsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindowsClientListOptions contains the optional parameters for the MaintenanceWindowsClient.NewListPager method.
+type MaintenanceWindowsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindowsClientUpdateTagsOptions contains the optional parameters for the MaintenanceWindowsClient.UpdateTags
+// method.
+type MaintenanceWindowsClientUpdateTagsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ManagedClusterSnapshotsClientCreateOrUpdateOptions contains the optional parameters for the ManagedClusterSnapshotsClient.CreateOrUpdate
 // method.
 type ManagedClusterSnapshotsClientCreateOrUpdateOptions struct {

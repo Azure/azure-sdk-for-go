@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/Snapshots_Create.json
+// Generated from example definition: 2026-04-01/Snapshots_Create.json
 func ExampleSnapshotsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,11 +31,11 @@ func ExampleSnapshotsClient_BeginCreate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/Snapshots_Delete.json
+// Generated from example definition: 2026-04-01/Snapshots_Delete.json
 func ExampleSnapshotsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleSnapshotsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -61,7 +61,7 @@ func ExampleSnapshotsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Snapshots_Get.json
+// Generated from example definition: 2026-04-01/Snapshots_Get.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleSnapshotsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.SnapshotsClientGetResponse{
-	// 	Snapshot: &armnetapp.Snapshot{
+	// 	Snapshot: armnetapp.Snapshot{
 	// 		Name: to.Ptr("account1/pool1/volume1/snapshot1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
@@ -94,7 +94,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Snapshots_List.json
+// Generated from example definition: 2026-04-01/Snapshots_List.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Snapshots_SingleFileRestore.json
+// Generated from example definition: 2026-04-01/Snapshots_SingleFileRestore.json
 func ExampleSnapshotsClient_BeginRestoreFiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleSnapshotsClient_BeginRestoreFiles() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -167,7 +167,7 @@ func ExampleSnapshotsClient_BeginRestoreFiles() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Snapshots_Update.json
+// Generated from example definition: 2026-04-01/Snapshots_Update.json
 func ExampleSnapshotsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,13 +184,13 @@ func ExampleSnapshotsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.SnapshotsClientUpdateResponse{
-	// 	Snapshot: &armnetapp.Snapshot{
+	// 	Snapshot: armnetapp.Snapshot{
 	// 		Name: to.Ptr("account1/pool1/volume1/snapshot1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/snapshots"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),

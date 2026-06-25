@@ -18,6 +18,8 @@ import (
 
 // HealthValidationsClient contains the methods for the HealthValidations group.
 // Don't use this type directly, use NewHealthValidationsClient() instead.
+//
+// Generated from API version 2025-01-02
 type HealthValidationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewHealthValidationsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get a HealthValidation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - watcherName - The database watcher name.
 //   - healthValidationName - The health validation resource name.
@@ -93,8 +93,8 @@ func (client *HealthValidationsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250102)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *HealthValidationsClient) getHandleResponse(resp *http.Response) (H
 }
 
 // NewListByParentPager - List HealthValidation resources by Watcher
-//
-// Generated from API version 2025-01-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - watcherName - The database watcher name.
 //   - options - HealthValidationsClientListByParentOptions contains the optional parameters for the HealthValidationsClient.NewListByParentPager
@@ -158,8 +156,8 @@ func (client *HealthValidationsClient) listByParentCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250102)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -175,8 +173,6 @@ func (client *HealthValidationsClient) listByParentHandleResponse(resp *http.Res
 
 // BeginStartValidation - Starts health validation for a watcher.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - watcherName - The database watcher name.
 //   - healthValidationName - The health validation resource name.
@@ -201,8 +197,6 @@ func (client *HealthValidationsClient) BeginStartValidation(ctx context.Context,
 
 // StartValidation - Starts health validation for a watcher.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-02
 func (client *HealthValidationsClient) startValidation(ctx context.Context, resourceGroupName string, watcherName string, healthValidationName string, options *HealthValidationsClientBeginStartValidationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HealthValidationsClient.BeginStartValidation"
@@ -248,8 +242,8 @@ func (client *HealthValidationsClient) startValidationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250102)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VolumeQuotaRules_Create.json
+// Generated from example definition: 2026-04-01/VolumeQuotaRules_Create.json
 func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,13 +36,13 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumeQuotaRulesClientCreateResponse{
-	// 	VolumeQuotaRule: &armnetapp.VolumeQuotaRule{
+	// 	VolumeQuotaRule: armnetapp.VolumeQuotaRule{
 	// 		Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
 	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
@@ -57,7 +57,7 @@ func ExampleVolumeQuotaRulesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VolumeQuotaRules_Delete.json
+// Generated from example definition: 2026-04-01/VolumeQuotaRules_Delete.json
 func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -83,7 +83,7 @@ func ExampleVolumeQuotaRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VolumeQuotaRules_Get.json
+// Generated from example definition: 2026-04-01/VolumeQuotaRules_Get.json
 func ExampleVolumeQuotaRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumeQuotaRulesClientGetResponse{
-	// 	VolumeQuotaRule: &armnetapp.VolumeQuotaRule{
+	// 	VolumeQuotaRule: armnetapp.VolumeQuotaRule{
 	// 		Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
 	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),
@@ -117,7 +117,7 @@ func ExampleVolumeQuotaRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VolumeQuotaRules_List.json
+// Generated from example definition: 2026-04-01/VolumeQuotaRules_List.json
 func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleVolumeQuotaRulesClient_NewListByVolumePager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/VolumeQuotaRules_Update.json
+// Generated from example definition: 2026-04-01/VolumeQuotaRules_Update.json
 func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,13 +181,13 @@ func ExampleVolumeQuotaRulesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumeQuotaRulesClientUpdateResponse{
-	// 	VolumeQuotaRule: &armnetapp.VolumeQuotaRule{
+	// 	VolumeQuotaRule: armnetapp.VolumeQuotaRule{
 	// 		Name: to.Ptr("account-9957/pool-5210/volume-6387/rule-0004"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/volumeQuotaRules"),
 	// 		ID: to.Ptr("/subscriptions/5275316f-a498-48d6-b324-2cbfdc4311b9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account-9957/capacityPools/pool-5210/volumes/volume-6387/volumeQuotaRules/rule-0004"),

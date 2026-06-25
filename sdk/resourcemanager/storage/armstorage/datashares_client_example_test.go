@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/StorageDataShareCRUD/StorageDataShares_Create.json
+// Generated from example definition: 2026-04-01/StorageDataShareCRUD/StorageDataShares_Create.json
 func ExampleDataSharesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleDataSharesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageDataShareCRUD/StorageDataShares_Delete.json
+// Generated from example definition: 2026-04-01/StorageDataShareCRUD/StorageDataShares_Delete.json
 func ExampleDataSharesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleDataSharesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageDataShareCRUD/StorageDataShares_Get.json
+// Generated from example definition: 2026-04-01/StorageDataShareCRUD/StorageDataShares_Get.json
 func ExampleDataSharesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleDataSharesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageDataShareCRUD/StorageDataShares_ListByStorageAccount.json
+// Generated from example definition: 2026-04-01/StorageDataShareCRUD/StorageDataShares_ListByStorageAccount.json
 func ExampleDataSharesClient_NewListByStorageAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleDataSharesClient_NewListByStorageAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageDataShareCRUD/StorageDataShares_Update.json
+// Generated from example definition: 2026-04-01/StorageDataShareCRUD/StorageDataShares_Update.json
 func ExampleDataSharesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

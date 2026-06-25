@@ -19,6 +19,8 @@ import (
 
 // BmcKeySetsClient contains the methods for the BmcKeySets group.
 // Don't use this type directly, use NewBmcKeySetsClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type BmcKeySetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewBmcKeySetsClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreateOrUpdate - Create a new baseboard management controller key set or update the existing one for the provided
 // cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bmcKeySetName - The name of the baseboard management controller key set.
@@ -70,8 +70,6 @@ func (client *BmcKeySetsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Create a new baseboard management controller key set or update the existing one for the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *BmcKeySetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetParameters BmcKeySet, options *BmcKeySetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BmcKeySetsClient.BeginCreateOrUpdate"
@@ -117,8 +115,8 @@ func (client *BmcKeySetsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -135,8 +133,6 @@ func (client *BmcKeySetsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Delete the baseboard management controller key set of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bmcKeySetName - The name of the baseboard management controller key set.
@@ -160,8 +156,6 @@ func (client *BmcKeySetsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete the baseboard management controller key set of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *BmcKeySetsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, options *BmcKeySetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BmcKeySetsClient.BeginDelete"
@@ -207,8 +201,8 @@ func (client *BmcKeySetsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -220,8 +214,6 @@ func (client *BmcKeySetsClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Get baseboard management controller key set of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bmcKeySetName - The name of the baseboard management controller key set.
@@ -272,8 +264,8 @@ func (client *BmcKeySetsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -288,8 +280,6 @@ func (client *BmcKeySetsClient) getHandleResponse(resp *http.Response) (BmcKeySe
 }
 
 // NewListByClusterPager - Get a list of baseboard management controller key sets for the provided cluster.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - BmcKeySetsClientListByClusterOptions contains the optional parameters for the BmcKeySetsClient.NewListByClusterPager
@@ -343,8 +333,8 @@ func (client *BmcKeySetsClient) listByClusterCreateRequest(ctx context.Context, 
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -361,8 +351,6 @@ func (client *BmcKeySetsClient) listByClusterHandleResponse(resp *http.Response)
 // BeginUpdate - Patch properties of baseboard management controller key set for the provided cluster, or update the tags
 // associated with it. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - bmcKeySetName - The name of the baseboard management controller key set.
@@ -388,8 +376,6 @@ func (client *BmcKeySetsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 // Update - Patch properties of baseboard management controller key set for the provided cluster, or update the tags associated
 // with it. Properties and tag updates can be done independently.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *BmcKeySetsClient) update(ctx context.Context, resourceGroupName string, clusterName string, bmcKeySetName string, bmcKeySetUpdateParameters BmcKeySetPatchParameters, options *BmcKeySetsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BmcKeySetsClient.BeginUpdate"
@@ -435,8 +421,8 @@ func (client *BmcKeySetsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

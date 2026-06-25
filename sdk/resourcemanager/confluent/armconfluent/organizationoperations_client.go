@@ -11,10 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // OrganizationOperationsClient contains the methods for the OrganizationOperations group.
 // Don't use this type directly, use NewOrganizationOperationsClient() instead.
+//
+// Generated from API version 2025-08-18-preview
 type OrganizationOperationsClient struct {
 	internal *arm.Client
 }
@@ -34,8 +37,6 @@ func NewOrganizationOperationsClient(credential azcore.TokenCredential, options 
 }
 
 // NewListPager - List the operations for the provider
-//
-// Generated from API version 2025-08-18-preview
 //   - options - OrganizationOperationsClientListOptions contains the optional parameters for the OrganizationOperationsClient.NewListPager
 //     method.
 func (client *OrganizationOperationsClient) NewListPager(options *OrganizationOperationsClientListOptions) *runtime.Pager[OrganizationOperationsClientListResponse] {
@@ -69,8 +70,8 @@ func (client *OrganizationOperationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-18-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250818Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

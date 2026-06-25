@@ -35,7 +35,7 @@ func NewClient(endpoint string, credential azcore.TokenCredential, options *Clie
 	}
 
 	authPolicy := runtime.NewBearerTokenPolicy(credential, []string{internal.TokenScope}, nil)
-	azcoreClient, err := azcore.NewClient(internal.ModuleName, internal.ModuleVersion,
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion,
 		runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 		return nil, err
 	}
 
-	azcoreClient, err := azcore.NewClient(internal.ModuleName, internal.ModuleVersion, runtime.PipelineOptions{
+	azcoreClient, err := azcore.NewClient(moduleName, moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{internal.NewWebPubSubKeyCredentialPolicy(props.AccessKey)},
 	}, &options.ClientOptions)
 

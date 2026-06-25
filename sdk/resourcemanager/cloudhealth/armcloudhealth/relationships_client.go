@@ -20,7 +20,7 @@ import (
 // RelationshipsClient contains the methods for the Relationships group.
 // Don't use this type directly, use NewRelationshipsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-01-01-preview
 type RelationshipsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,39 +42,57 @@ func NewRelationshipsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// CreateOrUpdate - Create a Relationship
+// BeginCreateOrUpdate - Create a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - relationshipName - Name of the relationship. Must be unique within a health model. For example, a concatenation of parentEntityName
 //     and childEntityName can be used as the name.
 //   - resource - Resource create parameters.
-//   - options - RelationshipsClientCreateOrUpdateOptions contains the optional parameters for the RelationshipsClient.CreateOrUpdate
+//   - options - RelationshipsClientBeginCreateOrUpdateOptions contains the optional parameters for the RelationshipsClient.BeginCreateOrUpdate
 //     method.
-func (client *RelationshipsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, options *RelationshipsClientCreateOrUpdateOptions) (RelationshipsClientCreateOrUpdateResponse, error) {
+func (client *RelationshipsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, options *RelationshipsClientBeginCreateOrUpdateOptions) (*runtime.Poller[RelationshipsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, healthModelName, relationshipName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RelationshipsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RelationshipsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// CreateOrUpdate - Create a Relationship
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RelationshipsClient) createOrUpdate(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, options *RelationshipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RelationshipsClient.CreateOrUpdate"
+	const operationName = "RelationshipsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, healthModelName, relationshipName, resource, options)
 	if err != nil {
-		return RelationshipsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RelationshipsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return RelationshipsClientCreateOrUpdateResponse{}, err
+		return nil, err
 	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, _ *RelationshipsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, resource Relationship, _ *RelationshipsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -97,7 +115,7 @@ func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,45 +125,56 @@ func (client *RelationshipsClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RelationshipsClient) createOrUpdateHandleResponse(resp *http.Response) (RelationshipsClientCreateOrUpdateResponse, error) {
-	result := RelationshipsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Relationship); err != nil {
-		return RelationshipsClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
-}
-
-// Delete - Delete a Relationship
+// BeginDelete - Delete a Relationship
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - healthModelName - Name of health model resource
 //   - relationshipName - Name of the relationship. Must be unique within a health model. For example, a concatenation of parentEntityName
 //     and childEntityName can be used as the name.
-//   - options - RelationshipsClientDeleteOptions contains the optional parameters for the RelationshipsClient.Delete method.
-func (client *RelationshipsClient) Delete(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, options *RelationshipsClientDeleteOptions) (RelationshipsClientDeleteResponse, error) {
+//   - options - RelationshipsClientBeginDeleteOptions contains the optional parameters for the RelationshipsClient.BeginDelete
+//     method.
+func (client *RelationshipsClient) BeginDelete(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, options *RelationshipsClientBeginDeleteOptions) (*runtime.Poller[RelationshipsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, healthModelName, relationshipName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RelationshipsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RelationshipsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Delete - Delete a Relationship
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RelationshipsClient) deleteOperation(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, options *RelationshipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RelationshipsClient.Delete"
+	const operationName = "RelationshipsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, healthModelName, relationshipName, options)
 	if err != nil {
-		return RelationshipsClientDeleteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RelationshipsClientDeleteResponse{}, err
+		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return RelationshipsClientDeleteResponse{}, err
+		return nil, err
 	}
-	return RelationshipsClientDeleteResponse{}, nil
+	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, _ *RelationshipsClientDeleteOptions) (*policy.Request, error) {
+func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, relationshipName string, _ *RelationshipsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/relationships/{relationshipName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -168,7 +197,7 @@ func (client *RelationshipsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -226,7 +255,7 @@ func (client *RelationshipsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -289,7 +318,7 @@ func (client *RelationshipsClient) listByHealthModelCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260101Preview)
 	if options != nil && options.Timestamp != nil {
 		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
 	}

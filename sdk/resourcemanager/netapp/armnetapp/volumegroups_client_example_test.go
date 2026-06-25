@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/VolumeGroups_Create_Oracle.json
+// Generated from example definition: 2026-04-01/VolumeGroups_Create_Oracle.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,11 +496,11 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateOracle() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/VolumeGroups_Create_SapHana.json
+// Generated from example definition: 2026-04-01/VolumeGroups_Create_SapHana.json
 func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -708,11 +708,11 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateSapHana() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01/VolumeGroups_Delete.json
+// Generated from example definition: 2026-04-01/VolumeGroups_Delete.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +729,7 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -738,7 +738,7 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VolumeGroups_Get_Oracle.json
+// Generated from example definition: 2026-04-01/VolumeGroups_Get_Oracle.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -757,7 +757,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumeGroupsClientGetResponse{
-	// 	VolumeGroupDetails: &armnetapp.VolumeGroupDetails{
+	// 	VolumeGroupDetails: armnetapp.VolumeGroupDetails{
 	// 		Name: to.Ptr("group1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
@@ -1257,7 +1257,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetOracle() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VolumeGroups_Get_SapHana.json
+// Generated from example definition: 2026-04-01/VolumeGroups_Get_SapHana.json
 func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1276,7 +1276,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetapp.VolumeGroupsClientGetResponse{
-	// 	VolumeGroupDetails: &armnetapp.VolumeGroupDetails{
+	// 	VolumeGroupDetails: armnetapp.VolumeGroupDetails{
 	// 		Name: to.Ptr("group1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/volumeGroups"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/volumeGroups/group1"),
@@ -1486,7 +1486,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetSapHana() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/VolumeGroups_List_Oracle.json
+// Generated from example definition: 2026-04-01/VolumeGroups_List_Oracle.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1532,7 +1532,7 @@ func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListOracl
 	}
 }
 
-// Generated from example definition: 2026-01-01/VolumeGroups_List_SapHana.json
+// Generated from example definition: 2026-04-01/VolumeGroups_List_SapHana.json
 func ExampleVolumeGroupsClient_NewListByNetAppAccountPager_volumeGroupsListSapHana() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ConfigurationsGet.json
+// Generated from example definition: 2026-04-01-preview/ConfigurationsGet.json
 func ExampleConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.ConfigurationsClientGetResponse{
-	// 	Configuration: &armpostgresqlflexibleservers.Configuration{
+	// 	Configuration: armpostgresqlflexibleservers.Configuration{
 	// 		Name: to.Ptr("array_nulls"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/configurations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/configurations/array_nulls"),
@@ -51,7 +51,7 @@ func ExampleConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConfigurationsListByServer.json
+// Generated from example definition: 2026-04-01-preview/ConfigurationsListByServer.json
 func ExampleConfigurationsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleConfigurationsClient_NewListByServerPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpostgresqlflexibleservers.ConfigurationsClientListByServerResponse{
 		// 	ConfigurationList: armpostgresqlflexibleservers.ConfigurationList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff//resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/configurations?api-version=2025-06-01-preview&$skiptoken=skiptoken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff//resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/configurations?api-version=2026-04-01-preview&$skiptoken=skiptoken"),
 		// 		Value: []*armpostgresqlflexibleservers.Configuration{
 		// 			{
 		// 				Name: to.Ptr("allow_in_place_tablespaces"),
@@ -7191,7 +7191,7 @@ func ExampleConfigurationsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/ConfigurationsUpdateUsingPut.json
+// Generated from example definition: 2026-04-01-preview/ConfigurationsUpdateUsingPut.json
 func ExampleConfigurationsClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7213,11 +7213,11 @@ func ExampleConfigurationsClient_BeginPut() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/ConfigurationsUpdate.json
+// Generated from example definition: 2026-04-01-preview/ConfigurationsUpdate.json
 func ExampleConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7239,6 +7239,6 @@ func ExampleConfigurationsClient_BeginUpdate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

@@ -12,7 +12,7 @@ module-version: 0.1.0
 openapi-type: "data-plane"
 output-folder: ../azquery
 security: "AADToken"
-use: "@autorest/go@4.0.0-preview.71"
+use: "@autorest/go@4.0.0-preview.80"
 inject-spans: true
 rawjson-as-bytes: true
 version: "^3.0.0"
@@ -127,23 +127,6 @@ directive:
   - from: models_serde.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?Error.+\{\s(?:.+\s)+\}\s/g, "");
-
-  # point the clients to the correct host url
-  - from: 
-         - logs_client.go
-         - metrics_client.go
-    where: $
-    transform: return $.replace(/host/g, "client.host");
-  - from: 
-         - logs_client.go
-         - metrics_client.go
-    where: $
-    transform: return $.replace(/internal \*azcore.Client/g, "host string\n internal *azcore.Client");
-
-  # delete generated host url
-  - from: constants.go
-    where: $
-    transform: return $.replace(/const host = "(.*?)"/, "");
 
   # change Table.Rows from type [][]byte to type []Row
   - from: models.go

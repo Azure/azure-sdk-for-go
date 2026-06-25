@@ -467,3 +467,81 @@ func TestServer(t *testing.T) {
 	require.Equal(t, keyVersion, wrapResp.KID.Version())
 
 }
+
+func TestSecureWrapKey(t *testing.T) {
+	const wrappedKey = "wrapped-aes-key"
+
+	fakeServer := fake.Server{
+		SecureWrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyWrapOperationParameters, options *azkeys.SecureWrapKeyOptions) (resp azfake.Responder[azkeys.SecureWrapKeyResponse], errResp azfake.ErrorResponder) {
+			require.Equal(t, keyName, name)
+			require.Empty(t, version)
+			require.NotNil(t, parameters.Algorithm)
+			require.Equal(t, azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, *parameters.Algorithm)
+
+			resp.SetResponse(http.StatusOK, azkeys.SecureWrapKeyResponse{
+				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
+					Algorithm: parameters.Algorithm,
+					Kid:       to.Ptr("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion),
+					Value:     []byte(wrappedKey),
+				},
+			}, nil)
+			return
+		},
+	}
+
+	client, err := azkeys.NewClient("https://fake-vault.vault.azure.net", &azfake.TokenCredential{}, &azkeys.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: fake.NewServerTransport(&fakeServer),
+		},
+	})
+	require.NoError(t, err)
+
+	resp, err := client.SecureWrapKey(context.Background(), keyName, "", azkeys.SecureKeyWrapOperationParameters{
+		Algorithm: to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
+	}, nil)
+	require.NoError(t, err)
+	require.Equal(t, []byte(wrappedKey), resp.Value)
+	require.Equal(t, azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, *resp.Algorithm)
+}
+
+func TestSecureUnwrapKey(t *testing.T) {
+	const wrappedKey = "wrapped-aes-key"
+	const unwrappedKey = "unwrapped-aes-key"
+
+	fakeServer := fake.Server{
+		SecureUnwrapKey: func(ctx context.Context, name string, version string, parameters azkeys.SecureKeyUnWrapOperationParameters, options *azkeys.SecureUnwrapKeyOptions) (resp azfake.Responder[azkeys.SecureUnwrapKeyResponse], errResp azfake.ErrorResponder) {
+			require.Equal(t, keyName, name)
+			require.Empty(t, version)
+			require.NotNil(t, parameters.Algorithm)
+			require.Equal(t, azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, *parameters.Algorithm)
+			require.Equal(t, []byte(wrappedKey), parameters.Value)
+			require.NotNil(t, parameters.TargetAttestationToken)
+			require.Equal(t, "attestation-token", *parameters.TargetAttestationToken)
+
+			resp.SetResponse(http.StatusOK, azkeys.SecureUnwrapKeyResponse{
+				SecureKeyOperationResult: azkeys.SecureKeyOperationResult{
+					Algorithm: parameters.Algorithm,
+					Kid:       to.Ptr("https://fake.vault.azure.net/keys/" + keyName + "/" + keyVersion),
+					Value:     []byte(unwrappedKey),
+				},
+			}, nil)
+			return
+		},
+	}
+
+	client, err := azkeys.NewClient("https://fake-vault.vault.azure.net", &azfake.TokenCredential{}, &azkeys.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: fake.NewServerTransport(&fakeServer),
+		},
+	})
+	require.NoError(t, err)
+
+	resp, err := client.SecureUnwrapKey(context.Background(), keyName, "", azkeys.SecureKeyUnWrapOperationParameters{
+		Algorithm:              to.Ptr(azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256),
+		TargetAttestationToken: to.Ptr("attestation-token"),
+		Value:                  []byte(wrappedKey),
+	}, nil)
+	require.NoError(t, err)
+	require.Equal(t, []byte(unwrappedKey), resp.Value)
+	require.Equal(t, azkeys.JSONWebKeyWrapAlgorithmRSAOAEP256, *resp.Algorithm)
+}

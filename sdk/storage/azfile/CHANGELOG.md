@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.7.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,11 @@
 
 ### Other Changes
 * Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+
+## 1.7.0 (2026-06-15)
+
+### Features Added
+* Includes all features from `1.7.0-beta.1`
 
 ## 1.6.0 (2026-05-14)
 

@@ -18,6 +18,8 @@ import (
 
 // MHSMPrivateLinkResourcesClient contains the methods for the MHSMPrivateLinkResources group.
 // Don't use this type directly, use NewMHSMPrivateLinkResourcesClient() instead.
+//
+// Generated from API version 2026-02-01
 type MHSMPrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewMHSMPrivateLinkResourcesClient(subscriptionID string, credential azcore.
 
 // ListByMHSMResource - Gets the private link resources supported for the managed hsm pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the managed HSM Pool.
 //   - options - MHSMPrivateLinkResourcesClientListByMHSMResourceOptions contains the optional parameters for the MHSMPrivateLinkResourcesClient.ListByMHSMResource
@@ -89,8 +89,8 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

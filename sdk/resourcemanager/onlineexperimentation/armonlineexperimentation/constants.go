@@ -4,6 +4,10 @@
 
 package armonlineexperimentation
 
+const (
+	version20250531Preview string = "2025-05-31-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

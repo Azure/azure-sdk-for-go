@@ -1,12 +1,8 @@
 # Release History
 
-## 1.0.1-beta.1 (2026-06-25)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Added new system event `LifecycleHookEventsEventData` for Virtual Machine Scale Set lifecycle hook events, along with supporting model and enum types.
-- Added retention policy support for Azure Communication Services chat thread events, including the `AcsChatRetentionPolicy`, `AcsChatRetentionPolicyKind`, and `AcsChatThreadDeletedReasonType` types and `RetentionPolicy`/`Reason` fields on the relevant chat thread events.
-- Added new properties to existing Azure Communication Services system events.
 
 ### Breaking Changes
 

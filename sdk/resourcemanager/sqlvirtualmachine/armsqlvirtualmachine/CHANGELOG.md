@@ -3,6 +3,7 @@
 ## 1.0.0 (2026-06-24)
 ### Other Changes
 
+- General availability of the `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine` package.
 
 ## 0.11.0 (2026-03-19)
 ### Breaking Changes

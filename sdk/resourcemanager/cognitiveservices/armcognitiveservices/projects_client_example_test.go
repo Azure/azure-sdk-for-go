@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CreateProject.json
+// Generated from example definition: 2026-05-15-preview/CreateProject.json
 func ExampleProjectsClient_BeginCreate_createProject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleProjectsClient_BeginCreate_createProject() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CreateProjectMin.json
+// Generated from example definition: 2026-05-15-preview/CreateProjectMin.json
 func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteProject.json
+// Generated from example definition: 2026-05-15-preview/DeleteProject.json
 func ExampleProjectsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleProjectsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetProject.json
+// Generated from example definition: 2026-05-15-preview/GetProject.json
 func ExampleProjectsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleProjectsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListProjects.json
+// Generated from example definition: 2026-05-15-preview/ListProjects.json
 func ExampleProjectsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +263,7 @@ func ExampleProjectsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateProjects.json
+// Generated from example definition: 2026-05-15-preview/UpdateProjects.json
 func ExampleProjectsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

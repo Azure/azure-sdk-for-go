@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-15-preview/ProjectConnection/create.json
+// Generated from example definition: 2026-05-15-preview/ProjectConnection/create.json
 func ExampleProjectConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleProjectConnectionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ProjectConnection/delete.json
+// Generated from example definition: 2026-05-15-preview/ProjectConnection/delete.json
 func ExampleProjectConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleProjectConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ProjectConnection/get.json
+// Generated from example definition: 2026-05-15-preview/ProjectConnection/get.json
 func ExampleProjectConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleProjectConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ProjectConnection/list.json
+// Generated from example definition: 2026-05-15-preview/ProjectConnection/list.json
 func ExampleProjectConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleProjectConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ProjectConnection/update.json
+// Generated from example definition: 2026-05-15-preview/ProjectConnection/update.json
 func ExampleProjectConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

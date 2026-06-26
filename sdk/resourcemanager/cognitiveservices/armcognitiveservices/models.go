@@ -1646,6 +1646,9 @@ type DeploymentProperties struct {
 	// supported on Standard, DataZoneStandard, and GlobalStandard SKUs.
 	ServiceTier *ServiceTier
 
+	// Speculative decoding settings for the deployment. This configuration applies to Fireworks model formats.
+	SpeculativeDecoding *DeploymentSpeculativeDecoding
+
 	// Specifies the deployment name that should serve requests when the request would have otherwise been throttled due to reaching
 	// current deployment throughput limit.
 	SpilloverDeploymentName *string
@@ -1712,6 +1715,15 @@ type DeploymentSizeCapacity struct {
 
 	// READ-ONLY; The total available capacity for this deployment size.
 	TotalAvailableCapacity *int32
+}
+
+// DeploymentSpeculativeDecoding - Speculative decoding settings for a deployment.
+type DeploymentSpeculativeDecoding struct {
+	// REQUIRED; Draft model used to generate speculative decoding tokens.
+	DraftModel *DeploymentModel
+
+	// The number of draft tokens attempted per speculation step.
+	DraftTokenCount *int32
 }
 
 // DomainAvailability - Domain availability.
@@ -2067,9 +2079,6 @@ type ManagedComputeCapacityProperties struct {
 
 	// READ-ONLY; Capacity information broken down by deployment size.
 	DeploymentSizeCapacities []*DeploymentSizeCapacity
-
-	// READ-ONLY; The Azure region where the capacity is available.
-	Location *string
 }
 
 // ManagedComputeDeployment - Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
@@ -2149,6 +2158,10 @@ type ManagedComputeDeploymentProperties struct {
 
 	// READ-ONLY; Read-only. Number of accelerators (GPUs) consumed by each model instance, sourced from the deployment template.
 	AcceleratorsPerInstance *int32
+
+	// READ-ONLY; Deployment capabilities represented as key-value pairs.
+	// Example: { assetsV2: "true" }.
+	Capabilities map[string]*string
 
 	// READ-ONLY; Read-only. Status message and timestamp from the last provisioning operation.
 	ProvisioningDetails *ManagedComputeDeploymentProvisioningDetails
@@ -3510,6 +3523,145 @@ type RaiContentFilterProperties struct {
 	Source *RaiPolicyContentSource
 }
 
+// RaiEgressHeaderTransform - A header transformation applied to matched traffic.
+// For Set or Insert operations, exactly one of value or valueRef must be provided.
+// For Remove operations, neither value nor valueRef should be set.
+type RaiEgressHeaderTransform struct {
+	// REQUIRED; The HTTP header name (e.g., "Authorization", "X-Custom-Auth").
+	Name *string
+
+	// REQUIRED; The operation to perform on this header.
+	Operation *RaiEgressHeaderOperation
+
+	// A static header value. Write-only: accepted on create/update, never returned on read.
+	// If omitted on update, the existing value is preserved. Use this for non-sensitive values;
+	// for credentials, use valueRef instead.
+	Value *string
+
+	// A dynamic header value resolved at request time from a secret or managed identity.
+	ValueRef *RaiEgressHeaderValueRef
+}
+
+// RaiEgressHeaderValueRef - A dynamic source for a header value. Exactly one of secretRef or managedIdentityRef must be set.
+type RaiEgressHeaderValueRef struct {
+	// Resolve the value from a managed-identity token.
+	ManagedIdentityRef *RaiEgressManagedIdentityRef
+
+	// Resolve the value from a stored secret.
+	SecretRef *RaiEgressSecretRef
+}
+
+// RaiEgressManagedIdentityRef - A reference to a managed-identity token used as a header value.
+type RaiEgressManagedIdentityRef struct {
+	// REQUIRED; The resource/audience the token is requested for.
+	Resource *string
+
+	// Optional format for the resolved token; "{value}" is the placeholder, e.g. "Bearer {value}".
+	Format *string
+}
+
+// RaiEgressPolicyConfig - Egress (outbound network) policy configuration nested within an RAI policy.
+// Controls which external endpoints sandboxed agents can reach and what
+// transformations (header injection, URL rewrite) are applied to matching traffic.
+type RaiEgressPolicyConfig struct {
+	// The default action when no user-defined rules match.
+	// Deny blocks unmatched traffic; Allow permits it. Transform and Rewrite rules
+	// are always applied to their matched traffic regardless of this setting —
+	// defaultAction only governs traffic that does not match any rule.
+	// If omitted on create, the server defaults to Deny (fail-closed). On subsequent
+	// GET requests, the server always returns the effective value.
+	DefaultAction *RaiEgressDefaultAction
+
+	// Description of the egress policy.
+	Description *string
+
+	// The enforcement mode for egress rules.
+	// If omitted on create, the server defaults to Enforced. On subsequent GET
+	// requests, the server always returns the effective mode.
+	Mode *RaiEgressMode
+
+	// Ordered list of egress rules. First matching rule wins.
+	// Rules are evaluated in declaration order; the first rule whose match criteria
+	// are satisfied determines the action taken on the request.
+	Rules []*RaiEgressRule
+}
+
+// RaiEgressRewriteTarget - Where a Rewrite action sends matched traffic. At least one field must be set;
+// omitted fields retain the original request values. This constraint is enforced
+// by the server (400 Bad Request if all fields are omitted).
+type RaiEgressRewriteTarget struct {
+	// Target host. Original host is kept if omitted.
+	Host *string
+
+	// Target path (literal string). Original path (and query) is kept if omitted.
+	Path *string
+
+	// Target scheme. Original scheme is kept if omitted.
+	Scheme *RaiEgressScheme
+}
+
+// RaiEgressRule - A single egress rule. Rules are evaluated in order; first match wins.
+type RaiEgressRule struct {
+	// REQUIRED; The action to take when this rule matches, including the action type and any
+	// type-specific configuration (headers for Transform, rewrite target for Rewrite).
+	Action *RaiEgressRuleAction
+
+	// REQUIRED; Name of the rule. Must be unique within the policy.
+	Name *string
+
+	// REQUIRED; The type of rule (e.g., Fqdn). Determines how match criteria are interpreted.
+	RuleType *RaiEgressRuleType
+
+	// Description of the rule.
+	Description *string
+
+	// The match criteria for this rule.
+	Match *RaiEgressRuleMatch
+}
+
+// RaiEgressRuleAction - The action an egress rule takes when it matches.
+// - Allow/Deny: no additional fields needed; headers and rewrite must not be set.
+// - Transform: headers is required with at least one entry; rewrite must not be set.
+// - Rewrite: rewrite is required with at least one of scheme/host/path;
+// headers is optional for injecting headers alongside the redirect.
+type RaiEgressRuleAction struct {
+	// REQUIRED; The kind of action.
+	ActionType *RaiEgressRuleActionType
+
+	// Header transforms to apply. Required for Transform; optional for Rewrite;
+	// not allowed for Allow or Deny.
+	Headers []*RaiEgressHeaderTransform
+
+	// Destination override. Required for Rewrite; not allowed otherwise.
+	Rewrite *RaiEgressRewriteTarget
+}
+
+// RaiEgressRuleMatch - The match criteria for an egress rule.
+// If both host and path are omitted, the rule matches all traffic.
+// Host uses DNS wildcard syntax (e.g., "*.openai.com" matches "api.openai.com").
+// Path uses URI prefix matching with '*' as a single-segment wildcard (e.g., "/v1/*" matches "/v1/chat").
+type RaiEgressRuleMatch struct {
+	// Host pattern to match using DNS wildcard syntax (e.g., "*.openai.com").
+	// A leading "*." matches any subdomain. Omit to match all hosts.
+	Host *string
+
+	// Path pattern to match using URI prefix with '*' wildcard (e.g., "/v1/*").
+	// Omit to match all paths.
+	Path *string
+}
+
+// RaiEgressSecretRef - A reference to a stored secret used as a header value.
+type RaiEgressSecretRef struct {
+	// REQUIRED; Identifier of the secret to inject.
+	SecretID *string
+
+	// Optional format for the resolved value; "{value}" is the placeholder, e.g. "Bearer {value}".
+	Format *string
+
+	// Optional key within the secret.
+	SecretKey *string
+}
+
 // RaiExternalSafetyProviderResult - The list of cognitive services RAI External Safety Providers.
 type RaiExternalSafetyProviderResult struct {
 	// The link used to get the next page of Rai External Safety Provider.
@@ -3646,6 +3798,10 @@ type RaiPolicyProperties struct {
 
 	// The list of custom Blocklist.
 	CustomBlocklists []*CustomBlocklistConfig
+
+	// Egress (outbound network) policy controlling which external endpoints sandboxed
+	// agents can reach. Includes rules with Allow/Deny/Transform/Rewrite actions.
+	EgressPolicy *RaiEgressPolicyConfig
 
 	// Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter =3. Please
 	// use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.

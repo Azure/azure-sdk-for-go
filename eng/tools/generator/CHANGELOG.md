@@ -1,5 +1,11 @@
 # Release History
 
+## 0.4.16 (2026-06-29)
+
+### Features Added
+
+- Added `--filter-test` flag to the `build` command. When provided, hand-written test files (those without the generated-code marker) are excluded from `go build` and `go vet`.
+
 ## 0.4.15 (2026-06-12)
 
 ### Bugs Fixed

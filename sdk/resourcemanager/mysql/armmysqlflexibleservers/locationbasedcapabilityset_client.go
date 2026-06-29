@@ -18,6 +18,8 @@ import (
 
 // LocationBasedCapabilitySetClient contains the methods for the LocationBasedCapabilitySet group.
 // Don't use this type directly, use NewLocationBasedCapabilitySetClient() instead.
+//
+// Generated from API version 2024-12-30
 type LocationBasedCapabilitySetClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewLocationBasedCapabilitySetClient(subscriptionID string, credential azcor
 
 // Get - Get capabilities at specified location in a given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - locationName - The name of the location.
 //   - capabilitySetName - Name of capability set
 //   - options - LocationBasedCapabilitySetClientGetOptions contains the optional parameters for the LocationBasedCapabilitySetClient.Get
@@ -89,8 +89,8 @@ func (client *LocationBasedCapabilitySetClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -105,8 +105,6 @@ func (client *LocationBasedCapabilitySetClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Get capabilities at specified location in a given subscription.
-//
-// Generated from API version 2024-12-01-preview
 //   - locationName - The name of the location.
 //   - options - LocationBasedCapabilitySetClientListOptions contains the optional parameters for the LocationBasedCapabilitySetClient.NewListPager
 //     method.
@@ -149,8 +147,8 @@ func (client *LocationBasedCapabilitySetClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

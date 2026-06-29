@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/OperationResults_Get.json
+// Generated from example definition: 2024-12-30/OperationResults_Get.json
 func ExampleOperationResultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleOperationResultsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.OperationResultsClientGetResponse{
-	// 	OperationStatusExtendedResult: &armmysqlflexibleservers.OperationStatusExtendedResult{
+	// 	OperationStatusExtendedResult: armmysqlflexibleservers.OperationStatusExtendedResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-29T07:37:05.6406008Z"); return t}()),
 	// 		Error: &armmysqlflexibleservers.ErrorDetail{

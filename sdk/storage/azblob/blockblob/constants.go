@@ -35,6 +35,21 @@ func PossibleBlockListTypeValues() []BlockListType {
 	return generated.PossibleBlockListTypeValues()
 }
 
+// BlockListIncludeItem defines values for the GetBlockList include parameter, selecting additional
+// per-block datasets (such as content hashes) to return. Requires service-side support and is only
+// honored for BlockListTypeCommitted.
+type BlockListIncludeItem = generated.BlockListIncludeItem
+
+const (
+	BlockListIncludeItemCrc64  BlockListIncludeItem = generated.BlockListIncludeItemCrc64
+	BlockListIncludeItemSha256 BlockListIncludeItem = generated.BlockListIncludeItemSha256
+)
+
+// PossibleBlockListIncludeItemValues returns the possible values for the BlockListIncludeItem const type.
+func PossibleBlockListIncludeItemValues() []BlockListIncludeItem {
+	return generated.PossibleBlockListIncludeItemValues()
+}
+
 // BlobCopySourceTags - can be 'COPY' or 'REPLACE'
 type BlobCopySourceTags = generated.BlobCopySourceTags
 

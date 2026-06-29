@@ -232,6 +232,11 @@ type CommitBlockListOptions struct {
 type GetBlockListOptions struct {
 	Snapshot         *string
 	AccessConditions *blob.AccessConditions
+
+	// Include specifies additional per-block datasets to return, such as the crc64 and sha256 content
+	// hashes. This requires service-side support (feature-flagged) and is only honored for
+	// BlockListTypeCommitted.
+	Include []BlockListIncludeItem
 }
 
 func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOptions, *generated.LeaseAccessConditions, *generated.ModifiedAccessConditions) {
@@ -240,7 +245,7 @@ func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOp
 	}
 
 	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
-	return &generated.BlockBlobClientGetBlockListOptions{Snapshot: o.Snapshot}, leaseAccessConditions, modifiedAccessConditions
+	return &generated.BlockBlobClientGetBlockListOptions{Snapshot: o.Snapshot, Include: o.Include}, leaseAccessConditions, modifiedAccessConditions
 }
 
 // ------------------------------------------------------------

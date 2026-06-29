@@ -8,6 +8,7 @@ package generated
 import (
 	"context"
 	"encoding/base64"
+	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -254,6 +255,9 @@ func (client *BlockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("blocklisttype", string(listType))
 	reqQP.Set("comp", "blocklist")
+	if options != nil && options.Include != nil {
+		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
+	}
 	if options != nil && options.Snapshot != nil {
 		reqQP.Set("snapshot", *options.Snapshot)
 	}

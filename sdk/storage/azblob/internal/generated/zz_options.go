@@ -690,6 +690,9 @@ type BlockBlobClientCommitBlockListOptions struct {
 
 // BlockBlobClientGetBlockListOptions contains the optional parameters for the BlockBlobClient.GetBlockList method.
 type BlockBlobClientGetBlockListOptions struct {
+	// Specifies one or more datasets to include in the response, such as the per-block crc64 and sha256 content hashes.
+	Include []BlockListIncludeItem
+
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string

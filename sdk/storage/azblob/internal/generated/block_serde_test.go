@@ -4,6 +4,7 @@
 package generated
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/xml"
 	"testing"
@@ -81,4 +82,31 @@ func TestBlockListUnmarshalXMLWithoutHashes(t *testing.T) {
 	require.Nil(t, block.Offset)
 	require.Nil(t, block.Crc64)
 	require.Nil(t, block.Sha256)
+}
+
+// TestGetBlockListCreateRequestInclude verifies that GetBlockList emits the
+// include=crc64,sha256 query parameter (which XStore gates the hashes on) only
+// when the Include option is set, and omits it otherwise for back-compat.
+func TestGetBlockListCreateRequestInclude(t *testing.T) {
+	client := &BlockBlobClient{endpoint: "https://acct.blob.core.windows.net/container/blob"}
+
+	req, err := client.getBlockListCreateRequest(
+		context.Background(),
+		BlockListTypeCommitted,
+		&BlockBlobClientGetBlockListOptions{
+			Include: []BlockListIncludeItem{BlockListIncludeItemCrc64, BlockListIncludeItemSha256},
+		},
+		nil, nil)
+	require.NoError(t, err)
+	q := req.Raw().URL.Query()
+	require.Equal(t, "committed", q.Get("blocklisttype"))
+	require.Equal(t, "blocklist", q.Get("comp"))
+	require.Equal(t, "crc64,sha256", q.Get("include"))
+
+	req, err = client.getBlockListCreateRequest(
+		context.Background(),
+		BlockListTypeCommitted,
+		nil, nil, nil)
+	require.NoError(t, err)
+	require.Empty(t, req.Raw().URL.Query().Get("include"))
 }

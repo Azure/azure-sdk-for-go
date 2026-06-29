@@ -4,7 +4,7 @@
 
 ### Features Added
 
-* Added `Offset`, `Crc64`, and `Sha256` fields to `Block`, exposing the per-block offset and content hashes returned by `BlockBlobClient.GetBlockList` when the service includes them in the response.
+* Added `Offset`, `Crc64`, and `Sha256` fields to `Block`, and a new `Include` option (`BlockListIncludeItemCrc64`/`BlockListIncludeItemSha256`) on `GetBlockListOptions` that emits `include=crc64,sha256`, exposing the per-block offset and content hashes returned by `BlockBlobClient.GetBlockList` when the service supports it (committed block lists only).
 
 ### Breaking Changes
 

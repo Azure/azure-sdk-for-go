@@ -105,6 +105,32 @@ directive:
     };
 ```
 
+### Add include query parameter to GetBlockList (per-block crc64/sha256 hashes)
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.GetBlockListInclude = {
+      "name": "include",
+      "in": "query",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string",
+        "enum": ["crc64", "sha256"],
+        "x-ms-enum": { "name": "BlockListIncludeItem", "modelAsString": false }
+      },
+      "x-ms-parameter-location": "method",
+      "description": "Specifies one or more datasets to include in the response, such as the per-block crc64 and sha256 content hashes. Requires service-side support and is only honored for committed block lists."
+    };
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=blocklist"].get
+  transform: >
+    $.parameters.push({ "$ref": "#/parameters/GetBlockListInclude" });
+```
+
 ### Undo breaking change with BlobName 
 ``` yaml
 directive:

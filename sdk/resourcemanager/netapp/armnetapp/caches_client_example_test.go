@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/Caches_CreateOrUpdate.json
+// Generated from example definition: 2026-04-15-preview/Caches_CreateOrUpdate.json
 func ExampleCachesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleCachesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Caches_Delete.json
+// Generated from example definition: 2026-04-15-preview/Caches_Delete.json
 func ExampleCachesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleCachesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/Caches_Get.json
+// Generated from example definition: 2026-04-15-preview/Caches_Get.json
 func ExampleCachesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleCachesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Caches_List.json
+// Generated from example definition: 2026-04-15-preview/Caches_List.json
 func ExampleCachesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +220,7 @@ func ExampleCachesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/Caches_ListPeeringPassphrases.json
+// Generated from example definition: 2026-04-15-preview/Caches_ListPeeringPassphrases.json
 func ExampleCachesClient_ListPeeringPassphrases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleCachesClient_ListPeeringPassphrases() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Caches_PoolChange.json
+// Generated from example definition: 2026-04-15-preview/Caches_PoolChange.json
 func ExampleCachesClient_BeginPoolChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleCachesClient_BeginPoolChange() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Caches_ResetSmbPassword.json
+// Generated from example definition: 2026-04-15-preview/Caches_ResetSmbPassword.json
 func ExampleCachesClient_BeginResetSmbPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,7 +351,7 @@ func ExampleCachesClient_BeginResetSmbPassword() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/Caches_Update.json
+// Generated from example definition: 2026-04-15-preview/Caches_Update.json
 func ExampleCachesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

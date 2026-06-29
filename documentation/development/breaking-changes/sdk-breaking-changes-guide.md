@@ -433,6 +433,7 @@ op test(
 Use client customization to restore the original parameter order with `@@override` and `reorderParameters`. List the parameter names in the desired (original) order:
 
 ```tsp
+#suppress "experimental-feature" "using reorderParameters"
 @@override(MyService.test, reorderParameters(MyService.test, #["param1", "param2"]));
 ```
 

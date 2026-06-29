@@ -27,7 +27,7 @@ type ChangelogResult struct {
 	Version           string `json:"version,omitempty"`
 	ReleaseDate       string `json:"release_date,omitempty"`
 	HasBreakingChange bool   `json:"hasBreakingChange"`
-	ChangelogMD       string `json:"changelog_md,omitempty"`
+	Changes           string `json:"changes,omitempty"`
 }
 
 // Command returns the changelog command
@@ -119,8 +119,8 @@ Examples:
 						fmt.Printf("Version: %s\n", result.Version)
 					}
 					fmt.Printf("Release Date: %s\n", result.ReleaseDate)
-					if verbose && result.ChangelogMD != "" {
-						fmt.Printf("\nGenerated Changelog:\n%s\n", result.ChangelogMD)
+					if verbose && result.Changes != "" {
+						fmt.Printf("\nGenerated Changelog:\n%s\n", result.Changes)
 					}
 				} else {
 					fmt.Printf("✗ Changelog update failed: %s\n", result.Message)
@@ -198,7 +198,7 @@ func handleNewPackage(modulePath string, sdkRepo repo.SDKRepository, result *Cha
 	}
 
 	result.Version = "0.1.0"
-	result.ChangelogMD = "New package"
+	result.Changes = "New package"
 	result.HasBreakingChange = false
 
 	if reportOnly {
@@ -240,7 +240,7 @@ func handleExistingPackage(modulePath string, sdkRepo repo.SDKRepository, result
 
 	if reportOnly {
 		// In report-only mode, do not modify CHANGELOG.md or compute a new version.
-		result.ChangelogMD = changelogResult.ChangelogData.ToCompactMarkdown()
+		result.Changes = changelogResult.ChangelogData.ToCompactMarkdown()
 		return nil
 	}
 
@@ -262,7 +262,7 @@ func handleExistingPackage(modulePath string, sdkRepo repo.SDKRepository, result
 		return fmt.Errorf("failed to update changelog file: %v", err)
 	}
 
-	result.ChangelogMD = changelogMd
+	result.Changes = changelogMd
 
 	if verbose {
 		log.Printf("Successfully updated changelog for version %s", newVersion.String())

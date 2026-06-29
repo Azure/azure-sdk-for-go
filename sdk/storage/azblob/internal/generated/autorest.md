@@ -82,6 +82,29 @@ directive:
       };
 ```
 
+### Add Offset, Crc64, and Sha256 to the Block definition
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.Block.properties["Offset"] = {
+      "type": "integer",
+      "format": "int64",
+      "description": "The block's start offset in the blob, in bytes."
+    };
+    $.Block.properties["Crc64"] = {
+      "type": "string",
+      "format": "byte",
+      "description": "The CRC64 hash of the block."
+    };
+    $.Block.properties["Sha256"] = {
+      "type": "string",
+      "format": "byte",
+      "description": "The SHA256 hash of the block."
+    };
+```
+
 ### Undo breaking change with BlobName 
 ``` yaml
 directive:

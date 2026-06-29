@@ -172,6 +172,15 @@ type Block struct {
 
 	// REQUIRED; The block size in bytes.
 	Size *int64 `xml:"Size"`
+
+	// The CRC64 hash of the block.
+	Crc64 []byte `xml:"Crc64"`
+
+	// The block's start offset in the blob, in bytes.
+	Offset *int64 `xml:"Offset"`
+
+	// The SHA256 hash of the block.
+	Sha256 []byte `xml:"Sha256"`
 }
 
 type BlockList struct {

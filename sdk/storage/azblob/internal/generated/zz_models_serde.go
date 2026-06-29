@@ -229,6 +229,53 @@ func (b BlobTags) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type Block.
+func (b Block) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias Block
+	aux := &struct {
+		*alias
+		Crc64  *string `xml:"Crc64"`
+		Sha256 *string `xml:"Sha256"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.Crc64 != nil {
+		encodedCrc64 := runtime.EncodeByteArray(b.Crc64, runtime.Base64StdFormat)
+		aux.Crc64 = &encodedCrc64
+	}
+	if b.Sha256 != nil {
+		encodedSha256 := runtime.EncodeByteArray(b.Sha256, runtime.Base64StdFormat)
+		aux.Sha256 = &encodedSha256
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type Block.
+func (b *Block) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias Block
+	aux := &struct {
+		*alias
+		Crc64  *string `xml:"Crc64"`
+		Sha256 *string `xml:"Sha256"`
+	}{
+		alias: (*alias)(b),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.Crc64 != nil {
+		if err := runtime.DecodeByteArray(*aux.Crc64, &b.Crc64, runtime.Base64StdFormat); err != nil {
+			return err
+		}
+	}
+	if aux.Sha256 != nil {
+		if err := runtime.DecodeByteArray(*aux.Sha256, &b.Sha256, runtime.Base64StdFormat); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // MarshalXML implements the xml.Marshaller interface for type BlockList.
 func (b BlockList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias BlockList

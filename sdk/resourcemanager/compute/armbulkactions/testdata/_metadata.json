@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.Compute": "2026-06-06"
+  },
+  "emitterVersion": "0.14.2"
+}

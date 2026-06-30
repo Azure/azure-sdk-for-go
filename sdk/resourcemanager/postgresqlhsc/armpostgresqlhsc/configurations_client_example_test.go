@@ -31,7 +31,7 @@ func ExampleConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ConfigurationsClientGetResponse{
-	// 	Configuration: &armpostgresqlhsc.Configuration{
+	// 	Configuration: armpostgresqlhsc.Configuration{
 	// 		Name: to.Ptr("client_encoding"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/configurations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster/configurations/client_encoding"),
@@ -85,7 +85,7 @@ func ExampleConfigurationsClient_GetCoordinator() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ConfigurationsClientGetCoordinatorResponse{
-	// 	ServerConfiguration: &armpostgresqlhsc.ServerConfiguration{
+	// 	ServerConfiguration: armpostgresqlhsc.ServerConfiguration{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster/coordinatorConfigurations/array_nulls"),
 	// 		Name: to.Ptr("array_nulls"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/coordinatorConfigurations"),
@@ -123,7 +123,7 @@ func ExampleConfigurationsClient_GetNode() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ConfigurationsClientGetNodeResponse{
-	// 	ServerConfiguration: &armpostgresqlhsc.ServerConfiguration{
+	// 	ServerConfiguration: armpostgresqlhsc.ServerConfiguration{
 	// 		Name: to.Ptr("array_nulls"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/nodeConfigurations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster/nodeConfigurations/array_nulls"),
@@ -423,13 +423,13 @@ func ExampleConfigurationsClient_BeginUpdateOnCoordinator() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ConfigurationsClientUpdateOnCoordinatorResponse{
-	// 	ServerConfiguration: &armpostgresqlhsc.ServerConfiguration{
+	// 	ServerConfiguration: armpostgresqlhsc.ServerConfiguration{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster/configurations/array_nulls"),
 	// 		Name: to.Ptr("array_nulls"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/configurations/coordinator"),
@@ -476,13 +476,13 @@ func ExampleConfigurationsClient_BeginUpdateOnNode() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ConfigurationsClientUpdateOnNodeResponse{
-	// 	ServerConfiguration: &armpostgresqlhsc.ServerConfiguration{
+	// 	ServerConfiguration: armpostgresqlhsc.ServerConfiguration{
 	// 		Name: to.Ptr("array_nulls"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/configurations/node"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster/configurations/array_nulls"),

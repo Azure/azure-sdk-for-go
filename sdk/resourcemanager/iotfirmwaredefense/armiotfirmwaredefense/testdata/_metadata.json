@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.IoTFirmwareDefense": "2025-08-02"
   },
-  "emitterVersion": "0.14.1"
+  "emitterVersion": "0.14.2"
 }

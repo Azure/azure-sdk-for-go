@@ -18,6 +18,8 @@ import (
 
 // AzureMonitorWorkspacesClient contains the methods for the AzureMonitorWorkspaces group.
 // Don't use this type directly, use NewAzureMonitorWorkspacesClient() instead.
+//
+// Generated from API version 2025-10-03
 type AzureMonitorWorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAzureMonitorWorkspacesClient(subscriptionID string, credential azcore.To
 
 // CreateOrUpdate - Creates or updates an Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - resource - Properties that need to be specified to create a new Azure Monitor Workspace
@@ -90,8 +90,8 @@ func (client *AzureMonitorWorkspacesClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -111,8 +111,6 @@ func (client *AzureMonitorWorkspacesClient) createOrUpdateHandleResponse(resp *h
 
 // BeginDelete - Deletes an Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - options - AzureMonitorWorkspacesClientBeginDeleteOptions contains the optional parameters for the AzureMonitorWorkspacesClient.BeginDelete
@@ -136,8 +134,6 @@ func (client *AzureMonitorWorkspacesClient) BeginDelete(ctx context.Context, res
 
 // Delete - Deletes an Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 func (client *AzureMonitorWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureMonitorWorkspacesClient.BeginDelete"
@@ -179,15 +175,13 @@ func (client *AzureMonitorWorkspacesClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Returns the specified Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - options - AzureMonitorWorkspacesClientGetOptions contains the optional parameters for the AzureMonitorWorkspacesClient.Get
@@ -234,8 +228,8 @@ func (client *AzureMonitorWorkspacesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -250,8 +244,6 @@ func (client *AzureMonitorWorkspacesClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByResourceGroupPager - Lists all Azure Monitor Workspaces in the specified resource group
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AzureMonitorWorkspacesClientListByResourceGroupOptions contains the optional parameters for the AzureMonitorWorkspacesClient.NewListByResourceGroupPager
 //     method.
@@ -294,8 +286,8 @@ func (client *AzureMonitorWorkspacesClient) listByResourceGroupCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -310,8 +302,6 @@ func (client *AzureMonitorWorkspacesClient) listByResourceGroupHandleResponse(re
 }
 
 // NewListBySubscriptionPager - Lists all Azure Monitor Workspaces in the specified subscription
-//
-// Generated from API version 2025-10-03
 //   - options - AzureMonitorWorkspacesClientListBySubscriptionOptions contains the optional parameters for the AzureMonitorWorkspacesClient.NewListBySubscriptionPager
 //     method.
 func (client *AzureMonitorWorkspacesClient) NewListBySubscriptionPager(options *AzureMonitorWorkspacesClientListBySubscriptionOptions) *runtime.Pager[AzureMonitorWorkspacesClientListBySubscriptionResponse] {
@@ -349,8 +339,8 @@ func (client *AzureMonitorWorkspacesClient) listBySubscriptionCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -366,8 +356,6 @@ func (client *AzureMonitorWorkspacesClient) listBySubscriptionHandleResponse(res
 
 // Update - Updates part of an Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - properties - The resource properties to be updated.
@@ -415,8 +403,8 @@ func (client *AzureMonitorWorkspacesClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

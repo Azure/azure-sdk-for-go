@@ -18,6 +18,8 @@ import (
 
 // IssueClient contains the methods for the Issue group.
 // Don't use this type directly, use NewIssueClient() instead.
+//
+// Generated from API version 2025-10-03
 type IssueClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewIssueClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // AddInvestigationResult - Adds investigation result
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -95,8 +95,8 @@ func (client *IssueClient) addInvestigationResultCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -116,8 +116,6 @@ func (client *IssueClient) addInvestigationResultHandleResponse(resp *http.Respo
 
 // AddOrUpdateAlerts - Add or update alerts associated with an issue
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -169,8 +167,8 @@ func (client *IssueClient) addOrUpdateAlertsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -190,8 +188,6 @@ func (client *IssueClient) addOrUpdateAlertsHandleResponse(resp *http.Response) 
 
 // AddOrUpdateResources - Add or update resources associated with an issue
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -244,8 +240,8 @@ func (client *IssueClient) addOrUpdateResourcesCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -265,8 +261,6 @@ func (client *IssueClient) addOrUpdateResourcesHandleResponse(resp *http.Respons
 
 // Create - Create a new issue or updates an existing one
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -318,11 +312,11 @@ func (client *IssueClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
+	reqQP.Set("api-version", version20251003)
 	if options != nil && options.Related != nil {
 		reqQP.Set("related", *options.Related)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -342,8 +336,6 @@ func (client *IssueClient) createHandleResponse(resp *http.Response) (IssueClien
 
 // Delete - Delete an issue
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -393,15 +385,13 @@ func (client *IssueClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // FetchBackgroundVisualization - Fetch the background visualization of the issue
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -453,8 +443,8 @@ func (client *IssueClient) fetchBackgroundVisualizationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -470,8 +460,6 @@ func (client *IssueClient) fetchBackgroundVisualizationHandleResponse(resp *http
 
 // FetchInvestigationResult - Fetch investigation result
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -524,8 +512,8 @@ func (client *IssueClient) fetchInvestigationResultCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -545,8 +533,6 @@ func (client *IssueClient) fetchInvestigationResultHandleResponse(resp *http.Res
 
 // Get - Get issue properties
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -597,8 +583,8 @@ func (client *IssueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -613,8 +599,6 @@ func (client *IssueClient) getHandleResponse(resp *http.Response) (IssueClientGe
 }
 
 // NewListPager - List all issues under the parent
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - options - IssueClientListOptions contains the optional parameters for the IssueClient.NewListPager method.
@@ -661,8 +645,8 @@ func (client *IssueClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -678,8 +662,6 @@ func (client *IssueClient) listHandleResponse(resp *http.Response) (IssueClientL
 
 // ListAlerts - List all alerts in the issue - this method uses pagination to return all alerts
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -731,8 +713,8 @@ func (client *IssueClient) listAlertsCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -752,8 +734,6 @@ func (client *IssueClient) listAlertsHandleResponse(resp *http.Response) (IssueC
 
 // ListResources - List all resources in the issue - this method uses pagination to return all resources
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -805,8 +785,8 @@ func (client *IssueClient) listResourcesCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -826,8 +806,6 @@ func (client *IssueClient) listResourcesHandleResponse(resp *http.Response) (Iss
 
 // SetBackgroundVisualization - Set the background visualization for the issue
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -879,8 +857,8 @@ func (client *IssueClient) setBackgroundVisualizationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
@@ -890,8 +868,6 @@ func (client *IssueClient) setBackgroundVisualizationCreateRequest(ctx context.C
 
 // Update - Update an issue
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - issueName - The name of the IssueResource
@@ -943,8 +919,8 @@ func (client *IssueClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

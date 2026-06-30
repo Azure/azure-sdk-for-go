@@ -141,7 +141,7 @@ Examples:
 
 // processChangelog processes the changelog for the given package.
 // When reportOnly is true, CHANGELOG.md is not modified; only the change report
-// (HasBreakingChange, ChangelogMD) is populated.
+// (HasBreakingChange, Changes) is populated.
 func processChangelog(sdkRoot, packagePath string, verbose, reportOnly bool) (*ChangelogResult, error) {
 	result := &ChangelogResult{
 		PackagePath: packagePath,
@@ -257,12 +257,12 @@ func handleExistingPackage(modulePath string, sdkRepo repo.SDKRepository, result
 	result.Version = newVersion.String()
 
 	// Update changelog file
-	changelogMd, err := changelog.AddChangelogToFileWithReplacement(changelogResult.ChangelogData, newVersion, modulePath, result.ReleaseDate)
+	changes, err := changelog.AddChangelogToFileWithReplacement(changelogResult.ChangelogData, newVersion, modulePath, result.ReleaseDate)
 	if err != nil {
 		return fmt.Errorf("failed to update changelog file: %v", err)
 	}
 
-	result.Changes = changelogMd
+	result.Changes = changes
 
 	if verbose {
 		log.Printf("Successfully updated changelog for version %s", newVersion.String())

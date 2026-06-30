@@ -1,6 +1,6 @@
 # Release History
 
-## 11.0.0-beta.1 (2026-06-29)
+## 11.0.0-beta.1 (2026-06-30)
 ### Breaking Changes
 
 - Type of `AccountPatch.Properties` has been changed from `*AccountProperties` to `*AccountPropertiesPatch`

@@ -62,26 +62,14 @@ type AccountList struct {
 
 // AccountPatch - NetApp account patch resource
 type AccountPatch struct {
-	// The identity used for the resource.
+	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
-	// Resource location
-	Location *string
-
 	// NetApp Account properties
-	Properties *AccountProperties
+	Properties *AccountPropertiesPatch
 
-	// Resource tags
+	// Resource tags.
 	Tags map[string]*string
-
-	// READ-ONLY; Resource Id
-	ID *string
-
-	// READ-ONLY; Resource name
-	Name *string
-
-	// READ-ONLY; Resource type
-	Type *string
 }
 
 // AccountProperties - NetApp account properties
@@ -91,6 +79,12 @@ type AccountProperties struct {
 
 	// Encryption settings
 	Encryption *AccountEncryption
+
+	// Entra ID configuration for the account.
+	EntraIDConfig *EntraIDConfig
+
+	// LDAP Configuration for the account.
+	LdapConfiguration *LdapConfiguration
 
 	// Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and region and
 	// only affect non ldap NFSv4 volumes.
@@ -104,6 +98,25 @@ type AccountProperties struct {
 
 	// READ-ONLY; Azure lifecycle management
 	ProvisioningState *string
+}
+
+// AccountPropertiesPatch - NetApp account patch properties
+type AccountPropertiesPatch struct {
+	// Active Directories
+	ActiveDirectories []*ActiveDirectory
+
+	// Encryption settings
+	Encryption *AccountEncryption
+
+	// Entra ID configuration for the account.
+	EntraIDConfig *EntraIDConfigPatch
+
+	// LDAP Configuration for the account.
+	LdapConfiguration *LdapConfigurationPatch
+
+	// Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and region and
+	// only affect non ldap NFSv4 volumes.
+	NfsV4IDDomain *string
 }
 
 // ActiveDirectory - Active Directory
@@ -179,6 +192,134 @@ type ActiveDirectory struct {
 
 	// READ-ONLY; Any details in regards to the Status of the Active Directory
 	StatusDetails *string
+}
+
+// ActiveDirectoryConfig - Active Directory Configuration resource
+type ActiveDirectoryConfig struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *ActiveDirectoryConfigProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; "If etag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.")
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ActiveDirectoryConfigListResult - The response of a ActiveDirectoryConfig list operation.
+type ActiveDirectoryConfigListResult struct {
+	// REQUIRED; The ActiveDirectoryConfig items on this page
+	Value []*ActiveDirectoryConfig
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ActiveDirectoryConfigProperties - Active Directory Configuration properties
+type ActiveDirectoryConfigProperties struct {
+	// REQUIRED; Name of the Active Directory domain
+	Domain *string
+
+	// REQUIRED; Access password from Azure KeyVault Secrets to connect Active Directory
+	SecretPassword *SecretPassword
+
+	// REQUIRED; The Active Directory site the service will limit Domain Controller discovery to
+	Site *string
+
+	// Users to be added to the Built-in Administrators active directory group. A list of unique usernames without domain specifier
+	Administrators []*string
+
+	// Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without domain specifier
+	BackupOperators []*string
+
+	// An array of DNS server IP addresses(IPv4 only) for the Active Directory
+	DNS []*string
+
+	// The Organizational Unit (OU) within the Windows Active Directory
+	OrganizationalUnit *string
+
+	// Domain Users in the Active directory to be given SecurityPrivilege privilege (Needed for SMB Continuously available shares
+	// for SQL). A list of unique usernames without domain specifier
+	SecurityOperators []*string
+
+	// NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
+	SmbServerName *string
+
+	// A domain user account with permission to create machine accounts
+	UserName *string
+
+	// READ-ONLY; Status of the Active Directory
+	ActiveDirectoryStatus *ActiveDirectoryStatus
+
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+}
+
+// ActiveDirectoryConfigUpdate - The type used for update operations of the ActiveDirectoryConfig.
+type ActiveDirectoryConfigUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *ActiveDirectoryConfigUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ActiveDirectoryConfigUpdateProperties - The updatable properties of the ActiveDirectoryConfig.
+type ActiveDirectoryConfigUpdateProperties struct {
+	// Users to be added to the Built-in Administrators active directory group. A list of unique usernames without domain specifier
+	Administrators []*string
+
+	// Users to be added to the Built-in Backup Operator active directory group. A list of unique usernames without domain specifier
+	BackupOperators []*string
+
+	// An array of DNS server IP addresses(IPv4 only) for the Active Directory
+	DNS []*string
+
+	// Name of the Active Directory domain
+	Domain *string
+
+	// The Organizational Unit (OU) within the Windows Active Directory
+	OrganizationalUnit *string
+
+	// Access password from Azure KeyVault Secrets to connect Active Directory
+	SecretPassword *SecretPassword
+
+	// Domain Users in the Active directory to be given SecurityPrivilege privilege (Needed for SMB Continuously available shares
+	// for SQL). A list of unique usernames without domain specifier
+	SecurityOperators []*string
+
+	// The Active Directory site the service will limit Domain Controller discovery to
+	Site *string
+
+	// NetBIOS name of the SMB server. This name will be registered as a computer account in the AD and used to mount volumes
+	SmbServerName *string
+
+	// A domain user account with permission to create machine accounts
+	UserName *string
 }
 
 // AuthorizeRequest - Authorize request
@@ -466,6 +607,31 @@ type BackupsList struct {
 type BackupsMigrationRequest struct {
 	// REQUIRED; The ResourceId of the Backup Vault
 	BackupVaultID *string
+}
+
+// BindPasswordAkvConfig - The Azure Key Vault configuration where the Bind DN (Distinguished Name) user password is stored.
+type BindPasswordAkvConfig struct {
+	// REQUIRED; The Azure Key Vault URI where the Bind DN user password is stored.
+	AzureKeyVaultURI *string
+
+	// REQUIRED; The name of the secret in Azure Key Vault that contains the Bind DN user password.
+	SecretName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault.
+	UserAssignedIdentity *string
+}
+
+// BindPasswordAkvConfigPatch - The Azure Key Vault configuration where the Bind DN (Distinguished Name) user password is
+// stored.
+type BindPasswordAkvConfigPatch struct {
+	// The Azure Key Vault URI where the Bind DN user password is stored.
+	AzureKeyVaultURI *string
+
+	// The name of the secret in Azure Key Vault that contains the Bind DN user password.
+	SecretName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault.
+	UserAssignedIdentity *string
 }
 
 // BreakFileLocksRequest - Break file locks request
@@ -902,6 +1068,11 @@ type CertificateAkvDetails struct {
 
 	// The name of the bucket server certificate stored in the Azure Key Vault.
 	CertificateName *string
+
+	// Optional resource ID of the managed identity that has access to the Azure Key Vault (AKV) secret. If a value is provided,
+	// it is used to find a matching entry in the account's collection of user-assigned managed identities. If no match is found,
+	// an exception is thrown. If no value is provided, the system-assigned managed identity is used.
+	UserAssignedIdentity *string
 }
 
 // ChangeKeyVault - Change key vault request
@@ -920,6 +1091,12 @@ type ChangeKeyVault struct {
 	KeyVaultResourceID *string
 }
 
+// ChangeZoneRequest - Changes the zone for the Zone Redundant elastic capacity pool
+type ChangeZoneRequest struct {
+	// REQUIRED; Availability zone to move Zone Redundant elastic capacity pool to
+	NewZone *string
+}
+
 // CheckAvailabilityResponse - Information regarding availability of a resource.
 type CheckAvailabilityResponse struct {
 	// <code>true</code> indicates name is valid and available. <code>false</code> indicates the name is invalid, unavailable,
@@ -934,6 +1111,29 @@ type CheckAvailabilityResponse struct {
 	// <code>Invalid</code> indicates the name provided does not match Azure App Service naming requirements. <code>AlreadyExists</code>
 	// indicates that the name is already in use and is therefore unavailable.
 	Reason *InAvailabilityReasonType
+}
+
+// CheckElasticResourceAvailabilityResponse - Information regarding availability of a resource.
+type CheckElasticResourceAvailabilityResponse struct {
+	// True indicates name is valid and available. False indicates the name is invalid, unavailable, or both.
+	IsAvailable *CheckElasticResourceAvailabilityStatus
+
+	// If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements
+	// so that the user can select a valid name. If reason == AlreadyExists, explain that resource name is already in use, and
+	// direct them to select a different name.
+	Message *string
+
+	// Invalid indicates the name provided does not match Azure NetApp Files naming requirements. AlreadyExists indicates that
+	// the name is already in use and is therefore unavailable.
+	Reason *CheckElasticResourceAvailabilityReason
+}
+
+// CheckElasticVolumeFilePathAvailabilityRequest - File path availability request content - availability is based on the elastic
+// volume filePath within the given elastic capacityPool.
+type CheckElasticVolumeFilePathAvailabilityRequest struct {
+	// REQUIRED; A unique file path for the volume. Used when creating mount targets. This needs to be unique within the elastic
+	// capacity pool.
+	FilePath *string
 }
 
 // CifsUser - The effective CIFS username when accessing the volume data.
@@ -968,6 +1168,11 @@ type CredentialsAkvDetails struct {
 	// "secret_access_key": "<REDACTED>"
 	// }
 	SecretName *string
+
+	// Optional resource ID of the managed identity that has access to the Azure Key Vault (AKV) secret. If a value is provided,
+	// it is used to find a matching entry in the account's collection of user-assigned managed identities. If no match is found,
+	// an exception is thrown. If no value is provided, the system-assigned managed identity is used.
+	UserAssignedIdentity *string
 }
 
 // DailySchedule - Daily Schedule properties
@@ -1009,6 +1214,820 @@ type Dimension struct {
 	Name *string
 }
 
+// ElasticAccount - NetApp elastic account resource
+type ElasticAccount struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *ElasticAccountProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticAccountListResult - The response of a ElasticAccount list operation.
+type ElasticAccountListResult struct {
+	// REQUIRED; The ElasticAccount items on this page
+	Value []*ElasticAccount
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticAccountProperties - NetApp elastic account properties
+type ElasticAccountProperties struct {
+	// Encryption settings
+	Encryption *ElasticEncryption
+
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+}
+
+// ElasticAccountUpdate - The type used for update operations of the ElasticAccount.
+type ElasticAccountUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *ElasticAccountUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticAccountUpdateProperties - The updatable properties of the ElasticAccount.
+type ElasticAccountUpdateProperties struct {
+	// Encryption settings
+	Encryption *ElasticEncryption
+}
+
+// ElasticBackup - NetApp Elastic Backup under an elastic Backup Vault
+type ElasticBackup struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticBackupProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticBackupListResult - The response of a ElasticBackup list operation.
+type ElasticBackupListResult struct {
+	// REQUIRED; The ElasticBackup items on this page
+	Value []*ElasticBackup
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticBackupPolicy - NetApp Elastic Backup Policy resource
+type ElasticBackupPolicy struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ElasticBackupPolicyProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticBackupPolicyListResult - The response of a ElasticBackupPolicy list operation.
+type ElasticBackupPolicyListResult struct {
+	// REQUIRED; The ElasticBackupPolicy items on this page
+	Value []*ElasticBackupPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticBackupPolicyProperties - Elastic Backup Policy properties
+type ElasticBackupPolicyProperties struct {
+	// Daily backups count to keep
+	DailyBackupsToKeep *int32
+
+	// Monthly backups count to keep
+	MonthlyBackupsToKeep *int32
+
+	// The property to identify whether Backup Policy is enabled or not
+	PolicyState *ElasticBackupPolicyState
+
+	// Weekly backups count to keep
+	WeeklyBackupsToKeep *int32
+
+	// READ-ONLY; The number of volumes currently using this Backup Policy.
+	AssignedVolumesCount *int32
+
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+}
+
+// ElasticBackupPolicyUpdate - The type used for update operations of the ElasticBackupPolicy.
+type ElasticBackupPolicyUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticBackupPolicyUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticBackupPolicyUpdateProperties - The updatable properties of the ElasticBackupPolicy.
+type ElasticBackupPolicyUpdateProperties struct {
+	// Daily backups count to keep
+	DailyBackupsToKeep *int32
+
+	// Monthly backups count to keep
+	MonthlyBackupsToKeep *int32
+
+	// The property to identify whether Backup Policy is enabled or not
+	PolicyState *ElasticBackupPolicyState
+
+	// Weekly backups count to keep
+	WeeklyBackupsToKeep *int32
+}
+
+// ElasticBackupProperties - Elastic Backup properties
+type ElasticBackupProperties struct {
+	// REQUIRED; ResourceId used to identify the Elastic Volume
+	ElasticVolumeResourceID *string
+
+	// ResourceId used to identify the elastic snapshot resource. This is required when an existing snapshot needs to be used
+	// for creating a manual backup
+	ElasticSnapshotResourceID *string
+
+	// Label for backup
+	Label *string
+
+	// Manual backup using an already existing snapshot. This will always be CreateNewSnapshot for scheduled backups and UseExistingSnapshot/CreateNewSnapshot
+	// for manual backups
+	SnapshotUsage *SnapshotUsage
+
+	// READ-ONLY; Type of backup Manual or Scheduled
+	BackupType *ElasticBackupType
+
+	// READ-ONLY; The completion date of the backup
+	CompletionDate *time.Time
+
+	// READ-ONLY; The creation date of the backup
+	CreationDate *time.Time
+
+	// READ-ONLY; ResourceId used to identify the elastic backup policy
+	ElasticBackupPolicyResourceID *string
+
+	// READ-ONLY; Failure reason
+	FailureReason *string
+
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Size of backup in bytes
+	Size *int64
+
+	// READ-ONLY; The snapshot creation date of the backup
+	SnapshotCreationDate *time.Time
+
+	// READ-ONLY; Specifies if the backup is for a large volume.
+	VolumeSize *VolumeSize
+}
+
+// ElasticBackupVault - NetApp elastic backup vault resource
+type ElasticBackupVault struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ElasticBackupVaultProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticBackupVaultListResult - The response of a ElasticBackupVault list operation.
+type ElasticBackupVaultListResult struct {
+	// REQUIRED; The ElasticBackupVault items on this page
+	Value []*ElasticBackupVault
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticBackupVaultProperties - Elastic Backup Vault properties
+type ElasticBackupVaultProperties struct {
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+}
+
+// ElasticBackupVaultUpdate - The type used for update operations of the ElasticBackupVault.
+type ElasticBackupVaultUpdate struct {
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticCapacityPool - NetApp Elastic Capacity Pool resource
+type ElasticCapacityPool struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ElasticCapacityPoolProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticCapacityPoolListResult - The response of a ElasticCapacityPool list operation.
+type ElasticCapacityPoolListResult struct {
+	// REQUIRED; The ElasticCapacityPool items on this page
+	Value []*ElasticCapacityPool
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticCapacityPoolProperties - Elastic capacity pool properties
+type ElasticCapacityPoolProperties struct {
+	// REQUIRED; The service level of the elastic capacity pool
+	ServiceLevel *ElasticServiceLevel
+
+	// REQUIRED; Provisioned size of the pool (in bytes). For zoneRedundant service level pool, value must be in the range 1TiB
+	// to 16TiB or 1TiB to 128TiB for supported region. Values expressed in bytes as multiples of 1TiB till 16TiB and in multiples
+	// of 8TiB from 24TiB to 128TiB. Pool size can't be shrunk once it is created.
+	Size *int64
+
+	// REQUIRED; The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/elasticVolumes, this
+	// is used by all the volumes within the pool
+	SubnetResourceID *string
+
+	// The Azure Resource URI for an Active Directory configuration. This is used by all the SMB volumes within the pool
+	ActiveDirectoryConfigResourceID *string
+
+	// Encryption settings
+	Encryption *ElasticEncryptionConfiguration
+
+	// READ-ONLY; Current availability status of the resource.
+	AvailabilityStatus *ElasticResourceAvailabilityStatus
+
+	// READ-ONLY; Indicates the current zone of the pool. This can be changed for zoneRedundant service level pool with the changeZone
+	// action
+	CurrentZone *string
+
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Total throughput of the pool in MiB/s
+	TotalThroughputMibps *float64
+}
+
+// ElasticCapacityPoolUpdate - The type used for update operations of the ElasticCapacityPool.
+type ElasticCapacityPoolUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticCapacityPoolUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticCapacityPoolUpdateProperties - The updatable properties of the ElasticCapacityPool.
+type ElasticCapacityPoolUpdateProperties struct {
+	// The Azure Resource URI for an Active Directory configuration. This is used by all the SMB volumes within the pool
+	ActiveDirectoryConfigResourceID *string
+
+	// Encryption settings
+	Encryption *ElasticEncryptionConfiguration
+
+	// Provisioned size of the pool (in bytes). For zoneRedundant service level pool, value must be in the range 1TiB to 16TiB
+	// or 1TiB to 128TiB for supported region. Values expressed in bytes as multiples of 1TiB till 16TiB and in multiples of 8TiB
+	// from 24TiB to 128TiB. Pool size can't be shrunk once it is created.
+	Size *int64
+}
+
+// ElasticEncryption - Encryption settings
+type ElasticEncryption struct {
+	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
+	Identity *ElasticEncryptionIdentity
+
+	// The encryption keySource (provider). Possible values (case-insensitive): Microsoft.NetApp, Microsoft.KeyVault
+	KeySource *KeySource
+
+	// Properties provided by KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
+	KeyVaultProperties *ElasticKeyVaultProperties
+}
+
+// ElasticEncryptionConfiguration - CMK Encryption Configuration
+type ElasticEncryptionConfiguration struct {
+	// REQUIRED; Pool Encryption Key Source.
+	ElasticPoolEncryptionKeySource *ElasticPoolEncryptionKeySource
+
+	// REQUIRED; The resource ID of private endpoint for KeyVault. It must reside in the same VNET as the volume. Only applicable
+	// if encryptionKeySource = 'Microsoft.KeyVault'.
+	KeyVaultPrivateEndpointResourceID *string
+}
+
+// ElasticEncryptionIdentity - Identity used to authenticate with key vault.
+type ElasticEncryptionIdentity struct {
+	// ClientId of the multi-tenant Entra ID Application. Used to access cross-tenant keyvaults.
+	FederatedClientID *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type
+	// has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
+	UserAssignedIdentity *string
+
+	// READ-ONLY; The principal ID (object ID) of the identity used to authenticate with key vault. Read-only.
+	PrincipalID *string
+}
+
+// ElasticExportPolicy - Set of export policy rules
+type ElasticExportPolicy struct {
+	// Export policy rule
+	Rules []*ElasticExportPolicyRule
+}
+
+// ElasticExportPolicyRule - Elastic Volume Export Policy Rule
+type ElasticExportPolicyRule struct {
+	// Client ingress specification for the export policy as list of IPv4 CIDRs, IPv4 host addresses and host names.
+	AllowedClients []*string
+
+	// Allows clients to access the volume with the NFSv3 protocol. Enable only for NFSv3 type volumes
+	Nfsv3 *ElasticNfsv3Access
+
+	// Allows clients to access the volume with at least NFSv4.1 protocol.
+	Nfsv4 *ElasticNfsv4Access
+
+	// Indicates whether root access to the volume is granted to clients affected by this rule
+	RootAccess *ElasticRootAccess
+
+	// Controls the priority of the export policy rule. When connecting to the volume the rule with the lowest index that applies
+	// to the connecting client is used
+	RuleIndex *int32
+
+	// Specifies the Unix file access level for the volume. It encompasses both read-only and read-write permissions. Additionally,
+	// NoAccess can be set to block all access to the volume
+	UnixAccessRule *ElasticUnixAccessRule
+}
+
+// ElasticKeyVaultProperties - Properties of key vault.
+type ElasticKeyVaultProperties struct {
+	// The name of KeyVault key.
+	KeyName *string
+
+	// The resource ID of KeyVault.
+	KeyVaultResourceID *string
+
+	// The Uri of KeyVault.
+	KeyVaultURI *string
+
+	// READ-ONLY; Status of the KeyVault connection.
+	Status *ElasticKeyVaultStatus
+}
+
+// ElasticMountTargetProperties - Contains all the information needed to mount an elastic volume
+type ElasticMountTargetProperties struct {
+	// READ-ONLY; The mount target's IPv4 address, used to mount the volume
+	IPAddress *string
+
+	// READ-ONLY; The SMB server's Fully Qualified Domain Name, FQDN
+	SmbServerFqdn *string
+}
+
+// ElasticSmbPatchProperties - SMB Patch Properties
+type ElasticSmbPatchProperties struct {
+	// Used to enable or disable encryption for in-flight SMB data volume. This flag can be modified during Elastic volume update
+	// operation as well. Only applicable for SMB protocol Elastic volumes.
+	SmbEncryption *ElasticSmbEncryption
+}
+
+// ElasticSmbProperties - SMB Properties
+type ElasticSmbProperties struct {
+	// Used to enable or disable encryption for in-flight SMB data volume. This flag can be modified during Elastic volume update
+	// operation as well. Only applicable for SMB protocol Elastic volumes.
+	SmbEncryption *ElasticSmbEncryption
+}
+
+// ElasticSnapshot - NetApp Elastic Snapshot under an Elastic Volume
+type ElasticSnapshot struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticSnapshotProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticSnapshotListResult - The response of a ElasticSnapshot list operation.
+type ElasticSnapshotListResult struct {
+	// REQUIRED; The ElasticSnapshot items on this page
+	Value []*ElasticSnapshot
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticSnapshotPolicy - NetApp Elastic Snapshot Policy under an Elastic Account
+type ElasticSnapshotPolicy struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ElasticSnapshotPolicyProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticSnapshotPolicyDailySchedule - Daily Schedule properties used to create NetApp snapshot policy
+type ElasticSnapshotPolicyDailySchedule struct {
+	// Indicates which hour in UTC timezone a snapshot should be taken
+	Hour *int32
+
+	// Indicates which minute snapshot should be taken
+	Minute *int32
+
+	// Daily snapshot count to keep
+	SnapshotsToKeep *int32
+}
+
+// ElasticSnapshotPolicyHourlySchedule - Hourly Schedule properties used to create NetApp snapshot policy
+type ElasticSnapshotPolicyHourlySchedule struct {
+	// Indicates which minute snapshot should be taken
+	Minute *int32
+
+	// Hourly snapshot count to keep
+	SnapshotsToKeep *int32
+}
+
+// ElasticSnapshotPolicyListResult - The response of a ElasticSnapshotPolicy list operation.
+type ElasticSnapshotPolicyListResult struct {
+	// REQUIRED; The ElasticSnapshotPolicy items on this page
+	Value []*ElasticSnapshotPolicy
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticSnapshotPolicyMonthlySchedule - Monthly Schedule properties used to create NetApp snapshot policy
+type ElasticSnapshotPolicyMonthlySchedule struct {
+	// Indicates which days of the month snapshot (1-31) should be taken, accepts a list of integers
+	DaysOfMonth []*int32
+
+	// Indicates which hour in UTC timezone a snapshot should be taken
+	Hour *int32
+
+	// Indicates which minute snapshot should be taken
+	Minute *int32
+
+	// Monthly snapshot count to keep
+	SnapshotsToKeep *int32
+}
+
+// ElasticSnapshotPolicyProperties - Elastic Snapshot policy properties
+type ElasticSnapshotPolicyProperties struct {
+	// Schedule for daily snapshots
+	DailySchedule *ElasticSnapshotPolicyDailySchedule
+
+	// Schedule for hourly snapshots
+	HourlySchedule *ElasticSnapshotPolicyHourlySchedule
+
+	// Schedule for monthly snapshots
+	MonthlySchedule *ElasticSnapshotPolicyMonthlySchedule
+
+	// Configures if the snapshot policy is enabled on the volumes connected to the policy.
+	PolicyStatus *PolicyStatus
+
+	// Schedule for weekly snapshots
+	WeeklySchedule *ElasticSnapshotPolicyWeeklySchedule
+
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+}
+
+// ElasticSnapshotPolicyUpdate - The type used for update operations of the ElasticSnapshotPolicy.
+type ElasticSnapshotPolicyUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticSnapshotPolicyUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticSnapshotPolicyUpdateProperties - The updatable properties of the ElasticSnapshotPolicy.
+type ElasticSnapshotPolicyUpdateProperties struct {
+	// Schedule for daily snapshots
+	DailySchedule *ElasticSnapshotPolicyDailySchedule
+
+	// Schedule for hourly snapshots
+	HourlySchedule *ElasticSnapshotPolicyHourlySchedule
+
+	// Schedule for monthly snapshots
+	MonthlySchedule *ElasticSnapshotPolicyMonthlySchedule
+
+	// Configures if the snapshot policy is enabled on the volumes connected to the policy.
+	PolicyStatus *PolicyStatus
+
+	// Schedule for weekly snapshots
+	WeeklySchedule *ElasticSnapshotPolicyWeeklySchedule
+}
+
+// ElasticSnapshotPolicyVolumeList - Elastic Volumes associated with Elastic Snapshot Policy
+type ElasticSnapshotPolicyVolumeList struct {
+	// REQUIRED; The ElasticVolume items on this page
+	Value []*ElasticVolume
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticSnapshotPolicyWeeklySchedule - Weekly Schedule properties used to create NetApp snapshot policy
+type ElasticSnapshotPolicyWeeklySchedule struct {
+	// Indicates which weekday(s) snapshot(s) should be taken, accepts a list of week day names in english
+	Days []*DayOfWeek
+
+	// Indicates which hour in UTC timezone a snapshot should be taken
+	Hour *int32
+
+	// Indicates which minute snapshot should be taken
+	Minute *int32
+
+	// Weekly snapshot count to keep
+	SnapshotsToKeep *int32
+}
+
+// ElasticSnapshotProperties - Elastic Snapshot properties
+type ElasticSnapshotProperties struct {
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+}
+
+// ElasticVolume - NetApp Elastic Volume resource
+type ElasticVolume struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *ElasticVolumeProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// The availability zones.
+	Zones []*string
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ElasticVolumeBackupProperties - Elastic Volume Backup Properties
+type ElasticVolumeBackupProperties struct {
+	// ResourceId used to identify Elastic Backup Policy
+	ElasticBackupPolicyResourceID *string
+
+	// ResourceId used to identify Elastic Backup Vault
+	ElasticBackupVaultResourceID *string
+
+	// The property to decide policy is enforced or not on the volume
+	PolicyEnforcement *ElasticVolumePolicyEnforcement
+}
+
+// ElasticVolumeDataProtectionPatchProperties - Data protection configuration option for updating the volume, including snapshot
+// policies and backup.
+type ElasticVolumeDataProtectionPatchProperties struct {
+	// Used to configure backups on an elastic volume.
+	Backup *ElasticVolumeBackupProperties
+
+	// Used to apply a snapshot policy to a volume.
+	Snapshot *ElasticVolumeSnapshotProperties
+}
+
+// ElasticVolumeDataProtectionProperties - Data protection configuration option for the volume, including snapshot policies
+// and backup.
+type ElasticVolumeDataProtectionProperties struct {
+	// Used to configure backups on an elastic volume.
+	Backup *ElasticVolumeBackupProperties
+
+	// Used to apply a snapshot policy to a volume.
+	Snapshot *ElasticVolumeSnapshotProperties
+}
+
+// ElasticVolumeListResult - The response of a ElasticVolume list operation.
+type ElasticVolumeListResult struct {
+	// REQUIRED; The ElasticVolume items on this page
+	Value []*ElasticVolume
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ElasticVolumeProperties - Elastic Volume properties
+type ElasticVolumeProperties struct {
+	// REQUIRED; A unique file path for the volume. Used when creating mount targets. This needs to be unique within the elastic
+	// capacity pool.
+	FilePath *string
+
+	// REQUIRED; Set of support protocol types for the elastic volume
+	ProtocolTypes []*ElasticProtocolType
+
+	// REQUIRED; Maximum size allowed for a volume in bytes. Valid values are in the range 1GiB to 16TiB. Values expressed in
+	// bytes as multiples of 1 GiB.
+	Size *int64
+
+	// Resource identifier used to identify the Elastic Backup.
+	BackupResourceID *string
+
+	// Data protection configuration option for the volume, including snapshot policies and backup.
+	DataProtection *ElasticVolumeDataProtectionProperties
+
+	// Set of export policy rules
+	ExportPolicy *ElasticExportPolicy
+
+	// SMB Properties
+	SmbProperties *ElasticSmbProperties
+
+	// Controls the visibility of the volume's read-only snapshot directory, which provides access to each of the volume's snapshots.
+	SnapshotDirectoryVisibility *SnapshotDirectoryVisibility
+
+	// Resource identifier used to identify the Elastic Snapshot.
+	SnapshotResourceID *string
+
+	// READ-ONLY; Current availability status of the resource.
+	AvailabilityStatus *ElasticResourceAvailabilityStatus
+
+	// READ-ONLY; List of mount targets that can be used to mount this volume
+	MountTargets []*ElasticMountTargetProperties
+
+	// READ-ONLY; Azure lifecycle management.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The current state of the restoration process.
+	RestorationState *ElasticVolumeRestorationState
+}
+
+// ElasticVolumeRevert - Reverts the elastic volume to the specified snapshot.
+type ElasticVolumeRevert struct {
+	// Resource identifier used to identify the Elastic Snapshot.
+	SnapshotResourceID *string
+}
+
+// ElasticVolumeSnapshotProperties - Elastic Volume Snapshot Properties
+type ElasticVolumeSnapshotProperties struct {
+	// Snapshot Policy ResourceId
+	SnapshotPolicyResourceID *string
+}
+
+// ElasticVolumeUpdate - The type used for update operations of the ElasticVolume.
+type ElasticVolumeUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *ElasticVolumeUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// ElasticVolumeUpdateProperties - The updatable properties of the ElasticVolume.
+type ElasticVolumeUpdateProperties struct {
+	// Data protection configuration option for the volume, including snapshot policies and backup.
+	DataProtection *ElasticVolumeDataProtectionPatchProperties
+
+	// Set of export policy rules
+	ExportPolicy *ElasticExportPolicy
+
+	// Maximum size allowed for a volume in bytes. Valid values are in the range 1GiB to 16TiB. Values expressed in bytes as multiples
+	// of 1 GiB.
+	Size *int64
+
+	// SMB Properties
+	SmbProperties *ElasticSmbPatchProperties
+
+	// Controls the visibility of the volume's read-only snapshot directory, which provides access to each of the volume's snapshots.
+	SnapshotDirectoryVisibility *SnapshotDirectoryVisibility
+}
+
 // EncryptionIdentity - Identity used to authenticate with key vault.
 type EncryptionIdentity struct {
 	// ClientId of the multi-tenant Entra ID Application. Used to access cross-tenant keyvaults.
@@ -1029,6 +2048,68 @@ type EncryptionTransitionRequest struct {
 
 	// REQUIRED; Identifier for the virtual network
 	VirtualNetworkID *string
+}
+
+// EntraIDAkvConfig - Using AKV config, certificate will be fetched, which will contain private key & public certificate,
+// that correspond to the public certificate which is uploaded on the application created by customer. This will be used further
+// for authentication.
+type EntraIDAkvConfig struct {
+	// REQUIRED; The Azure Key Vault URI where the Entra ID credentials are stored.
+	AzureKeyVaultURI *string
+
+	// REQUIRED; The name of the certificate in Azure Key Vault.
+	CertificateName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault.
+	UserAssignedIdentity *string
+}
+
+// EntraIDAkvConfigPatch - Entra ID Patch configuration for the account.
+type EntraIDAkvConfigPatch struct {
+	// The Azure Key Vault URI where the Entra ID credentials are stored.
+	AzureKeyVaultURI *string
+
+	// The name of the certificate in Azure Key Vault.
+	CertificateName *string
+
+	// The ARM resource identifier of the user assigned identity used to authenticate with key vault.
+	UserAssignedIdentity *string
+}
+
+// EntraIDConfig - Entra ID configuration for the account.
+type EntraIDConfig struct {
+	// REQUIRED; ApplicationId of the app created by customer to provide authentication and required API permissions for Microsoft
+	// Graph endpoint.
+	ApplicationID *string
+
+	// REQUIRED; Domain of the Active directory synced to Entra ID for hybrid identities.
+	Domain *string
+
+	// REQUIRED; Using ServerNamePrefix, FQDN (Fully Qualified Domain Name) will be generated for SMB share, using this FQDN,
+	// SMB Share will be mounted on Entra Joined VM.
+	ServerNamePrefix *string
+
+	// Using AKV config, certificate will be fetched, which will contain private key & public certificate, that correspond to
+	// the public certificate which is uploaded on the application created by customer. This will be used further for authentication.
+	EntraIDAkvConfig *EntraIDAkvConfig
+}
+
+// EntraIDConfigPatch - Entra ID Patch configuration for the account.
+type EntraIDConfigPatch struct {
+	// ApplicationId of the app created by customer to provide authentication and required API permissions for Microsoft Graph
+	// endpoint.
+	ApplicationID *string
+
+	// Domain of the Active directory synced to Entra ID for hybrid identities.
+	Domain *string
+
+	// Using AKV config, certificate will be fetched, which will contain private key & public certificate, that correspond to
+	// the public certificate which is uploaded on the application created by customer. This will be used further for authentication.
+	EntraIDAkvConfig *EntraIDAkvConfigPatch
+
+	// Using ServerNamePrefix, FQDN (Fully Qualified Domain Name) will be generated for SMB share, using this FQDN, SMB Share
+	// will be mounted on Entra Joined VM.
+	ServerNamePrefix *string
 }
 
 // ExportPolicyRule - Volume Export Policy Rule
@@ -1176,6 +2257,60 @@ type KeyVaultProperties struct {
 
 	// READ-ONLY; Status of the KeyVault connection.
 	Status *KeyVaultStatus
+}
+
+// LdapConfiguration - LDAP configuration
+type LdapConfiguration struct {
+	// The authentication level to use when binding to the LDAP server, defaults to Anonymous.
+	BindAuthenticationLevel *BindAuthenticationLevel
+
+	// The distinguished name (DN) to bind as when performing LDAP operations.
+	BindDN *string
+
+	// The Azure Key Vault configuration where the Bind DN (Distinguished Name) user password is stored.
+	BindPasswordAkvConfig *BindPasswordAkvConfig
+
+	// The CN host name used while generating the certificate, LDAP Over TLS requires the CN host name to create DNS host entry.
+	CertificateCNHost *string
+
+	// Name of the LDAP configuration domain
+	Domain *string
+
+	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
+	LdapOverTLS *bool
+
+	// List of LDAP server IP addresses (IPv4 only) for the LDAP domain.
+	LdapServers []*string
+
+	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
+	ServerCACertificate *string
+}
+
+// LdapConfigurationPatch - LDAP configuration for PATCH operations (no default values)
+type LdapConfigurationPatch struct {
+	// The authentication level to use when binding to the LDAP server, defaults to Anonymous.
+	BindAuthenticationLevel *BindAuthenticationLevel
+
+	// The distinguished name (DN) to bind as when performing LDAP operations.
+	BindDN *string
+
+	// The Azure Key Vault configuration where the Bind DN (Distinguished Name) user password is stored.
+	BindPasswordAkvConfig *BindPasswordAkvConfigPatch
+
+	// The CN host name used while generating the certificate, LDAP Over TLS requires the CN host name to create DNS host entry.
+	CertificateCNHost *string
+
+	// Name of the LDAP configuration domain
+	Domain *string
+
+	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
+	LdapOverTLS *bool
+
+	// List of LDAP server IP addresses (IPv4 only) for the LDAP domain.
+	LdapServers []*string
+
+	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
+	ServerCACertificate *string
 }
 
 // LdapSearchScopeOpt - LDAP search scope
@@ -1475,7 +2610,8 @@ type PoolPatchProperties struct {
 	// The qos type of the pool
 	QosType *QosType
 
-	// Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of 1099511627776).
+	// Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or in 1TiB chunks (value must be
+	// multiple of 1099511627776).
 	Size *int64
 }
 
@@ -1484,7 +2620,8 @@ type PoolProperties struct {
 	// REQUIRED; The service level of the file system
 	ServiceLevel *ServiceLevel
 
-	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of 1099511627776).
+	// REQUIRED; Provisioned size of the pool (in bytes). Allowed values are 512GiB (549755813888 bytes) or in 1TiB chunks (value
+	// must be multiple of 1099511627776).
 	Size *int64
 
 	// If enabled (true) the pool can contain cool Access enabled volumes.
@@ -1860,6 +2997,34 @@ type RestoreStatus struct {
 
 	// READ-ONLY; Reason for the unhealthy restore relationship
 	UnhealthyReason *string
+}
+
+// SecretPassword - Access password from Azure KeyVault Secrets to connect Active Directory
+type SecretPassword struct {
+	// Identity used to authenticate to KeyVault. Applicable if keySource is 'Microsoft.KeyVault'.
+	Identity *SecretPasswordIdentity
+
+	// Properties provided by KeyVault.
+	KeyVaultProperties *SecretPasswordKeyVaultProperties
+}
+
+// SecretPasswordIdentity - Identity used to authenticate with key vault.
+type SecretPasswordIdentity struct {
+	// The Azure resource identifier of the user assigned identity used to authenticate with key vault. Applicable if identity.type
+	// has 'UserAssigned'. It should match key of identity.userAssignedIdentities.
+	UserAssignedIdentity *string
+
+	// READ-ONLY; The principal ID (object ID) of the identity used to authenticate with key vault. Read-only.
+	PrincipalID *string
+}
+
+// SecretPasswordKeyVaultProperties - Properties of key vault to get the secrets for password.
+type SecretPasswordKeyVaultProperties struct {
+	// REQUIRED; The Uri of KeyVault.
+	KeyVaultURI *string
+
+	// REQUIRED; The name of KeyVault password secret.
+	SecretName *string
 }
 
 // ServiceSpecification - One property of operation, include metric specifications.
@@ -2542,8 +3707,10 @@ type VolumePatchProperties struct {
 	UnixPermissions *string
 
 	// Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For regular volumes,
-	// valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range 100TiB to 500TiB, and on
-	// an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB.
+	// valid values are in the range 50GiB to 100TiB.
+	// For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+	// For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples of 1
+	// GiB.
 	UsageThreshold *int64
 }
 
@@ -2574,8 +3741,10 @@ type VolumeProperties struct {
 	SubnetID *string
 
 	// REQUIRED; Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For regular
-	// volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range 100TiB to 500TiB,
-	// and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples of 1 GiB.
+	// volumes, valid values are in the range 50GiB to 100TiB.
+	// For large volumes, valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB.
+	// For extra large volumes, valid values are in the range 2400GiB to 7200TiB. Values expressed in bytes as multiples of 1
+	// GiB.
 	UsageThreshold *int64
 
 	// While auto splitting the short term clone volume, if the parent pool does not have enough space to accommodate the volume
@@ -2588,6 +3757,9 @@ type VolumeProperties struct {
 
 	// Resource identifier used to identify the Backup.
 	BackupID *string
+
+	// Specifies whether the volume operates in Breakthrough Mode.
+	BreakthroughMode *BreakthroughMode
 
 	// Pool Resource Id used in case of creating a volume through volume group
 	CapacityPoolResourceID *string
@@ -2647,8 +3819,20 @@ type VolumeProperties struct {
 	// = 'Microsoft.KeyVault'.
 	KeyVaultPrivateEndpointResourceID *string
 
+	// Language supported for volume.
+	Language *VolumeLanguage
+
+	// Specifies the type of the Large Volume. When set to 'LargeVolume', the large volume is created with standard configuration.
+	// If it is set to 'ExtraLargeVolume7Dot2PiB', the extra large volume is created with higher capacity limit 7.2PiB with cool
+	// access enabled,
+	// delivering higher capacity limit with lower costs.
+	LargeVolumeType *LargeVolumeType
+
 	// Specifies whether LDAP is enabled or not for a given NFS volume.
 	LdapEnabled *bool
+
+	// Specifies the type of LDAP server for a given NFS volume.
+	LdapServerType *LdapServerType
 
 	// The original value of the network features type available to the volume at the time it was created.
 	NetworkFeatures *NetworkFeatures

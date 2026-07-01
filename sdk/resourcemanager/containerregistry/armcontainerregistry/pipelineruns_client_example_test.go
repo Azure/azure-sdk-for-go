@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunCreate_Export.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunCreate_Export.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunCreate_Import.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunCreate_Import.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunDelete.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunDelete.json
 func ExamplePipelineRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExamplePipelineRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunGet.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunGet.json
 func ExamplePipelineRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExamplePipelineRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunList.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunList.json
 func ExamplePipelineRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

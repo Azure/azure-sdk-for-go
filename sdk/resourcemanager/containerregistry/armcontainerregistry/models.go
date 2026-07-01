@@ -18,6 +18,18 @@ type Actor struct {
 	Name *string
 }
 
+// AdditionalAuthenticationProperties - Authentication configuration used by a cache rule to access an upstream registry.
+type AdditionalAuthenticationProperties struct {
+	// REQUIRED; Authentication type discriminator.
+	AuthenticationType *AdditionalAuthenticationType
+}
+
+// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
+// AdditionalAuthenticationProperties.
+func (a *AdditionalAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
+	return a
+}
+
 // Archive - An object that represents a archive for a container registry.
 type Archive struct {
 	// The properties of the archive.
@@ -164,6 +176,9 @@ type CacheRule struct {
 
 // CacheRuleProperties - The properties of a cache rule.
 type CacheRuleProperties struct {
+	// Authentication configuration used by the cache rule to access the upstream source repository.
+	AdditionalAuthenticationProperties AdditionalAuthenticationPropertiesClassification
+
 	// The ARM resource ID of the credential store which is associated with the cache rule.
 	CredentialSetResourceID *string
 
@@ -192,6 +207,9 @@ type CacheRuleUpdateParameters struct {
 
 // CacheRuleUpdateProperties - The parameters for updating cache rule properties.
 type CacheRuleUpdateProperties struct {
+	// Authentication configuration used by the cache rule to access the upstream source repository.
+	AdditionalAuthenticationProperties AdditionalAuthenticationPropertiesClassification
+
 	// The ARM resource ID of the credential store which is associated with the Cache rule.
 	CredentialSetResourceID *string
 }
@@ -552,6 +570,30 @@ type ExportPolicy struct {
 	Status *ExportPolicyStatus
 }
 
+// GarAuthenticationProperties - Google Artifact Registry (GAR) authentication configuration.
+type GarAuthenticationProperties struct {
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeGoogleArtifactRegistry, any specified value is ignored.
+	AuthenticationType *AdditionalAuthenticationType
+
+	// REQUIRED; The Google Cloud Platform project that is configured for authentication
+	// Permissions should be granted to principal://iam.googleapis.com/projects/{ProjectNumber}/locations/global/workloadIdentityPools/{WorkloadIdentityPool}/providers/{WorkloadIdentityProvider}/subject/{ManagedIdentityPrincipal}
+	ProjectNumber *string
+
+	// REQUIRED; The Google Cloud platform workload identity pool used for authentication.
+	WorkloadIdentityPool *string
+
+	// REQUIRED; The Google Cloud Platform workload identity provider used for authentication.
+	WorkloadIdentityProvider *string
+}
+
+// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
+// GarAuthenticationProperties.
+func (g *GarAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
+	return &AdditionalAuthenticationProperties{
+		AuthenticationType: g.AuthenticationType,
+	}
+}
+
 // GarbageCollectionProperties - The garbage collection properties of the connected registry.
 type GarbageCollectionProperties struct {
 	// Indicates whether garbage collection is enabled for the connected registry.
@@ -752,6 +794,24 @@ type LoginServerProperties struct {
 	TLS *TLSProperties
 }
 
+// MyPrivateLinkResource - A private link resource.
+type MyPrivateLinkResource struct {
+	// A resource that supports private link capabilities.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the private link resource.
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // NetworkRuleSet - The network rule set for a container registry.
 type NetworkRuleSet struct {
 	// REQUIRED; The default action of allow or deny when no other rules match.
@@ -759,6 +819,9 @@ type NetworkRuleSet struct {
 
 	// The IP ACL rules.
 	IPRules []*IPRule
+
+	// The virtual network rules.
+	VirtualNetworkRules []*VirtualNetworkRule
 }
 
 // OperationDefinition - The definition of a container registry operation.
@@ -1068,24 +1131,6 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
-// PrivateLinkResource - A private link resource.
-type PrivateLinkResource struct {
-	// A resource that supports private link capabilities.
-	Properties *PrivateLinkResourceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the private link resource.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // PrivateLinkResourceListResult - The result of a request to list private link resources for a container registry.
 type PrivateLinkResourceListResult struct {
 	// The URI that can be used to request the next list of private link resources.
@@ -1093,7 +1138,7 @@ type PrivateLinkResourceListResult struct {
 
 	// The list of private link resources. Since this list may be incomplete, the nextLink field should be used to request the
 	// next list of private link resources.
-	Value []*PrivateLinkResource
+	Value []*MyPrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
@@ -1271,6 +1316,9 @@ type RegistryProperties struct {
 	// Determines registry role assignment mode.
 	RoleAssignmentMode *RoleAssignmentMode
 
+	// Whether to allow cache operations that write to repositories in this registry.
+	WritableCacheRepos *WritableCacheRepos
+
 	// Whether or not zone redundancy is enabled for this container registry
 	ZoneRedundancy *ZoneRedundancy
 
@@ -1336,6 +1384,9 @@ type RegistryPropertiesUpdateParameters struct {
 
 	// Determines registry role assignment mode.
 	RoleAssignmentMode *RoleAssignmentMode
+
+	// Whether to allow cache operations that write to repositories in this registry.
+	WritableCacheRepos *WritableCacheRepos
 }
 
 // RegistrySyncResult - The registry sync result of the connected registry.
@@ -1833,6 +1884,15 @@ type UserIdentityProperties struct {
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
+}
+
+// VirtualNetworkRule - Virtual network rule.
+type VirtualNetworkRule struct {
+	// REQUIRED; Resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+	VirtualNetworkSubnetResourceID *string
+
+	// The action of virtual network rule.
+	Action *Action
 }
 
 // Webhook - An object that represents a webhook for a container registry.

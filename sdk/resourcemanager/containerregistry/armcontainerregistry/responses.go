@@ -278,7 +278,7 @@ type RegistriesClientGenerateCredentialsResponse struct {
 // RegistriesClientGetPrivateLinkResourceResponse contains the response from method RegistriesClient.GetPrivateLinkResource.
 type RegistriesClientGetPrivateLinkResourceResponse struct {
 	// A private link resource.
-	PrivateLinkResource
+	MyPrivateLinkResource
 }
 
 // RegistriesClientGetResponse contains the response from method RegistriesClient.Get.

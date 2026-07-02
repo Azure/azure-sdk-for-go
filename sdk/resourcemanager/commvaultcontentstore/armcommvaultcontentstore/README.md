@@ -1,6 +1,6 @@
-# Azure Commvaultcontentstore Module for Go
+# Azure Commvault Content Store Module for Go
 
-The `armcommvaultcontentstore` module provides operations for working with Azure Commvaultcontentstore.
+The `armcommvaultcontentstore` module provides operations for working with Azure Commvault Content Store.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore)
 

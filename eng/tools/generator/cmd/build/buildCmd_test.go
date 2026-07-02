@@ -80,7 +80,7 @@ func main() {
 	}
 
 	// Test build and vet
-	result, err := buildAndVet(tempDir)
+	result, err := buildAndVet(tempDir, false)
 	if err != nil {
 		t.Errorf("buildAndVet failed: %v", err)
 	}
@@ -123,7 +123,7 @@ func main() {
 	}
 
 	// Test build and vet
-	result, err := buildAndVet(tempDir)
+	result, err := buildAndVet(tempDir, false)
 	if err != nil {
 		t.Errorf("buildAndVet failed: %v", err)
 	}
@@ -134,5 +134,43 @@ func main() {
 
 	if result.BuildOutput == "" {
 		t.Error("buildAndVet should report build output for invalid Go code")
+	}
+}
+
+// TestFilterHandWrittenTests verifies that hand-written test files are excluded
+// from build while generated test files remain.
+func TestFilterHandWrittenTests(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "build_test_filter")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	handWritten := filepath.Join(tempDir, "manual_test.go")
+	if err := os.WriteFile(handWritten, []byte("package main\n"), 0644); err != nil {
+		t.Fatalf("Failed to create hand-written test: %v", err)
+	}
+	generated := filepath.Join(tempDir, "zz_generated_test.go")
+	genContent := generatedMarker + "\n\npackage main\n"
+	if err := os.WriteFile(generated, []byte(genContent), 0644); err != nil {
+		t.Fatalf("Failed to create generated test: %v", err)
+	}
+
+	restore, err := filterHandWrittenTests(tempDir)
+	if err != nil {
+		t.Fatalf("filterHandWrittenTests failed: %v", err)
+	}
+
+	if _, err := os.Stat(handWritten); !os.IsNotExist(err) {
+		t.Error("hand-written test file should be filtered out during build")
+	}
+	if _, err := os.Stat(generated); err != nil {
+		t.Error("generated test file should remain present during build")
+	}
+
+	restore()
+
+	if _, err := os.Stat(handWritten); err != nil {
+		t.Error("hand-written test file should be restored after build")
 	}
 }

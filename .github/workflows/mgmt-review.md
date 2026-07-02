@@ -10,6 +10,7 @@ permissions:
   pull-requests: read
   actions: read
   checks: read
+  copilot-requests: write
 strict: false
 tools:
   github:
@@ -45,7 +46,9 @@ Fetch the PR details. If the PR is in **draft** state, use the `update_pull_requ
 
 1. Fetch PR details and changed files using GitHub MCP tools.
 2. Identify the module path from the changed files (e.g., `sdk/resourcemanager/<service>/arm<package>/`).
-3. Determine if this is a **first on-board service** (first beta version): check whether the PR adds a new `ci.yml` file under the module path (i.e., `ci.yml` appears in the changed files with status `added`). If so, record this for the Step 5 comment.
+3. Determine if this is a **first on-board service** (first beta version): check whether the PR adds a new `ci.yml` file under the module path (i.e., `ci.yml` appears in the changed files with status `added`). If so, this PR has two extra onboarding requirements to verify (record the results for the Step 5 checklist):
+   - **Release pipelines** — created via `/azp run prepare-pipelines`.
+   - **Namespace review link** — fetch PR comments and confirm the PR author posted a comment that includes a GitHub issue URL (`https://github.com/.../issues/<number>`) and references `namespace review`. Treat the link as missing if no such comment exists.
 
 ### Step 2 — Check pipeline status
 
@@ -117,25 +120,26 @@ The `go - pullrequest` pipeline checks have not completed yet. Analysis cannot p
 **Action required:** Re-trigger this workflow by removing and re-adding the `mgmt-review-needed` label after the pipeline checks have completed.
 ```
 
-**If all checks completed, nothing blocks, and this is NOT a first on-board service** → post only:
+**If all checks completed and nothing blocks:**
 
-```
-## PR is ready to merge
-```
+- If this is **not** a first on-board service → post only `## PR is ready to merge`.
+- If this **is** a first on-board service and **both** onboarding requirements are satisfied (release pipelines created **and** namespace review link present) → post only `## PR is ready to merge`.
+- If this **is** a first on-board service and **either** onboarding requirement is outstanding → do **not** post `## PR is ready to merge`. Instead post only the **First On-Board Service Checklist** below with the outstanding items.
 
-**If nothing blocks but this IS a first on-board service** (detected in Step 1) → post:
+#### First On-Board Service Checklist
+
+List only the items that are still outstanding. Omit an item once its requirement is satisfied.
 
 ```markdown
-## PR is ready to merge
+## ⚠️ First On-Board Service — Action Required
 
-## ⚠️ First On-Board Service — Pipeline Setup Required
+This PR cannot be merged until the following onboarding requirements are completed:
 
-This PR adds a new service. Release pipelines have not been created yet.
-
-**Action required:** Comment `/azp run prepare-pipelines` on this PR to create the release pipelines.
+- **Pipeline setup** (release pipelines not created yet): comment `/azp run prepare-pipelines` on this PR to create the release pipelines.
+- **Namespace review link** (not found in PR comments): comment the namespace review issue link, for example `Namespace review issue: https://github.com/Azure/azure-sdk/issues/12345`.
 ```
 
-**If there are failures** → use this template (append the first on-board block above after the failure list if this is also a first on-board service):
+**If there are failures** → use this template, then append the **First On-Board Service Checklist** above (with only the outstanding items) when this is a first on-board service:
 
 ```markdown
 ## Next Steps to Merge
@@ -169,4 +173,5 @@ Rules:
 - Only list failing/blocking checks — omit passed checks entirely.
 - For every failure, include a concrete **Fix** line with the exact command or step the PR author should run locally.
 - For ADO checks, always link the real `target_url` from the check API. Never fabricate URLs.
+- For first on-board services, append the **First On-Board Service Checklist** with only the outstanding items (pipeline setup and/or namespace review link).
 - Be direct and actionable.

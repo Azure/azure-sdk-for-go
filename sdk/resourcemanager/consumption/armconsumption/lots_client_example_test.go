@@ -50,6 +50,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountCont
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](550),
 		// 					},
 		// 				},
 		// 			},
@@ -92,10 +93,12 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountPrim
 		// 					OrganizationType: to.Ptr(armconsumption.OrganizationTypePrimaryOrganizationType),
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](60.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](5000),
 		// 					},
 		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
@@ -103,6 +106,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountPrim
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](550),
 		// 					},
 		// 				},
 		// 			},
@@ -144,10 +148,12 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 		// 				Properties: &armconsumption.LotProperties{
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](60.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](5000),
 		// 					},
 		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
@@ -162,10 +168,12 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 		// 				Properties: &armconsumption.LotProperties{
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](80.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](6000),
 		// 					},
 		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
@@ -218,6 +226,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](550),
 		// 					},
 		// 				},
 		// 			},
@@ -261,10 +270,12 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 		// 					OrganizationType: to.Ptr(armconsumption.OrganizationTypePrimaryOrganizationType),
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](60.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](5000),
 		// 					},
 		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
@@ -272,6 +283,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](550),
 		// 					},
 		// 				},
 		// 			},
@@ -314,10 +326,12 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 		// 				Properties: &armconsumption.LotProperties{
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](60.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](5000),
 		// 					},
 		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
@@ -364,8 +378,10 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 					BillingCurrency: to.Ptr("USD"),
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](60.9),
 		// 					},
 		// 					ClosedBalanceInBillingCurrency: &armconsumption.AmountWithExchangeRate{
+		// 						ExchangeRate: to.Ptr[float64](5000),
 		// 						ExchangeRateMonth: to.Ptr[int32](1),
 		// 					},
 		// 					CreditCurrency: to.Ptr("USD"),
@@ -373,8 +389,10 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](5000),
 		// 					},
 		// 					OriginalAmountInBillingCurrency: &armconsumption.AmountWithExchangeRate{
+		// 						ExchangeRate: to.Ptr[float64](5000),
 		// 						ExchangeRateMonth: to.Ptr[int32](1),
 		// 					},
 		// 					PoNumber: to.Ptr("3524"),
@@ -394,8 +412,10 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 					BillingCurrency: to.Ptr("USD"),
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](80.9),
 		// 					},
 		// 					ClosedBalanceInBillingCurrency: &armconsumption.AmountWithExchangeRate{
+		// 						ExchangeRate: to.Ptr[float64](5000),
 		// 						ExchangeRateMonth: to.Ptr[int32](1),
 		// 					},
 		// 					CreditCurrency: to.Ptr("USD"),
@@ -403,8 +423,10 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](6000),
 		// 					},
 		// 					OriginalAmountInBillingCurrency: &armconsumption.AmountWithExchangeRate{
+		// 						ExchangeRate: to.Ptr[float64](5000),
 		// 						ExchangeRateMonth: to.Ptr[int32](1),
 		// 					},
 		// 					PoNumber: to.Ptr("31224"),
@@ -454,11 +476,13 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 		// 				Properties: &armconsumption.LotProperties{
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](60.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T00:00:00Z"); return t}()),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](5000),
 		// 					},
 		// 					PoNumber: to.Ptr("3524"),
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),
@@ -472,11 +496,13 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 		// 				Properties: &armconsumption.LotProperties{
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](80.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](6000),
 		// 					},
 		// 					PoNumber: to.Ptr("31224"),
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),
@@ -522,11 +548,13 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomerWithFilter() {
 		// 				Properties: &armconsumption.LotProperties{
 		// 					ClosedBalance: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](60.9),
 		// 					},
 		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T00:00:00Z"); return t}()),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float64](5000),
 		// 					},
 		// 					PoNumber: to.Ptr("3524"),
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),

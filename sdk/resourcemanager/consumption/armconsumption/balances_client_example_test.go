@@ -38,19 +38,33 @@ func ExampleBalancesClient_GetByBillingAccount() {
 	// 			AdjustmentDetails: []*armconsumption.BalancePropertiesAdjustmentDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Credit"),
+	// 					Value: to.Ptr[float64](1.1),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("SIE Credit"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			Adjustments: to.Ptr[float64](0),
+	// 			AzureMarketplaceServiceCharges: to.Ptr[float64](609.82),
+	// 			BeginningBalance: to.Ptr[float64](3396469.19),
 	// 			BillingFrequency: to.Ptr(armconsumption.BillingFrequencyMonth),
+	// 			ChargesBilledSeparately: to.Ptr[float64](0),
 	// 			Currency: to.Ptr("USD  "),
+	// 			EndingBalance: to.Ptr[float64](2922371.02),
+	// 			NewPurchases: to.Ptr[float64](0),
 	// 			NewPurchasesDetails: []*armconsumption.BalancePropertiesNewPurchasesDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Purchase"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			OverageRefund: to.Ptr[float64](2012.61),
 	// 			PriceHidden: to.Ptr(false),
+	// 			ServiceOverage: to.Ptr[float64](0),
+	// 			TotalOverage: to.Ptr[float64](0),
+	// 			TotalUsage: to.Ptr[float64](474098.17),
+	// 			Utilized: to.Ptr[float64](474098.17),
 	// 		},
 	// 	},
 	// }
@@ -83,19 +97,33 @@ func ExampleBalancesClient_GetForBillingPeriodByBillingAccount() {
 	// 			AdjustmentDetails: []*armconsumption.BalancePropertiesAdjustmentDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Credit"),
+	// 					Value: to.Ptr[float64](1.1),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("SIE Credit"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			Adjustments: to.Ptr[float64](0),
+	// 			AzureMarketplaceServiceCharges: to.Ptr[float64](609.82),
+	// 			BeginningBalance: to.Ptr[float64](3396469.19),
 	// 			BillingFrequency: to.Ptr(armconsumption.BillingFrequencyMonth),
+	// 			ChargesBilledSeparately: to.Ptr[float64](0),
 	// 			Currency: to.Ptr("USD  "),
+	// 			EndingBalance: to.Ptr[float64](2922371.02),
+	// 			NewPurchases: to.Ptr[float64](0),
 	// 			NewPurchasesDetails: []*armconsumption.BalancePropertiesNewPurchasesDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Purchase"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			OverageRefund: to.Ptr[float64](2012.61),
 	// 			PriceHidden: to.Ptr(false),
+	// 			ServiceOverage: to.Ptr[float64](0),
+	// 			TotalOverage: to.Ptr[float64](0),
+	// 			TotalUsage: to.Ptr[float64](474098.17),
+	// 			Utilized: to.Ptr[float64](474098.17),
 	// 		},
 	// 	},
 	// }

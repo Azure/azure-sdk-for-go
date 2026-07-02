@@ -19,7 +19,7 @@ import (
 // BackupsUnderVolumeClient contains the methods for the BackupsUnderVolume group.
 // Don't use this type directly, use NewBackupsUnderVolumeClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-04-15-preview
 type BackupsUnderVolumeClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -118,7 +118,7 @@ func (client *BackupsUnderVolumeClient) migrateBackupsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260415Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

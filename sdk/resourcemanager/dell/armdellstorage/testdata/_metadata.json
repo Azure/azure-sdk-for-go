@@ -2,5 +2,5 @@
   "apiVersions": {
     "Dell.Storage": "2025-03-21"
   },
-  "emitterVersion": "0.14.1"
+  "emitterVersion": "0.14.2"
 }

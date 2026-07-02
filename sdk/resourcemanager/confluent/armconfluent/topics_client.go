@@ -20,7 +20,7 @@ import (
 // TopicsClient contains the methods for the Topics group.
 // Don't use this type directly, use NewTopicsClient() instead.
 //
-// Generated from API version 2025-08-18-preview
+// Generated from API version 2026-05-01-preview
 type TopicsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -105,7 +105,7 @@ func (client *TopicsClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -204,7 +204,7 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -271,7 +271,7 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -343,7 +343,7 @@ func (client *TopicsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.PageSize != nil {
 		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
 	}

@@ -63,6 +63,29 @@ type AccessClientListUsersResponse struct {
 	AccessListUsersSuccessResponse
 }
 
+// AccessPointResourcesClientCreateOrReplaceResponse contains the response from method AccessPointResourcesClient.BeginCreateOrReplace.
+type AccessPointResourcesClientCreateOrReplaceResponse struct {
+	// Details of access point record
+	AccessPointResource
+}
+
+// AccessPointResourcesClientDeleteResponse contains the response from method AccessPointResourcesClient.BeginDelete.
+type AccessPointResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AccessPointResourcesClientGetResponse contains the response from method AccessPointResourcesClient.Get.
+type AccessPointResourcesClientGetResponse struct {
+	// Details of access point record
+	AccessPointResource
+}
+
+// AccessPointResourcesClientListResponse contains the response from method AccessPointResourcesClient.NewListPager.
+type AccessPointResourcesClientListResponse struct {
+	// The response of a AccessPointResource list operation.
+	AccessPointResourceListResult
+}
+
 // ClusterClientCreateOrUpdateResponse contains the response from method ClusterClient.CreateOrUpdate.
 type ClusterClientCreateOrUpdateResponse struct {
 	// Details of cluster record
@@ -118,6 +141,29 @@ type MarketplaceAgreementsClientCreateResponse struct {
 type MarketplaceAgreementsClientListResponse struct {
 	// Response of a list operation.
 	AgreementResourceListResponse
+}
+
+// NetworkGatewayResourcesClientCreateOrReplaceResponse contains the response from method NetworkGatewayResourcesClient.BeginCreateOrReplace.
+type NetworkGatewayResourcesClientCreateOrReplaceResponse struct {
+	// Details of network gateway record
+	NetworkGatewayResource
+}
+
+// NetworkGatewayResourcesClientDeleteResponse contains the response from method NetworkGatewayResourcesClient.BeginDelete.
+type NetworkGatewayResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// NetworkGatewayResourcesClientGetResponse contains the response from method NetworkGatewayResourcesClient.Get.
+type NetworkGatewayResourcesClientGetResponse struct {
+	// Details of network gateway record
+	NetworkGatewayResource
+}
+
+// NetworkGatewayResourcesClientListResponse contains the response from method NetworkGatewayResourcesClient.NewListPager.
+type NetworkGatewayResourcesClientListResponse struct {
+	// The response of a NetworkGatewayResource list operation.
+	NetworkGatewayResourceListResult
 }
 
 // OrganizationClientCreateAPIKeyResponse contains the response from method OrganizationClient.CreateAPIKey.

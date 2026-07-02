@@ -55,6 +55,31 @@ type AccessClientListUsersOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AccessPointResourcesClientBeginCreateOrReplaceOptions contains the optional parameters for the AccessPointResourcesClient.BeginCreateOrReplace
+// method.
+type AccessPointResourcesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AccessPointResourcesClientBeginDeleteOptions contains the optional parameters for the AccessPointResourcesClient.BeginDelete
+// method.
+type AccessPointResourcesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AccessPointResourcesClientGetOptions contains the optional parameters for the AccessPointResourcesClient.Get method.
+type AccessPointResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessPointResourcesClientListOptions contains the optional parameters for the AccessPointResourcesClient.NewListPager
+// method.
+type AccessPointResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClusterClientBeginDeleteOptions contains the optional parameters for the ClusterClient.BeginDelete method.
 type ClusterClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -110,6 +135,31 @@ type MarketplaceAgreementsClientCreateOptions struct {
 // MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.NewListPager
 // method.
 type MarketplaceAgreementsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkGatewayResourcesClientBeginCreateOrReplaceOptions contains the optional parameters for the NetworkGatewayResourcesClient.BeginCreateOrReplace
+// method.
+type NetworkGatewayResourcesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkGatewayResourcesClientBeginDeleteOptions contains the optional parameters for the NetworkGatewayResourcesClient.BeginDelete
+// method.
+type NetworkGatewayResourcesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkGatewayResourcesClientGetOptions contains the optional parameters for the NetworkGatewayResourcesClient.Get method.
+type NetworkGatewayResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkGatewayResourcesClientListOptions contains the optional parameters for the NetworkGatewayResourcesClient.NewListPager
+// method.
+type NetworkGatewayResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

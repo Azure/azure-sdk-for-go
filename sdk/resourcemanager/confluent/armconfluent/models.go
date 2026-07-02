@@ -186,6 +186,59 @@ type AccessListUsersSuccessResponse struct {
 	Metadata *ListMetadata
 }
 
+// AccessPointProperties - Access Point Properties
+type AccessPointProperties struct {
+	// REQUIRED; Display name of the access point
+	AccessPointName *string
+
+	// REQUIRED; The cloud service provider region for the access point
+	Region *string
+
+	// REQUIRED; VNet injection target (LiftrBase standard model). Contains the virtual network resource ID and the delegated
+	// subnet resource ID.
+	VnetInjection *VnetInjectionDetails
+
+	// Additional properties for extensibility
+	Dictionary []*KeyValuePair
+
+	// IP ranges to route through your virtual network instead of Confluent's default path. Required for Kafka clients in peered
+	// VNets or on-premises networks (e.g., 10.0.0.0/8, 172.16.0.0/12).
+	EgressRoutes []*string
+
+	// Metadata of the record
+	Metadata *SCMetadataEntity
+
+	// READ-ONLY; Provisioning state of the access point
+	ProvisioningState *ProvisionState
+}
+
+// AccessPointResource - Details of access point record
+type AccessPointResource struct {
+	// Access Point Properties
+	Properties *AccessPointProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AccessPointResourceListResult - The response of a AccessPointResource list operation.
+type AccessPointResourceListResult struct {
+	// REQUIRED; The AccessPointResource items on this page
+	Value []*AccessPointResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // AccessRoleBindingNameListSuccessResponse - Details of the role binding names returned on successful response
 type AccessRoleBindingNameListSuccessResponse struct {
 	// List of role binding names
@@ -886,6 +939,15 @@ func (k *KafkaAzureSynapseAnalyticsSinkConnectorInfo) GetPartnerInfoBase() *Part
 	}
 }
 
+// KeyValuePair - A key-value pair for extensibility.
+type KeyValuePair struct {
+	// REQUIRED; The key.
+	Key *string
+
+	// REQUIRED; The value.
+	Value *string
+}
+
 // LinkOrganization - Link an existing Confluent organization
 type LinkOrganization struct {
 	// REQUIRED; User auth token
@@ -975,6 +1037,51 @@ type MetadataEntity struct {
 
 	// Updated Date time
 	UpdatedAt *string
+}
+
+// NetworkGatewayProperties - Network Gateway Properties
+type NetworkGatewayProperties struct {
+	// REQUIRED; Display name of the network gateway
+	NetworkGatewayName *string
+
+	// REQUIRED; The cloud service provider region for the network gateway
+	Region *string
+
+	// Additional properties for extensibility
+	Dictionary []*KeyValuePair
+
+	// Metadata of the record
+	Metadata *SCMetadataEntity
+
+	// READ-ONLY; Provisioning state of the network gateway
+	ProvisioningState *ProvisionState
+}
+
+// NetworkGatewayResource - Details of network gateway record
+type NetworkGatewayResource struct {
+	// Network Gateway Properties
+	Properties *NetworkGatewayProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkGatewayResourceListResult - The response of a NetworkGatewayResource list operation.
+type NetworkGatewayResourceListResult struct {
+	// REQUIRED; The NetworkGatewayResource items on this page
+	Value []*NetworkGatewayResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // OfferDetail - Confluent Offer detail
@@ -1522,4 +1629,13 @@ type UserRecord struct {
 type ValidationResponse struct {
 	// Info from the response
 	Info map[string]*string
+}
+
+// VnetInjectionDetails - Details for VNet injection
+type VnetInjectionDetails struct {
+	// REQUIRED; Resource ID of the subnet
+	SubnetResourceID *string
+
+	// REQUIRED; Resource ID of the virtual network
+	VirtualNetworkResourceID *string
 }

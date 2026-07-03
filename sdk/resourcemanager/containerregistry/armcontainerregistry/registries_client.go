@@ -447,7 +447,7 @@ func (client *RegistriesClient) getPrivateLinkResourceCreateRequest(ctx context.
 // getPrivateLinkResourceHandleResponse handles the GetPrivateLinkResource response.
 func (client *RegistriesClient) getPrivateLinkResourceHandleResponse(resp *http.Response) (RegistriesClientGetPrivateLinkResourceResponse, error) {
 	result := RegistriesClientGetPrivateLinkResourceResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MyPrivateLinkResource); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return RegistriesClientGetPrivateLinkResourceResponse{}, err
 	}
 	return result, nil

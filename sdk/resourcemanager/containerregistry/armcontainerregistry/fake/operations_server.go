@@ -7,14 +7,13 @@ package fake
 import (
 	"errors"
 	"fmt"
-	"net/http"
-	"slices"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"net/http"
+	"slices"
 )
 
 // OperationsServer is a fake server for instances of the armcontainerregistry.OperationsClient type.

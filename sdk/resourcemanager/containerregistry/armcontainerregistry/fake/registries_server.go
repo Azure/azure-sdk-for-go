@@ -8,16 +8,15 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"regexp"
-	"slices"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
 )
 
 // RegistriesServer is a fake server for instances of the armcontainerregistry.RegistriesClient type.
@@ -407,7 +406,7 @@ func (r *RegistriesServerTransport) dispatchGetPrivateLinkResource(req *http.Req
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MyPrivateLinkResource, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PrivateLinkResource, req)
 	if err != nil {
 		return nil, err
 	}

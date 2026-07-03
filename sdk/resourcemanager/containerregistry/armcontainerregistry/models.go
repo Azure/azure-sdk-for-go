@@ -794,24 +794,6 @@ type LoginServerProperties struct {
 	TLS *TLSProperties
 }
 
-// MyPrivateLinkResource - A private link resource.
-type MyPrivateLinkResource struct {
-	// A resource that supports private link capabilities.
-	Properties *PrivateLinkResourceProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the private link resource.
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // NetworkRuleSet - The network rule set for a container registry.
 type NetworkRuleSet struct {
 	// REQUIRED; The default action of allow or deny when no other rules match.
@@ -1131,6 +1113,24 @@ type PrivateEndpointConnectionProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// PrivateLinkResource - A private link resource.
+type PrivateLinkResource struct {
+	// A resource that supports private link capabilities.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the private link resource.
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // PrivateLinkResourceListResult - The result of a request to list private link resources for a container registry.
 type PrivateLinkResourceListResult struct {
 	// The URI that can be used to request the next list of private link resources.
@@ -1138,7 +1138,7 @@ type PrivateLinkResourceListResult struct {
 
 	// The list of private link resources. Since this list may be incomplete, the nextLink field should be used to request the
 	// next list of private link resources.
-	Value []*MyPrivateLinkResource
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.

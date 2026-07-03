@@ -2142,49 +2142,6 @@ func (l *LoginServerProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type MyPrivateLinkResource.
-func (m MyPrivateLinkResource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", m.ID)
-	populate(objectMap, "name", m.Name)
-	populate(objectMap, "properties", m.Properties)
-	populate(objectMap, "systemData", m.SystemData)
-	populate(objectMap, "type", m.Type)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type MyPrivateLinkResource.
-func (m *MyPrivateLinkResource) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", m, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &m.ID)
-			delete(rawMsg, key)
-		case "name":
-			err = unpopulate(val, "Name", &m.Name)
-			delete(rawMsg, key)
-		case "properties":
-			err = unpopulate(val, "Properties", &m.Properties)
-			delete(rawMsg, key)
-		case "systemData":
-			err = unpopulate(val, "SystemData", &m.SystemData)
-			delete(rawMsg, key)
-		case "type":
-			err = unpopulate(val, "Type", &m.Type)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", m, err)
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type NetworkRuleSet.
 func (n NetworkRuleSet) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3067,6 +3024,49 @@ func (p *PrivateEndpointConnectionProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &p.ProvisioningState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PrivateLinkResource.
+func (p PrivateLinkResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", p.ID)
+	populate(objectMap, "name", p.Name)
+	populate(objectMap, "properties", p.Properties)
+	populate(objectMap, "systemData", p.SystemData)
+	populate(objectMap, "type", p.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PrivateLinkResource.
+func (p *PrivateLinkResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &p.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &p.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &p.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &p.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &p.Type)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -6,12 +6,11 @@ package armcontainerregistry_test
 
 import (
 	"context"
-	"log"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"log"
+	"time"
 )
 
 // Generated from example definition: 2026-03-01-preview/RegistryCheckNameAvailable.json
@@ -656,7 +655,7 @@ func ExampleRegistriesClient_GetPrivateLinkResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.RegistriesClientGetPrivateLinkResourceResponse{
-	// 	MyPrivateLinkResource: armcontainerregistry.MyPrivateLinkResource{
+	// 	PrivateLinkResource: armcontainerregistry.PrivateLinkResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/privateLinkResources/registry"),
 	// 		Name: to.Ptr("registry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/privateLinkResources"),
@@ -1037,7 +1036,7 @@ func ExampleRegistriesClient_NewListPrivateLinkResourcesPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armcontainerregistry.RegistriesClientListPrivateLinkResourcesResponse{
 		// 	PrivateLinkResourceListResult: armcontainerregistry.PrivateLinkResourceListResult{
-		// 		Value: []*armcontainerregistry.MyPrivateLinkResource{
+		// 		Value: []*armcontainerregistry.PrivateLinkResource{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/privateLinkResources/registry"),
 		// 				Name: to.Ptr("registry"),

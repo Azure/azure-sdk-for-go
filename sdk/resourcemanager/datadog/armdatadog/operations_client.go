@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // OperationsClient - This is the interface that implements the standard Azure Resource Manager operation that returns
@@ -18,6 +19,8 @@ import (
 // Azure Resource Manager service. It implements
 // GET "/providers/Microsoft.ContosoProviderHub/operations"
 // Don't use this type directly, use NewOperationsClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type OperationsClient struct {
 	internal *arm.Client
 }
@@ -39,8 +42,6 @@ func NewOperationsClient(credential azcore.TokenCredential, options *arm.ClientO
 // NewListPager - List all operations provided by Microsoft.Datadog for the 2025-06-11 api version.
 //
 // List all operations provided by Microsoft.Datadog for the 2025-06-11 api version.
-//
-// Generated from API version 2025-12-26-preview
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -73,8 +74,8 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

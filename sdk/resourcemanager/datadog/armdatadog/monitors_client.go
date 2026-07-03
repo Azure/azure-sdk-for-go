@@ -18,6 +18,8 @@ import (
 
 // MonitorsClient contains the methods for the Monitors group.
 // Don't use this type directly, use NewMonitorsClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type MonitorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewMonitorsClient(subscriptionID string, credential azcore.TokenCredential,
 //
 // Create a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
@@ -69,8 +69,6 @@ func (client *MonitorsClient) BeginCreate(ctx context.Context, resourceGroupName
 //
 // Create a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitorsClient) create(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResource, options *MonitorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorsClient.BeginCreate"
@@ -112,8 +110,8 @@ func (client *MonitorsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -126,8 +124,6 @@ func (client *MonitorsClient) createCreateRequest(ctx context.Context, resourceG
 //
 // Delete a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientBeginDeleteOptions contains the optional parameters for the MonitorsClient.BeginDelete method.
@@ -152,8 +148,6 @@ func (client *MonitorsClient) BeginDelete(ctx context.Context, resourceGroupName
 //
 // Delete a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorsClient.BeginDelete"
@@ -195,8 +189,8 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -204,8 +198,6 @@ func (client *MonitorsClient) deleteCreateRequest(ctx context.Context, resourceG
 //
 // Get the properties of a specific monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientGetOptions contains the optional parameters for the MonitorsClient.Get method.
@@ -251,8 +243,8 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -270,8 +262,6 @@ func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsCl
 //
 // Get the default application key.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientGetDefaultApplicationKeyOptions contains the optional parameters for the MonitorsClient.GetDefaultApplicationKey
@@ -318,8 +308,8 @@ func (client *MonitorsClient) getDefaultApplicationKeyCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -337,8 +327,6 @@ func (client *MonitorsClient) getDefaultApplicationKeyHandleResponse(resp *http.
 //
 // Get the default api key.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientGetDefaultKeyOptions contains the optional parameters for the MonitorsClient.GetDefaultKey method.
@@ -384,8 +372,8 @@ func (client *MonitorsClient) getDefaultKeyCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -402,8 +390,6 @@ func (client *MonitorsClient) getDefaultKeyHandleResponse(resp *http.Response) (
 // NewListPager - List all monitors under the specified subscription.
 //
 // List all monitors under the specified subscription.
-//
-// Generated from API version 2025-12-26-preview
 //   - options - MonitorsClientListOptions contains the optional parameters for the MonitorsClient.NewListPager method.
 func (client *MonitorsClient) NewListPager(options *MonitorsClientListOptions) *runtime.Pager[MonitorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MonitorsClientListResponse]{
@@ -440,8 +426,8 @@ func (client *MonitorsClient) listCreateRequest(ctx context.Context, _ *Monitors
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -458,8 +444,6 @@ func (client *MonitorsClient) listHandleResponse(resp *http.Response) (MonitorsC
 // NewListAPIKeysPager - List the api keys for a given monitor resource.
 //
 // List the api keys for a given monitor resource.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListAPIKeysOptions contains the optional parameters for the MonitorsClient.NewListAPIKeysPager
@@ -507,8 +491,8 @@ func (client *MonitorsClient) listAPIKeysCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -525,8 +509,6 @@ func (client *MonitorsClient) listAPIKeysHandleResponse(resp *http.Response) (Mo
 // NewListByResourceGroupPager - List all monitors under the specified resource group.
 //
 // List all monitors under the specified resource group.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MonitorsClientListByResourceGroupOptions contains the optional parameters for the MonitorsClient.NewListByResourceGroupPager
 //     method.
@@ -569,8 +551,8 @@ func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -587,8 +569,6 @@ func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Respo
 // NewListHostsPager - List the hosts for a given monitor resource.
 //
 // List the hosts for a given monitor resource.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListHostsOptions contains the optional parameters for the MonitorsClient.NewListHostsPager method.
@@ -635,8 +615,8 @@ func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -653,8 +633,6 @@ func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response) (Moni
 // NewListLinkedResourcesPager - List all Azure resources associated to the same Datadog organization as the target resource.
 //
 // List all Azure resources associated to the same Datadog organization as the target resource.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListLinkedResourcesOptions contains the optional parameters for the MonitorsClient.NewListLinkedResourcesPager
@@ -702,8 +680,8 @@ func (client *MonitorsClient) listLinkedResourcesCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -720,8 +698,6 @@ func (client *MonitorsClient) listLinkedResourcesHandleResponse(resp *http.Respo
 // NewListMonitoredResourcesPager - List the resources currently being monitored by the Datadog monitor resource.
 //
 // List the resources currently being monitored by the Datadog monitor resource.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientListMonitoredResourcesOptions contains the optional parameters for the MonitorsClient.NewListMonitoredResourcesPager
@@ -769,8 +745,8 @@ func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -786,8 +762,6 @@ func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Re
 
 // ManageSreAgentConnectors - Manages Datadog MCP connectors to add/remove for the SRE Agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - request - The content of the action request
@@ -835,8 +809,8 @@ func (client *MonitorsClient) manageSreAgentConnectorsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {
@@ -858,8 +832,6 @@ func (client *MonitorsClient) manageSreAgentConnectorsHandleResponse(resp *http.
 //
 // Refresh the set password link and return a latest one.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientRefreshSetPasswordLinkOptions contains the optional parameters for the MonitorsClient.RefreshSetPasswordLink
@@ -906,8 +878,8 @@ func (client *MonitorsClient) refreshSetPasswordLinkCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -925,8 +897,6 @@ func (client *MonitorsClient) refreshSetPasswordLinkHandleResponse(resp *http.Re
 //
 // Set the default api key.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientSetDefaultKeyOptions contains the optional parameters for the MonitorsClient.SetDefaultKey method.
@@ -971,8 +941,8 @@ func (client *MonitorsClient) setDefaultKeyCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
@@ -987,8 +957,6 @@ func (client *MonitorsClient) setDefaultKeyCreateRequest(ctx context.Context, re
 //
 // Update a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitorsClientBeginUpdateOptions contains the optional parameters for the MonitorsClient.BeginUpdate method.
@@ -1013,8 +981,6 @@ func (client *MonitorsClient) BeginUpdate(ctx context.Context, resourceGroupName
 //
 // Update a monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitorsClient) update(ctx context.Context, resourceGroupName string, monitorName string, body MonitorResourceUpdateParameters, options *MonitorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitorsClient.BeginUpdate"
@@ -1056,8 +1022,8 @@ func (client *MonitorsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

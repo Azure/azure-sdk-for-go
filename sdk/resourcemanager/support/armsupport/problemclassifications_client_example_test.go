@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/GetProblemClassification.json
+// Generated from example definition: 2026-07-01/GetProblemClassification.json
 func ExampleProblemClassificationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleProblemClassificationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/ListProblemClassifications.json
+// Generated from example definition: 2026-07-01/ListProblemClassifications.json
 func ExampleProblemClassificationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

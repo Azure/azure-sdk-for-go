@@ -19,7 +19,7 @@ import (
 // ChatTranscriptsClient contains the methods for the ChatTranscripts group.
 // Don't use this type directly, use NewChatTranscriptsClient() instead.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2026-07-01
 type ChatTranscriptsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -88,7 +88,7 @@ func (client *ChatTranscriptsClient) getCreateRequest(ctx context.Context, suppo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -146,7 +146,7 @@ func (client *ChatTranscriptsClient) listCreateRequest(ctx context.Context, supp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

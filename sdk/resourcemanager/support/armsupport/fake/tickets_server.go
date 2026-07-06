@@ -38,6 +38,10 @@ type TicketsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(options *armsupport.TicketsClientListOptions) (resp azfake.PagerResponder[armsupport.TicketsClientListResponse])
 
+	// LookUpResourceID is the fake for method TicketsClient.LookUpResourceID
+	// HTTP status codes to indicate success: http.StatusOK
+	LookUpResourceID func(ctx context.Context, lookUpResourceIDRequest armsupport.LookUpResourceIDRequest, options *armsupport.TicketsClientLookUpResourceIDOptions) (resp azfake.Responder[armsupport.TicketsClientLookUpResourceIDResponse], errResp azfake.ErrorResponder)
+
 	// Update is the fake for method TicketsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, supportTicketName string, updateSupportTicket armsupport.UpdateSupportTicket, options *armsupport.TicketsClientUpdateOptions) (resp azfake.Responder[armsupport.TicketsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -91,6 +95,8 @@ func (t *TicketsServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = t.dispatchGet(req)
 			case "TicketsClient.NewListPager":
 				res.resp, res.err = t.dispatchNewListPager(req)
+			case "TicketsClient.LookUpResourceID":
+				res.resp, res.err = t.dispatchLookUpResourceID(req)
 			case "TicketsClient.Update":
 				res.resp, res.err = t.dispatchUpdate(req)
 			default:
@@ -259,6 +265,29 @@ func (t *TicketsServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	}
 	if !server.PagerResponderMore(newListPager) {
 		t.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (t *TicketsServerTransport) dispatchLookUpResourceID(req *http.Request) (*http.Response, error) {
+	if t.srv.LookUpResourceID == nil {
+		return nil, &nonRetriableError{errors.New("fake for method LookUpResourceID not implemented")}
+	}
+	body, err := server.UnmarshalRequestAsJSON[armsupport.LookUpResourceIDRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.LookUpResourceID(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LookUpResourceIDResponse, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

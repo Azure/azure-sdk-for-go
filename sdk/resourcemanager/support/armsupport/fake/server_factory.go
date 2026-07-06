@@ -21,6 +21,18 @@ type ServerFactory struct {
 	// ChatTranscriptsNoSubscriptionServer contains the fakes for client ChatTranscriptsNoSubscriptionClient
 	ChatTranscriptsNoSubscriptionServer ChatTranscriptsNoSubscriptionServer
 
+	// ClassifyProblemsServer contains the fakes for client ClassifyProblemsClient
+	ClassifyProblemsServer ClassifyProblemsServer
+
+	// ClassifyProblemsNoSubscriptionServer contains the fakes for client ClassifyProblemsNoSubscriptionClient
+	ClassifyProblemsNoSubscriptionServer ClassifyProblemsNoSubscriptionServer
+
+	// ClassifyServicesServer contains the fakes for client ClassifyServicesClient
+	ClassifyServicesServer ClassifyServicesServer
+
+	// ClassifyServicesNoSubscriptionServer contains the fakes for client ClassifyServicesNoSubscriptionClient
+	ClassifyServicesNoSubscriptionServer ClassifyServicesNoSubscriptionServer
+
 	// CommunicationsServer contains the fakes for client CommunicationsClient
 	CommunicationsServer CommunicationsServer
 
@@ -67,21 +79,25 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armsupport.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                   *ServerFactory
-	trMu                                  sync.Mutex
-	trChatTranscriptsServer               *ChatTranscriptsServerTransport
-	trChatTranscriptsNoSubscriptionServer *ChatTranscriptsNoSubscriptionServerTransport
-	trCommunicationsServer                *CommunicationsServerTransport
-	trCommunicationsNoSubscriptionServer  *CommunicationsNoSubscriptionServerTransport
-	trFileWorkspacesServer                *FileWorkspacesServerTransport
-	trFileWorkspacesNoSubscriptionServer  *FileWorkspacesNoSubscriptionServerTransport
-	trFilesServer                         *FilesServerTransport
-	trFilesNoSubscriptionServer           *FilesNoSubscriptionServerTransport
-	trOperationsServer                    *OperationsServerTransport
-	trProblemClassificationsServer        *ProblemClassificationsServerTransport
-	trServicesServer                      *ServicesServerTransport
-	trTicketsServer                       *TicketsServerTransport
-	trTicketsNoSubscriptionServer         *TicketsNoSubscriptionServerTransport
+	srv                                    *ServerFactory
+	trMu                                   sync.Mutex
+	trChatTranscriptsServer                *ChatTranscriptsServerTransport
+	trChatTranscriptsNoSubscriptionServer  *ChatTranscriptsNoSubscriptionServerTransport
+	trClassifyProblemsServer               *ClassifyProblemsServerTransport
+	trClassifyProblemsNoSubscriptionServer *ClassifyProblemsNoSubscriptionServerTransport
+	trClassifyServicesServer               *ClassifyServicesServerTransport
+	trClassifyServicesNoSubscriptionServer *ClassifyServicesNoSubscriptionServerTransport
+	trCommunicationsServer                 *CommunicationsServerTransport
+	trCommunicationsNoSubscriptionServer   *CommunicationsNoSubscriptionServerTransport
+	trFileWorkspacesServer                 *FileWorkspacesServerTransport
+	trFileWorkspacesNoSubscriptionServer   *FileWorkspacesNoSubscriptionServerTransport
+	trFilesServer                          *FilesServerTransport
+	trFilesNoSubscriptionServer            *FilesNoSubscriptionServerTransport
+	trOperationsServer                     *OperationsServerTransport
+	trProblemClassificationsServer         *ProblemClassificationsServerTransport
+	trServicesServer                       *ServicesServerTransport
+	trTicketsServer                        *TicketsServerTransport
+	trTicketsNoSubscriptionServer          *TicketsNoSubscriptionServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -107,6 +123,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewChatTranscriptsNoSubscriptionServerTransport(&s.srv.ChatTranscriptsNoSubscriptionServer)
 		})
 		resp, err = s.trChatTranscriptsNoSubscriptionServer.Do(req)
+	case "ClassifyProblemsClient":
+		initServer(&s.trMu, &s.trClassifyProblemsServer, func() *ClassifyProblemsServerTransport {
+			return NewClassifyProblemsServerTransport(&s.srv.ClassifyProblemsServer)
+		})
+		resp, err = s.trClassifyProblemsServer.Do(req)
+	case "ClassifyProblemsNoSubscriptionClient":
+		initServer(&s.trMu, &s.trClassifyProblemsNoSubscriptionServer, func() *ClassifyProblemsNoSubscriptionServerTransport {
+			return NewClassifyProblemsNoSubscriptionServerTransport(&s.srv.ClassifyProblemsNoSubscriptionServer)
+		})
+		resp, err = s.trClassifyProblemsNoSubscriptionServer.Do(req)
+	case "ClassifyServicesClient":
+		initServer(&s.trMu, &s.trClassifyServicesServer, func() *ClassifyServicesServerTransport {
+			return NewClassifyServicesServerTransport(&s.srv.ClassifyServicesServer)
+		})
+		resp, err = s.trClassifyServicesServer.Do(req)
+	case "ClassifyServicesNoSubscriptionClient":
+		initServer(&s.trMu, &s.trClassifyServicesNoSubscriptionServer, func() *ClassifyServicesNoSubscriptionServerTransport {
+			return NewClassifyServicesNoSubscriptionServerTransport(&s.srv.ClassifyServicesNoSubscriptionServer)
+		})
+		resp, err = s.trClassifyServicesNoSubscriptionServer.Do(req)
 	case "CommunicationsClient":
 		initServer(&s.trMu, &s.trCommunicationsServer, func() *CommunicationsServerTransport {
 			return NewCommunicationsServerTransport(&s.srv.CommunicationsServer)

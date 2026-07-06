@@ -63,6 +63,18 @@ type CheckNameAvailabilityOutput struct {
 	Reason *string
 }
 
+// ClassificationService - Service Classification result object.
+type ClassificationService struct {
+	// List of applicable ARM resource types for this service.
+	ResourceTypes []*string
+
+	// READ-ONLY; Localized name of the azure service.
+	DisplayName *string
+
+	// READ-ONLY; Azure resource Id of the service.
+	ServiceID *string
+}
+
 // CommunicationDetails - Object that represents a Communication resource.
 type CommunicationDetails struct {
 	// REQUIRED; Properties of the resource.
@@ -146,6 +158,18 @@ type ContactProfile struct {
 	PhoneNumber *string
 }
 
+// DirectConnectEscalation - Direct Connect Escalation details for a support ticket.
+type DirectConnectEscalation struct {
+	// An array containing the allowed severities for direct connect escalation.
+	AllowedSeverities []*SeverityLevel
+
+	// Status of Direct Connect Escalation.
+	AzureEEStatus *EscalationStatus
+
+	// Reason for escalation / business impact.
+	ReasonForEscalation *string
+}
+
 // Engineer - Support engineer information.
 type Engineer struct {
 	// READ-ONLY; Email address of the Azure Support engineer assigned to the support ticket.
@@ -219,6 +243,22 @@ type FilesListResult struct {
 
 	// [Placeholder] Description for value property
 	Value []*FileDetails
+}
+
+// LookUpResourceIDRequest - The look up resource Id request body
+type LookUpResourceIDRequest struct {
+	// The System generated Id that is unique. Use supportTicketId property for Microsoft.Support/supportTickets resource type.
+	Identifier *string
+
+	// FLAG; CONSTANT; The type of resource.
+	// Field has constant value "Microsoft.Support/supportTickets", any specified value is ignored.
+	Type *string
+}
+
+// LookUpResourceIDResponse - The look up resource id response
+type LookUpResourceIDResponse struct {
+	// The resource Id of support resource type.
+	ResourceID *string
 }
 
 // MessageProperties - Describes the properties of a Message Details resource.
@@ -317,6 +357,46 @@ type ProblemClassificationProperties struct {
 	SecondaryConsentEnabled []*SecondaryConsentEnabled
 }
 
+// ProblemClassificationsClassificationInput - Input to problem classification Classification API.
+type ProblemClassificationsClassificationInput struct {
+	// REQUIRED; Natural language description of the customer’s issue.
+	IssueSummary *string
+
+	// ARM resource Id of the resource that is having the issue.
+	ResourceID *string
+}
+
+// ProblemClassificationsClassificationOutput - Output of the problem classification Classification API.
+type ProblemClassificationsClassificationOutput struct {
+	// Set of problem classification objects classified.
+	ProblemClassificationResults []*ProblemClassificationsClassificationResult
+}
+
+// ProblemClassificationsClassificationResult - ProblemClassification Classification result object.
+type ProblemClassificationsClassificationResult struct {
+	// Related service.
+	RelatedService *ClassificationService
+
+	// READ-ONLY; Identifier of the article associated with this problem classification result. This value is populated only when
+	// a related article is available; otherwise it is omitted.
+	ArticleID *string
+
+	// READ-ONLY; Description of the problem classification result.
+	Description *string
+
+	// READ-ONLY; Identifier that may be used for support ticket creation.
+	ProblemClassificationID *string
+
+	// READ-ONLY; Identifier that may be used for solution discovery or some other purposes.
+	ProblemID *string
+
+	// READ-ONLY; Identifier of the service associated with this problem classification result.
+	ServiceID *string
+
+	// READ-ONLY; Title of the problem classification result.
+	Title *string
+}
+
 // ProblemClassificationsListResult - Collection of ProblemClassification resources.
 type ProblemClassificationsListResult struct {
 	// The link to the next page of items
@@ -384,6 +464,39 @@ type Service struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ServiceClassificationAnswer - Service Classification result object.
+type ServiceClassificationAnswer struct {
+	// Child service.
+	ChildService *ClassificationService
+
+	// List of applicable ARM resource types for this service.
+	ResourceTypes []*string
+
+	// READ-ONLY; Localized name of the azure service.
+	DisplayName *string
+
+	// READ-ONLY; Azure resource Id of the service.
+	ServiceID *string
+}
+
+// ServiceClassificationOutput - Output of the service classification API.
+type ServiceClassificationOutput struct {
+	// Set of problem classification objects classified.
+	ServiceClassificationResults []*ServiceClassificationAnswer
+}
+
+// ServiceClassificationRequest - Input to problem classification Classification API.
+type ServiceClassificationRequest struct {
+	// Additional information in the form of a string.
+	AdditionalContext *string
+
+	// Natural language description of the customer’s issue.
+	IssueSummary *string
+
+	// ARM resource Id of the resource that is having the issue.
+	ResourceID *string
 }
 
 // ServiceLevelAgreement - Service Level Agreement details for a support ticket.
@@ -488,6 +601,12 @@ type TicketDetailsProperties struct {
 	// REQUIRED; Title of the support ticket.
 	Title *string
 
+	// Contains a link to the post on the community forum.
+	CommunityForumPost *string
+
+	// Direct Connect Escalation details for a support ticket.
+	DirectConnectEscalation *DirectConnectEscalation
+
 	// Enrollment Id associated with the support ticket.
 	EnrollmentID *string
 
@@ -524,6 +643,9 @@ type TicketDetailsProperties struct {
 	// Additional ticket details associated with a technical support ticket request.
 	TechnicalTicketDetails *TechnicalTicketDetails
 
+	// READ-ONLY; Status of the chat conversation associated with the support ticket.
+	ChatConversationStatus *ChatConversationStatus
+
 	// READ-ONLY; Time in UTC (ISO 8601 format) when the support ticket was created.
 	CreatedDate *time.Time
 
@@ -541,6 +663,9 @@ type TicketDetailsProperties struct {
 
 	// READ-ONLY; Status of the support ticket.
 	Status *string
+
+	// READ-ONLY; Support channel type for the support ticket.
+	SupportChannel *Channel
 
 	// READ-ONLY; Support plan type associated with the support ticket.
 	SupportPlanDisplayName *string
@@ -601,6 +726,9 @@ type UpdateSupportTicket struct {
 
 	// Contact details to be updated on the support ticket.
 	ContactDetails *UpdateContactProfile
+
+	// Direct Connect Escalation details for a support ticket.
+	DirectConnectEscalation *DirectConnectEscalation
 
 	// This property indicates secondary consents for the support ticket
 	SecondaryConsent []*SecondaryConsent

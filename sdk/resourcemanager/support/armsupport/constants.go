@@ -5,7 +5,7 @@
 package armsupport
 
 const (
-	version20240401 string = "2024-04-01"
+	version20260701 string = "2026-07-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +20,42 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// Channel - Support channel type for the support ticket.
+type Channel string
+
+const (
+	// ChannelChat - Chat support channel.
+	ChannelChat Channel = "Chat"
+	// ChannelWeb - Web support channel.
+	ChannelWeb Channel = "Web"
+)
+
+// PossibleChannelValues returns the possible values for the Channel const type.
+func PossibleChannelValues() []Channel {
+	return []Channel{
+		ChannelChat,
+		ChannelWeb,
+	}
+}
+
+// ChatConversationStatus - Status of the chat conversation associated with the support ticket.
+type ChatConversationStatus string
+
+const (
+	// ChatConversationStatusActive - Chat conversation is currently active.
+	ChatConversationStatusActive ChatConversationStatus = "Active"
+	// ChatConversationStatusClosed - Chat conversation has been closed.
+	ChatConversationStatusClosed ChatConversationStatus = "Closed"
+)
+
+// PossibleChatConversationStatusValues returns the possible values for the ChatConversationStatus const type.
+func PossibleChatConversationStatusValues() []ChatConversationStatus {
+	return []ChatConversationStatus{
+		ChatConversationStatusActive,
+		ChatConversationStatusClosed,
 	}
 }
 
@@ -92,6 +128,35 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// EscalationStatus - Status of Direct Connect Escalation.
+type EscalationStatus string
+
+const (
+	// EscalationStatusEscalationAvailable - Escalation is available and uninitiated
+	EscalationStatusEscalationAvailable EscalationStatus = "EscalationAvailable"
+	// EscalationStatusEscalationInitiated - Escalation is unavailable and has been initiated
+	EscalationStatusEscalationInitiated EscalationStatus = "EscalationInitiated"
+	// EscalationStatusEscalationProcessed - Escalation is unavailable and has finished processing after being initiated
+	EscalationStatusEscalationProcessed EscalationStatus = "EscalationProcessed"
+	// EscalationStatusEscalationUnavailable - Escalation is unavailable and cannot be initiated due to customer not being enrolled
+	// to direct escalation
+	EscalationStatusEscalationUnavailable EscalationStatus = "EscalationUnavailable"
+	// EscalationStatusEscalationUnsupported - Escalation is unavailable and cannot be initiated due to direct escalation being
+	// unsupported on this product or topic
+	EscalationStatusEscalationUnsupported EscalationStatus = "EscalationUnsupported"
+)
+
+// PossibleEscalationStatusValues returns the possible values for the EscalationStatus const type.
+func PossibleEscalationStatusValues() []EscalationStatus {
+	return []EscalationStatus{
+		EscalationStatusEscalationAvailable,
+		EscalationStatusEscalationInitiated,
+		EscalationStatusEscalationProcessed,
+		EscalationStatusEscalationUnavailable,
+		EscalationStatusEscalationUnsupported,
 	}
 }
 

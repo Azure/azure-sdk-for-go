@@ -47,6 +47,36 @@ func (c *ClientFactory) NewChatTranscriptsNoSubscriptionClient() *ChatTranscript
 	}
 }
 
+// NewClassifyProblemsClient creates a new instance of ClassifyProblemsClient.
+func (c *ClientFactory) NewClassifyProblemsClient() *ClassifyProblemsClient {
+	return &ClassifyProblemsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClassifyProblemsNoSubscriptionClient creates a new instance of ClassifyProblemsNoSubscriptionClient.
+func (c *ClientFactory) NewClassifyProblemsNoSubscriptionClient() *ClassifyProblemsNoSubscriptionClient {
+	return &ClassifyProblemsNoSubscriptionClient{
+		internal: c.internal,
+	}
+}
+
+// NewClassifyServicesClient creates a new instance of ClassifyServicesClient.
+func (c *ClientFactory) NewClassifyServicesClient() *ClassifyServicesClient {
+	return &ClassifyServicesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClassifyServicesNoSubscriptionClient creates a new instance of ClassifyServicesNoSubscriptionClient.
+func (c *ClientFactory) NewClassifyServicesNoSubscriptionClient() *ClassifyServicesNoSubscriptionClient {
+	return &ClassifyServicesNoSubscriptionClient{
+		internal: c.internal,
+	}
+}
+
 // NewCommunicationsClient creates a new instance of CommunicationsClient.
 func (c *ClientFactory) NewCommunicationsClient() *CommunicationsClient {
 	return &CommunicationsClient{

@@ -18,6 +18,8 @@ import (
 
 // RecommendedSensitivityLabelsClient contains the methods for the RecommendedSensitivityLabels group.
 // Don't use this type directly, use NewRecommendedSensitivityLabelsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type RecommendedSensitivityLabelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRecommendedSensitivityLabelsClient(subscriptionID string, credential azc
 
 // Update - Update recommended sensitivity labels states of a given database using an operations batch.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -93,8 +93,8 @@ func (client *RecommendedSensitivityLabelsClient) updateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

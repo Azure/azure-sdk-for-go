@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo
 
 go 1.25.0
 

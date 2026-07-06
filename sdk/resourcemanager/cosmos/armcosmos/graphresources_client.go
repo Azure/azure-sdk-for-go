@@ -18,6 +18,8 @@ import (
 
 // GraphResourcesClient contains the methods for the GraphResources group.
 // Don't use this type directly, use NewGraphResourcesClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type GraphResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewGraphResourcesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateUpdateGraph - Create or update an Azure Cosmos DB Graph.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - graphName - Cosmos DB graph resource name.
@@ -68,8 +68,6 @@ func (client *GraphResourcesClient) BeginCreateUpdateGraph(ctx context.Context, 
 
 // CreateUpdateGraph - Create or update an Azure Cosmos DB Graph.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *GraphResourcesClient) createUpdateGraph(ctx context.Context, resourceGroupName string, accountName string, graphName string, createUpdateGraphParameters GraphResourceCreateUpdateParameters, options *GraphResourcesClientBeginCreateUpdateGraphOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GraphResourcesClient.BeginCreateUpdateGraph"
@@ -115,8 +113,8 @@ func (client *GraphResourcesClient) createUpdateGraphCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createUpdateGraphParameters); err != nil {
@@ -127,8 +125,6 @@ func (client *GraphResourcesClient) createUpdateGraphCreateRequest(ctx context.C
 
 // BeginDeleteGraphResource - Deletes an existing Azure Cosmos DB Graph Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - graphName - Cosmos DB graph resource name.
@@ -153,8 +149,6 @@ func (client *GraphResourcesClient) BeginDeleteGraphResource(ctx context.Context
 
 // DeleteGraphResource - Deletes an existing Azure Cosmos DB Graph Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *GraphResourcesClient) deleteGraphResource(ctx context.Context, resourceGroupName string, accountName string, graphName string, options *GraphResourcesClientBeginDeleteGraphResourceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GraphResourcesClient.BeginDeleteGraphResource"
@@ -200,15 +194,13 @@ func (client *GraphResourcesClient) deleteGraphResourceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GetGraph - Gets the Graph resource under an existing Azure Cosmos DB database account with the provided name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - graphName - Cosmos DB graph resource name.
@@ -259,8 +251,8 @@ func (client *GraphResourcesClient) getGraphCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *GraphResourcesClient) getGraphHandleResponse(resp *http.Response) 
 }
 
 // NewListGraphsPager - Lists the graphs under an existing Azure Cosmos DB database account.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - Cosmos DB database account name.
 //   - options - GraphResourcesClientListGraphsOptions contains the optional parameters for the GraphResourcesClient.NewListGraphsPager
@@ -324,8 +314,8 @@ func (client *GraphResourcesClient) listGraphsCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

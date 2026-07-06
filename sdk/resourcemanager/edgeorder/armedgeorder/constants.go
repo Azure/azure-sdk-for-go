@@ -4,6 +4,10 @@
 
 package armedgeorder
 
+const (
+	version20240201 string = "2024-02-01"
+)
+
 // ActionStatusEnum - Describes whether the order item is deletable or not.
 type ActionStatusEnum string
 

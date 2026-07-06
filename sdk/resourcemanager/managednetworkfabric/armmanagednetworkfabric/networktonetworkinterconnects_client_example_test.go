@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 	"log"
 )
 
@@ -133,13 +133,13 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkToNetworkInterconnectsClientCreateResponse{
-	// 	NetworkToNetworkInterconnect: &armmanagednetworkfabric.NetworkToNetworkInterconnect{
+	// 	NetworkToNetworkInterconnect: armmanagednetworkfabric.NetworkToNetworkInterconnect{
 	// 		Properties: &armmanagednetworkfabric.NetworkToNetworkInterconnectProperties{
 	// 			NniType: to.Ptr(armmanagednetworkfabric.NniTypeCE),
 	// 			IsManagementType: to.Ptr(armmanagednetworkfabric.IsManagementTypeTrue),
@@ -284,7 +284,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -307,7 +307,7 @@ func ExampleNetworkToNetworkInterconnectsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkToNetworkInterconnectsClientGetResponse{
-	// 	NetworkToNetworkInterconnect: &armmanagednetworkfabric.NetworkToNetworkInterconnect{
+	// 	NetworkToNetworkInterconnect: armmanagednetworkfabric.NetworkToNetworkInterconnect{
 	// 		Properties: &armmanagednetworkfabric.NetworkToNetworkInterconnectProperties{
 	// 			NniType: to.Ptr(armmanagednetworkfabric.NniTypeCE),
 	// 			IsManagementType: to.Ptr(armmanagednetworkfabric.IsManagementTypeTrue),
@@ -692,13 +692,13 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateResponse{
-	// 	NetworkToNetworkInterconnect: &armmanagednetworkfabric.NetworkToNetworkInterconnect{
+	// 	NetworkToNetworkInterconnect: armmanagednetworkfabric.NetworkToNetworkInterconnect{
 	// 		Properties: &armmanagednetworkfabric.NetworkToNetworkInterconnectProperties{
 	// 			NniType: to.Ptr(armmanagednetworkfabric.NniTypeCE),
 	// 			IsManagementType: to.Ptr(armmanagednetworkfabric.IsManagementTypeTrue),
@@ -840,13 +840,13 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateAdministrativeState()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: &armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -886,13 +886,13 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateBfdAdministrativeStat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateBfdAdministrativeStateResponse{
-	// 	NniUpdateBfdAdministrativeStateResponse: &armmanagednetworkfabric.NniUpdateBfdAdministrativeStateResponse{
+	// 	NniUpdateBfdAdministrativeStateResponse: armmanagednetworkfabric.NniUpdateBfdAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -934,13 +934,13 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateNpbStaticRouteBfdAdmi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkToNetworkInterconnectsClientUpdateNpbStaticRouteBfdAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: &armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),

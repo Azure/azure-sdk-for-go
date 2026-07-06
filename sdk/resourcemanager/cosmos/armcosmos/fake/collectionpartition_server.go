@@ -11,10 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CollectionPartitionServer is a fake server for instances of the armcosmos.CollectionPartitionClient type.
@@ -59,9 +60,7 @@ func (c *CollectionPartitionServerTransport) Do(req *http.Request) (*http.Respon
 }
 
 func (c *CollectionPartitionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -79,10 +78,7 @@ func (c *CollectionPartitionServerTransport) dispatchToMethodFake(req *http.Requ
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -122,11 +118,7 @@ func (c *CollectionPartitionServerTransport) dispatchNewListMetricsPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		filterParam, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, databaseRidParam, collectionRidParam, filterParam, nil)
+		resp := c.srv.NewListMetricsPager(resourceGroupNameParam, accountNameParam, databaseRidParam, collectionRidParam, qp.Get("$filter"), nil)
 		newListMetricsPager = &resp
 		c.newListMetricsPager.add(req, newListMetricsPager)
 		server.PagerResponderInjectNextLinks(newListMetricsPager, req, func(page *armcosmos.CollectionPartitionClientListMetricsResponse, createLink func() string) {
@@ -137,7 +129,7 @@ func (c *CollectionPartitionServerTransport) dispatchNewListMetricsPager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListMetricsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -176,11 +168,7 @@ func (c *CollectionPartitionServerTransport) dispatchNewListUsagesPager(req *htt
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
 		var options *armcosmos.CollectionPartitionClientListUsagesOptions
 		if filterParam != nil {
 			options = &armcosmos.CollectionPartitionClientListUsagesOptions{
@@ -198,7 +186,7 @@ func (c *CollectionPartitionServerTransport) dispatchNewListUsagesPager(req *htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListUsagesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

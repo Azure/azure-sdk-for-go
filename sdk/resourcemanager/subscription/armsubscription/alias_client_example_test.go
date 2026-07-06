@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"log"
 )
 
@@ -44,13 +44,13 @@ func ExampleAliasClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.AliasClientCreateResponse{
-	// 	AliasResponse: &armsubscription.AliasResponse{
+	// 	AliasResponse: armsubscription.AliasResponse{
 	// 		Name: to.Ptr("string"),
 	// 		Type: to.Ptr("string"),
 	// 		ID: to.Ptr("/providers/Microsoft.Subscription/aliases/dummyalias"),
@@ -114,7 +114,7 @@ func ExampleAliasClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.AliasClientGetResponse{
-	// 	AliasResponse: &armsubscription.AliasResponse{
+	// 	AliasResponse: armsubscription.AliasResponse{
 	// 		Name: to.Ptr("string"),
 	// 		Type: to.Ptr("string"),
 	// 		ID: to.Ptr("/providers/Microsoft.Subscription/aliases/dummyalias"),

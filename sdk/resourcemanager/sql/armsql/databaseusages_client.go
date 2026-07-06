@@ -18,6 +18,8 @@ import (
 
 // DatabaseUsagesClient contains the methods for the DatabaseUsages group.
 // Don't use this type directly, use NewDatabaseUsagesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewDatabaseUsagesClient(subscriptionID string, credential azcore.TokenCrede
 }
 
 // NewListByDatabasePager - Gets database usages.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -94,8 +94,8 @@ func (client *DatabaseUsagesClient) listByDatabaseCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

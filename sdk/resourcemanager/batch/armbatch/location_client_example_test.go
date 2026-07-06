@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 	"log"
 )
 
@@ -34,7 +34,7 @@ func ExampleLocationClient_CheckNameAvailability_locationCheckNameAvailabilityAl
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.LocationClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armbatch.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armbatch.CheckNameAvailabilityResult{
 	// 		Message: to.Ptr("An account named 'existingaccountname' is already in use."),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr(armbatch.NameAvailabilityReasonAlreadyExists),
@@ -64,7 +64,7 @@ func ExampleLocationClient_CheckNameAvailability_locationCheckNameAvailabilityAv
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.LocationClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armbatch.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armbatch.CheckNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
@@ -89,7 +89,7 @@ func ExampleLocationClient_GetQuotas() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.LocationClientGetQuotasResponse{
-	// 	LocationQuota: &armbatch.LocationQuota{
+	// 	LocationQuota: armbatch.LocationQuota{
 	// 		AccountQuota: to.Ptr[int32](1),
 	// 	},
 	// }

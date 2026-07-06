@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 )
 
@@ -31,7 +31,7 @@ func ExampleDataTransferJobsClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientCancelResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -75,7 +75,7 @@ func ExampleDataTransferJobsClient_Complete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientCompleteResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/e35cc6eb-c8e3-447b-8de6-b83328cd0098/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -132,7 +132,7 @@ func ExampleDataTransferJobsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientCreateResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -176,7 +176,7 @@ func ExampleDataTransferJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientGetResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -273,7 +273,7 @@ func ExampleDataTransferJobsClient_Pause() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientPauseResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{
@@ -317,7 +317,7 @@ func ExampleDataTransferJobsClient_Resume() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DataTransferJobsClientResumeResponse{
-	// 	DataTransferJobGetResults: &armcosmos.DataTransferJobGetResults{
+	// 	DataTransferJobGetResults: armcosmos.DataTransferJobGetResults{
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/dataTransferJobs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/dataTransferJobs/j1"),
 	// 		Properties: &armcosmos.DataTransferJobProperties{

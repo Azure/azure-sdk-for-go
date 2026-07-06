@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
 	"log"
 )
 
@@ -42,13 +42,13 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrReplaceCertificatesWithDev
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/testHub/certificates/cert"),
 	// 		Properties: &armiothub.CertificateProperties{
 	// 			Certificate: to.Ptr("############################################"),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(false),
 	// 			PolicyResourceID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/testNamespace/credentials/default/policies/default"),
 	// 			Subject: to.Ptr("CN=testdevice1"),
 	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 		},
 	// 	},
 	// }
@@ -84,12 +84,12 @@ func ExampleCertificatesClient_CreateOrUpdate_certificatesCreateOrUpdate() {
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServives/myFirstProvisioningService/certificates/cert"),
 	// 		Properties: &armiothub.CertificateProperties{
 	// 			Certificate: to.Ptr("############################################"),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(false),
 	// 			Subject: to.Ptr("CN=testdevice1"),
 	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 		},
 	// 	},
 	// }
@@ -139,12 +139,12 @@ func ExampleCertificatesClient_GenerateVerificationCode() {
 	// 	CertificateWithNonceDescription: armiothub.CertificateWithNonceDescription{
 	// 		Name: to.Ptr("cert"),
 	// 		Properties: &armiothub.CertificatePropertiesWithNonce{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(false),
 	// 			Subject: to.Ptr("CN=andbucdevice1"),
 	// 			Thumbprint: to.Ptr("##############################"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:26:56 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:26:56 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			VerificationCode: to.Ptr("##################################"),
 	// 		},
 	// 	},
@@ -177,12 +177,12 @@ func ExampleCertificatesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/andbuc-hub/certificates/cert"),
 	// 		Properties: &armiothub.CertificateProperties{
 	// 			Certificate: to.Ptr("############################################"),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(false),
 	// 			Subject: to.Ptr("CN=testdevice1"),
 	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 		},
 	// 	},
 	// }
@@ -216,12 +216,12 @@ func ExampleCertificatesClient_ListByIotHub() {
 	// 				ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/andbuc-hub/certificates/cert"),
 	// 				Properties: &armiothub.CertificateProperties{
 	// 					Certificate: to.Ptr("############################################"),
-	// 					Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 					Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 					Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 					Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 					IsVerified: to.Ptr(false),
 	// 					Subject: to.Ptr("CN=testdevice1"),
 	// 					Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
+	// 					Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 				},
 	// 			},
 	// 		},
@@ -256,12 +256,12 @@ func ExampleCertificatesClient_Verify() {
 	// 		Etag: to.Ptr("AAAAAAExpTQ="),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/certificates/cert"),
 	// 		Properties: &armiothub.CertificateProperties{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(true),
 	// 			Subject: to.Ptr("CN=andbucdevice1"),
 	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:26:56 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:26:56 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 		},
 	// 	},
 	// }

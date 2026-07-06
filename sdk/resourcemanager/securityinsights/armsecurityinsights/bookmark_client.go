@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultBookmarkClientVersion string = "2025-07-01-preview"
-
 // BookmarkClient contains the methods for the Bookmark group.
 // Don't use this type directly, use NewBookmarkClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultBookmarkClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

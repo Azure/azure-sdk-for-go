@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 	"log"
 )
 
@@ -139,13 +139,13 @@ func ExampleNetworkTapRulesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientCreateResponse{
-	// 	NetworkTapRule: &armmanagednetworkfabric.NetworkTapRule{
+	// 	NetworkTapRule: armmanagednetworkfabric.NetworkTapRule{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapRuleProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -290,7 +290,7 @@ func ExampleNetworkTapRulesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -313,7 +313,7 @@ func ExampleNetworkTapRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientGetResponse{
-	// 	NetworkTapRule: &armmanagednetworkfabric.NetworkTapRule{
+	// 	NetworkTapRule: armmanagednetworkfabric.NetworkTapRule{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapRuleProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -814,13 +814,13 @@ func ExampleNetworkTapRulesClient_BeginResync() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientResyncResponse{
-	// 	NetworkTapRuleResyncResponse: &armmanagednetworkfabric.NetworkTapRuleResyncResponse{
+	// 	NetworkTapRuleResyncResponse: armmanagednetworkfabric.NetworkTapRuleResyncResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -964,13 +964,13 @@ func ExampleNetworkTapRulesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientUpdateResponse{
-	// 	NetworkTapRule: &armmanagednetworkfabric.NetworkTapRule{
+	// 	NetworkTapRule: armmanagednetworkfabric.NetworkTapRule{
 	// 		Properties: &armmanagednetworkfabric.NetworkTapRuleProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -1131,13 +1131,13 @@ func ExampleNetworkTapRulesClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientUpdateAdministrativeStateResponse{
-	// 	CommonPostActionResponseForStateUpdate: &armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	CommonPostActionResponseForStateUpdate: armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("ConfigurationStateError"),
 	// 			Message: to.Ptr("The operation resulted in a degraded state"),
@@ -1180,13 +1180,13 @@ func ExampleNetworkTapRulesClient_BeginValidateConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkTapRulesClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: &armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("ValidationError"),
 	// 			Message: to.Ptr("Configuration validation found issues requiring administrative update"),

@@ -26,7 +26,8 @@ type BaseCopyJobPropertiesClassification interface {
 // BaseCosmosDataTransferDataSourceSinkClassification provides polymorphic access to related types.
 // Call the interface's GetBaseCosmosDataTransferDataSourceSink() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *BaseCosmosDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *MongoDataTransferDataSourceSink, *SQLDataTransferDataSourceSink
+// - *AzureBlobDataTransferDataSourceSink, *BaseCosmosDataTransferDataSourceSink, *CassandraDataTransferDataSourceSink, *MongoDataTransferDataSourceSink,
+// - *SQLDataTransferDataSourceSink
 type BaseCosmosDataTransferDataSourceSinkClassification interface {
 	DataTransferDataSourceSinkClassification
 	// GetBaseCosmosDataTransferDataSourceSink returns the BaseCosmosDataTransferDataSourceSink content of the underlying type.

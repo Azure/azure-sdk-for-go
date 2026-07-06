@@ -24,15 +24,6 @@ func (nonRetriableError) NonRetriable() {
 	// marker method
 }
 
-func contains[T comparable](s []T, v T) bool {
-	for _, vv := range s {
-		if vv == v {
-			return true
-		}
-	}
-	return false
-}
-
 func getHeaderValue(h http.Header, k string) string {
 	v := h[k]
 	if len(v) == 0 {
@@ -64,7 +55,7 @@ func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error)
 	if err != nil {
 		return nil, err
 	}
-	return &t, err
+	return &t, nil
 }
 
 func newTracker[T any]() *tracker[T] {

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 	"time"
 )
@@ -137,13 +137,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -333,13 +333,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -512,13 +512,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		Name: to.Ptr("ddb1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
@@ -628,7 +628,7 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -660,7 +660,7 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -683,7 +683,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientGetResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -853,7 +853,7 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientGetReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: &armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
@@ -1194,7 +1194,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: &armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
 	// 				Type: to.Ptr(armcosmos.TypeSQL),
@@ -1226,7 +1226,7 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: &armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
 	// 				Description: to.Ptr("Name of the connection string"),
@@ -1256,7 +1256,7 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListKeysResponse{
-	// 	DatabaseAccountListKeysResult: &armcosmos.DatabaseAccountListKeysResult{
+	// 	DatabaseAccountListKeysResult: armcosmos.DatabaseAccountListKeysResult{
 	// 		PrimaryMasterKey: to.Ptr("primaryMasterKey"),
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryMasterKey: to.Ptr("secondaryMasterKey"),
@@ -1405,7 +1405,7 @@ func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: &armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
@@ -1473,7 +1473,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1501,7 +1501,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1529,7 +1529,7 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1619,13 +1619,13 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),

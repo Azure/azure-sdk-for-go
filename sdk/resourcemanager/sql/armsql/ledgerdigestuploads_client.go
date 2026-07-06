@@ -18,6 +18,8 @@ import (
 
 // LedgerDigestUploadsClient contains the methods for the LedgerDigestUploads group.
 // Don't use this type directly, use NewLedgerDigestUploadsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type LedgerDigestUploadsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewLedgerDigestUploadsClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -67,8 +67,6 @@ func (client *LedgerDigestUploadsClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Enables upload ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *LedgerDigestUploadsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, ledgerDigestUploads LedgerDigestUploadsName, parameters LedgerDigestUploads, options *LedgerDigestUploadsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LedgerDigestUploadsClient.BeginCreateOrUpdate"
@@ -118,8 +116,8 @@ func (client *LedgerDigestUploadsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -130,8 +128,6 @@ func (client *LedgerDigestUploadsClient) createOrUpdateCreateRequest(ctx context
 
 // BeginDisable - Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -156,8 +152,6 @@ func (client *LedgerDigestUploadsClient) BeginDisable(ctx context.Context, resou
 
 // Disable - Disables uploading ledger digests to an Azure Storage account or an Azure Confidential Ledger instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *LedgerDigestUploadsClient) disable(ctx context.Context, resourceGroupName string, serverName string, databaseName string, ledgerDigestUploads LedgerDigestUploadsName, options *LedgerDigestUploadsClientBeginDisableOptions) (*http.Response, error) {
 	var err error
 	const operationName = "LedgerDigestUploadsClient.BeginDisable"
@@ -207,16 +201,14 @@ func (client *LedgerDigestUploadsClient) disableCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets the current ledger digest upload configuration for a database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -271,8 +263,8 @@ func (client *LedgerDigestUploadsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -287,8 +279,6 @@ func (client *LedgerDigestUploadsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByDatabasePager - Gets all ledger digest upload settings on a database.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -341,8 +331,8 @@ func (client *LedgerDigestUploadsClient) listByDatabaseCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

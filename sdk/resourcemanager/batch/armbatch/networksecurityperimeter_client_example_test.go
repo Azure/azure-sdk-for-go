@@ -7,7 +7,7 @@ package armbatch_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleNetworkSecurityPerimeterClient_GetConfiguration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.NetworkSecurityPerimeterClientGetConfigurationResponse{
-	// 	NetworkSecurityPerimeterConfiguration: &armbatch.NetworkSecurityPerimeterConfiguration{
+	// 	NetworkSecurityPerimeterConfiguration: armbatch.NetworkSecurityPerimeterConfiguration{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000.sampleassociation"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/networkSecurityPerimeterConfigurations"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/networkSecurityPerimeterConfigurations/00000000-0000-0000-0000-000000000000.sampleassociation"),
@@ -211,6 +211,6 @@ func ExampleNetworkSecurityPerimeterClient_BeginReconcileConfiguration() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

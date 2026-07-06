@@ -18,6 +18,8 @@ import (
 
 // FetchTieringCostClient contains the methods for the FetchTieringCost group.
 // Don't use this type directly, use NewFetchTieringCostClient() instead.
+//
+// Generated from API version 2026-01-31-preview
 type FetchTieringCostClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewFetchTieringCostClient(subscriptionID string, credential azcore.TokenCre
 // Status of the operation can be fetched using GetTieringCostOperationStatus API and result using GetTieringCostOperationResult
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - parameters - Fetch Tiering Cost Request
@@ -71,8 +71,6 @@ func (client *FetchTieringCostClient) BeginPost(ctx context.Context, resourceGro
 // Status of the operation can be fetched using GetTieringCostOperationStatus API and result using GetTieringCostOperationResult
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 func (client *FetchTieringCostClient) post(ctx context.Context, resourceGroupName string, vaultName string, parameters FetchTieringCostInfoRequestClassification, options *FetchTieringCostClientBeginPostOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FetchTieringCostClient.BeginPost"
@@ -114,8 +112,8 @@ func (client *FetchTieringCostClient) postCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

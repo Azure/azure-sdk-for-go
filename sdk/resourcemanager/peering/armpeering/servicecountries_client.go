@@ -18,6 +18,8 @@ import (
 
 // ServiceCountriesClient contains the methods for the ServiceCountries group.
 // Don't use this type directly, use NewServiceCountriesClient() instead.
+//
+// Generated from API version 2025-05-01
 type ServiceCountriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListPager - Lists all of the available countries for peering service.
-//
-// Generated from API version 2025-05-01
 //   - options - ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.NewListPager
 //     method.
 func (client *ServiceCountriesClient) NewListPager(options *ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse] {
@@ -79,8 +79,8 @@ func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

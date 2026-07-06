@@ -18,6 +18,8 @@ import (
 
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type CapabilitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredent
 
 // ListByLocation - Gets the subscription capabilities available for the specified location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - locationName - The location name whose capabilities are retrieved.
 //   - options - CapabilitiesClientListByLocationOptions contains the optional parameters for the CapabilitiesClient.ListByLocation
 //     method.
@@ -84,11 +84,11 @@ func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.Include != nil {
 		reqQP.Set("include", string(*options.Include))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

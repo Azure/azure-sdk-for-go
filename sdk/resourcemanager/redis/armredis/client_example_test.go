@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3"
 	"log"
 )
 
@@ -76,13 +76,13 @@ func ExampleClient_BeginCreate_redisCacheCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientCreateResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
@@ -209,13 +209,13 @@ func ExampleClient_BeginCreate_redisCacheCreateAutomaticZonalAllocationPolicy() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientCreateResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
@@ -336,13 +336,13 @@ func ExampleClient_BeginCreate_redisCacheCreateDefaultVersion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientCreateResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
@@ -472,13 +472,13 @@ func ExampleClient_BeginCreate_redisCacheCreateLatestVersion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientCreateResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
@@ -605,13 +605,13 @@ func ExampleClient_BeginCreate_redisCacheCreateNoZonesZonalAllocationPolicy() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientCreateResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
@@ -734,13 +734,13 @@ func ExampleClient_BeginCreate_redisCacheCreateUserDefinedZonalAllocationPolicy(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientCreateResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
@@ -848,7 +848,7 @@ func ExampleClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -879,7 +879,7 @@ func ExampleClient_BeginExportData() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -905,13 +905,13 @@ func ExampleClient_BeginFlushCache() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientFlushCacheResponse{
-	// 	OperationStatusResult: &armredis.OperationStatusResult{
+	// 	OperationStatusResult: armredis.OperationStatusResult{
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -943,7 +943,7 @@ func ExampleClient_ForceReboot() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientForceRebootResponse{
-	// 	ForceRebootResponse: &armredis.ForceRebootResponse{
+	// 	ForceRebootResponse: armredis.ForceRebootResponse{
 	// 		Message: to.Ptr("reboot operation enqueued"),
 	// 	},
 	// }
@@ -968,7 +968,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientGetResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),
@@ -1062,7 +1062,7 @@ func ExampleClient_BeginImportData() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1223,7 +1223,7 @@ func ExampleClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientListKeysResponse{
-	// 	AccessKeys: &armredis.AccessKeys{
+	// 	AccessKeys: armredis.AccessKeys{
 	// 		PrimaryKey: to.Ptr("<primaryKey>"),
 	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
 	// 	},
@@ -1288,7 +1288,7 @@ func ExampleClient_RegenerateKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientRegenerateKeyResponse{
-	// 	AccessKeys: &armredis.AccessKeys{
+	// 	AccessKeys: armredis.AccessKeys{
 	// 		PrimaryKey: to.Ptr("<primaryKey>"),
 	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
 	// 	},
@@ -1317,13 +1317,13 @@ func ExampleClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredis.ClientUpdateResponse{
-	// 	ResourceInfo: &armredis.ResourceInfo{
+	// 	ResourceInfo: armredis.ResourceInfo{
 	// 		Name: to.Ptr("cache1"),
 	// 		Type: to.Ptr("Microsoft.Cache/Redis"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache1"),

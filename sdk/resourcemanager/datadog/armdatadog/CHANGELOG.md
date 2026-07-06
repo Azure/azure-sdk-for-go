@@ -1,13 +1,7 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-07-03)
-### Breaking Changes
-
-- Field `SaaSGUID` of struct `ActivateSaaSParameterRequest` has been removed
-
-### Features Added
-
-- New field `SaaSResourceID` in struct `ActivateSaaSParameterRequest`
+## 2.0.0-beta.2 (2026-07-06)
+### Other Changes
 
 
 ## 2.0.0-beta.1 (2026-03-19)

@@ -24,7 +24,7 @@ func ExampleSaaSOperationGroupClient_ActivateResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSaaSOperationGroupClient().ActivateResource(ctx, armdatadog.ActivateSaaSParameterRequest{
-		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/mySaaSResource"),
+		SaaSGUID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/mySaaSResource"),
 		UserInfo: &armdatadog.UserInfo{
 			Name:         to.Ptr("Alice"),
 			EmailAddress: to.Ptr("alice@example.com"),

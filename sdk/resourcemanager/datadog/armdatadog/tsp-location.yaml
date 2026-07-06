@@ -1,4 +1,4 @@
 directory: specification/datadog/Datadog.Management
-commit: 9d8bde686b46fed801a67c10b5590e2121a300c3
+commit: 4345e3042b62d804bb54eadfebeb0cbf258e871f
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

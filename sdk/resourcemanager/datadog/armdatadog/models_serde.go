@@ -87,7 +87,7 @@ func (a *APIKeyListResponse) UnmarshalJSON(data []byte) error {
 func (a ActivateSaaSParameterRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "datadogOrganizationProperties", a.DatadogOrganizationProperties)
-	populate(objectMap, "saaSResourceId", a.SaaSResourceID)
+	populate(objectMap, "saaSResourceId", a.SaaSGUID)
 	populate(objectMap, "userInfo", a.UserInfo)
 	return json.Marshal(objectMap)
 }
@@ -105,7 +105,7 @@ func (a *ActivateSaaSParameterRequest) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "DatadogOrganizationProperties", &a.DatadogOrganizationProperties)
 			delete(rawMsg, key)
 		case "saaSResourceId":
-			err = unpopulate(val, "SaaSResourceID", &a.SaaSResourceID)
+			err = unpopulate(val, "SaaSGUID", &a.SaaSGUID)
 			delete(rawMsg, key)
 		case "userInfo":
 			err = unpopulate(val, "UserInfo", &a.UserInfo)

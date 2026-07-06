@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ListManagedComputeCapacities.json
+// Generated from example definition: 2026-05-15-preview/ListManagedComputeCapacities.json
 func ExampleManagedComputeCapacitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,6 @@ func ExampleManagedComputeCapacitiesClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.CognitiveServices/managedComputeCapacities"),
 		// 				Properties: &armcognitiveservices.ManagedComputeCapacityProperties{
 		// 					AcceleratorType: to.Ptr("Azure.A100"),
-		// 					Location: to.Ptr("eastus"),
 		// 					AvailableAccelerators: to.Ptr[int32](16),
 		// 					DeploymentSizeCapacities: []*armcognitiveservices.DeploymentSizeCapacity{
 		// 						{
@@ -69,7 +68,6 @@ func ExampleManagedComputeCapacitiesClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.CognitiveServices/managedComputeCapacities"),
 		// 				Properties: &armcognitiveservices.ManagedComputeCapacityProperties{
 		// 					AcceleratorType: to.Ptr("Azure.H100"),
-		// 					Location: to.Ptr("westus2"),
 		// 					AvailableAccelerators: to.Ptr[int32](32),
 		// 					DeploymentSizeCapacities: []*armcognitiveservices.DeploymentSizeCapacity{
 		// 						{

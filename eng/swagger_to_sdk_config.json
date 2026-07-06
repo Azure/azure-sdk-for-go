@@ -32,7 +32,7 @@
     "breakingChangeLabel": "CI-BreakingChange-Go",
     "breakingChangesLabel": "BreakingChange-Go-Sdk",
     "buildScript": {
-      "command": "generator build {packagePath}",
+      "command": "generator build {packagePath} --filter-test",
       "path": ""
     },
     "getSDKChangesScript":{

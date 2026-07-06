@@ -167,3 +167,4 @@ steps:
   - template: /eng/common/pipelines/templates/steps/upload-llm-artifacts.yml
     parameters:
       TestResultsGlob: 'report.xml'
+      SearchFolder: '$(Build.SourcesDirectory)/sdk'

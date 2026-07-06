@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"runtime"
 	"sort"
 	"sync"
 
@@ -17,6 +18,18 @@ import (
 
 const maxItemsPerQuery = 1000
 const maxPKRangeGoneRetries = 3
+
+// determineConcurrency returns either the provided positive max or NumCPU (>=1).
+func determineConcurrency(max *int32) int {
+	if max != nil && *max > 0 {
+		return int(*max)
+	}
+	c := runtime.NumCPU()
+	if c <= 0 {
+		c = 1
+	}
+	return c
+}
 
 // queryChunk is a single parameterized query targeting one physical partition key range.
 type queryChunk struct {

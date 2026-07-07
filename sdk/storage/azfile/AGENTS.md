@@ -59,17 +59,6 @@ Common creation flow:
 
 This module models a traditional file share hierarchy. Directory deletion requires the directory to be empty; file uploads often involve explicit create + range upload semantics under the hood.
 
-### SMB handles
-
-There is no separate `HandleClient` type in this module today. Handle operations are methods on existing clients:
-
-- `directory.Client.ListHandles(...)`
-- `directory.Client.ForceCloseHandles(...)`
-- `file.Client.ListHandles(...)`
-- `file.Client.ForceCloseHandles(...)`
-
-If a task is about open-handle cleanup or rename failures, start in `directory/` or `file/`, not a separate handle package.
-
 ### Leases
 
 The [`lease/`](./lease/) package provides wrappers around share and file lease operations. The public methods are named `Acquire`, `Break`, `Change`, `Release`, and `Renew` on dedicated lease client types.

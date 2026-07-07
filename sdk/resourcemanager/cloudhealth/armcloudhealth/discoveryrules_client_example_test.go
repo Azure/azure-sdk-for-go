@@ -12,27 +12,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/DiscoveryRules_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01-preview/DiscoveryRules_CreateOrUpdate.json
 func ExampleDiscoveryRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDiscoveryRulesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myHealthModel", "myDiscoveryRule", armcloudhealth.DiscoveryRule{
+	poller, err := clientFactory.NewDiscoveryRulesClient().BeginCreateOrUpdate(ctx, "online-store-rg", "online-store", "discover-web-apps", armcloudhealth.DiscoveryRule{
 		Properties: &armcloudhealth.DiscoveryRuleProperties{
-			AuthenticationSetting: to.Ptr("authSetting1"),
-			DisplayName:           to.Ptr("myDisplayName"),
+			AuthenticationSetting: to.Ptr("default-auth"),
+			DisplayName:           to.Ptr("Discover web apps"),
 			DiscoverRelationships: to.Ptr(armcloudhealth.DiscoveryRuleRelationshipDiscoveryBehaviorEnabled),
 			AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
 			Specification: &armcloudhealth.ResourceGraphQuerySpecification{
 				Kind:               to.Ptr(armcloudhealth.DiscoveryRuleKindResourceGraphQuery),
-				ResourceGraphQuery: to.Ptr("resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'"),
+				ResourceGraphQuery: to.Ptr("resources | where type =~ 'microsoft.web/sites' and resourceGroup =~ 'online-store-rg' | project id, name, location"),
 			},
+			AddResourceHealthSignal: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
 		},
 	}, nil)
 	if err != nil {
@@ -48,44 +49,45 @@ func ExampleDiscoveryRulesClient_BeginCreateOrUpdate() {
 	// res = armcloudhealth.DiscoveryRulesClientCreateOrUpdateResponse{
 	// 	DiscoveryRule: armcloudhealth.DiscoveryRule{
 	// 		Properties: &armcloudhealth.DiscoveryRuleProperties{
-	// 			AuthenticationSetting: to.Ptr("authSetting1"),
+	// 			AuthenticationSetting: to.Ptr("default-auth"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			DisplayName: to.Ptr("myDisplayName"),
+	// 			DisplayName: to.Ptr("Discover web apps"),
 	// 			DiscoverRelationships: to.Ptr(armcloudhealth.DiscoveryRuleRelationshipDiscoveryBehaviorEnabled),
 	// 			AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
 	// 			Specification: &armcloudhealth.ResourceGraphQuerySpecification{
 	// 				Kind: to.Ptr(armcloudhealth.DiscoveryRuleKindResourceGraphQuery),
-	// 				ResourceGraphQuery: to.Ptr("resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'"),
+	// 				ResourceGraphQuery: to.Ptr("resources | where type =~ 'microsoft.web/sites' and resourceGroup =~ 'online-store-rg' | project id, name, location"),
 	// 			},
-	// 			EntityName: to.Ptr("f1f0ef5e-a5b5-4d02-b69c-7145f4658829"),
+	// 			AddResourceHealthSignal: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+	// 			EntityName: to.Ptr("online-store-web-apps"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.CloudHealth/healthModels/myHealthModel/discoveryRules/myDiscoveryRule"),
-	// 		Name: to.Ptr("myDiscoveryRule"),
-	// 		Type: to.Ptr("Microsoft.CloudHealth/healthModels/discoveryRules"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/discoveryRules/discover-web-apps"),
+	// 		Name: to.Ptr("discover-web-apps"),
+	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels/discoveryRules"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("myCreatedBy"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("myLastModifiedBy"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/DiscoveryRules_Delete.json
+// Generated from example definition: 2026-05-01-preview/DiscoveryRules_Delete.json
 func ExampleDiscoveryRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDiscoveryRulesClient().BeginDelete(ctx, "my-resource-group", "my-health-model", "my-discovery-rule", nil)
+	poller, err := clientFactory.NewDiscoveryRulesClient().BeginDelete(ctx, "online-store-rg", "online-store", "discover-web-apps", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,18 +97,18 @@ func ExampleDiscoveryRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/DiscoveryRules_Get.json
+// Generated from example definition: 2026-05-01-preview/DiscoveryRules_Get.json
 func ExampleDiscoveryRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDiscoveryRulesClient().Get(ctx, "myResourceGroup", "myHealthModel", "myDiscoveryRule", nil)
+	res, err := clientFactory.NewDiscoveryRulesClient().Get(ctx, "online-store-rg", "online-store", "discover-web-apps", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -116,50 +118,52 @@ func ExampleDiscoveryRulesClient_Get() {
 	// res = armcloudhealth.DiscoveryRulesClientGetResponse{
 	// 	DiscoveryRule: armcloudhealth.DiscoveryRule{
 	// 		Properties: &armcloudhealth.DiscoveryRuleProperties{
-	// 			AuthenticationSetting: to.Ptr("authSetting1"),
+	// 			AuthenticationSetting: to.Ptr("default-auth"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			DisplayName: to.Ptr("myDisplayName"),
+	// 			DisplayName: to.Ptr("Discover web apps"),
 	// 			DiscoverRelationships: to.Ptr(armcloudhealth.DiscoveryRuleRelationshipDiscoveryBehaviorEnabled),
 	// 			AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
 	// 			Specification: &armcloudhealth.ResourceGraphQuerySpecification{
 	// 				Kind: to.Ptr(armcloudhealth.DiscoveryRuleKindResourceGraphQuery),
-	// 				ResourceGraphQuery: to.Ptr("resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'"),
+	// 				ResourceGraphQuery: to.Ptr("resources | where type =~ 'microsoft.web/sites' and resourceGroup =~ 'online-store-rg' | project id, name, location"),
 	// 			},
+	// 			AddResourceHealthSignal: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
 	// 			Error: &armcloudhealth.DiscoveryError{
-	// 				Message: to.Ptr("Authorization error on execution"),
+	// 				Message: to.Ptr("The discovery query failed because the authentication setting 'default-auth' does not have Reader access to the target scope."),
 	// 				Context: []*string{
-	// 					to.Ptr("subscriptionId: 7ddfffd7-9b32-40df-1234-828cbd55d6f4"),
+	// 					to.Ptr("scope: /subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg"),
+	// 					to.Ptr("authenticationSetting: default-auth"),
 	// 				},
 	// 			},
-	// 			EntityName: to.Ptr("f1f0ef5e-a5b5-4d02-b69c-7145f4658829"),
+	// 			EntityName: to.Ptr("online-store-web-apps"),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.CloudHealth/healthModels/myHealthModel/discoveryRules/myDiscoveryRule"),
-	// 		Name: to.Ptr("myDiscoveryRule"),
-	// 		Type: to.Ptr("Microsoft.CloudHealth/healthModels/discoveryRules"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/discoveryRules/discover-web-apps"),
+	// 		Name: to.Ptr("discover-web-apps"),
+	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels/discoveryRules"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("myCreatedBy"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("myLastModifiedBy"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/DiscoveryRules_ListByHealthModel.json
+// Generated from example definition: 2026-05-01-preview/DiscoveryRules_ListByHealthModel.json
 func ExampleDiscoveryRulesClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDiscoveryRulesClient().NewListByHealthModelPager("my-resource-group", "my-health-model", nil)
+	pager := clientFactory.NewDiscoveryRulesClient().NewListByHealthModelPager("online-store-rg", "online-store", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -175,56 +179,57 @@ func ExampleDiscoveryRulesClient_NewListByHealthModelPager() {
 		// 		Value: []*armcloudhealth.DiscoveryRule{
 		// 			{
 		// 				Properties: &armcloudhealth.DiscoveryRuleProperties{
-		// 					AuthenticationSetting: to.Ptr("authSetting1"),
+		// 					AuthenticationSetting: to.Ptr("default-auth"),
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-		// 					DisplayName: to.Ptr("ARG Discovery Rule"),
+		// 					DisplayName: to.Ptr("Discover web apps"),
 		// 					DiscoverRelationships: to.Ptr(armcloudhealth.DiscoveryRuleRelationshipDiscoveryBehaviorEnabled),
 		// 					AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
 		// 					Specification: &armcloudhealth.ResourceGraphQuerySpecification{
 		// 						Kind: to.Ptr(armcloudhealth.DiscoveryRuleKindResourceGraphQuery),
-		// 						ResourceGraphQuery: to.Ptr("resources | where subscriptionId == '7ddfffd7-9b32-40df-1234-828cbd55d6f4' | where resourceGroup == 'my-rg'"),
+		// 						ResourceGraphQuery: to.Ptr("resources | where type =~ 'microsoft.web/sites' and resourceGroup =~ 'online-store-rg' | project id, name, location"),
 		// 					},
-		// 					EntityName: to.Ptr("f1f0ef5e-a5b5-4d02-b69c-7145f4658829"),
+		// 					AddResourceHealthSignal: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+		// 					EntityName: to.Ptr("online-store-web-apps"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.CloudHealth/healthModels/myHealthModel/discoveryRules/myArgDiscoveryRule"),
-		// 				Name: to.Ptr("myArgDiscoveryRule"),
-		// 				Type: to.Ptr("Microsoft.CloudHealth/healthModels/discoveryRules"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/discoveryRules/discover-web-apps"),
+		// 				Name: to.Ptr("discover-web-apps"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/discoveryRules"),
 		// 				SystemData: &armcloudhealth.SystemData{
-		// 					CreatedBy: to.Ptr("myCreatedBy"),
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("myLastModifiedBy"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 			{
 		// 				Properties: &armcloudhealth.DiscoveryRuleProperties{
-		// 					AuthenticationSetting: to.Ptr("authSetting1"),
+		// 					AuthenticationSetting: to.Ptr("default-auth"),
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-		// 					DisplayName: to.Ptr("Application Insights Discovery Rule"),
+		// 					DisplayName: to.Ptr("Discover Application Insights topology"),
 		// 					DiscoverRelationships: to.Ptr(armcloudhealth.DiscoveryRuleRelationshipDiscoveryBehaviorEnabled),
 		// 					AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
 		// 					Specification: &armcloudhealth.ApplicationInsightsTopologySpecification{
 		// 						Kind: to.Ptr(armcloudhealth.DiscoveryRuleKindApplicationInsightsTopology),
-		// 						ApplicationInsightsResourceID: to.Ptr("/subscriptions/7ddfffd7-9b32-40df-1234-828cbd55d6f4/resourceGroups/my-rg/providers/Microsoft.Insights/components/my-app-insights"),
+		// 						ApplicationInsightsResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/components/online-store-ai"),
 		// 					},
-		// 					EntityName: to.Ptr("a2b3c4d5-e6f7-8901-2345-678901234567"),
+		// 					AddResourceHealthSignal: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorDisabled),
+		// 					EntityName: to.Ptr("online-store-topology"),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.CloudHealth/healthModels/myHealthModel/discoveryRules/myAppInsightsDiscoveryRule"),
-		// 				Name: to.Ptr("myAppInsightsDiscoveryRule"),
-		// 				Type: to.Ptr("Microsoft.CloudHealth/healthModels/discoveryRules"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/discoveryRules/discover-app-topology"),
+		// 				Name: to.Ptr("discover-app-topology"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/discoveryRules"),
 		// 				SystemData: &armcloudhealth.SystemData{
-		// 					CreatedBy: to.Ptr("myCreatedBy"),
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-20T10:15:30.123Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("myLastModifiedBy"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-20T10:15:30.456Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/ahgxpg"),
 		// 	},
 		// }
 	}

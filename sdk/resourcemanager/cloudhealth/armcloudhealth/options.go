@@ -57,6 +57,11 @@ type DiscoveryRulesClientListByHealthModelOptions struct {
 	Timestamp *time.Time
 }
 
+// EntitiesClientAddDataAnnotationOptions contains the optional parameters for the EntitiesClient.AddDataAnnotation method.
+type EntitiesClientAddDataAnnotationOptions struct {
+	// placeholder for future optional parameters
+}
+
 // EntitiesClientBeginCreateOrUpdateOptions contains the optional parameters for the EntitiesClient.BeginCreateOrUpdate method.
 type EntitiesClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -67,6 +72,11 @@ type EntitiesClientBeginCreateOrUpdateOptions struct {
 type EntitiesClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// EntitiesClientGetDataAnnotationsOptions contains the optional parameters for the EntitiesClient.GetDataAnnotations method.
+type EntitiesClientGetDataAnnotationsOptions struct {
+	// placeholder for future optional parameters
 }
 
 // EntitiesClientGetHistoryOptions contains the optional parameters for the EntitiesClient.GetHistory method.
@@ -81,6 +91,12 @@ type EntitiesClientGetOptions struct {
 
 // EntitiesClientGetSignalHistoryOptions contains the optional parameters for the EntitiesClient.GetSignalHistory method.
 type EntitiesClientGetSignalHistoryOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EntitiesClientGetSignalRecommendationsOptions contains the optional parameters for the EntitiesClient.GetSignalRecommendations
+// method.
+type EntitiesClientGetSignalRecommendationsOptions struct {
 	// placeholder for future optional parameters
 }
 

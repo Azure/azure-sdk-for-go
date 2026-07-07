@@ -40,6 +40,14 @@ func (c *ClientFactory) NewClient() *Client {
 	}
 }
 
+// NewDeletedVaultsClient creates a new instance of DeletedVaultsClient.
+func (c *ClientFactory) NewDeletedVaultsClient() *DeletedVaultsClient {
+	return &DeletedVaultsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

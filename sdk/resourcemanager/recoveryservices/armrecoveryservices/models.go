@@ -148,6 +148,12 @@ type CmkKeyVaultProperties struct {
 	KeyURI *string
 }
 
+// CostManagementSettings - Cost Management Settings of the vault
+type CostManagementSettings struct {
+	// Settings for granularity level
+	GranularityLevel *GranularityLevel
+}
+
 // CrossSubscriptionRestoreSettings - Settings for Cross Subscription Restore Settings
 type CrossSubscriptionRestoreSettings struct {
 	CrossSubscriptionRestoreState *CrossSubscriptionRestoreState
@@ -166,6 +172,57 @@ type DNSZoneResponse struct {
 
 	// Subresource type for vault AzureBackup, AzureBackup_secondary or AzureSiteRecovery
 	SubResource *VaultSubResourceType
+}
+
+// DeletedVault information as returned by the resource provider.
+type DeletedVault struct {
+	// The resource-specific properties for this resource.
+	Properties *DeletedVaultProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DeletedVaultList - The response model for a list of DeletedVaults.
+type DeletedVaultList struct {
+	// REQUIRED; The DeletedVault items on this page
+	Value []*DeletedVault
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// DeletedVaultProperties - Properties of the DeletedVault.
+type DeletedVaultProperties struct {
+	// READ-ONLY; Time in UTC at which the DeletedVault will be purged.
+	PurgeAt *time.Time
+
+	// READ-ONLY; Time in UTC at which the Vault was deleted.
+	VaultDeletionTime *time.Time
+
+	// READ-ONLY; ARM Id of the Vault which was deleted.
+	VaultID *string
+}
+
+// DeletedVaultUndeleteInput - Input definition for DeletedVault undelete.
+type DeletedVaultUndeleteInput struct {
+	// REQUIRED; Undelete input properties.
+	Properties *DeletedVaultUndeleteInputProperties
+}
+
+// DeletedVaultUndeleteInputProperties - Input definition for DeletedVault undelete properties.
+type DeletedVaultUndeleteInputProperties struct {
+	// REQUIRED; Recovery resource group Id.
+	RecoveryResourceGroupID *string
 }
 
 // Error - The resource management error response.
@@ -212,9 +269,22 @@ type IdentityData struct {
 	TenantID *string
 }
 
+// ImmutabilityConfiguration - Immutability configuration of vault.
+type ImmutabilityConfiguration struct {
+	// Duration in days. Required when type is TimeBased, omitted when AsPerPolicy.
+	DurationInDays *int32
+
+	// Immutability type. 'AsPerPolicy' inherits duration from backup policy; 'TimeBased' requires explicit durationInDays.
+	Type *ImmutabilityType
+}
+
 // ImmutabilitySettings - Immutability Settings of vault
 type ImmutabilitySettings struct {
-	State *ImmutabilityState
+	// Immutability configuration of the vault — selects whether immutability is
+	// inherited from the backup policy (AsPerPolicy) or fixed for a specific
+	// duration (TimeBased).
+	Configuration *ImmutabilityConfiguration
+	State         *ImmutabilityState
 }
 
 // JobsSummary - Summary of the replication job data for this vault.
@@ -828,6 +898,9 @@ type VaultList struct {
 
 // VaultProperties - Properties of the vault.
 type VaultProperties struct {
+	// Cost Management Settings of the vault
+	CostManagementSettings *CostManagementSettings
+
 	// Customer Managed Key details of the resource.
 	Encryption *VaultPropertiesEncryption
 

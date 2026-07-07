@@ -1,0 +1,15 @@
+{
+  "succeed_to_regenerate": [
+    "armcompute",
+    "armcomputebulkactions",
+    "armcomputefleet",
+    "armcomputelimit",
+    "armcomputeschedule"
+  ],
+  "fail_to_regenerate": [
+    "armcomputerecommender"
+  ],
+  "not_found_api_version": [],
+  "time_to_regenerate": "2026-07-07 06:49:04.422361",
+  "typespec_go_commit_hash": "unknown"
+}

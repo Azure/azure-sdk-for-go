@@ -2,17 +2,11 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.5.0 (Unreleased)
-
-### Features Added
+## 1.5.0 (2026-07-07)
 
 ### Breaking Changes
 
 * Removed the external query engine integration from `QueryOptions` and deleted the `sdk/data/azcosmos/queryengine` package for the 1.5.0 GA release. This feature will return in the upcoming 1.6.0 preview release.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 1.5.0-beta.7 (2026-06-02)
 

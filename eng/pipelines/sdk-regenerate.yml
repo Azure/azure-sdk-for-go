@@ -1,0 +1,134 @@
+# Regenerates the resource manager SDKs produced by the @azure-tools/typespec-go
+# emitter and opens a pull request against Azure/azure-sdk-for-go.
+#
+# Migrated from the Azure DevOps sdk-regenerate.yml pipeline that previously lived
+# in Azure/autorest.go and now lives alongside the SDK it regenerates.
+#
+# Two emitter modes (mirroring the original pipeline):
+#   * released (default): pin eng/emitter-package.json to the latest published
+#     @azure-tools/typespec-go from npm.
+#   * dev: build the emitter from an Azure/typespec-azure branch, `pnpm pack` it,
+#     and point eng/emitter-package.json at the resulting tarball.
+
+trigger: none
+pr: none
+
+schedules:
+  - cron: "0 2 * * 1" # Weekly at Monday 2 AM UTC
+    displayName: Weekly regenerate SDK
+    branches:
+      include:
+        - main
+
+parameters:
+  - name: UseLatestSpec
+    default: false
+    type: boolean
+  - name: ServiceFilter
+    type: string
+    default: '.*'
+  - name: UseDevPackage
+    default: false
+    type: boolean
+  - name: TypeSpecAzureRef
+    displayName: "Azure/typespec-azure branch to build the dev emitter from (dev mode only)"
+    type: string
+    default: main
+
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
+  - template: /eng/pipelines/templates/variables/image.yml
+  - name: NodeVersion
+    value: "24.x"
+  # Compile-time paths so both layouts work: when only `self` is checked out
+  # (released mode) it lives at $(Build.SourcesDirectory); when typespec-azure is
+  # also checked out (dev mode) each repo lives under a named subfolder.
+  - ${{ if eq(parameters.UseDevPackage, true) }}:
+      - name: sdkRoot
+        value: $(Build.SourcesDirectory)/azure-sdk-for-go
+      - name: emitterRoot
+        value: $(Build.SourcesDirectory)/typespec-azure/packages/typespec-go
+  - ${{ else }}:
+      - name: sdkRoot
+        value: $(Build.SourcesDirectory)
+      - name: emitterRoot
+        value: ''
+
+pool:
+  name: $(LINUXPOOL)
+  demands: ImageOverride -equals $(LINUXVMIMAGE)
+
+resources:
+  repositories:
+    - repository: typespec-azure
+      type: github
+      name: Azure/typespec-azure
+      endpoint: azure
+      ref: refs/heads/${{ parameters.TypeSpecAzureRef }}
+
+jobs:
+  - job: Generate_SDK
+
+    timeoutInMinutes: 180
+
+    steps:
+      - checkout: self
+        fetchDepth: 1
+
+      # The emitter source is only needed to build a dev package.
+      - ${{ if eq(parameters.UseDevPackage, true) }}:
+          - checkout: typespec-azure
+            fetchDepth: 1
+            submodules: recursive
+
+      - task: NodeTool@0
+        displayName: 'Install Node.js $(NodeVersion)'
+        inputs:
+          versionSpec: '$(NodeVersion)'
+
+      - ${{ if eq(parameters.UseDevPackage, true) }}:
+          - script: |
+              npm i -g corepack@latest
+              corepack enable
+              corepack prepare pnpm@latest-10 --activate
+            displayName: Install pnpm
+
+          - script: pnpm install
+            displayName: pnpm install
+            workingDirectory: $(Build.SourcesDirectory)/typespec-azure
+
+          # Build the emitter together with its in-repo workspace dependencies
+          # (TCGC, compiler via the core submodule, azure-resource-manager, etc.).
+          - script: pnpm turbo run --filter "@azure-tools/typespec-go..." build
+            displayName: Build emitter
+            workingDirectory: $(Build.SourcesDirectory)/typespec-azure
+
+          - script: pnpm pack
+            displayName: Pack emitter
+            workingDirectory: $(Build.SourcesDirectory)/typespec-azure/packages/typespec-go
+
+      - task: GoTool@0
+        displayName: 'Use Go $(GO_VERSION_LATEST)'
+        inputs:
+          version: '$(GO_VERSION_LATEST)'
+
+      - script: npm install -g @azure-tools/typespec-client-generator-cli
+        displayName: 'Install tsp-client'
+
+      - script: |
+          python3 $(sdkRoot)/eng/scripts/sdk_regenerate.py --sdk-root=$(sdkRoot) --typespec-go-root="$(emitterRoot)" --use-latest-spec=${{ parameters.UseLatestSpec }} --service-filter="${{ parameters.ServiceFilter }}" --use-dev-package=${{ parameters.UseDevPackage }}
+        displayName: 'Generate SDK'
+        workingDirectory: $(sdkRoot)
+
+      - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+        parameters:
+          WorkingDirectory: $(sdkRoot)
+          RepoOwner: Azure
+          RepoName: azure-sdk-for-go
+          PROwner: azure-sdk
+          BaseBranchName: 'refs/heads/main'
+          PRBranchName: typespec-go-regenerate-${{ parameters.TypeSpecAzureRef }}
+          CommitMsg: 'Regenerate SDK based on typespec-go (${{ parameters.TypeSpecAzureRef }})'
+          PRTitle: '[Automation] Regenerate SDK based on typespec-go (${{ parameters.TypeSpecAzureRef }})'
+          OpenAsDraft: true
+          PushArgs: '--force'

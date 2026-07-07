@@ -3,6 +3,7 @@
 ## 1.2.1 (2026-07-07)
 ### Other Changes
 
+- Updated documentation for `FeaturesClient.BeginDisable`, `FeaturesClient.BeginEnable`, and related methods to note that the Contributor role is required.
 
 ## 1.2.0 (2026-06-17)
 ### Features Added

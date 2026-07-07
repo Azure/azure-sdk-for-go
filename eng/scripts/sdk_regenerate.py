@@ -324,7 +324,7 @@ def regenerate_sdk(use_latest_spec: bool, service_filter: str, sdk_root: str, ty
     return result
 
 
-def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_filter: str, use_dev_package: bool):
+def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_filter: str, use_dev_package: bool, result_file: str):
     # Configure logging for better pipeline visibility
     logging.basicConfig(
         level=logging.INFO,
@@ -334,14 +334,21 @@ def main(sdk_root: str, typespec_go_root: str, use_latest_spec: bool, service_fi
         ]
     )
 
-    # Branch management, committing, and PR creation are handled by the GitHub
-    # Actions workflow that invokes this script. This script is responsible only
-    # for updating eng/emitter-package.json and regenerating the SDKs, leaving the
-    # resulting changes in the working tree for the workflow to commit.
+    # Branch management, committing, and PR creation are handled by the pipeline
+    # that invokes this script. This script is responsible only for updating
+    # eng/emitter-package.json and regenerating the SDKs, leaving the resulting
+    # changes in the working tree for the pipeline to commit.
     update_emitter_package(sdk_root, typespec_go_root, use_dev_package)
     result = regenerate_sdk(use_latest_spec, service_filter, sdk_root, typespec_go_root)
-    with open("regenerate-sdk-result.json", "w") as f:
+    # The regeneration report is a build artifact, not part of the SDK change set.
+    # The pipeline points --result-file outside the SDK working tree so it is never
+    # picked up by the pull request; only fall back to the CWD for local runs.
+    result_path = Path(result_file)
+    if result_path.parent and str(result_path.parent) not in ("", "."):
+        result_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(result_path, "w") as f:
         json.dump(result, f, indent=2)
+    logging.info(f"Wrote regeneration report to {result_path}")
 
 
 if __name__ == "__main__":
@@ -380,6 +387,14 @@ if __name__ == "__main__":
         default=False,
     )
 
+    parser.add_argument(
+        "--result-file",
+        help="Path to write the regeneration report JSON to. Point this outside the "
+             "SDK working tree so it is not committed to the pull request.",
+        type=str,
+        default="regenerate-sdk-result.json",
+    )
+
     args = parser.parse_args()
 
-    main(args.sdk_root, args.typespec_go_root, args.use_latest_spec, args.service_filter, args.use_dev_package)
+    main(args.sdk_root, args.typespec_go_root, args.use_latest_spec, args.service_filter, args.use_dev_package, args.result_file)

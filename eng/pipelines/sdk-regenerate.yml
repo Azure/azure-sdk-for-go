@@ -116,9 +116,19 @@ jobs:
         displayName: 'Install tsp-client'
 
       - script: |
-          python3 $(sdkRoot)/eng/scripts/sdk_regenerate.py --sdk-root=$(sdkRoot) --typespec-go-root="$(emitterRoot)" --use-latest-spec=${{ parameters.UseLatestSpec }} --service-filter="${{ parameters.ServiceFilter }}" --use-dev-package=${{ parameters.UseDevPackage }}
+          python3 $(sdkRoot)/eng/scripts/sdk_regenerate.py --sdk-root=$(sdkRoot) --typespec-go-root="$(emitterRoot)" --use-latest-spec=${{ parameters.UseLatestSpec }} --service-filter="${{ parameters.ServiceFilter }}" --use-dev-package=${{ parameters.UseDevPackage }} --result-file=$(Build.ArtifactStagingDirectory)/regenerate-sdk-result.json
         displayName: 'Generate SDK'
         workingDirectory: $(sdkRoot)
+
+      # Publish the regeneration report as a build artifact. It is written outside
+      # the SDK working tree (ArtifactStagingDirectory) so it is never committed to
+      # the regeneration pull request.
+      - task: PublishPipelineArtifact@1
+        displayName: 'Publish regeneration report'
+        condition: succeededOrFailed()
+        inputs:
+          targetPath: $(Build.ArtifactStagingDirectory)/regenerate-sdk-result.json
+          artifactName: regenerate-sdk-result
 
       - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
         parameters:

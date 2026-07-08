@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // CassandraResourcesServer is a fake server for instances of the armcosmos.CassandraResourcesClient type.
@@ -36,10 +37,6 @@ type CassandraResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateUpdateCassandraTable func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, createUpdateCassandraTableParameters armcosmos.CassandraTableCreateUpdateParameters, options *armcosmos.CassandraResourcesClientBeginCreateUpdateCassandraTableOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraTableResponse], errResp azfake.ErrorResponder)
 
-	// BeginCreateUpdateCassandraView is the fake for method CassandraResourcesClient.BeginCreateUpdateCassandraView
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginCreateUpdateCassandraView func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, createUpdateCassandraViewParameters armcosmos.CassandraViewCreateUpdateParameters, options *armcosmos.CassandraResourcesClientBeginCreateUpdateCassandraViewOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraViewResponse], errResp azfake.ErrorResponder)
-
 	// BeginDeleteCassandraKeyspace is the fake for method CassandraResourcesClient.BeginDeleteCassandraKeyspace
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteCassandraKeyspace func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, options *armcosmos.CassandraResourcesClientBeginDeleteCassandraKeyspaceOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraKeyspaceResponse], errResp azfake.ErrorResponder)
@@ -55,10 +52,6 @@ type CassandraResourcesServer struct {
 	// BeginDeleteCassandraTable is the fake for method CassandraResourcesClient.BeginDeleteCassandraTable
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDeleteCassandraTable func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *armcosmos.CassandraResourcesClientBeginDeleteCassandraTableOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraTableResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeleteCassandraView is the fake for method CassandraResourcesClient.BeginDeleteCassandraView
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteCassandraView func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *armcosmos.CassandraResourcesClientBeginDeleteCassandraViewOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraViewResponse], errResp azfake.ErrorResponder)
 
 	// GetCassandraKeyspace is the fake for method CassandraResourcesClient.GetCassandraKeyspace
 	// HTTP status codes to indicate success: http.StatusOK
@@ -84,14 +77,6 @@ type CassandraResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetCassandraTableThroughput func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *armcosmos.CassandraResourcesClientGetCassandraTableThroughputOptions) (resp azfake.Responder[armcosmos.CassandraResourcesClientGetCassandraTableThroughputResponse], errResp azfake.ErrorResponder)
 
-	// GetCassandraView is the fake for method CassandraResourcesClient.GetCassandraView
-	// HTTP status codes to indicate success: http.StatusOK
-	GetCassandraView func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *armcosmos.CassandraResourcesClientGetCassandraViewOptions) (resp azfake.Responder[armcosmos.CassandraResourcesClientGetCassandraViewResponse], errResp azfake.ErrorResponder)
-
-	// GetCassandraViewThroughput is the fake for method CassandraResourcesClient.GetCassandraViewThroughput
-	// HTTP status codes to indicate success: http.StatusOK
-	GetCassandraViewThroughput func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *armcosmos.CassandraResourcesClientGetCassandraViewThroughputOptions) (resp azfake.Responder[armcosmos.CassandraResourcesClientGetCassandraViewThroughputResponse], errResp azfake.ErrorResponder)
-
 	// NewListCassandraKeyspacesPager is the fake for method CassandraResourcesClient.NewListCassandraKeyspacesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListCassandraKeyspacesPager func(resourceGroupName string, accountName string, options *armcosmos.CassandraResourcesClientListCassandraKeyspacesOptions) (resp azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraKeyspacesResponse])
@@ -107,10 +92,6 @@ type CassandraResourcesServer struct {
 	// NewListCassandraTablesPager is the fake for method CassandraResourcesClient.NewListCassandraTablesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListCassandraTablesPager func(resourceGroupName string, accountName string, keyspaceName string, options *armcosmos.CassandraResourcesClientListCassandraTablesOptions) (resp azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraTablesResponse])
-
-	// NewListCassandraViewsPager is the fake for method CassandraResourcesClient.NewListCassandraViewsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListCassandraViewsPager func(resourceGroupName string, accountName string, keyspaceName string, options *armcosmos.CassandraResourcesClientListCassandraViewsOptions) (resp azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraViewsResponse])
 
 	// BeginMigrateCassandraKeyspaceToAutoscale is the fake for method CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -128,14 +109,6 @@ type CassandraResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginMigrateCassandraTableToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, options *armcosmos.CassandraResourcesClientBeginMigrateCassandraTableToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse], errResp azfake.ErrorResponder)
 
-	// BeginMigrateCassandraViewToAutoscale is the fake for method CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateCassandraViewToAutoscale func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *armcosmos.CassandraResourcesClientBeginMigrateCassandraViewToAutoscaleOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse], errResp azfake.ErrorResponder)
-
-	// BeginMigrateCassandraViewToManualThroughput is the fake for method CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginMigrateCassandraViewToManualThroughput func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, options *armcosmos.CassandraResourcesClientBeginMigrateCassandraViewToManualThroughputOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse], errResp azfake.ErrorResponder)
-
 	// BeginUpdateCassandraKeyspaceThroughput is the fake for method CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateCassandraKeyspaceThroughput func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.CassandraResourcesClientBeginUpdateCassandraKeyspaceThroughputOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse], errResp azfake.ErrorResponder)
@@ -143,10 +116,6 @@ type CassandraResourcesServer struct {
 	// BeginUpdateCassandraTableThroughput is the fake for method CassandraResourcesClient.BeginUpdateCassandraTableThroughput
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateCassandraTableThroughput func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, tableName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.CassandraResourcesClientBeginUpdateCassandraTableThroughputOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraTableThroughputResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateCassandraViewThroughput is the fake for method CassandraResourcesClient.BeginUpdateCassandraViewThroughput
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateCassandraViewThroughput func(ctx context.Context, resourceGroupName string, accountName string, keyspaceName string, viewName string, updateThroughputParameters armcosmos.ThroughputSettingsUpdateParameters, options *armcosmos.CassandraResourcesClientBeginUpdateCassandraViewThroughputOptions) (resp azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraViewThroughputResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCassandraResourcesServerTransport creates a new instance of CassandraResourcesServerTransport with the provided implementation.
@@ -159,26 +128,20 @@ func NewCassandraResourcesServerTransport(srv *CassandraResourcesServer) *Cassan
 		beginCreateUpdateCassandraRoleAssignment:        newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraRoleAssignmentResponse]](),
 		beginCreateUpdateCassandraRoleDefinition:        newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraRoleDefinitionResponse]](),
 		beginCreateUpdateCassandraTable:                 newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraTableResponse]](),
-		beginCreateUpdateCassandraView:                  newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraViewResponse]](),
 		beginDeleteCassandraKeyspace:                    newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraKeyspaceResponse]](),
 		beginDeleteCassandraRoleAssignment:              newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraRoleAssignmentResponse]](),
 		beginDeleteCassandraRoleDefinition:              newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraRoleDefinitionResponse]](),
 		beginDeleteCassandraTable:                       newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraTableResponse]](),
-		beginDeleteCassandraView:                        newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraViewResponse]](),
 		newListCassandraKeyspacesPager:                  newTracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraKeyspacesResponse]](),
 		newListCassandraRoleAssignmentsPager:            newTracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraRoleAssignmentsResponse]](),
 		newListCassandraRoleDefinitionsPager:            newTracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraRoleDefinitionsResponse]](),
 		newListCassandraTablesPager:                     newTracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraTablesResponse]](),
-		newListCassandraViewsPager:                      newTracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraViewsResponse]](),
 		beginMigrateCassandraKeyspaceToAutoscale:        newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse]](),
 		beginMigrateCassandraKeyspaceToManualThroughput: newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse]](),
 		beginMigrateCassandraTableToAutoscale:           newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse]](),
 		beginMigrateCassandraTableToManualThroughput:    newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse]](),
-		beginMigrateCassandraViewToAutoscale:            newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse]](),
-		beginMigrateCassandraViewToManualThroughput:     newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse]](),
 		beginUpdateCassandraKeyspaceThroughput:          newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse]](),
 		beginUpdateCassandraTableThroughput:             newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraTableThroughputResponse]](),
-		beginUpdateCassandraViewThroughput:              newTracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraViewThroughputResponse]](),
 	}
 }
 
@@ -190,26 +153,20 @@ type CassandraResourcesServerTransport struct {
 	beginCreateUpdateCassandraRoleAssignment        *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraRoleAssignmentResponse]]
 	beginCreateUpdateCassandraRoleDefinition        *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraRoleDefinitionResponse]]
 	beginCreateUpdateCassandraTable                 *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraTableResponse]]
-	beginCreateUpdateCassandraView                  *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientCreateUpdateCassandraViewResponse]]
 	beginDeleteCassandraKeyspace                    *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraKeyspaceResponse]]
 	beginDeleteCassandraRoleAssignment              *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraRoleAssignmentResponse]]
 	beginDeleteCassandraRoleDefinition              *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraRoleDefinitionResponse]]
 	beginDeleteCassandraTable                       *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraTableResponse]]
-	beginDeleteCassandraView                        *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientDeleteCassandraViewResponse]]
 	newListCassandraKeyspacesPager                  *tracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraKeyspacesResponse]]
 	newListCassandraRoleAssignmentsPager            *tracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraRoleAssignmentsResponse]]
 	newListCassandraRoleDefinitionsPager            *tracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraRoleDefinitionsResponse]]
 	newListCassandraTablesPager                     *tracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraTablesResponse]]
-	newListCassandraViewsPager                      *tracker[azfake.PagerResponder[armcosmos.CassandraResourcesClientListCassandraViewsResponse]]
 	beginMigrateCassandraKeyspaceToAutoscale        *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse]]
 	beginMigrateCassandraKeyspaceToManualThroughput *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse]]
 	beginMigrateCassandraTableToAutoscale           *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse]]
 	beginMigrateCassandraTableToManualThroughput    *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse]]
-	beginMigrateCassandraViewToAutoscale            *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse]]
-	beginMigrateCassandraViewToManualThroughput     *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse]]
 	beginUpdateCassandraKeyspaceThroughput          *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse]]
 	beginUpdateCassandraTableThroughput             *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraTableThroughputResponse]]
-	beginUpdateCassandraViewThroughput              *tracker[azfake.PollerResponder[armcosmos.CassandraResourcesClientUpdateCassandraViewThroughputResponse]]
 }
 
 // Do implements the policy.Transporter interface for CassandraResourcesServerTransport.
@@ -224,9 +181,7 @@ func (c *CassandraResourcesServerTransport) Do(req *http.Request) (*http.Respons
 }
 
 func (c *CassandraResourcesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -243,8 +198,6 @@ func (c *CassandraResourcesServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchBeginCreateUpdateCassandraRoleDefinition(req)
 			case "CassandraResourcesClient.BeginCreateUpdateCassandraTable":
 				res.resp, res.err = c.dispatchBeginCreateUpdateCassandraTable(req)
-			case "CassandraResourcesClient.BeginCreateUpdateCassandraView":
-				res.resp, res.err = c.dispatchBeginCreateUpdateCassandraView(req)
 			case "CassandraResourcesClient.BeginDeleteCassandraKeyspace":
 				res.resp, res.err = c.dispatchBeginDeleteCassandraKeyspace(req)
 			case "CassandraResourcesClient.BeginDeleteCassandraRoleAssignment":
@@ -253,8 +206,6 @@ func (c *CassandraResourcesServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchBeginDeleteCassandraRoleDefinition(req)
 			case "CassandraResourcesClient.BeginDeleteCassandraTable":
 				res.resp, res.err = c.dispatchBeginDeleteCassandraTable(req)
-			case "CassandraResourcesClient.BeginDeleteCassandraView":
-				res.resp, res.err = c.dispatchBeginDeleteCassandraView(req)
 			case "CassandraResourcesClient.GetCassandraKeyspace":
 				res.resp, res.err = c.dispatchGetCassandraKeyspace(req)
 			case "CassandraResourcesClient.GetCassandraKeyspaceThroughput":
@@ -267,10 +218,6 @@ func (c *CassandraResourcesServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchGetCassandraTable(req)
 			case "CassandraResourcesClient.GetCassandraTableThroughput":
 				res.resp, res.err = c.dispatchGetCassandraTableThroughput(req)
-			case "CassandraResourcesClient.GetCassandraView":
-				res.resp, res.err = c.dispatchGetCassandraView(req)
-			case "CassandraResourcesClient.GetCassandraViewThroughput":
-				res.resp, res.err = c.dispatchGetCassandraViewThroughput(req)
 			case "CassandraResourcesClient.NewListCassandraKeyspacesPager":
 				res.resp, res.err = c.dispatchNewListCassandraKeyspacesPager(req)
 			case "CassandraResourcesClient.NewListCassandraRoleAssignmentsPager":
@@ -279,8 +226,6 @@ func (c *CassandraResourcesServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchNewListCassandraRoleDefinitionsPager(req)
 			case "CassandraResourcesClient.NewListCassandraTablesPager":
 				res.resp, res.err = c.dispatchNewListCassandraTablesPager(req)
-			case "CassandraResourcesClient.NewListCassandraViewsPager":
-				res.resp, res.err = c.dispatchNewListCassandraViewsPager(req)
 			case "CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale":
 				res.resp, res.err = c.dispatchBeginMigrateCassandraKeyspaceToAutoscale(req)
 			case "CassandraResourcesClient.BeginMigrateCassandraKeyspaceToManualThroughput":
@@ -289,25 +234,16 @@ func (c *CassandraResourcesServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = c.dispatchBeginMigrateCassandraTableToAutoscale(req)
 			case "CassandraResourcesClient.BeginMigrateCassandraTableToManualThroughput":
 				res.resp, res.err = c.dispatchBeginMigrateCassandraTableToManualThroughput(req)
-			case "CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale":
-				res.resp, res.err = c.dispatchBeginMigrateCassandraViewToAutoscale(req)
-			case "CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput":
-				res.resp, res.err = c.dispatchBeginMigrateCassandraViewToManualThroughput(req)
 			case "CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput":
 				res.resp, res.err = c.dispatchBeginUpdateCassandraKeyspaceThroughput(req)
 			case "CassandraResourcesClient.BeginUpdateCassandraTableThroughput":
 				res.resp, res.err = c.dispatchBeginUpdateCassandraTableThroughput(req)
-			case "CassandraResourcesClient.BeginUpdateCassandraViewThroughput":
-				res.resp, res.err = c.dispatchBeginUpdateCassandraViewThroughput(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -359,7 +295,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginCreateUpdateCassandraKe
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateUpdateCassandraKeyspace.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -411,7 +347,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginCreateUpdateCassandraRo
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateUpdateCassandraRoleAssignment.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -463,7 +399,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginCreateUpdateCassandraRo
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateUpdateCassandraRoleDefinition.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -519,68 +455,12 @@ func (c *CassandraResourcesServerTransport) dispatchBeginCreateUpdateCassandraTa
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateUpdateCassandraTable.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateUpdateCassandraTable) {
 		c.beginCreateUpdateCassandraTable.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchBeginCreateUpdateCassandraView(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginCreateUpdateCassandraView == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateUpdateCassandraView not implemented")}
-	}
-	beginCreateUpdateCassandraView := c.beginCreateUpdateCassandraView.get(req)
-	if beginCreateUpdateCassandraView == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.CassandraViewCreateUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		viewNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("viewName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginCreateUpdateCassandraView(req.Context(), resourceGroupNameParam, accountNameParam, keyspaceNameParam, viewNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateUpdateCassandraView = &respr
-		c.beginCreateUpdateCassandraView.add(req, beginCreateUpdateCassandraView)
-	}
-
-	resp, err := server.PollerResponderNext(beginCreateUpdateCassandraView, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginCreateUpdateCassandraView.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateUpdateCassandraView) {
-		c.beginCreateUpdateCassandraView.remove(req)
 	}
 
 	return resp, nil
@@ -623,7 +503,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginDeleteCassandraKeyspace
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDeleteCassandraKeyspace.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -671,7 +551,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginDeleteCassandraRoleAssi
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDeleteCassandraRoleAssignment.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -719,7 +599,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginDeleteCassandraRoleDefi
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDeleteCassandraRoleDefinition.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -771,64 +651,12 @@ func (c *CassandraResourcesServerTransport) dispatchBeginDeleteCassandraTable(re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDeleteCassandraTable.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginDeleteCassandraTable) {
 		c.beginDeleteCassandraTable.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchBeginDeleteCassandraView(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginDeleteCassandraView == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteCassandraView not implemented")}
-	}
-	beginDeleteCassandraView := c.beginDeleteCassandraView.get(req)
-	if beginDeleteCassandraView == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		viewNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("viewName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginDeleteCassandraView(req.Context(), resourceGroupNameParam, accountNameParam, keyspaceNameParam, viewNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDeleteCassandraView = &respr
-		c.beginDeleteCassandraView.add(req, beginDeleteCassandraView)
-	}
-
-	resp, err := server.PollerResponderNext(beginDeleteCassandraView, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		c.beginDeleteCassandraView.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDeleteCassandraView) {
-		c.beginDeleteCassandraView.remove(req)
 	}
 
 	return resp, nil
@@ -861,7 +689,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraKeyspace(req *ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CassandraKeyspaceGetResults, req)
@@ -898,7 +726,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraKeyspaceThroughp
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputSettingsGetResults, req)
@@ -935,7 +763,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraRoleAssignment(r
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CassandraRoleAssignmentResource, req)
@@ -972,7 +800,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraRoleDefinition(r
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CassandraRoleDefinitionResource, req)
@@ -1013,7 +841,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraTable(req *http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CassandraTableGetResults, req)
@@ -1054,89 +882,7 @@ func (c *CassandraResourcesServerTransport) dispatchGetCassandraTableThroughput(
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputSettingsGetResults, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchGetCassandraView(req *http.Request) (*http.Response, error) {
-	if c.srv.GetCassandraView == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetCassandraView not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	viewNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("viewName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.GetCassandraView(req.Context(), resourceGroupNameParam, accountNameParam, keyspaceNameParam, viewNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CassandraViewGetResults, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchGetCassandraViewThroughput(req *http.Request) (*http.Response, error) {
-	if c.srv.GetCassandraViewThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetCassandraViewThroughput not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-	if err != nil {
-		return nil, err
-	}
-	viewNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("viewName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.GetCassandraViewThroughput(req.Context(), resourceGroupNameParam, accountNameParam, keyspaceNameParam, viewNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ThroughputSettingsGetResults, req)
@@ -1177,7 +923,7 @@ func (c *CassandraResourcesServerTransport) dispatchNewListCassandraKeyspacesPag
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListCassandraKeyspacesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1218,7 +964,7 @@ func (c *CassandraResourcesServerTransport) dispatchNewListCassandraRoleAssignme
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListCassandraRoleAssignmentsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1259,7 +1005,7 @@ func (c *CassandraResourcesServerTransport) dispatchNewListCassandraRoleDefiniti
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListCassandraRoleDefinitionsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -1304,57 +1050,12 @@ func (c *CassandraResourcesServerTransport) dispatchNewListCassandraTablesPager(
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListCassandraTablesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListCassandraTablesPager) {
 		c.newListCassandraTablesPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchNewListCassandraViewsPager(req *http.Request) (*http.Response, error) {
-	if c.srv.NewListCassandraViewsPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListCassandraViewsPager not implemented")}
-	}
-	newListCassandraViewsPager := c.newListCassandraViewsPager.get(req)
-	if newListCassandraViewsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := c.srv.NewListCassandraViewsPager(resourceGroupNameParam, accountNameParam, keyspaceNameParam, nil)
-		newListCassandraViewsPager = &resp
-		c.newListCassandraViewsPager.add(req, newListCassandraViewsPager)
-		server.PagerResponderInjectNextLinks(newListCassandraViewsPager, req, func(page *armcosmos.CassandraResourcesClientListCassandraViewsResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListCassandraViewsPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
-		c.newListCassandraViewsPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListCassandraViewsPager) {
-		c.newListCassandraViewsPager.remove(req)
 	}
 	return resp, nil
 }
@@ -1396,7 +1097,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraKeyspac
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginMigrateCassandraKeyspaceToAutoscale.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1444,7 +1145,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraKeyspac
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginMigrateCassandraKeyspaceToManualThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1496,7 +1197,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraTableTo
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginMigrateCassandraTableToAutoscale.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1548,116 +1249,12 @@ func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraTableTo
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginMigrateCassandraTableToManualThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginMigrateCassandraTableToManualThroughput) {
 		c.beginMigrateCassandraTableToManualThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraViewToAutoscale(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginMigrateCassandraViewToAutoscale == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateCassandraViewToAutoscale not implemented")}
-	}
-	beginMigrateCassandraViewToAutoscale := c.beginMigrateCassandraViewToAutoscale.get(req)
-	if beginMigrateCassandraViewToAutoscale == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToAutoscale`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		viewNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("viewName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginMigrateCassandraViewToAutoscale(req.Context(), resourceGroupNameParam, accountNameParam, keyspaceNameParam, viewNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateCassandraViewToAutoscale = &respr
-		c.beginMigrateCassandraViewToAutoscale.add(req, beginMigrateCassandraViewToAutoscale)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateCassandraViewToAutoscale, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginMigrateCassandraViewToAutoscale.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateCassandraViewToAutoscale) {
-		c.beginMigrateCassandraViewToAutoscale.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchBeginMigrateCassandraViewToManualThroughput(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginMigrateCassandraViewToManualThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateCassandraViewToManualThroughput not implemented")}
-	}
-	beginMigrateCassandraViewToManualThroughput := c.beginMigrateCassandraViewToManualThroughput.get(req)
-	if beginMigrateCassandraViewToManualThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default/migrateToManualThroughput`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		viewNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("viewName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginMigrateCassandraViewToManualThroughput(req.Context(), resourceGroupNameParam, accountNameParam, keyspaceNameParam, viewNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginMigrateCassandraViewToManualThroughput = &respr
-		c.beginMigrateCassandraViewToManualThroughput.add(req, beginMigrateCassandraViewToManualThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginMigrateCassandraViewToManualThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginMigrateCassandraViewToManualThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginMigrateCassandraViewToManualThroughput) {
-		c.beginMigrateCassandraViewToManualThroughput.remove(req)
 	}
 
 	return resp, nil
@@ -1704,7 +1301,7 @@ func (c *CassandraResourcesServerTransport) dispatchBeginUpdateCassandraKeyspace
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginUpdateCassandraKeyspaceThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -1760,68 +1357,12 @@ func (c *CassandraResourcesServerTransport) dispatchBeginUpdateCassandraTableThr
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginUpdateCassandraTableThroughput.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginUpdateCassandraTableThroughput) {
 		c.beginUpdateCassandraTableThroughput.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *CassandraResourcesServerTransport) dispatchBeginUpdateCassandraViewThroughput(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdateCassandraViewThroughput == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateCassandraViewThroughput not implemented")}
-	}
-	beginUpdateCassandraViewThroughput := c.beginUpdateCassandraViewThroughput.get(req)
-	if beginUpdateCassandraViewThroughput == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cassandraKeyspaces/(?P<keyspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/views/(?P<viewName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/throughputSettings/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcosmos.ThroughputSettingsUpdateParameters](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		keyspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("keyspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		viewNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("viewName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdateCassandraViewThroughput(req.Context(), resourceGroupNameParam, accountNameParam, keyspaceNameParam, viewNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateCassandraViewThroughput = &respr
-		c.beginUpdateCassandraViewThroughput.add(req, beginUpdateCassandraViewThroughput)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdateCassandraViewThroughput, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdateCassandraViewThroughput.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdateCassandraViewThroughput) {
-		c.beginUpdateCassandraViewThroughput.remove(req)
 	}
 
 	return resp, nil

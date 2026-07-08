@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDataTransferServiceCreate.json
+// Generated from example definition: 2026-03-15/CosmosDBDataTransferServiceCreate.json
 func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,8 +25,8 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "DataTransfer", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.DataTransferServiceResourceCreateUpdateProperties{
-			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+			InstanceCount: to.Ptr[int32](1),
 			ServiceType:   to.Ptr(armcosmos.ServiceTypeDataTransfer),
 		},
 	}, nil)
@@ -35,20 +35,22 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/DataTransfer"),
 	// 		Name: to.Ptr("DataTransfer"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/DataTransfer"),
 	// 		Properties: &armcosmos.DataTransferServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeDataTransfer),
 	// 			Locations: []*armcosmos.DataTransferRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("DataTransfer-westus2"),
@@ -56,14 +58,12 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeDataTransfer),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceCreate.json
+// Generated from example definition: 2026-03-15/CosmosDBGraphAPIComputeServiceCreate.json
 func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,8 +76,8 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "GraphAPICompute", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.GraphAPIComputeServiceResourceCreateUpdateProperties{
-			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+			InstanceCount: to.Ptr[int32](1),
 			ServiceType:   to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
 		},
 	}, nil)
@@ -86,37 +86,37 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/GraphAPICompute"),
 	// 		Name: to.Ptr("GraphAPICompute"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/GraphAPICompute"),
 	// 		Properties: &armcosmos.GraphAPIComputeServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute.gremlin.cosmos.windows-int.net/"),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
+	// 			GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute.gremlin.cosmos.windows-int.net/"),
 	// 			Locations: []*armcosmos.GraphAPIComputeRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("GraphAPICompute-westus2"),
-	// 					GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute-westus.gremlin.cosmos.windows-int.net/"),
 	// 					Location: to.Ptr("West US 2"),
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
+	// 					GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute-westus.gremlin.cosmos.windows-int.net/"),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceCreate.json
+// Generated from example definition: 2026-03-15/CosmosDBMaterializedViewsBuilderServiceCreate.json
 func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,8 +129,8 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.MaterializedViewsBuilderServiceResourceCreateUpdateProperties{
-			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+			InstanceCount: to.Ptr[int32](1),
 			ServiceType:   to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
 		},
 	}, nil)
@@ -139,20 +139,22 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/MaterializedViewsBuilder"),
 	// 		Name: to.Ptr("MaterializedViewsBuilder"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/MaterializedViewsBuilder"),
 	// 		Properties: &armcosmos.MaterializedViewsBuilderServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
 	// 			Locations: []*armcosmos.MaterializedViewsBuilderRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("MaterializedViewsBuilder-westus2"),
@@ -160,14 +162,12 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
+// Generated from example definition: 2026-03-15/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceCreate.json
 func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -180,10 +180,10 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	}
 	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "SqlDedicatedGateway", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.SQLDedicatedGatewayServiceResourceCreateUpdateProperties{
-			DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
-			InstanceCount:        to.Ptr[int32](1),
 			InstanceSize:         to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+			InstanceCount:        to.Ptr[int32](1),
 			ServiceType:          to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
+			DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
 		},
 	}, nil)
 	if err != nil {
@@ -191,38 +191,38 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientCreateResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/SqlDedicatedGateway"),
 	// 		Name: to.Ptr("SqlDedicatedGateway"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/SqlDedicatedGateway"),
 	// 		Properties: &armcosmos.SQLDedicatedGatewayServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
+	// 			DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
+	// 			SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway.sqlx.cosmos.windows-int.net/"),
 	// 			Locations: []*armcosmos.SQLDedicatedGatewayRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("SqlDedicatedGateway-westus2"),
 	// 					Location: to.Ptr("West US 2"),
-	// 					SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway-westus.sqlx.cosmos.windows-int.net/"),
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
+	// 					SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway-westus.sqlx.cosmos.windows-int.net/"),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
-	// 			SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway.sqlx.cosmos.windows-int.net/"),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDataTransferServiceDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBDataTransferServiceDelete.json
 func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -248,7 +248,7 @@ func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBGraphAPIComputeServiceDelete.json
 func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +265,7 @@ func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -274,7 +274,7 @@ func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBMaterializedViewsBuilderServiceDelete.json
 func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -300,7 +300,7 @@ func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceDelete.json
+// Generated from example definition: 2026-03-15/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceDelete.json
 func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -326,7 +326,7 @@ func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDataTransferServiceGet.json
+// Generated from example definition: 2026-03-15/CosmosDBDataTransferServiceGet.json
 func ExampleServiceClient_Get_dataTransferServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,14 +345,16 @@ func ExampleServiceClient_Get_dataTransferServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/DataTransfer"),
 	// 		Name: to.Ptr("DataTransfer"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/DataTransfer"),
 	// 		Properties: &armcosmos.DataTransferServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeDataTransfer),
 	// 			Locations: []*armcosmos.DataTransferRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("DataTransfer-westus2"),
@@ -360,14 +362,12 @@ func ExampleServiceClient_Get_dataTransferServiceGet() {
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeDataTransfer),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBGraphAPIComputeServiceGet.json
+// Generated from example definition: 2026-03-15/CosmosDBGraphAPIComputeServiceGet.json
 func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,31 +386,31 @@ func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/GraphAPICompute"),
 	// 		Name: to.Ptr("GraphAPICompute"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/GraphAPICompute"),
 	// 		Properties: &armcosmos.GraphAPIComputeServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute.gremlin.cosmos.windows-int.net/"),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
+	// 			GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute.gremlin.cosmos.windows-int.net/"),
 	// 			Locations: []*armcosmos.GraphAPIComputeRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("GraphAPICompute-westus2"),
-	// 					GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute-westus.gremlin.cosmos.windows-int.net/"),
 	// 					Location: to.Ptr("West US 2"),
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
+	// 					GraphAPIComputeEndpoint: to.Ptr("https://graphAPICompute-westus.gremlin.cosmos.windows-int.net/"),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeGraphAPICompute),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBMaterializedViewsBuilderServiceGet.json
+// Generated from example definition: 2026-03-15/CosmosDBMaterializedViewsBuilderServiceGet.json
 func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,14 +429,16 @@ func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/MaterializedViewsBuilder"),
 	// 		Name: to.Ptr("MaterializedViewsBuilder"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/MaterializedViewsBuilder"),
 	// 		Properties: &armcosmos.MaterializedViewsBuilderServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
 	// 			Locations: []*armcosmos.MaterializedViewsBuilderRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("MaterializedViewsBuilder-westus2"),
@@ -444,14 +446,12 @@ func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeMaterializedViewsBuilder),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceGet.json
+// Generated from example definition: 2026-03-15/services/sqldedicatedgateway/CosmosDBSqlDedicatedGatewayServiceGet.json
 func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,32 +470,32 @@ func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.ServiceClientGetResponse{
-	// 	ServiceResource: &armcosmos.ServiceResource{
+	// 	ServiceResource: armcosmos.ServiceResource{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/SqlDedicatedGateway"),
 	// 		Name: to.Ptr("SqlDedicatedGateway"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/SqlDedicatedGateway"),
 	// 		Properties: &armcosmos.SQLDedicatedGatewayServiceResourceProperties{
+	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-	// 			DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
-	// 			InstanceCount: to.Ptr[int32](1),
 	// 			InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+	// 			InstanceCount: to.Ptr[int32](1),
+	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
+	// 			DedicatedGatewayType: to.Ptr(armcosmos.DedicatedGatewayTypeIntegratedCache),
+	// 			SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway.sqlx.cosmos.windows-int.net/"),
 	// 			Locations: []*armcosmos.SQLDedicatedGatewayRegionalServiceResource{
 	// 				{
 	// 					Name: to.Ptr("SqlDedicatedGateway-westus2"),
 	// 					Location: to.Ptr("West US 2"),
-	// 					SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway-westus.sqlx.cosmos.windows-int.net/"),
 	// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
+	// 					SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway-westus.sqlx.cosmos.windows-int.net/"),
 	// 				},
 	// 			},
-	// 			ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
-	// 			SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway.sqlx.cosmos.windows-int.net/"),
-	// 			Status: to.Ptr(armcosmos.ServiceStatusRunning),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBServicesList.json
+// Generated from example definition: 2026-03-15/CosmosDBServicesList.json
 func ExampleServiceClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -521,24 +521,24 @@ func ExampleServiceClient_NewListPager() {
 		// 	ServiceResourceListResult: armcosmos.ServiceResourceListResult{
 		// 		Value: []*armcosmos.ServiceResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/sqlDedicatedGateway"),
 		// 				Name: to.Ptr("sqlDedicatedGateway"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/services"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/services/sqlDedicatedGateway"),
 		// 				Properties: &armcosmos.SQLDedicatedGatewayServiceResourceProperties{
+		// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
 		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-25T12:56:05.4622517Z"); return t}()),
-		// 					InstanceCount: to.Ptr[int32](1),
 		// 					InstanceSize: to.Ptr(armcosmos.ServiceSizeCosmosD4S),
+		// 					InstanceCount: to.Ptr[int32](1),
+		// 					ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
+		// 					SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway.sqlx.cosmos.windows-int.net/"),
 		// 					Locations: []*armcosmos.SQLDedicatedGatewayRegionalServiceResource{
 		// 						{
 		// 							Name: to.Ptr("sqlDedicatedGateway-westus2"),
 		// 							Location: to.Ptr("West US 2"),
-		// 							SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway-westus.sqlx.cosmos.windows-int.net/"),
 		// 							Status: to.Ptr(armcosmos.ServiceStatusRunning),
+		// 							SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway-westus.sqlx.cosmos.windows-int.net/"),
 		// 						},
 		// 					},
-		// 					ServiceType: to.Ptr(armcosmos.ServiceTypeSQLDedicatedGateway),
-		// 					SQLDedicatedGatewayEndpoint: to.Ptr("https://sqlDedicatedGateway.sqlx.cosmos.windows-int.net/"),
-		// 					Status: to.Ptr(armcosmos.ServiceStatusRunning),
 		// 				},
 		// 			},
 		// 		},

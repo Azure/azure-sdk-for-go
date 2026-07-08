@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBPKeyRangeIdRegionGetMetrics.json
+// Generated from example definition: 2026-03-15/CosmosDBPKeyRangeIdRegionGetMetrics.json
 func ExamplePartitionKeyRangeIDRegionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExamplePartitionKeyRangeIDRegionClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPartitionKeyRangeIDRegionClient().NewListMetricsPager("rg1", "ddb1", "West US", "databaseRid", "collectionRid", "0", "$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z", nil)
+	pager := clientFactory.NewPartitionKeyRangeIDRegionClient().NewListMetricsPager("rg1", "ddb1", "West US", "databaseRid", "collectionRid", "0", "(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -37,42 +37,42 @@ func ExamplePartitionKeyRangeIDRegionClient_NewListMetricsPager() {
 		// 	PartitionMetricListResult: armcosmos.PartitionMetricListResult{
 		// 		Value: []*armcosmos.PartitionMetric{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Max RUs Per Second"),
-		// 					Value: to.Ptr("Max RUs Per Second"),
-		// 				},
+		// 				TimeGrain: to.Ptr("PT1M"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T23:58:55.2780000Z"); return t}()),
-		// 				MetricValues: []*armcosmos.MetricValue{
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:54:55.2780000Z"); return t}()),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:55:55.2780000Z"); return t}()),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:56:55.2780000Z"); return t}()),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:57:55.2780000Z"); return t}()),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:58:55.2780000Z"); return t}()),
-		// 					},
-		// 				},
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				PartitionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				PartitionKeyRangeID: to.Ptr("0"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				TimeGrain: to.Ptr("PT1M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 				MetricValues: []*armcosmos.MetricValue{
+		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:54:55.2780000Z"); return t}()),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:55:55.2780000Z"); return t}()),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:56:55.2780000Z"); return t}()),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:57:55.2780000Z"); return t}()),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:58:55.2780000Z"); return t}()),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 				},
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Max RUs Per Second"),
+		// 					LocalizedValue: to.Ptr("Max RUs Per Second"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},

@@ -1,5 +1,44 @@
 # Release History
 
+## 0.3.0 (2026-07-07)
+### Breaking Changes
+
+- Field `Dimension` of struct `AzureResourceSignal` has been removed
+- Field `Dimension` of struct `ResourceMetricSignalDefinitionProperties` has been removed
+
+### Features Added
+
+- New value `RefreshIntervalPT15M` added to enum type `RefreshInterval`
+- New value `SignalOperatorDynamic` added to enum type `SignalOperator`
+- New enum type `DynamicThresholdSensitivity` with values `DynamicThresholdSensitivityHigh`, `DynamicThresholdSensitivityLow`, `DynamicThresholdSensitivityMedium`
+- New enum type `LookBackWindow` with values `LookBackWindowPT15M`, `LookBackWindowPT1H`, `LookBackWindowPT30M`, `LookBackWindowPT5M`
+- New enum type `ResourceHealthAvailabilityState` with values `ResourceHealthAvailabilityStateAvailable`, `ResourceHealthAvailabilityStateDegraded`, `ResourceHealthAvailabilityStateUnavailable`, `ResourceHealthAvailabilityStateUnknown`
+- New enum type `ResourceHealthAvailabilityStateSignalBehavior` with values `ResourceHealthAvailabilityStateSignalBehaviorDisabled`, `ResourceHealthAvailabilityStateSignalBehaviorEnabled`
+- New enum type `ResourceHealthCategory` with values `ResourceHealthCategoryPlanned`, `ResourceHealthCategoryUnplanned`
+- New enum type `ResourceHealthReasonChronicity` with values `ResourceHealthReasonChronicityPersistent`, `ResourceHealthReasonChronicityTransient`
+- New enum type `ResourceHealthReasonType` with values `ResourceHealthReasonTypePlanned`, `ResourceHealthReasonTypeUnplanned`, `ResourceHealthReasonTypeUserInitiated`
+- New function `*EntitiesClient.AddDataAnnotation(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body AddDataAnnotationRequest, options *EntitiesClientAddDataAnnotationOptions) (EntitiesClientAddDataAnnotationResponse, error)`
+- New function `*EntitiesClient.GetDataAnnotations(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body GetDataAnnotationsRequest, options *EntitiesClientGetDataAnnotationsOptions) (EntitiesClientGetDataAnnotationsResponse, error)`
+- New function `*EntitiesClient.GetSignalRecommendations(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *EntitiesClientGetSignalRecommendationsOptions) (EntitiesClientGetSignalRecommendationsResponse, error)`
+- New function `PossibleResourceHealthAvailabilityStateValues() []ResourceHealthAvailabilityState`
+- New struct `AddDataAnnotationRequest`
+- New struct `AzureResourceHealthSignal`
+- New struct `AzureResourceHealthSignalStatus`
+- New struct `DataAnnotation`
+- New struct `GetDataAnnotationsRequest`
+- New struct `GetDataAnnotationsResponse`
+- New struct `GetSignalRecommendationsResponse`
+- New struct `SignalConfiguration`
+- New field `ResourceHealth` in struct `AzureResourceSignals`
+- New field `AddResourceHealthSignal` in struct `DiscoveryRuleProperties`
+- New field `NextMarker`, `Top` in struct `EntityHistoryRequest`
+- New field `NextMarker` in struct `EntityHistoryResponse`
+- New field `NextMarker`, `Top` in struct `SignalHistoryRequest`
+- New field `NextMarker` in struct `SignalHistoryResponse`
+- New field `AdditionalContext` in struct `SignalStatus`
+- New field `LookBackWindow`, `Sensitivity` in struct `ThresholdRuleV2`
+
+
 ## 0.2.0 (2026-06-01)
 ### Breaking Changes
 

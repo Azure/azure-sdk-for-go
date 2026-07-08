@@ -6,5 +6,5 @@ package armhybridcompute
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute"
-	moduleVersion = "v2.1.0-beta.3"
+	moduleVersion = "v2.1.0-beta.4"
 )

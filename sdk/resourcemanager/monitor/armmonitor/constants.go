@@ -8,16 +8,19 @@ const (
 	version20150401        string = "2015-04-01"
 	version20160301        string = "2016-03-01"
 	version20160901        string = "2016-09-01"
+	version20181127Preview string = "2018-11-27-preview"
 	version20190301        string = "2019-03-01"
+	version20210501Preview string = "2021-05-01-preview"
 	version20211001        string = "2021-10-01"
 	version20221001        string = "2022-10-01"
 	version20230101Preview string = "2023-01-01-preview"
+	version20230501Preview string = "2023-05-01-preview"
 	version20230601Preview string = "2023-06-01-preview"
 	version20240201        string = "2024-02-01"
-	version20240301Preview string = "2024-03-01-preview"
 	version20240311        string = "2024-03-11"
 	version20241001Preview string = "2024-10-01-preview"
 	version20250101Preview string = "2025-01-01-preview"
+	version20260101        string = "2026-01-01"
 )
 
 // AccessMode - Access mode types.
@@ -162,6 +165,24 @@ func PossibleBaselineSensitivityValues() []BaselineSensitivity {
 	}
 }
 
+// CategoryType - The type of the diagnostic settings category.
+type CategoryType string
+
+const (
+	// CategoryTypeLogs - Logs
+	CategoryTypeLogs CategoryType = "Logs"
+	// CategoryTypeMetrics - Metrics
+	CategoryTypeMetrics CategoryType = "Metrics"
+)
+
+// PossibleCategoryTypeValues returns the possible values for the CategoryType const type.
+func PossibleCategoryTypeValues() []CategoryType {
+	return []CategoryType{
+		CategoryTypeLogs,
+		CategoryTypeMetrics,
+	}
+}
+
 // ComparisonOperationType - the operator that is used to compare the metric data and the threshold.
 type ComparisonOperationType string
 
@@ -261,6 +282,25 @@ func PossibleCriterionTypeValues() []CriterionType {
 	return []CriterionType{
 		CriterionTypeDynamicThresholdCriterion,
 		CriterionTypeStaticThresholdCriterion,
+	}
+}
+
+// DataStatus - The status of VM Insights data from the resource. When reported as `present` the data array will contain information
+// about the data containers to which data for the specified resource is being routed.
+type DataStatus string
+
+const (
+	// DataStatusNotPresent - notPresent
+	DataStatusNotPresent DataStatus = "notPresent"
+	// DataStatusPresent - present
+	DataStatusPresent DataStatus = "present"
+)
+
+// PossibleDataStatusValues returns the possible values for the DataStatus const type.
+func PossibleDataStatusValues() []DataStatus {
+	return []DataStatus{
+		DataStatusNotPresent,
+		DataStatusPresent,
 	}
 }
 
@@ -1387,6 +1427,28 @@ func PossibleOdatatypeValues() []Odatatype {
 	}
 }
 
+// OnboardingStatus - The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription,
+// is considered onboarded if at least one resource under it is onboarded.
+type OnboardingStatus string
+
+const (
+	// OnboardingStatusNotOnboarded - notOnboarded
+	OnboardingStatusNotOnboarded OnboardingStatus = "notOnboarded"
+	// OnboardingStatusOnboarded - onboarded
+	OnboardingStatusOnboarded OnboardingStatus = "onboarded"
+	// OnboardingStatusUnknown - unknown
+	OnboardingStatusUnknown OnboardingStatus = "unknown"
+)
+
+// PossibleOnboardingStatusValues returns the possible values for the OnboardingStatus const type.
+func PossibleOnboardingStatusValues() []OnboardingStatus {
+	return []OnboardingStatus{
+		OnboardingStatusNotOnboarded,
+		OnboardingStatusOnboarded,
+		OnboardingStatusUnknown,
+	}
+}
+
 // Operator - The criteria operator. Previously undocumented values might be returned
 type Operator string
 
@@ -1502,6 +1564,27 @@ func PossiblePrivateLinkScopeProvisioningStateValues() []PrivateLinkScopeProvisi
 		PrivateLinkScopeProvisioningStateDeleting,
 		PrivateLinkScopeProvisioningStateFailed,
 		PrivateLinkScopeProvisioningStateSucceeded,
+	}
+}
+
+// ReceiverStatus - Indicates the status of the receiver. Receivers that are not Enabled will not receive any communications.
+type ReceiverStatus string
+
+const (
+	// ReceiverStatusDisabled - Disabled
+	ReceiverStatusDisabled ReceiverStatus = "Disabled"
+	// ReceiverStatusEnabled - Enabled
+	ReceiverStatusEnabled ReceiverStatus = "Enabled"
+	// ReceiverStatusNotSpecified - NotSpecified
+	ReceiverStatusNotSpecified ReceiverStatus = "NotSpecified"
+)
+
+// PossibleReceiverStatusValues returns the possible values for the ReceiverStatus const type.
+func PossibleReceiverStatusValues() []ReceiverStatus {
+	return []ReceiverStatus{
+		ReceiverStatusDisabled,
+		ReceiverStatusEnabled,
+		ReceiverStatusNotSpecified,
 	}
 }
 

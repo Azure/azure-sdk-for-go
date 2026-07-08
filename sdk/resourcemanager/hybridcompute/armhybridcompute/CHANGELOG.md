@@ -3,6 +3,9 @@
 ## 2.1.0-beta.4 (2026-07-07)
 ### Other Changes
 
+- Added example for `*ManagementClient.BeginUpgradeExtensions`.
+- Updated module dependencies.
+
 
 ## 2.1.0-beta.3 (2026-05-20)
 ### Features Added

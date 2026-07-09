@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0-beta.1 (2026-05-20)
+## 2.4.0 (2026-06-24)
 ### Features Added
 
 - New value `DataConnectionKindEventGridWithManagedIdentity`, `DataConnectionKindEventHubWithManagedIdentity` added to enum type `DataConnectionKind`

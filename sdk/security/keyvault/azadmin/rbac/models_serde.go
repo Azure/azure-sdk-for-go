@@ -181,6 +181,7 @@ func (r *RoleAssignmentProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RoleAssignmentPropertiesWithScope.
 func (r RoleAssignmentPropertiesWithScope) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
+	populate(objectMap, "expirationTime", r.ExpirationTime)
 	populate(objectMap, "principalId", r.PrincipalID)
 	populate(objectMap, "roleDefinitionId", r.RoleDefinitionID)
 	populate(objectMap, "scope", r.Scope)
@@ -196,6 +197,9 @@ func (r *RoleAssignmentPropertiesWithScope) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
+		case "expirationTime":
+			err = unpopulate(val, "ExpirationTime", &r.ExpirationTime)
+			delete(rawMsg, key)
 		case "principalId":
 			err = unpopulate(val, "PrincipalID", &r.PrincipalID)
 			delete(rawMsg, key)

@@ -268,10 +268,10 @@ extends:
       # The Prerelease and Release stages are conditioned on:
       # 1. Internal trigger, not Pull Request trigger
       # 2. Not weekly build
-      # 3. Manual trigger or force IncludeRelease
+      # 3. Manual trigger, post-merge main CI (auto-release), or force IncludeRelease
       - ${{ if and(not(and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual'))), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal')) }}:
           - ${{ if not(contains(variables['Build.DefinitionName'], 'weekly')) }}:
-              - ${{ if or(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.IncludeRelease, true)) }}:
+              - ${{ if or(in(variables['Build.Reason'], 'Manual', '', 'IndividualCI'), eq(parameters.IncludeRelease, true)) }}:
                   - template: archetype-go-release.yml
                     parameters:
                       DependsOn:

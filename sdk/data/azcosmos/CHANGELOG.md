@@ -2,12 +2,16 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.5.0 (2026-07-07)
+## 1.5.0 (2026-07-13)
 
 ### Breaking Changes
 
 * Removed the external query engine integration from `QueryOptions` and deleted the `sdk/data/azcosmos/queryengine` package for the 1.5.0 GA release. This feature will return in the upcoming 1.6.0 preview release. See [PR 27134](https://github.com/Azure/azure-sdk-for-go/pull/27134).
 * Renamed `ChangeFeedResponse.GetContRanges()` to `ChangeFeedResponse.GetContinuationRange()`. This API was previously only present in a beta release. See [PR 27148](https://github.com/Azure/azure-sdk-for-go/pull/27148).
+* Renamed `ChangeFeedRangeOptions.EpkMinHeader` and `ChangeFeedRangeOptions.EpkMaxHeader` to `EPKMinHeader` and `EPKMaxHeader`. These fields were previously only present in a beta release.
+* `Diagnostics.StartTimeUTC()` now returns a `time.Time` (zero value when no diagnostics are present) instead of a `*time.Time`. This API was previously only present in a beta release.
+* Removed the `NewFeedRange` constructor. Construct a `FeedRange` directly using a struct initializer instead. This API was previously only present in a beta release.
+* Removed the `PriorityLevel.ToPtr` method. Use [`to.Ptr`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/to#Ptr) from `azcore` instead. This API was previously only present in a beta release.
 
 ## 1.5.0-beta.7 (2026-06-02)
 

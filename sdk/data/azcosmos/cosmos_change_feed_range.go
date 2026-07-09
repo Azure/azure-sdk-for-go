@@ -26,10 +26,10 @@ type changeFeedRange struct {
 type ChangeFeedRangeOptions struct {
 	// ContinuationToken is used to continue reading the change feed from a specific point.
 	ContinuationToken *azcore.ETag
-	// EpkMinHeader is the header for the minimum inclusive value of the partition key range.
-	EpkMinHeader *string
-	// EpkMaxHeader is the header for the maximum exclusive value of the partition key range.
-	EpkMaxHeader *string
+	// EPKMinHeader is the header for the minimum inclusive value of the partition key range.
+	EPKMinHeader *string
+	// EPKMaxHeader is the header for the maximum exclusive value of the partition key range.
+	EPKMaxHeader *string
 }
 
 // newChangeFeedRange creates a new changeFeedRange with the specified minimum inclusive and maximum exclusive values.
@@ -46,11 +46,11 @@ func newChangeFeedRange(minInclusive, maxExclusive string, options *ChangeFeedRa
 			continuationETag := *options.ContinuationToken
 			result.ContinuationToken = &continuationETag
 		}
-		if options.EpkMinHeader != nil {
-			result.epkMinHeader = *options.EpkMinHeader
+		if options.EPKMinHeader != nil {
+			result.epkMinHeader = *options.EPKMinHeader
 		}
-		if options.EpkMaxHeader != nil {
-			result.epkMaxHeader = *options.EpkMaxHeader
+		if options.EPKMaxHeader != nil {
+			result.epkMaxHeader = *options.EPKMaxHeader
 		}
 	}
 

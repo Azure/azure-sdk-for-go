@@ -80,6 +80,30 @@ func TestBearerPolicy_SuccessGetToken(t *testing.T) {
 	}
 }
 
+func TestBearerPolicy_SuccessGetPoPToken(t *testing.T) {
+	srv, close := mock.NewTLSServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+	popCredential := mockCredential{
+		getTokenImpl: func(ctx context.Context, options policy.TokenRequestOptions) (exported.AccessToken, error) {
+			return exported.AccessToken{Token: tokenValue, ExpiresOn: time.Now().Add(time.Hour), TokenType: "PoP"}, nil
+		},
+	}
+	b := NewBearerTokenPolicy(popCredential, []string{scope}, nil)
+	pipeline := NewPipeline(
+		"testmodule",
+		"v0.1.0",
+		PipelineOptions{PerRetry: []policy.Policy{b}},
+		&policy.ClientOptions{Transport: srv},
+	)
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+
+	resp, err := pipeline.Do(req)
+	require.NoError(t, err)
+	require.Equal(t, "PoP "+tokenValue, resp.Request.Header.Get(shared.HeaderAuthorization))
+}
+
 func TestBearerPolicy_CredentialFailGetToken(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()

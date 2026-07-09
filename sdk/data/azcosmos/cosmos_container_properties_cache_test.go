@@ -77,7 +77,7 @@ func Test_containerPropertiesCache_getProperties_cacheHit(t *testing.T) {
 		link: "dbs/db1/colls/col1",
 	}
 
-	props, err := cache.getProperties(nil, container) //nolint:staticcheck // nil context is fine for cache hit
+	props, err := cache.getProperties(t.Context(), container)
 	require.NoError(t, err)
 	require.Equal(t, expectedProps, props)
 }

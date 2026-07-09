@@ -264,7 +264,7 @@ func TestReadEndpointFailure(t *testing.T) {
 	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
 
 	assert.NoError(t, err)
-	assert.True(t, verifier.requests[0].retryContext.retryCount == 2)
+	assert.Equal(t, 2, verifier.requests[0].retryContext.retryCount)
 	// Verify region is marked as read unavailable
 	assert.True(t, len(gem.locationCache.locationUnavailabilityInfoMap) == 1)
 	locationKeys := []url.URL{}
@@ -327,7 +327,7 @@ func TestWriteEndpointFailure(t *testing.T) {
 	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("1"), marshalled, nil)
 
 	assert.NoError(t, err)
-	assert.True(t, verifier.requests[0].retryContext.retryCount == 2)
+	assert.Equal(t, 2, verifier.requests[0].retryContext.retryCount)
 	// Verify region is marked as write unavailable
 	locationKeys := []url.URL{}
 	for k := range gem.locationCache.locationUnavailabilityInfoMap {
@@ -1342,13 +1342,13 @@ func TestConnectionErrorFailoverResetsNonZeroRetryCount(t *testing.T) {
 func boolPtr(b bool) *bool { return &b }
 
 func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
-	availableWriteLocs := []string{"East US"}
+	availableWriteLocs := []regionId{newRegionId("East US")}
 	if isMultiMaster {
-		availableWriteLocs = []string{"East US", "Central US"}
+		availableWriteLocs = []regionId{newRegionId("East US"), newRegionId("Central US")}
 	}
-	availableReadLocs := []string{"East US", "Central US", "East US 2"}
-	availableWriteEndpointsByLoc := map[string]url.URL{}
-	availableReadEndpointsByLoc := map[string]url.URL{}
+	availableReadLocs := []regionId{newRegionId("East US"), newRegionId("Central US"), newRegionId("East US 2")}
+	availableWriteEndpointsByLoc := map[regionId]url.URL{}
+	availableReadEndpointsByLoc := map[regionId]url.URL{}
 	dereferencedEndpoint := defaultEndpoint
 
 	for _, value := range availableWriteLocs {
@@ -1360,7 +1360,7 @@ func CreateMockLC(defaultEndpoint url.URL, isMultiMaster bool) *locationCache {
 	}
 
 	dbAccountLocationInfo := &databaseAccountLocationsInfo{
-		prefLocations:                 []string{},
+		prefLocations:                 []regionId{},
 		availWriteLocations:           availableWriteLocs,
 		availReadLocations:            availableReadLocs,
 		availWriteEndpointsByLocation: availableWriteEndpointsByLoc,

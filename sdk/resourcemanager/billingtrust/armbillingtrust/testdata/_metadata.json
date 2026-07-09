@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.BillingTrust": "2026-03-17-preview"
   },
-  "emitterVersion": "0.14.2"
+  "emitterVersion": "0.14.3"
 }

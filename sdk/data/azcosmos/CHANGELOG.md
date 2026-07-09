@@ -6,7 +6,8 @@
 
 ### Breaking Changes
 
-* Removed the external query engine integration from `QueryOptions` and deleted the `sdk/data/azcosmos/queryengine` package for the 1.5.0 GA release. This feature will return in the upcoming 1.6.0 preview release.
+* Removed the external query engine integration from `QueryOptions` and deleted the `sdk/data/azcosmos/queryengine` package for the 1.5.0 GA release. This feature will return in the upcoming 1.6.0 preview release. See [PR 27134](https://github.com/Azure/azure-sdk-for-go/pull/27134).
+* Renamed `ChangeFeedResponse.GetContRanges()` to `ChangeFeedResponse.GetContinuationRange()`. This API was previously only present in a beta release. See [PR 27148](https://github.com/Azure/azure-sdk-for-go/pull/27148).
 
 ## 1.5.0-beta.7 (2026-06-02)
 

@@ -6,7 +6,10 @@ package armbillingtrust
 
 // AssessmentsClientCreateOrUpdateResponse contains the response from method AssessmentsClient.BeginCreateOrUpdate.
 type AssessmentsClientCreateOrUpdateResponse struct {
-	// placeholder for future response values
+	// A billing trust assessment. An assessment runs a set of rules to evaluate trust attributes of a billing account. The assessment
+	// is a singleton per parent resource and is always named 'default'. Re-issuing PUT with the same `assessmentType` is idempotent;
+	// changing `assessmentType` after the assessment exists is not supported.
+	Assessment
 }
 
 // AssessmentsClientDeleteResponse contains the response from method AssessmentsClient.BeginDelete.

@@ -53,6 +53,24 @@ func ExampleAssessmentsClient_BeginCreateOrUpdate_createOrUpdateTheEduAssessment
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbillingtrust.AssessmentsClientCreateOrUpdateResponse{
+	// 	Assessment: armbillingtrust.Assessment{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/billing-edu-rg/providers/Microsoft.Program/educationEnrollments/default/providers/Microsoft.BillingTrust/assessments/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.BillingTrust/assessments"),
+	// 		Properties: &armbillingtrust.AssessmentProperties{
+	// 			AssessmentType: to.Ptr(armbillingtrust.AssessmentTypeEdu),
+	// 			EvaluationState: to.Ptr(armbillingtrust.AssessmentStatePending),
+	// 			ProvisioningState: to.Ptr(armbillingtrust.ProvisioningStateAccepted),
+	// 		},
+	// 		SystemData: &armbillingtrust.SystemData{
+	// 			CreatedBy: to.Ptr("edu-admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("edu-admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 		},
+	// 	},
 	// }
 }
 
@@ -83,6 +101,24 @@ func ExampleAssessmentsClient_BeginCreateOrUpdate_createOrUpdateTheBusinessVerif
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbillingtrust.AssessmentsClientCreateOrUpdateResponse{
+	// 	Assessment: armbillingtrust.Assessment{
+	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/abc123:00000000-0000-0000-0000-000000000000_2019-05-31/providers/Microsoft.BillingTrust/assessments/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.BillingTrust/assessments"),
+	// 		Properties: &armbillingtrust.AssessmentProperties{
+	// 			AssessmentType: to.Ptr(armbillingtrust.AssessmentTypeBusinessVerification),
+	// 			EvaluationState: to.Ptr(armbillingtrust.AssessmentStatePending),
+	// 			ProvisioningState: to.Ptr(armbillingtrust.ProvisioningStateAccepted),
+	// 		},
+	// 		SystemData: &armbillingtrust.SystemData{
+	// 			CreatedBy: to.Ptr("billing-admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("billing-admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 		},
+	// 	},
 	// }
 }
 
@@ -113,6 +149,24 @@ func ExampleAssessmentsClient_BeginCreateOrUpdate_createOrUpdateThePayeeEnrollme
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbillingtrust.AssessmentsClientCreateOrUpdateResponse{
+	// 	Assessment: armbillingtrust.Assessment{
+	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/abc123:00000000-0000-0000-0000-000000000000_2019-05-31/providers/Microsoft.BillingTrust/assessments/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.BillingTrust/assessments"),
+	// 		Properties: &armbillingtrust.AssessmentProperties{
+	// 			AssessmentType: to.Ptr(armbillingtrust.AssessmentTypePayeeEnrollment),
+	// 			EvaluationState: to.Ptr(armbillingtrust.AssessmentStatePending),
+	// 			ProvisioningState: to.Ptr(armbillingtrust.ProvisioningStateAccepted),
+	// 		},
+	// 		SystemData: &armbillingtrust.SystemData{
+	// 			CreatedBy: to.Ptr("billing-admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("billing-admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 		},
+	// 	},
 	// }
 }
 
@@ -143,6 +197,24 @@ func ExampleAssessmentsClient_BeginCreateOrUpdate_createOrUpdateThePayeeProfileA
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbillingtrust.AssessmentsClientCreateOrUpdateResponse{
+	// 	Assessment: armbillingtrust.Assessment{
+	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/abc123:00000000-0000-0000-0000-000000000000_2019-05-31/providers/Microsoft.BillingTrust/assessments/default"),
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.BillingTrust/assessments"),
+	// 		Properties: &armbillingtrust.AssessmentProperties{
+	// 			AssessmentType: to.Ptr(armbillingtrust.AssessmentTypePayeeProfile),
+	// 			EvaluationState: to.Ptr(armbillingtrust.AssessmentStatePending),
+	// 			ProvisioningState: to.Ptr(armbillingtrust.ProvisioningStateAccepted),
+	// 		},
+	// 		SystemData: &armbillingtrust.SystemData{
+	// 			CreatedBy: to.Ptr("billing-admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("billing-admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armbillingtrust.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-17T10:00:00.000Z"); return t}()),
+	// 		},
+	// 	},
 	// }
 }
 

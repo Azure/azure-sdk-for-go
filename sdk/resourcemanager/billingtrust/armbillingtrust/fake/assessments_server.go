@@ -22,7 +22,7 @@ import (
 // AssessmentsServer is a fake server for instances of the armbillingtrust.AssessmentsClient type.
 type AssessmentsServer struct {
 	// BeginCreateOrUpdate is the fake for method AssessmentsClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceURI string, resource armbillingtrust.Assessment, options *armbillingtrust.AssessmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armbillingtrust.AssessmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method AssessmentsClient.BeginDelete
@@ -143,9 +143,9 @@ func (a *AssessmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		a.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		a.beginCreateOrUpdate.remove(req)

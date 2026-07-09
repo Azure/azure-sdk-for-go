@@ -33,9 +33,9 @@ Primary hierarchy:
 
 Common creation flow:
 
-- `client.ServiceClient().NewContainerClient(name)` from the top-level `azblob.Client`
-- `containerClient.NewBlobClient(name)` for generic blob operations
-- `containerClient.NewBlockBlobClient(name)`, `NewAppendBlobClient(name)`, or `NewPageBlobClient(name)` for blob-type-specific operations
+- The top-level `azblob.Client` exposes convenience methods directly (for example `client.CreateContainer(...)`, `client.UploadStream(...)`, `client.DownloadStream(...)`). For most operations, use these directly without drilling into the service client.
+- For subpackage-specific operations, create scoped clients: `client.ServiceClient()` returns the inner `*service.Client`, and from there `NewContainerClient(name)`, `NewBlockBlobClient(name)`, etc.
+- Subpackage clients can also be created standalone via their own constructors (for example `container.NewClient(...)`, `blockblob.NewClient(...)`).
 
 The top-level `azblob.Client` in [`client.go`](./client.go) is mostly a convenience wrapper that forwards to `service.Client` and creates lower-level clients on demand.
 
@@ -131,3 +131,5 @@ cd sdk/storage/azblob && go test ./...
 - Keep the convenience-client forwarding pattern intact when changing `azblob.Client`
 - Reuse existing pagers, transfer helpers, and lease clients instead of adding parallel abstractions
 - Keep blob-type-specific behavior in the correct specialized package
+- [`internal/generated/autorest.md`](./internal/generated/autorest.md) contains directives/transforms that post-process generated code: renaming types, fixing response status codes, swapping string fields for `azcore.ETag`, adjusting XML tags, and exporting internal methods. When investigating unexpected generated output or type mismatches, check the transforms before assuming the swagger spec is wrong.
+- `internal/generated/constants.go` (no `zz_` prefix) is hand-written and contains the `ServiceVersion` constant. Do not skip it as "generated code."

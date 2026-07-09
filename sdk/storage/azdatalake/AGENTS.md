@@ -60,7 +60,7 @@ Important conceptual differences from Blob Storage:
 - HNS gives you **real directories**, not just blob name prefixes
 - directory/file **rename and move** are first-class path operations
 - POSIX-like access control is part of the API surface
-- many clients track both **DFSURL** and **BlobURL** internally
+- Many clients track both a **DFS URL** (`*.dfs.core.windows.net`) and a **Blob URL** (`*.blob.core.windows.net`) internally (see `DFSURL()` / `BlobURL()`). ADLS Gen2 routes some operations through the DFS endpoint (path CRUD, ACLs, rename) and others through the Blob endpoint (data upload/download, properties, SAS). When modifying request construction or URL handling, verify which endpoint the operation targets — mixing them up will produce 404s or auth failures.
 
 When changing path behavior, be careful not to break the dual-endpoint design. Service/filesystem/path clients often call both DFS and Blob layers.
 
@@ -125,3 +125,5 @@ cd sdk/storage/azdatalake && go test ./...
 - Prefer handwritten wrappers over `internal/generated/` and `internal/generated_blob/`
 - Keep ACL logic in the path-level clients that already own it
 - Use existing rename and transfer helpers instead of duplicating path or upload logic
+- Generated code configuration and transforms live in [`internal/generated/autorest.md`](./internal/generated/autorest.md) (this module is autorest-based); check it when investigating unexpected generated output.
+- `internal/generated/constants.go` (no `zz_` prefix) is hand-written and contains the `ServiceVersion` constant.

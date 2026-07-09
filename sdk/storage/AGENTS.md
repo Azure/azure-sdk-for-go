@@ -74,6 +74,27 @@ Generated code patterns in storage packages:
 
 In all four storage modules, prefer changing handwritten wrapper layers first (for example `client.go`, `service/`, `filesystem/`, `share/`, `blob/`, `file/`, `directory/`) and defer regeneration workflow details to the root [AGENTS.md](../../AGENTS.md).
 
+## Service Version
+
+Each storage module pins its service version in a hand-written `internal/generated/constants.go`:
+
+```go
+const ServiceVersion = "2026-06-06"
+```
+
+This file has no `zz_` prefix and is not overwritten by regeneration despite living under `internal/generated/`. It is manually updated when bumping the API version.
+
+The `x-ms-version` header sent on every request is derived from this constant (each generated client is initialized with `version: ServiceVersion`). These modules do not currently wire up an azcore `APIVersion` policy, so the header is **not** overridable per client via `ClientOptions`; changing the service version means editing the constant (and regenerating).
+
+### SAS version coupling
+
+The `sv=` parameter in SAS tokens defaults to the same `ServiceVersion` constant, but through a separate code path:
+
+- `sas/query_params.go` -> `var Version = generated.ServiceVersion`
+- `sas/service.go` -> `if v.Version == "" { v.Version = Version }`
+
+`sas.Version` is a package-level `var` (not a `const`), so it can be reassigned globally, but this is not per-client. The header path and the SAS path both start from `ServiceVersion` but are otherwise independent: a task that changes the effective service version must address both.
+
 ## Common Subpackage Patterns
 
 Across storage modules, watch for these recurring package roles:
@@ -150,3 +171,7 @@ Guidance:
 3. Preserve the existing client hierarchy and constructor patterns
 4. Reuse `internal/testcommon` helpers instead of inventing ad hoc test setup
 5. Keep SAS, lease, and error-handling changes in their dedicated subpackages when possible
+
+## Note on `azqueue`
+
+`azqueue` does not have its own package-level `AGENTS.md` because of its relatively flat structure. Agents working in `azqueue` should use this shared storage `AGENTS.md` for guidance. The client hierarchy is simply `ServiceClient` -> `QueueClient`, with generated code in `internal/generated/` following the same patterns as the other storage modules (including a hand-written `internal/generated/constants.go` `ServiceVersion` constant).

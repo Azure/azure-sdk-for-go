@@ -70,7 +70,7 @@ Azure Files has stricter token-auth behavior than the other storage modules.
 Important details from the current clients:
 
 - `service.Client` and `share.Client` support token credential construction mainly to enable lower-level clients, but not every service/share operation supports token auth
-- `ClientOptions.FileRequestIntent` is currently required for token-authenticated Azure Files clients
+- `ClientOptions.FileRequestIntent` must be set to `Backup` (`ShareTokenIntentBackup`) for token-authenticated (Azure AD) clients. The Azure Files service requires this header on all token-auth requests — this is a permanent service requirement, not a temporary SDK limitation.
 - shared key, SAS, and connection string flows are the most straightforward paths for broad API coverage
 
 When changing auth or constructors, keep these caveats intact.
@@ -123,5 +123,7 @@ When making functional changes, prefer the handwritten wrappers in:
 - `directory/`
 - `file/`
 - `lease/`
+
+Generated code for this module is driven by [`tsp-location.yaml`](./tsp-location.yaml) (TypeSpec-based); check it when investigating generated output issues. `internal/generated/constants.go` (no `zz_` prefix) is hand-written and contains the `ServiceVersion` constant.
 
 Keep token-auth constraints, range/rename helpers, and handle-management behavior aligned with the existing wrappers.

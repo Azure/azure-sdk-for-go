@@ -40,18 +40,38 @@ type cacheRegistryEntry struct {
 var globalCacheRegistry sync.Map // map[string]*cacheRegistryEntry
 
 // normalizeEndpoint returns a canonical form of the endpoint for use as a
-// registry key. It lowercases the host and strips ports and paths so that
-// endpoints like "https://account.documents.azure.com:443/" and
-// "https://account.documents.azure.com" resolve to the same key. Ports are
-// stripped entirely because the same account is the same account regardless
-// of the port used to reach it.
+// registry key. It lowercases the host and strips paths. The port is included
+// only when it is not the scheme's default (443 for https, 80 for http); a
+// port that matches the scheme default is removed so that
+// "https://account.documents.azure.com:443/" and
+// "https://account.documents.azure.com" resolve to the same key.
+//
+// Non-default ports are deliberately preserved so that distinct targets such
+// as multiple emulator instances or proxy/forwarding configurations are never
+// collapsed onto a single cache entry. Confusing two account endpoints for one
+// another would be a major failure, so we err on the side of keeping keys
+// distinct.
 func normalizeEndpoint(endpoint string) string {
 	u, err := url.Parse(strings.TrimSpace(endpoint))
 	if err != nil || u.Host == "" {
 		// Fallback for malformed input
 		return strings.TrimRight(strings.ToLower(endpoint), "/")
 	}
-	return u.Scheme + "://" + strings.ToLower(u.Hostname())
+
+	scheme := strings.ToLower(u.Scheme)
+	port := u.Port()
+	switch {
+	case scheme == "https" && port == "443":
+		port = ""
+	case scheme == "http" && port == "80":
+		port = ""
+	}
+
+	host := strings.ToLower(u.Hostname())
+	if port == "" {
+		return scheme + "://" + host
+	}
+	return scheme + "://" + host + ":" + port
 }
 
 // acquireCaches returns the shared cache set for the given endpoint, creating

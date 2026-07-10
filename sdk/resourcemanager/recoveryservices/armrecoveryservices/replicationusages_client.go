@@ -19,7 +19,7 @@ import (
 // ReplicationUsagesClient contains the methods for the ReplicationUsages group.
 // Don't use this type directly, use NewReplicationUsagesClient() instead.
 //
-// Generated from API version 2025-02-01
+// Generated from API version 2026-05-01
 type ReplicationUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +89,7 @@ func (client *ReplicationUsagesClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01/Capabilities.json
+// Generated from example definition: 2026-05-01/Capabilities.json
 func ExampleClient_Capabilities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleClient_Capabilities() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01/CheckNameAvailability_Available.json
+// Generated from example definition: 2026-05-01/CheckNameAvailability_Available.json
 func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenNoResourceWithSameNameTypeAndSubscriptionExistsNorHasBeenDeletedWithinLast24Hours() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenNoR
 	// }
 }
 
-// Generated from example definition: 2025-02-01/CheckNameAvailability_NotAvailable.json
+// Generated from example definition: 2026-05-01/CheckNameAvailability_NotAvailable.json
 func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenResourceWithSameNameTypeAndSubscriptionExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

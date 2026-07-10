@@ -1,5 +1,27 @@
 # Release History
 
+## 3.1.0 (2026-07-07)
+### Features Added
+
+- New enum type `GranularityLevel` with values `GranularityLevelProtectedItemLevel`, `GranularityLevelProtectedItemWithParentTag`, `GranularityLevelVaultLevel`
+- New enum type `ImmutabilityType` with values `ImmutabilityTypeAsPerPolicy`, `ImmutabilityTypeTimeBased`
+- New function `*ClientFactory.NewDeletedVaultsClient() *DeletedVaultsClient`
+- New function `NewDeletedVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedVaultsClient, error)`
+- New function `*DeletedVaultsClient.Get(ctx context.Context, location string, deletedVaultName string, options *DeletedVaultsClientGetOptions) (DeletedVaultsClientGetResponse, error)`
+- New function `*DeletedVaultsClient.GetOperationStatus(ctx context.Context, location string, deletedVaultName string, operationID string, options *DeletedVaultsClientGetOperationStatusOptions) (DeletedVaultsClientGetOperationStatusResponse, error)`
+- New function `*DeletedVaultsClient.NewListBySubscriptionIDPager(location string, options *DeletedVaultsClientListBySubscriptionIDOptions) *runtime.Pager[DeletedVaultsClientListBySubscriptionIDResponse]`
+- New function `*DeletedVaultsClient.BeginUndelete(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, options *DeletedVaultsClientBeginUndeleteOptions) (*runtime.Poller[DeletedVaultsClientUndeleteResponse], error)`
+- New struct `CostManagementSettings`
+- New struct `DeletedVault`
+- New struct `DeletedVaultList`
+- New struct `DeletedVaultProperties`
+- New struct `DeletedVaultUndeleteInput`
+- New struct `DeletedVaultUndeleteInputProperties`
+- New struct `ImmutabilityConfiguration`
+- New field `Configuration` in struct `ImmutabilitySettings`
+- New field `CostManagementSettings` in struct `VaultProperties`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

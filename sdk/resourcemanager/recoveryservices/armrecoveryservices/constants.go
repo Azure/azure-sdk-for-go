@@ -5,7 +5,7 @@
 package armrecoveryservices
 
 const (
-	version20250201 string = "2025-02-01"
+	version20260501 string = "2026-05-01"
 )
 
 type AlertsState string
@@ -159,6 +159,23 @@ func PossibleEnhancedSecurityStateValues() []EnhancedSecurityState {
 	}
 }
 
+type GranularityLevel string
+
+const (
+	GranularityLevelProtectedItemLevel         GranularityLevel = "ProtectedItemLevel"
+	GranularityLevelProtectedItemWithParentTag GranularityLevel = "ProtectedItemWithParentTag"
+	GranularityLevelVaultLevel                 GranularityLevel = "VaultLevel"
+)
+
+// PossibleGranularityLevelValues returns the possible values for the GranularityLevel const type.
+func PossibleGranularityLevelValues() []GranularityLevel {
+	return []GranularityLevel{
+		GranularityLevelProtectedItemLevel,
+		GranularityLevelProtectedItemWithParentTag,
+		GranularityLevelVaultLevel,
+	}
+}
+
 // IdentityType - Identity type that should be used for an operation.
 type IdentityType string
 
@@ -189,6 +206,24 @@ func PossibleImmutabilityStateValues() []ImmutabilityState {
 		ImmutabilityStateDisabled,
 		ImmutabilityStateLocked,
 		ImmutabilityStateUnlocked,
+	}
+}
+
+// ImmutabilityType - Immutability config type.
+type ImmutabilityType string
+
+const (
+	// ImmutabilityTypeAsPerPolicy - Immutability is governed by policy.
+	ImmutabilityTypeAsPerPolicy ImmutabilityType = "AsPerPolicy"
+	// ImmutabilityTypeTimeBased - Immutability duration is time-based.
+	ImmutabilityTypeTimeBased ImmutabilityType = "TimeBased"
+)
+
+// PossibleImmutabilityTypeValues returns the possible values for the ImmutabilityType const type.
+func PossibleImmutabilityTypeValues() []ImmutabilityType {
+	return []ImmutabilityType{
+		ImmutabilityTypeAsPerPolicy,
+		ImmutabilityTypeTimeBased,
 	}
 }
 

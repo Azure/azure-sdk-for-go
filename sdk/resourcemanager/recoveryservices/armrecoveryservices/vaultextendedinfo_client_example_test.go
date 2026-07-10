@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01/UpdateVaultExtendedInfo_Put.json
+// Generated from example definition: 2026-05-01/UpdateVaultExtendedInfo_Put.json
 func ExampleVaultExtendedInfoClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleVaultExtendedInfoClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01/GETVaultExtendedInfo.json
+// Generated from example definition: 2026-05-01/GETVaultExtendedInfo.json
 func ExampleVaultExtendedInfoClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleVaultExtendedInfoClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01/UpdateVaultExtendedInfo.json
+// Generated from example definition: 2026-05-01/UpdateVaultExtendedInfo.json
 func ExampleVaultExtendedInfoClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

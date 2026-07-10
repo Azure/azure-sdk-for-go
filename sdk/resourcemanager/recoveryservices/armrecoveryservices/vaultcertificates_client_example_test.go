@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01/PUTVaultCred.json
+// Generated from example definition: 2026-05-01/PUTVaultCred.json
 func ExampleVaultCertificatesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

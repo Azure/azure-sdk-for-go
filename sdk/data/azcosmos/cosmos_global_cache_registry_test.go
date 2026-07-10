@@ -5,12 +5,27 @@ package azcosmos
 
 import (
 	"context"
+	"runtime"
 	"sync"
 	"sync/atomic"
 	"testing"
+	"weak"
 
 	"github.com/stretchr/testify/require"
 )
+
+// registryRefCount returns the current reference count recorded in the registry
+// entry for the given endpoint, or -1 if no entry exists. Test helper.
+func registryRefCount(endpoint string) int {
+	val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+	if !ok {
+		return -1
+	}
+	entry := val.(*cacheRegistryEntry)
+	entry.mu.Lock()
+	defer entry.mu.Unlock()
+	return entry.refCount
+}
 
 func TestNormalizeEndpoint(t *testing.T) {
 	tests := []struct {
@@ -45,7 +60,7 @@ func TestAcquireCaches_SameEndpoint_ReturnsSameInstance(t *testing.T) {
 
 	require.Same(t, set1, set2, "same endpoint should return same cache set")
 	require.Same(t, set1, set3, "normalization should make these equivalent")
-	require.Equal(t, int64(3), set1.refCount.Load())
+	require.Equal(t, 3, registryRefCount("https://account1.documents.azure.com/"))
 }
 
 func TestAcquireCaches_DifferentEndpoints_ReturnDifferentInstances(t *testing.T) {
@@ -69,12 +84,12 @@ func TestReleaseCaches_RemovesEntryWhenZeroRefs(t *testing.T) {
 	_ = acquireCaches(endpoint) // refCount = 2
 
 	releaseCaches(endpoint) // refCount = 1
-	require.Equal(t, int64(1), set1.refCount.Load())
+	require.Equal(t, 1, registryRefCount(endpoint))
 
 	// Entry should still be in the registry
 	val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
 	require.True(t, ok)
-	require.Same(t, set1, val.(*sharedCacheSet))
+	require.Same(t, set1, val.(*cacheRegistryEntry).weakRef.Value())
 
 	releaseCaches(endpoint) // refCount = 0 → removed
 	_, ok = globalCacheRegistry.Load(normalizeEndpoint(endpoint))
@@ -91,6 +106,80 @@ func TestReleaseCaches_NewAcquireAfterFullRelease_CreatesNew(t *testing.T) {
 
 	set2 := acquireCaches(endpoint) // new instance
 	require.NotSame(t, set1, set2, "should create a fresh cache set after full release")
+}
+
+func TestAcquireCaches_CollectedWhenClientDiscardedWithoutClose(t *testing.T) {
+	resetGlobalCacheRegistry()
+	defer resetGlobalCacheRegistry()
+
+	endpoint := "https://account1.documents.azure.com"
+
+	// Acquire a cache set the way a Client would, but never call releaseCaches
+	// (i.e. never call Close) and drop the only strong reference — simulating a
+	// discarded Client. The set escapes only through the weak registry entry.
+	weakRef := func() weak.Pointer[sharedCacheSet] {
+		set := acquireCaches(endpoint)
+		require.NotNil(t, set)
+		val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+		require.True(t, ok)
+		w := val.(*cacheRegistryEntry).weakRef
+		require.NotNil(t, w.Value())
+		return w
+	}()
+
+	// Because the registry holds only a weak reference, the cache set becomes
+	// eligible for collection once the discarded Client's strong reference is
+	// gone — even though Close was never called.
+	collected := false
+	for i := 0; i < 100; i++ {
+		runtime.GC()
+		if weakRef.Value() == nil {
+			collected = true
+			break
+		}
+	}
+	require.True(t, collected, "cache set should be reclaimed once the discarded client's strong ref is gone")
+
+	// The small registry entry remains, but reacquiring must build a fresh set.
+	set2 := acquireCaches(endpoint)
+	require.NotNil(t, set2)
+	val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+	require.True(t, ok)
+	require.Same(t, set2, val.(*cacheRegistryEntry).weakRef.Value())
+	releaseCaches(endpoint)
+}
+
+func TestAcquireCaches_ReacquireAfterCollectionResetsRefCount(t *testing.T) {
+	resetGlobalCacheRegistry()
+	defer resetGlobalCacheRegistry()
+
+	endpoint := "https://account1.documents.azure.com"
+
+	// Two acquires, no releases, then both strong refs discarded (leaked clients).
+	weakRef := func() weak.Pointer[sharedCacheSet] {
+		_ = acquireCaches(endpoint)
+		_ = acquireCaches(endpoint) // refCount = 2; both refs dropped on return
+		val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+		require.True(t, ok)
+		return val.(*cacheRegistryEntry).weakRef
+	}()
+	require.Equal(t, 2, registryRefCount(endpoint))
+
+	collected := false
+	for i := 0; i < 100; i++ {
+		runtime.GC()
+		if weakRef.Value() == nil {
+			collected = true
+			break
+		}
+	}
+	require.True(t, collected, "cache set should be reclaimed after both leaked refs are gone")
+
+	// A fresh acquire must reset the stale refCount to 1, not resume from 2.
+	set := acquireCaches(endpoint)
+	require.NotNil(t, set)
+	require.Equal(t, 1, registryRefCount(endpoint))
+	releaseCaches(endpoint)
 }
 
 func TestSharedCaches_CrossClientCacheHit(t *testing.T) {
@@ -265,7 +354,7 @@ func TestAcquireCaches_ConcurrentSafe(t *testing.T) {
 	for i := 1; i < goroutines; i++ {
 		require.Same(t, results[0], results[i], "concurrent acquires should return same instance")
 	}
-	require.Equal(t, int64(goroutines), results[0].refCount.Load())
+	require.Equal(t, goroutines, registryRefCount(endpoint))
 }
 
 func TestAcquireCaches_ResilientToInterleavedRelease(t *testing.T) {
@@ -284,7 +373,7 @@ func TestAcquireCaches_ResilientToInterleavedRelease(t *testing.T) {
 	// Now a new acquire should create a fresh set (the old one is gone)
 	set2 := acquireCaches(endpoint)
 	require.NotSame(t, set1, set2, "after full release, a new set should be created")
-	require.Equal(t, int64(1), set2.refCount.Load())
+	require.Equal(t, 1, registryRefCount(endpoint))
 
 	// Stress test: interleave acquires and releases concurrently
 	const goroutines = 100
@@ -297,7 +386,7 @@ func TestAcquireCaches_ResilientToInterleavedRelease(t *testing.T) {
 			// Verify the returned set is actually in the registry
 			val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
 			require.True(t, ok, "acquired set must be in registry")
-			require.Same(t, s, val.(*sharedCacheSet), "acquired set must match registry entry")
+			require.Same(t, s, val.(*cacheRegistryEntry).weakRef.Value(), "acquired set must match registry entry")
 			releaseCaches(endpoint)
 		}()
 	}
@@ -306,8 +395,8 @@ func TestAcquireCaches_ResilientToInterleavedRelease(t *testing.T) {
 	// set2 should still be valid (we haven't released it)
 	val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
 	require.True(t, ok)
-	require.Same(t, set2, val.(*sharedCacheSet))
-	require.Equal(t, int64(1), set2.refCount.Load())
+	require.Same(t, set2, val.(*cacheRegistryEntry).weakRef.Value())
+	require.Equal(t, 1, registryRefCount(endpoint))
 	releaseCaches(endpoint)
 }
 
@@ -326,10 +415,9 @@ func TestClientClose_Idempotent(t *testing.T) {
 	client.Close() // still idempotent
 
 	// RefCount should be 1 (the second acquire), not -1 or 0
-	val, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
+	_, ok := globalCacheRegistry.Load(normalizeEndpoint(endpoint))
 	require.True(t, ok, "entry should still exist — second reference is alive")
-	set := val.(*sharedCacheSet)
-	require.Equal(t, int64(1), set.refCount.Load())
+	require.Equal(t, 1, registryRefCount(endpoint))
 
 	// Clean up the second reference
 	releaseCaches(endpoint)

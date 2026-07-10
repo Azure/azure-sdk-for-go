@@ -201,6 +201,47 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// SandboxGroupsClientConnectResponse contains the response from method SandboxGroupsClient.Connect.
+type SandboxGroupsClientConnectResponse struct {
+	// The result of getting an access token for a SandboxGroup.
+	SandboxGroupAccessToken
+}
+
+// SandboxGroupsClientCreateOrUpdateResponse contains the response from method SandboxGroupsClient.BeginCreateOrUpdate.
+type SandboxGroupsClientCreateOrUpdateResponse struct {
+	// A SandboxGroup tracked resource.
+	SandboxGroup
+}
+
+// SandboxGroupsClientDeleteResponse contains the response from method SandboxGroupsClient.BeginDelete.
+type SandboxGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SandboxGroupsClientGetResponse contains the response from method SandboxGroupsClient.Get.
+type SandboxGroupsClientGetResponse struct {
+	// A SandboxGroup tracked resource.
+	SandboxGroup
+}
+
+// SandboxGroupsClientListByResourceGroupResponse contains the response from method SandboxGroupsClient.NewListByResourceGroupPager.
+type SandboxGroupsClientListByResourceGroupResponse struct {
+	// The response of a SandboxGroup list operation.
+	SandboxGroupListResult
+}
+
+// SandboxGroupsClientListBySubscriptionResponse contains the response from method SandboxGroupsClient.NewListBySubscriptionPager.
+type SandboxGroupsClientListBySubscriptionResponse struct {
+	// The response of a SandboxGroup list operation.
+	SandboxGroupListResult
+}
+
+// SandboxGroupsClientUpdateResponse contains the response from method SandboxGroupsClient.BeginUpdate.
+type SandboxGroupsClientUpdateResponse struct {
+	// A SandboxGroup tracked resource.
+	SandboxGroup
+}
+
 // SubnetServiceAssociationLinkClientDeleteResponse contains the response from method SubnetServiceAssociationLinkClient.BeginDelete.
 type SubnetServiceAssociationLinkClientDeleteResponse struct {
 	// placeholder for future response values

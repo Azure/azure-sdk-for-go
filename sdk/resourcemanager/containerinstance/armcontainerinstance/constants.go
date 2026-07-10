@@ -5,7 +5,7 @@
 package armcontainerinstance
 
 const (
-	version20250901 string = "2025-09-01"
+	version20260701 string = "2026-07-01"
 )
 
 // AzureFileShareAccessTier - Access tier for specific share. GpV2 account can choose between TransactionOptimized (default),
@@ -306,6 +306,30 @@ func PossibleLogAnalyticsLogTypeValues() []LogAnalyticsLogType {
 	}
 }
 
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
 // NGroupProvisioningState - The provisioning state, which only appears in the response.
 type NGroupProvisioningState string
 
@@ -397,6 +421,36 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeSystemAssignedUserAssigned,
 		ResourceIdentityTypeUserAssigned,
+	}
+}
+
+// SandboxGroupProvisioningState - The provisioning state of a SandboxGroup resource.
+type SandboxGroupProvisioningState string
+
+const (
+	// SandboxGroupProvisioningStateAccepted - The resource provisioning request was accepted but not yet started.
+	SandboxGroupProvisioningStateAccepted SandboxGroupProvisioningState = "Accepted"
+	// SandboxGroupProvisioningStateCanceled - Resource creation was canceled.
+	SandboxGroupProvisioningStateCanceled SandboxGroupProvisioningState = "Canceled"
+	// SandboxGroupProvisioningStateDeleting - The resource is being deleted.
+	SandboxGroupProvisioningStateDeleting SandboxGroupProvisioningState = "Deleting"
+	// SandboxGroupProvisioningStateFailed - Resource creation failed.
+	SandboxGroupProvisioningStateFailed SandboxGroupProvisioningState = "Failed"
+	// SandboxGroupProvisioningStateSucceeded - Resource has been created.
+	SandboxGroupProvisioningStateSucceeded SandboxGroupProvisioningState = "Succeeded"
+	// SandboxGroupProvisioningStateUpdating - The resource is being updated.
+	SandboxGroupProvisioningStateUpdating SandboxGroupProvisioningState = "Updating"
+)
+
+// PossibleSandboxGroupProvisioningStateValues returns the possible values for the SandboxGroupProvisioningState const type.
+func PossibleSandboxGroupProvisioningStateValues() []SandboxGroupProvisioningState {
+	return []SandboxGroupProvisioningState{
+		SandboxGroupProvisioningStateAccepted,
+		SandboxGroupProvisioningStateCanceled,
+		SandboxGroupProvisioningStateDeleting,
+		SandboxGroupProvisioningStateFailed,
+		SandboxGroupProvisioningStateSucceeded,
+		SandboxGroupProvisioningStateUpdating,
 	}
 }
 

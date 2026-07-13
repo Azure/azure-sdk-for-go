@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/gateway/Gateway_CreateOrUpdate.json
+// Generated from example definition: 2026-06-16-preview/gateway/Gateway_CreateOrUpdate.json
 func ExampleGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,6 +30,10 @@ func ExampleGatewaysClient_BeginCreateOrUpdate() {
 				to.Ptr("*"),
 			},
 			GatewayType: to.Ptr(armhybridcompute.GatewayTypePublic),
+			GatewayBypass: []*string{
+				to.Ptr("contoso.com"),
+				to.Ptr("internal.corp.net"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -55,13 +59,17 @@ func ExampleGatewaysClient_BeginCreateOrUpdate() {
 	// 			GatewayEndpoint: to.Ptr("https://uniqueValue.contoso.com"),
 	// 			GatewayID: to.Ptr("<generated Guid>"),
 	// 			GatewayType: to.Ptr(armhybridcompute.GatewayTypePublic),
+	// 			GatewayBypass: []*string{
+	// 				to.Ptr("contoso.com"),
+	// 				to.Ptr("internal.corp.net"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridcompute.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/gateway/Gateway_Delete.json
+// Generated from example definition: 2026-06-16-preview/gateway/Gateway_Delete.json
 func ExampleGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +90,7 @@ func ExampleGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/gateway/Gateway_Get.json
+// Generated from example definition: 2026-06-16-preview/gateway/Gateway_Get.json
 func ExampleGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,13 +121,17 @@ func ExampleGatewaysClient_Get() {
 	// 			GatewayEndpoint: to.Ptr("https://uniqueValue.contoso.com"),
 	// 			GatewayID: to.Ptr("<generated Guid>"),
 	// 			GatewayType: to.Ptr(armhybridcompute.GatewayTypePublic),
+	// 			GatewayBypass: []*string{
+	// 				to.Ptr("contoso.com"),
+	// 				to.Ptr("internal.corp.net"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridcompute.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/gateway/Gateway_ListByResourceGroup.json
+// Generated from example definition: 2026-06-16-preview/gateway/Gateway_ListByResourceGroup.json
 func ExampleGatewaysClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,6 +168,10 @@ func ExampleGatewaysClient_NewListByResourceGroupPager() {
 		// 					GatewayEndpoint: to.Ptr("https://uniqueValue.contoso.com"),
 		// 					GatewayID: to.Ptr("<generated Guid>"),
 		// 					GatewayType: to.Ptr(armhybridcompute.GatewayTypePublic),
+		// 					GatewayBypass: []*string{
+		// 						to.Ptr("contoso.com"),
+		// 						to.Ptr("internal.corp.net"),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armhybridcompute.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -165,7 +181,7 @@ func ExampleGatewaysClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/gateway/Gateway_ListBySubscription.json
+// Generated from example definition: 2026-06-16-preview/gateway/Gateway_ListBySubscription.json
 func ExampleGatewaysClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,6 +218,10 @@ func ExampleGatewaysClient_NewListBySubscriptionPager() {
 		// 					GatewayEndpoint: to.Ptr("https://uniqueValue.contoso.com"),
 		// 					GatewayID: to.Ptr("<generated Guid>"),
 		// 					GatewayType: to.Ptr(armhybridcompute.GatewayTypePublic),
+		// 					GatewayBypass: []*string{
+		// 						to.Ptr("contoso.com"),
+		// 						to.Ptr("internal.corp.net"),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armhybridcompute.ProvisioningStateSucceeded),
 		// 				},
 		// 			},
@@ -211,7 +231,7 @@ func ExampleGatewaysClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/gateway/Gateway_Update.json
+// Generated from example definition: 2026-06-16-preview/gateway/Gateway_Update.json
 func ExampleGatewaysClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -226,6 +246,10 @@ func ExampleGatewaysClient_Update() {
 		Properties: &armhybridcompute.GatewayUpdateProperties{
 			AllowedFeatures: []*string{
 				to.Ptr("*"),
+			},
+			GatewayBypass: []*string{
+				to.Ptr("contoso.com"),
+				to.Ptr("internal.corp.net"),
 			},
 		},
 	}, nil)
@@ -248,6 +272,10 @@ func ExampleGatewaysClient_Update() {
 	// 			GatewayEndpoint: to.Ptr("https://uniqueValue.contoso.com"),
 	// 			GatewayID: to.Ptr("<generated Guid>"),
 	// 			GatewayType: to.Ptr(armhybridcompute.GatewayTypePublic),
+	// 			GatewayBypass: []*string{
+	// 				to.Ptr("contoso.com"),
+	// 				to.Ptr("internal.corp.net"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armhybridcompute.ProvisioningStateSucceeded),
 	// 		},
 	// 	},

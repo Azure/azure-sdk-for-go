@@ -524,7 +524,9 @@ func (c *ContainerClient) ReadManyItems(
 
 // GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.
 // ctx - The context for the request.
-func (c *ContainerClient) GetFeedRanges(ctx context.Context) ([]FeedRange, error) {
+// o - Options for the operation. nil to use default options. Currently no options are
+// defined and the parameter is ignored; it exists for future use.
+func (c *ContainerClient) GetFeedRanges(ctx context.Context, o *GetFeedRangesOptions) ([]FeedRange, error) {
 	// Get the partition key ranges from the container
 	response, err := c.getPartitionKeyRanges(ctx, nil)
 	if err != nil {

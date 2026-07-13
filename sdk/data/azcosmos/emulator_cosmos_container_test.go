@@ -633,7 +633,7 @@ func TestEmulatorContainerPartitionKeyRangesAndFeedRanges(t *testing.T) {
 	}
 
 	// Get Feed Ranges (which internally calls getPartitionKeyRanges)
-	feedRanges, err := container.GetFeedRanges(context.TODO())
+	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to get feed ranges: %v", err)
 	}
@@ -718,7 +718,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 	time.Sleep(2 * time.Second)
 
 	// Get Feed Ranges (which internally calls getPartitionKeyRanges)
-	feedRanges, err := container.GetFeedRanges(context.TODO())
+	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to get feed ranges: %v", err)
 	}
@@ -852,7 +852,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 
 		// Should find at least the new item
 		foundNewItem := false
-		for _, doc := range resp.Documents {
+		for _, doc := range resp.Items {
 			var item map[string]interface{}
 			err := json.Unmarshal(doc, &item)
 			if err != nil {
@@ -892,7 +892,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			t.Log("This might be a limitation of the emulator's change feed implementation")
 
 			// Let's verify what items were returned
-			for i, doc := range futureResp.Documents {
+			for i, doc := range futureResp.Items {
 				var item map[string]interface{}
 				if err := json.Unmarshal(doc, &item); err == nil {
 					t.Logf("  Unexpected document %d: id=%v, pk=%v", i, item["id"], item["pk"])

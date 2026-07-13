@@ -83,7 +83,7 @@ func TestContainerGetFeedRanges(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	feedRanges, err := container.GetFeedRanges(context.TODO())
+	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("GetFeedRanges failed: %v", err)
 	}
@@ -134,7 +134,7 @@ func TestContainerGetFeedRangesEmpty(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	feedRanges, err := container.GetFeedRanges(context.TODO())
+	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("GetFeedRanges failed: %v", err)
 	}
@@ -218,7 +218,7 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 	container, _ := newContainer("containerId", database)
 
 	// First call: populates caches, makes 2 HTTP requests
-	feedRanges, err := container.GetFeedRanges(context.TODO())
+	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(feedRanges))
 	require.Equal(t, "", feedRanges[0].MinInclusive)
@@ -231,7 +231,7 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 
 	// Second call: should use caches, no additional HTTP requests
 	// (no more responses queued — would panic if a request was made)
-	feedRanges2, err := container.GetFeedRanges(context.TODO())
+	feedRanges2, err := container.GetFeedRanges(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(feedRanges2))
 	require.Equal(t, feedRanges[0], feedRanges2[0])

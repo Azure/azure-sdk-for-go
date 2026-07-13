@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_CreateOrUpdate.json
 func ExampleDedicatedHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,13 +41,13 @@ func ExampleDedicatedHostsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientCreateOrUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Properties: &armcompute.DedicatedHostProperties{
 	// 			PlatformFaultDomain: to.Ptr[int32](1),
 	// 			AutoReplaceOnFailure: to.Ptr(false),
@@ -67,7 +67,7 @@ func ExampleDedicatedHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Delete_MaximumSet_Gen.json
 func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMaximumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -93,7 +93,7 @@ func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Delete_MinimumSet_Gen.json
 func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMinimumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -119,7 +119,7 @@ func ExampleDedicatedHostsClient_BeginDelete_dedicatedHostDeleteMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Get.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Get.json
 func ExampleDedicatedHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleDedicatedHostsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientGetResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/HostGroups/myDedicatedHostGroup/hosts/myHost"),
 	// 		Properties: &armcompute.DedicatedHostProperties{
 	// 			PlatformFaultDomain: to.Ptr[int32](1),
@@ -189,7 +189,7 @@ func ExampleDedicatedHostsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_ListAvailableSizes.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_ListAvailableSizes.json
 func ExampleDedicatedHostsClient_NewListAvailableSizesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleDedicatedHostsClient_NewListAvailableSizesPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MaximumSet_Gen.json
 func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHostGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHost
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_ListByHostGroup_MinimumSet_Gen.json
 func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHostGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -337,7 +337,7 @@ func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHost
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Redeploy.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Redeploy.json
 func ExampleDedicatedHostsClient_BeginRedeploy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,11 +354,11 @@ func ExampleDedicatedHostsClient_BeginRedeploy() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Restart.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Restart.json
 func ExampleDedicatedHostsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +375,7 @@ func ExampleDedicatedHostsClient_BeginRestart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -384,7 +384,7 @@ func ExampleDedicatedHostsClient_BeginRestart() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
 func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,13 +429,13 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMaximumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -484,7 +484,7 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
 func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,13 +501,13 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMinimumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.SKU{
 	// 		},
@@ -515,7 +515,7 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01/dedicatedHostExamples/DedicatedHost_Update_Resize.json
+// Generated from example definition: 2026-03-01/dedicatedHostExamples/DedicatedHost_Update_Resize.json
 func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateResize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,13 +536,13 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateResize() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DedicatedHostsClientUpdateResponse{
-	// 	DedicatedHost: &armcompute.DedicatedHost{
+	// 	DedicatedHost: armcompute.DedicatedHost{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},

@@ -7,11 +7,10 @@ package armpurview
 import (
 	"encoding/json"
 	"fmt"
-	"reflect"
-	"time"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"reflect"
+	"time"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AccessKeys.
@@ -1859,5 +1858,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

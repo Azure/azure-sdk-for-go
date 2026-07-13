@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/CheckNameAvailability.json
+// Generated from example definition: 2024-12-30/CheckNameAvailability.json
 func ExampleCheckNameAvailabilityClient_Execute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleCheckNameAvailabilityClient_Execute() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.CheckNameAvailabilityClientExecuteResponse{
-	// 	NameAvailability: &armmysqlflexibleservers.NameAvailability{
+	// 	NameAvailability: armmysqlflexibleservers.NameAvailability{
 	// 		Message: to.Ptr(""),
 	// 		NameAvailable: to.Ptr(true),
 	// 		Reason: to.Ptr(""),

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseGetMetricDefinitions.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseGetMetricDefinitions.json
 func ExampleDatabaseClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,27 +38,27 @@ func ExampleDatabaseClient_NewListMetricDefinitionsPager() {
 		// 	MetricDefinitionsListResult: armcosmos.MetricDefinitionsListResult{
 		// 		Value: []*armcosmos.MetricDefinition{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 					Value: to.Ptr("Total Requests"),
-		// 				},
 		// 				MetricAvailabilities: []*armcosmos.MetricAvailability{
 		// 					{
-		// 						Retention: to.Ptr("P2D"),
 		// 						TimeGrain: to.Ptr("PT5M"),
+		// 						Retention: to.Ptr("P2D"),
 		// 					},
 		// 					{
-		// 						Retention: to.Ptr("P14D"),
 		// 						TimeGrain: to.Ptr("PT1H"),
+		// 						Retention: to.Ptr("P14D"),
 		// 					},
 		// 					{
-		// 						Retention: to.Ptr("P60D"),
 		// 						TimeGrain: to.Ptr("P1D"),
+		// 						Retention: to.Ptr("P60D"),
 		// 					},
 		// 				},
 		// 				PrimaryAggregationType: to.Ptr(armcosmos.PrimaryAggregationTypeTotal),
-		// 				ResourceURI: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 				ResourceURI: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Total Requests"),
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -66,7 +66,7 @@ func ExampleDatabaseClient_NewListMetricDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseGetMetrics.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseGetMetrics.json
 func ExampleDatabaseClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleDatabaseClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDatabaseClient().NewListMetricsPager("rg1", "ddb1", "rid", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewDatabaseClient().NewListMetricsPager("rg1", "ddb1", "rid", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -92,40 +92,40 @@ func ExampleDatabaseClient_NewListMetricsPager() {
 		// 	MetricListResult: armcosmos.MetricListResult{
 		// 		Value: []*armcosmos.Metric{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 					Value: to.Ptr("Total Requests"),
-		// 				},
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				MetricValues: []*armcosmos.MetricValue{
 		// 					{
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:58:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:03:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:08:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Total Requests"),
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -133,7 +133,7 @@ func ExampleDatabaseClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseGetUsages.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseGetUsages.json
 func ExampleDatabaseClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleDatabaseClient_NewListUsagesPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewDatabaseClient().NewListUsagesPager("rg1", "ddb1", "databaseRid", &armcosmos.DatabaseClientListUsagesOptions{
-		Filter: to.Ptr("$filter=name.value eq 'Storage'")})
+		Filter: to.Ptr("name.value eq 'Storage'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -160,14 +160,14 @@ func ExampleDatabaseClient_NewListUsagesPager() {
 		// 	UsagesResult: armcosmos.UsagesResult{
 		// 		Value: []*armcosmos.Usage{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Storage"),
-		// 					Value: to.Ptr("Storage"),
-		// 				},
-		// 				CurrentValue: to.Ptr[int64](0),
-		// 				Limit: to.Ptr[int64](10737418240),
-		// 				QuotaPeriod: to.Ptr("P1D"),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
+		// 				QuotaPeriod: to.Ptr("P1D"),
+		// 				Limit: to.Ptr[int64](10737418240),
+		// 				CurrentValue: to.Ptr[int64](0),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Storage"),
+		// 					LocalizedValue: to.Ptr("Storage"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},

@@ -35,13 +35,13 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.FirewallRulesClientCreateOrUpdateResponse{
-	// 	FirewallRule: &armhorizondb.FirewallRule{
+	// 	FirewallRule: armhorizondb.FirewallRule{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/pools/examplepool/firewallRules/examplefirewallrule"),
 	// 		Name: to.Ptr("examplefirewallrule"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/pools/firewallRules"),
@@ -72,7 +72,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -95,7 +95,7 @@ func ExampleFirewallRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.FirewallRulesClientGetResponse{
-	// 	FirewallRule: &armhorizondb.FirewallRule{
+	// 	FirewallRule: armhorizondb.FirewallRule{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/pools/examplepool/firewallRules/examplefirewallrule"),
 	// 		Name: to.Ptr("examplefirewallrule"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/pools/firewallRules"),

@@ -208,7 +208,7 @@ type BackupForPatch struct {
 	GeoRedundantBackup *GeographicallyRedundantBackup
 }
 
-// BackupSettings - The settings for the long term backup.
+// BackupSettings - Settings for the long term backup.
 type BackupSettings struct {
 	// REQUIRED; Backup Name for the current backup
 	BackupName *string
@@ -238,12 +238,12 @@ type BackupsLongTermRetentionOperation struct {
 	Type *string
 }
 
-// BackupsLongTermRetentionRequest - The request that is made for a long term retention backup.
+// BackupsLongTermRetentionRequest - Request made for a long term retention backup.
 type BackupsLongTermRetentionRequest struct {
 	// REQUIRED; Backup Settings
 	BackupSettings *BackupSettings
 
-	// REQUIRED; Backup store detail for target server
+	// REQUIRED; Backup store detail for target server.
 	TargetDetails *BackupStoreDetails
 }
 
@@ -280,14 +280,14 @@ type Capability struct {
 	// engine is not supported. Will be deprecated in the future. Look to Supported Features for 'OnlineResize'.
 	OnlineResizeSupported *OnlineStorageResizeSupport
 
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
 	// READ-ONLY; Indicates if this location is restricted. 'Enabled' means location is restricted. 'Disabled' stands for location
 	// is not restricted. Will be deprecated in the future. Look to Supported Features for 'Restricted'.
 	Restricted *LocationRestricted
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; Indicates if storage autogrow is supported in this location. 'Enabled' means storage autogrow is supported.
@@ -468,6 +468,9 @@ type ConfigurationProperties struct {
 
 // DataEncryption - Data encryption properties of a server.
 type DataEncryption struct {
+	// Client id of multi-tenant Microsoft Entra application for when it is configured to support geographically redundant backups.
+	GeoBackupFederatedIdentityClientID *string
+
 	// Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of the geographically
 	// redundant storage associated to a server that is configured to support geographically redundant backups.
 	GeoBackupKeyURI *string
@@ -475,6 +478,9 @@ type DataEncryption struct {
 	// Identifier of the user assigned managed identity used to access the key in Azure Key Vault for data encryption of the geographically
 	// redundant storage associated to a server that is configured to support geographically redundant backups.
 	GeoBackupUserAssignedIdentityID *string
+
+	// Client id of multi-tenant Microsoft Entra application.
+	PrimaryFederatedIdentityClientID *string
 
 	// URI of the key in Azure Key Vault used for data encryption of the primary storage associated to a server.
 	PrimaryKeyURI *string
@@ -623,13 +629,13 @@ type DelegatedSubnetUsage struct {
 
 // FastProvisioningEditionCapability - Capability of a fast provisioning compute tier.
 type FastProvisioningEditionCapability struct {
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
 	// READ-ONLY; Count of servers in cache matching this specification.
 	ServerCount *int32
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; Compute name (SKU) supporting fast provisioning.
@@ -737,32 +743,32 @@ type LtrBackupOperationResponseProperties struct {
 	// REQUIRED; Start time of the operation.
 	StartTime *time.Time
 
-	// REQUIRED; Service-set extensible enum indicating the status of operation
+	// REQUIRED; Service-set extensible enum indicating the status of operation.
 	Status *ExecutionStatus
 
 	// Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this Recovery
-	// point. e.g. Versions, DataFormat etc
+	// point. e.g. Versions, DataFormat etc.
 	BackupMetadata *string
 
-	// Name of Backup operation
+	// Name of Backup operation.
 	BackupName *string
 
-	// Data transferred in bytes
+	// Data transferred in bytes.
 	DataTransferredInBytes *int64
 
-	// Size of datasource in bytes
+	// Size of datasource in bytes.
 	DatasourceSizeInBytes *int64
 
 	// End time of the operation.
 	EndTime *time.Time
 
-	// PercentageCompleted
+	// Percentage completed.
 	PercentComplete *float64
 
-	// READ-ONLY; The error code.
+	// READ-ONLY; Error code.
 	ErrorCode *string
 
-	// READ-ONLY; The error message.
+	// READ-ONLY; Error message.
 	ErrorMessage *string
 }
 
@@ -772,7 +778,7 @@ type LtrPreBackupRequest struct {
 	BackupSettings *BackupSettings
 }
 
-// LtrPreBackupResponse - Response for the LTR pre-backup API call
+// LtrPreBackupResponse - Response for the LTR pre-backup API call.
 type LtrPreBackupResponse struct {
 	// REQUIRED; Additional Properties for the pre backup response
 	Properties *BackupsLongTermRetentionResponseProperties
@@ -785,6 +791,105 @@ type LtrServerBackupOperationList struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// MaintenanceEventActionResponse - Response model for maintenance event reschedule and apply-now actions.
+type MaintenanceEventActionResponse struct {
+	// A value indicating whether this was an apply-now (immediate) action. True for ApplyNow; false for Reschedule.
+	AppliedNow *bool
+
+	// The time this maintenance event record was last updated (UTC).
+	LastUpdatedTime *time.Time
+
+	// The maintenance event name (maintenance ID).
+	MaintenanceEventID *string
+
+	// The planned end time of the maintenance event (UTC).
+	PlannedEndTime *time.Time
+
+	// The planned start time of the maintenance event (UTC).
+	PlannedStartTime *time.Time
+
+	// The full Azure resource ID of the server.
+	ServerID *string
+
+	// The status of the maintenance event.
+	Status *MaintenanceEventStatus
+}
+
+// MaintenanceEventRescheduleRequest - Parameters to reschedule a maintenance event.
+type MaintenanceEventRescheduleRequest struct {
+	// REQUIRED; New start time in RFC3339 format.
+	PostponeToDateTime *time.Time
+}
+
+// MaintenanceEventResource - Maintenance event resource for a PostgreSQL flexible server.
+type MaintenanceEventResource struct {
+	// The resource-specific properties for this resource.
+	Properties *MaintenanceEventResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MaintenanceEventResourceListResult - The response of a MaintenanceEventResource list operation.
+type MaintenanceEventResourceListResult struct {
+	// REQUIRED; The MaintenanceEventResource items on this page
+	Value []*MaintenanceEventResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MaintenanceEventResourceProperties - Properties of a maintenance event resource.
+type MaintenanceEventResourceProperties struct {
+	// READ-ONLY; A value indicating whether this maintenance event can be rescheduled by the customer.
+	Deferrable *bool
+
+	// READ-ONLY; The scheduled end time of the maintenance event (UTC).
+	EndTime *time.Time
+
+	// READ-ONLY; The maintenance type (e.g., 'PlannedMaintenance').
+	MaintenanceType *MaintenanceType
+
+	// READ-ONLY; The initial scheduled start time before any reschedule (UTC). Equals startTime when the event has never been
+	// rescheduled.
+	OriginalStartTime *time.Time
+
+	// READ-ONLY; The scheduled start time of the maintenance event (UTC).
+	StartTime *time.Time
+
+	// READ-ONLY; The customer-facing status of the maintenance event.
+	Status *MaintenanceEventStatus
+
+	// READ-ONLY; The latest date/time this maintenance event can be postponed to (UTC). Present only when deferrable is true.
+	DeferralDeadline *time.Time
+
+	// READ-ONLY; The human-readable description of the maintenance event.
+	Description *string
+
+	// READ-ONLY; The estimated downtime as an ISO 8601 duration string (e.g., 'PT60S' = 60 seconds).
+	EstimatedDowntime *string
+
+	// READ-ONLY; The time this maintenance event record was last updated (UTC).
+	LastUpdatedTime *time.Time
+
+	// READ-ONLY; A service-generated identifier for this maintenance event, assigned by the platform (e.g., 'YL1T-HFG'). The
+	// format is not contractual and clients should not attempt to parse or construct this value.
+	MaintenanceEventID *string
+
+	// READ-ONLY; The previous scheduled start time before the most recent reschedule (UTC). Null if the event has never been
+	// rescheduled.
+	RescheduledFrom *time.Time
 }
 
 // MaintenanceWindow - Maintenance window properties of a server.
@@ -817,6 +922,51 @@ type MaintenanceWindowForPatch struct {
 	StartMinute *int32
 }
 
+// MajorVersionUpgradePrecheckResource - Major version upgrade precheck resource for a PostgreSQL flexible server.
+type MajorVersionUpgradePrecheckResource struct {
+	// The resource-specific properties for this resource.
+	Properties *MajorVersionUpgradePrecheckResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MajorVersionUpgradePrecheckResourceListResult - The response of a MajorVersionUpgradePrecheckResource list operation.
+type MajorVersionUpgradePrecheckResourceListResult struct {
+	// REQUIRED; The MajorVersionUpgradePrecheckResource items on this page
+	Value []*MajorVersionUpgradePrecheckResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MajorVersionUpgradePrecheckResourceProperties - Major version upgrade precheck resource with validation results.
+type MajorVersionUpgradePrecheckResourceProperties struct {
+	// The time when the precheck was created.
+	CreateTime *time.Time
+
+	// Array of policy validation details.
+	PolicyDetails []*PolicyDetail
+
+	// The detailed result of the precheck operation.
+	PrecheckResult *PrecheckResult
+
+	// The status of the precheck validation.
+	Status *MajorVersionUpgradePrecheckStatus
+
+	// The target PostgreSQL major version for the upgrade.
+	TargetVersion *PostgresMajorVersion
+}
+
 // MetricSpecification - Metric specification for an operation.
 type MetricSpecification struct {
 	// Aggregation type of the metric.
@@ -844,18 +994,18 @@ type MetricSpecification struct {
 	Unit *string
 }
 
-// MigrateNetworkStatus - The status of a network migration operation.
+// MigrateNetworkStatus - Status of a network migration operation.
 type MigrateNetworkStatus struct {
-	// The name of the resource group.
+	// Name of the resource group.
 	ResourceGroupName *string
 
-	// The name of the server.
+	// Name of the server.
 	ServerName *string
 
-	// The ID of the subscription.
+	// Identifier of the subscription.
 	SubscriptionID *string
 
-	// READ-ONLY; The state of the network migration operation.
+	// READ-ONLY; State of the network migration operation.
 	State *NetworkMigrationState
 }
 
@@ -1311,6 +1461,45 @@ type OperationProperties struct {
 	ServiceSpecification *ServiceSpecification
 }
 
+// PolicyDetail - Policy validation details.
+type PolicyDetail struct {
+	// The error code if validation failed.
+	ErrorCode *int32
+
+	// The error message if validation failed.
+	ErrorMessage *string
+
+	// Whether the policy validation passed.
+	Passed *bool
+
+	// Description of what the policy validates.
+	PolicyDescription *string
+
+	// The name of the policy.
+	PolicyName *string
+}
+
+// PrecheckErrorInfo - Error information from precheck validation.
+type PrecheckErrorInfo struct {
+	// The error code.
+	ErrorCode *int32
+
+	// The error message.
+	ErrorMessage *string
+}
+
+// PrecheckResult - Precheck result details.
+type PrecheckResult struct {
+	// The action performed.
+	Action *string
+
+	// Array of error information.
+	ErrorInfo []*PrecheckErrorInfo
+
+	// The upgrade sequence information.
+	UpgradeSequence *UpgradeSequence
+}
+
 // PrivateEndpoint - The private endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The resource identifier of the private endpoint
@@ -1526,10 +1715,10 @@ type ServerEditionCapability struct {
 	// READ-ONLY; Name of compute tier.
 	Name *string
 
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; List of supported compute names (SKUs).
@@ -1706,13 +1895,13 @@ type ServerSKUCapability struct {
 	// READ-ONLY; Name of the compute (SKU).
 	Name *string
 
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
 	// READ-ONLY; Security profile of the compute. Indicates if it's a Confidential Compute virtual machine.
 	SecurityProfile *string
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; Features supported.
@@ -1739,10 +1928,10 @@ type ServerVersionCapability struct {
 	// READ-ONLY; Major version of PostgreSQL database engine.
 	Name *string
 
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; Features supported.
@@ -1759,6 +1948,24 @@ type ServiceSpecification struct {
 
 	// READ-ONLY; Metric specifications for the operation.
 	MetricSpecifications []*MetricSpecification
+}
+
+// StartMajorVersionUpgradePrecheckRequest - Request model for starting a major version upgrade precheck.
+type StartMajorVersionUpgradePrecheckRequest struct {
+	// REQUIRED; The target major version to upgrade to.
+	TargetVersion *PostgresMajorVersion
+}
+
+// StartMajorVersionUpgradePrecheckResponse - Response model for starting a major version upgrade precheck.
+type StartMajorVersionUpgradePrecheckResponse struct {
+	// The time when the precheck was created.
+	CreateTime *time.Time
+
+	// The precheck validation ID.
+	Name *string
+
+	// The status of the precheck validation.
+	Status *MajorVersionUpgradePrecheckStatus
 }
 
 // Storage properties of a server.
@@ -1792,10 +1999,10 @@ type StorageEditionCapability struct {
 	// READ-ONLY; Name of storage tier.
 	Name *string
 
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; Configurations of storage supported for this storage tier.
@@ -1810,10 +2017,10 @@ type StorageMbCapability struct {
 	// READ-ONLY; Maximum supported size (in MB) of storage.
 	MaximumStorageSizeMb *int64
 
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 
 	// READ-ONLY; Minimum supported size (in MB) of storage.
@@ -1843,10 +2050,10 @@ type StorageTierCapability struct {
 	// READ-ONLY; Name of the storage tier.
 	Name *string
 
-	// READ-ONLY; The reason for the capability not being available.
+	// READ-ONLY; Reason for the capability not being available.
 	Reason *string
 
-	// READ-ONLY; The status of the capability.
+	// READ-ONLY; Status of the capability.
 	Status *CapabilityStatus
 }
 
@@ -1911,6 +2118,15 @@ type TuningOptionsList struct {
 type TuningOptionsProperties struct {
 	// READ-ONLY; State of the tuning option.
 	State *string
+}
+
+// UpgradeSequence - Upgrade sequence information.
+type UpgradeSequence struct {
+	// The source PostgreSQL version.
+	SourceVersion *PostgresMajorVersion
+
+	// The target PostgreSQL version.
+	TargetVersion *PostgresMajorVersion
 }
 
 // UserAssignedIdentity - Identities associated with a server.

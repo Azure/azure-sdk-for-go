@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/FirewallRuleCreate.json
+// Generated from example definition: 2024-12-30/FirewallRuleCreate.json
 func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,13 +34,13 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.FirewallRulesClientCreateOrUpdateResponse{
-	// 	FirewallRule: &armmysqlflexibleservers.FirewallRule{
+	// 	FirewallRule: armmysqlflexibleservers.FirewallRule{
 	// 		Name: to.Ptr("rule1"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/firewallRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/firewallRules/rule1"),
@@ -52,7 +52,7 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/FirewallRuleDelete.json
+// Generated from example definition: 2024-12-30/FirewallRuleDelete.json
 func ExampleFirewallRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -78,7 +78,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/FirewallRuleGet.json
+// Generated from example definition: 2024-12-30/FirewallRuleGet.json
 func ExampleFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleFirewallRulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.FirewallRulesClientGetResponse{
-	// 	FirewallRule: &armmysqlflexibleservers.FirewallRule{
+	// 	FirewallRule: armmysqlflexibleservers.FirewallRule{
 	// 		Name: to.Ptr("rule1"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/firewallRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/testserver/firewallRules/rule1"),
@@ -109,7 +109,7 @@ func ExampleFirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/FirewallRulesListByServer.json
+// Generated from example definition: 2024-12-30/FirewallRulesListByServer.json
 func ExampleFirewallRulesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -35,19 +35,19 @@ func ExampleDpsCertificateClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientCreateOrUpdateResponse{
-	// 	CertificateResponse: &armdeviceprovisioningservices.CertificateResponse{
+	// 	CertificateResponse: armdeviceprovisioningservices.CertificateResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/Certificates"),
 	// 		Etag: to.Ptr("AAAAAAExpNs="),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServives/myFirstProvisioningService/certificates/cert"),
 	// 		Properties: &armdeviceprovisioningservices.CertificateProperties{
 	// 			Certificate: []byte("MA=="),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(false),
 	// 			Subject: to.Ptr("CN=testdevice1"),
 	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 		},
 	// 	},
 	// }
@@ -94,7 +94,7 @@ func ExampleDpsCertificateClient_GenerateVerificationCode() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientGenerateVerificationCodeResponse{
-	// 	VerificationCodeResponse: &armdeviceprovisioningservices.VerificationCodeResponse{
+	// 	VerificationCodeResponse: armdeviceprovisioningservices.VerificationCodeResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Properties: &armdeviceprovisioningservices.VerificationCodeResponseProperties{
 	// 			Certificate: []byte("MA=="),
@@ -129,19 +129,19 @@ func ExampleDpsCertificateClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientGetResponse{
-	// 	CertificateResponse: &armdeviceprovisioningservices.CertificateResponse{
+	// 	CertificateResponse: armdeviceprovisioningservices.CertificateResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/Certificates"),
 	// 		Etag: to.Ptr("AAAAAAExpNs="),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/andbuc-hub/certificates/cert"),
 	// 		Properties: &armdeviceprovisioningservices.CertificateProperties{
 	// 			Certificate: []byte("MA=="),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(false),
 	// 			Subject: to.Ptr("CN=testdevice1"),
 	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 		},
 	// 	},
 	// }
@@ -166,7 +166,7 @@ func ExampleDpsCertificateClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientListResponse{
-	// 	CertificateListDescription: &armdeviceprovisioningservices.CertificateListDescription{
+	// 	CertificateListDescription: armdeviceprovisioningservices.CertificateListDescription{
 	// 		Value: []*armdeviceprovisioningservices.CertificateResponse{
 	// 			{
 	// 				Name: to.Ptr("cert"),
@@ -175,12 +175,12 @@ func ExampleDpsCertificateClient_List() {
 	// 				ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/andbuc-hub/certificates/cert"),
 	// 				Properties: &armdeviceprovisioningservices.CertificateProperties{
 	// 					Certificate: []byte("MA=="),
-	// 					Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 					Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 					Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 					Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 					IsVerified: to.Ptr(false),
 	// 					Subject: to.Ptr("CN=testdevice1"),
 	// 					Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 					Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
+	// 					Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 				},
 	// 			},
 	// 		},
@@ -209,19 +209,19 @@ func ExampleDpsCertificateClient_VerifyCertificate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceprovisioningservices.DpsCertificateClientVerifyCertificateResponse{
-	// 	CertificateResponse: &armdeviceprovisioningservices.CertificateResponse{
+	// 	CertificateResponse: armdeviceprovisioningservices.CertificateResponse{
 	// 		Name: to.Ptr("cert"),
 	// 		Type: to.Ptr("Microsoft.Devices/ProvisioningServices/Certificates"),
 	// 		Etag: to.Ptr("AAAAAAExpTQ="),
 	// 		ID: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.Devices/ProvisioningServices/myFirstProvisioningService/certificates/cert"),
 	// 		Properties: &armdeviceprovisioningservices.CertificateProperties{
 	// 			Certificate: []byte("MA=="),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:23:50 GMT"); return t}()),
-	// 			Expiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Sat, 31 Dec 2039 23:59:59 GMT"); return t}()),
+	// 			Created: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:23:50 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 			Expiry: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Sat, 31 Dec 2039 23:59:59 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 			IsVerified: to.Ptr(true),
 	// 			Subject: to.Ptr("CN=andbucdevice1"),
 	// 			Thumbprint: to.Ptr("97388663832D0393C9246CAB4FBA2C8677185A25"),
-	// 			Updated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Thu, 12 Oct 2017 19:26:56 GMT"); return t}()),
+	// 			Updated: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 12 Oct 2017 19:26:56 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
 	// 		},
 	// 	},
 	// }

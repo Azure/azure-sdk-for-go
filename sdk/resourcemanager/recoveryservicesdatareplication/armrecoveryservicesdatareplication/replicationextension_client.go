@@ -18,6 +18,8 @@ import (
 
 // ReplicationExtensionClient contains the methods for the ReplicationExtension group.
 // Don't use this type directly, use NewReplicationExtensionClient() instead.
+//
+// Generated from API version 2024-09-01
 type ReplicationExtensionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewReplicationExtensionClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreate - Creates the replication extension in the given vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - replicationExtensionName - The replication extension name.
@@ -68,8 +68,6 @@ func (client *ReplicationExtensionClient) BeginCreate(ctx context.Context, resou
 
 // Create - Creates the replication extension in the given vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ReplicationExtensionClient) create(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, resource ReplicationExtensionModel, options *ReplicationExtensionClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationExtensionClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *ReplicationExtensionClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *ReplicationExtensionClient) createCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes the replication extension in the given vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - replicationExtensionName - The replication extension name.
@@ -153,8 +149,6 @@ func (client *ReplicationExtensionClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Deletes the replication extension in the given vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ReplicationExtensionClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, replicationExtensionName string, options *ReplicationExtensionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationExtensionClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *ReplicationExtensionClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the details of the replication extension.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - replicationExtensionName - The replication extension name.
@@ -260,8 +252,8 @@ func (client *ReplicationExtensionClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *ReplicationExtensionClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListPager - Gets the list of replication extensions in the given vault.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - options - ReplicationExtensionClientListOptions contains the optional parameters for the ReplicationExtensionClient.NewListPager
@@ -325,8 +315,8 @@ func (client *ReplicationExtensionClient) listCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

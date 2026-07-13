@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/LocalUserCreate.json
+// Generated from example definition: 2026-04-01/LocalUserCreate.json
 func ExampleLocalUsersClient_CreateOrUpdate_createLocalUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_createLocalUser() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserCreateNFSv3Enabled.json
+// Generated from example definition: 2026-04-01/LocalUserCreateNFSv3Enabled.json
 func ExampleLocalUsersClient_CreateOrUpdate_createNfSv3EnabledLocalUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_createNfSv3EnabledLocalUser() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserUpdate.json
+// Generated from example definition: 2026-04-01/LocalUserUpdate.json
 func ExampleLocalUsersClient_CreateOrUpdate_updateLocalUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleLocalUsersClient_CreateOrUpdate_updateLocalUser() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserDelete.json
+// Generated from example definition: 2026-04-01/LocalUserDelete.json
 func ExampleLocalUsersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleLocalUsersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserGet.json
+// Generated from example definition: 2026-04-01/LocalUserGet.json
 func ExampleLocalUsersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleLocalUsersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUsersList.json
+// Generated from example definition: 2026-04-01/LocalUsersList.json
 func ExampleLocalUsersClient_NewListPager_listLocalUsers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleLocalUsersClient_NewListPager_listLocalUsers() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/LocalUsersListNFSv3Enabled.json
+// Generated from example definition: 2026-04-01/LocalUsersListNFSv3Enabled.json
 func ExampleLocalUsersClient_NewListPager_listNfSv3EnabledLocalUsers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleLocalUsersClient_NewListPager_listNfSv3EnabledLocalUsers() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/LocalUserListKeys.json
+// Generated from example definition: 2026-04-01/LocalUserListKeys.json
 func ExampleLocalUsersClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -493,7 +493,7 @@ func ExampleLocalUsersClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/LocalUserRegeneratePassword.json
+// Generated from example definition: 2026-04-01/LocalUserRegeneratePassword.json
 func ExampleLocalUsersClient_RegeneratePassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

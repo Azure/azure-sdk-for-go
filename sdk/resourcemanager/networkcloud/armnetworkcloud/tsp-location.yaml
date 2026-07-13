@@ -1,4 +1,4 @@
 directory: specification/networkcloud/NetworkCloud.Management
-commit: c06ce304958de0f8801227615035c118a4a95753
+commit: 13c2dbb75b6428e8a8e0751e40fe1e3dbc453d8b
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

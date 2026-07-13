@@ -10,91 +10,218 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cloudhealth/armcloudhealth"
 	"log"
+	"time"
 )
 
-// Generated from example definition: 2025-05-01-preview/Entities_CreateOrUpdate.json
-func ExampleEntitiesClient_CreateOrUpdate() {
+// Generated from example definition: 2026-05-01-preview/Entities_AddDataAnnotation.json
+func ExampleEntitiesClient_AddDataAnnotation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEntitiesClient().CreateOrUpdate(ctx, "rgopenapi", "myHealthModel", "uszrxbdkxesdrxhmagmzywebgbjj", armcloudhealth.Entity{
+	res, err := clientFactory.NewEntitiesClient().AddDataAnnotation(ctx, "online-store-rg", "online-store", "web-frontend", armcloudhealth.AddDataAnnotationRequest{
+		AnnotationDetails: map[string]*string{
+			"environment":  to.Ptr("production"),
+			"deploymentId": to.Ptr("deploy-2026-05-04-001"),
+			"changedBy":    to.Ptr("release-pipeline"),
+		},
+		Description: to.Ptr("Deployed release 2.4.1 to the web frontend."),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcloudhealth.EntitiesClientAddDataAnnotationResponse{
+	// 	DataAnnotation: armcloudhealth.DataAnnotation{
+	// 		AnnotationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+	// 		AnnotationDetails: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 			"deploymentId": to.Ptr("deploy-2026-05-04-001"),
+	// 			"changedBy": to.Ptr("release-pipeline"),
+	// 		},
+	// 		Description: to.Ptr("Deployed release 2.4.1 to the web frontend."),
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T14:30:00Z"); return t}()),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Entities_CreateOrUpdate.json
+func ExampleEntitiesClient_BeginCreateOrUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEntitiesClient().BeginCreateOrUpdate(ctx, "online-store-rg", "online-store", "orders-api", armcloudhealth.Entity{
 		Properties: &armcloudhealth.EntityProperties{
-			DisplayName: to.Ptr("My entity"),
+			DisplayName: to.Ptr("Orders API"),
 			CanvasPosition: &armcloudhealth.EntityCoordinates{
-				X: to.Ptr[float32](14),
-				Y: to.Ptr[float32](13),
+				X: to.Ptr[float32](360),
+				Y: to.Ptr[float32](240),
 			},
 			Icon: &armcloudhealth.IconDefinition{
-				IconName:   to.Ptr("Custom"),
-				CustomData: to.Ptr("rcitntvapruccrhtxmkqjphbxunkz"),
+				IconName: to.Ptr("Kubernetes"),
 			},
-			HealthObjective: to.Ptr[float32](62),
+			HealthObjective: to.Ptr[float32](99.9),
 			Impact:          to.Ptr(armcloudhealth.EntityImpactStandard),
-			Labels: map[string]*string{
-				"key1376": to.Ptr("ixfvzsfnpvkkbrce"),
+			Tags: map[string]*string{
+				"environment": to.Ptr("production"),
+				"team":        to.Ptr("online-store"),
 			},
-			Signals: &armcloudhealth.SignalGroup{
-				AzureResource: &armcloudhealth.AzureResourceSignalGroup{
-					SignalAssignments: []*armcloudhealth.SignalAssignment{
+			SignalGroups: &armcloudhealth.SignalGroups{
+				AzureResource: &armcloudhealth.AzureResourceSignals{
+					AuthenticationSetting: to.Ptr("default-auth"),
+					AzureResourceID:       to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.ContainerService/managedClusters/online-store-aks"),
+					AzureResourceKind:     to.Ptr("managedClusters"),
+					Signals: []*armcloudhealth.AzureResourceSignal{
 						{
-							SignalDefinitions: []*string{
-								to.Ptr("sigdef1"),
+							SignalKind:      to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+							Name:            to.Ptr("node-cpu"),
+							DisplayName:     to.Ptr("Node CPU utilization"),
+							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+							DataUnit:        to.Ptr("Percent"),
+							MetricNamespace: to.Ptr("Microsoft.ContainerService/managedClusters"),
+							MetricName:      to.Ptr("node_cpu_usage_percentage"),
+							TimeGrain:       to.Ptr("PT5M"),
+							AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+							EvaluationRules: &armcloudhealth.EvaluationRule{
+								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](70),
+								},
+								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](90),
+								},
 							},
 						},
 					},
-					AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-					AzureResourceID:       to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+					ResourceHealth: &armcloudhealth.AzureResourceHealthSignal{
+						Enabled: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+					},
 				},
-				AzureLogAnalytics: &armcloudhealth.LogAnalyticsSignalGroup{
-					SignalAssignments: []*armcloudhealth.SignalAssignment{
+				AzureMonitorWorkspace: &armcloudhealth.AzureMonitorWorkspaceSignals{
+					AuthenticationSetting:           to.Ptr("default-auth"),
+					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Monitor/accounts/online-store-amw"),
+					Signals: []*armcloudhealth.PrometheusMetricsSignal{
 						{
-							SignalDefinitions: []*string{
-								to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
+							SignalKind:      to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+							Name:            to.Ptr("error-rate"),
+							DisplayName:     to.Ptr("HTTP 5xx error rate"),
+							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+							DataUnit:        to.Ptr("Percent"),
+							QueryText:       to.Ptr("sum(rate(http_requests_total{job=\"orders-api\", code=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=\"orders-api\"}[5m])) * 100"),
+							TimeGrain:       to.Ptr("PT5M"),
+							EvaluationRules: &armcloudhealth.EvaluationRule{
+								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](1),
+								},
+								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](5),
+								},
+							},
+						},
+						{
+							SignalKind:      to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+							Name:            to.Ptr("p95-latency"),
+							DisplayName:     to.Ptr("p95 request latency"),
+							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+							DataUnit:        to.Ptr("MilliSeconds"),
+							QueryText:       to.Ptr("histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"orders-api\"}[5m]))) * 1000"),
+							TimeGrain:       to.Ptr("PT5M"),
+							EvaluationRules: &armcloudhealth.EvaluationRule{
+								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](300),
+								},
+								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](800),
+								},
+							},
+						},
+						{
+							SignalKind:           to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+							Name:                 to.Ptr("pod-cpu"),
+							SignalDefinitionName: to.Ptr("pod-cpu-usage"),
+							DisplayName:          to.Ptr("Pod CPU utilization"),
+							RefreshInterval:      to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+							DataUnit:             to.Ptr("Percent"),
+							QueryText:            to.Ptr("sum(rate(container_cpu_usage_seconds_total{namespace=\"online-store\", pod=~\"orders-api-.*\"}[5m])) * 100"),
+							TimeGrain:            to.Ptr("PT5M"),
+							EvaluationRules: &armcloudhealth.EvaluationRule{
+								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](70),
+								},
+								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](90),
+								},
 							},
 						},
 					},
-					AuthenticationSetting:           to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
 				},
-				AzureMonitorWorkspace: &armcloudhealth.AzureMonitorWorkspaceSignalGroup{
-					SignalAssignments: []*armcloudhealth.SignalAssignment{
+				AzureLogAnalytics: &armcloudhealth.LogAnalyticsSignals{
+					AuthenticationSetting:           to.Ptr("default-auth"),
+					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.OperationalInsights/workspaces/online-store-law"),
+					Signals: []*armcloudhealth.LogAnalyticsSignal{
 						{
-							SignalDefinitions: []*string{
-								to.Ptr("sigdef2"),
-							},
-						},
-						{
-							SignalDefinitions: []*string{
-								to.Ptr("sigdef3"),
+							SignalKind:      to.Ptr(armcloudhealth.SignalKindLogAnalyticsQuery),
+							Name:            to.Ptr("unhealthy-pods"),
+							DisplayName:     to.Ptr("Unhealthy pods"),
+							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
+							DataUnit:        to.Ptr("Count"),
+							QueryText:       to.Ptr("KubePodInventory | where TimeGenerated > ago(5m) | where Namespace == 'online-store' | where PodStatus != 'Running' | summarize unhealthyPods = dcount(Name)"),
+							TimeGrain:       to.Ptr("PT5M"),
+							ValueColumnName: to.Ptr("unhealthyPods"),
+							EvaluationRules: &armcloudhealth.EvaluationRule{
+								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](0),
+								},
+								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+									Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+									Threshold: to.Ptr[float64](2),
+								},
 							},
 						},
 					},
-					AuthenticationSetting:           to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
 				},
-				Dependencies: &armcloudhealth.DependenciesSignalGroup{
-					AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+				Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
+					AggregationType:    to.Ptr(armcloudhealth.DependenciesAggregationTypeMinHealthy),
+					Unit:               to.Ptr(armcloudhealth.DependenciesAggregationUnitPercentage),
+					DegradedThreshold:  to.Ptr[float64](100),
+					UnhealthyThreshold: to.Ptr[float64](50),
+					IgnoreUnknown:      to.Ptr(true),
 				},
 			},
 			Alerts: &armcloudhealth.EntityAlerts{
 				Unhealthy: &armcloudhealth.AlertConfiguration{
 					Severity:    to.Ptr(armcloudhealth.AlertSeveritySev1),
-					Description: to.Ptr("Alert description"),
+					Description: to.Ptr("Orders API is unhealthy."),
 					ActionGroupIDs: []*string{
-						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
+						to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
 					},
 				},
 				Degraded: &armcloudhealth.AlertConfiguration{
-					Severity:    to.Ptr(armcloudhealth.AlertSeveritySev4),
-					Description: to.Ptr("Alert description"),
+					Severity:    to.Ptr(armcloudhealth.AlertSeveritySev3),
+					Description: to.Ptr("Orders API is degraded."),
 					ActionGroupIDs: []*string{
-						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
+						to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
 					},
 				},
 			},
@@ -103,126 +230,259 @@ func ExampleEntitiesClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.EntitiesClientCreateOrUpdateResponse{
-	// 	Entity: &armcloudhealth.Entity{
+	// 	Entity: armcloudhealth.Entity{
 	// 		Properties: &armcloudhealth.EntityProperties{
-	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			DisplayName: to.Ptr("My entity"),
+	// 			DisplayName: to.Ptr("Orders API"),
 	// 			CanvasPosition: &armcloudhealth.EntityCoordinates{
-	// 				X: to.Ptr[float32](14),
-	// 				Y: to.Ptr[float32](13),
+	// 				X: to.Ptr[float32](360),
+	// 				Y: to.Ptr[float32](240),
 	// 			},
 	// 			Icon: &armcloudhealth.IconDefinition{
-	// 				IconName: to.Ptr("Custom"),
-	// 				CustomData: to.Ptr("rcitntvapruccrhtxmkqjphbxunkz"),
+	// 				IconName: to.Ptr("Kubernetes"),
 	// 			},
-	// 			HealthObjective: to.Ptr[float32](62),
+	// 			HealthObjective: to.Ptr[float32](99.9),
 	// 			Impact: to.Ptr(armcloudhealth.EntityImpactStandard),
-	// 			Labels: map[string]*string{
-	// 				"key1376": to.Ptr("ixfvzsfnpvkkbrce"),
+	// 			Tags: map[string]*string{
+	// 				"environment": to.Ptr("production"),
+	// 				"team": to.Ptr("online-store"),
 	// 			},
-	// 			Signals: &armcloudhealth.SignalGroup{
-	// 				AzureResource: &armcloudhealth.AzureResourceSignalGroup{
-	// 					SignalAssignments: []*armcloudhealth.SignalAssignment{
+	// 			SignalGroups: &armcloudhealth.SignalGroups{
+	// 				AzureResource: &armcloudhealth.AzureResourceSignals{
+	// 					AuthenticationSetting: to.Ptr("default-auth"),
+	// 					AzureResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.ContainerService/managedClusters/online-store-aks"),
+	// 					AzureResourceKind: to.Ptr("managedClusters"),
+	// 					Signals: []*armcloudhealth.AzureResourceSignal{
 	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("sigdef1"),
+	// 							SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+	// 							Name: to.Ptr("node-cpu"),
+	// 							Status: &armcloudhealth.SignalStatus{
+	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 								Value: to.Ptr[float64](41.2),
+	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							},
+	// 							DisplayName: to.Ptr("Node CPU utilization"),
+	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+	// 							DataUnit: to.Ptr("Percent"),
+	// 							MetricNamespace: to.Ptr("Microsoft.ContainerService/managedClusters"),
+	// 							MetricName: to.Ptr("node_cpu_usage_percentage"),
+	// 							TimeGrain: to.Ptr("PT5M"),
+	// 							AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+	// 							EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](70),
+	// 								},
+	// 								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](90),
+	// 								},
 	// 							},
 	// 						},
 	// 					},
-	// 					AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 					AzureResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
+	// 					ResourceHealth: &armcloudhealth.AzureResourceHealthSignal{
+	// 						Enabled: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+	// 						SignalName: to.Ptr("resourcehealth-availabilitystate"),
+	// 						Status: &armcloudhealth.AzureResourceHealthSignalStatus{
+	// 							HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 							ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
+	// 							Summary: to.Ptr("The managed cluster is available."),
+	// 						},
+	// 					},
 	// 				},
-	// 				AzureMonitorWorkspace: &armcloudhealth.AzureMonitorWorkspaceSignalGroup{
-	// 					SignalAssignments: []*armcloudhealth.SignalAssignment{
+	// 				AzureMonitorWorkspace: &armcloudhealth.AzureMonitorWorkspaceSignals{
+	// 					AuthenticationSetting: to.Ptr("default-auth"),
+	// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Monitor/accounts/online-store-amw"),
+	// 					Signals: []*armcloudhealth.PrometheusMetricsSignal{
 	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("sigdef2"),
+	// 							SignalKind: to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+	// 							Name: to.Ptr("error-rate"),
+	// 							Status: &armcloudhealth.SignalStatus{
+	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 								Value: to.Ptr[float64](0.4),
+	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							},
+	// 							DisplayName: to.Ptr("HTTP 5xx error rate"),
+	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+	// 							DataUnit: to.Ptr("Percent"),
+	// 							QueryText: to.Ptr("sum(rate(http_requests_total{job=\"orders-api\", code=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=\"orders-api\"}[5m])) * 100"),
+	// 							TimeGrain: to.Ptr("PT5M"),
+	// 							EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](1),
+	// 								},
+	// 								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](5),
+	// 								},
 	// 							},
 	// 						},
 	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("sigdef3"),
+	// 							SignalKind: to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+	// 							Name: to.Ptr("p95-latency"),
+	// 							Status: &armcloudhealth.SignalStatus{
+	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 								Value: to.Ptr[float64](180),
+	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							},
+	// 							DisplayName: to.Ptr("p95 request latency"),
+	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+	// 							DataUnit: to.Ptr("MilliSeconds"),
+	// 							QueryText: to.Ptr("histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"orders-api\"}[5m]))) * 1000"),
+	// 							TimeGrain: to.Ptr("PT5M"),
+	// 							EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](300),
+	// 								},
+	// 								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](800),
+	// 								},
+	// 							},
+	// 						},
+	// 						{
+	// 							SignalKind: to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+	// 							Name: to.Ptr("pod-cpu"),
+	// 							SignalDefinitionName: to.Ptr("pod-cpu-usage"),
+	// 							Status: &armcloudhealth.SignalStatus{
+	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 								Value: to.Ptr[float64](45.3),
+	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							},
+	// 							DisplayName: to.Ptr("Pod CPU utilization"),
+	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+	// 							DataUnit: to.Ptr("Percent"),
+	// 							QueryText: to.Ptr("sum(rate(container_cpu_usage_seconds_total{namespace=\"online-store\", pod=~\"orders-api-.*\"}[5m])) * 100"),
+	// 							TimeGrain: to.Ptr("PT5M"),
+	// 							EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](70),
+	// 								},
+	// 								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](90),
+	// 								},
 	// 							},
 	// 						},
 	// 					},
-	// 					AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
 	// 				},
-	// 				Dependencies: &armcloudhealth.DependenciesSignalGroup{
-	// 					AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+	// 				AzureLogAnalytics: &armcloudhealth.LogAnalyticsSignals{
+	// 					AuthenticationSetting: to.Ptr("default-auth"),
+	// 					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.OperationalInsights/workspaces/online-store-law"),
+	// 					Signals: []*armcloudhealth.LogAnalyticsSignal{
+	// 						{
+	// 							SignalKind: to.Ptr(armcloudhealth.SignalKindLogAnalyticsQuery),
+	// 							Name: to.Ptr("unhealthy-pods"),
+	// 							Status: &armcloudhealth.SignalStatus{
+	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 								Value: to.Ptr[float64](0),
+	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							},
+	// 							DisplayName: to.Ptr("Unhealthy pods"),
+	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
+	// 							DataUnit: to.Ptr("Count"),
+	// 							QueryText: to.Ptr("KubePodInventory | where TimeGenerated > ago(5m) | where Namespace == 'online-store' | where PodStatus != 'Running' | summarize unhealthyPods = dcount(Name)"),
+	// 							TimeGrain: to.Ptr("PT5M"),
+	// 							ValueColumnName: to.Ptr("unhealthyPods"),
+	// 							EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](0),
+	// 								},
+	// 								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](2),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
+	// 					AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeMinHealthy),
+	// 					Unit: to.Ptr(armcloudhealth.DependenciesAggregationUnitPercentage),
+	// 					DegradedThreshold: to.Ptr[float64](100),
+	// 					UnhealthyThreshold: to.Ptr[float64](50),
+	// 					IgnoreUnknown: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:14.531Z"); return t}()),
 	// 			Alerts: &armcloudhealth.EntityAlerts{
 	// 				Unhealthy: &armcloudhealth.AlertConfiguration{
 	// 					Severity: to.Ptr(armcloudhealth.AlertSeveritySev1),
-	// 					Description: to.Ptr("Alert description"),
+	// 					Description: to.Ptr("Orders API is unhealthy."),
 	// 					ActionGroupIDs: []*string{
-	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
+	// 						to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
 	// 					},
 	// 				},
 	// 				Degraded: &armcloudhealth.AlertConfiguration{
-	// 					Severity: to.Ptr(armcloudhealth.AlertSeveritySev4),
-	// 					Description: to.Ptr("Alert description"),
+	// 					Severity: to.Ptr(armcloudhealth.AlertSeveritySev3),
+	// 					Description: to.Ptr("Orders API is degraded."),
 	// 					ActionGroupIDs: []*string{
-	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
+	// 						to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
 	// 					},
 	// 				},
 	// 			},
+	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+	// 			HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.CloudHealth/healthmodels/myHealthModel/entities/uszrxbdkxesdrxhmagmzywebgbjj"),
-	// 		Name: to.Ptr("uszrxbdkxesdrxhmagmzywebgbjj"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/entities/orders-api"),
+	// 		Name: to.Ptr("orders-api"),
 	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels/entities"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("arz"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Entities_Delete.json
-func ExampleEntitiesClient_Delete() {
+// Generated from example definition: 2026-05-01-preview/Entities_Delete.json
+func ExampleEntitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEntitiesClient().Delete(ctx, "rgopenapi", "model1", "U4VTRFlUkm9kR6H23-c-6U-XHq7n", nil)
+	poller, err := clientFactory.NewEntitiesClient().BeginDelete(ctx, "online-store-rg", "online-store", "catalog-storage", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcloudhealth.EntitiesClientDeleteResponse{
-	// }
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Entities_Get.json
+// Generated from example definition: 2026-05-01-preview/Entities_Get.json
 func ExampleEntitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEntitiesClient().Get(ctx, "rgopenapi", "myHealthModel", "entity1", nil)
+	res, err := clientFactory.NewEntitiesClient().Get(ctx, "online-store-rg", "online-store", "orders-db", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -230,119 +490,429 @@ func ExampleEntitiesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.EntitiesClientGetResponse{
-	// 	Entity: &armcloudhealth.Entity{
+	// 	Entity: armcloudhealth.Entity{
 	// 		Properties: &armcloudhealth.EntityProperties{
-	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			DisplayName: to.Ptr("olsaxmichzpzqzpdworuxbvucaazeoxvnaujlvbpjijarbnfdmskksgdtyfdlfuftoecrgmmenvvgfkzlfcogkyhk"),
+	// 			DisplayName: to.Ptr("Orders Database"),
 	// 			CanvasPosition: &armcloudhealth.EntityCoordinates{
-	// 				X: to.Ptr[float32](14),
-	// 				Y: to.Ptr[float32](13),
+	// 				X: to.Ptr[float32](480),
+	// 				Y: to.Ptr[float32](360),
 	// 			},
 	// 			Icon: &armcloudhealth.IconDefinition{
-	// 				IconName: to.Ptr("UserFlow"),
+	// 				IconName: to.Ptr("SQLDatabase"),
 	// 			},
-	// 			HealthObjective: to.Ptr[float32](62),
+	// 			HealthObjective: to.Ptr[float32](99.5),
 	// 			Impact: to.Ptr(armcloudhealth.EntityImpactStandard),
-	// 			Labels: map[string]*string{
-	// 				"key1376": to.Ptr("ixfvzsfnpvkkbrcedaligqtopbadmojqgnzglztqytwickyeurumvqdqetmmikaqwuodokzjagoddnlolnputcdpyguuagucpbafkdpekxlxlmlrknzzjjxmbkysveyfmhzkgxverwcwdaolfqranhuearqchyxrtdlzabumuajmuxysgpaqwmwlrmqegyowtcnighwuudbgkzgzqfptsvdlvzgmnvnraufeocfkevwngzulwzjazttrwqcaakwwcehrdyhseimrwoqdkdxtcjadqcdrtdwwnieddexogctivtosotbddmjnjtexxrhngtnombrlqtasnncqmmmtnivnlkejghrvbfmullwnpjfhpejlzhcytgrrrybydizeefuxtuvjhlksxzyouukfhpsfpoqgcqoohvbqdvotzubjvqptqtapcahdhwhkxnyenlpsiepigjwukxwvpdgturhosxlfgidortepltfkkukrkuuaafhdjjwiozztomxjlluegvxrfsjiktoakpsjpqrxfsiajmzgexrfkergxbyoahyqhenydbvbtyqjwquruumwammhatjegpuokgwlildvghtlnpbsafhqqfltgxqxxusuybxamqqbhljfoaiaxkeqqsthzjdzisirutglrksotlabiitdzjudxtbbtetjxwizrvvzfcwuxiisalsbtvrpsfolasbegwivrkrjldijywozlldwxhedsnvvfecjuajhnbqmatkvsbuatpwdjfuhzdykrjprpvakktnwehehgbiewdxyxfyrruwjkndywcwwkyeupwjxceaqousxtufkhyqjnuluqkxxqupafnyrmhaxtnqzbpiavuwjagkdpqehfutmnjhmdruoatlvhkvvzaylaytvwuiirfurxeyegmiultvffswlzzhmicvxjozvngnyerepqskhjpaaicvwmlqhgbddjnudpppkeuuydjzzxhoxyefeszxpiwuexvyatxutnavzrmjmbnmalskaxnnrkcukdnkndoijtbirepqlcrmwygambodzwcppjpzerwyowpumxkypyrjzunzhutwjqpdbpwanunjnnnxmyqmlwzcmpvievaefcebzkooipxomlpviertmwoeekznzacypgptjuoegmikqwpnjlhwoqcgbggxtbneavfuixusnwdjdzxbbanoymoqnbldycwlzkeffsdbqxurzehzkmlowtoyqegkacazobopayenowenkpmyydloxnzkgjpvsirrklujljafltsvayxdvnfasmywffeifmrbqghaoprihgikeuuxyzoddhuqzsrladhpfexafdkdorlkfaukpailrlpyncyovlgdueygtzlsuykbuhbbcdfkotzqcelkrlxwuswzittcantblfpeikpwnppmnfzvsgarmqfpwmpqpfcicfnkxhepddwpqnvfqhedkecrpsutpfikwlmicfjcffommczdqvizrlofzqibjutnfczjecgfsyhhmylvdfhnsrovfivhgdmbbzwdqscjhvamvnpneryiafcykojgzvcmptphjbwsakbsmdrgvscrduqqgdztswobpctbnhdtjbrldpefdmdtemihpfbxllcsrydxbfwwolekwwxbyxexdlsepdzjpaxwpmqlsbrmyanzazdffepfwnltmopdqifsonrqcbkjphiydjhmcqfnkdbsrmvgknrvjywpmaehfshklwlmqajhkjlysxhqqeogtrbeqmopbfeqgrdwoihoebidkkurwygxhbhyivbubdtexrixwyqrsxwqjkdjmfdvxxdsfrnlumgwsywfzcnakabctdmcvqtyiijfwtvlkrmcvuncwcesmwvipmxoxeqaelzfgwznowvnwarfffevwdgmjvdkmkcrmtoxkboczjchbqnrdrodbetttulazfxwqxtrfcgjiusoubmqklesrqydiumytmqaqknvtxsvutmtxmbpccferzekdqzeqirnnavzmktdewfwihxwluqgtkynnqanexybirsssrfsjpzoseujluxtobzwuwqbllertseuwtifdihejvvtopoopdlogqvokhinvmryxlgjjcrtbgynxoztxpsyjgqxlgsvrvidpobbohjeniozridnjxbqewtgpjtkhdnqlceovpuxsrjcackwgtsllqazbxnhowajrtynuvldfcnedngnrwiwbjfogfzwlqkhbzklvziysuiyqbezkqpoanudvtabhlpgxljwailxvjarcumvxuwzxfevllhhvjyxqweesdgworgnneveovfgprphymmgjjoxjndsefmzrglkyootgjyarycquagpfkhiifqdmrwvwfyhtxtzhziefmysgdupawzaohqoecrebadanvnacsoeszhggciahbmpbsmbpjfzcmqcoquatvooeifsvdmfobivkzgvgbnadusjqcgvhqcxwrprtpulluwzutqivwhzncrpflgfikjiwubkndelhiprzzwrqunqwmpkrbhrcwutrwpeybrcplgqzxpohnasthxsdhjhxfqzntsiderxmcirhaoagswhtnjvjhtfbvujrxihbnqubzogedbhmnlmuylleruqpcpwhaevtkxuimmdvmqjhvdpkxkpsrwxbjfvoerlizufmcsjybvisohwhftdtslijozojfvrxswbxtxmksagrfupnrzuvepklqeoqtbksyhvavqrfmfioogifjlaacqnfmsjrnmhssaxnulrqaefikbkhsnfaelmiabbdhpsauikymiaynbxywybqgzhegxhrelpadodltzwgfirqertmoauuglcrpjxlznalzlqdisvtphfqefmgegxotsetvylexpbjlyxcznssqdbkshwocmq"),
+	// 			Tags: map[string]*string{
+	// 				"environment": to.Ptr("production"),
+	// 				"team": to.Ptr("online-store"),
 	// 			},
+	// 			SignalGroups: &armcloudhealth.SignalGroups{
+	// 				AzureResource: &armcloudhealth.AzureResourceSignals{
+	// 					AuthenticationSetting: to.Ptr("default-auth"),
+	// 					AzureResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Sql/servers/online-store-sql/databases/orders"),
+	// 					Signals: []*armcloudhealth.AzureResourceSignal{
+	// 						{
+	// 							SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+	// 							Name: to.Ptr("sql-cpu"),
+	// 							SignalDefinitionName: to.Ptr("sql-cpu-percent"),
+	// 							Status: &armcloudhealth.SignalStatus{
+	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 								Value: to.Ptr[float64](38.5),
+	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							},
+	// 							DisplayName: to.Ptr("CPU utilization"),
+	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+	// 							DataUnit: to.Ptr("Percent"),
+	// 							MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 							MetricName: to.Ptr("cpu_percent"),
+	// 							TimeGrain: to.Ptr("PT5M"),
+	// 							AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+	// 							EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](70),
+	// 								},
+	// 								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](90),
+	// 								},
+	// 							},
+	// 						},
+	// 						{
+	// 							SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+	// 							Name: to.Ptr("sql-dtu"),
+	// 							Status: &armcloudhealth.SignalStatus{
+	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 								Value: to.Ptr[float64](52.1),
+	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							},
+	// 							DisplayName: to.Ptr("DTU consumption"),
+	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+	// 							DataUnit: to.Ptr("Percent"),
+	// 							MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 							MetricName: to.Ptr("dtu_consumption_percent"),
+	// 							TimeGrain: to.Ptr("PT5M"),
+	// 							AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+	// 							EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 								DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](75),
+	// 								},
+	// 								UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 									Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 									Threshold: to.Ptr[float64](90),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					ResourceHealth: &armcloudhealth.AzureResourceHealthSignal{
+	// 						Enabled: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+	// 						SignalName: to.Ptr("resourcehealth-availabilitystate"),
+	// 						Status: &armcloudhealth.AzureResourceHealthSignalStatus{
+	// 							HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 							ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
+	// 							Summary: to.Ptr("The database is available."),
+	// 						},
+	// 					},
+	// 				},
+	// 				Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
+	// 					AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 			HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
-	// 			Signals: &armcloudhealth.SignalGroup{
-	// 				AzureResource: &armcloudhealth.AzureResourceSignalGroup{
-	// 					SignalAssignments: []*armcloudhealth.SignalAssignment{
-	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 							},
-	// 						},
-	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 							},
-	// 						},
-	// 					},
-	// 					AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 					AzureResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-	// 				},
-	// 				AzureLogAnalytics: &armcloudhealth.LogAnalyticsSignalGroup{
-	// 					SignalAssignments: []*armcloudhealth.SignalAssignment{
-	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 							},
-	// 						},
-	// 					},
-	// 					AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 					LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
-	// 				},
-	// 				AzureMonitorWorkspace: &armcloudhealth.AzureMonitorWorkspaceSignalGroup{
-	// 					SignalAssignments: []*armcloudhealth.SignalAssignment{
-	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 							},
-	// 						},
-	// 						{
-	// 							SignalDefinitions: []*string{
-	// 								to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 							},
-	// 						},
-	// 					},
-	// 					AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-	// 					AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
-	// 				},
-	// 				Dependencies: &armcloudhealth.DependenciesSignalGroup{
-	// 					AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeThresholds),
-	// 					DegradedThreshold: to.Ptr("3"),
-	// 					UnhealthyThreshold: to.Ptr("50%"),
-	// 				},
-	// 			},
-	// 			DiscoveredBy: to.Ptr("discoveryRule1"),
-	// 			DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:14.531Z"); return t}()),
-	// 			Alerts: &armcloudhealth.EntityAlerts{
-	// 				Unhealthy: &armcloudhealth.AlertConfiguration{
-	// 					Severity: to.Ptr(armcloudhealth.AlertSeveritySev1),
-	// 					Description: to.Ptr("Alert description"),
-	// 					ActionGroupIDs: []*string{
-	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
-	// 					},
-	// 				},
-	// 				Degraded: &armcloudhealth.AlertConfiguration{
-	// 					Severity: to.Ptr(armcloudhealth.AlertSeveritySev4),
-	// 					Description: to.Ptr("Alert description"),
-	// 					ActionGroupIDs: []*string{
-	// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
-	// 					},
-	// 				},
-	// 			},
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.CloudHealth/healthmodels/myHealthModel/entities/entity1"),
-	// 		Name: to.Ptr("entity1"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/entities/orders-db"),
+	// 		Name: to.Ptr("orders-db"),
 	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels/entities"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("arz"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Entities_ListByHealthModel.json
+// Generated from example definition: 2026-05-01-preview/Entities_GetDataAnnotations.json
+func ExampleEntitiesClient_GetDataAnnotations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEntitiesClient().GetDataAnnotations(ctx, "online-store-rg", "online-store", "web-frontend", armcloudhealth.GetDataAnnotationsRequest{
+		StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T00:00:00Z"); return t }()),
+		EndAt:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T23:59:59Z"); return t }()),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcloudhealth.EntitiesClientGetDataAnnotationsResponse{
+	// 	GetDataAnnotationsResponse: armcloudhealth.GetDataAnnotationsResponse{
+	// 		EntityName: to.Ptr("web-frontend"),
+	// 		Annotations: []*armcloudhealth.DataAnnotation{
+	// 			{
+	// 				AnnotationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T14:30:00Z"); return t}()),
+	// 				AnnotationDetails: map[string]*string{
+	// 					"environment": to.Ptr("production"),
+	// 					"deploymentId": to.Ptr("deploy-2026-05-04-001"),
+	// 					"changedBy": to.Ptr("release-pipeline"),
+	// 				},
+	// 				Description: to.Ptr("Deployed release 2.4.1 to the web frontend."),
+	// 			},
+	// 			{
+	// 				AnnotationID: to.Ptr("b2c3d4e5-f6a7-8901-bcde-f21234567890"),
+	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T03:15:00Z"); return t}()),
+	// 				AnnotationDetails: map[string]*string{
+	// 					"changeType": to.Ptr("ScaleOut"),
+	// 					"instanceCount": to.Ptr("6"),
+	// 				},
+	// 				Description: to.Ptr("Scaled out the web frontend to 6 instances."),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Entities_GetHistory.json
+func ExampleEntitiesClient_GetHistory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEntitiesClient().GetHistory(ctx, "online-store-rg", "online-store", "web-frontend", armcloudhealth.EntityHistoryRequest{
+		StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T09:30:00Z"); return t }()),
+		EndAt:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00Z"); return t }()),
+		Top:     to.Ptr[int32](100),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcloudhealth.EntitiesClientGetHistoryResponse{
+	// 	EntityHistoryResponse: armcloudhealth.EntityHistoryResponse{
+	// 		EntityName: to.Ptr("web-frontend"),
+	// 		History: []*armcloudhealth.HealthStateTransition{
+	// 			{
+	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 				NewState: to.Ptr(armcloudhealth.HealthStateDegraded),
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T14:30:00Z"); return t}()),
+	// 				Reason: to.Ptr("SignalTransition"),
+	// 			},
+	// 			{
+	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateDegraded),
+	// 				NewState: to.Ptr(armcloudhealth.HealthStateUnhealthy),
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T18:45:00Z"); return t}()),
+	// 				Reason: to.Ptr("ChildEntityTransition"),
+	// 			},
+	// 			{
+	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateUnhealthy),
+	// 				NewState: to.Ptr(armcloudhealth.HealthStateDegraded),
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T22:15:00Z"); return t}()),
+	// 				Reason: to.Ptr("ChildEntityTransition"),
+	// 			},
+	// 			{
+	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateDegraded),
+	// 				NewState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T02:30:00Z"); return t}()),
+	// 				Reason: to.Ptr("SignalTransition"),
+	// 			},
+	// 		},
+	// 		NextMarker: to.Ptr("eyJsYXN0VGltZXN0YW1wIjoiMjAyNi0wNS0wNFQwMjozMDowMFoifQ=="),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Entities_GetSignalHistory.json
+func ExampleEntitiesClient_GetSignalHistory() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEntitiesClient().GetSignalHistory(ctx, "online-store-rg", "online-store", "web-frontend", armcloudhealth.SignalHistoryRequest{
+		SignalName: to.Ptr("http-5xx"),
+		StartAt:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T09:30:00Z"); return t }()),
+		EndAt:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00Z"); return t }()),
+		Top:        to.Ptr[int32](7),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcloudhealth.EntitiesClientGetSignalHistoryResponse{
+	// 	SignalHistoryResponse: armcloudhealth.SignalHistoryResponse{
+	// 		EntityName: to.Ptr("web-frontend"),
+	// 		SignalName: to.Ptr("http-5xx"),
+	// 		History: []*armcloudhealth.SignalHistoryDataPoint{
+	// 			{
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T10:00:00Z"); return t}()),
+	// 				Value: to.Ptr[float64](0),
+	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 			},
+	// 			{
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T14:00:00Z"); return t}()),
+	// 				Value: to.Ptr[float64](3),
+	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 			},
+	// 			{
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T18:00:00Z"); return t}()),
+	// 				Value: to.Ptr[float64](12),
+	// 				HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
+	// 			},
+	// 			{
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T22:00:00Z"); return t}()),
+	// 				Value: to.Ptr[float64](27),
+	// 				HealthState: to.Ptr(armcloudhealth.HealthStateUnhealthy),
+	// 			},
+	// 			{
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T02:00:00Z"); return t}()),
+	// 				Value: to.Ptr[float64](8),
+	// 				HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
+	// 			},
+	// 			{
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T06:00:00Z"); return t}()),
+	// 				Value: to.Ptr[float64](1),
+	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 			},
+	// 			{
+	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:00:00Z"); return t}()),
+	// 				Value: to.Ptr[float64](0),
+	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+	// 			},
+	// 		},
+	// 		NextMarker: to.Ptr("eyJsYXN0VGltZXN0YW1wIjoiMjAyNi0wNS0wNFQwOTowMDowMFoifQ=="),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Entities_GetSignalRecommendations.json
+func ExampleEntitiesClient_GetSignalRecommendations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEntitiesClient().GetSignalRecommendations(ctx, "online-store-rg", "online-store", "orders-db", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcloudhealth.EntitiesClientGetSignalRecommendationsResponse{
+	// 	GetSignalRecommendationsResponse: armcloudhealth.GetSignalRecommendationsResponse{
+	// 		RecommendedSignals: []*armcloudhealth.SignalConfiguration{
+	// 			{
+	// 				SignalID: to.Ptr("sql-cpu-percent"),
+	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 				MetricName: to.Ptr("cpu_percent"),
+	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+	// 				Unit: to.Ptr("Percent"),
+	// 				TimeGrain: to.Ptr("PT5M"),
+	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 					DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](70),
+	// 					},
+	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](90),
+	// 					},
+	// 				},
+	// 			},
+	// 			{
+	// 				SignalID: to.Ptr("sql-dtu-consumption"),
+	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 				MetricName: to.Ptr("dtu_consumption_percent"),
+	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+	// 				Unit: to.Ptr("Percent"),
+	// 				TimeGrain: to.Ptr("PT5M"),
+	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 					DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](75),
+	// 					},
+	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](90),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		RecommendedConfigurations: []*armcloudhealth.SignalConfiguration{
+	// 			{
+	// 				SignalID: to.Ptr("sql-storage-percent"),
+	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 				MetricName: to.Ptr("storage_percent"),
+	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeMaximum),
+	// 				Unit: to.Ptr("Percent"),
+	// 				TimeGrain: to.Ptr("PT15M"),
+	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 					DegradedRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](80),
+	// 					},
+	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](95),
+	// 					},
+	// 				},
+	// 			},
+	// 			{
+	// 				SignalID: to.Ptr("sql-deadlocks"),
+	// 				MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+	// 				MetricName: to.Ptr("deadlock"),
+	// 				AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeTotal),
+	// 				Unit: to.Ptr("Count"),
+	// 				TimeGrain: to.Ptr("PT5M"),
+	// 				EvaluationRules: &armcloudhealth.EvaluationRule{
+	// 					UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+	// 						Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+	// 						Threshold: to.Ptr[float64](0),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Entities_IngestHealthReport.json
+func ExampleEntitiesClient_IngestHealthReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewEntitiesClient().IngestHealthReport(ctx, "online-store-rg", "online-store", "orders-api", armcloudhealth.HealthReportRequest{
+		SignalName:  to.Ptr("error-rate"),
+		HealthState: to.Ptr(armcloudhealth.HealthStateUnhealthy),
+		Value:       to.Ptr[float64](6.5),
+		EvaluationRules: &armcloudhealth.HealthReportEvaluationRule{
+			DegradedRule: &armcloudhealth.ThresholdRuleV2{
+				Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+				Threshold: to.Ptr[float64](1),
+			},
+			UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+				Operator:  to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+				Threshold: to.Ptr[float64](5),
+			},
+		},
+		ExpiresInMinutes:  to.Ptr[int32](60),
+		AdditionalContext: to.Ptr("Elevated 5xx error rate during the checkout traffic spike."),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Entities_ListByHealthModel.json
 func ExampleEntitiesClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewEntitiesClient().NewListByHealthModelPager("rgopenapi", "gPWT6GP85xRV248L7LhNRTD--2Yc73wu-5Qk-0tS", nil)
+	pager := clientFactory.NewEntitiesClient().NewListByHealthModelPager("online-store-rg", "online-store", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -358,109 +928,507 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 		Value: []*armcloudhealth.Entity{
 		// 			{
 		// 				Properties: &armcloudhealth.EntityProperties{
-		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-		// 					DisplayName: to.Ptr("olsaxmichzpzqzpdworuxbvucaazeoxvnaujlvbpjijarbnfdmskksgdtyfdlfuftoecrgmmenvvgfkzlfcogkyhk"),
+		// 					DisplayName: to.Ptr("Online Store"),
 		// 					CanvasPosition: &armcloudhealth.EntityCoordinates{
-		// 						X: to.Ptr[float32](14),
-		// 						Y: to.Ptr[float32](13),
+		// 						X: to.Ptr[float32](120),
+		// 						Y: to.Ptr[float32](40),
 		// 					},
 		// 					Icon: &armcloudhealth.IconDefinition{
-		// 						IconName: to.Ptr("SystemComponent"),
+		// 						IconName: to.Ptr("Globe"),
 		// 					},
-		// 					HealthObjective: to.Ptr[float32](62),
+		// 					HealthObjective: to.Ptr[float32](99.9),
 		// 					Impact: to.Ptr(armcloudhealth.EntityImpactStandard),
-		// 					Labels: map[string]*string{
-		// 						"key1376": to.Ptr("ixfvzsfnpvkkbrcedaligqtopbadmojqgnzglztqytwickyeurumvqdqetmmikaqwuodokzjagoddnlolnputcdpyguuagucpbafkdpekxlxlmlrknzzjjxmbkysveyfmhzkgxverwcwdaolfqranhuearqchyxrtdlzabumuajmuxysgpaqwmwlrmqegyowtcnighwuudbgkzgzqfptsvdlvzgmnvnraufeocfkevwngzulwzjazttrwqcaakwwcehrdyhseimrwoqdkdxtcjadqcdrtdwwnieddexogctivtosotbddmjnjtexxrhngtnombrlqtasnncqmmmtnivnlkejghrvbfmullwnpjfhpejlzhcytgrrrybydizeefuxtuvjhlksxzyouukfhpsfpoqgcqoohvbqdvotzubjvqptqtapcahdhwhkxnyenlpsiepigjwukxwvpdgturhosxlfgidortepltfkkukrkuuaafhdjjwiozztomxjlluegvxrfsjiktoakpsjpqrxfsiajmzgexrfkergxbyoahyqhenydbvbtyqjwquruumwammhatjegpuokgwlildvghtlnpbsafhqqfltgxqxxusuybxamqqbhljfoaiaxkeqqsthzjdzisirutglrksotlabiitdzjudxtbbtetjxwizrvvzfcwuxiisalsbtvrpsfolasbegwivrkrjldijywozlldwxhedsnvvfecjuajhnbqmatkvsbuatpwdjfuhzdykrjprpvakktnwehehgbiewdxyxfyrruwjkndywcwwkyeupwjxceaqousxtufkhyqjnuluqkxxqupafnyrmhaxtnqzbpiavuwjagkdpqehfutmnjhmdruoatlvhkvvzaylaytvwuiirfurxeyegmiultvffswlzzhmicvxjozvngnyerepqskhjpaaicvwmlqhgbddjnudpppkeuuydjzzxhoxyefeszxpiwuexvyatxutnavzrmjmbnmalskaxnnrkcukdnkndoijtbirepqlcrmwygambodzwcppjpzerwyowpumxkypyrjzunzhutwjqpdbpwanunjnnnxmyqmlwzcmpvievaefcebzkooipxomlpviertmwoeekznzacypgptjuoegmikqwpnjlhwoqcgbggxtbneavfuixusnwdjdzxbbanoymoqnbldycwlzkeffsdbqxurzehzkmlowtoyqegkacazobopayenowenkpmyydloxnzkgjpvsirrklujljafltsvayxdvnfasmywffeifmrbqghaoprihgikeuuxyzoddhuqzsrladhpfexafdkdorlkfaukpailrlpyncyovlgdueygtzlsuykbuhbbcdfkotzqcelkrlxwuswzittcantblfpeikpwnppmnfzvsgarmqfpwmpqpfcicfnkxhepddwpqnvfqhedkecrpsutpfikwlmicfjcffommczdqvizrlofzqibjutnfczjecgfsyhhmylvdfhnsrovfivhgdmbbzwdqscjhvamvnpneryiafcykojgzvcmptphjbwsakbsmdrgvscrduqqgdztswobpctbnhdtjbrldpefdmdtemihpfbxllcsrydxbfwwolekwwxbyxexdlsepdzjpaxwpmqlsbrmyanzazdffepfwnltmopdqifsonrqcbkjphiydjhmcqfnkdbsrmvgknrvjywpmaehfshklwlmqajhkjlysxhqqeogtrbeqmopbfeqgrdwoihoebidkkurwygxhbhyivbubdtexrixwyqrsxwqjkdjmfdvxxdsfrnlumgwsywfzcnakabctdmcvqtyiijfwtvlkrmcvuncwcesmwvipmxoxeqaelzfgwznowvnwarfffevwdgmjvdkmkcrmtoxkboczjchbqnrdrodbetttulazfxwqxtrfcgjiusoubmqklesrqydiumytmqaqknvtxsvutmtxmbpccferzekdqzeqirnnavzmktdewfwihxwluqgtkynnqanexybirsssrfsjpzoseujluxtobzwuwqbllertseuwtifdihejvvtopoopdlogqvokhinvmryxlgjjcrtbgynxoztxpsyjgqxlgsvrvidpobbohjeniozridnjxbqewtgpjtkhdnqlceovpuxsrjcackwgtsllqazbxnhowajrtynuvldfcnedngnrwiwbjfogfzwlqkhbzklvziysuiyqbezkqpoanudvtabhlpgxljwailxvjarcumvxuwzxfevllhhvjyxqweesdgworgnneveovfgprphymmgjjoxjndsefmzrglkyootgjyarycquagpfkhiifqdmrwvwfyhtxtzhziefmysgdupawzaohqoecrebadanvnacsoeszhggciahbmpbsmbpjfzcmqcoquatvooeifsvdmfobivkzgvgbnadusjqcgvhqcxwrprtpulluwzutqivwhzncrpflgfikjiwubkndelhiprzzwrqunqwmpkrbhrcwutrwpeybrcplgqzxpohnasthxsdhjhxfqzntsiderxmcirhaoagswhtnjvjhtfbvujrxihbnqubzogedbhmnlmuylleruqpcpwhaevtkxuimmdvmqjhvdpkxkpsrwxbjfvoerlizufmcsjybvisohwhftdtslijozojfvrxswbxtxmksagrfupnrzuvepklqeoqtbksyhvavqrfmfioogifjlaacqnfmsjrnmhssaxnulrqaefikbkhsnfaelmiabbdhpsauikymiaynbxywybqgzhegxhrelpadodltzwgfirqertmoauuglcrpjxlznalzlqdisvtphfqefmgegxotsetvylexpbjlyxcznssqdbkshwocmq"),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
 		// 					},
-		// 					HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
-		// 					Signals: &armcloudhealth.SignalGroup{
-		// 						AzureResource: &armcloudhealth.AzureResourceSignalGroup{
-		// 							SignalAssignments: []*armcloudhealth.SignalAssignment{
-		// 								{
-		// 									SignalDefinitions: []*string{
-		// 										to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 									},
-		// 								},
-		// 								{
-		// 									SignalDefinitions: []*string{
-		// 										to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 									},
-		// 								},
-		// 							},
-		// 							AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 							AzureResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachines/myvm"),
-		// 						},
-		// 						AzureLogAnalytics: &armcloudhealth.LogAnalyticsSignalGroup{
-		// 							SignalAssignments: []*armcloudhealth.SignalAssignment{
-		// 								{
-		// 									SignalDefinitions: []*string{
-		// 										to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 									},
-		// 								},
-		// 								{
-		// 									SignalDefinitions: []*string{
-		// 										to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 									},
-		// 								},
-		// 							},
-		// 							AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 							LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
-		// 						},
-		// 						AzureMonitorWorkspace: &armcloudhealth.AzureMonitorWorkspaceSignalGroup{
-		// 							SignalAssignments: []*armcloudhealth.SignalAssignment{
-		// 								{
-		// 									SignalDefinitions: []*string{
-		// 										to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 									},
-		// 								},
-		// 								{
-		// 									SignalDefinitions: []*string{
-		// 										to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 									},
-		// 								},
-		// 							},
-		// 							AuthenticationSetting: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 							AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.OperationalInsights/workspaces/myworkspace"),
-		// 						},
-		// 						Dependencies: &armcloudhealth.DependenciesSignalGroup{
-		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeThresholds),
-		// 							DegradedThreshold: to.Ptr("3"),
-		// 							UnhealthyThreshold: to.Ptr("50%"),
+		// 					SignalGroups: &armcloudhealth.SignalGroups{
+		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
+		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
 		// 						},
 		// 					},
-		// 					DiscoveredBy: to.Ptr("discoveryRule1"),
-		// 					DeletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:14.531Z"); return t}()),
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 					HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/entities/storefront"),
+		// 				Name: to.Ptr("storefront"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/entities"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.EntityProperties{
+		// 					DisplayName: to.Ptr("Web Frontend"),
+		// 					CanvasPosition: &armcloudhealth.EntityCoordinates{
+		// 						X: to.Ptr[float32](240),
+		// 						Y: to.Ptr[float32](120),
+		// 					},
+		// 					Icon: &armcloudhealth.IconDefinition{
+		// 						IconName: to.Ptr("AppService"),
+		// 					},
+		// 					HealthObjective: to.Ptr[float32](99.9),
+		// 					Impact: to.Ptr(armcloudhealth.EntityImpactStandard),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
+		// 					},
+		// 					SignalGroups: &armcloudhealth.SignalGroups{
+		// 						AzureResource: &armcloudhealth.AzureResourceSignals{
+		// 							AuthenticationSetting: to.Ptr("default-auth"),
+		// 							AzureResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Web/sites/online-store-web"),
+		// 							AzureResourceKind: to.Ptr("app"),
+		// 							Signals: []*armcloudhealth.AzureResourceSignal{
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+		// 									Name: to.Ptr("http-5xx"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](0),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("HTTP 5xx errors"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("Count"),
+		// 									MetricNamespace: to.Ptr("Microsoft.Web/sites"),
+		// 									MetricName: to.Ptr("Http5xx"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeTotal),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](5),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](20),
+		// 										},
+		// 									},
+		// 								},
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+		// 									Name: to.Ptr("response-time"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](0.42),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("Average response time"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("Seconds"),
+		// 									MetricNamespace: to.Ptr("Microsoft.Web/sites"),
+		// 									MetricName: to.Ptr("AverageResponseTime"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](1),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](3),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							ResourceHealth: &armcloudhealth.AzureResourceHealthSignal{
+		// 								Enabled: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+		// 								SignalName: to.Ptr("resourcehealth-availabilitystate"),
+		// 								Status: &armcloudhealth.AzureResourceHealthSignalStatus{
+		// 									HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 									ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
+		// 									Summary: to.Ptr("The App Service is available."),
+		// 								},
+		// 							},
+		// 						},
+		// 						AzureLogAnalytics: &armcloudhealth.LogAnalyticsSignals{
+		// 							AuthenticationSetting: to.Ptr("default-auth"),
+		// 							LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.OperationalInsights/workspaces/online-store-law"),
+		// 							Signals: []*armcloudhealth.LogAnalyticsSignal{
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindLogAnalyticsQuery),
+		// 									Name: to.Ptr("failed-request-rate"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
+		// 										Value: to.Ptr[float64](2.3),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("Failed request rate"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
+		// 									DataUnit: to.Ptr("Percent"),
+		// 									QueryText: to.Ptr("requests | where timestamp > ago(5m) | summarize failureRate = 100.0 * countif(success == false) / count()"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									ValueColumnName: to.Ptr("failureRate"),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](1),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](5),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
+		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+		// 						},
+		// 					},
 		// 					Alerts: &armcloudhealth.EntityAlerts{
 		// 						Unhealthy: &armcloudhealth.AlertConfiguration{
 		// 							Severity: to.Ptr(armcloudhealth.AlertSeveritySev1),
-		// 							Description: to.Ptr("Alert description"),
+		// 							Description: to.Ptr("Web frontend is unhealthy."),
 		// 							ActionGroupIDs: []*string{
-		// 								to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
+		// 								to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
 		// 							},
 		// 						},
 		// 						Degraded: &armcloudhealth.AlertConfiguration{
-		// 							Severity: to.Ptr(armcloudhealth.AlertSeveritySev4),
-		// 							Description: to.Ptr("Alert description"),
+		// 							Severity: to.Ptr(armcloudhealth.AlertSeveritySev3),
+		// 							Description: to.Ptr("Web frontend is degraded."),
 		// 							ActionGroupIDs: []*string{
-		// 								to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Insights/actionGroups/myactiongroup"),
+		// 								to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
 		// 							},
 		// 						},
 		// 					},
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 					HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.CloudHealth/healthmodels/5D334Xv2hy4-Kj48w7b3JO0--51G625B6-m/entities/entity1"),
-		// 				Name: to.Ptr("entity1"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/entities/web-frontend"),
+		// 				Name: to.Ptr("web-frontend"),
 		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/entities"),
 		// 				SystemData: &armcloudhealth.SystemData{
-		// 					CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("arz"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.EntityProperties{
+		// 					DisplayName: to.Ptr("Orders API"),
+		// 					CanvasPosition: &armcloudhealth.EntityCoordinates{
+		// 						X: to.Ptr[float32](360),
+		// 						Y: to.Ptr[float32](240),
+		// 					},
+		// 					Icon: &armcloudhealth.IconDefinition{
+		// 						IconName: to.Ptr("Kubernetes"),
+		// 					},
+		// 					HealthObjective: to.Ptr[float32](99.9),
+		// 					Impact: to.Ptr(armcloudhealth.EntityImpactStandard),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
+		// 					},
+		// 					SignalGroups: &armcloudhealth.SignalGroups{
+		// 						AzureResource: &armcloudhealth.AzureResourceSignals{
+		// 							AuthenticationSetting: to.Ptr("default-auth"),
+		// 							AzureResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.ContainerService/managedClusters/online-store-aks"),
+		// 							AzureResourceKind: to.Ptr("managedClusters"),
+		// 							Signals: []*armcloudhealth.AzureResourceSignal{
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+		// 									Name: to.Ptr("node-cpu"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](41.2),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("Node CPU utilization"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("Percent"),
+		// 									MetricNamespace: to.Ptr("Microsoft.ContainerService/managedClusters"),
+		// 									MetricName: to.Ptr("node_cpu_usage_percentage"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](70),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](90),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							ResourceHealth: &armcloudhealth.AzureResourceHealthSignal{
+		// 								Enabled: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+		// 								SignalName: to.Ptr("resourcehealth-availabilitystate"),
+		// 								Status: &armcloudhealth.AzureResourceHealthSignalStatus{
+		// 									HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 									ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
+		// 									Summary: to.Ptr("The managed cluster is available."),
+		// 								},
+		// 							},
+		// 						},
+		// 						AzureMonitorWorkspace: &armcloudhealth.AzureMonitorWorkspaceSignals{
+		// 							AuthenticationSetting: to.Ptr("default-auth"),
+		// 							AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Monitor/accounts/online-store-amw"),
+		// 							Signals: []*armcloudhealth.PrometheusMetricsSignal{
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+		// 									Name: to.Ptr("error-rate"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](0.4),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("HTTP 5xx error rate"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("Percent"),
+		// 									QueryText: to.Ptr("sum(rate(http_requests_total{job=\"orders-api\", code=~\"5..\"}[5m])) / sum(rate(http_requests_total{job=\"orders-api\"}[5m])) * 100"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](1),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](5),
+		// 										},
+		// 									},
+		// 								},
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+		// 									Name: to.Ptr("p95-latency"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](180),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("p95 request latency"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("MilliSeconds"),
+		// 									QueryText: to.Ptr("histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket{job=\"orders-api\"}[5m]))) * 1000"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](300),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](800),
+		// 										},
+		// 									},
+		// 								},
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindPrometheusMetricsQuery),
+		// 									Name: to.Ptr("pod-cpu"),
+		// 									SignalDefinitionName: to.Ptr("pod-cpu-usage"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](45.3),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("Pod CPU utilization"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("Percent"),
+		// 									QueryText: to.Ptr("sum(rate(container_cpu_usage_seconds_total{namespace=\"online-store\", pod=~\"orders-api-.*\"}[5m])) * 100"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](70),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](90),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 						AzureLogAnalytics: &armcloudhealth.LogAnalyticsSignals{
+		// 							AuthenticationSetting: to.Ptr("default-auth"),
+		// 							LogAnalyticsWorkspaceResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.OperationalInsights/workspaces/online-store-law"),
+		// 							Signals: []*armcloudhealth.LogAnalyticsSignal{
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindLogAnalyticsQuery),
+		// 									Name: to.Ptr("unhealthy-pods"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](0),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("Unhealthy pods"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
+		// 									DataUnit: to.Ptr("Count"),
+		// 									QueryText: to.Ptr("KubePodInventory | where TimeGenerated > ago(5m) | where Namespace == 'online-store' | where PodStatus != 'Running' | summarize unhealthyPods = dcount(Name)"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									ValueColumnName: to.Ptr("unhealthyPods"),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](0),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](2),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
+		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeMinHealthy),
+		// 							Unit: to.Ptr(armcloudhealth.DependenciesAggregationUnitPercentage),
+		// 							DegradedThreshold: to.Ptr[float64](100),
+		// 							UnhealthyThreshold: to.Ptr[float64](50),
+		// 							IgnoreUnknown: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					Alerts: &armcloudhealth.EntityAlerts{
+		// 						Unhealthy: &armcloudhealth.AlertConfiguration{
+		// 							Severity: to.Ptr(armcloudhealth.AlertSeveritySev1),
+		// 							Description: to.Ptr("Orders API is unhealthy."),
+		// 							ActionGroupIDs: []*string{
+		// 								to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
+		// 							},
+		// 						},
+		// 						Degraded: &armcloudhealth.AlertConfiguration{
+		// 							Severity: to.Ptr(armcloudhealth.AlertSeveritySev3),
+		// 							Description: to.Ptr("Orders API is degraded."),
+		// 							ActionGroupIDs: []*string{
+		// 								to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Insights/actionGroups/online-store-oncall"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 					HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/entities/orders-api"),
+		// 				Name: to.Ptr("orders-api"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/entities"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.EntityProperties{
+		// 					DisplayName: to.Ptr("Orders Database"),
+		// 					CanvasPosition: &armcloudhealth.EntityCoordinates{
+		// 						X: to.Ptr[float32](480),
+		// 						Y: to.Ptr[float32](360),
+		// 					},
+		// 					Icon: &armcloudhealth.IconDefinition{
+		// 						IconName: to.Ptr("SQLDatabase"),
+		// 					},
+		// 					HealthObjective: to.Ptr[float32](99.5),
+		// 					Impact: to.Ptr(armcloudhealth.EntityImpactStandard),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
+		// 					},
+		// 					SignalGroups: &armcloudhealth.SignalGroups{
+		// 						AzureResource: &armcloudhealth.AzureResourceSignals{
+		// 							AuthenticationSetting: to.Ptr("default-auth"),
+		// 							AzureResourceID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.Sql/servers/online-store-sql/databases/orders"),
+		// 							Signals: []*armcloudhealth.AzureResourceSignal{
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+		// 									Name: to.Ptr("sql-cpu"),
+		// 									SignalDefinitionName: to.Ptr("sql-cpu-percent"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](38.5),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("CPU utilization"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("Percent"),
+		// 									MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 									MetricName: to.Ptr("cpu_percent"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](70),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](90),
+		// 										},
+		// 									},
+		// 								},
+		// 								{
+		// 									SignalKind: to.Ptr(armcloudhealth.SignalKindAzureResourceMetric),
+		// 									Name: to.Ptr("sql-dtu"),
+		// 									Status: &armcloudhealth.SignalStatus{
+		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 										Value: to.Ptr[float64](52.1),
+		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									},
+		// 									DisplayName: to.Ptr("DTU consumption"),
+		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
+		// 									DataUnit: to.Ptr("Percent"),
+		// 									MetricNamespace: to.Ptr("Microsoft.Sql/servers/databases"),
+		// 									MetricName: to.Ptr("dtu_consumption_percent"),
+		// 									TimeGrain: to.Ptr("PT5M"),
+		// 									AggregationType: to.Ptr(armcloudhealth.MetricAggregationTypeAverage),
+		// 									EvaluationRules: &armcloudhealth.EvaluationRule{
+		// 										DegradedRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](75),
+		// 										},
+		// 										UnhealthyRule: &armcloudhealth.ThresholdRuleV2{
+		// 											Operator: to.Ptr(armcloudhealth.SignalOperatorGreaterThan),
+		// 											Threshold: to.Ptr[float64](90),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							ResourceHealth: &armcloudhealth.AzureResourceHealthSignal{
+		// 								Enabled: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateSignalBehaviorEnabled),
+		// 								SignalName: to.Ptr("resourcehealth-availabilitystate"),
+		// 								Status: &armcloudhealth.AzureResourceHealthSignalStatus{
+		// 									HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 									ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
+		// 									Summary: to.Ptr("The database is available."),
+		// 								},
+		// 							},
+		// 						},
+		// 						Dependencies: &armcloudhealth.DependenciesSignalGroupV2{
+		// 							AggregationType: to.Ptr(armcloudhealth.DependenciesAggregationTypeWorstOf),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 					HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/entities/orders-db"),
+		// 				Name: to.Ptr("orders-db"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/entities"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/ai"),
 		// 	},
 		// }
 	}

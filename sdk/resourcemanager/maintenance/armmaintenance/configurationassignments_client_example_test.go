@@ -35,7 +35,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsClientCreateOrUpdateResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
@@ -70,7 +70,7 @@ func ExampleConfigurationAssignmentsClient_CreateOrUpdateParent() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsClientCreateOrUpdateParentResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmPolicy"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/virtualMachines/smdvm1/providers/Microsoft.Maintenance/configurationAssignments/workervmPolicy"),
@@ -101,7 +101,7 @@ func ExampleConfigurationAssignmentsClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsClientDeleteResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
@@ -128,7 +128,7 @@ func ExampleConfigurationAssignmentsClient_DeleteParent() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsClientDeleteParentResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
@@ -155,7 +155,7 @@ func ExampleConfigurationAssignmentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsClientGetResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmConfiguration"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/configurationAssignments/workervmConfiguration"),
@@ -186,7 +186,7 @@ func ExampleConfigurationAssignmentsClient_GetParent() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ConfigurationAssignmentsClientGetParentResponse{
-	// 	ConfigurationAssignment: &armmaintenance.ConfigurationAssignment{
+	// 	ConfigurationAssignment: armmaintenance.ConfigurationAssignment{
 	// 		Name: to.Ptr("workervmPolicy"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/configurationAssignments"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/virtualMachines/smdvm1/providers/Microsoft.Maintenance/configurationAssignments/workervmPolicy"),

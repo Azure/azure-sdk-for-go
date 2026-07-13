@@ -299,6 +299,21 @@ type ApplicationUserAssignedIdentity struct {
 	PrincipalID *string
 }
 
+// ApplyMaintenanceWindowRequest - Describes the request to apply a maintenance window on a Service Fabric Managed Cluster.
+type ApplyMaintenanceWindowRequest struct {
+	// Duration of the maintenance window in hh:mm format. If not provided, defaults to 5 hours. Example: 08:30 for 8 and a half
+	// hours.
+	Duration *string
+
+	// Effective start date of the maintenance window in yyyy-MM-dd HH:mm format. If not provided, defaults to the current time.
+	StartDateTime *string
+
+	// Name of the timezone. List of timezones can be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+	// If not provided, defaults to UTC. Example: Pacific Standard Time, UTC, W. Europe Standard Time, Korea Standard Time, Central
+	// Australia Standard Time.
+	TimeZone *string
+}
+
 // AvailableOperationDisplay - Operation supported by the Service Fabric resource provider
 type AvailableOperationDisplay struct {
 	// Operation description
@@ -515,6 +530,81 @@ type ErrorModelError struct {
 	Message *string
 }
 
+// FaultSimulation - Fault simulation object with status.
+type FaultSimulation struct {
+	// Fault simulation details
+	Details *FaultSimulationDetails
+
+	// The end time of the fault simulation.
+	EndTime *time.Time
+
+	// unique identifier for the fault simulation.
+	SimulationID *string
+
+	// The start time of the fault simulation.
+	StartTime *time.Time
+
+	// Fault simulation status
+	Status *FaultSimulationStatus
+}
+
+// FaultSimulationConstraints - Constraints for Fault Simulation action.
+type FaultSimulationConstraints struct {
+	// The absolute expiration timestamp (UTC) after which this fault simulation should be stopped if it's still active.
+	ExpirationTime *time.Time
+}
+
+// FaultSimulationContent - Parameters for Fault Simulation action.
+type FaultSimulationContent struct {
+	// REQUIRED; The kind of fault to be simulated.
+	FaultKind *FaultKind
+
+	// Constraints for Fault Simulation action.
+	Constraints *FaultSimulationConstraints
+
+	// Force the action to go through without any check on the cluster.
+	Force *bool
+}
+
+// GetFaultSimulationContent implements the FaultSimulationContentClassification interface for type FaultSimulationContent.
+func (f *FaultSimulationContent) GetFaultSimulationContent() *FaultSimulationContent { return f }
+
+// FaultSimulationContentWrapper - Fault Simulation Request for Start action.
+type FaultSimulationContentWrapper struct {
+	// REQUIRED; Parameters for Fault Simulation start action.
+	Parameters FaultSimulationContentClassification
+}
+
+// FaultSimulationDetails - Details for Fault Simulation.
+type FaultSimulationDetails struct {
+	// unique identifier for the cluster resource.
+	ClusterID *string
+
+	// List of node type simulations associated with the cluster fault simulation.
+	NodeTypeFaultSimulation []*NodeTypeFaultSimulation
+
+	// unique identifier for the operation associated with the fault simulation.
+	OperationID *string
+
+	// Fault simulation parameters.
+	Parameters FaultSimulationContentClassification
+}
+
+// FaultSimulationIDContent - Parameters for Fault Simulation id.
+type FaultSimulationIDContent struct {
+	// REQUIRED; unique identifier for the fault simulation.
+	SimulationID *string
+}
+
+// FaultSimulationListResult - Fault simulation list results
+type FaultSimulationListResult struct {
+	// REQUIRED; The FaultSimulation items on this page
+	Value []*FaultSimulation
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // FrontendConfiguration - Describes the frontend configurations for the node type.
 type FrontendConfiguration struct {
 	// The resource Id of application gateway backend address pool. The format of the resource Id is '/subscriptions/<subscriptionId>/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendAddressPools/{backendAddressPoolName}'.
@@ -530,6 +620,17 @@ type FrontendConfiguration struct {
 	// The resource Id of the Load Balancer inbound NAT pool that the VM instances of the node type are associated with. The format
 	// of the resource Id is '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/inboundNatPools/{inboundNatPoolName}'.
 	LoadBalancerInboundNatPoolID *string
+}
+
+// HostEndpointSettings - Specifies particular host endpoint settings.
+type HostEndpointSettings struct {
+	// Specifies the InVMAccessControlProfileVersion resource id in the format of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/inVMAccessControlProfiles/{profile}/versions/{version}
+	InVMAccessControlProfileReferenceID *string
+
+	// Specifies the execution mode. In Audit mode, the system acts as if it is enforcing the access control policy, including
+	// emitting access denial entries in the logs but it does not actually deny any requests to host endpoints. In Enforce mode,
+	// the system will enforce the access control and it is the recommended mode of operation.
+	Mode *string
 }
 
 // IPConfiguration - Specifies an IP configuration of the network interface.
@@ -1043,6 +1144,21 @@ type NodeTypeAvailableSKU struct {
 	SKU *NodeTypeSupportedSKU
 }
 
+// NodeTypeFaultSimulation - Node type fault simulation object with status.
+type NodeTypeFaultSimulation struct {
+	// Node type name.
+	NodeTypeName *string
+
+	// Current or latest asynchronous operation identifier on the node type.
+	OperationID *string
+
+	// Current or latest asynchronous operation status on the node type
+	OperationStatus *SfmcOperationStatus
+
+	// Fault simulation status
+	Status *FaultSimulationStatus
+}
+
 // NodeTypeListResult - The response of a NodeType list operation.
 type NodeTypeListResult struct {
 	// REQUIRED; The NodeType items on this page
@@ -1175,6 +1291,13 @@ type NodeTypeProperties struct {
 	// The placement tags applied to nodes in the node type, which can be used to indicate where certain services (workload) should
 	// run.
 	PlacementProperties map[string]*string
+
+	// Specifies the settings for the proxy agent on the node type.
+	ProxyAgentSettings *ProxyAgentSettings
+
+	// Specifies the scale in policy for the node type, which will be used when scale in happens on the cluster. If not specified,
+	// the default is Default which means the platform will decide which nodes to remove during scale in.
+	ScaleInPolicy *ScaleInPolicy
 
 	// Specifies whether secure boot should be enabled on the nodeType. Can only be used with TrustedLaunch and ConfidentialVM
 	// SecurityType.
@@ -1369,6 +1492,25 @@ func (p *PartitionInstanceCountScaleMechanism) GetScalingMechanism() *ScalingMec
 	return &ScalingMechanism{
 		Kind: p.Kind,
 	}
+}
+
+// ProxyAgentSettings - Specifies ProxyAgent settings for the virtual machine or virtual machine scale set.
+type ProxyAgentSettings struct {
+	// Specify whether to implicitly install the ProxyAgent Extension. This option is currently applicable only for Linux Os.
+	AddProxyAgentExtension *bool
+
+	// Specifies whether ProxyAgent feature should be enabled on the virtual machine or virtual machine scale set.
+	Enabled *bool
+
+	// Specifies the IMDS endpoint settings while creating the virtual machine or virtual machine scale set.
+	Imds *HostEndpointSettings
+
+	// Increasing the value of this property allows users to reset the key used for securing communication channel between guest
+	// and host.
+	KeyIncarnationID *int32
+
+	// Specifies the Wire Server endpoint settings while creating the virtual machine or virtual machine scale set.
+	WireServer *HostEndpointSettings
 }
 
 // ResourceAzStatus - Describes Az Resiliency status of Base resources
@@ -1586,6 +1728,12 @@ type RuntimeUpdateApplicationUpgradeParameters struct {
 type SKU struct {
 	// REQUIRED; Sku Name.
 	Name *SKUName
+}
+
+// ScaleInPolicy - Scale in policy for a node type. This is used to specify the mode for scale in operations on a node type.
+type ScaleInPolicy struct {
+	// The scale in policy mode for a node type.
+	Mode *ScaleInPolicyMode
 }
 
 // ScalingMechanism - Describes the mechanism for performing a scaling operation.
@@ -2297,4 +2445,29 @@ type VmssDataDisk struct {
 	// REQUIRED; Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
 	// therefore must be unique for each data disk attached to a VM. Lun 0 is reserved for the service fabric data disk.
 	Lun *int32
+}
+
+// ZoneFaultSimulationContent - Parameters for Zone Fault Simulation action.
+type ZoneFaultSimulationContent struct {
+	// CONSTANT; The kind of fault simulation.
+	// Field has constant value FaultKindZone, any specified value is ignored.
+	FaultKind *FaultKind
+
+	// Constraints for Fault Simulation action.
+	Constraints *FaultSimulationConstraints
+
+	// Force the action to go through without any check on the cluster.
+	Force *bool
+
+	// Indicates the zones of the fault simulation.
+	Zones []*string
+}
+
+// GetFaultSimulationContent implements the FaultSimulationContentClassification interface for type ZoneFaultSimulationContent.
+func (z *ZoneFaultSimulationContent) GetFaultSimulationContent() *FaultSimulationContent {
+	return &FaultSimulationContent{
+		Constraints: z.Constraints,
+		FaultKind:   z.FaultKind,
+		Force:       z.Force,
+	}
 }

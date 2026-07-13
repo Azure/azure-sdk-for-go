@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01-preview/DeleteUpdateRuns.json
+// Generated from example definition: 2026-04-30/DeleteUpdateRuns.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -39,7 +39,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GetUpdateRuns.json
+// Generated from example definition: 2026-04-30/GetUpdateRuns.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleUpdateRunsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdateRunsClientGetResponse{
-	// 	UpdateRun: &armazurestackhci.UpdateRun{
+	// 	UpdateRun: armazurestackhci.UpdateRun{
 	// 		Name: to.Ptr("Microsoft4.2203.2.32/23b779ba-0d52-4a80-8571-45ca74664ec3"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updates/updateRuns"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updates/Microsoft4.2203.2.32/updateRuns/23b779ba-0d52-4a80-8571-45ca74664ec3"),
@@ -91,7 +91,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ListUpdateRuns.json
+// Generated from example definition: 2026-04-30/ListUpdateRuns.json
 func ExampleUpdateRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleUpdateRunsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/PutUpdateRuns.json
+// Generated from example definition: 2026-04-30/PutUpdateRuns.json
 func ExampleUpdateRunsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleUpdateRunsClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdateRunsClientPutResponse{
-	// 	UpdateRun: &armazurestackhci.UpdateRun{
+	// 	UpdateRun: armazurestackhci.UpdateRun{
 	// 		Name: to.Ptr("Microsoft4.2203.2.32/23b779ba-0d52-4a80-8571-45ca74664ec3"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updates/updateRuns"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updates/Microsoft4.2203.2.32/updateRuns/23b779ba-0d52-4a80-8571-45ca74664ec3"),

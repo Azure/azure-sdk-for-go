@@ -86,40 +86,40 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AccountsClient":
-		initServer(s, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
+		initServer(&s.trMu, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
 	case "BillingInfoClient":
-		initServer(s, &s.trBillingInfoServer, func() *BillingInfoServerTransport { return NewBillingInfoServerTransport(&s.srv.BillingInfoServer) })
+		initServer(&s.trMu, &s.trBillingInfoServer, func() *BillingInfoServerTransport { return NewBillingInfoServerTransport(&s.srv.BillingInfoServer) })
 		resp, err = s.trBillingInfoServer.Do(req)
 	case "ConnectedPartnerResourcesClient":
-		initServer(s, &s.trConnectedPartnerResourcesServer, func() *ConnectedPartnerResourcesServerTransport {
+		initServer(&s.trMu, &s.trConnectedPartnerResourcesServer, func() *ConnectedPartnerResourcesServerTransport {
 			return NewConnectedPartnerResourcesServerTransport(&s.srv.ConnectedPartnerResourcesServer)
 		})
 		resp, err = s.trConnectedPartnerResourcesServer.Do(req)
 	case "MonitoredSubscriptionsClient":
-		initServer(s, &s.trMonitoredSubscriptionsServer, func() *MonitoredSubscriptionsServerTransport {
+		initServer(&s.trMu, &s.trMonitoredSubscriptionsServer, func() *MonitoredSubscriptionsServerTransport {
 			return NewMonitoredSubscriptionsServerTransport(&s.srv.MonitoredSubscriptionsServer)
 		})
 		resp, err = s.trMonitoredSubscriptionsServer.Do(req)
 	case "MonitorsClient":
-		initServer(s, &s.trMonitorsServer, func() *MonitorsServerTransport { return NewMonitorsServerTransport(&s.srv.MonitorsServer) })
+		initServer(&s.trMu, &s.trMonitorsServer, func() *MonitorsServerTransport { return NewMonitorsServerTransport(&s.srv.MonitorsServer) })
 		resp, err = s.trMonitorsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "OrganizationsClient":
-		initServer(s, &s.trOrganizationsServer, func() *OrganizationsServerTransport {
+		initServer(&s.trMu, &s.trOrganizationsServer, func() *OrganizationsServerTransport {
 			return NewOrganizationsServerTransport(&s.srv.OrganizationsServer)
 		})
 		resp, err = s.trOrganizationsServer.Do(req)
 	case "PlansClient":
-		initServer(s, &s.trPlansServer, func() *PlansServerTransport { return NewPlansServerTransport(&s.srv.PlansServer) })
+		initServer(&s.trMu, &s.trPlansServer, func() *PlansServerTransport { return NewPlansServerTransport(&s.srv.PlansServer) })
 		resp, err = s.trPlansServer.Do(req)
 	case "SaaSClient":
-		initServer(s, &s.trSaaSServer, func() *SaaSServerTransport { return NewSaaSServerTransport(&s.srv.SaaSServer) })
+		initServer(&s.trMu, &s.trSaaSServer, func() *SaaSServerTransport { return NewSaaSServerTransport(&s.srv.SaaSServer) })
 		resp, err = s.trSaaSServer.Do(req)
 	case "TagRulesClient":
-		initServer(s, &s.trTagRulesServer, func() *TagRulesServerTransport { return NewTagRulesServerTransport(&s.srv.TagRulesServer) })
+		initServer(&s.trMu, &s.trTagRulesServer, func() *TagRulesServerTransport { return NewTagRulesServerTransport(&s.srv.TagRulesServer) })
 		resp, err = s.trTagRulesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -130,12 +130,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -114,7 +114,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 	etagAny := azcore.ETagAny
 	kv, opts := setting.toGeneratedPutOptions(nil, &etagAny)
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
+	resp, err := c.appConfigClient.PutKeyValue(ctx, generated.PutKeyValueRequestContentTypeApplicationJSON, *setting.Key, kv, &opts)
 	if err != nil {
 		return AddSettingResponse{}, err
 	}
@@ -224,7 +224,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 	setting := Setting{Key: &key, Value: value, Label: options.Label, ContentType: options.ContentType, Tags: options.Tags}
 
 	kv, opts := setting.toGeneratedPutOptions(options.OnlyIfUnchanged, nil)
-	resp, err := c.appConfigClient.PutKeyValue(ctx, *setting.Key, kv, &opts)
+	resp, err := c.appConfigClient.PutKeyValue(ctx, generated.PutKeyValueRequestContentTypeApplicationJSON, *setting.Key, kv, &opts)
 	if err != nil {
 		return SetSettingResponse{}, err
 	}
@@ -327,7 +327,16 @@ func (c *Client) NewCheckSettingsPager(selector SettingSelector, options *CheckS
 //   - options - NewListSnapshotsPagerOptions contains the optional parameters to retrieve a snapshot
 //     method.
 func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.Pager[ListSnapshotsResponse] {
-	opts := (*generated.AzureAppConfigurationClientGetSnapshotsOptions)(options)
+	var opts *generated.AzureAppConfigurationClientGetSnapshotsOptions
+	if options != nil {
+		opts = &generated.AzureAppConfigurationClientGetSnapshotsOptions{
+			After:  options.After,
+			Name:   options.Name,
+			Select: options.Select,
+			Status: options.Status,
+		}
+	}
+
 	ssRespPager := c.appConfigClient.NewGetSnapshotsPager(opts)
 
 	return runtime.NewPager(runtime.PagingHandler[ListSnapshotsResponse]{
@@ -464,7 +473,7 @@ func (c *Client) BeginCreateSnapshot(ctx context.Context, snapshotName string, s
 	ctx, endSpan := runtime.StartSpan(ctx, "Client.BeginCreateSnapshot", c.appConfigClient.Tracer(), nil)
 	defer func() { endSpan(err) }()
 
-	resp, err := c.appConfigClient.CreateSnapshot(ctx, snapshotName, entity, nil)
+	resp, err := c.appConfigClient.CreateSnapshot(ctx, generated.CreateSnapshotRequestContentTypeApplicationJSON, snapshotName, entity, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -583,7 +592,7 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 		Status: &status,
 	}
 
-	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, snapshotName, entity, &generated.AzureAppConfigurationClientUpdateSnapshotOptions{
+	updateResp, err := c.appConfigClient.UpdateSnapshot(ctx, generated.UpdateSnapshotRequestContentTypeApplicationJSON, snapshotName, entity, &generated.AzureAppConfigurationClientUpdateSnapshotOptions{
 		IfMatch:     (*string)(options.IfMatch),
 		IfNoneMatch: (*string)(options.IfNoneMatch),
 	})

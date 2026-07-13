@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // WorkflowRunActionScopeRepetitionsServer is a fake server for instances of the armappservice.WorkflowRunActionScopeRepetitionsClient type.
@@ -58,9 +59,7 @@ func (w *WorkflowRunActionScopeRepetitionsServerTransport) Do(req *http.Request)
 }
 
 func (w *WorkflowRunActionScopeRepetitionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (w *WorkflowRunActionScopeRepetitionsServerTransport) dispatchToMethodFake(
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -131,7 +127,7 @@ func (w *WorkflowRunActionScopeRepetitionsServerTransport) dispatchGet(req *http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).WorkflowRunActionRepetitionDefinition, req)
@@ -184,7 +180,7 @@ func (w *WorkflowRunActionScopeRepetitionsServerTransport) dispatchNewListPager(
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		w.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

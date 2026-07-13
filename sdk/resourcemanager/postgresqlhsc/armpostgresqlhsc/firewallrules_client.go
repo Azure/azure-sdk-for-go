@@ -18,6 +18,8 @@ import (
 
 // FirewallRulesClient contains the methods for the FirewallRules group.
 // Don't use this type directly, use NewFirewallRulesClient() instead.
+//
+// Generated from API version 2023-03-02-preview
 type FirewallRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreateOrUpdate - Creates a new cluster firewall rule or updates an existing cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - firewallRuleName - The name of the cluster firewall rule.
@@ -69,8 +69,6 @@ func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 
 // CreateOrUpdate - Creates a new cluster firewall rule or updates an existing cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-03-02-preview
 func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, firewallRuleName string, parameters FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallRulesClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,8 +126,6 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 
 // BeginDelete - Deletes a cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - firewallRuleName - The name of the cluster firewall rule.
@@ -155,8 +151,6 @@ func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Deletes a cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-03-02-preview
 func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallRulesClient.BeginDelete"
@@ -202,15 +196,13 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about a cluster firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - firewallRuleName - The name of the cluster firewall rule.
@@ -261,8 +253,8 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -277,8 +269,6 @@ func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (Firew
 }
 
 // NewListByClusterPager - Lists all the firewall rules on cluster.
-//
-// Generated from API version 2023-03-02-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - FirewallRulesClientListByClusterOptions contains the optional parameters for the FirewallRulesClient.NewListByClusterPager
@@ -326,8 +316,8 @@ func (client *FirewallRulesClient) listByClusterCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-03-02-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230302Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

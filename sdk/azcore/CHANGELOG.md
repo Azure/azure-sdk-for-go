@@ -1,6 +1,6 @@
 # Release History
 
-## 1.21.2-beta.1 (Unreleased)
+## 1.22.1-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.22.0 (2026-06-04)
+
+### Features Added
+
+* Added type `datetime.RFC7231` for date/time values in RFC 1123 format with a fixed GMT timezone.
+
+### Other Changes
+
+* Upgraded dependencies.
 
 ## 1.21.1 (2026-04-16)
 

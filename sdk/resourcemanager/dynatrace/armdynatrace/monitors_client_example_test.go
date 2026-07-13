@@ -62,13 +62,13 @@ func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMaximumSetG
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientCreateOrUpdateResponse{
-	// 	MonitorResource: &armdynatrace.MonitorResource{
+	// 	MonitorResource: armdynatrace.MonitorResource{
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Dynatrace.Observability/monitors"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor"),
@@ -154,13 +154,13 @@ func ExampleMonitorsClient_BeginCreateOrUpdate_monitorsCreateOrUpdateMinimumSetG
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientCreateOrUpdateResponse{
-	// 	MonitorResource: &armdynatrace.MonitorResource{
+	// 	MonitorResource: armdynatrace.MonitorResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor"),
 	// 		Location: to.Ptr("West US 2"),
 	// 		Properties: &armdynatrace.MonitorProperties{
@@ -186,7 +186,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMaximumSetGen() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -207,7 +207,7 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -230,7 +230,7 @@ func ExampleMonitorsClient_Get_monitorsGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetResponse{
-	// 	MonitorResource: &armdynatrace.MonitorResource{
+	// 	MonitorResource: armdynatrace.MonitorResource{
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Dynatrace.Observability/monitors"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor"),
@@ -316,7 +316,7 @@ func ExampleMonitorsClient_Get_monitorsGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetResponse{
-	// 	MonitorResource: &armdynatrace.MonitorResource{
+	// 	MonitorResource: armdynatrace.MonitorResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor"),
 	// 		Location: to.Ptr("West US 2"),
 	// 		Properties: &armdynatrace.MonitorProperties{
@@ -346,7 +346,7 @@ func ExampleMonitorsClient_GetAllConnectedResourcesCount_monitorsGetAllConnected
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetAllConnectedResourcesCountResponse{
-	// 	ConnectedResourcesCountResponse: &armdynatrace.ConnectedResourcesCountResponse{
+	// 	ConnectedResourcesCountResponse: armdynatrace.ConnectedResourcesCountResponse{
 	// 		ConnectedResourcesCount: to.Ptr[int64](4),
 	// 	},
 	// }
@@ -373,7 +373,7 @@ func ExampleMonitorsClient_GetAllConnectedResourcesCount_monitorsGetAllConnected
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetAllConnectedResourcesCountResponse{
-	// 	ConnectedResourcesCountResponse: &armdynatrace.ConnectedResourcesCountResponse{
+	// 	ConnectedResourcesCountResponse: armdynatrace.ConnectedResourcesCountResponse{
 	// 	},
 	// }
 }
@@ -399,7 +399,7 @@ func ExampleMonitorsClient_GetMarketplaceSaaSResourceDetails_monitorsGetMarketpl
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetMarketplaceSaaSResourceDetailsResponse{
-	// 	MarketplaceSaaSResourceDetailsResponse: &armdynatrace.MarketplaceSaaSResourceDetailsResponse{
+	// 	MarketplaceSaaSResourceDetailsResponse: armdynatrace.MarketplaceSaaSResourceDetailsResponse{
 	// 		MarketplaceSaaSResourceID: to.Ptr("owpmulwohq"),
 	// 		MarketplaceSubscriptionStatus: to.Ptr(armdynatrace.MarketplaceSubscriptionStatusActive),
 	// 		PlanID: to.Ptr("dsfefsaf"),
@@ -428,7 +428,7 @@ func ExampleMonitorsClient_GetMarketplaceSaaSResourceDetails_monitorsGetMarketpl
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetMarketplaceSaaSResourceDetailsResponse{
-	// 	MarketplaceSaaSResourceDetailsResponse: &armdynatrace.MarketplaceSaaSResourceDetailsResponse{
+	// 	MarketplaceSaaSResourceDetailsResponse: armdynatrace.MarketplaceSaaSResourceDetailsResponse{
 	// 	},
 	// }
 }
@@ -457,7 +457,7 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMaximumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetMetricStatusResponse{
-	// 	MetricsStatusResponse: &armdynatrace.MetricsStatusResponse{
+	// 	MetricsStatusResponse: armdynatrace.MetricsStatusResponse{
 	// 		AzureResourceIDs: []*string{
 	// 			to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/00000000-0000-0000-0000-000000000000"),
 	// 		},
@@ -484,7 +484,7 @@ func ExampleMonitorsClient_GetMetricStatus_monitorsGetMetricStatusMinimumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetMetricStatusResponse{
-	// 	MetricsStatusResponse: &armdynatrace.MetricsStatusResponse{
+	// 	MetricsStatusResponse: armdynatrace.MetricsStatusResponse{
 	// 	},
 	// }
 }
@@ -511,7 +511,7 @@ func ExampleMonitorsClient_GetSSODetails_monitorsGetSsoDetailsMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetSSODetailsResponse{
-	// 	SSODetailsResponse: &armdynatrace.SSODetailsResponse{
+	// 	SSODetailsResponse: armdynatrace.SSODetailsResponse{
 	// 		AADDomains: []*string{
 	// 			to.Ptr("mpliftrdt20210811outlook.onmicrosoft.com"),
 	// 		},
@@ -547,7 +547,7 @@ func ExampleMonitorsClient_GetSSODetails_monitorsGetSsoDetailsMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetSSODetailsResponse{
-	// 	SSODetailsResponse: &armdynatrace.SSODetailsResponse{
+	// 	SSODetailsResponse: armdynatrace.SSODetailsResponse{
 	// 	},
 	// }
 }
@@ -571,7 +571,7 @@ func ExampleMonitorsClient_GetVMHostPayload_monitorsGetVMHostPayloadMaximumSetGe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetVMHostPayloadResponse{
-	// 	VMExtensionPayload: &armdynatrace.VMExtensionPayload{
+	// 	VMExtensionPayload: armdynatrace.VMExtensionPayload{
 	// 		EnvironmentID: to.Ptr("abc123lsjlsfjlfjgd"),
 	// 		IngestionKey: to.Ptr("abcd.efg"),
 	// 	},
@@ -597,7 +597,7 @@ func ExampleMonitorsClient_GetVMHostPayload_monitorsGetVMHostPayloadMinimumSetGe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientGetVMHostPayloadResponse{
-	// 	VMExtensionPayload: &armdynatrace.VMExtensionPayload{
+	// 	VMExtensionPayload: armdynatrace.VMExtensionPayload{
 	// 	},
 	// }
 }
@@ -1256,7 +1256,7 @@ func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientUpdateResponse{
-	// 	MonitorResource: &armdynatrace.MonitorResource{
+	// 	MonitorResource: armdynatrace.MonitorResource{
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Dynatrace.Observability/monitors"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Dynatrace.Observability/monitors/myMonitor"),
@@ -1342,7 +1342,7 @@ func ExampleMonitorsClient_Update_monitorsUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.MonitorsClientUpdateResponse{
-	// 	MonitorResource: &armdynatrace.MonitorResource{
+	// 	MonitorResource: armdynatrace.MonitorResource{
 	// 		Location: to.Ptr("West US 2"),
 	// 		Properties: &armdynatrace.MonitorProperties{
 	// 		},
@@ -1374,7 +1374,7 @@ func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMaximumSetGen() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1402,6 +1402,6 @@ func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMinimumSetGen() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

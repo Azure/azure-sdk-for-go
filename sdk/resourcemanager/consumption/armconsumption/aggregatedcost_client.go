@@ -18,6 +18,8 @@ import (
 
 // AggregatedCostClient contains the methods for the AggregatedCost group.
 // Don't use this type directly, use NewAggregatedCostClient() instead.
+//
+// Generated from API version 2024-08-01
 type AggregatedCostClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewAggregatedCostClient(credential azcore.TokenCredential, options *arm.Cli
 // GetByManagementGroup - Provides the aggregate cost of a management group and all child management groups by current billing
 // period.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - managementGroupID - Order Id of the reservation
 //   - options - AggregatedCostClientGetByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetByManagementGroup
 //     method.
@@ -81,8 +81,8 @@ func (client *AggregatedCostClient) getByManagementGroupCreateRequest(ctx contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *AggregatedCostClient) getByManagementGroupHandleResponse(resp *htt
 // GetForBillingPeriodByManagementGroup - Provides the aggregate cost of a management group and all child management groups
 // by specified billing period
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - managementGroupID - Order Id of the reservation
 //   - billingPeriodName - Billing Period Name.
 //   - options - AggregatedCostClientGetForBillingPeriodByManagementGroupOptions contains the optional parameters for the AggregatedCostClient.GetForBillingPeriodByManagementGroup
@@ -143,8 +141,8 @@ func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

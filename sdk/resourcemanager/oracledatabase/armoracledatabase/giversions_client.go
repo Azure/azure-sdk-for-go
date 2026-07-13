@@ -18,6 +18,8 @@ import (
 
 // GiVersionsClient contains the methods for the GiVersions group.
 // Don't use this type directly, use NewGiVersionsClient() instead.
+//
+// Generated from API version 2025-09-01
 type GiVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewGiVersionsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Get a GiVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - giversionname - GiVersion name
 //   - options - GiVersionsClientGetOptions contains the optional parameters for the GiVersionsClient.Get method.
@@ -88,8 +88,8 @@ func (client *GiVersionsClient) getCreateRequest(ctx context.Context, location s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *GiVersionsClient) getHandleResponse(resp *http.Response) (GiVersio
 }
 
 // NewListByLocationPager - List GiVersion resources by SubscriptionLocationResource
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - GiVersionsClientListByLocationOptions contains the optional parameters for the GiVersionsClient.NewListByLocationPager
 //     method.
@@ -148,7 +146,7 @@ func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", version20250901)
 	if options != nil && options.Shape != nil {
 		reqQP.Set("shape", string(*options.Shape))
 	}
@@ -158,7 +156,7 @@ func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context,
 	if options != nil && options.Zone != nil {
 		reqQP.Set("zone", *options.Zone)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

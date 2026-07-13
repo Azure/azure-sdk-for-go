@@ -18,6 +18,8 @@ import (
 
 // SecuritySettingsClient contains the methods for the SecuritySettings group.
 // Don't use this type directly, use NewSecuritySettingsClient() instead.
+//
+// Generated from API version 2026-04-30
 type SecuritySettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSecuritySettingsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Create a security setting
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - securitySettingsName - Name of security setting
@@ -68,8 +68,6 @@ func (client *SecuritySettingsClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create a security setting
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 func (client *SecuritySettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, securitySettingsName string, resource SecuritySetting, options *SecuritySettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecuritySettingsClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *SecuritySettingsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *SecuritySettingsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a SecuritySetting
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - securitySettingsName - Name of security setting
@@ -153,8 +149,6 @@ func (client *SecuritySettingsClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete a SecuritySetting
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 func (client *SecuritySettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, securitySettingsName string, options *SecuritySettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecuritySettingsClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *SecuritySettingsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a SecuritySetting
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - securitySettingsName - Name of security setting
@@ -259,8 +251,8 @@ func (client *SecuritySettingsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *SecuritySettingsClient) getHandleResponse(resp *http.Response) (Se
 }
 
 // NewListByClustersPager - List SecuritySetting resources by Clusters
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - SecuritySettingsClientListByClustersOptions contains the optional parameters for the SecuritySettingsClient.NewListByClustersPager
@@ -324,8 +314,8 @@ func (client *SecuritySettingsClient) listByClustersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

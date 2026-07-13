@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountCheckNameExists.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountCheckNameExists.json
 func ExampleDatabaseAccountsClient_CheckNameExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,14 +35,14 @@ func ExampleDatabaseAccountsClient_CheckNameExists() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMax.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountCreateMax.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMax() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -86,7 +86,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 					IsZoneRedundant:  to.Ptr(false),
 				},
 			},
-			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelBoundedStaleness),
 				MaxIntervalInSeconds:    to.Ptr[int32](10),
@@ -98,10 +97,15 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 			APIProperties: &armcosmos.APIProperties{
 				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
 			},
-			EnableAnalyticalStorage: to.Ptr(true),
+			EnableAnalyticalStorage:              to.Ptr(true),
+			EnableBurstCapacity:                  to.Ptr(true),
+			EnablePriorityBasedExecution:         to.Ptr(true),
+			DefaultPriorityLevel:                 to.Ptr(armcosmos.DefaultPriorityLevelLow),
+			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 			},
+			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 			BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
 				Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
@@ -122,14 +126,8 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 			Capacity: &armcosmos.Capacity{
 				TotalThroughputLimit: to.Ptr[int32](2000),
 			},
-			CapacityMode:                          to.Ptr(armcosmos.CapacityModeProvisioned),
-			EnableMaterializedViews:               to.Ptr(false),
-			EnableBurstCapacity:                   to.Ptr(true),
-			MinimalTLSVersion:                     to.Ptr(armcosmos.MinimalTLSVersionTls12),
-			EnablePriorityBasedExecution:          to.Ptr(true),
-			DefaultPriorityLevel:                  to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			EnablePerRegionPerPartitionAutoscale:  to.Ptr(true),
-			EnableAllVersionsAndDeletesChangeFeed: to.Ptr(false),
+			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTls12),
 		},
 	}, nil)
 	if err != nil {
@@ -137,13 +135,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -158,7 +156,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 					PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
 	// 				},
 	// 			},
 	// 		},
@@ -247,6 +245,9 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
 	// 			},
 	// 			EnableAnalyticalStorage: to.Ptr(true),
+	// 			EnableBurstCapacity: to.Ptr(true),
+	// 			EnablePriorityBasedExecution: to.Ptr(true),
+	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
 	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 	// 			},
@@ -272,29 +273,22 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 			Capacity: &armcosmos.Capacity{
 	// 				TotalThroughputLimit: to.Ptr[int32](2000),
 	// 			},
-	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 			EnableMaterializedViews: to.Ptr(false),
-	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTls12),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 			},
-	// 			EnablePriorityBasedExecution: to.Ptr(true),
-	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](0),
-	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](0),
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTls12),
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
@@ -303,14 +297,14 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountCreateMin.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountCreateMin.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCreateMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -318,6 +312,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 		Location: to.Ptr("westus"),
 		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
 			DatabaseAccountOfferType: to.Ptr("Standard"),
+			CreateMode:               to.Ptr(armcosmos.CreateModeDefault),
 			Locations: []*armcosmos.Location{
 				{
 					FailoverPriority: to.Ptr[int32](0),
@@ -325,7 +320,6 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 					IsZoneRedundant:  to.Ptr(false),
 				},
 			},
-			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 		},
 	}, nil)
 	if err != nil {
@@ -333,13 +327,13 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -411,25 +405,21 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
 	// 				},
 	// 			},
-	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 			EnableMaterializedViews: to.Ptr(false),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
-	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
+	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 				},
 	// 			},
-	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](0),
-	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](0),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
@@ -438,7 +428,7 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestoreDatabaseAccountCreateUpdate.json
+// Generated from example definition: 2026-03-15/CosmosDBRestoreDatabaseAccountCreateUpdate.json
 func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAccountCreateUpdateJson() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -450,11 +440,41 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewDatabaseAccountsClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
-		Kind:     to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
 		Location: to.Ptr("westus"),
+		Tags:     map[string]*string{},
+		Kind:     to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
 		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
-			APIProperties: &armcosmos.APIProperties{
-				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
+			DatabaseAccountOfferType: to.Ptr("Standard"),
+			Locations: []*armcosmos.Location{
+				{
+					FailoverPriority: to.Ptr[int32](0),
+					LocationName:     to.Ptr("southcentralus"),
+					IsZoneRedundant:  to.Ptr(false),
+				},
+			},
+			CreateMode: to.Ptr(armcosmos.CreateModeRestore),
+			RestoreParameters: &armcosmos.RestoreParameters{
+				RestoreMode:            to.Ptr(armcosmos.RestoreModePointInTime),
+				RestoreSource:          to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
+				RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-11T22:05:09Z"); return t }()),
+				RestoreWithTTLDisabled: to.Ptr(false),
+				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
+					{
+						DatabaseName: to.Ptr("db1"),
+						CollectionNames: []*string{
+							to.Ptr("collection1"),
+							to.Ptr("collection2"),
+						},
+					},
+					{
+						DatabaseName: to.Ptr("db2"),
+						CollectionNames: []*string{
+							to.Ptr("collection3"),
+							to.Ptr("collection4"),
+						},
+					},
+				},
+				SourceBackupLocation: to.Ptr("westus"),
 			},
 			BackupPolicy: &armcosmos.ContinuousModeBackupPolicy{
 				Type: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
@@ -467,65 +487,81 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 				MaxIntervalInSeconds:    to.Ptr[int32](10),
 				MaxStalenessPrefix:      to.Ptr[int64](200),
 			},
-			CreateMode:               to.Ptr(armcosmos.CreateModeRestore),
-			DatabaseAccountOfferType: to.Ptr("Standard"),
-			EnableAnalyticalStorage:  to.Ptr(true),
-			EnableFreeTier:           to.Ptr(false),
-			EnableMaterializedViews:  to.Ptr(false),
-			KeyVaultKeyURI:           to.Ptr("https://myKeyVault.vault.azure.net"),
-			Locations: []*armcosmos.Location{
-				{
-					FailoverPriority: to.Ptr[int32](0),
-					IsZoneRedundant:  to.Ptr(false),
-					LocationName:     to.Ptr("southcentralus"),
-				},
+			KeyVaultKeyURI: to.Ptr("https://myKeyVault.vault.azure.net"),
+			EnableFreeTier: to.Ptr(false),
+			APIProperties: &armcosmos.APIProperties{
+				ServerVersion: to.Ptr(armcosmos.ServerVersionThree2),
 			},
-			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-			RestoreParameters: &armcosmos.RestoreParameters{
-				DatabasesToRestore: []*armcosmos.DatabaseRestoreResource{
-					{
-						CollectionNames: []*string{
-							to.Ptr("collection1"),
-							to.Ptr("collection2"),
-						},
-						DatabaseName: to.Ptr("db1"),
-					},
-					{
-						CollectionNames: []*string{
-							to.Ptr("collection3"),
-							to.Ptr("collection4"),
-						},
-						DatabaseName: to.Ptr("db2"),
-					},
-				},
-				RestoreMode:            to.Ptr(armcosmos.RestoreModePointInTime),
-				RestoreSource:          to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc"),
-				RestoreTimestampInUTC:  to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-11T22:05:09Z"); return t }()),
-				RestoreWithTTLDisabled: to.Ptr(false),
-				SourceBackupLocation:   to.Ptr("westus"),
-			},
+			EnableAnalyticalStorage:                    to.Ptr(true),
+			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientCreateOrUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
-	// 		Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
 	// 		Location: to.Ptr("West US"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts"),
+	// 		Kind: to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.DatabaseAccountGetProperties{
-	// 			APIProperties: &armcosmos.APIProperties{
+	// 			ProvisioningState: to.Ptr("Initializing"),
+	// 			IPRules: []*armcosmos.IPAddressOrRange{
+	// 			},
+	// 			DatabaseAccountOfferType: to.Ptr("Standard"),
+	// 			DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
+	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+	// 			CreateMode: to.Ptr(armcosmos.CreateModeRestore),
+	// 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
+	// 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
+	// 				MaxIntervalInSeconds: to.Ptr[int32](5),
+	// 				MaxStalenessPrefix: to.Ptr[int64](100),
+	// 			},
+	// 			WriteLocations: []*armcosmos.Location{
+	// 				{
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 					ProvisioningState: to.Ptr("Initializing"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 					IsZoneRedundant: to.Ptr(false),
+	// 				},
+	// 			},
+	// 			ReadLocations: []*armcosmos.Location{
+	// 				{
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 					ProvisioningState: to.Ptr("Initializing"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 					IsZoneRedundant: to.Ptr(false),
+	// 				},
+	// 			},
+	// 			Locations: []*armcosmos.Location{
+	// 				{
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 					ProvisioningState: to.Ptr("Initializing"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 					IsZoneRedundant: to.Ptr(false),
+	// 				},
+	// 			},
+	// 			FailoverPolicies: []*armcosmos.FailoverPolicy{
+	// 				{
+	// 					ID: to.Ptr("ddb1-southcentralus"),
+	// 					LocationName: to.Ptr("South Central US"),
+	// 					FailoverPriority: to.Ptr[int32](0),
+	// 				},
 	// 			},
 	// 			BackupPolicy: &armcosmos.ContinuousModeBackupPolicy{
 	// 				Type: to.Ptr(armcosmos.BackupPolicyTypeContinuous),
@@ -533,85 +569,35 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 	// 					Tier: to.Ptr(armcosmos.ContinuousTierContinuous30Days),
 	// 				},
 	// 			},
-	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 			ConsistencyPolicy: &armcosmos.ConsistencyPolicy{
-	// 				DefaultConsistencyLevel: to.Ptr(armcosmos.DefaultConsistencyLevelSession),
-	// 				MaxIntervalInSeconds: to.Ptr[int32](5),
-	// 				MaxStalenessPrefix: to.Ptr[int64](100),
-	// 			},
-	// 			CreateMode: to.Ptr(armcosmos.CreateModeRestore),
-	// 			DatabaseAccountOfferType: to.Ptr("Standard"),
-	// 			DisableKeyBasedMetadataWriteAccess: to.Ptr(false),
-	// 			EnableAnalyticalStorage: to.Ptr(false),
 	// 			EnableFreeTier: to.Ptr(false),
-	// 			EnableMaterializedViews: to.Ptr(false),
-	// 			FailoverPolicies: []*armcosmos.FailoverPolicy{
-	// 				{
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 				},
+	// 			APIProperties: &armcosmos.APIProperties{
 	// 			},
-	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-	// 			IPRules: []*armcosmos.IPAddressOrRange{
-	// 			},
+	// 			EnableAnalyticalStorage: to.Ptr(false),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 	// 				},
-	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
+	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 	// 				},
-	// 				SecondaryMasterKey: &armcosmos.AccountKeyMetadata{
+	// 				PrimaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 	// 				},
 	// 				SecondaryReadonlyMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 	// 				},
 	// 			},
-	// 			Locations: []*armcosmos.Location{
-	// 				{
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					IsZoneRedundant: to.Ptr(false),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 					ProvisioningState: to.Ptr("Initializing"),
-	// 				},
-	// 			},
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
-	// 			NetworkACLBypassResourceIDs: []*string{
-	// 			},
-	// 			ProvisioningState: to.Ptr("Initializing"),
-	// 			ReadLocations: []*armcosmos.Location{
-	// 				{
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					IsZoneRedundant: to.Ptr(false),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 					ProvisioningState: to.Ptr("Initializing"),
-	// 				},
-	// 			},
-	// 			WriteLocations: []*armcosmos.Location{
-	// 				{
-	// 					FailoverPriority: to.Ptr[int32](0),
-	// 					ID: to.Ptr("ddb1-southcentralus"),
-	// 					IsZoneRedundant: to.Ptr(false),
-	// 					LocationName: to.Ptr("South Central US"),
-	// 					ProvisioningState: to.Ptr("Initializing"),
-	// 				},
-	// 			},
 	// 		},
 	// 		SystemData: &armcosmos.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountDelete.json
 func ExampleDatabaseAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,11 +614,11 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountFailoverPriorityChange.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountFailoverPriorityChange.json
 func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,12 +632,12 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	poller, err := clientFactory.NewDatabaseAccountsClient().BeginFailoverPriorityChange(ctx, "rg1", "ddb1-failover", armcosmos.FailoverPolicies{
 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 			{
-				FailoverPriority: to.Ptr[int32](0),
 				LocationName:     to.Ptr("eastus"),
+				FailoverPriority: to.Ptr[int32](0),
 			},
 			{
-				FailoverPriority: to.Ptr[int32](1),
 				LocationName:     to.Ptr("westus"),
+				FailoverPriority: to.Ptr[int32](1),
 			},
 		},
 	}, nil)
@@ -660,18 +646,18 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGet.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountGet.json
 func ExampleDatabaseAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -683,7 +669,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientGetResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -761,6 +747,10 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 			APIProperties: &armcosmos.APIProperties{
 	// 			},
 	// 			EnableAnalyticalStorage: to.Ptr(true),
+	// 			EnableBurstCapacity: to.Ptr(true),
+	// 			EnablePriorityBasedExecution: to.Ptr(true),
+	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
 	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 	// 			},
@@ -782,22 +772,6 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
 	// 			NetworkACLBypassResourceIDs: []*string{
 	// 			},
-	// 			EnablePartitionMerge: to.Ptr(true),
-	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-	// 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-	// 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryFalse),
-	// 			},
-	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 			CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
-	// 				CapacityModeTransitionBeginTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:16.2747253Z"); return t}()),
-	// 				CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
-	// 				CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-	// 				CapacityModeTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-	// 				CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 				PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
-	// 			},
-	// 			EnableMaterializedViews: to.Ptr(false),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
@@ -812,12 +786,9 @@ func ExampleDatabaseAccountsClient_Get() {
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 	// 				},
 	// 			},
-	// 			EnablePriorityBasedExecution: to.Ptr(true),
-	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-	// 			EnableAllVersionsAndDeletesChangeFeed: to.Ptr(true),
-	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
-	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
+	// 			EnablePartitionMerge: to.Ptr(true),
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 		},
 	// 		Identity: &armcosmos.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -834,7 +805,7 @@ func ExampleDatabaseAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountListReadOnlyKeys_GetReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -853,21 +824,21 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientGetReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: &armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountList.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountList.json
 func ExampleDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -960,6 +931,10 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					APIProperties: &armcosmos.APIProperties{
 		// 					},
 		// 					EnableAnalyticalStorage: to.Ptr(true),
+		// 					EnableBurstCapacity: to.Ptr(true),
+		// 					EnablePriorityBasedExecution: to.Ptr(true),
+		// 					DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
+		// 					EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
 		// 					AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 		// 						SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 		// 					},
@@ -976,19 +951,6 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
 		// 					NetworkACLBypassResourceIDs: []*string{
 		// 					},
-		// 					EnablePartitionMerge: to.Ptr(true),
-		// 					EnableBurstCapacity: to.Ptr(true),
-		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
-		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
-		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:16.2747253Z"); return t}()),
-		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
-		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-		// 						CapacityModeTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
-		// 					},
-		// 					EnableMaterializedViews: to.Ptr(false),
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
@@ -1003,11 +965,9 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 		// 						},
 		// 					},
-		// 					EnablePriorityBasedExecution: to.Ptr(true),
-		// 					DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-		// 					EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
-		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
+		// 					EnablePartitionMerge: to.Ptr(true),
+		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		// 				},
 		// 				SystemData: &armcosmos.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
@@ -1030,14 +990,14 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListByResourceGroup.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountListByResourceGroup.json
 func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1112,31 +1072,10 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 					Cors: []*armcosmos.CorsPolicy{
 		// 					},
 		// 					EnableFreeTier: to.Ptr(false),
-		// 					InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-		// 					CreateMode: to.Ptr(armcosmos.CreateModeDefault),
 		// 					DefaultIdentity: to.Ptr("FirstPartyIdentity"),
-		// 					BackupPolicy: &armcosmos.PeriodicModeBackupPolicy{
-		// 						Type: to.Ptr(armcosmos.BackupPolicyTypePeriodic),
-		// 						PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
-		// 							BackupIntervalInMinutes: to.Ptr[int32](240),
-		// 							BackupRetentionIntervalInHours: to.Ptr[int32](720),
-		// 							BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
-		// 						},
-		// 					},
 		// 					NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassNone),
 		// 					NetworkACLBypassResourceIDs: []*string{
 		// 					},
-		// 					CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 					CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
-		// 						CapacityModeTransitionBeginTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:16.2747253Z"); return t}()),
-		// 						CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
-		// 						CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-		// 						CapacityModeTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-		// 						CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-		// 						PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
-		// 					},
-		// 					EnableMaterializedViews: to.Ptr(false),
-		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		// 					KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 		// 						PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
@@ -1151,11 +1090,8 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		// 							GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 		// 						},
 		// 					},
-		// 					ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
-		// 					ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
-		// 				},
-		// 				SystemData: &armcosmos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+		// 					EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+		// 					MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		// 				},
 		// 				Identity: &armcosmos.ManagedServiceIdentity{
 		// 					Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -1175,7 +1111,7 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListConnectionStrings.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountListConnectionStrings.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1194,20 +1130,20 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: &armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
-	// 				Type: to.Ptr(armcosmos.TypeSQL),
-	// 				Description: to.Ptr("Primary SQL Connection String"),
 	// 				ConnectionString: to.Ptr("connection-string"),
+	// 				Description: to.Ptr("Primary SQL Connection String"),
 	// 				KeyKind: to.Ptr(armcosmos.KindPrimary),
+	// 				Type: to.Ptr(armcosmos.TypeSQL),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountListConnectionStringsMongo.json
 func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccountListConnectionStringsMongo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1226,18 +1162,18 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListConnectionStringsResponse{
-	// 	DatabaseAccountListConnectionStringsResult: &armcosmos.DatabaseAccountListConnectionStringsResult{
+	// 	DatabaseAccountListConnectionStringsResult: armcosmos.DatabaseAccountListConnectionStringsResult{
 	// 		ConnectionStrings: []*armcosmos.DatabaseAccountConnectionString{
 	// 			{
-	// 				Description: to.Ptr("Name of the connection string"),
 	// 				ConnectionString: to.Ptr("connection-string"),
+	// 				Description: to.Ptr("Name of the connection string"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListKeys.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountListKeys.json
 func ExampleDatabaseAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1256,16 +1192,16 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListKeysResponse{
-	// 	DatabaseAccountListKeysResult: &armcosmos.DatabaseAccountListKeysResult{
+	// 	DatabaseAccountListKeysResult: armcosmos.DatabaseAccountListKeysResult{
 	// 		PrimaryMasterKey: to.Ptr("primaryMasterKey"),
-	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryMasterKey: to.Ptr("secondaryMasterKey"),
+	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGetMetricDefinitions.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountGetMetricDefinitions.json
 func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1291,27 +1227,27 @@ func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 		// 	MetricDefinitionsListResult: armcosmos.MetricDefinitionsListResult{
 		// 		Value: []*armcosmos.MetricDefinition{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 					Value: to.Ptr("Total Requests"),
-		// 				},
 		// 				MetricAvailabilities: []*armcosmos.MetricAvailability{
 		// 					{
-		// 						Retention: to.Ptr("P2D"),
 		// 						TimeGrain: to.Ptr("PT5M"),
+		// 						Retention: to.Ptr("P2D"),
 		// 					},
 		// 					{
-		// 						Retention: to.Ptr("P14D"),
 		// 						TimeGrain: to.Ptr("PT1H"),
+		// 						Retention: to.Ptr("P14D"),
 		// 					},
 		// 					{
-		// 						Retention: to.Ptr("P60D"),
 		// 						TimeGrain: to.Ptr("P1D"),
+		// 						Retention: to.Ptr("P60D"),
 		// 					},
 		// 				},
 		// 				PrimaryAggregationType: to.Ptr(armcosmos.PrimaryAggregationTypeTotal),
-		// 				ResourceURI: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 				ResourceURI: to.Ptr("/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Total Requests"),
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -1319,7 +1255,7 @@ func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGetMetrics.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountGetMetrics.json
 func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1330,7 +1266,7 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricsPager("rg1", "ddb1", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricsPager("rg1", "ddb1", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1345,40 +1281,40 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 		// 	MetricListResult: armcosmos.MetricListResult{
 		// 		Value: []*armcosmos.Metric{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 					Value: to.Ptr("Total Requests"),
-		// 				},
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				MetricValues: []*armcosmos.MetricValue{
 		// 					{
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:58:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:03:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:08:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Total Requests"),
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -1386,7 +1322,7 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountListReadOnlyKeys.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountListReadOnlyKeys.json
 func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1405,14 +1341,14 @@ func ExampleDatabaseAccountsClient_ListReadOnlyKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientListReadOnlyKeysResponse{
-	// 	DatabaseAccountListReadOnlyKeysResult: &armcosmos.DatabaseAccountListReadOnlyKeysResult{
+	// 	DatabaseAccountListReadOnlyKeysResult: armcosmos.DatabaseAccountListReadOnlyKeysResult{
 	// 		PrimaryReadonlyMasterKey: to.Ptr("primaryReadonlyMasterKey"),
 	// 		SecondaryReadonlyMasterKey: to.Ptr("secondaryReadonlyMasterKey"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountGetUsages.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountGetUsages.json
 func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1424,7 +1360,7 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	pager := clientFactory.NewDatabaseAccountsClient().NewListUsagesPager("rg1", "ddb1", &armcosmos.DatabaseAccountsClientListUsagesOptions{
-		Filter: to.Ptr("$filter=name.value eq 'Storage'")})
+		Filter: to.Ptr("name.value eq 'Storage'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1439,14 +1375,14 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 		// 	UsagesResult: armcosmos.UsagesResult{
 		// 		Value: []*armcosmos.Usage{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Storage"),
-		// 					Value: to.Ptr("Storage"),
-		// 				},
-		// 				CurrentValue: to.Ptr[int64](0),
-		// 				Limit: to.Ptr[int64](10737418240),
-		// 				QuotaPeriod: to.Ptr("P1D"),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
+		// 				QuotaPeriod: to.Ptr("P1D"),
+		// 				Limit: to.Ptr[int64](10737418240),
+		// 				CurrentValue: to.Ptr[int64](0),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Storage"),
+		// 					LocalizedValue: to.Ptr("Storage"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -1454,7 +1390,7 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountOfflineRegion.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountOfflineRegion.json
 func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1473,7 +1409,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1482,7 +1418,7 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountOnlineRegion.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountOnlineRegion.json
 func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1501,7 +1437,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1510,7 +1446,7 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountRegenerateKey.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountRegenerateKey.json
 func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1529,7 +1465,7 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1538,14 +1474,14 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBDatabaseAccountPatch.json
+// Generated from example definition: 2026-03-15/CosmosDBDatabaseAccountPatch.json
 func ExampleDatabaseAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -1581,9 +1517,13 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 				MaxIntervalInSeconds:    to.Ptr[int32](10),
 				MaxStalenessPrefix:      to.Ptr[int64](200),
 			},
-			DefaultIdentity:         to.Ptr("FirstPartyIdentity"),
-			EnableFreeTier:          to.Ptr(false),
-			EnableAnalyticalStorage: to.Ptr(true),
+			DefaultIdentity:                      to.Ptr("FirstPartyIdentity"),
+			EnableFreeTier:                       to.Ptr(false),
+			EnableAnalyticalStorage:              to.Ptr(true),
+			EnableBurstCapacity:                  to.Ptr(true),
+			EnablePriorityBasedExecution:         to.Ptr(true),
+			DefaultPriorityLevel:                 to.Ptr(armcosmos.DefaultPriorityLevelLow),
+			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 			},
@@ -1592,7 +1532,7 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
 					BackupIntervalInMinutes:        to.Ptr[int32](240),
 					BackupRetentionIntervalInHours: to.Ptr[int32](720),
-					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+					BackupStorageRedundancy:        to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 				},
 			},
 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassAzureServices),
@@ -1602,16 +1542,9 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 			Capacity: &armcosmos.Capacity{
 				TotalThroughputLimit: to.Ptr[int32](2000),
 			},
-			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
-			},
-			EnablePartitionMerge:                 to.Ptr(true),
-			EnableBurstCapacity:                  to.Ptr(true),
-			MinimalTLSVersion:                    to.Ptr(armcosmos.MinimalTLSVersionTLS),
-			EnablePriorityBasedExecution:         to.Ptr(true),
-			DefaultPriorityLevel:                 to.Ptr(armcosmos.DefaultPriorityLevelLow),
-			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
+			EnablePartitionMerge:                       to.Ptr(true),
+			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+			MinimalTLSVersion:                          to.Ptr(armcosmos.MinimalTLSVersionTLS),
 		},
 	}, nil)
 	if err != nil {
@@ -1619,13 +1552,13 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.DatabaseAccountsClientUpdateResponse{
-	// 	DatabaseAccountGetResults: &armcosmos.DatabaseAccountGetResults{
+	// 	DatabaseAccountGetResults: armcosmos.DatabaseAccountGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1"),
 	// 		Name: to.Ptr("ddb1"),
 	// 		Location: to.Ptr("West US"),
@@ -1641,7 +1574,7 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 			UserAssignedIdentities: map[string]*armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 				"/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1": &armcosmos.ManagedServiceIdentityUserAssignedIdentities{
 	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
-	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 					PrincipalID: to.Ptr("33e01921-4d64-4f8c-a055-5bdaffd5e33d"),
 	// 				},
 	// 			},
 	// 		},
@@ -1698,8 +1631,6 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 					FailoverPriority: to.Ptr[int32](0),
 	// 				},
 	// 			},
-	// 			Cors: []*armcosmos.CorsPolicy{
-	// 			},
 	// 			VirtualNetworkRules: []*armcosmos.VirtualNetworkRule{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/subId/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
@@ -1720,13 +1651,16 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Cors: []*armcosmos.CorsPolicy{
+	// 			},
 	// 			DefaultIdentity: to.Ptr("FirstPartyIdentity"),
 	// 			EnableFreeTier: to.Ptr(false),
 	// 			APIProperties: &armcosmos.APIProperties{
 	// 			},
 	// 			EnableAnalyticalStorage: to.Ptr(true),
-	// 			InstanceID: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-	// 			CreateMode: to.Ptr(armcosmos.CreateModeDefault),
+	// 			EnableBurstCapacity: to.Ptr(true),
+	// 			EnablePriorityBasedExecution: to.Ptr(true),
+	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
 	// 			AnalyticalStorageConfiguration: &armcosmos.AnalyticalStorageConfiguration{
 	// 				SchemaType: to.Ptr(armcosmos.AnalyticalStorageSchemaTypeWellDefined),
 	// 			},
@@ -1735,7 +1669,7 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 				PeriodicModeProperties: &armcosmos.PeriodicModeProperties{
 	// 					BackupIntervalInMinutes: to.Ptr[int32](240),
 	// 					BackupRetentionIntervalInHours: to.Ptr[int32](720),
-	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyGeo),
+	// 					BackupStorageRedundancy: to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 	// 				},
 	// 			},
 	// 			NetworkACLBypass: to.Ptr(armcosmos.NetworkACLBypassAzureServices),
@@ -1745,21 +1679,6 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 			Capacity: &armcosmos.Capacity{
 	// 				TotalThroughputLimit: to.Ptr[int32](2000),
 	// 			},
-	// 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
-	// 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
-	// 			},
-	// 			CapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 			CapacityModeChangeTransitionState: &armcosmos.CapacityModeChangeTransitionState{
-	// 				CapacityModeTransitionBeginTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:16.2747253Z"); return t}()),
-	// 				CapacityModeTransitionStatus: to.Ptr(armcosmos.CapacityModeTransitionStatusCompleted),
-	// 				CapacityModeLastSuccessfulTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-	// 				CapacityModeTransitionEndTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-24T03:02:18.8758329Z"); return t}()),
-	// 				CurrentCapacityMode: to.Ptr(armcosmos.CapacityModeProvisioned),
-	// 				PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
-	// 			},
-	// 			EnableMaterializedViews: to.Ptr(false),
-	// 			EnableBurstCapacity: to.Ptr(true),
-	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 			KeysMetadata: &armcosmos.DatabaseAccountKeysMetadata{
 	// 				PrimaryMasterKey: &armcosmos.AccountKeyMetadata{
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
@@ -1774,14 +1693,9 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 					GenerationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-25T20:30:11Z"); return t}()),
 	// 				},
 	// 			},
-	// 			EnablePriorityBasedExecution: to.Ptr(true),
-	// 			DefaultPriorityLevel: to.Ptr(armcosmos.DefaultPriorityLevelLow),
-	// 			EnablePerRegionPerPartitionAutoscale: to.Ptr(true),
-	// 			ThroughputPoolDedicatedRUs: to.Ptr[int64](300000),
-	// 			ThroughputPoolMaxConsumableRUs: to.Ptr[int64](700000),
-	// 		},
-	// 		SystemData: &armcosmos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+	// 			EnablePartitionMerge: to.Ptr(true),
+	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
+	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),
 	// 		},
 	// 	},
 	// }

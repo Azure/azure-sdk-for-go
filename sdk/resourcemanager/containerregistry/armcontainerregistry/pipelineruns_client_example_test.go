@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunCreate_Export.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunCreate_Export.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,13 +43,13 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.PipelineRunsClientCreateResponse{
-	// 	PipelineRun: &armcontainerregistry.PipelineRun{
+	// 	PipelineRun: armcontainerregistry.PipelineRun{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/pipelineRuns/myPipelineRun"),
 	// 		Name: to.Ptr("myPipelineRun"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/pipelineRuns"),
@@ -81,7 +81,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunCreate_Import.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunCreate_Import.json
 func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,13 +110,13 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.PipelineRunsClientCreateResponse{
-	// 	PipelineRun: &armcontainerregistry.PipelineRun{
+	// 	PipelineRun: armcontainerregistry.PipelineRun{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/pipelineRuns/myPipelineRun"),
 	// 		Name: to.Ptr("myPipelineRun"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/pipelineRuns"),
@@ -148,7 +148,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunDelete.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunDelete.json
 func ExamplePipelineRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExamplePipelineRunsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -174,7 +174,7 @@ func ExamplePipelineRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunGet.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunGet.json
 func ExamplePipelineRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExamplePipelineRunsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.PipelineRunsClientGetResponse{
-	// 	PipelineRun: &armcontainerregistry.PipelineRun{
+	// 	PipelineRun: armcontainerregistry.PipelineRun{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/pipelineRuns/myPipelineRun"),
 	// 		Name: to.Ptr("myPipelineRun"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/pipelineRuns"),
@@ -225,7 +225,7 @@ func ExamplePipelineRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PipelineRunList.json
+// Generated from example definition: 2026-03-01-preview/PipelineRunList.json
 func ExamplePipelineRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

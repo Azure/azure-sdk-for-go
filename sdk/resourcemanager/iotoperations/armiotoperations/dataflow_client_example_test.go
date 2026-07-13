@@ -87,13 +87,13 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateComplexCont
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowClientCreateOrUpdateResponse{
-	// 	DataflowResource: &armiotoperations.DataflowResource{
+	// 	DataflowResource: armiotoperations.DataflowResource{
 	// 		Properties: &armiotoperations.DataflowProperties{
 	// 			Mode: to.Ptr(armiotoperations.OperationalModeEnabled),
 	// 			Operations: []*armiotoperations.DataflowOperation{
@@ -275,13 +275,13 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateComplexEven
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowClientCreateOrUpdateResponse{
-	// 	DataflowResource: &armiotoperations.DataflowResource{
+	// 	DataflowResource: armiotoperations.DataflowResource{
 	// 		Properties: &armiotoperations.DataflowProperties{
 	// 			Mode: to.Ptr(armiotoperations.OperationalModeEnabled),
 	// 			Operations: []*armiotoperations.DataflowOperation{
@@ -426,13 +426,13 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateFilterToTop
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowClientCreateOrUpdateResponse{
-	// 	DataflowResource: &armiotoperations.DataflowResource{
+	// 	DataflowResource: armiotoperations.DataflowResource{
 	// 		Properties: &armiotoperations.DataflowProperties{
 	// 			Mode: to.Ptr(armiotoperations.OperationalModeEnabled),
 	// 			Operations: []*armiotoperations.DataflowOperation{
@@ -583,13 +583,13 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowClientCreateOrUpdateResponse{
-	// 	DataflowResource: &armiotoperations.DataflowResource{
+	// 	DataflowResource: armiotoperations.DataflowResource{
 	// 		Properties: &armiotoperations.DataflowProperties{
 	// 			Mode: to.Ptr(armiotoperations.OperationalModeEnabled),
 	// 			RequestDiskPersistence: to.Ptr(armiotoperations.OperationalModeDisabled),
@@ -714,13 +714,13 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateSimpleEvent
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowClientCreateOrUpdateResponse{
-	// 	DataflowResource: &armiotoperations.DataflowResource{
+	// 	DataflowResource: armiotoperations.DataflowResource{
 	// 		Properties: &armiotoperations.DataflowProperties{
 	// 			Mode: to.Ptr(armiotoperations.OperationalModeEnabled),
 	// 			Operations: []*armiotoperations.DataflowOperation{
@@ -816,13 +816,13 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateSimpleFabri
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowClientCreateOrUpdateResponse{
-	// 	DataflowResource: &armiotoperations.DataflowResource{
+	// 	DataflowResource: armiotoperations.DataflowResource{
 	// 		Properties: &armiotoperations.DataflowProperties{
 	// 			Mode: to.Ptr(armiotoperations.OperationalModeEnabled),
 	// 			Operations: []*armiotoperations.DataflowOperation{
@@ -890,7 +890,7 @@ func ExampleDataflowClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -913,7 +913,7 @@ func ExampleDataflowClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.DataflowClientGetResponse{
-	// 	DataflowResource: &armiotoperations.DataflowResource{
+	// 	DataflowResource: armiotoperations.DataflowResource{
 	// 		Properties: &armiotoperations.DataflowProperties{
 	// 			Mode: to.Ptr(armiotoperations.OperationalModeEnabled),
 	// 			Operations: []*armiotoperations.DataflowOperation{

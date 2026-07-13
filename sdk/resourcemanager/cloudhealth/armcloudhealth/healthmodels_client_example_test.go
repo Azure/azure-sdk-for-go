@@ -12,120 +12,101 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Create.json
+// Generated from example definition: 2026-05-01-preview/HealthModels_Create.json
 func ExampleHealthModelsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewHealthModelsClient().BeginCreate(ctx, "rgopenapi", "model1", armcloudhealth.HealthModel{
-		Properties: &armcloudhealth.HealthModelProperties{
-			Discovery: &armcloudhealth.ModelDiscoverySettings{
-				Scope:                 to.Ptr("/providers/Microsoft.Management/serviceGroups/myServiceGroup"),
-				Identity:              to.Ptr("SystemAssigned"),
-				AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
-			},
-		},
+	poller, err := clientFactory.NewHealthModelsClient().BeginCreate(ctx, "online-store-rg", "online-store", armcloudhealth.HealthModel{
+		Properties: &armcloudhealth.HealthModelProperties{},
 		Identity: &armcloudhealth.ManagedServiceIdentity{
-			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
-			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": {},
-			},
+			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Tags: map[string]*string{
-			"key2961": to.Ptr("hbljozzkqrpcthsjtfkyozpwyx"),
+			"environment": to.Ptr("production"),
+			"team":        to.Ptr("online-store"),
 		},
-		Location: to.Ptr("eastus2"),
+		Location: to.Ptr("eastus"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.HealthModelsClientCreateResponse{
-	// 	HealthModel: &armcloudhealth.HealthModel{
+	// 	HealthModel: armcloudhealth.HealthModel{
 	// 		Properties: &armcloudhealth.HealthModelProperties{
-	// 			DataplaneEndpoint: to.Ptr("https://model1-23dfkljdf.eastus2.healthmodels.azure.com"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			Discovery: &armcloudhealth.ModelDiscoverySettings{
-	// 				Scope: to.Ptr("/providers/Microsoft.Management/serviceGroups/myServiceGroup"),
-	// 				Identity: to.Ptr("SystemAssigned"),
-	// 				AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
-	// 			},
 	// 		},
 	// 		Identity: &armcloudhealth.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a1"),
-	// 			TenantID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
-	// 			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-	// 				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": &armcloudhealth.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 					ClientID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 				},
-	// 			},
+	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2961": to.Ptr("hbljozzkqrpcthsjtfkyozpwyx"),
+	// 			"environment": to.Ptr("production"),
+	// 			"team": to.Ptr("online-store"),
 	// 		},
-	// 		Location: to.Ptr("eastus2"),
-	// 		ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.CloudHealth/healthmodels/model1"),
-	// 		Name: to.Ptr("model1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store"),
+	// 		Name: to.Ptr("online-store"),
 	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("arz"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Delete.json
+// Generated from example definition: 2026-05-01-preview/HealthModels_Delete.json
 func ExampleHealthModelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewHealthModelsClient().BeginDelete(ctx, "rgopenapi", "model1", nil)
+	poller, err := clientFactory.NewHealthModelsClient().BeginDelete(ctx, "online-store-rg", "online-store", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Get.json
+// Generated from example definition: 2026-05-01-preview/HealthModels_Get.json
 func ExampleHealthModelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewHealthModelsClient().Get(ctx, "rgopenapi", "myHealthModel", nil)
+	res, err := clientFactory.NewHealthModelsClient().Get(ctx, "online-store-rg", "online-store", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -133,57 +114,47 @@ func ExampleHealthModelsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.HealthModelsClientGetResponse{
-	// 	HealthModel: &armcloudhealth.HealthModel{
+	// 	HealthModel: armcloudhealth.HealthModel{
 	// 		Properties: &armcloudhealth.HealthModelProperties{
-	// 			DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			Discovery: &armcloudhealth.ModelDiscoverySettings{
-	// 				Scope: to.Ptr("/providers/Microsoft.Management/serviceGroups/myServiceGroup"),
-	// 				AddRecommendedSignals: to.Ptr(armcloudhealth.DiscoveryRuleRecommendedSignalsBehaviorEnabled),
-	// 			},
 	// 		},
 	// 		Identity: &armcloudhealth.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a1"),
-	// 			TenantID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
-	// 			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-	// 				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": &armcloudhealth.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 					ClientID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 				},
-	// 			},
+	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2961": to.Ptr("hbljozzkqrpcthsjtfkyozpwyx"),
+	// 			"environment": to.Ptr("production"),
+	// 			"team": to.Ptr("online-store"),
 	// 		},
-	// 		Location: to.Ptr("eastus2"),
-	// 		ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.CloudHealth/healthmodels/myHealthModel"),
-	// 		Name: to.Ptr("myHealthModel"),
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store"),
+	// 		Name: to.Ptr("online-store"),
 	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("arz"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_ListByResourceGroup.json
+// Generated from example definition: 2026-05-01-preview/HealthModels_ListByResourceGroup.json
 func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewHealthModelsClient().NewListByResourceGroupPager("rgopenapi", nil)
+	pager := clientFactory.NewHealthModelsClient().NewListByResourceGroupPager("online-store-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -199,51 +170,74 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 		// 		Value: []*armcloudhealth.HealthModel{
 		// 			{
 		// 				Properties: &armcloudhealth.HealthModelProperties{
-		// 					DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 		// 				},
 		// 				Identity: &armcloudhealth.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a1"),
-		// 					TenantID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-		// 					Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
+		// 					Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 					"team": to.Ptr("online-store"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store"),
+		// 				Name: to.Ptr("online-store"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.HealthModelProperties{
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 				},
+		// 				Identity: &armcloudhealth.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeUserAssigned),
 		// 					UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-		// 						"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": &armcloudhealth.UserAssignedIdentity{
-		// 							PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-		// 							ClientID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
+		// 						"/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/online-store-identity": &armcloudhealth.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+		// 							ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
 		// 						},
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2961": to.Ptr("hbljozzkqrpcthsjtfkyozpwyx"),
+		// 					"environment": to.Ptr("staging"),
+		// 					"team": to.Ptr("online-store"),
 		// 				},
-		// 				Location: to.Ptr("eastus2"),
-		// 				ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.CloudHealth/healthmodels/mproankhtrzzlpeqhwwsiibjcv"),
-		// 				Name: to.Ptr("ledqwyacixdfszgsxnsxggonrwk"),
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store-staging"),
+		// 				Name: to.Ptr("online-store-staging"),
 		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
 		// 				SystemData: &armcloudhealth.SystemData{
-		// 					CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("arz"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_ListBySubscription.json
+// Generated from example definition: 2026-05-01-preview/HealthModels_ListBySubscription.json
 func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -263,63 +257,82 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 		// 		Value: []*armcloudhealth.HealthModel{
 		// 			{
 		// 				Properties: &armcloudhealth.HealthModelProperties{
-		// 					DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 		// 				},
 		// 				Identity: &armcloudhealth.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-		// 					TenantID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-		// 					Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
+		// 					Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 					"team": to.Ptr("online-store"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store"),
+		// 				Name: to.Ptr("online-store"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.HealthModelProperties{
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 				},
+		// 				Identity: &armcloudhealth.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeUserAssigned),
 		// 					UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-		// 						"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": &armcloudhealth.UserAssignedIdentity{
-		// 							PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a1"),
-		// 							ClientID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
+		// 						"/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/online-store-identity": &armcloudhealth.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+		// 							ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
 		// 						},
 		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
-		// 					"key2961": to.Ptr("hbljozzkqrpcthsjtfkyozpwyx"),
+		// 					"environment": to.Ptr("staging"),
+		// 					"team": to.Ptr("online-store"),
 		// 				},
-		// 				Location: to.Ptr("eastus2"),
-		// 				ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/MyResourceGroup/providers/Microsoft.CloudHealth/healthmodels/mproankhtrzzlpeqhwwsiibjcv"),
-		// 				Name: to.Ptr("mproankhtrzzlpeqhwwsiibjcv"),
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store-staging"),
+		// 				Name: to.Ptr("online-store-staging"),
 		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
 		// 				SystemData: &armcloudhealth.SystemData{
-		// 					CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("arz"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/HealthModels_Update.json
+// Generated from example definition: 2026-05-01-preview/HealthModels_Update.json
 func ExampleHealthModelsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewHealthModelsClient().BeginUpdate(ctx, "rgopenapi", "model1", armcloudhealth.HealthModelUpdate{
-		Identity: &armcloudhealth.ManagedServiceIdentity{
-			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
-			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": {},
-			},
-		},
+	poller, err := clientFactory.NewHealthModelsClient().BeginUpdate(ctx, "online-store-rg", "online-store", armcloudhealth.HealthModelUpdate{
 		Tags: map[string]*string{
-			"key21": to.Ptr("menfkmseplchh"),
+			"environment": to.Ptr("production"),
+			"team":        to.Ptr("online-store"),
+			"tier":        to.Ptr("gold"),
 		},
 	}, nil)
 	if err != nil {
@@ -327,42 +340,37 @@ func ExampleHealthModelsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.HealthModelsClientUpdateResponse{
-	// 	HealthModel: &armcloudhealth.HealthModel{
+	// 	HealthModel: armcloudhealth.HealthModel{
 	// 		Properties: &armcloudhealth.HealthModelProperties{
-	// 			DataplaneEndpoint: to.Ptr("https://mymodel123.healthmodels.azure.com"),
 	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 		},
 	// 		Identity: &armcloudhealth.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 			TenantID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
-	// 			UserAssignedIdentities: map[string]*armcloudhealth.UserAssignedIdentity{
-	// 				"/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ua1": &armcloudhealth.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a1"),
-	// 					ClientID: to.Ptr("b3f9c5a0-7c5b-4a5a-8b7a-3b5fddc1b0a0"),
-	// 				},
-	// 			},
+	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 		},
 	// 		Tags: map[string]*string{
-	// 			"key2961": to.Ptr("hbljozzkqrpcthsjtfkyozpwyx"),
+	// 			"environment": to.Ptr("production"),
+	// 			"team": to.Ptr("online-store"),
+	// 			"tier": to.Ptr("gold"),
 	// 		},
-	// 		Location: to.Ptr("eastus2"),
-	// 		ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.CloudHealth/healthmodels/model1"),
-	// 		Name: to.Ptr("model1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store"),
+	// 		Name: to.Ptr("online-store"),
 	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("arz"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }

@@ -66,25 +66,25 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "EnterpriseMccCacheNodesOperationsClient":
-		initServer(s, &s.trEnterpriseMccCacheNodesOperationsServer, func() *EnterpriseMccCacheNodesOperationsServerTransport {
+		initServer(&s.trMu, &s.trEnterpriseMccCacheNodesOperationsServer, func() *EnterpriseMccCacheNodesOperationsServerTransport {
 			return NewEnterpriseMccCacheNodesOperationsServerTransport(&s.srv.EnterpriseMccCacheNodesOperationsServer)
 		})
 		resp, err = s.trEnterpriseMccCacheNodesOperationsServer.Do(req)
 	case "EnterpriseMccCustomersClient":
-		initServer(s, &s.trEnterpriseMccCustomersServer, func() *EnterpriseMccCustomersServerTransport {
+		initServer(&s.trMu, &s.trEnterpriseMccCustomersServer, func() *EnterpriseMccCustomersServerTransport {
 			return NewEnterpriseMccCustomersServerTransport(&s.srv.EnterpriseMccCustomersServer)
 		})
 		resp, err = s.trEnterpriseMccCustomersServer.Do(req)
 	case "IspCacheNodesOperationsClient":
-		initServer(s, &s.trIspCacheNodesOperationsServer, func() *IspCacheNodesOperationsServerTransport {
+		initServer(&s.trMu, &s.trIspCacheNodesOperationsServer, func() *IspCacheNodesOperationsServerTransport {
 			return NewIspCacheNodesOperationsServerTransport(&s.srv.IspCacheNodesOperationsServer)
 		})
 		resp, err = s.trIspCacheNodesOperationsServer.Do(req)
 	case "IspCustomersClient":
-		initServer(s, &s.trIspCustomersServer, func() *IspCustomersServerTransport { return NewIspCustomersServerTransport(&s.srv.IspCustomersServer) })
+		initServer(&s.trMu, &s.trIspCustomersServer, func() *IspCustomersServerTransport { return NewIspCustomersServerTransport(&s.srv.IspCustomersServer) })
 		resp, err = s.trIspCustomersServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -95,12 +95,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

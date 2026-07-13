@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/QueueServicesGet.json
+// Generated from example definition: 2026-04-01/QueueServicesGet.json
 func ExampleQueueServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleQueueServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/QueueServicesList.json
+// Generated from example definition: 2026-04-01/QueueServicesList.json
 func ExampleQueueServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleQueueServicesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/QueueServicesPut.json
+// Generated from example definition: 2026-04-01/QueueServicesPut.json
 func ExampleQueueServicesClient_SetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

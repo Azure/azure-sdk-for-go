@@ -29,7 +29,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -52,7 +52,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnectionResource: &armhorizondb.PrivateEndpointConnectionResource{
+	// 	PrivateEndpointConnectionResource: armhorizondb.PrivateEndpointConnectionResource{
 	// 		Name: to.Ptr("exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateEndpointConnections/exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
@@ -167,13 +167,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.PrivateEndpointConnectionsClientUpdateResponse{
-	// 	PrivateEndpointConnection: &armhorizondb.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armhorizondb.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/privateEndpointConnections/exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Name: to.Ptr("exampleprivateendpointconnection.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/privateEndpointConnections"),

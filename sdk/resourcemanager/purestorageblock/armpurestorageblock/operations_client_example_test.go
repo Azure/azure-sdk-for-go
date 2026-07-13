@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-01/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-01-01-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,25 +37,25 @@ func ExampleOperationsClient_NewListPager_operationsList() {
 		// 	OperationListResult: armpurestorageblock.OperationListResult{
 		// 		Value: []*armpurestorageblock.Operation{
 		// 			{
-		// 				Name: to.Ptr("wikaab"),
-		// 				IsDataAction: to.Ptr(true),
+		// 				Name: to.Ptr("PureStorage.Block/storagePools/read"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armpurestorageblock.OperationDisplay{
-		// 					Provider: to.Ptr("oqlfyrrvbitoadnqagqkgxylxkow"),
-		// 					Resource: to.Ptr("dxeqyes"),
-		// 					Operation: to.Ptr("mk"),
-		// 					Description: to.Ptr("zcgnhznothktczdlyovbbjwnxep"),
+		// 					Provider: to.Ptr("Pure Storage"),
+		// 					Resource: to.Ptr("Storage Pools"),
+		// 					Operation: to.Ptr("Read Storage Pools"),
+		// 					Description: to.Ptr("Gets a list of storage pools or gets details of a storage pool"),
 		// 				},
 		// 				Origin: to.Ptr(armpurestorageblock.OriginUser),
 		// 				ActionType: to.Ptr(armpurestorageblock.ActionTypeInternal),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2024-11-01/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-01-01-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumGenSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

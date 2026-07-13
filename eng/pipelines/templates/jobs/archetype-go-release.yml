@@ -22,6 +22,7 @@ stages:
           image: $(LINUXVMIMAGE)
           os: linux
         steps:
+          - template: /eng/common/pipelines/templates/steps/login-to-github.yml
           - task: PowerShell@2
             name: Verify
             inputs:
@@ -40,15 +41,38 @@ stages:
                   -workingDirectory $(System.DefaultWorkingDirectory)
               pwsh: true
             env:
-              GH_TOKEN: $(azuresdk-github-pat)
+              GH_TOKEN: $(GH_TOKEN)
+
+  # On a post-merge main CI build, resolve the merged PR and require the 'auto-release' label plus a
+  # direct change to this pipeline's package before releasing. Manual/scheduled runs skip this stage
+  # and keep releasing on the changelog/tag gate alone.
+  - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+    - template: /eng/common/pipelines/templates/stages/archetype-auto-release-prepare.yml
+      parameters:
+        DependsOn: ${{ parameters.DependsOn }}
+        Artifacts:
+          - ${{ if startsWith(parameters.ServiceDirectory, '../') }}:
+              name: ${{ replace(parameters.ServiceDirectory, '../', '') }}
+              safeName: ${{ replace(replace(parameters.ServiceDirectory, '../', ''), '/', '_') }}
+          - ${{ else }}:
+              name: sdk/${{ parameters.ServiceDirectory }}
+              safeName: ${{ replace(parameters.ServiceDirectory, '/', '_') }}
 
   - stage: Release
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
       - template: /eng/pipelines/templates/variables/image.yml
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
-    dependsOn: CheckRelease
-    condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
+    # On post-merge main CI, also require the auto-release label + changed-package signal from
+    # AutoReleasePrepare. Manual/scheduled runs release on the changelog/tag gate alone.
+    ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+      dependsOn:
+        - CheckRelease
+        - AutoReleasePrepare
+      condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'), eq(dependencies.AutoReleasePrepare.outputs['ResolveAutoReleasePackages.resolve.AutoReleaseLabelPresent'], 'true'), eq(dependencies.AutoReleasePrepare.outputs['ResolveAutoReleasePackages.resolve.HasAutoReleaseArtifacts'], 'true'))
+    ${{ else }}:
+      dependsOn: CheckRelease
+      condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
     jobs:
       - deployment: ReleaseGate
         environment: package-publish
@@ -123,6 +147,7 @@ stages:
               ReleaseSha: $(Build.SourceVersion)
               RepoId: Azure/azure-sdk-for-go
               WorkingDirectory: $(System.DefaultWorkingDirectory)
+              AuthToken: ''
           - download: current
             artifact: 'packages'
           - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
@@ -175,3 +200,4 @@ stages:
                 CommitMsg: "Increment package version after release of ${{ parameters.ServiceDirectory }}"
                 PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
                 CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                AuthToken: ''

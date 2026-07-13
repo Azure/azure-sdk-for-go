@@ -53,7 +53,7 @@ func ExampleRunsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RunsClientGetResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/runs"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),
@@ -125,7 +125,7 @@ func ExampleRunsClient_GetLogSasURL() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RunsClientGetLogSasURLResponse{
-	// 	RunGetLogResult: &armcontainerregistrytasks.RunGetLogResult{
+	// 	RunGetLogResult: armcontainerregistrytasks.RunGetLogResult{
 	// 		LogLink: to.Ptr("https://registrystorageaccount.blob.core.windows.net/sascontainer/logs/0accec26-d6de-4757-8e74-d080f38eaaab/rawtext.log?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
 	// 	},
 	// }
@@ -235,7 +235,7 @@ func ExampleRunsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.RunsClientUpdateResponse{
-	// 	Run: &armcontainerregistrytasks.Run{
+	// 	Run: armcontainerregistrytasks.Run{
 	// 		Name: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/runs"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/runs/0accec26-d6de-4757-8e74-d080f38eaaab"),

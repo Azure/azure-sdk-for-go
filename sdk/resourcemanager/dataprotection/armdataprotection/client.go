@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2026-03-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //
 // Validates if a feature is supported
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - location - The name of the Azure region.
 //   - parameters - The request body
 //   - options - ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
@@ -86,8 +86,8 @@ func (client *Client) checkFeatureSupportCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

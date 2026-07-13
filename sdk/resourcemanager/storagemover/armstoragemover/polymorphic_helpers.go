@@ -16,20 +16,20 @@ func unmarshalEndpointBasePropertiesClassification(rawMsg json.RawMessage) (Endp
 	}
 	var b EndpointBasePropertiesClassification
 	switch m["endpointType"] {
+	case string(EndpointTypeAzureMultiCloudConnector):
+		b = &AzureMultiCloudConnectorEndpointProperties{}
 	case string(EndpointTypeAzureStorageBlobContainer):
 		b = &AzureStorageBlobContainerEndpointProperties{}
+	case string(EndpointTypeAzureStorageNfsFileShare):
+		b = &AzureStorageNfsFileShareEndpointProperties{}
+	case string(EndpointTypeAzureStorageSmbFileShare):
+		b = &AzureStorageSmbFileShareEndpointProperties{}
 	case string(EndpointTypeNfsMount):
 		b = &NfsMountEndpointProperties{}
 	case string(EndpointTypeS3WithHmac):
 		b = &S3WithHmacEndpointProperties{}
-	case string(EndpointTypeAzureStorageSmbFileShare):
-		b = &AzureStorageSmbFileShareEndpointProperties{}
 	case string(EndpointTypeSmbMount):
 		b = &SmbMountEndpointProperties{}
-	case string(EndpointTypeAzureStorageNfsFileShare):
-		b = &AzureStorageNfsFileShareEndpointProperties{}
-	case string(EndpointTypeAzureMultiCloudConnector):
-		b = &AzureMultiCloudConnectorEndpointProperties{}
 	default:
 		b = &EndpointBaseProperties{}
 	}
@@ -49,18 +49,18 @@ func unmarshalEndpointBaseUpdatePropertiesClassification(rawMsg json.RawMessage)
 	}
 	var b EndpointBaseUpdatePropertiesClassification
 	switch m["endpointType"] {
-	case string(EndpointTypeAzureStorageBlobContainer):
-		b = &AzureStorageBlobContainerEndpointUpdateProperties{}
-	case string(EndpointTypeS3WithHmac):
-		b = &S3WithHmacEndpointUpdateProperties{}
-	case string(EndpointTypeNfsMount):
-		b = &NfsMountEndpointUpdateProperties{}
-	case string(EndpointTypeAzureStorageSmbFileShare):
-		b = &AzureStorageSmbFileShareEndpointUpdateProperties{}
-	case string(EndpointTypeAzureStorageNfsFileShare):
-		b = &AzureStorageNfsFileShareEndpointUpdateProperties{}
 	case string(EndpointTypeAzureMultiCloudConnector):
 		b = &AzureMultiCloudConnectorEndpointUpdateProperties{}
+	case string(EndpointTypeAzureStorageBlobContainer):
+		b = &AzureStorageBlobContainerEndpointUpdateProperties{}
+	case string(EndpointTypeAzureStorageNfsFileShare):
+		b = &AzureStorageNfsFileShareEndpointUpdateProperties{}
+	case string(EndpointTypeAzureStorageSmbFileShare):
+		b = &AzureStorageSmbFileShareEndpointUpdateProperties{}
+	case string(EndpointTypeNfsMount):
+		b = &NfsMountEndpointUpdateProperties{}
+	case string(EndpointTypeS3WithHmac):
+		b = &S3WithHmacEndpointUpdateProperties{}
 	case string(EndpointTypeSmbMount):
 		b = &SmbMountEndpointUpdateProperties{}
 	default:

@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -121,9 +122,7 @@ func (b *BulkActionsServerTransport) Do(req *http.Request) (*http.Response, erro
 }
 
 func (b *BulkActionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -167,10 +166,7 @@ func (b *BulkActionsServerTransport) dispatchToMethodFake(req *http.Request, met
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -218,7 +214,7 @@ func (b *BulkActionsServerTransport) dispatchBeginCancel(req *http.Request) (*ht
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		b.beginCancel.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -270,7 +266,7 @@ func (b *BulkActionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		b.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -306,11 +302,7 @@ func (b *BulkActionsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		deleteInstancesUnescaped, err := url.QueryUnescape(qp.Get("deleteInstances"))
-		if err != nil {
-			return nil, err
-		}
-		deleteInstancesParam, err := parseOptional(deleteInstancesUnescaped, strconv.ParseBool)
+		deleteInstancesParam, err := parseOptional(qp.Get("deleteInstances"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -333,7 +325,7 @@ func (b *BulkActionsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		b.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -371,7 +363,7 @@ func (b *BulkActionsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LocationBasedLaunchBulkInstancesOperation, req)
@@ -404,7 +396,7 @@ func (b *BulkActionsServerTransport) dispatchGetOperationStatus(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).OperationStatusResult, req)
@@ -445,7 +437,7 @@ func (b *BulkActionsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		b.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -482,7 +474,7 @@ func (b *BulkActionsServerTransport) dispatchNewListBySubscriptionPager(req *htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		b.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -517,16 +509,8 @@ func (b *BulkActionsServerTransport) dispatchNewListVirtualMachinesPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam := getOptional(skiptokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		var options *armcomputebulkactions.BulkActionsClientListVirtualMachinesOptions
 		if filterParam != nil || skiptokenParam != nil {
 			options = &armcomputebulkactions.BulkActionsClientListVirtualMachinesOptions{
@@ -545,7 +529,7 @@ func (b *BulkActionsServerTransport) dispatchNewListVirtualMachinesPager(req *ht
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		b.newListVirtualMachinesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -578,7 +562,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesCancelOperations(req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CancelOperationsResponse, req)
@@ -611,7 +595,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteCreate(req *h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CreateResourceOperationResponse, req)
@@ -644,7 +628,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteDeallocate(re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeallocateResourceOperationResponse, req)
@@ -677,7 +661,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteDelete(req *h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeleteResourceOperationResponse, req)
@@ -710,7 +694,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteHibernate(req
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).HibernateResourceOperationResponse, req)
@@ -743,7 +727,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteStart(req *ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).StartResourceOperationResponse, req)
@@ -776,7 +760,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesGetOperationStatus(r
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GetOperationStatusResponse, req)

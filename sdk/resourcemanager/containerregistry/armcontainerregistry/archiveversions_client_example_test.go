@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionCreate.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionCreate.json
 func ExampleArchiveVersionsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,13 +28,13 @@ func ExampleArchiveVersionsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ArchiveVersionsClientCreateResponse{
-	// 	ArchiveVersion: &armcontainerregistry.ArchiveVersion{
+	// 	ArchiveVersion: armcontainerregistry.ArchiveVersion{
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/packages/archives/versions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/packages/rpm/archives/myArchiveName/versions/myArchiveVersionName"),
 	// 		Name: to.Ptr("myArchiveVersionName"),
@@ -45,7 +45,7 @@ func ExampleArchiveVersionsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionDelete.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionDelete.json
 func ExampleArchiveVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,11 +62,11 @@ func ExampleArchiveVersionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionGet.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionGet.json
 func ExampleArchiveVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleArchiveVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ArchiveVersionsClientGetResponse{
-	// 	ArchiveVersion: &armcontainerregistry.ArchiveVersion{
+	// 	ArchiveVersion: armcontainerregistry.ArchiveVersion{
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/packages/archives"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/packages/rpm/archives/myArchiveName/versions/myArchiveVersionName"),
 	// 		Name: to.Ptr("myArchiveName"),
@@ -105,7 +105,7 @@ func ExampleArchiveVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ArchiveVersionList.json
+// Generated from example definition: 2026-03-01-preview/ArchiveVersionList.json
 func ExampleArchiveVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

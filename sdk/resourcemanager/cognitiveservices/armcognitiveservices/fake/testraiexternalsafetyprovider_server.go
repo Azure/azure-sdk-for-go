@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // TestRaiExternalSafetyProviderServer is a fake server for instances of the armcognitiveservices.TestRaiExternalSafetyProviderClient type.
@@ -49,9 +50,7 @@ func (t *TestRaiExternalSafetyProviderServerTransport) Do(req *http.Request) (*h
 }
 
 func (t *TestRaiExternalSafetyProviderServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -67,10 +66,7 @@ func (t *TestRaiExternalSafetyProviderServerTransport) dispatchToMethodFake(req 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -112,7 +108,7 @@ func (t *TestRaiExternalSafetyProviderServerTransport) dispatchCreateOrUpdate(re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiExternalSafetyProviderSchema, req)

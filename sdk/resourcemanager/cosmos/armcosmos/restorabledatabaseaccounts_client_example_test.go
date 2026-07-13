@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableDatabaseAccountGet.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableDatabaseAccountGet.json
 func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,28 +30,28 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.RestorableDatabaseAccountsClientGetByLocationResponse{
-	// 	RestorableDatabaseAccountGetResult: &armcosmos.RestorableDatabaseAccountGetResult{
+	// 	RestorableDatabaseAccountGetResult: armcosmos.RestorableDatabaseAccountGetResult{
+	// 		ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 	// 		Name: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 	// 		Location: to.Ptr("West US"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 	// 		Properties: &armcosmos.RestorableDatabaseAccountProperties{
 	// 			AccountName: to.Ptr("ddb1"),
-	// 			APIType: to.Ptr(armcosmos.APITypeSQL),
 	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-11T21:56:15Z"); return t}()),
 	// 			DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
 	// 			OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09Z"); return t}()),
+	// 			APIType: to.Ptr(armcosmos.APITypeSQL),
 	// 			RestorableLocations: []*armcosmos.RestorableLocationResource{
 	// 				{
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
-	// 					DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 	// 					LocationName: to.Ptr("South Central US"),
 	// 					RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
+	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
+	// 					DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 	// 				},
 	// 				{
-	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 	// 					LocationName: to.Ptr("West US"),
 	// 					RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
+	// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 	// 				},
 	// 			},
 	// 		},
@@ -59,7 +59,7 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableDatabaseAccountNoLocationList.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableDatabaseAccountNoLocationList.json
 func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,52 +85,52 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 		// 	RestorableDatabaseAccountsListResult: armcosmos.RestorableDatabaseAccountsListResult{
 		// 		Value: []*armcosmos.RestorableDatabaseAccountGetResult{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 		// 				Name: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 		// 				Location: to.Ptr("West US"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
 		// 					AccountName: to.Ptr("ddb1"),
-		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-11T21:56:15Z"); return t}()),
 		// 					DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
-		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09Z"); return t}()),
+		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
-		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 							LocationName: to.Ptr("South Central US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
+		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 						},
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 							LocationName: to.Ptr("West US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 						},
 		// 					},
 		// 				},
 		// 			},
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
 		// 				Name: to.Ptr("4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
 		// 				Location: to.Ptr("East US"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
 		// 					AccountName: to.Ptr("ddb2"),
-		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18Z"); return t}()),
-		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09Z"); return t}()),
+		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18Z"); return t}()),
+		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
-		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 							LocationName: to.Ptr("South Central US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
+		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 						},
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 							LocationName: to.Ptr("West US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 						},
 		// 					},
 		// 				},
@@ -141,7 +141,7 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableDatabaseAccountList.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableDatabaseAccountList.json
 func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,52 +167,52 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 		// 	RestorableDatabaseAccountsListResult: armcosmos.RestorableDatabaseAccountsListResult{
 		// 		Value: []*armcosmos.RestorableDatabaseAccountGetResult{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 		// 				Name: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
 		// 				Location: to.Ptr("West US"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
 		// 					AccountName: to.Ptr("ddb1"),
-		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-11T21:56:15Z"); return t}()),
 		// 					DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
-		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09Z"); return t}()),
+		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-12T22:05:09Z"); return t}()),
+		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
-		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 							LocationName: to.Ptr("South Central US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
+		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 						},
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 							LocationName: to.Ptr("West US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 						},
 		// 					},
 		// 				},
 		// 			},
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
 		// 				Name: to.Ptr("4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
 		// 				Location: to.Ptr("West US"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
 		// 					AccountName: to.Ptr("ddb2"),
-		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18Z"); return t}()),
-		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T22:05:09Z"); return t}()),
+		// 					OldestRestorableTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-01T08:05:18Z"); return t}()),
+		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
 		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
-		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 							LocationName: to.Ptr("South Central US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
+		// 							DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:35Z"); return t}()),
 		// 						},
 		// 						{
-		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 							LocationName: to.Ptr("West US"),
 		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
+		// 							CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-30T21:13:10Z"); return t}()),
 		// 						},
 		// 					},
 		// 				},

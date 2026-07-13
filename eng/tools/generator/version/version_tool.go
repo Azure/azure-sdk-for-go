@@ -29,8 +29,10 @@ const (
 )
 
 var (
-	versionLineRegex     = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
-	apiVersionConstRegex = regexp.MustCompile(`const\s+default\w+Version\s+string\s*=\s*"`)
+	versionLineRegex = regexp.MustCompile(`moduleVersion\s*=\s*\".*v.+"`)
+	// Matches the generator's API version constants in constants.go,
+	// e.g. `version20250525Preview string = "2025-05-25-preview"`.
+	apiVersionConstRegex = regexp.MustCompile(`(?:^|\s)version\d\w*\s+string\s*=\s*"`)
 )
 
 // UpdateAllVersionFiles updates all version-related files in the package
@@ -49,20 +51,29 @@ func UpdateAllVersionFiles(modulePath string, version *semver.Version, sdkRepo r
 		}
 	}
 
-	// Update version.go
-	if err := UpdateVersionGoFile(modulePath, version); err != nil {
-		return fmt.Errorf("failed to update version.go: %v", err)
+	// Update version.go if it exists
+	versionGoPath := filepath.Join(modulePath, "version.go")
+	if _, err := os.Stat(versionGoPath); err == nil {
+		if err := UpdateVersionGoFile(modulePath, version); err != nil {
+			return fmt.Errorf("failed to update version.go: %v", err)
+		}
 	}
 
 	if version.Major() > 1 {
-		// Update go.mod for v2+ modules
-		if err := UpdateModuleDefinition(modulePath, version, sdkRepo); err != nil {
-			return fmt.Errorf("failed to update go.mod: %v", err)
+		// Update go.mod for v2+ modules if it exists
+		goModPath := filepath.Join(modulePath, "go.mod")
+		if _, err := os.Stat(goModPath); err == nil {
+			if err := UpdateModuleDefinition(modulePath, version, sdkRepo); err != nil {
+				return fmt.Errorf("failed to update go.mod: %v", err)
+			}
 		}
 
-		// Update README.md module path for v2+
-		if err := UpdateReadmeModule(modulePath, version, sdkRepo); err != nil {
-			return fmt.Errorf("failed to update README.md: %v", err)
+		// Update README.md module path for v2+ if it exists
+		readmePath := filepath.Join(modulePath, "README.md")
+		if _, err := os.Stat(readmePath); err == nil {
+			if err := UpdateReadmeModule(modulePath, version, sdkRepo); err != nil {
+				return fmt.Errorf("failed to update README.md: %v", err)
+			}
 		}
 
 		// Update import paths for v2+
@@ -100,10 +111,6 @@ func UpdateVersionGoFile(modulePath string, version *semver.Version) error {
 
 	path := filepath.Join(modulePath, "version.go")
 
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil
-	}
-
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -128,10 +135,6 @@ func UpdateModuleDefinition(modulePath string, version *semver.Version, sdkRepo 
 	}
 
 	path := filepath.Join(modulePath, "go.mod")
-
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		return nil
-	}
 
 	moduleRelativePath, err := utils.GetRelativePath(modulePath, sdkRepo)
 	if err != nil {
@@ -369,7 +372,7 @@ func containsPreviewAPIVersion(packagePath string) (bool, error) {
 						return true, nil
 					}
 				}
-				// Check const API version pattern: const defaultXxxClientVersion string = "2023-01-01-preview"
+				// Check const API version pattern: versionYYYYMMDD[Preview] string = "2023-01-01-preview"
 				if apiVersionConstRegex.MatchString(line) {
 					parts := strings.Split(line, "\"")
 					if len(parts) >= 2 && strings.Contains(parts[1], "preview") {

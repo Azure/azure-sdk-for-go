@@ -8,11 +8,12 @@ version: "^3.0.0"
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/d744b6bcb95ab4034832ded556dbbe58f4287c5b/specification/cosmos-db/data-plane/Microsoft.Tables/preview/2019-02-02/table.json
 license-header: MICROSOFT_MIT_NO_VERSION
 clear-output-folder: false
+containing-module: github.com/Azure/azure-sdk-for-go/sdk/data/aztables
 output-folder: internal
 file-prefix: "zz_"
 tag: package-2019-02
 credential-scope: none
-use: "@autorest/go@4.0.0-preview.59"
+use: "@autorest/go@4.0.0-preview.80"
 security: "AADToken"
 security-scopes: "https://storage.azure.com/.default"
 honor-body-placement: true
@@ -34,11 +35,6 @@ directive:
         replace(/= client\.mergeEntityCreateRequest\(/, `= client.MergeEntityCreateRequest(`).
         replace(/= client\.updateEntityCreateRequest\(/, `= client.UpdateEntityCreateRequest(`).
         replace(/if rowKey == "" \{\s*.*\s*\}\s*/g, ``);
-  - from:
-      - zz_time_rfc1123.go
-      - zz_time_rfc3339.go
-    where: $
-    transform: return $.replace(/UnmarshalText\(data\s+\[\]byte\)\s+(?:error|\(error\))\s+\{\s/g, `UnmarshalText(data []byte) error {\n\tif len(data) == 0 {\n\t\treturn nil\n\t}\n`);
 ```
 
 ### Go multi-api

@@ -18,8 +18,6 @@ import (
 	"time"
 )
 
-const defaultAccountsClientVersion string = "2024-04-01"
-
 // AccountsClient contains the methods for the Accounts group.
 // Don't use this type directly, use NewAccountsClient() instead.
 //
@@ -106,7 +104,7 @@ func (client *AccountsClient) addPaymentTermsCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -176,7 +174,7 @@ func (client *AccountsClient) cancelPaymentTermsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -226,7 +224,7 @@ func (client *AccountsClient) confirmTransitionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -279,7 +277,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, billingAccou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -327,7 +325,7 @@ func (client *AccountsClient) listCreateRequest(ctx context.Context, options *Ac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Expand != nil {
 		reqQP.Set("expand", *options.Expand)
 	}
@@ -419,7 +417,7 @@ func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
@@ -500,7 +498,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, billingAc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -551,7 +549,7 @@ func (client *AccountsClient) validatePaymentTermsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAccountsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

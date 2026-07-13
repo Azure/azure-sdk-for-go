@@ -18,6 +18,8 @@ import (
 
 // PolicyClient contains the methods for the Policy group.
 // Don't use this type directly, use NewPolicyClient() instead.
+//
+// Generated from API version 2024-09-01
 type PolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPolicyClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // BeginCreate - Creates the policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - policyName - The policy name.
@@ -67,8 +67,6 @@ func (client *PolicyClient) BeginCreate(ctx context.Context, resourceGroupName s
 
 // Create - Creates the policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *PolicyClient) create(ctx context.Context, resourceGroupName string, vaultName string, policyName string, resource PolicyModel, options *PolicyClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PolicyClient.BeginCreate"
@@ -114,8 +112,8 @@ func (client *PolicyClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -126,8 +124,6 @@ func (client *PolicyClient) createCreateRequest(ctx context.Context, resourceGro
 
 // BeginDelete - Removes the policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - policyName - The policy name.
@@ -151,8 +147,6 @@ func (client *PolicyClient) BeginDelete(ctx context.Context, resourceGroupName s
 
 // Delete - Removes the policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *PolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, policyName string, options *PolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PolicyClient.BeginDelete"
@@ -198,15 +192,13 @@ func (client *PolicyClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the details of the policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - policyName - The policy name.
@@ -257,8 +249,8 @@ func (client *PolicyClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -273,8 +265,6 @@ func (client *PolicyClient) getHandleResponse(resp *http.Response) (PolicyClient
 }
 
 // NewListPager - Gets the list of policies in the given vault.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - options - PolicyClientListOptions contains the optional parameters for the PolicyClient.NewListPager method.
@@ -321,8 +311,8 @@ func (client *PolicyClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

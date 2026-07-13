@@ -35,7 +35,7 @@ func ExampleDppResourceGuardProxyClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.DppResourceGuardProxyClientCreateOrUpdateResponse{
-	// 	ResourceGuardProxyBaseResource: &armdataprotection.ResourceGuardProxyBaseResource{
+	// 	ResourceGuardProxyBaseResource: armdataprotection.ResourceGuardProxyBaseResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/vaults/backupResourceGuardProxies"),
 	// 		ID: to.Ptr("/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupResourceGuardProxies/swaggerExample"),
@@ -99,7 +99,7 @@ func ExampleDppResourceGuardProxyClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.DppResourceGuardProxyClientGetResponse{
-	// 	ResourceGuardProxyBaseResource: &armdataprotection.ResourceGuardProxyBaseResource{
+	// 	ResourceGuardProxyBaseResource: armdataprotection.ResourceGuardProxyBaseResource{
 	// 		Name: to.Ptr("swaggerExample"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/vaults/backupResourceGuardProxies"),
 	// 		ID: to.Ptr("/subscriptions/5e13b949-1218-4d18-8b99-7e12155ec4f7/resourceGroups/SampleResourceGroup/providers/Microsoft.DataProtection/backupVaults/sampleVault/backupResourceGuardProxies/swaggerExample"),
@@ -197,7 +197,7 @@ func ExampleDppResourceGuardProxyClient_UnlockDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.DppResourceGuardProxyClientUnlockDeleteResponse{
-	// 	UnlockDeleteResponse: &armdataprotection.UnlockDeleteResponse{
+	// 	UnlockDeleteResponse: armdataprotection.UnlockDeleteResponse{
 	// 		UnlockDeleteExpiryTime: to.Ptr("2022-09-16T12:50:10.7039695Z"),
 	// 	},
 	// }

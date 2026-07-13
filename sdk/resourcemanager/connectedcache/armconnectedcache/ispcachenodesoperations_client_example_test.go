@@ -81,13 +81,13 @@ func ExampleIspCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCacheNodesOperationsClientCreateOrUpdateResponse{
-	// 	IspCacheNodeResource: &armconnectedcache.IspCacheNodeResource{
+	// 	IspCacheNodeResource: armconnectedcache.IspCacheNodeResource{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/DOTest/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest1/ispCacheNodes/MCCCachenode1"),
 	// 		Name: to.Ptr("MccRPTest1"),
@@ -212,7 +212,7 @@ func ExampleIspCacheNodesOperationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -235,7 +235,7 @@ func ExampleIspCacheNodesOperationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCacheNodesOperationsClientGetResponse{
-	// 	IspCacheNodeResource: &armconnectedcache.IspCacheNodeResource{
+	// 	IspCacheNodeResource: armconnectedcache.IspCacheNodeResource{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest1/ispCacheNodes/MCCCachenode1"),
 	// 		Name: to.Ptr("MccRPTest1"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/ispCustomers/ispCacheNodes"),
@@ -368,7 +368,7 @@ func ExampleIspCacheNodesOperationsClient_GetBgpCidrs() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCacheNodesOperationsClientGetBgpCidrsResponse{
-	// 	MccCacheNodeBgpCidrDetails: &armconnectedcache.MccCacheNodeBgpCidrDetails{
+	// 	MccCacheNodeBgpCidrDetails: armconnectedcache.MccCacheNodeBgpCidrDetails{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest1/ispCacheNodes/MCCCachenode1"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/ispCustomers/ispCacheNodes"),
 	// 		Location: to.Ptr("westus"),
@@ -412,7 +412,7 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{
-	// 	MccCacheNodeAutoUpdateHistory: &armconnectedcache.MccCacheNodeAutoUpdateHistory{
+	// 	MccCacheNodeAutoUpdateHistory: armconnectedcache.MccCacheNodeAutoUpdateHistory{
 	// 		Properties: &armconnectedcache.MccCacheNodeAutoUpdateHistoryProperties{
 	// 			CustomerID: to.Ptr("fqyulypmqacwoifqnddnkcexbgm"),
 	// 			CacheNodeID: to.Ptr("elwtomk"),
@@ -476,7 +476,7 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeInstallDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{
-	// 	MccCacheNodeInstallDetails: &armconnectedcache.MccCacheNodeInstallDetails{
+	// 	MccCacheNodeInstallDetails: armconnectedcache.MccCacheNodeInstallDetails{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest1/ispCacheNodes/MCCCachenode1"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/ispCustomers/ispCacheNodes"),
 	// 		Location: to.Ptr("westus"),
@@ -521,7 +521,7 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{
-	// 	MccCacheNodeIssueHistory: &armconnectedcache.MccCacheNodeIssueHistory{
+	// 	MccCacheNodeIssueHistory: armconnectedcache.MccCacheNodeIssueHistory{
 	// 		Properties: &armconnectedcache.MccCacheNodeIssueHistoryProperties{
 	// 			CustomerID: to.Ptr("xqsblxpzcdxwwlzejepoyqrhbrpqgz"),
 	// 			CacheNodeID: to.Ptr("enw"),
@@ -721,7 +721,7 @@ func ExampleIspCacheNodesOperationsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.IspCacheNodesOperationsClientUpdateResponse{
-	// 	IspCacheNodeResource: &armconnectedcache.IspCacheNodeResource{
+	// 	IspCacheNodeResource: armconnectedcache.IspCacheNodeResource{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/ispCustomers/MccRPTest1/ispCacheNodes/MCCCachenode1"),
 	// 		Name: to.Ptr("MccRPTest1"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/ispCustomers/ispCacheNodes"),

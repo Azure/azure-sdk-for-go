@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // GiMinorVersionsServer is a fake server for instances of the armoracledatabase.GiMinorVersionsClient type.
@@ -58,9 +59,7 @@ func (g *GiMinorVersionsServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (g *GiMinorVersionsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (g *GiMinorVersionsServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -119,7 +115,7 @@ func (g *GiMinorVersionsServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GiMinorVersion, req)
@@ -150,16 +146,8 @@ func (g *GiMinorVersionsServerTransport) dispatchNewListByParentPager(req *http.
 		if err != nil {
 			return nil, err
 		}
-		shapeFamilyUnescaped, err := url.QueryUnescape(qp.Get("shapeFamily"))
-		if err != nil {
-			return nil, err
-		}
-		shapeFamilyParam := getOptional(armoracledatabase.ShapeFamily(shapeFamilyUnescaped))
-		zoneUnescaped, err := url.QueryUnescape(qp.Get("zone"))
-		if err != nil {
-			return nil, err
-		}
-		zoneParam := getOptional(zoneUnescaped)
+		shapeFamilyParam := getOptional(armoracledatabase.ShapeFamily(qp.Get("shapeFamily")))
+		zoneParam := getOptional(qp.Get("zone"))
 		var options *armoracledatabase.GiMinorVersionsClientListByParentOptions
 		if shapeFamilyParam != nil || zoneParam != nil {
 			options = &armoracledatabase.GiMinorVersionsClientListByParentOptions{
@@ -178,7 +166,7 @@ func (g *GiMinorVersionsServerTransport) dispatchNewListByParentPager(req *http.
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		g.newListByParentPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

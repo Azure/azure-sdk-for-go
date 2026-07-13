@@ -86,46 +86,46 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "DNSForwardingRulesetsClient":
-		initServer(s, &s.trDNSForwardingRulesetsServer, func() *DNSForwardingRulesetsServerTransport {
+		initServer(&s.trMu, &s.trDNSForwardingRulesetsServer, func() *DNSForwardingRulesetsServerTransport {
 			return NewDNSForwardingRulesetsServerTransport(&s.srv.DNSForwardingRulesetsServer)
 		})
 		resp, err = s.trDNSForwardingRulesetsServer.Do(req)
 	case "DNSResolversClient":
-		initServer(s, &s.trDNSResolversServer, func() *DNSResolversServerTransport { return NewDNSResolversServerTransport(&s.srv.DNSResolversServer) })
+		initServer(&s.trMu, &s.trDNSResolversServer, func() *DNSResolversServerTransport { return NewDNSResolversServerTransport(&s.srv.DNSResolversServer) })
 		resp, err = s.trDNSResolversServer.Do(req)
 	case "DNSSecurityRulesClient":
-		initServer(s, &s.trDNSSecurityRulesServer, func() *DNSSecurityRulesServerTransport {
+		initServer(&s.trMu, &s.trDNSSecurityRulesServer, func() *DNSSecurityRulesServerTransport {
 			return NewDNSSecurityRulesServerTransport(&s.srv.DNSSecurityRulesServer)
 		})
 		resp, err = s.trDNSSecurityRulesServer.Do(req)
 	case "DomainListsClient":
-		initServer(s, &s.trDomainListsServer, func() *DomainListsServerTransport { return NewDomainListsServerTransport(&s.srv.DomainListsServer) })
+		initServer(&s.trMu, &s.trDomainListsServer, func() *DomainListsServerTransport { return NewDomainListsServerTransport(&s.srv.DomainListsServer) })
 		resp, err = s.trDomainListsServer.Do(req)
 	case "ForwardingRulesClient":
-		initServer(s, &s.trForwardingRulesServer, func() *ForwardingRulesServerTransport {
+		initServer(&s.trMu, &s.trForwardingRulesServer, func() *ForwardingRulesServerTransport {
 			return NewForwardingRulesServerTransport(&s.srv.ForwardingRulesServer)
 		})
 		resp, err = s.trForwardingRulesServer.Do(req)
 	case "InboundEndpointsClient":
-		initServer(s, &s.trInboundEndpointsServer, func() *InboundEndpointsServerTransport {
+		initServer(&s.trMu, &s.trInboundEndpointsServer, func() *InboundEndpointsServerTransport {
 			return NewInboundEndpointsServerTransport(&s.srv.InboundEndpointsServer)
 		})
 		resp, err = s.trInboundEndpointsServer.Do(req)
 	case "OutboundEndpointsClient":
-		initServer(s, &s.trOutboundEndpointsServer, func() *OutboundEndpointsServerTransport {
+		initServer(&s.trMu, &s.trOutboundEndpointsServer, func() *OutboundEndpointsServerTransport {
 			return NewOutboundEndpointsServerTransport(&s.srv.OutboundEndpointsServer)
 		})
 		resp, err = s.trOutboundEndpointsServer.Do(req)
 	case "PoliciesClient":
-		initServer(s, &s.trPoliciesServer, func() *PoliciesServerTransport { return NewPoliciesServerTransport(&s.srv.PoliciesServer) })
+		initServer(&s.trMu, &s.trPoliciesServer, func() *PoliciesServerTransport { return NewPoliciesServerTransport(&s.srv.PoliciesServer) })
 		resp, err = s.trPoliciesServer.Do(req)
 	case "PolicyVirtualNetworkLinksClient":
-		initServer(s, &s.trPolicyVirtualNetworkLinksServer, func() *PolicyVirtualNetworkLinksServerTransport {
+		initServer(&s.trMu, &s.trPolicyVirtualNetworkLinksServer, func() *PolicyVirtualNetworkLinksServerTransport {
 			return NewPolicyVirtualNetworkLinksServerTransport(&s.srv.PolicyVirtualNetworkLinksServer)
 		})
 		resp, err = s.trPolicyVirtualNetworkLinksServer.Do(req)
 	case "VirtualNetworkLinksClient":
-		initServer(s, &s.trVirtualNetworkLinksServer, func() *VirtualNetworkLinksServerTransport {
+		initServer(&s.trMu, &s.trVirtualNetworkLinksServer, func() *VirtualNetworkLinksServerTransport {
 			return NewVirtualNetworkLinksServerTransport(&s.srv.VirtualNetworkLinksServer)
 		})
 		resp, err = s.trVirtualNetworkLinksServer.Do(req)
@@ -138,12 +138,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

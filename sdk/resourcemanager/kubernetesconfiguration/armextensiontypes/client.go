@@ -7,19 +7,20 @@ package armextensiontypes
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2024-11-01-preview
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +44,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // ClusterGetVersion - Get details of a version for an Extension Type installable to the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters,
@@ -111,8 +110,8 @@ func (client *Client) clusterGetVersionCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -127,8 +126,6 @@ func (client *Client) clusterGetVersionHandleResponse(resp *http.Response) (Clie
 }
 
 // NewClusterListVersionsPager - List the version for an Extension Type installable to the cluster.
-//
-// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters,
@@ -192,7 +189,7 @@ func (client *Client) clusterListVersionsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", version20241101Preview)
 	if options != nil && options.MajorVersion != nil {
 		reqQP.Set("majorVersion", *options.MajorVersion)
 	}
@@ -202,7 +199,7 @@ func (client *Client) clusterListVersionsCreateRequest(ctx context.Context, reso
 	if options != nil && options.ShowLatest != nil {
 		reqQP.Set("showLatest", strconv.FormatBool(*options.ShowLatest))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -218,8 +215,6 @@ func (client *Client) clusterListVersionsHandleResponse(resp *http.Response) (Cl
 
 // Get - Get an Extension Type installable to the cluster based region and type for the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters,
@@ -281,8 +276,8 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -298,8 +293,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // GetVersion - Get details of a version for an extension type and location
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01-preview
 //   - location - The location name.
 //   - extensionTypeName - Name of the Extension Type.
 //   - versionNumber - Version number of the Extension Type.
@@ -350,8 +343,8 @@ func (client *Client) getVersionCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -366,8 +359,6 @@ func (client *Client) getVersionHandleResponse(resp *http.Response) (ClientGetVe
 }
 
 // NewListPager - List installable Extension Types for the cluster based region and type for the cluster.
-//
-// Generated from API version 2024-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterRp - The Kubernetes cluster RP - i.e. Microsoft.ContainerService, Microsoft.Kubernetes, Microsoft.HybridContainerService.
 //   - clusterResourceName - The Kubernetes cluster resource name - i.e. managedClusters, connectedClusters, provisionedClusters,
@@ -425,7 +416,7 @@ func (client *Client) listCreateRequest(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", version20241101Preview)
 	if options != nil && options.OfferID != nil {
 		reqQP.Set("offerId", *options.OfferID)
 	}
@@ -438,7 +429,7 @@ func (client *Client) listCreateRequest(ctx context.Context, resourceGroupName s
 	if options != nil && options.ReleaseTrain != nil {
 		reqQP.Set("releaseTrain", *options.ReleaseTrain)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -453,8 +444,6 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 }
 
 // NewListVersionsPager - List the versions for an extension type and location.
-//
-// Generated from API version 2024-11-01-preview
 //   - location - The location name.
 //   - extensionTypeName - Name of the Extension Type.
 //   - options - ClientListVersionsOptions contains the optional parameters for the Client.NewListVersionsPager method.
@@ -501,7 +490,7 @@ func (client *Client) listVersionsCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", version20241101Preview)
 	if options != nil && options.ClusterType != nil {
 		reqQP.Set("clusterType", *options.ClusterType)
 	}
@@ -514,7 +503,7 @@ func (client *Client) listVersionsCreateRequest(ctx context.Context, location st
 	if options != nil && options.ShowLatest != nil {
 		reqQP.Set("showLatest", strconv.FormatBool(*options.ShowLatest))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -530,8 +519,6 @@ func (client *Client) listVersionsHandleResponse(resp *http.Response) (ClientLis
 
 // LocationGet - Get an extension type for the location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01-preview
 //   - location - The location name.
 //   - extensionTypeName - Name of the Extension Type.
 //   - options - ClientLocationGetOptions contains the optional parameters for the Client.LocationGet method.
@@ -577,8 +564,8 @@ func (client *Client) locationGetCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -593,8 +580,6 @@ func (client *Client) locationGetHandleResponse(resp *http.Response) (ClientLoca
 }
 
 // NewLocationListPager - List all Extension Types for the location.
-//
-// Generated from API version 2024-11-01-preview
 //   - location - The location name.
 //   - options - ClientLocationListOptions contains the optional parameters for the Client.NewLocationListPager method.
 func (client *Client) NewLocationListPager(location string, options *ClientLocationListOptions) *runtime.Pager[ClientLocationListResponse] {
@@ -636,7 +621,7 @@ func (client *Client) locationListCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01-preview")
+	reqQP.Set("api-version", version20241101Preview)
 	if options != nil && options.ClusterType != nil {
 		reqQP.Set("clusterType", *options.ClusterType)
 	}
@@ -652,7 +637,7 @@ func (client *Client) locationListCreateRequest(ctx context.Context, location st
 	if options != nil && options.ReleaseTrain != nil {
 		reqQP.Set("releaseTrain", *options.ReleaseTrain)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

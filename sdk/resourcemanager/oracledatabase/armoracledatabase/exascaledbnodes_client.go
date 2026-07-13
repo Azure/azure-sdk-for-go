@@ -18,6 +18,8 @@ import (
 
 // ExascaleDbNodesClient contains the methods for the ExascaleDbNodes group.
 // Don't use this type directly, use NewExascaleDbNodesClient() instead.
+//
+// Generated from API version 2025-09-01
 type ExascaleDbNodesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewExascaleDbNodesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginAction - VM actions on DbNode of ExadbVmCluster by the provided filter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - exadbVMClusterName - The name of the ExadbVmCluster
 //   - exascaleDbNodeName - The name of the ExascaleDbNode
@@ -68,8 +68,6 @@ func (client *ExascaleDbNodesClient) BeginAction(ctx context.Context, resourceGr
 
 // Action - VM actions on DbNode of ExadbVmCluster by the provided filter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *ExascaleDbNodesClient) action(ctx context.Context, resourceGroupName string, exadbVMClusterName string, exascaleDbNodeName string, body DbNodeAction, options *ExascaleDbNodesClientBeginActionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExascaleDbNodesClient.BeginAction"
@@ -115,8 +113,8 @@ func (client *ExascaleDbNodesClient) actionCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,8 +125,6 @@ func (client *ExascaleDbNodesClient) actionCreateRequest(ctx context.Context, re
 
 // Get - Get a ExascaleDbNode
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - exadbVMClusterName - The name of the ExadbVmCluster
 //   - exascaleDbNodeName - The name of the ExascaleDbNode
@@ -179,8 +175,8 @@ func (client *ExascaleDbNodesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -195,8 +191,6 @@ func (client *ExascaleDbNodesClient) getHandleResponse(resp *http.Response) (Exa
 }
 
 // NewListByParentPager - List ExascaleDbNode resources by ExadbVmCluster
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - exadbVMClusterName - The name of the ExadbVmCluster
 //   - options - ExascaleDbNodesClientListByParentOptions contains the optional parameters for the ExascaleDbNodesClient.NewListByParentPager
@@ -244,8 +238,8 @@ func (client *ExascaleDbNodesClient) listByParentCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

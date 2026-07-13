@@ -47,7 +47,7 @@ func NewLogsClient(credential azcore.TokenCredential, options *LogsClientOptions
 	if err != nil {
 		return nil, err
 	}
-	return &LogsClient{host: c.Endpoint, internal: azcoreClient}, nil
+	return &LogsClient{endpoint: c.Endpoint, internal: azcoreClient}, nil
 }
 
 // NewMetricsClient creates a client that accesses Azure Monitor metrics data.
@@ -75,7 +75,7 @@ func NewMetricsClient(credential azcore.TokenCredential, options *MetricsClientO
 	if err != nil {
 		return nil, err
 	}
-	return &MetricsClient{host: c.Endpoint, internal: azcoreClient}, nil
+	return &MetricsClient{endpoint: c.Endpoint, internal: azcoreClient}, nil
 }
 
 // ErrorInfo - The code and message for an error.

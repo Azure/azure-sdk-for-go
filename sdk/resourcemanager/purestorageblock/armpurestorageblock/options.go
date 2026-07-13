@@ -228,3 +228,72 @@ type StoragePoolsClientListByResourceGroupOptions struct {
 type StoragePoolsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
+
+// VolumeGroupsClientBeginCreateOptions contains the optional parameters for the VolumeGroupsClient.BeginCreate method.
+type VolumeGroupsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumeGroupsClientBeginDeleteOptions contains the optional parameters for the VolumeGroupsClient.BeginDelete method.
+type VolumeGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumeGroupsClientBeginUpdateOptions contains the optional parameters for the VolumeGroupsClient.BeginUpdate method.
+type VolumeGroupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumeGroupsClientGetOptions contains the optional parameters for the VolumeGroupsClient.Get method.
+type VolumeGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumeGroupsClientGetStatusOptions contains the optional parameters for the VolumeGroupsClient.GetStatus method.
+type VolumeGroupsClientGetStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumeGroupsClientListByStoragePoolOptions contains the optional parameters for the VolumeGroupsClient.NewListByStoragePoolPager
+// method.
+type VolumeGroupsClientListByStoragePoolOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumeGroupsClientListConnectionParametersOptions contains the optional parameters for the VolumeGroupsClient.ListConnectionParameters
+// method.
+type VolumeGroupsClientListConnectionParametersOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumesClientBeginCreateOptions contains the optional parameters for the VolumesClient.BeginCreate method.
+type VolumesClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginDeleteOptions contains the optional parameters for the VolumesClient.BeginDelete method.
+type VolumesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
+type VolumesClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientGetOptions contains the optional parameters for the VolumesClient.Get method.
+type VolumesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumesClientListByVolumeGroupOptions contains the optional parameters for the VolumesClient.NewListByVolumeGroupPager
+// method.
+type VolumesClientListByVolumeGroupOptions struct {
+	// placeholder for future optional parameters
+}

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01/GetPrivateLinkResources.json
+// Generated from example definition: 2026-05-01/GetPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armrecoveryservices.PrivateLinkResource{
+	// 	PrivateLinkResource: armrecoveryservices.PrivateLinkResource{
 	// 		Name: to.Ptr("backupResource"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/Vaults/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/6c48fa17-39c7-45f1-90ac-47a587128ace/resourceGroups/petesting/providers/Microsoft.RecoveryServices/Vaults/pemsi-ecy-rsv2/privateLinkResources/backupResource"),
@@ -56,7 +56,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01/ListPrivateLinkResources.json
+// Generated from example definition: 2026-05-01/ListPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

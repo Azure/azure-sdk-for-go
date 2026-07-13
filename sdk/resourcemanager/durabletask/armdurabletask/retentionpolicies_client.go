@@ -18,6 +18,8 @@ import (
 
 // RetentionPoliciesClient contains the methods for the RetentionPolicies group.
 // Don't use this type directly, use NewRetentionPoliciesClient() instead.
+//
+// Generated from API version 2026-02-01
 type RetentionPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRetentionPoliciesClient(subscriptionID string, credential azcore.TokenCr
 
 // BeginCreateOrReplace - Create or Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *RetentionPoliciesClient) BeginCreateOrReplace(ctx context.Context,
 
 // CreateOrReplace - Create or Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *RetentionPoliciesClient) createOrReplace(ctx context.Context, resourceGroupName string, schedulerName string, resource RetentionPolicy, options *RetentionPoliciesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RetentionPoliciesClient.BeginCreateOrReplace"
@@ -110,8 +108,8 @@ func (client *RetentionPoliciesClient) createOrReplaceCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *RetentionPoliciesClient) createOrReplaceCreateRequest(ctx context.
 
 // BeginDelete - Delete a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - RetentionPoliciesClientBeginDeleteOptions contains the optional parameters for the RetentionPoliciesClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *RetentionPoliciesClient) BeginDelete(ctx context.Context, resource
 
 // Delete - Delete a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *RetentionPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, schedulerName string, options *RetentionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RetentionPoliciesClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *RetentionPoliciesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - RetentionPoliciesClientGetOptions contains the optional parameters for the RetentionPoliciesClient.Get method.
@@ -244,8 +236,8 @@ func (client *RetentionPoliciesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *RetentionPoliciesClient) getHandleResponse(resp *http.Response) (R
 }
 
 // NewListBySchedulerPager - List Retention Policies
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - options - RetentionPoliciesClientListBySchedulerOptions contains the optional parameters for the RetentionPoliciesClient.NewListBySchedulerPager
@@ -309,8 +299,8 @@ func (client *RetentionPoliciesClient) listBySchedulerCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -326,8 +316,6 @@ func (client *RetentionPoliciesClient) listBySchedulerHandleResponse(resp *http.
 
 // BeginUpdate - Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schedulerName - The name of the Scheduler
 //   - properties - The resource properties to be updated.
@@ -352,8 +340,6 @@ func (client *RetentionPoliciesClient) BeginUpdate(ctx context.Context, resource
 
 // Update - Update a Retention Policy
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 func (client *RetentionPoliciesClient) update(ctx context.Context, resourceGroupName string, schedulerName string, properties RetentionPolicy, options *RetentionPoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RetentionPoliciesClient.BeginUpdate"
@@ -395,8 +381,8 @@ func (client *RetentionPoliciesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

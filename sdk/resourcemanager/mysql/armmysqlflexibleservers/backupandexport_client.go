@@ -18,6 +18,8 @@ import (
 
 // BackupAndExportClient contains the methods for the BackupAndExport group.
 // Don't use this type directly, use NewBackupAndExportClient() instead.
+//
+// Generated from API version 2024-12-30
 type BackupAndExportClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupAndExportClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Exports the backup of the given server by creating a backup if not existing.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - The required parameters for creating and exporting backup of the given server.
@@ -67,8 +67,6 @@ func (client *BackupAndExportClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Exports the backup of the given server by creating a backup if not existing.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 func (client *BackupAndExportClient) create(ctx context.Context, resourceGroupName string, serverName string, parameters BackupAndExportRequest, options *BackupAndExportClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupAndExportClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *BackupAndExportClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -122,8 +120,6 @@ func (client *BackupAndExportClient) createCreateRequest(ctx context.Context, re
 
 // ValidateBackup - Validates if backup can be performed for given server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - BackupAndExportClientValidateBackupOptions contains the optional parameters for the BackupAndExportClient.ValidateBackup
@@ -170,8 +166,8 @@ func (client *BackupAndExportClient) validateBackupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

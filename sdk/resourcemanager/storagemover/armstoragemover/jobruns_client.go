@@ -18,6 +18,8 @@ import (
 
 // JobRunsClient contains the methods for the JobRuns group.
 // Don't use this type directly, use NewJobRunsClient() instead.
+//
+// Generated from API version 2025-12-01
 type JobRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewJobRunsClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // Get - Gets a Job Run resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - projectName - The name of the Project resource.
@@ -103,8 +103,8 @@ func (client *JobRunsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -119,8 +119,6 @@ func (client *JobRunsClient) getHandleResponse(resp *http.Response) (JobRunsClie
 }
 
 // NewListPager - Lists all Job Runs in a Job Definition.
-//
-// Generated from API version 2025-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storageMoverName - The name of the Storage Mover resource.
 //   - projectName - The name of the Project resource.
@@ -177,8 +175,8 @@ func (client *JobRunsClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

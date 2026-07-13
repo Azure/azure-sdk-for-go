@@ -18,6 +18,8 @@ import (
 
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
+//
+// Generated from API version 2026-01-20-preview
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // BeginDelete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
@@ -66,8 +66,6 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 
 // Delete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -109,15 +107,13 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -169,8 +165,8 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -185,8 +181,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Lists private endpoint connections in a HorizonDb cluster.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
@@ -234,8 +228,8 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -251,8 +245,6 @@ func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Re
 
 // BeginUpdate - Updates a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - properties - The resource properties to be updated.
@@ -277,8 +269,6 @@ func (client *PrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context,
 
 // Update - Updates a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *PrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginUpdate"
@@ -320,8 +310,8 @@ func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -30,7 +30,7 @@ func ExampleAutonomousDatabaseVersionsClient_Get_getAnAutonomousVersionGenerated
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseVersionsClientGetResponse{
-	// 	AutonomousDbVersion: &armoracledatabase.AutonomousDbVersion{
+	// 	AutonomousDbVersion: armoracledatabase.AutonomousDbVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDbVersions/18.4.0.0"),
 	// 		Type: to.Ptr("Oracle.Database/locations/autonomousDbVersions"),
 	// 		Properties: &armoracledatabase.AutonomousDbVersionProperties{
@@ -73,7 +73,7 @@ func ExampleAutonomousDatabaseVersionsClient_Get_getAnAutonomousVersionGenerated
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseVersionsClientGetResponse{
-	// 	AutonomousDbVersion: &armoracledatabase.AutonomousDbVersion{
+	// 	AutonomousDbVersion: armoracledatabase.AutonomousDbVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDbVersions/18.4.0.0"),
 	// 	},
 	// }
@@ -98,7 +98,7 @@ func ExampleAutonomousDatabaseVersionsClient_Get_autonomousDatabaseVersionsGet()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseVersionsClientGetResponse{
-	// 	AutonomousDbVersion: &armoracledatabase.AutonomousDbVersion{
+	// 	AutonomousDbVersion: armoracledatabase.AutonomousDbVersion{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDbVersions/18.4.0.0"),
 	// 		Type: to.Ptr("Oracle.Database/locations/autonomousDbVersions"),
 	// 		Properties: &armoracledatabase.AutonomousDbVersionProperties{

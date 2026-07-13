@@ -1,5 +1,29 @@
 # Release History
 
+## 3.0.0-beta.5 (2026-05-28)
+### Features Added
+
+- New enum type `ClusterMeshProfileProvisioningState` with values `ClusterMeshProfileProvisioningStateCanceled`, `ClusterMeshProfileProvisioningStateFailed`, `ClusterMeshProfileProvisioningStateSucceeded`
+- New enum type `ClusterMeshState` with values `ClusterMeshStateApplying`, `ClusterMeshStateConnected`, `ClusterMeshStateDegraded`, `ClusterMeshStateFailed`, `ClusterMeshStateNotConnected`
+- New enum type `MeshMemberState` with values `MeshMemberStateConnected`, `MeshMemberStateConnecting`, `MeshMemberStateDisconnecting`, `MeshMemberStateFailed`
+- New function `*ClientFactory.NewClusterMeshProfilesClient() *ClusterMeshProfilesClient`
+- New function `NewClusterMeshProfilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterMeshProfilesClient, error)`
+- New function `*ClusterMeshProfilesClient.BeginApply(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginApplyOptions) (*runtime.Poller[ClusterMeshProfilesClientApplyResponse], error)`
+- New function `*ClusterMeshProfilesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, resource ClusterMeshProfile, options *ClusterMeshProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClusterMeshProfilesClientCreateOrUpdateResponse], error)`
+- New function `*ClusterMeshProfilesClient.BeginDelete(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientBeginDeleteOptions) (*runtime.Poller[ClusterMeshProfilesClientDeleteResponse], error)`
+- New function `*ClusterMeshProfilesClient.Get(ctx context.Context, resourceGroupName string, fleetName string, clusterMeshProfileName string, options *ClusterMeshProfilesClientGetOptions) (ClusterMeshProfilesClientGetResponse, error)`
+- New function `*ClusterMeshProfilesClient.NewListByFleetPager(resourceGroupName string, fleetName string, options *ClusterMeshProfilesClientListByFleetOptions) *runtime.Pager[ClusterMeshProfilesClientListByFleetResponse]`
+- New struct `CiliumProperties`
+- New struct `ClusterMeshProfile`
+- New struct `ClusterMeshProfileListResult`
+- New struct `ClusterMeshProfileProperties`
+- New struct `ClusterMeshProfileStatus`
+- New struct `MemberSelector`
+- New struct `MeshMemberStatus`
+- New struct `MeshProperties`
+- New field `MeshProperties` in struct `FleetMemberProperties`
+
+
 ## 3.0.0-beta.4 (2026-03-24)
 ### Features Added
 

@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
+	"slices"
 )
 
 // ServersServer is a fake server for instances of the armpostgresqlflexibleservers.ServersClient type.
@@ -53,6 +54,10 @@ type ServersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStart func(ctx context.Context, resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.ServersClientBeginStartOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartResponse], errResp azfake.ErrorResponder)
 
+	// BeginStartMajorVersionUpgradePrecheck is the fake for method ServersClient.BeginStartMajorVersionUpgradePrecheck
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginStartMajorVersionUpgradePrecheck func(ctx context.Context, resourceGroupName string, serverName string, body armpostgresqlflexibleservers.StartMajorVersionUpgradePrecheckRequest, options *armpostgresqlflexibleservers.ServersClientBeginStartMajorVersionUpgradePrecheckOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartMajorVersionUpgradePrecheckResponse], errResp azfake.ErrorResponder)
+
 	// BeginStop is the fake for method ServersClient.BeginStop
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStop func(ctx context.Context, resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.ServersClientBeginStopOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStopResponse], errResp azfake.ErrorResponder)
@@ -67,32 +72,34 @@ type ServersServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewServersServerTransport(srv *ServersServer) *ServersServerTransport {
 	return &ServersServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse]](),
-		beginMigrateNetworkMode:     newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientMigrateNetworkModeResponse]](),
-		beginRestart:                newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientRestartResponse]](),
-		beginStart:                  newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartResponse]](),
-		beginStop:                   newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStopResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientUpdateResponse]](),
+		srv:                                   srv,
+		beginCreateOrUpdate:                   newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateOrUpdateResponse]](),
+		beginDelete:                           newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientDeleteResponse]](),
+		newListByResourceGroupPager:           newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:            newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse]](),
+		beginMigrateNetworkMode:               newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientMigrateNetworkModeResponse]](),
+		beginRestart:                          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientRestartResponse]](),
+		beginStart:                            newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartResponse]](),
+		beginStartMajorVersionUpgradePrecheck: newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartMajorVersionUpgradePrecheckResponse]](),
+		beginStop:                             newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStopResponse]](),
+		beginUpdate:                           newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientUpdateResponse]](),
 	}
 }
 
 // ServersServerTransport connects instances of armpostgresqlflexibleservers.ServersClient to instances of ServersServer.
 // Don't use this type directly, use NewServersServerTransport instead.
 type ServersServerTransport struct {
-	srv                         *ServersServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse]]
-	beginMigrateNetworkMode     *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientMigrateNetworkModeResponse]]
-	beginRestart                *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientRestartResponse]]
-	beginStart                  *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartResponse]]
-	beginStop                   *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStopResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientUpdateResponse]]
+	srv                                   *ServersServer
+	beginCreateOrUpdate                   *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientCreateOrUpdateResponse]]
+	beginDelete                           *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientDeleteResponse]]
+	newListByResourceGroupPager           *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager            *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.ServersClientListBySubscriptionResponse]]
+	beginMigrateNetworkMode               *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientMigrateNetworkModeResponse]]
+	beginRestart                          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientRestartResponse]]
+	beginStart                            *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartResponse]]
+	beginStartMajorVersionUpgradePrecheck *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStartMajorVersionUpgradePrecheckResponse]]
+	beginStop                             *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientStopResponse]]
+	beginUpdate                           *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.ServersClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServersServerTransport.
@@ -107,9 +114,7 @@ func (s *ServersServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -134,6 +139,8 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = s.dispatchBeginRestart(req)
 			case "ServersClient.BeginStart":
 				res.resp, res.err = s.dispatchBeginStart(req)
+			case "ServersClient.BeginStartMajorVersionUpgradePrecheck":
+				res.resp, res.err = s.dispatchBeginStartMajorVersionUpgradePrecheck(req)
 			case "ServersClient.BeginStop":
 				res.resp, res.err = s.dispatchBeginStop(req)
 			case "ServersClient.BeginUpdate":
@@ -143,10 +150,7 @@ func (s *ServersServerTransport) dispatchToMethodFake(req *http.Request, method 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -194,7 +198,7 @@ func (s *ServersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -238,7 +242,7 @@ func (s *ServersServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -272,7 +276,7 @@ func (s *ServersServerTransport) dispatchGet(req *http.Request) (*http.Response,
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Server, req)
@@ -309,7 +313,7 @@ func (s *ServersServerTransport) dispatchNewListByResourceGroupPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -342,7 +346,7 @@ func (s *ServersServerTransport) dispatchNewListBySubscriptionPager(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -385,7 +389,7 @@ func (s *ServersServerTransport) dispatchBeginMigrateNetworkMode(req *http.Reque
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginMigrateNetworkMode.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -439,7 +443,7 @@ func (s *ServersServerTransport) dispatchBeginRestart(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginRestart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -483,12 +487,60 @@ func (s *ServersServerTransport) dispatchBeginStart(req *http.Request) (*http.Re
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginStart.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginStart) {
 		s.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServersServerTransport) dispatchBeginStartMajorVersionUpgradePrecheck(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginStartMajorVersionUpgradePrecheck == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStartMajorVersionUpgradePrecheck not implemented")}
+	}
+	beginStartMajorVersionUpgradePrecheck := s.beginStartMajorVersionUpgradePrecheck.get(req)
+	if beginStartMajorVersionUpgradePrecheck == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startMajorVersionUpgradePrecheck`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.StartMajorVersionUpgradePrecheckRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginStartMajorVersionUpgradePrecheck(req.Context(), resourceGroupNameParam, serverNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStartMajorVersionUpgradePrecheck = &respr
+		s.beginStartMajorVersionUpgradePrecheck.add(req, beginStartMajorVersionUpgradePrecheck)
+	}
+
+	resp, err := server.PollerResponderNext(beginStartMajorVersionUpgradePrecheck, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginStartMajorVersionUpgradePrecheck.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStartMajorVersionUpgradePrecheck) {
+		s.beginStartMajorVersionUpgradePrecheck.remove(req)
 	}
 
 	return resp, nil
@@ -527,7 +579,7 @@ func (s *ServersServerTransport) dispatchBeginStop(req *http.Request) (*http.Res
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		s.beginStop.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -575,7 +627,7 @@ func (s *ServersServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		s.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

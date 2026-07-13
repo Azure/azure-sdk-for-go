@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperationAutoScale_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationAutoScale_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,13 +82,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParamet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -158,7 +158,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithAutoScaleParamet
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperationCustomImage_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationCustomImage_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,13 +183,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -213,7 +213,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithCustomVMImage() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperationCustomSharedGalleriesImage_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationCustomSharedGalleriesImage_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCustomVMImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,13 +238,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -268,7 +268,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithSharedGalleriesCu
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperationDedicatedHost_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationDedicatedHost_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,13 +303,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -340,7 +340,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithDedicatedHosts() 
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperationStateless_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationStateless_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTemporaryDiskForServiceFabric() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,13 +383,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTempor
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -426,7 +426,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putAnStatelessNodeTypeWithTempor
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperationVmImagePlan_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperationVmImagePlan_example.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,13 +459,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -497,7 +497,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putNodeTypeWithVMImagePlan() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperation_example_max.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperation_example_max.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -570,17 +570,18 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 			Capacities: map[string]*string{
 				"ClientConnections": to.Ptr("65536"),
 			},
-			ComputerNamePrefix:          to.Ptr("BE"),
-			DataDiskLetter:              to.Ptr("S"),
-			DataDiskSizeGB:              to.Ptr[int32](200),
-			DataDiskType:                to.Ptr(armservicefabricmanagedclusters.DiskTypePremiumLRS),
-			DscpConfigurationID:         to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/dscpConfigurations/myDscpConfig"),
-			EnableAcceleratedNetworking: to.Ptr(true),
-			EnableEncryptionAtHost:      to.Ptr(true),
-			EnableNodePublicIP:          to.Ptr(true),
-			EnableNodePublicIPv6:        to.Ptr(true),
-			EnableOverProvisioning:      to.Ptr(false),
-			EvictionPolicy:              to.Ptr(armservicefabricmanagedclusters.EvictionPolicyTypeDeallocate),
+			ComputerNamePrefix:             to.Ptr("BE"),
+			DataDiskLetter:                 to.Ptr("S"),
+			DataDiskSizeGB:                 to.Ptr[int32](200),
+			DataDiskType:                   to.Ptr(armservicefabricmanagedclusters.DiskTypePremiumLRS),
+			DscpConfigurationID:            to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/dscpConfigurations/myDscpConfig"),
+			EnableAcceleratedNetworking:    to.Ptr(true),
+			EnableEncryptionAtHost:         to.Ptr(true),
+			EnableNodePublicIP:             to.Ptr(true),
+			EnableNodePublicIPv6:           to.Ptr(true),
+			EnableOverProvisioning:         to.Ptr(false),
+			EnableResilientEphemeralOsDisk: to.Ptr(true),
+			EvictionPolicy:                 to.Ptr(armservicefabricmanagedclusters.EvictionPolicyTypeDeallocate),
 			FrontendConfigurations: []*armservicefabricmanagedclusters.FrontendConfiguration{
 				{
 					ApplicationGatewayBackendAddressPoolID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/applicationGateways/appgw-test/backendAddressPools/appgwBepoolTest"),
@@ -588,6 +589,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 					LoadBalancerInboundNatPoolID:           to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/loadBalancers/test-LB/inboundNatPools/LoadBalancerNATPool"),
 				},
 			},
+			IsOutboundOnly:          to.Ptr(true),
 			IsPrimary:               to.Ptr(false),
 			IsSpotVM:                to.Ptr(true),
 			IsStateless:             to.Ptr(true),
@@ -598,9 +600,25 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 				"NodeColor":    to.Ptr("green"),
 				"SomeProperty": to.Ptr("5"),
 			},
+			ProxyAgentSettings: &armservicefabricmanagedclusters.ProxyAgentSettings{
+				Enabled:          to.Ptr(true),
+				KeyIncarnationID: to.Ptr[int32](17),
+				WireServer: &armservicefabricmanagedclusters.HostEndpointSettings{
+					Mode:                                to.Ptr("Audit"),
+					InVMAccessControlProfileReferenceID: to.Ptr("someReferenceId"),
+				},
+				Imds: &armservicefabricmanagedclusters.HostEndpointSettings{
+					Mode:                                to.Ptr("Audit"),
+					InVMAccessControlProfileReferenceID: to.Ptr("someReferenceId"),
+				},
+				AddProxyAgentExtension: to.Ptr(true),
+			},
+			ScaleInPolicy: &armservicefabricmanagedclusters.ScaleInPolicy{
+				Mode: to.Ptr(armservicefabricmanagedclusters.ScaleInPolicyModeDefault),
+			},
 			SecureBootEnabled:            to.Ptr(true),
-			SecurityType:                 to.Ptr(armservicefabricmanagedclusters.SecurityTypeConfidentialVM),
 			SecurityEncryptionType:       to.Ptr(armservicefabricmanagedclusters.SecurityEncryptionTypeDiskWithVMGuestState),
+			SecurityType:                 to.Ptr(armservicefabricmanagedclusters.SecurityTypeConfidentialVM),
 			ServiceArtifactReferenceID:   to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Compute/galleries/myGallery/serviceArtifacts/myServiceArtifact/vmArtifactsProfiles/myVmArtifactProfile"),
 			SpotRestoreTimeout:           to.Ptr("PT30M"),
 			SubnetID:                     to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
@@ -661,9 +679,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 				to.Ptr(armservicefabricmanagedclusters.VMSetupActionEnableContainers),
 				to.Ptr(armservicefabricmanagedclusters.VMSetupActionEnableHyperV),
 			},
-			VMSize:                         to.Ptr("Standard_DS3"),
-			IsOutboundOnly:                 to.Ptr(true),
-			EnableResilientEphemeralOsDisk: to.Ptr(true),
+			VMSize: to.Ptr("Standard_DS3"),
 		},
 	}, nil)
 	if err != nil {
@@ -671,13 +687,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -751,6 +767,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// 			EnableNodePublicIP: to.Ptr(true),
 	// 			EnableNodePublicIPv6: to.Ptr(true),
 	// 			EnableOverProvisioning: to.Ptr(false),
+	// 			EnableResilientEphemeralOsDisk: to.Ptr(true),
 	// 			EvictionPolicy: to.Ptr(armservicefabricmanagedclusters.EvictionPolicyTypeDeallocate),
 	// 			FrontendConfigurations: []*armservicefabricmanagedclusters.FrontendConfiguration{
 	// 				{
@@ -759,6 +776,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// 					LoadBalancerInboundNatPoolID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/loadBalancers/test-LB/inboundNatPools/LoadBalancerNATPool"),
 	// 				},
 	// 			},
+	// 			IsOutboundOnly: to.Ptr(true),
 	// 			IsPrimary: to.Ptr(false),
 	// 			IsSpotVM: to.Ptr(true),
 	// 			IsStateless: to.Ptr(true),
@@ -770,9 +788,22 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// 				"SomeProperty": to.Ptr("5"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armservicefabricmanagedclusters.ManagedResourceProvisioningStateCreating),
+	// 			ProxyAgentSettings: &armservicefabricmanagedclusters.ProxyAgentSettings{
+	// 				Enabled: to.Ptr(true),
+	// 				KeyIncarnationID: to.Ptr[int32](17),
+	// 				WireServer: &armservicefabricmanagedclusters.HostEndpointSettings{
+	// 					Mode: to.Ptr("Audit"),
+	// 					InVMAccessControlProfileReferenceID: to.Ptr("someReferenceId"),
+	// 				},
+	// 				Imds: &armservicefabricmanagedclusters.HostEndpointSettings{
+	// 					Mode: to.Ptr("Audit"),
+	// 					InVMAccessControlProfileReferenceID: to.Ptr("someReferenceId"),
+	// 				},
+	// 				AddProxyAgentExtension: to.Ptr(true),
+	// 			},
 	// 			SecureBootEnabled: to.Ptr(true),
-	// 			SecurityType: to.Ptr(armservicefabricmanagedclusters.SecurityTypeConfidentialVM),
 	// 			SecurityEncryptionType: to.Ptr(armservicefabricmanagedclusters.SecurityEncryptionTypeDiskWithVMGuestState),
+	// 			SecurityType: to.Ptr(armservicefabricmanagedclusters.SecurityTypeConfidentialVM),
 	// 			ServiceArtifactReferenceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Compute/galleries/myGallery/serviceArtifacts/myServiceArtifact/vmArtifactsProfiles/myVmArtifactProfile"),
 	// 			SpotRestoreTimeout: to.Ptr("PT30M"),
 	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resRg/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
@@ -840,8 +871,6 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// 				to.Ptr("2"),
 	// 				to.Ptr("3"),
 	// 			},
-	// 			IsOutboundOnly: to.Ptr(true),
-	// 			EnableResilientEphemeralOsDisk: to.Ptr(true),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -849,7 +878,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMaximumParameter
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePutOperation_example_min.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePutOperation_example_min.json
 func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -877,13 +906,13 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameter
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientCreateOrUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -910,7 +939,7 @@ func ExampleNodeTypesClient_BeginCreateOrUpdate_putANodeTypeWithMinimumParameter
 	// }
 }
 
-// Generated from example definition: 2026-02-01/DeallocateNodes_example.json
+// Generated from example definition: 2026-05-01-preview/DeallocateNodes_example.json
 func ExampleNodeTypesClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -932,11 +961,11 @@ func ExampleNodeTypesClient_BeginDeallocate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/NodeTypeDeleteOperation_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypeDeleteOperation_example.json
 func ExampleNodeTypesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -953,11 +982,11 @@ func ExampleNodeTypesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/DeleteNodes_example.json
+// Generated from example definition: 2026-05-01-preview/DeleteNodes_example.json
 func ExampleNodeTypesClient_BeginDeleteNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -979,11 +1008,11 @@ func ExampleNodeTypesClient_BeginDeleteNode() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/NodeTypeGetOperation_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypeGetOperation_example.json
 func ExampleNodeTypesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1002,7 +1031,7 @@ func ExampleNodeTypesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientGetResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("FE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/FE"),
@@ -1041,7 +1070,59 @@ func ExampleNodeTypesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypeListOperation_example.json
+// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeGetFaultSimulation_example.json
+func ExampleNodeTypesClient_GetFaultSimulation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNodeTypesClient().GetFaultSimulation(ctx, "resRg", "myCluster", "BE", armservicefabricmanagedclusters.FaultSimulationIDContent{
+		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armservicefabricmanagedclusters.NodeTypesClientGetFaultSimulationResponse{
+	// 	FaultSimulation: armservicefabricmanagedclusters.FaultSimulation{
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+	// 		SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T18:11:11.3471742Z"); return t}()),
+	// 		Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+	// 		Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
+	// 			OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
+	// 			NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
+	// 				{
+	// 					OperationID: to.Ptr("714f0003-80d8-464a-a019-69e6bf89ed4c"),
+	// 					NodeTypeName: to.Ptr("BE"),
+	// 					OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
+	// 					Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+	// 				},
+	// 			},
+	// 			Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
+	// 				Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
+	// 					ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+	// 				},
+	// 				FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
+	// 				Force: to.Ptr(false),
+	// 				Zones: []*string{
+	// 					to.Ptr("2"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/NodeTypeListOperation_example.json
 func ExampleNodeTypesClient_NewListByManagedClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1155,7 +1236,94 @@ func ExampleNodeTypesClient_NewListByManagedClustersPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/RedeployNodes_UD_example.json
+// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeListFaultSimulation_example.json
+func ExampleNodeTypesClient_NewListFaultSimulationPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewNodeTypesClient().NewListFaultSimulationPager("resRg", "myCluster", "BE", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armservicefabricmanagedclusters.NodeTypesClientListFaultSimulationResponse{
+		// 	FaultSimulationListResult: armservicefabricmanagedclusters.FaultSimulationListResult{
+		// 		Value: []*armservicefabricmanagedclusters.FaultSimulation{
+		// 			{
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+		// 				SimulationID: to.Ptr("1bb61ba9-8a41-4d73-b5f0-7fc93b1edfe3"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T21:27:55.4452675Z"); return t}()),
+		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
+		// 					OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
+		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
+		// 						{
+		// 							OperationID: to.Ptr("bff10003-af96-465c-b849-99c18e1f4af6"),
+		// 							NodeTypeName: to.Ptr("BE"),
+		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
+		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusActive),
+		// 						},
+		// 					},
+		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
+		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
+		// 							ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+		// 						},
+		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
+		// 						Force: to.Ptr(false),
+		// 						Zones: []*string{
+		// 							to.Ptr("3"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T21:24:13.082339Z"); return t}()),
+		// 				SimulationID: to.Ptr("aec13cc2-1d39-4ba6-a1a8-2fc35b00643c"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-21T18:11:11.3471742Z"); return t}()),
+		// 				Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
+		// 				Details: &armservicefabricmanagedclusters.FaultSimulationDetails{
+		// 					OperationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ClusterID: to.Ptr("dd65fb6d-753b-4664-8798-4f077d4a2e18"),
+		// 					NodeTypeFaultSimulation: []*armservicefabricmanagedclusters.NodeTypeFaultSimulation{
+		// 						{
+		// 							OperationID: to.Ptr("391d0003-0d46-474c-9839-cbc345938704"),
+		// 							NodeTypeName: to.Ptr("BE"),
+		// 							OperationStatus: to.Ptr(armservicefabricmanagedclusters.SfmcOperationStatusSucceeded),
+		// 							Status: to.Ptr(armservicefabricmanagedclusters.FaultSimulationStatusDone),
+		// 						},
+		// 					},
+		// 					Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
+		// 						Constraints: &armservicefabricmanagedclusters.FaultSimulationConstraints{
+		// 							ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00"); return t}()),
+		// 						},
+		// 						FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
+		// 						Force: to.Ptr(false),
+		// 						Zones: []*string{
+		// 							to.Ptr("2"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/RedeployNodes_UD_example.json
 func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1174,11 +1342,11 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployAllNodesByUpgradeDomain() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/RedeployNodes_example.json
+// Generated from example definition: 2026-05-01-preview/RedeployNodes_example.json
 func ExampleNodeTypesClient_BeginRedeploy_redeployNodes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1200,11 +1368,11 @@ func ExampleNodeTypesClient_BeginRedeploy_redeployNodes() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/ReimageNodes_UD_example.json
+// Generated from example definition: 2026-05-01-preview/ReimageNodes_UD_example.json
 func ExampleNodeTypesClient_BeginReimage_reimageAllNodesByUpgradeDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1223,11 +1391,11 @@ func ExampleNodeTypesClient_BeginReimage_reimageAllNodesByUpgradeDomain() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/ReimageNodes_example.json
+// Generated from example definition: 2026-05-01-preview/ReimageNodes_example.json
 func ExampleNodeTypesClient_BeginReimage_reimageNodes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1249,11 +1417,11 @@ func ExampleNodeTypesClient_BeginReimage_reimageNodes() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/RestartNodes_example.json
+// Generated from example definition: 2026-05-01-preview/RestartNodes_example.json
 func ExampleNodeTypesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1275,11 +1443,11 @@ func ExampleNodeTypesClient_BeginRestart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/StartNodes_example.json
+// Generated from example definition: 2026-05-01-preview/StartNodes_example.json
 func ExampleNodeTypesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1301,11 +1469,62 @@ func ExampleNodeTypesClient_BeginStart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePatchOperationAutoScale_example.json
+// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeStartFaultSimulation_example.json
+func ExampleNodeTypesClient_BeginStartFaultSimulation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNodeTypesClient().BeginStartFaultSimulation(ctx, "resRg", "myCluster", "BE", armservicefabricmanagedclusters.FaultSimulationContentWrapper{
+		Parameters: &armservicefabricmanagedclusters.ZoneFaultSimulationContent{
+			FaultKind: to.Ptr(armservicefabricmanagedclusters.FaultKindZone),
+			Zones: []*string{
+				to.Ptr("2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/faultSimulation/NodeTypeStopFaultSimulation_example.json
+func ExampleNodeTypesClient_BeginStopFaultSimulation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armservicefabricmanagedclusters.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNodeTypesClient().BeginStopFaultSimulation(ctx, "resRg", "myCluster", "BE", armservicefabricmanagedclusters.FaultSimulationIDContent{
+		SimulationID: to.Ptr("1bb61ba9-8a41-4d73-b5f0-7fc93b1edfe3"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/NodeTypePatchOperationAutoScale_example.json
 func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1331,13 +1550,13 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),
@@ -1405,7 +1624,7 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeTypeWhileAutoScaling() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/NodeTypePatchOperation_example.json
+// Generated from example definition: 2026-05-01-preview/NodeTypePatchOperation_example.json
 func ExampleNodeTypesClient_BeginUpdate_patchANodeType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1426,13 +1645,13 @@ func ExampleNodeTypesClient_BeginUpdate_patchANodeType() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicefabricmanagedclusters.NodeTypesClientUpdateResponse{
-	// 	NodeType: &armservicefabricmanagedclusters.NodeType{
+	// 	NodeType: armservicefabricmanagedclusters.NodeType{
 	// 		Name: to.Ptr("BE"),
 	// 		Type: to.Ptr("Microsoft.ServiceFabric/managedClusters/nodeTypes"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/resRg/providers/Microsoft.ServiceFabric/managedClusters/myCluster/nodeTypes/BE"),

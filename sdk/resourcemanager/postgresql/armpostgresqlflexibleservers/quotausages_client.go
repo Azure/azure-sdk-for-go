@@ -18,6 +18,8 @@ import (
 
 // QuotaUsagesClient contains the methods for the QuotaUsages group.
 // Don't use this type directly, use NewQuotaUsagesClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type QuotaUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewQuotaUsagesClient(subscriptionID string, credential azcore.TokenCredenti
 }
 
 // NewListPager - Get quota usages at specified location in a given subscription.
-//
-// Generated from API version 2026-01-01-preview
 //   - locationName - The name of the location.
 //   - options - QuotaUsagesClientListOptions contains the optional parameters for the QuotaUsagesClient.NewListPager method.
 func (client *QuotaUsagesClient) NewListPager(locationName string, options *QuotaUsagesClientListOptions) *runtime.Pager[QuotaUsagesClientListResponse] {
@@ -83,8 +83,8 @@ func (client *QuotaUsagesClient) listCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

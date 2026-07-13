@@ -18,6 +18,8 @@ import (
 
 // DeletedBackupVaultsClient - Deleted backup vault operations (available from version 2025-09-01)
 // Don't use this type directly, use NewDeletedBackupVaultsClient() instead.
+//
+// Generated from API version 2026-03-01
 type DeletedBackupVaultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDeletedBackupVaultsClient(subscriptionID string, credential azcore.Token
 
 // Get - Gets a deleted backup vault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - location - The name of the Azure region.
 //   - deletedVaultName - The name of the DeletedBackupVaultResource
 //   - options - DeletedBackupVaultsClientGetOptions contains the optional parameters for the DeletedBackupVaultsClient.Get method.
@@ -88,8 +88,8 @@ func (client *DeletedBackupVaultsClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *DeletedBackupVaultsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByLocationPager - Lists deleted backup vaults by location
-//
-// Generated from API version 2026-03-01
 //   - location - The name of the Azure region.
 //   - options - DeletedBackupVaultsClientListByLocationOptions contains the optional parameters for the DeletedBackupVaultsClient.NewListByLocationPager
 //     method.
@@ -148,8 +146,8 @@ func (client *DeletedBackupVaultsClient) listByLocationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

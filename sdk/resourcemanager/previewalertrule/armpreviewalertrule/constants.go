@@ -4,6 +4,10 @@
 
 package armpreviewalertrule
 
+const (
+	version20250701Preview string = "2025-07-01-preview"
+)
+
 // AlertSeverity - Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required
 // only for rules of the kind LogAlert.
 type AlertSeverity int64

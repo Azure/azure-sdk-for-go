@@ -6,11 +6,10 @@ package armkeyvault_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"log"
 )
 
 // Generated from example definition: 2026-02-01/checkVaultNameAvailability.json
@@ -35,7 +34,7 @@ func ExampleVaultsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.VaultsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armkeyvault.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armkeyvault.CheckNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
@@ -123,13 +122,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armkeyvault.Vault{
+	// 	Vault: armkeyvault.Vault{
 	// 		Name: to.Ptr("sample-vault"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
@@ -291,13 +290,13 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.VaultsClientCreateOrUpdateResponse{
-	// 	Vault: &armkeyvault.Vault{
+	// 	Vault: armkeyvault.Vault{
 	// 		Name: to.Ptr("sample-vault"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
@@ -386,7 +385,7 @@ func ExampleVaultsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.VaultsClientGetResponse{
-	// 	Vault: &armkeyvault.Vault{
+	// 	Vault: armkeyvault.Vault{
 	// 		Name: to.Ptr("sample-vault"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
@@ -490,7 +489,7 @@ func ExampleVaultsClient_GetDeleted() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.VaultsClientGetDeletedResponse{
-	// 	DeletedVault: &armkeyvault.DeletedVault{
+	// 	DeletedVault: armkeyvault.DeletedVault{
 	// 		Name: to.Ptr("sample-vault"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/deletedVaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/westus/deletedVaults/sample-vault"),
@@ -518,7 +517,8 @@ func ExampleVaultsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewVaultsClient().NewListPager(&armkeyvault.VaultsClientListOptions{Top: to.Ptr[int32](1)})
+	pager := clientFactory.NewVaultsClient().NewListPager(&armkeyvault.VaultsClientListOptions{
+		Top: to.Ptr[int32](1)})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -840,7 +840,7 @@ func ExampleVaultsClient_BeginPurgeDeleted() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -932,7 +932,7 @@ func ExampleVaultsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.VaultsClientUpdateResponse{
-	// 	Vault: &armkeyvault.Vault{
+	// 	Vault: armkeyvault.Vault{
 	// 		Name: to.Ptr("sample-vault"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
@@ -1086,7 +1086,7 @@ func ExampleVaultsClient_UpdateAccessPolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.VaultsClientUpdateAccessPolicyResponse{
-	// 	VaultAccessPolicyParameters: &armkeyvault.VaultAccessPolicyParameters{
+	// 	VaultAccessPolicyParameters: armkeyvault.VaultAccessPolicyParameters{
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults/accessPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault/accessPolicies/"),
 	// 		Properties: &armkeyvault.VaultAccessPolicyProperties{

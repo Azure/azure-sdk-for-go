@@ -31,7 +31,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ApplyUpdatesClientCreateOrUpdateResponse{
-	// 	ApplyUpdate: &armmaintenance.ApplyUpdate{
+	// 	ApplyUpdate: armmaintenance.ApplyUpdate{
 	// 		Name: to.Ptr("e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/applyUpdates"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/applyUpdates/e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
@@ -62,7 +62,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateOrCancel_applyUpdatesCreateOrUpdate
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ApplyUpdatesClientCreateOrUpdateOrCancelResponse{
-	// 	ApplyUpdate: &armmaintenance.ApplyUpdate{
+	// 	ApplyUpdate: armmaintenance.ApplyUpdate{
 	// 		Name: to.Ptr("e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/applyUpdates"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/applyUpdates/e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
@@ -97,7 +97,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateOrCancel_applyUpdatesCreateOrUpdate
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ApplyUpdatesClientCreateOrUpdateOrCancelResponse{
-	// 	ApplyUpdate: &armmaintenance.ApplyUpdate{
+	// 	ApplyUpdate: armmaintenance.ApplyUpdate{
 	// 		Name: to.Ptr("maintenanceConfig1"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/applyUpdates"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/microsoft.maintenance/maintenanceconfigurations/maintenanceconfig1/providers/microsoft.maintenance/applyupdates/20230901121200"),
@@ -128,7 +128,7 @@ func ExampleApplyUpdatesClient_CreateOrUpdateParent() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ApplyUpdatesClientCreateOrUpdateParentResponse{
-	// 	ApplyUpdate: &armmaintenance.ApplyUpdate{
+	// 	ApplyUpdate: armmaintenance.ApplyUpdate{
 	// 		Name: to.Ptr("e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/applyUpdates"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/virtualMachines/smdvm1/providers/Microsoft.Maintenance/applyUpdates/e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
@@ -159,7 +159,7 @@ func ExampleApplyUpdatesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ApplyUpdatesClientGetResponse{
-	// 	ApplyUpdate: &armmaintenance.ApplyUpdate{
+	// 	ApplyUpdate: armmaintenance.ApplyUpdate{
 	// 		Name: to.Ptr("e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/applyUpdates"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/providers/Microsoft.Maintenance/applyUpdates/e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
@@ -190,7 +190,7 @@ func ExampleApplyUpdatesClient_GetParent() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmaintenance.ApplyUpdatesClientGetParentResponse{
-	// 	ApplyUpdate: &armmaintenance.ApplyUpdate{
+	// 	ApplyUpdate: armmaintenance.ApplyUpdate{
 	// 		Name: to.Ptr("e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),
 	// 		Type: to.Ptr("Microsoft.Maintenance/applyUpdates"),
 	// 		ID: to.Ptr("/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Compute/virtualMachineScaleSets/smdtest1/virtualMachines/smdvm1/providers/Microsoft.Maintenance/applyUpdates/e9b9685d-78e4-44c4-a81c-64a14f9b87b6"),

@@ -12,7 +12,7 @@ module: github.com/Azure/azure-sdk-for-go/sdk/ai/azopenai
 license-header: MICROSOFT_MIT_NO_VERSION
 openapi-type: data-plane
 go: true
-use: "@autorest/go@4.0.0-preview.63"
+use: "@autorest/go@4.0.0-preview.80"
 title: "OpenAI"
 slice-elements-byval: true
 rawjson-as-bytes: true

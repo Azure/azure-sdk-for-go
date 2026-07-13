@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01/Capabilities.json
+// Generated from example definition: 2026-05-01/Capabilities.json
 func ExampleClient_Capabilities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleClient_Capabilities() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.ClientCapabilitiesResponse{
-	// 	CapabilitiesResponse: &armrecoveryservices.CapabilitiesResponse{
+	// 	CapabilitiesResponse: armrecoveryservices.CapabilitiesResponse{
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/Vaults"),
 	// 		Properties: &armrecoveryservices.CapabilitiesResponseProperties{
 	// 			DNSZones: []*armrecoveryservices.DNSZoneResponse{
@@ -67,7 +67,7 @@ func ExampleClient_Capabilities() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01/CheckNameAvailability_Available.json
+// Generated from example definition: 2026-05-01/CheckNameAvailability_Available.json
 func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenNoResourceWithSameNameTypeAndSubscriptionExistsNorHasBeenDeletedWithinLast24Hours() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,13 +89,13 @@ func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenNoR
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.ClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armrecoveryservices.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armrecoveryservices.CheckNameAvailabilityResult{
 	// 		NameAvailable: to.Ptr(true),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01/CheckNameAvailability_NotAvailable.json
+// Generated from example definition: 2026-05-01/CheckNameAvailability_NotAvailable.json
 func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenResourceWithSameNameTypeAndSubscriptionExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleClient_CheckNameAvailability_availabilityStatusOfResourceNameWhenRes
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.ClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armrecoveryservices.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armrecoveryservices.CheckNameAvailabilityResult{
 	// 		Message: to.Ptr("Resource already exists with the same name."),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("AlreadyExists"),

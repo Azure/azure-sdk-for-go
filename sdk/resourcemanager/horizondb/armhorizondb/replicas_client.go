@@ -18,6 +18,8 @@ import (
 
 // ReplicasClient contains the methods for the Replicas group.
 // Don't use this type directly, use NewReplicasClient() instead.
+//
+// Generated from API version 2026-01-20-preview
 type ReplicasClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Creates a new HorizonDb replica or updates an existing replica.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - poolName - The name of the HorizonDb pool.
@@ -70,8 +70,6 @@ func (client *ReplicasClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Creates a new HorizonDb replica or updates an existing replica.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *ReplicasClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, resource Replica, options *ReplicasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginCreateOrUpdate"
@@ -121,8 +119,8 @@ func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -133,8 +131,6 @@ func (client *ReplicasClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Deletes a HorizonDb replica.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - poolName - The name of the HorizonDb pool.
@@ -159,8 +155,6 @@ func (client *ReplicasClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Deletes a HorizonDb replica.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *ReplicasClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, options *ReplicasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginDelete"
@@ -210,15 +204,13 @@ func (client *ReplicasClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about a HorizonDb replica.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - poolName - The name of the HorizonDb pool.
@@ -274,8 +266,8 @@ func (client *ReplicasClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -290,8 +282,6 @@ func (client *ReplicasClient) getHandleResponse(resp *http.Response) (ReplicasCl
 }
 
 // NewListPager - Lists all HorizonDb replicas in a pool.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - poolName - The name of the HorizonDb pool.
@@ -343,8 +333,8 @@ func (client *ReplicasClient) listCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -360,8 +350,6 @@ func (client *ReplicasClient) listHandleResponse(resp *http.Response) (ReplicasC
 
 // BeginUpdate - Updates an existing HorizonDb replica (e.g., role).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - poolName - The name of the HorizonDb pool.
@@ -387,8 +375,6 @@ func (client *ReplicasClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - Updates an existing HorizonDb replica (e.g., role).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *ReplicasClient) update(ctx context.Context, resourceGroupName string, clusterName string, poolName string, replicaName string, properties ReplicaForPatchUpdate, options *ReplicasClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicasClient.BeginUpdate"
@@ -438,8 +424,8 @@ func (client *ReplicasClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

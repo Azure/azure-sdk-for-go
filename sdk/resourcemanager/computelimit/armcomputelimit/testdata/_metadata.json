@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.ComputeLimit": "2026-04-30"
+    "Microsoft.ComputeLimit": "2026-07-01"
   },
-  "emitterVersion": "0.10.7"
+  "emitterVersion": "0.14.2"
 }

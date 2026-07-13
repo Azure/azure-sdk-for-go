@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_CreateOrUpdate.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateABlockCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,13 +48,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateABlockC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientCreateOrUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Name: to.Ptr("blockCapacityReservation"),
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/blockCapacityReservationGroup/capacityReservations/blockCapacityReservation"),
@@ -82,7 +82,7 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateABlockC
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_CreateOrUpdate.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateACapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,13 +111,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateACapaci
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientCreateOrUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Name: to.Ptr("myCapacityReservation"),
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/myCapacityReservationGroup/capacityReservations/myCapacityReservation"),
@@ -141,7 +141,7 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateACapaci
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_CreateOrUpdate.json
 func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateATargetedCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,13 +170,13 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateATarget
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientCreateOrUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Name: to.Ptr("targetedCapacityReservation"),
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/targetedCapacityReservationGroup/capacityReservations/targetedCapacityReservation"),
@@ -200,7 +200,7 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateATarget
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Delete_MaximumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +217,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMaxi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -226,7 +226,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMaxi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Delete_MinimumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMini
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -252,7 +252,7 @@ func ExampleCapacityReservationsClient_BeginDelete_capacityReservationDeleteMini
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/BlockCapacityReservation_Get.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_Get.json
 func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientGetResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/blockCapacityReservationGroup/capacityReservations/blockCapacityReservation"),
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -332,7 +332,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservation_Get.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Get.json
 func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -352,7 +352,7 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientGetResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/myCapacityReservationGroup/capacityReservations/myCapacityReservation"),
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -408,7 +408,7 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/TargetedCapacityReservation_Get.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_Get.json
 func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientGetResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/targetedCapacityReservationGroup/capacityReservations/targetedCapacityReservation"),
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
@@ -484,7 +484,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservation_ListByReservationGroup.json
 func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_listBlockCapacityReservationsInReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -584,7 +584,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 	}
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_ListByReservationGroup.json
 func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_listCapacityReservationsInReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +676,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 	}
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservation_ListByReservationGroup.json
 func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_listCapacityReservationsInTargetedReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -768,7 +768,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 	}
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservation_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Update_MaximumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -808,13 +808,13 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
 	// 		},
@@ -862,7 +862,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/capacityReservationExamples/CapacityReservation_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservation_Update_MinimumSet_Gen.json
 func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -879,13 +879,13 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMini
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CapacityReservationsClientUpdateResponse{
-	// 	CapacityReservation: &armcompute.CapacityReservation{
+	// 	CapacityReservation: armcompute.CapacityReservation{
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.SKU{
 	// 		},

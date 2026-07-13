@@ -54,10 +54,10 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "SpotPlacementScoresClient":
-		initServer(s, &s.trSpotPlacementScoresServer, func() *SpotPlacementScoresServerTransport {
+		initServer(&s.trMu, &s.trSpotPlacementScoresServer, func() *SpotPlacementScoresServerTransport {
 			return NewSpotPlacementScoresServerTransport(&s.srv.SpotPlacementScoresServer)
 		})
 		resp, err = s.trSpotPlacementScoresServer.Do(req)
@@ -70,12 +70,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

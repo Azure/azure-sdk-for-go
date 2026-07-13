@@ -18,6 +18,8 @@ import (
 
 // SchemaReferencesClient contains the methods for the SchemaReferences group.
 // Don't use this type directly, use NewSchemaReferencesClient() instead.
+//
+// Generated from API version 2025-06-01
 type SchemaReferencesClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewSchemaReferencesClient(credential azcore.TokenCredential, options *arm.C
 
 // BeginCreateOrUpdate - Create or update a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - schemaReferenceName - The name of the SchemaReference
 //   - resource - Resource create parameters.
@@ -64,8 +64,6 @@ func (client *SchemaReferencesClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create or update a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SchemaReferencesClient) createOrUpdate(ctx context.Context, resourceURI string, schemaReferenceName string, resource SchemaReference, options *SchemaReferencesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemaReferencesClient.BeginCreateOrUpdate"
@@ -103,8 +101,8 @@ func (client *SchemaReferencesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -115,8 +113,6 @@ func (client *SchemaReferencesClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - schemaReferenceName - The name of the SchemaReference
 //   - options - SchemaReferencesClientBeginDeleteOptions contains the optional parameters for the SchemaReferencesClient.BeginDelete
@@ -140,8 +136,6 @@ func (client *SchemaReferencesClient) BeginDelete(ctx context.Context, resourceU
 
 // Delete - Delete a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SchemaReferencesClient) deleteOperation(ctx context.Context, resourceURI string, schemaReferenceName string, options *SchemaReferencesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemaReferencesClient.BeginDelete"
@@ -179,15 +173,13 @@ func (client *SchemaReferencesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - schemaReferenceName - The name of the SchemaReference
 //   - options - SchemaReferencesClientGetOptions contains the optional parameters for the SchemaReferencesClient.Get method.
@@ -229,8 +221,8 @@ func (client *SchemaReferencesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -245,8 +237,6 @@ func (client *SchemaReferencesClient) getHandleResponse(resp *http.Response) (Sc
 }
 
 // NewListByResourceGroupPager - List by specified resource group
-//
-// Generated from API version 2025-06-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - SchemaReferencesClientListByResourceGroupOptions contains the optional parameters for the SchemaReferencesClient.NewListByResourceGroupPager
 //     method.
@@ -285,8 +275,8 @@ func (client *SchemaReferencesClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -302,8 +292,6 @@ func (client *SchemaReferencesClient) listByResourceGroupHandleResponse(resp *ht
 
 // Update - update a Schema Reference Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - schemaReferenceName - The name of the SchemaReference
 //   - properties - The resource properties to be updated.
@@ -346,8 +334,8 @@ func (client *SchemaReferencesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

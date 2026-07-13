@@ -18,6 +18,8 @@ import (
 
 // DbSystemsClient contains the methods for the DbSystems group.
 // Don't use this type directly, use NewDbSystemsClient() instead.
+//
+// Generated from API version 2025-09-01
 type DbSystemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDbSystemsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Create a DbSystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dbSystemName - The name of the DbSystem
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *DbSystemsClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // CreateOrUpdate - Create a DbSystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *DbSystemsClient) createOrUpdate(ctx context.Context, resourceGroupName string, dbSystemName string, resource DbSystem, options *DbSystemsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DbSystemsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *DbSystemsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *DbSystemsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // BeginDelete - Delete a DbSystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dbSystemName - The name of the DbSystem
 //   - options - DbSystemsClientBeginDeleteOptions contains the optional parameters for the DbSystemsClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *DbSystemsClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Delete a DbSystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *DbSystemsClient) deleteOperation(ctx context.Context, resourceGroupName string, dbSystemName string, options *DbSystemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DbSystemsClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *DbSystemsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a DbSystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dbSystemName - The name of the DbSystem
 //   - options - DbSystemsClientGetOptions contains the optional parameters for the DbSystemsClient.Get method.
@@ -243,8 +235,8 @@ func (client *DbSystemsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *DbSystemsClient) getHandleResponse(resp *http.Response) (DbSystems
 }
 
 // NewListByResourceGroupPager - List DbSystem resources by resource group
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DbSystemsClientListByResourceGroupOptions contains the optional parameters for the DbSystemsClient.NewListByResourceGroupPager
 //     method.
@@ -303,8 +293,8 @@ func (client *DbSystemsClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -319,8 +309,6 @@ func (client *DbSystemsClient) listByResourceGroupHandleResponse(resp *http.Resp
 }
 
 // NewListBySubscriptionPager - List DbSystem resources by subscription ID
-//
-// Generated from API version 2025-09-01
 //   - options - DbSystemsClientListBySubscriptionOptions contains the optional parameters for the DbSystemsClient.NewListBySubscriptionPager
 //     method.
 func (client *DbSystemsClient) NewListBySubscriptionPager(options *DbSystemsClientListBySubscriptionOptions) *runtime.Pager[DbSystemsClientListBySubscriptionResponse] {
@@ -358,8 +346,8 @@ func (client *DbSystemsClient) listBySubscriptionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,8 +363,6 @@ func (client *DbSystemsClient) listBySubscriptionHandleResponse(resp *http.Respo
 
 // BeginUpdate - Update a DbSystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dbSystemName - The name of the DbSystem
 //   - properties - The resource properties to be updated.
@@ -400,8 +386,6 @@ func (client *DbSystemsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // Update - Update a DbSystem
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *DbSystemsClient) update(ctx context.Context, resourceGroupName string, dbSystemName string, properties DbSystemUpdate, options *DbSystemsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DbSystemsClient.BeginUpdate"
@@ -443,8 +427,8 @@ func (client *DbSystemsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

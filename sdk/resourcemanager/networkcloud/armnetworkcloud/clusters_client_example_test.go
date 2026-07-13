@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/Clusters_ContinueUpdateVersion.json
+// Generated from example definition: 2026-05-01-preview/Clusters_ContinueUpdateVersion.json
 func ExampleClustersClient_BeginContinueUpdateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,17 +25,18 @@ func ExampleClustersClient_BeginContinueUpdateVersion() {
 	}
 	poller, err := clientFactory.NewClustersClient().BeginContinueUpdateVersion(ctx, "resourceGroupName", "clusterName", armnetworkcloud.ClusterContinueUpdateVersionParameters{
 		MachineGroupTargetingMode: to.Ptr(armnetworkcloud.ClusterContinueUpdateVersionMachineGroupTargetingModeAlphaByRack),
+		SafeguardMode:             to.Ptr(armnetworkcloud.ClusterContinueUpdateVersionSafeguardModeAll),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Create.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Create.json
 func ExampleClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,6 +58,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 				"/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1": {},
 			},
 		},
+		Kind:     to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 		Location: to.Ptr("location"),
 		Properties: &armnetworkcloud.ClusterProperties{
 			AggregatorOrSingleRackDefinition: &armnetworkcloud.RackDefinition{
@@ -103,7 +105,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 				},
 			},
 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 					IdentityType:                   to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -185,7 +187,8 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 			},
 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
-				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
+				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
+				EnforcementLevel:     to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 			},
 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
@@ -215,13 +218,13 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientCreateOrUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -234,6 +237,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -299,7 +303,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -411,6 +415,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -452,7 +457,7 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Delete.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Delete.json
 func ExampleClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,11 +474,11 @@ func ExampleClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Deploy.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Deploy.json
 func ExampleClustersClient_BeginDeploy_deployCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -491,11 +496,11 @@ func ExampleClustersClient_BeginDeploy_deployCluster() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Deploy_SkipValidation.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Deploy_SkipValidation.json
 func ExampleClustersClient_BeginDeploy_deployClusterSkippingValidation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -517,11 +522,11 @@ func ExampleClustersClient_BeginDeploy_deployClusterSkippingValidation() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Get.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Get.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +545,7 @@ func ExampleClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientGetResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -553,6 +558,7 @@ func ExampleClustersClient_Get() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -618,7 +624,7 @@ func ExampleClustersClient_Get() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -722,6 +728,14 @@ func ExampleClustersClient_Get() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -730,6 +744,7 @@ func ExampleClustersClient_Get() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -771,7 +786,42 @@ func ExampleClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_ListByResourceGroup.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Inspect.json
+func ExampleClustersClient_BeginInspect() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginInspect(ctx, "resourceGroupName", "clusterName", &armnetworkcloud.ClustersClientBeginInspectOptions{
+		ClusterInspectParameters: &armnetworkcloud.ClusterInspectParameters{
+			AdditionalActions: []*armnetworkcloud.ClusterInspectAdditionalAction{
+				to.Ptr(armnetworkcloud.ClusterInspectAdditionalActionResetHardware),
+			},
+			FilterDevices: &armnetworkcloud.FilterDevices{
+				BareMetalMachineNames: []*string{
+					to.Ptr("machine1"),
+					to.Ptr("machine2"),
+				},
+				RackNames: []*string{
+					to.Ptr("rack1"),
+				},
+			},
+		}})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_ListByResourceGroup.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -810,6 +860,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 				},
+		// 				Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 		// 				Location: to.Ptr("location"),
 		// 				Name: to.Ptr("clusterName"),
 		// 				Properties: &armnetworkcloud.ClusterProperties{
@@ -875,7 +926,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 					AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -979,6 +1030,14 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+		// 					LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+		// 					ManagedCredentials: []*string{
+		// 						to.Ptr("Bare Metal Machine Identity - console"),
+		// 						to.Ptr("Bare Metal Machine Identity - root"),
+		// 						to.Ptr("BMC Credential"),
+		// 						to.Ptr("local-path-provisioner volume passphrase"),
+		// 						to.Ptr("Storage Appliance User"),
+		// 					},
 		// 					ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 		// 						Location: to.Ptr("East US"),
 		// 						Name: to.Ptr("my-managed-rg"),
@@ -987,6 +1046,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 		// 					NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 		// 					RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+		// 						DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 		// 						EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 		// 					},
 		// 					SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -1031,7 +1091,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Clusters_ListBySubscription.json
+// Generated from example definition: 2026-05-01-preview/Clusters_ListBySubscription.json
 func ExampleClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1070,6 +1130,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 				},
+		// 				Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 		// 				Location: to.Ptr("location"),
 		// 				Name: to.Ptr("clusterName"),
 		// 				Properties: &armnetworkcloud.ClusterProperties{
@@ -1135,7 +1196,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 					AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+		// 						AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 		// 						AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 		// 							IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 		// 							UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -1239,6 +1300,14 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 		// 					DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+		// 					LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+		// 					ManagedCredentials: []*string{
+		// 						to.Ptr("Bare Metal Machine Identity - console"),
+		// 						to.Ptr("Bare Metal Machine Identity - root"),
+		// 						to.Ptr("BMC Credential"),
+		// 						to.Ptr("local-path-provisioner volume passphrase"),
+		// 						to.Ptr("Storage Appliance User"),
+		// 					},
 		// 					ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 		// 						Location: to.Ptr("East US"),
 		// 						Name: to.Ptr("my-managed-rg"),
@@ -1247,6 +1316,7 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 		// 					NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 		// 					RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+		// 						DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 		// 						EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 		// 					},
 		// 					SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -1291,7 +1361,32 @@ func ExampleClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/Clusters_ScanRuntime.json
+// Generated from example definition: 2026-05-01-preview/Clusters_RotateCredential.json
+func ExampleClustersClient_BeginRotateCredential() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewClustersClient().BeginRotateCredential(ctx, "resourceGroupName", "clusterName", armnetworkcloud.ClusterRotateCredentialParameters{
+		Credentials: []*string{
+			to.Ptr("BMC Credential"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Clusters_ScanRuntime.json
 func ExampleClustersClient_BeginScanRuntime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1311,11 +1406,11 @@ func ExampleClustersClient_BeginScanRuntime() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_AggregatorOrSingleRackDefinition.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_AggregatorOrSingleRackDefinition.json
 func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1387,13 +1482,13 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -1406,6 +1501,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -1471,7 +1567,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -1575,6 +1671,13 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -1583,6 +1686,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateAccepted),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -1624,7 +1728,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAggregatorOrSingleRackDefinit
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_AnalyticsOutput.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_AnalyticsOutput.json
 func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1645,7 +1749,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 		},
 		Properties: &armnetworkcloud.ClusterPatchProperties{
 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 					IdentityType:                   to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
@@ -1662,13 +1766,13 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -1683,6 +1787,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -1748,7 +1853,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"),
@@ -1852,6 +1957,14 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -1860,6 +1973,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -1901,7 +2015,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterAnalyticsOutput() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_CommandOutput.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_CommandOutput.json
 func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1949,13 +2063,13 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -1970,6 +2084,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -2035,7 +2150,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -2139,6 +2254,14 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -2147,6 +2270,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -2188,7 +2312,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterCommandOutput() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_Location.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_Location.json
 func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2213,13 +2337,13 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -2232,6 +2356,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -2297,7 +2422,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -2401,6 +2526,14 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -2409,6 +2542,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -2450,7 +2584,7 @@ func ExampleClustersClient_BeginUpdate_patchClusterLocation() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_RuntimeProtectionConfiguration.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_RuntimeProtectionConfiguration.json
 func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2464,7 +2598,8 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	poller, err := clientFactory.NewClustersClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", armnetworkcloud.ClusterPatchParameters{
 		Properties: &armnetworkcloud.ClusterPatchProperties{
 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
-				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
+				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeAutomatic),
+				EnforcementLevel:     to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 			},
 		},
 		Tags: map[string]*string{
@@ -2477,13 +2612,13 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -2496,6 +2631,7 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -2561,7 +2697,7 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -2665,6 +2801,14 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -2673,6 +2817,7 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeAutomatic),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -2714,7 +2859,7 @@ func ExampleClustersClient_BeginUpdate_patchRuntimeProtectionConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_SecretArchive.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_SecretArchive.json
 func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2745,13 +2890,13 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -2764,6 +2909,7 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -2829,7 +2975,7 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -2933,6 +3079,14 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -2941,6 +3095,7 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -2982,7 +3137,7 @@ func ExampleClustersClient_BeginUpdate_patchSecretArchive() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_UpdateStrategy.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_UpdateStrategy.json
 func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3013,13 +3168,13 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -3032,6 +3187,7 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -3097,7 +3253,7 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -3201,6 +3357,14 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -3209,6 +3373,7 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -3250,7 +3415,7 @@ func ExampleClustersClient_BeginUpdate_patchUpdateStrategy() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_Patch_VulnerabilityScanning.json
+// Generated from example definition: 2026-05-01-preview/Clusters_Patch_VulnerabilityScanning.json
 func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3277,13 +3442,13 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.ClustersClientUpdateResponse{
-	// 	Cluster: &armnetworkcloud.Cluster{
+	// 	Cluster: armnetworkcloud.Cluster{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterManagerExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -3296,6 +3461,7 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// 				},
 	// 			},
 	// 		},
+	// 		Kind: to.Ptr(armnetworkcloud.DeploymentTypeAzureLocal),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("clusterName"),
 	// 		Properties: &armnetworkcloud.ClusterProperties{
@@ -3361,7 +3527,7 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// 				},
 	// 			},
 	// 			AnalyticsOutputSettings: &armnetworkcloud.AnalyticsOutputSettings{
-	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName"),
+	// 				AnalyticsWorkspaceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.OperationalInsights/workspaces/logAnalyticsWorkspaceName"),
 	// 				AssociatedIdentity: &armnetworkcloud.IdentitySelector{
 	// 					IdentityType: to.Ptr(armnetworkcloud.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"),
@@ -3465,6 +3631,14 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// 			},
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterDetailedStatusRunning),
 	// 			DetailedStatusMessage: to.Ptr("Cluster is running and healthy"),
+	// 			LastSuccessfulVersionUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-22T12:00:00Z"); return t}()),
+	// 			ManagedCredentials: []*string{
+	// 				to.Ptr("Bare Metal Machine Identity - console"),
+	// 				to.Ptr("Bare Metal Machine Identity - root"),
+	// 				to.Ptr("BMC Credential"),
+	// 				to.Ptr("local-path-provisioner volume passphrase"),
+	// 				to.Ptr("Storage Appliance User"),
+	// 			},
 	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
 	// 				Location: to.Ptr("East US"),
 	// 				Name: to.Ptr("my-managed-rg"),
@@ -3473,6 +3647,7 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// 			NetworkFabricID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedNetworkFabric/networkFabrics/fabricName"),
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterProvisioningStateSucceeded),
 	// 			RuntimeProtectionConfiguration: &armnetworkcloud.RuntimeProtectionConfiguration{
+	// 				DefinitionUpdateMode: to.Ptr(armnetworkcloud.RuntimeProtectionDefinitionUpdateModeNone),
 	// 				EnforcementLevel: to.Ptr(armnetworkcloud.RuntimeProtectionEnforcementLevelOnDemand),
 	// 			},
 	// 			SecretArchiveSettings: &armnetworkcloud.SecretArchiveSettings{
@@ -3514,7 +3689,7 @@ func ExampleClustersClient_BeginUpdate_patchVulnerabilityScanning() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/Clusters_UpdateVersion.json
+// Generated from example definition: 2026-05-01-preview/Clusters_UpdateVersion.json
 func ExampleClustersClient_BeginUpdateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3526,6 +3701,7 @@ func ExampleClustersClient_BeginUpdateVersion() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClustersClient().BeginUpdateVersion(ctx, "resourceGroupName", "clusterName", armnetworkcloud.ClusterUpdateVersionParameters{
+		SafeguardMode:        to.Ptr(armnetworkcloud.ClusterUpdateVersionSafeguardModeAll),
 		TargetClusterVersion: to.Ptr("2.0"),
 	}, nil)
 	if err != nil {
@@ -3533,6 +3709,6 @@ func ExampleClustersClient_BeginUpdateVersion() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

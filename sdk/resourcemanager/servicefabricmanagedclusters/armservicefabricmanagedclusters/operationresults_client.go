@@ -18,6 +18,8 @@ import (
 
 // OperationResultsClient contains the methods for the OperationResults group.
 // Don't use this type directly, use NewOperationResultsClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type OperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCre
 //
 // Get long running operation result.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - location - The name of the Azure region.
 //   - operationID - operation identifier.
 //   - options - OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
@@ -90,8 +90,8 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 

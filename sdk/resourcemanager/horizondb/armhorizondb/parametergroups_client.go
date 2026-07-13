@@ -19,6 +19,8 @@ import (
 
 // ParameterGroupsClient contains the methods for the ParameterGroups group.
 // Don't use this type directly, use NewParameterGroupsClient() instead.
+//
+// Generated from API version 2026-01-20-preview
 type ParameterGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewParameterGroupsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Creates a new HorizonDb parameter group or updates an existing parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parameterGroupName - The name of the HorizonDb parameter group.
 //   - resource - Resource create parameters.
@@ -69,8 +69,6 @@ func (client *ParameterGroupsClient) BeginCreateOrUpdate(ctx context.Context, re
 
 // CreateOrUpdate - Creates a new HorizonDb parameter group or updates an existing parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *ParameterGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, parameterGroupName string, resource ParameterGroup, options *ParameterGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ParameterGroupsClient.BeginCreateOrUpdate"
@@ -112,8 +110,8 @@ func (client *ParameterGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -124,8 +122,6 @@ func (client *ParameterGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDelete - Deletes a HorizonDb parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parameterGroupName - The name of the HorizonDb parameter group.
 //   - options - ParameterGroupsClientBeginDeleteOptions contains the optional parameters for the ParameterGroupsClient.BeginDelete
@@ -149,8 +145,6 @@ func (client *ParameterGroupsClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Deletes a HorizonDb parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *ParameterGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ParameterGroupsClient.BeginDelete"
@@ -192,15 +186,13 @@ func (client *ParameterGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about a HorizonDb parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parameterGroupName - The name of the HorizonDb parameter group.
 //   - options - ParameterGroupsClientGetOptions contains the optional parameters for the ParameterGroupsClient.Get method.
@@ -246,8 +238,8 @@ func (client *ParameterGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -262,8 +254,6 @@ func (client *ParameterGroupsClient) getHandleResponse(resp *http.Response) (Par
 }
 
 // NewListByResourceGroupPager - Lists all HorizonDb parameter groups in a resource group.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ParameterGroupsClientListByResourceGroupOptions contains the optional parameters for the ParameterGroupsClient.NewListByResourceGroupPager
 //     method.
@@ -306,8 +296,8 @@ func (client *ParameterGroupsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -322,8 +312,6 @@ func (client *ParameterGroupsClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Lists all HorizonDb parameter groups in a subscription.
-//
-// Generated from API version 2026-01-20-preview
 //   - options - ParameterGroupsClientListBySubscriptionOptions contains the optional parameters for the ParameterGroupsClient.NewListBySubscriptionPager
 //     method.
 func (client *ParameterGroupsClient) NewListBySubscriptionPager(options *ParameterGroupsClientListBySubscriptionOptions) *runtime.Pager[ParameterGroupsClientListBySubscriptionResponse] {
@@ -361,8 +349,8 @@ func (client *ParameterGroupsClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -377,8 +365,6 @@ func (client *ParameterGroupsClient) listBySubscriptionHandleResponse(resp *http
 }
 
 // NewListConnectionsPager - Gets all connections to a parameter group.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parameterGroupName - The name of the HorizonDb parameter group.
 //   - options - ParameterGroupsClientListConnectionsOptions contains the optional parameters for the ParameterGroupsClient.NewListConnectionsPager
@@ -426,8 +412,8 @@ func (client *ParameterGroupsClient) listConnectionsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -442,8 +428,6 @@ func (client *ParameterGroupsClient) listConnectionsHandleResponse(resp *http.Re
 }
 
 // NewListVersionsPager - Lists parameter groups filtered by version number.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parameterGroupName - The name of the HorizonDb parameter group.
 //   - options - ParameterGroupsClientListVersionsOptions contains the optional parameters for the ParameterGroupsClient.NewListVersionsPager
@@ -491,11 +475,11 @@ func (client *ParameterGroupsClient) listVersionsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
+	reqQP.Set("api-version", version20260120Preview)
 	if options != nil && options.Version != nil {
 		reqQP.Set("version", strconv.FormatInt(int64(*options.Version), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -511,8 +495,6 @@ func (client *ParameterGroupsClient) listVersionsHandleResponse(resp *http.Respo
 
 // BeginUpdate - Updates an existing HorizonDb parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - parameterGroupName - The name of the HorizonDb parameter group.
 //   - properties - The resource properties to be updated.
@@ -537,8 +519,6 @@ func (client *ParameterGroupsClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - Updates an existing HorizonDb parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 func (client *ParameterGroupsClient) update(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, options *ParameterGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ParameterGroupsClient.BeginUpdate"
@@ -580,8 +560,8 @@ func (client *ParameterGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

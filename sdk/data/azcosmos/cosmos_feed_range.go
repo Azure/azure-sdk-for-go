@@ -44,14 +44,6 @@ type FeedRange struct {
 	MaxExclusive string
 }
 
-// NewFeedRange creates a new FeedRange with the specified minimum inclusive and maximum exclusive values.
-func NewFeedRange(minInclusive, maxExclusive string) FeedRange {
-	return FeedRange{
-		MinInclusive: minInclusive,
-		MaxExclusive: maxExclusive,
-	}
-}
-
 // overlappingPartitionKeyRanges returns the subset of partitionKeyRanges whose
 // boundaries overlap the given feedRange, preserving input order. Returns nil
 // on no overlap (no error).

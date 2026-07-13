@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Management operations (PeekMessages, ScheduleMessages, CancelScheduledMessages, and others) now use a minimum server-timeout of 60 seconds, aligning with the .NET SDK default and consistent with Java's 59-second default. Previously the user's context deadline was passed directly as the server-timeout, which could cause premature timeouts on partitioned entities where the service needs up to 60 seconds for partition scatter-gather. (#26421)
+- Management operations (PeekMessages, ScheduleMessages, CancelScheduledMessages, and others) now send an explicit 60-second `server-timeout` when the caller's context has no deadline, matching the .NET SDK's 60-second default (Java uses a comparable 59-second default). When the context has a deadline, the remaining time is sent as before, so the `server-timeout` never exceeds how long the client waits. This prevents a no-deadline management call from blocking indefinitely when the service stalls. (#26421)
 - Read `com.microsoft:max-message-batch-size` vendor property from the AMQP sender link to correctly limit batch size on Premium large-message entities, where `max-message-size` can be up to 100 MB but the batch limit is 1 MB.
 
 ### Other Changes

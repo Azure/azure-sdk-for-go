@@ -27,18 +27,24 @@ func TestServerTimeoutMillis(t *testing.T) {
 			wantExact: ptrUint(60000),
 		},
 		{
-			name: "deadline shorter than 60s returns floor of 60s",
+			name: "deadline shorter than 60s uses remaining time",
 			ctx: func() (context.Context, context.CancelFunc) {
 				return context.WithTimeout(context.Background(), 10*time.Second)
 			},
-			wantExact: ptrUint(60000),
+			// The remaining deadline is used so server-timeout never exceeds the
+			// client-side wait. time.Until can only be slightly under 10s, so the
+			// upper bound is the deadline itself and the lower bound tolerates
+			// scheduler drift without flaking.
+			wantMin: 9500,
+			wantMax: 10000,
 		},
 		{
-			name: "very short deadline returns floor of 60s",
+			name: "very short deadline uses remaining time",
 			ctx: func() (context.Context, context.CancelFunc) {
 				return context.WithTimeout(context.Background(), 1*time.Second)
 			},
-			wantExact: ptrUint(60000),
+			wantMin: 800,
+			wantMax: 1000,
 		},
 		{
 			name: "deadline longer than 60s respects user timeout",
@@ -47,25 +53,26 @@ func TestServerTimeoutMillis(t *testing.T) {
 			},
 			// time.Until shifts slightly between setup and call, so allow a range
 			wantMin: 119000,
-			wantMax: 120500,
+			wantMax: 120000,
 		},
 		{
-			name: "deadline exactly 60s returns ~60000 ms",
+			name: "deadline exactly 60s uses remaining time",
 			ctx: func() (context.Context, context.CancelFunc) {
 				return context.WithTimeout(context.Background(), 60*time.Second)
 			},
-			// With exactly 60s remaining, time.Until will be slightly under 60s,
-			// so the floor (defaultServerTimeout) wins → exact 60000.
-			wantExact: ptrUint(60000),
+			// With exactly 60s remaining, time.Until is slightly under 60s.
+			wantMin: 59000,
+			wantMax: 60000,
 		},
 		{
-			name: "expired context returns floor of 60s",
+			name: "expired context returns 0",
 			ctx: func() (context.Context, context.CancelFunc) {
 				ctx, cancel := context.WithDeadline(context.Background(), time.Now().Add(-1*time.Second))
 				return ctx, cancel
 			},
-			// time.Until returns negative, which is < defaultServerTimeout, so the floor wins.
-			wantExact: ptrUint(60000),
+			// Negative remaining is clamped to 0 to avoid an unsigned underflow; the
+			// RPC returns at ctx.Done() immediately, so the value is not used.
+			wantExact: ptrUint(0),
 		},
 	}
 

@@ -15,22 +15,28 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
-// defaultServerTimeout is the minimum server-timeout sent with management RPC operations.
-// This aligns with the default operation timeout in the .NET SDK (60s) and is
-// consistent with other SDK defaults, including the Java SDK's 59s timeout.
-// Setting a floor prevents timeout exhaustion during service-side scatter-gather for
-// partitioned entities. See https://github.com/Azure/azure-sdk-for-go/issues/26421.
+// defaultServerTimeout is the server-timeout sent with management RPC operations
+// when the caller's context has no deadline. This matches the default operation
+// timeout in the .NET SDK (60s) and is consistent with other SDK defaults,
+// including the Java SDK's 59s timeout. Sending an explicit default prevents a
+// management call made with a no-deadline context from blocking indefinitely
+// when the service stalls. See https://github.com/Azure/azure-sdk-for-go/issues/26421.
 const defaultServerTimeout = 60 * time.Second
 
 // serverTimeoutMillis returns the server-timeout value in milliseconds to send with
-// management operations. It uses the greater of ctx's remaining deadline or
-// defaultServerTimeout, ensuring the service always has enough time for operations
-// like partition scatter-gather. If ctx has no deadline, returns defaultServerTimeout.
+// management operations. When ctx has a deadline, the remaining time is used so the
+// value never exceeds how long the client itself waits (the RPC returns at ctx.Done()).
+// This matches the cross-SDK contract: .NET sends the operation timeout it also waits
+// on, and Java sends slightly less than it waits. When ctx has no deadline,
+// defaultServerTimeout is used so the service still bounds the operation.
 func serverTimeoutMillis(ctx context.Context) uint {
 	timeout := defaultServerTimeout
 	if deadline, ok := ctx.Deadline(); ok {
-		if remaining := time.Until(deadline); remaining > timeout {
-			timeout = remaining
+		timeout = time.Until(deadline)
+		if timeout < 0 {
+			// Context already expired; the RPC will return at ctx.Done() immediately,
+			// so the value is moot. Clamp to avoid an unsigned underflow.
+			timeout = 0
 		}
 	}
 	return uint(timeout / time.Millisecond)

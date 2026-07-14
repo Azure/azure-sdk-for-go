@@ -23,4 +23,15 @@ type RetryOptions struct {
 	// Typically the value is greater than or equal to the value specified in RetryDelay.
 	// The default Value is 120 seconds.  A value less than zero means there is no cap.
 	MaxRetryDelay time.Duration
+
+	// TryTimeout specifies the maximum duration of a single attempt, not the whole
+	// operation. Each retry attempt is bounded by a fresh TryTimeout, recomputed
+	// independently of the caller's context, so a single slow attempt cannot consume
+	// the entire operation. An attempt that exceeds TryTimeout is treated as a
+	// retryable failure (subject to MaxRetries); the overall bound remains the
+	// caller's context. This value is also advertised as the AMQP server-timeout on
+	// management operations. The default value is 60 seconds, matching the .NET SDK.
+	// A value less than zero means no per-attempt timeout (an attempt is bounded only
+	// by the caller's context).
+	TryTimeout time.Duration
 }

@@ -1,5 +1,39 @@
 # Release History
 
+## 4.0.0-beta.2 (2026-07-14)
+### Breaking Changes
+
+- Function `*ClientFactory.NewMigrationClient` has been removed
+- Function `NewMigrationClient` has been removed
+- Function `*MigrationClient.BeginCancel` has been removed
+- Function `*MigrationClient.Get` has been removed
+- Function `*MigrationClient.NewListPager` has been removed
+- Function `*MigrationClient.BeginStart` has been removed
+
+### Features Added
+
+- New value `MigrationProvisioningStateCancellationFailed` added to enum type `MigrationProvisioningState`
+- New function `*ClientFactory.NewMigrationsClient() *MigrationsClient`
+- New function `NewMigrationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationsClient, error)`
+- New function `*MigrationsClient.BeginCancel(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientBeginCancelOptions) (*runtime.Poller[MigrationsClientCancelResponse], error)`
+- New function `*MigrationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *MigrationsClientGetOptions) (MigrationsClientGetResponse, error)`
+- New function `*MigrationsClient.NewListPager(resourceGroupName string, clusterName string, options *MigrationsClientListOptions) *runtime.Pager[MigrationsClientListResponse]`
+- New function `*MigrationsClient.BeginStart(ctx context.Context, resourceGroupName string, clusterName string, parameters Migration, options *MigrationsClientBeginStartOptions) (*runtime.Poller[MigrationsClientStartResponse], error)`
+- New function `*MigrationsClient.Validate(ctx context.Context, resourceGroupName string, clusterName string, body MigrationValidationRequest, options *MigrationsClientValidateOptions) (MigrationsClientValidateResponse, error)`
+- New struct `AccessPolicyAssignmentProvisioningError`
+- New struct `MigrationValidationDisparity`
+- New struct `MigrationValidationError`
+- New struct `MigrationValidationRequest`
+- New struct `MigrationValidationResponse`
+- New struct `MigrationValidationWarning`
+- New field `AccessString`, `ProvisioningError` in struct `AccessPolicyAssignmentProperties`
+- New field `ForceMigrate` in struct `AzureCacheForRedisMigrationProperties`
+- New field `MigratedEndpoint` in struct `ClusterCreateProperties`
+- New field `MigratedEndpoint` in struct `ClusterUpdateProperties`
+- New field `NotifyKeyspaceEvents` in struct `DatabaseCreateProperties`
+- New field `NotifyKeyspaceEvents` in struct `DatabaseUpdateProperties`
+
+
 ## 4.0.0-beta.1 (2026-03-19)
 ### Breaking Changes
 

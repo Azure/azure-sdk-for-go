@@ -520,10 +520,13 @@ func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, er
 		// different connection than rpcLink. Retain it to recover exactly this connection
 		// if a later attempt fails with a connection error.
 		rpcLink, connID, linkErr := p.client.namespace.NewRPCLink(ctx, managementPath)
+		// Retain the revision even if link construction fails: NewRPCLink returns the
+		// revision of the connection it used, so a connection error here must still let the
+		// next retry recover exactly that connection.
+		lastConnID = connID
 		if linkErr != nil {
 			return linkErr
 		}
-		lastConnID = connID
 		defer func() {
 			_ = rpcLink.Close(ctx)
 		}()

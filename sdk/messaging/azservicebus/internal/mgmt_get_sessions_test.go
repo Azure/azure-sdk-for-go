@@ -173,11 +173,11 @@ func TestGetMessageSessions_404SessionNotFoundReturnsEmpty(t *testing.T) {
 
 			rpcLink := mock.NewMockRPCLink(ctrl)
 			rpcLink.EXPECT().RPC(gomock.Any(), gomock.Any()).Return(
-				&amqpwrap.RPCResponse{
+				nil,
+				RPCError{Resp: &amqpwrap.RPCResponse{
 					Code:        404,
 					Description: description,
-					Message:     &amqp.Message{},
-				}, nil)
+				}})
 
 			result, err := GetMessageSessions(context.Background(), rpcLink,
 				time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)
@@ -197,11 +197,14 @@ func TestGetMessageSessions_404OtherSurfacesError(t *testing.T) {
 
 	rpcLink := mock.NewMockRPCLink(ctrl)
 	rpcLink.EXPECT().RPC(gomock.Any(), gomock.Any()).Return(
-		&amqpwrap.RPCResponse{
-			Code:        404,
-			Description: "The messaging entity 'sb://ns/q' could not be found.",
-			Message:     &amqp.Message{},
-		}, nil)
+		nil,
+		RPCError{
+			Message: "rpc: failed, status code 404 and description: The messaging entity 'sb://ns/q' could not be found.",
+			Resp: &amqpwrap.RPCResponse{
+				Code:        404,
+				Description: "The messaging entity 'sb://ns/q' could not be found.",
+			},
+		})
 
 	result, err := GetMessageSessions(context.Background(), rpcLink,
 		time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)

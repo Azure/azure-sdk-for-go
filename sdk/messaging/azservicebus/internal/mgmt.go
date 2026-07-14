@@ -577,21 +577,22 @@ func GetMessageSessions(ctx context.Context, rpcLink amqpwrap.RPCLink, lastUpdat
 
 	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
+		// rpcLink.RPC converts every non-2xx status into an RPCError with the response
+		// attached, so a 404 arrives here as an error rather than as resp.Code == 404. A
+		// 404 with a "session not found" description means the entity exists but has no
+		// sessions - treat it as an empty result. Other 404s (e.g. entity not found) and
+		// all other errors surface so callers can distinguish "no sessions" from "the
+		// entity does not exist".
+		var rpcErr RPCError
+		if errors.As(err, &rpcErr) && rpcErr.Resp != nil &&
+			rpcErr.Resp.Code == 404 && isSessionNotFound(rpcErr.Resp.Description) {
+			return nil, nil
+		}
 		return nil, err
 	}
 
 	if resp.Code == 204 {
 		return nil, nil
-	}
-
-	// 404 + SessionNotFound means no sessions exist for this entity. Other 404s
-	// (e.g. entity not found) should surface as an error so callers can distinguish
-	// "this entity has no sessions" from "this entity does not exist".
-	if resp.Code == 404 {
-		if isSessionNotFound(resp.Description) {
-			return nil, nil
-		}
-		return nil, ErrAMQP(*resp)
 	}
 
 	if resp.Code != 200 {

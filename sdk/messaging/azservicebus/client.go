@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
@@ -378,88 +379,175 @@ func (client *Client) getCleanupForCloseable() (uint64, func()) {
 	}
 }
 
-// ListSessionsOptions contains options for the ListSessionsForQueue and ListSessionsForSubscription methods.
+// ListSessionsResponse contains a page of session IDs returned by the pager from
+// [Client.NewListSessionsForQueuePager] or [Client.NewListSessionsForSubscriptionPager].
+type ListSessionsResponse struct {
+	// Sessions are the IDs of the sessions in this page. Service Bus sessions are
+	// identified only by their ID, so these are plain strings rather than a typed item.
+	Sessions []string
+}
+
+// ListSessionsOptions contains optional parameters for [Client.NewListSessionsForQueuePager]
+// and [Client.NewListSessionsForSubscriptionPager].
 type ListSessionsOptions struct {
-	// SessionStateUpdatedAfter, if set, returns only sessions whose state was updated after this time.
-	// If not set, returns sessions with active messages in the entity.
+	// SessionStateUpdatedAfter, if set, lists only sessions whose session state was updated
+	// after this time. If nil, lists sessions that have active messages in the entity.
 	SessionStateUpdatedAfter *time.Time
 }
 
-// ListSessionsForQueue lists the IDs of sessions with active messages in a session-enabled queue.
-// If options.SessionStateUpdatedAfter is set, returns only sessions whose state was updated after that time.
-func (client *Client) ListSessionsForQueue(ctx context.Context, queueName string, options *ListSessionsOptions) ([]string, error) {
-	entityPath, err := (&entity{Queue: queueName}).String()
-	if err != nil {
-		return nil, err
+// listSessionsPageSize is the number of session IDs requested per service round-trip.
+// It is fixed (not exposed as an option): the end-of-results check treats a page shorter
+// than this value as "no more pages", which is only reliable at a page size the service is
+// known to honor. Exposing an arbitrary page size could let a server-side cap be mistaken
+// for the end of the results and silently truncate the enumeration.
+const listSessionsPageSize = 100
+
+// NewListSessionsForQueuePager creates a pager that lists the IDs of sessions in a session-enabled queue.
+//
+// By default it lists sessions that have active messages in the queue. Sessions on the
+// dead-letter queue, and sessions that have only session state (but no messages), are not
+// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists sessions whose
+// session state was updated after that time.
+//
+// The IDs are enumerated in pages; call [runtime.Pager.NextPage] until [runtime.Pager.More] returns false.
+// A malformed entity name (for example, an empty queueName) is reported from the first call to NextPage.
+func (client *Client) NewListSessionsForQueuePager(queueName string, options *ListSessionsOptions) *runtime.Pager[ListSessionsResponse] {
+	var updatedAfter *time.Time
+	if options != nil {
+		updatedAfter = options.SessionStateUpdatedAfter
 	}
-	return client.listSessionsForEntity(ctx, entityPath, options)
+	return client.newListSessionsPager(entity{Queue: queueName}, updatedAfter)
 }
 
-// ListSessionsForSubscription lists the IDs of sessions with active messages in a session-enabled subscription.
-// If options.SessionStateUpdatedAfter is set, returns only sessions whose state was updated after that time.
-func (client *Client) ListSessionsForSubscription(ctx context.Context, topicName string, subscriptionName string, options *ListSessionsOptions) ([]string, error) {
-	entityPath, err := (&entity{Topic: topicName, Subscription: subscriptionName}).String()
-	if err != nil {
-		return nil, err
+// NewListSessionsForSubscriptionPager creates a pager that lists the IDs of sessions in a session-enabled subscription.
+//
+// By default it lists sessions that have active messages in the subscription. Sessions on the
+// dead-letter queue, and sessions that have only session state (but no messages), are not
+// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists sessions whose
+// session state was updated after that time.
+//
+// The IDs are enumerated in pages; call [runtime.Pager.NextPage] until [runtime.Pager.More] returns false.
+// A malformed entity name (for example, an empty topicName or subscriptionName) is reported from the
+// first call to NextPage.
+func (client *Client) NewListSessionsForSubscriptionPager(topicName string, subscriptionName string, options *ListSessionsOptions) *runtime.Pager[ListSessionsResponse] {
+	var updatedAfter *time.Time
+	if options != nil {
+		updatedAfter = options.SessionStateUpdatedAfter
 	}
-	return client.listSessionsForEntity(ctx, entityPath, options)
+	return client.newListSessionsPager(entity{Topic: topicName, Subscription: subscriptionName}, updatedAfter)
 }
 
-func (client *Client) listSessionsForEntity(ctx context.Context, entityPath string, options *ListSessionsOptions) ([]string, error) {
-	// The service checks `lastUpdatedTime != DateTime.MaxValue` (exact equality) to switch
-	// between "active messages" mode and "updated since" mode. The .NET AMQP library encodes
-	// DateTime.MaxValue as 253402300800000 ms (10000-01-01T00:00:00Z) due to double→long
-	// rounding in TimeSpan.TotalMilliseconds, and its decoder clamps values beyond
-	// DateTime.MaxValue.Ticks back to DateTime.MaxValue. This matches Track 1 Java's
-	// SessionBrowser.MAXDATE = new Date(253402300800000L).
+func (client *Client) newListSessionsPager(e entity, updatedAfter *time.Time) *runtime.Pager[ListSessionsResponse] {
+	// The service switches between "active messages" mode and "updated since" mode by checking
+	// lastUpdatedTime != DateTime.MaxValue (exact equality). The .NET AMQP library encodes
+	// DateTime.MaxValue as 253402300800000 ms (10000-01-01T00:00:00Z) due to double→long rounding
+	// in TimeSpan.TotalMilliseconds, and its decoder clamps values beyond DateTime.MaxValue.Ticks
+	// back to DateTime.MaxValue. This matches Track 1 Java's SessionBrowser.MAXDATE =
+	// new Date(253402300800000L).
 	lastUpdatedTime := time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC)
-	if options != nil && options.SessionStateUpdatedAfter != nil {
-		lastUpdatedTime = *options.SessionStateUpdatedAfter
+	if updatedAfter != nil {
+		lastUpdatedTime = *updatedAfter
 	}
 
+	p := &listSessionsPager{
+		client:          client,
+		entity:          e,
+		lastUpdatedTime: lastUpdatedTime,
+	}
+
+	return runtime.NewPager(runtime.PagingHandler[ListSessionsResponse]{
+		More: func(ListSessionsResponse) bool {
+			return !p.done
+		},
+		Fetcher: func(ctx context.Context, _ *ListSessionsResponse) (ListSessionsResponse, error) {
+			return p.fetch(ctx)
+		},
+	})
+}
+
+// listSessionsPager holds the paging state for a single ListSessions enumeration.
+// It is not safe for concurrent use; a pager is intended to be driven by a single caller.
+type listSessionsPager struct {
+	client          *Client
+	entity          entity
+	lastUpdatedTime time.Time
+	skip            int32
+	done            bool
+}
+
+// fetch retrieves the next page of session IDs. get-message-sessions is an entity-level
+// management operation with no sender or receiver link, so it cannot use AMQPLinks (which
+// requires at least one of those and would open an unnecessary link on a session entity);
+// instead it drives the management RPC link directly with the same recover-on-connection-
+// error semantics AMQPLinks provides. Each page opens its own management link rather than
+// holding one open across pages, so a pager that a caller abandons mid-enumeration does not
+// leak a link (runtime.Pager has no cleanup hook).
+func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, error) {
+	entityPath, err := p.entity.String()
+	if err != nil {
+		p.done = true
+		return ListSessionsResponse{}, err
+	}
 	managementPath := entityPath + "/$management"
-	var allSessionIDs []string
 
-	err := utils.Retry(ctx, exported.EventReceiver, "ListSessions", func(ctx context.Context, args *utils.RetryFnArgs) error {
-		// Reset accumulated state on each retry attempt to avoid duplicates
-		allSessionIDs = nil
-		var skip int32
+	var page []string
+	var lastConnID uint64
 
-		cancelAuth, _, claimErr := client.namespace.NegotiateClaim(ctx, managementPath)
+	err = utils.Retry(ctx, exported.EventReceiver, "ListSessions", func(ctx context.Context, args *utils.RetryFnArgs) error {
+		page = nil
+
+		// If the previous attempt failed with a connection-level error the shared AMQP
+		// connection is dead, and NewRPCLink would keep handing back the dead cached
+		// connection. Recover it first. Recover is revision-guarded, so a connection that
+		// another caller already recovered is a no-op. Link-level errors need no explicit
+		// recovery here because we create a fresh RPC link on every attempt.
+		if args.LastErr != nil && internal.GetRecoveryKind(args.LastErr) == internal.RecoveryKindConn {
+			if _, recErr := p.client.namespace.Recover(ctx, lastConnID); recErr != nil {
+				return recErr
+			}
+		}
+
+		_, connID, clientErr := p.client.namespace.GetAMQPClientImpl(ctx)
+		if clientErr != nil {
+			return clientErr
+		}
+		lastConnID = connID
+
+		cancelAuth, _, claimErr := p.client.namespace.NegotiateClaim(ctx, managementPath)
 		if claimErr != nil {
 			return claimErr
 		}
+		// Defers run LIFO: the RPC link is closed first, then cancelAuth stops the
+		// background token-refresh goroutine (cancelAuth blocks until it has shut down),
+		// so no goroutine outlives the page fetch.
 		defer cancelAuth()
 
-		rpcLink, err := client.namespace.NewRPCLink(ctx, managementPath)
-		if err != nil {
-			return err
+		rpcLink, linkErr := p.client.namespace.NewRPCLink(ctx, managementPath)
+		if linkErr != nil {
+			return linkErr
 		}
 		defer func() {
 			_ = rpcLink.Close(ctx)
 		}()
 
-		for {
-			page, err := internal.GetMessageSessions(ctx, rpcLink, lastUpdatedTime, skip, 100)
-			if err != nil {
-				return err
-			}
-			if len(page) == 0 {
-				break
-			}
-			allSessionIDs = append(allSessionIDs, page...)
-			if len(page) < 100 {
-				break
-			}
-			skip += int32(len(page))
+		result, rpcErr := internal.GetMessageSessions(ctx, rpcLink, p.lastUpdatedTime, p.skip, listSessionsPageSize)
+		if rpcErr != nil {
+			return rpcErr
 		}
+		page = result
 		return nil
 	}, func(err error) bool {
 		return internal.GetRecoveryKind(err) == internal.RecoveryKindFatal
-	}, exported.RetryOptions(client.retryOptions))
+	}, exported.RetryOptions(p.client.retryOptions))
 
 	if err != nil {
-		return nil, internal.TransformError(err)
+		p.done = true
+		return ListSessionsResponse{}, internal.TransformError(err)
 	}
-	return allSessionIDs, nil
+
+	p.skip += int32(len(page))
+	if len(page) < listSessionsPageSize {
+		p.done = true
+	}
+	return ListSessionsResponse{Sessions: page}, nil
 }

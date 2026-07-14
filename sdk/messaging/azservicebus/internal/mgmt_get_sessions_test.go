@@ -237,6 +237,30 @@ func TestGetMessageSessions_NonStringSessionIDSurfacesError(t *testing.T) {
 	require.Nil(t, result)
 }
 
+func TestGetMessageSessions_NonArraySessionsIDsSurfacesError(t *testing.T) {
+	// If sessions-ids is present but is not an array (e.g. a number), fail fast rather than
+	// silently returning no sessions.
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	rpcLink := mock.NewMockRPCLink(ctrl)
+	rpcLink.EXPECT().RPC(gomock.Any(), gomock.Any()).Return(
+		&amqpwrap.RPCResponse{
+			Code: 200,
+			Message: &amqp.Message{
+				Value: map[string]any{
+					"sessions-ids": int32(42),
+				},
+			},
+		}, nil)
+
+	result, err := GetMessageSessions(context.Background(), rpcLink,
+		time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC), 0, 100)
+
+	require.Error(t, err)
+	require.Nil(t, result)
+}
+
 func TestGetMessageSessions_SkipAndTop(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()

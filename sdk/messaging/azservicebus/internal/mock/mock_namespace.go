@@ -67,6 +67,22 @@ func (mr *MockNamespaceForAMQPLinksMockRecorder) Close(permanently interface{}) 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).Close), permanently)
 }
 
+// GetAMQPClientImpl mocks base method.
+func (m *MockNamespaceForAMQPLinks) GetAMQPClientImpl(ctx context.Context) (amqpwrap.AMQPClient, uint64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAMQPClientImpl", ctx)
+	ret0, _ := ret[0].(amqpwrap.AMQPClient)
+	ret1, _ := ret[1].(uint64)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// GetAMQPClientImpl indicates an expected call of GetAMQPClientImpl.
+func (mr *MockNamespaceForAMQPLinksMockRecorder) GetAMQPClientImpl(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAMQPClientImpl", reflect.TypeOf((*MockNamespaceForAMQPLinks)(nil).GetAMQPClientImpl), ctx)
+}
+
 // GetEntityAudience mocks base method.
 func (m *MockNamespaceForAMQPLinks) GetEntityAudience(entityPath string) string {
 	m.ctrl.T.Helper()

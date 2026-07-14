@@ -73,6 +73,12 @@ type NamespaceForAMQPLinks interface {
 	NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error)
 	GetEntityAudience(entityPath string) string
 
+	// GetAMQPClientImpl returns the currently cached AMQP client and its connection
+	// revision (id), creating the client if needed. The revision can be passed to
+	// Recover so that a connection is only recreated if it has not already been
+	// recovered by another caller.
+	GetAMQPClientImpl(ctx context.Context) (amqpwrap.AMQPClient, uint64, error)
+
 	// Recover destroys the currently held AMQP connection and recreates it, if needed.
 	//
 	// If a new client is actually created (rather than just cached) then the returned bool

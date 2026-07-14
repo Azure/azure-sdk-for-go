@@ -276,6 +276,10 @@ func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (amqpwr
 	return ns.RPCLink, nil
 }
 
+func (ns *FakeNS) GetAMQPClientImpl(ctx context.Context) (amqpwrap.AMQPClient, uint64, error) {
+	return nil, ns.recovered + 100, nil
+}
+
 func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) (bool, error) {
 	ns.clientRevisions = append(ns.clientRevisions, clientRevision)
 	ns.recovered++

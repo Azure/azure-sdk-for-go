@@ -80,14 +80,71 @@ type ActionDetail struct {
 	// The mechanism type
 	MechanismType *string
 
+	// The mechanism type
+	MechanismType *string
+
+	// The detail of the friendly error message
+	Message *string
+
+	// The name of the action
+	Name *string
+
 	// The name of the action
 	Name *string
 
 	// The send time
 	SendTime *string
 
+	// The send time
+	SendTime *string
+
 	// The status of the action
 	Status *string
+
+	// The status of the action
+	Status *string
+
+	// The substatus of the action
+	SubState *string
+
+	// The substatus of the action
+	SubState *string
+}
+
+// ActionDetail - The action detail
+type ActionDetail struct {
+	// The detail of the friendly error message
+	Detail *string
+
+	// The mechanism type
+	MechanismType *string
+
+	// The mechanism type
+	MechanismType *string
+
+	// The detail of the friendly error message
+	Message *string
+
+	// The name of the action
+	Name *string
+
+	// The name of the action
+	Name *string
+
+	// The send time
+	SendTime *string
+
+	// The send time
+	SendTime *string
+
+	// The status of the action
+	Status *string
+
+	// The status of the action
+	Status *string
+
+	// The substatus of the action
+	SubState *string
 
 	// The substatus of the action
 	SubState *string
@@ -149,7 +206,7 @@ type ActionGroupList struct {
 	NextLink *string
 }
 
-// ActionGroupPatch - An Azure action group for patch operations.
+// ActionGroupPatch - Action group settings for patch operations.
 type ActionGroupPatch struct {
 	// Indicates whether this action group is enabled. If an action group is not enabled, then none of its actions will be activated.
 	Enabled *bool
@@ -162,6 +219,30 @@ type ActionGroupPatchBody struct {
 
 	// The action group settings for an update operation.
 	Properties *ActionGroupPatch
+
+	// The action group settings for an update operation.
+	Properties *ActionGroupPatch
+
+	// Resource tags
+	Tags map[string]*string
+
+	// Resource tags
+	Tags map[string]*string
+}
+
+// ActionGroupPatchBody - An action group object for the body of patch operations.
+type ActionGroupPatchBody struct {
+	// Managed service identity (system assigned and/or user assigned identities)
+	Identity *ManagedServiceIdentity
+
+	// The action group settings for an update operation.
+	Properties *ActionGroupPatch
+
+	// The action group settings for an update operation.
+	Properties *ActionGroupPatch
+
+	// Resource tags
+	Tags map[string]*string
 
 	// Resource tags
 	Tags map[string]*string
@@ -1158,6 +1239,12 @@ type DataCollectionRuleResourceSKU struct {
 	Tier *SKUTier
 }
 
+// DataContainer - Information about a container with data for a given resource.
+type DataContainer struct {
+	// REQUIRED; Log Analytics workspace information.
+	Workspace *WorkspaceInfo
+}
+
 // DataFlow - Definition of which streams are sent to which destinations.
 type DataFlow struct {
 	// The builtIn transform to transform stream data
@@ -1203,6 +1290,134 @@ type DestinationsSpecAzureMonitorMetrics struct {
 	// A friendly name for the destination.
 	// This name should be unique across all destinations (regardless of type) within the data collection rule.
 	Name *string
+}
+
+// DiagnosticSettings - The diagnostic settings.
+type DiagnosticSettings struct {
+	// The resource Id for the event hub authorization rule.
+	EventHubAuthorizationRuleID *string
+
+	// The name of the event hub. If none is specified, the default event hub will be selected.
+	EventHubName *string
+
+	// A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics,
+	// or use a destination type constructed as follows: <normalized service identity>_<normalized category name>. Possible values
+	// are: Dedicated and null (null is default.)
+	LogAnalyticsDestinationType *string
+
+	// The list of logs settings.
+	Logs []*DiagnosticsLogSettings
+
+	// The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
+	MarketplacePartnerID *string
+
+	// The list of metric settings.
+	Metrics []*DiagnosticsMetricSettings
+
+	// The service bus rule Id of the diagnostic setting. This is here to maintain backwards compatibility.
+	ServiceBusRuleID *string
+
+	// The resource ID of the storage account to which you would like to send Diagnostic Logs.
+	StorageAccountID *string
+
+	// The full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs. Example: /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2
+	WorkspaceID *string
+}
+
+// DiagnosticSettingsCategory - The diagnostic settings Category.
+type DiagnosticSettingsCategory struct {
+	// the collection of what category groups are supported.
+	CategoryGroups []*string
+
+	// The type of the diagnostic settings category.
+	CategoryType *CategoryType
+}
+
+// DiagnosticSettingsCategoryResource - The diagnostic settings category resource.
+type DiagnosticSettingsCategoryResource struct {
+	// The properties of a Diagnostic Settings Category.
+	Properties *DiagnosticSettingsCategory
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DiagnosticSettingsCategoryResourceCollection - Represents a collection of diagnostic setting category resources.
+type DiagnosticSettingsCategoryResourceCollection struct {
+	// The URL to get the next set of results.
+	NextLink *string
+
+	// The collection of diagnostic settings category resources.
+	Value []*DiagnosticSettingsCategoryResource
+}
+
+// DiagnosticSettingsResource - The diagnostic setting resource.
+type DiagnosticSettingsResource struct {
+	// Properties of a Diagnostic Settings Resource.
+	Properties *DiagnosticSettings
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// DiagnosticSettingsResourceCollection - Represents a collection of alert rule resources.
+type DiagnosticSettingsResourceCollection struct {
+	// The URL to get the next set of results.
+	NextLink *string
+
+	// The collection of diagnostic settings resources;.
+	Value []*DiagnosticSettingsResource
+}
+
+// DiagnosticsLogSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
+type DiagnosticsLogSettings struct {
+	// REQUIRED; a value indicating whether this log is enabled.
+	Enabled *bool
+
+	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
+	// categories for a resource, first perform a GET diagnostic settings operation.
+	Category *string
+
+	// Name of a Diagnostic Log category group for a resource type this setting is applied to. To obtain the list of Diagnostic
+	// Log categories for a resource, first perform a GET diagnostic settings operation.
+	CategoryGroup *string
+
+	// the retention policy for this log.
+	RetentionPolicy *RetentionPolicy
+}
+
+// DiagnosticsMetricSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric.
+type DiagnosticsMetricSettings struct {
+	// REQUIRED; a value indicating whether this category is enabled.
+	Enabled *bool
+
+	// Name of a Diagnostic Metric category for a resource type this setting is applied to. To obtain the list of Diagnostic metric
+	// categories for a resource, first perform a GET diagnostic settings operation.
+	Category *string
+
+	// the retention policy for this category.
+	RetentionPolicy *RetentionPolicy
+
+	// the timegrain of the metric in ISO8601 format.
+	TimeGrain *string
 }
 
 // Dimension splitting and filtering definition
@@ -3758,10 +3973,95 @@ type TagsResource struct {
 	Tags map[string]*string
 }
 
+// TenantActionGroup - A tenant action group.
+type TenantActionGroup struct {
+	// REQUIRED; Indicates whether this tenant action group is enabled. If a tenant action group is not enabled, then none of
+	// its receivers will receive communications.
+	Enabled *bool
+
+	// REQUIRED; The short name of the action group. This will be used in SMS messages.
+	GroupShortName *string
+
+	// The list of AzureAppPush receivers that are part of this tenant action group.
+	AzureAppPushReceivers []*AzureAppPushReceiver
+
+	// The list of email receivers that are part of this tenant action group.
+	EmailReceivers []*EmailReceiver
+
+	// The list of SMS receivers that are part of this tenant action group.
+	SmsReceivers []*SmsReceiver
+
+	// The list of voice receivers that are part of this tenant action group.
+	VoiceReceivers []*VoiceReceiver
+
+	// The list of webhook receivers that are part of this tenant action group.
+	WebhookReceivers []*WebhookReceiver
+}
+
+// TenantActionGroupList - A list of tenant action groups.
+type TenantActionGroupList struct {
+	// REQUIRED; The TenantActionGroupResource items on this page
+	Value []*TenantActionGroupResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// TenantActionGroupResource - A tenant action group resource.
+type TenantActionGroupResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The tenant action groups properties of the resource.
+	Properties *TenantActionGroup
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TenantNotificationRequestBody - The request body which contain contact detail metadata
+type TenantNotificationRequestBody struct {
+	// REQUIRED; The value of the supported alert type. Supported alert type value is: servicehealth
+	AlertType *string
+
+	// The list of AzureAppPush receivers that are part of this action group.
+	AzureAppPushReceivers []*AzureAppPushReceiver
+
+	// The list of email receivers that are part of this action group.
+	EmailReceivers []*EmailReceiver
+
+	// The list of SMS receivers that are part of this action group.
+	SmsReceivers []*SmsReceiver
+
+	// The list of voice receivers that are part of this action group.
+	VoiceReceivers []*VoiceReceiver
+
+	// The list of webhook receivers that are part of this action group.
+	WebhookReceivers []*WebhookReceiver
+}
+
 // TestNotificationDetailsResponse - The details of the test notification results.
 type TestNotificationDetailsResponse struct {
-	// REQUIRED; The overall state
+	// REQUIRED; REQUIRED; The overall state
 	State *string
+
+	// REQUIRED; REQUIRED; The overall state
+	State *string
+
+	// The list of action detail
+	ActionDetails []*ActionDetail
 
 	// The list of action detail
 	ActionDetails []*ActionDetail
@@ -3769,8 +4069,50 @@ type TestNotificationDetailsResponse struct {
 	// The completed time
 	CompletedTime *string
 
+	// The completed time
+	CompletedTime *string
+
 	// The context info
 	Context *Context
+
+	// The context info
+	Context *Context
+
+	// The created time
+	CreatedTime *string
+
+	// The created time
+	CreatedTime *string
+}
+
+// TestNotificationDetailsResponse - The details of the test notification results.
+type TestNotificationDetailsResponse struct {
+	// REQUIRED; REQUIRED; The overall state
+	State *string
+
+	// REQUIRED; REQUIRED; The overall state
+	State *string
+
+	// The list of action detail
+	ActionDetails []*ActionDetail
+
+	// The list of action detail
+	ActionDetails []*ActionDetail
+
+	// The completed time
+	CompletedTime *string
+
+	// The completed time
+	CompletedTime *string
+
+	// The context info
+	Context *Context
+
+	// The context info
+	Context *Context
+
+	// The created time
+	CreatedTime *string
 
 	// The created time
 	CreatedTime *string
@@ -3855,6 +4197,41 @@ type UserIdentityProperties struct {
 	PrincipalID *string
 }
 
+// VMInsightsOnboardingStatus - VM Insights onboarding status for a resource.
+type VMInsightsOnboardingStatus struct {
+	// Resource properties.
+	Properties *VMInsightsOnboardingStatusProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VMInsightsOnboardingStatusProperties - Resource properties.
+type VMInsightsOnboardingStatusProperties struct {
+	// REQUIRED; The status of VM Insights data from the resource. When reported as `present` the data array will contain information
+	// about the data containers to which data for the specified resource is being routed.
+	DataStatus *DataStatus
+
+	// REQUIRED; The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription,
+	// is considered onboarded if at least one resource under it is onboarded.
+	OnboardingStatus *OnboardingStatus
+
+	// REQUIRED; Azure Resource Manager identifier of the resource whose onboarding status is being represented.
+	ResourceID *string
+
+	// Containers that currently store VM Insights data for the specified resource.
+	Data []*DataContainer
+}
+
 // VoiceReceiver - A voice receiver.
 type VoiceReceiver struct {
 	// REQUIRED; The country code of the voice receiver.
@@ -3878,11 +4255,21 @@ type WebhookNotification struct {
 
 // WebhookReceiver - A webhook receiver.
 type WebhookReceiver struct {
-	// REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within an action group.
+	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within a tenant action
+	// group.
 	Name *string
 
-	// REQUIRED; The URI where webhooks should be sent.
+	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within an action group.
+	Name *string
+
+	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
 	ServiceURI *string
+
+	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
+	ServiceURI *string
+
+	// Indicates the identifier uri for aad auth.
+	IdentifierURI *string
 
 	// Indicates the identifier uri for aad auth.
 	IdentifierURI *string
@@ -3893,11 +4280,72 @@ type WebhookReceiver struct {
 	// Indicates the webhook app object Id for aad auth.
 	ObjectID *string
 
+	// Indicates the webhook app object Id for aad auth.
+	ObjectID *string
+
+	// Indicates the tenant id for aad auth.
+	TenantID *string
+
 	// Indicates the tenant id for aad auth.
 	TenantID *string
 
 	// Indicates whether or not use AAD authentication.
 	UseAADAuth *bool
+
+	// Indicates whether or not use AAD authentication.
+	UseAADAuth *bool
+
+	// Indicates whether to use common alert schema.
+	UseCommonAlertSchema *bool
+
+	// Indicates whether to use common alert schema.
+	UseCommonAlertSchema *bool
+}
+
+// WebhookReceiver - A webhook receiver.
+type WebhookReceiver struct {
+	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within a tenant action
+	// group.
+	Name *string
+
+	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within an action group.
+	Name *string
+
+	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
+	ServiceURI *string
+
+	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
+	ServiceURI *string
+
+	// Indicates the identifier uri for aad auth.
+	IdentifierURI *string
+
+	// Indicates the identifier uri for aad auth.
+	IdentifierURI *string
+
+	// The principal id of the managed identity. The value can be "None", "SystemAssigned"
+	ManagedIdentity *string
+
+	// Indicates the webhook app object Id for aad auth.
+	ObjectID *string
+
+	// Indicates the webhook app object Id for aad auth.
+	ObjectID *string
+
+	// Indicates the tenant id for aad auth.
+	TenantID *string
+
+	// Indicates the tenant id for aad auth.
+	TenantID *string
+
+	// Indicates whether or not use AAD authentication.
+	UseAADAuth *bool
+
+	// Indicates whether or not use AAD authentication.
+	UseAADAuth *bool
+
+	// Indicates whether to use common alert schema.
+	UseCommonAlertSchema *bool
 
 	// Indicates whether to use common alert schema.
 	UseCommonAlertSchema *bool
@@ -3958,4 +4406,22 @@ type WindowsFirewallLogsDataSource struct {
 
 	// Firewall logs profile filter
 	ProfileFilter []*KnownWindowsFirewallLogsDataSourceProfileFilter
+}
+
+// WorkspaceInfo - Information about a Log Analytics Workspace.
+type WorkspaceInfo struct {
+	// REQUIRED; Azure Resource Manager identifier of the Log Analytics Workspace.
+	ID *string
+
+	// REQUIRED; Location of the Log Analytics workspace.
+	Location *string
+
+	// REQUIRED; Resource properties.
+	Properties *WorkspaceInfoProperties
+}
+
+// WorkspaceInfoProperties - Resource properties.
+type WorkspaceInfoProperties struct {
+	// REQUIRED; Log Analytics workspace identifier.
+	CustomerID *string
 }

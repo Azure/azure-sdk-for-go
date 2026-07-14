@@ -311,6 +311,60 @@ func TestTryTimeoutInstallsPerAttemptDeadline(t *testing.T) {
 	require.NoError(t, err)
 }
 
+func TestTryTimeoutExhaustedAllAttemptsTimeout(t *testing.T) {
+	// When every attempt exceeds the per-attempt TryTimeout while the caller ctx
+	// stays alive, Retry retries up to MaxRetries and then returns the last attempt's
+	// context.DeadlineExceeded (a terminal error), without looping forever.
+	isFatalFn := func(err error) bool {
+		return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
+	}
+
+	called := 0
+
+	err := Retry(context.Background(), testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
+		called++
+		<-ctx.Done()
+		return ctx.Err()
+	}, isFatalFn, exported.RetryOptions{
+		TryTimeout:    20 * time.Millisecond,
+		RetryDelay:    time.Millisecond,
+		MaxRetryDelay: time.Millisecond,
+		MaxRetries:    3,
+	})
+
+	require.ErrorIs(t, err, context.DeadlineExceeded, "exhausted per-attempt timeouts surface the last attempt's deadline error")
+	require.EqualValues(t, 4, called, "the initial attempt plus MaxRetries retries all time out")
+}
+
+func TestTryTimeoutCallerDeadlineIsTerminal(t *testing.T) {
+	// A caller-supplied deadline shorter than TryTimeout must stay terminal: the
+	// attempt ctx inherits the caller's earlier deadline, so when it fires the caller
+	// ctx is also done and the failure is NOT treated as a retryable per-attempt
+	// timeout. This is the ctx.Err()==nil guard that separates the two cases.
+	isFatalFn := func(err error) bool {
+		return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
+	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Millisecond)
+	defer cancel()
+
+	called := 0
+
+	err := Retry(ctx, testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
+		called++
+		<-ctx.Done()
+		return ctx.Err()
+	}, isFatalFn, exported.RetryOptions{
+		TryTimeout:    time.Hour,
+		RetryDelay:    time.Millisecond,
+		MaxRetryDelay: time.Millisecond,
+		MaxRetries:    5,
+	})
+
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.EqualValues(t, 1, called, "caller-deadline expiry is terminal, not a retryable per-attempt timeout")
+}
+
 func Test_calcDelay(t *testing.T) {
 	t.Run("can't exceed max retry delay", func(t *testing.T) {
 		duration := calcDelay(exported.RetryOptions{
@@ -362,7 +416,7 @@ func TestRetryDefaults(t *testing.T) {
 	require.EqualValues(t, 3, ro.MaxRetries)
 	require.EqualValues(t, 4*time.Second, ro.RetryDelay)
 	require.EqualValues(t, 2*time.Minute, ro.MaxRetryDelay)
-	require.EqualValues(t, 60*time.Second, ro.TryTimeout, "zero TryTimeout defaults to 60s, matching .NET")
+	require.EqualValues(t, time.Duration(0), ro.TryTimeout, "zero TryTimeout means no per-attempt timeout (opt-in), it is not defaulted")
 
 	// this is an interesting default. Anything < 0 basically
 	// causes the max delay to be "infinite"

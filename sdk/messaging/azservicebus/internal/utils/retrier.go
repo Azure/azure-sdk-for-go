@@ -147,11 +147,10 @@ func setDefaults(o *exported.RetryOptions) {
 	} else if o.RetryDelay < 0 {
 		o.RetryDelay = 0
 	}
-	if o.TryTimeout == 0 {
-		o.TryTimeout = 60 * time.Second
-	}
-	// A negative TryTimeout means "no per-attempt timeout". It is left as-is here;
-	// Retry() only installs a per-attempt deadline when TryTimeout > 0.
+	// TryTimeout is left exactly as provided. A zero or negative value means "no
+	// per-attempt timeout"; Retry() only installs a per-attempt deadline when
+	// TryTimeout > 0. Per-attempt bounding is opt-in so existing callers keep
+	// bounding an attempt only by the caller's context.
 }
 
 // (adapted from from azcore/policy_retry)

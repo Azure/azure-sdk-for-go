@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added `RetryOptions.TryTimeout`, the maximum duration of a single retry attempt (not the whole operation), matching the .NET SDK's `ServiceBusRetryOptions.TryTimeout`. Each attempt gets a fresh TryTimeout, recomputed independently of the caller's context. The default is 60 seconds; a value less than zero disables per-attempt bounding. (#26421)
+- Added `RetryOptions.TryTimeout`, the maximum duration of a single retry attempt (not the whole operation), matching the concept behind the .NET SDK's `ServiceBusRetryOptions.TryTimeout`. When set to a positive value each attempt gets a fresh TryTimeout, recomputed independently of the caller's context, so a single slow attempt cannot consume the entire operation. The default is zero, which means no per-attempt timeout (opt-in), preserving the historical behavior; set a positive value such as 60 seconds to match the .NET per-attempt default. A negative value is also treated as no per-attempt timeout. (#26421)
 
 ### Breaking Changes
 
@@ -14,7 +14,7 @@
 
 ### Other Changes
 
-- The retry loop now bounds each attempt by `RetryOptions.TryTimeout` (default 60 seconds). An attempt that exceeds TryTimeout while the caller's context is still alive is treated as a retryable failure (subject to `MaxRetries`) rather than a terminal error, so a single slow attempt can no longer consume the caller's entire deadline. Caller cancellation and caller-deadline expiry remain terminal. `ReceiveMessages` is unaffected: its long-poll wait runs outside the retry loop (only quick link acquisition is wrapped), so the per-attempt timeout does not truncate a long receive. The per-attempt bound is also advertised as the AMQP server-timeout on management operations. (#26421)
+- The retry loop can now bound each attempt by `RetryOptions.TryTimeout`. This is opt-in and disabled by default (a zero or negative `TryTimeout` installs no per-attempt deadline, so existing callers are unchanged). When a positive `TryTimeout` is set, an attempt that exceeds it while the caller's context is still alive is treated as a retryable failure (subject to `MaxRetries`) rather than a terminal error, so a single slow attempt can no longer consume the caller's entire deadline. Caller cancellation and caller-deadline expiry remain terminal. `ReceiveMessages` is unaffected regardless: its long-poll wait runs outside the retry loop (only quick link acquisition is wrapped), so the per-attempt timeout does not truncate a long receive. When a positive `TryTimeout` is in effect, the per-attempt bound is also advertised as the AMQP server-timeout on management operations. (#26421)
 - Cleaned up accumulated `golangci-lint` findings in `azservicebus` (deprecated
   `runtime.WithHTTPHeader` calls switched to `policy.WithHTTPHeader`, duplicate
   `log` package imports consolidated under the `azlog` alias, unchecked `Close`

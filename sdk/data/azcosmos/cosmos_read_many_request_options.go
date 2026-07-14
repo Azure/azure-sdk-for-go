@@ -7,8 +7,8 @@ import (
 	"strconv"
 )
 
-// ReadManyOptions includes options for read many operations on items.
-type ReadManyOptions struct {
+// ReadManyItemsOptions includes options for read many operations on items.
+type ReadManyItemsOptions struct {
 	// SessionToken to be used when using Session consistency on the account.
 	// When working with Session consistency, each new write request to Azure Cosmos DB is assigned a new SessionToken.
 	// The client instance will use this token internally with each read/query request to ensure that the set consistency level is maintained.
@@ -34,7 +34,7 @@ type ReadManyOptions struct {
 	ThroughputBucket *int32
 }
 
-func (options *ReadManyOptions) toHeaders() *map[string]string {
+func (options *ReadManyItemsOptions) toHeaders() *map[string]string {
 	headers := make(map[string]string)
 
 	if options.ConsistencyLevel != nil {

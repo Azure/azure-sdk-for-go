@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestContainerGetFeedRanges(t *testing.T) {
+func TestContainerReadFeedRanges(t *testing.T) {
 	expectedJsonResponse := []byte(`{
 	"_rid": "lypXAMSZ-Cs=",
 	"PartitionKeyRanges": [
@@ -83,9 +83,9 @@ func TestContainerGetFeedRanges(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
+	feedRanges, err := container.ReadFeedRanges(context.TODO(), nil)
 	if err != nil {
-		t.Fatalf("GetFeedRanges failed: %v", err)
+		t.Fatalf("ReadFeedRanges failed: %v", err)
 	}
 
 	if len(feedRanges) != 2 {
@@ -109,7 +109,7 @@ func TestContainerGetFeedRanges(t *testing.T) {
 	}
 }
 
-func TestContainerGetFeedRangesEmpty(t *testing.T) {
+func TestContainerReadFeedRangesEmpty(t *testing.T) {
 	expectedJsonResponse := `{
     "_rid": "lypXAMSZ-Cs=",
     "PartitionKeyRanges": [],
@@ -134,9 +134,9 @@ func TestContainerGetFeedRangesEmpty(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
+	feedRanges, err := container.ReadFeedRanges(context.TODO(), nil)
 	if err != nil {
-		t.Fatalf("GetFeedRanges failed: %v", err)
+		t.Fatalf("ReadFeedRanges failed: %v", err)
 	}
 
 	if len(feedRanges) != 0 {
@@ -144,7 +144,7 @@ func TestContainerGetFeedRangesEmpty(t *testing.T) {
 	}
 }
 
-func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
+func TestContainerReadFeedRanges_UsesCache(t *testing.T) {
 	containerResponse := []byte(`{
 		"id": "containerId",
 		"_rid": "testRID",
@@ -218,7 +218,7 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 	container, _ := newContainer("containerId", database)
 
 	// First call: populates caches, makes 2 HTTP requests
-	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
+	feedRanges, err := container.ReadFeedRanges(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(feedRanges))
 	require.Equal(t, "", feedRanges[0].MinInclusive)
@@ -231,7 +231,7 @@ func TestContainerGetFeedRanges_UsesCache(t *testing.T) {
 
 	// Second call: should use caches, no additional HTTP requests
 	// (no more responses queued — would panic if a request was made)
-	feedRanges2, err := container.GetFeedRanges(context.TODO(), nil)
+	feedRanges2, err := container.ReadFeedRanges(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, 2, len(feedRanges2))
 	require.Equal(t, feedRanges[0], feedRanges2[0])

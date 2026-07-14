@@ -481,7 +481,7 @@ func (c *ContainerClient) ReadItem(
 func (c *ContainerClient) ReadManyItems(
 	ctx context.Context,
 	itemIdentities []ItemIdentity,
-	o *ReadManyOptions) (ReadManyItemsResponse, error) {
+	o *ReadManyItemsOptions) (ReadManyItemsResponse, error) {
 	// if empty list of items, return empty list
 	if len(itemIdentities) == 0 {
 		return ReadManyItemsResponse{}, nil
@@ -494,7 +494,7 @@ func (c *ContainerClient) ReadManyItems(
 		}
 	}
 
-	readManyOptions := &ReadManyOptions{}
+	readManyOptions := &ReadManyItemsOptions{}
 	if o != nil {
 		originalOptions := *o
 		readManyOptions = &originalOptions
@@ -522,11 +522,11 @@ func (c *ContainerClient) ReadManyItems(
 	return response, nil
 }
 
-// GetFeedRanges retrieves all the feed ranges for which changefeed could be fetched.
+// ReadFeedRanges retrieves all the feed ranges for which changefeed could be fetched.
 // ctx - The context for the request.
 // o - Options for the operation. nil to use default options. Currently no options are
 // defined and the parameter is ignored; it exists for future use.
-func (c *ContainerClient) GetFeedRanges(ctx context.Context, o *GetFeedRangesOptions) ([]FeedRange, error) {
+func (c *ContainerClient) ReadFeedRanges(ctx context.Context, o *FeedRangesOptions) ([]FeedRange, error) {
 	// Get the partition key ranges from the container
 	response, err := c.getPartitionKeyRanges(ctx, nil)
 	if err != nil {
@@ -807,7 +807,7 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 	return response, err
 }
 
-// GetChangeFeed retrieves a single page of the change feed using the provided options.
+// ReadChangeFeed retrieves a single page of the change feed using the provided options.
 // ctx - The context for the request.
 // options - Options for the operation
 //
@@ -819,11 +819,11 @@ func (c *ContainerClient) ExecuteTransactionalBatch(ctx context.Context, b Trans
 //
 // Returns ErrFeedRangeUnresolved (wrapped) when the customer's FeedRange/token
 // doesn't overlap any current physical range even after a forced refresh — a
-// signal to re-derive FeedRanges from GetFeedRanges.
+// signal to re-derive FeedRanges from ReadFeedRanges.
 //
 // Returns an error wrapping *azcore.ResponseError on persistent 410/Gone or any
 // non-retryable HTTP error.
-func (c *ContainerClient) GetChangeFeed(
+func (c *ContainerClient) ReadChangeFeed(
 	ctx context.Context,
 	options *ChangeFeedOptions,
 ) (ChangeFeedResponse, error) {

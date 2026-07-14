@@ -44,7 +44,7 @@ type ChangeFeedOptions struct {
 // supply the head and the already-resolved PK-range ID (overlap-matched
 // via the routing map, NOT exact-matched).
 //
-// This is the path used by the new queue-driven GetChangeFeed loop. The
+// This is the path used by the new queue-driven ReadChangeFeed loop. The
 // caller-options-level Continuation token is NOT consulted here — the
 // queue-head ETag drives If-None-Match because the queue may have been
 // split-expanded since the token was issued.

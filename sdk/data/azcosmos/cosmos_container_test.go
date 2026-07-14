@@ -824,7 +824,7 @@ func TestContainerReadPartitionKeyRangesEmpty(t *testing.T) {
 	}
 }
 
-func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
+func TestContainerReadChangeFeedWithStartFrom(t *testing.T) {
 	changeFeedBody := []byte(
 		`{"_rid":"testRID",
 		"Documents":[{"id":"doc1"},{"id":"doc2"}],
@@ -855,9 +855,9 @@ func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 		FeedRange: feedRange,
 	}
 
-	resp, err := container.GetChangeFeed(context.TODO(), options)
+	resp, err := container.ReadChangeFeed(context.TODO(), options)
 	if err != nil {
-		t.Fatalf("GetChangeFeed returned error: %v", err)
+		t.Fatalf("ReadChangeFeed returned error: %v", err)
 	}
 	if resp.ResourceID != "testRID" {
 		t.Errorf("Expected ResourceID 'testRID', got %v", resp.ResourceID)
@@ -885,7 +885,7 @@ func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 	}
 }
 
-func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
+func TestContainerReadChangeFeedWithStartFromFiltering(t *testing.T) {
 	// This test verifies that:
 	// 1. The If-Modified-Since header is properly set based on the StartFrom parameter
 	// 2. We can request and retrieve documents with different timestamps
@@ -939,9 +939,9 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 		FeedRange: feedRange,
 	}
 
-	allDocsResp, err := container.GetChangeFeed(context.TODO(), allDocsOptions)
+	allDocsResp, err := container.ReadChangeFeed(context.TODO(), allDocsOptions)
 	if err != nil {
-		t.Fatalf("First GetChangeFeed returned error: %v", err)
+		t.Fatalf("First ReadChangeFeed returned error: %v", err)
 	}
 
 	if allDocsResp.Count != 3 {
@@ -1003,9 +1003,9 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 		FeedRange: feedRange,
 	}
 
-	filteredResp, err := container.GetChangeFeed(context.TODO(), filteredOptions)
+	filteredResp, err := container.ReadChangeFeed(context.TODO(), filteredOptions)
 	if err != nil {
-		t.Fatalf("Second GetChangeFeed returned error: %v", err)
+		t.Fatalf("Second ReadChangeFeed returned error: %v", err)
 	}
 
 	if filteredResp.Count != 1 {
@@ -1039,7 +1039,7 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 	}
 }
 
-func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
+func TestContainerReadChangeFeedForEPKRange(t *testing.T) {
 	changeFeedBody := []byte(`{
         "_rid": "testRID",
         "Documents": [{"id": "doc1"}, {"id": "doc2"}],
@@ -1072,9 +1072,9 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		FeedRange:    feedRange,
 	}
 
-	resp, err := container.GetChangeFeed(context.TODO(), options)
+	resp, err := container.ReadChangeFeed(context.TODO(), options)
 	if err != nil {
-		t.Fatalf("GetChangeFeedForEPKRange failed: %v", err)
+		t.Fatalf("ReadChangeFeedForEPKRange failed: %v", err)
 	}
 
 	if resp.ResourceID != "testRID" {
@@ -1531,14 +1531,14 @@ func TestChangeFeedPriorityAndThroughputBucketHeaders(t *testing.T) {
 		MinInclusive: "00",
 		MaxExclusive: "FF",
 	}
-	_, err := container.GetChangeFeed(context.TODO(), &ChangeFeedOptions{
+	_, err := container.ReadChangeFeed(context.TODO(), &ChangeFeedOptions{
 		MaxItemCount:     10,
 		FeedRange:        feedRange,
 		PriorityLevel:    &requestPriority,
 		ThroughputBucket: &requestBucket,
 	})
 	if err != nil {
-		t.Fatalf("GetChangeFeed failed: %v", err)
+		t.Fatalf("ReadChangeFeed failed: %v", err)
 	}
 
 	h := verifier.requests[0].headers
@@ -1616,7 +1616,7 @@ func TestReadManyItemsPriorityAndThroughputBucketHeaders(t *testing.T) {
 			ID:           "item1",
 			PartitionKey: NewPartitionKeyString("pk1"),
 		},
-	}, &ReadManyOptions{
+	}, &ReadManyItemsOptions{
 		PriorityLevel:    &requestPriority,
 		ThroughputBucket: &requestBucket,
 	})

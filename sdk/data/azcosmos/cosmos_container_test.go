@@ -865,8 +865,8 @@ func TestContainerGetChangeFeedWithStartFrom(t *testing.T) {
 	if resp.Count != 2 {
 		t.Errorf("Expected Count 2, got %v", resp.Count)
 	}
-	if len(resp.Documents) != 2 {
-		t.Errorf("Expected 2 documents, got %v", len(resp.Documents))
+	if len(resp.Items) != 2 {
+		t.Errorf("Expected 2 documents, got %v", len(resp.Items))
 	}
 
 	// With caches pre-wired, only the change-feed request hits the wire.
@@ -947,12 +947,12 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 	if allDocsResp.Count != 3 {
 		t.Errorf("Expected 3 documents in first response, got %d", allDocsResp.Count)
 	}
-	if len(allDocsResp.Documents) != 3 {
-		t.Errorf("Expected 3 documents in first response, got %d", len(allDocsResp.Documents))
+	if len(allDocsResp.Items) != 3 {
+		t.Errorf("Expected 3 documents in first response, got %d", len(allDocsResp.Items))
 	}
 
 	var allDocs []map[string]interface{}
-	for i, docBytes := range allDocsResp.Documents {
+	for i, docBytes := range allDocsResp.Items {
 		var doc map[string]interface{}
 		if err := json.Unmarshal(docBytes, &doc); err != nil {
 			t.Fatalf("Failed to unmarshal document %d: %v", i, err)
@@ -1011,12 +1011,12 @@ func TestContainerGetChangeFeedWithStartFromFiltering(t *testing.T) {
 	if filteredResp.Count != 1 {
 		t.Errorf("Expected 1 document in filtered response, got %d", filteredResp.Count)
 	}
-	if len(filteredResp.Documents) != 1 {
-		t.Errorf("Expected 1 document in filtered response, got %d", len(filteredResp.Documents))
+	if len(filteredResp.Items) != 1 {
+		t.Errorf("Expected 1 document in filtered response, got %d", len(filteredResp.Items))
 	}
 
 	var filteredDoc map[string]interface{}
-	if err := json.Unmarshal(filteredResp.Documents[0], &filteredDoc); err != nil {
+	if err := json.Unmarshal(filteredResp.Items[0], &filteredDoc); err != nil {
 		t.Fatalf("Failed to unmarshal filtered document: %v", err)
 	}
 	if filteredDoc["id"] != "doc3" {
@@ -1085,8 +1085,8 @@ func TestContainerGetChangeFeedForEPKRange(t *testing.T) {
 		t.Errorf("unexpected Count: got %d, want 2", resp.Count)
 	}
 
-	if len(resp.Documents) != 2 {
-		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Documents))
+	if len(resp.Items) != 2 {
+		t.Errorf("unexpected number of Documents: got %d, want 2", len(resp.Items))
 	}
 
 	if len(verifier.requests) != 1 {

@@ -116,7 +116,7 @@ func TestEmulatorChangeFeed_F1_WideRangeMultiDrain(t *testing.T) {
 		require.Equal(t, cosmosCompositeContinuationTokenVersion, ct.Version)
 		require.GreaterOrEqual(t, len(ct.Continuation), 1, "composite token must carry at least one range")
 
-		for _, raw := range resp.Documents {
+		for _, raw := range resp.Items {
 			var d map[string]interface{}
 			require.NoError(t, json.Unmarshal(raw, &d))
 			if id, ok := d["id"].(string); ok {

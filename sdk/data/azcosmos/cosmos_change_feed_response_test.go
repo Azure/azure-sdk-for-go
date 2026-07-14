@@ -81,19 +81,19 @@ func TestNewChangeFeedResponse(t *testing.T) {
 		t.Fatalf("unexpected Count: got %d, want 2", parsedResponse.Count)
 	}
 
-	if len(parsedResponse.Documents) != 2 {
-		t.Fatalf("unexpected number of Documents: got %d, want 2", len(parsedResponse.Documents))
+	if len(parsedResponse.Items) != 2 {
+		t.Fatalf("unexpected number of Documents: got %d, want 2", len(parsedResponse.Items))
 	}
 
 	var doc0, doc1 map[string]interface{}
-	if err := json.Unmarshal(parsedResponse.Documents[0], &doc0); err != nil {
+	if err := json.Unmarshal(parsedResponse.Items[0], &doc0); err != nil {
 		t.Fatalf("failed to unmarshal first document: %v", err)
 	}
 	if doc0["id"] != "Erewhon" {
 		t.Errorf("unexpected first document id: got %v, want Erewhon", doc0["id"])
 	}
 
-	if err := json.Unmarshal(parsedResponse.Documents[1], &doc1); err != nil {
+	if err := json.Unmarshal(parsedResponse.Items[1], &doc1); err != nil {
 		t.Fatalf("failed to unmarshal second document: %v", err)
 	}
 	if doc1["id"] != "TraderJoes" {

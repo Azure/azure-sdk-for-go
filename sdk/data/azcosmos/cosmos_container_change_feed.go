@@ -402,11 +402,11 @@ func (c *ContainerClient) getChangeFeedForQueue(
 		lastResp = response
 
 		// 200 with a non-empty page → return immediately so the caller can
-		// process. The Documents-length belt covers the (shouldn't-happen)
+		// process. The Items-length belt covers the (shouldn't-happen)
 		// case where the server omits _count but still ships docs.
 		if response.RawResponse != nil &&
 			response.RawResponse.StatusCode == http.StatusOK &&
-			(response.Count > 0 || len(response.Documents) > 0) {
+			(response.Count > 0 || len(response.Items) > 0) {
 			return finalize(response)
 		}
 

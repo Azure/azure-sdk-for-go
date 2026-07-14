@@ -396,10 +396,9 @@ type ListSessionsOptions struct {
 }
 
 // listSessionsPageSize is the number of session IDs requested per service round-trip.
-// It is fixed (not exposed as an option): the end-of-results check treats a page shorter
-// than this value as "no more pages", which is only reliable at a page size the service is
-// known to honor. Exposing an arbitrary page size could let a server-side cap be mistaken
-// for the end of the results and silently truncate the enumeration.
+// Enumeration continues until the service returns an empty page, so this is only a batch
+// size and never a correctness boundary. It is kept fixed rather than exposed as an option
+// to keep the public surface minimal.
 const listSessionsPageSize = 100
 
 // NewListSessionsForQueuePager creates a pager that lists the IDs of sessions in a session-enabled queue.
@@ -507,12 +506,6 @@ func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, er
 			}
 		}
 
-		_, connID, clientErr := p.client.namespace.GetAMQPClientImpl(ctx)
-		if clientErr != nil {
-			return clientErr
-		}
-		lastConnID = connID
-
 		cancelAuth, _, claimErr := p.client.namespace.NegotiateClaim(ctx, managementPath)
 		if claimErr != nil {
 			return claimErr
@@ -522,10 +515,15 @@ func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, er
 		// so no goroutine outlives the page fetch.
 		defer cancelAuth()
 
-		rpcLink, linkErr := p.client.namespace.NewRPCLink(ctx, managementPath)
+		// NewRPCLink returns the connection revision it created the link on, atomically,
+		// so a concurrent recovery between calls cannot leave lastConnID pointing at a
+		// different connection than rpcLink. Retain it to recover exactly this connection
+		// if a later attempt fails with a connection error.
+		rpcLink, connID, linkErr := p.client.namespace.NewRPCLink(ctx, managementPath)
 		if linkErr != nil {
 			return linkErr
 		}
+		lastConnID = connID
 		defer func() {
 			_ = rpcLink.Close(ctx)
 		}()
@@ -546,7 +544,7 @@ func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, er
 	}
 
 	p.skip += int32(len(page))
-	if len(page) < listSessionsPageSize {
+	if len(page) == 0 {
 		p.done = true
 	}
 	return ListSessionsResponse{Sessions: page}, nil

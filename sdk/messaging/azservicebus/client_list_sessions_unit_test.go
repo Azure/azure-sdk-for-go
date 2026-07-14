@@ -67,7 +67,7 @@ type pathCapturingNS struct {
 	recoverCalls  []uint64
 }
 
-func (ns *pathCapturingNS) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {
+func (ns *pathCapturingNS) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
 	ns.mu.Lock()
 	ns.capturedPaths = append(ns.capturedPaths, managementPath)
 	ns.mu.Unlock()
@@ -159,10 +159,10 @@ func drainPager(t *testing.T, pager *runtime.Pager[ListSessionsResponse]) []stri
 	return got
 }
 
-func TestClient_ListSessionsForQueue_PaginatesUntilShortPage(t *testing.T) {
-	// Three full pages (100 each) then a partial page (37): exactly 4 RPC calls
-	// with skip 0, 100, 200, 300, stopping on the partial page rather than issuing
-	// a 5th call.
+func TestClient_ListSessionsForQueue_PaginatesUntilEmptyPage(t *testing.T) {
+	// Three full pages (100 each), a partial page (37), then an empty page. Enumeration
+	// ends on the EMPTY page - a short page does NOT terminate it - so there are 5 RPC
+	// calls with skip 0, 100, 200, 300, 337.
 	page1 := makeIDs("p1", 100)
 	page2 := makeIDs("p2", 100)
 	page3 := makeIDs("p3", 100)
@@ -175,6 +175,7 @@ func TestClient_ListSessionsForQueue_PaginatesUntilShortPage(t *testing.T) {
 			okPage(t, page2...),
 			okPage(t, page3...),
 			okPage(t, page4...),
+			okPage(t), // empty page terminates enumeration
 		},
 	}
 	client, ns := newClientForListSessionsUnitTest(t, link)
@@ -183,16 +184,16 @@ func TestClient_ListSessionsForQueue_PaginatesUntilShortPage(t *testing.T) {
 
 	expected := append(append(append(append([]string{}, page1...), page2...), page3...), page4...)
 	require.Equal(t, expected, got)
-	require.Len(t, link.calls, 4)
+	require.Len(t, link.calls, 5)
 
 	// Each page opens its own RPC link, all addressed to the queue's management endpoint.
 	require.Equal(t, []string{
-		"myqueue/$management", "myqueue/$management",
+		"myqueue/$management", "myqueue/$management", "myqueue/$management",
 		"myqueue/$management", "myqueue/$management",
 	}, ns.ManagementPaths())
 
 	// Skip values progress correctly across calls.
-	for i, expectedSkip := range []int32{0, 100, 200, 300} {
+	for i, expectedSkip := range []int32{0, 100, 200, 300, 337} {
 		body, ok := link.calls[i].Value.(map[string]any)
 		require.True(t, ok, "call %d: body shape", i)
 		require.Equal(t, expectedSkip, body["skip"], "call %d: skip", i)
@@ -231,12 +232,13 @@ func TestClient_ListSessionsForQueue_ActiveModeSendsSentinel(t *testing.T) {
 		t: t,
 		responses: []*amqpwrap.RPCResponse{
 			okPage(t, "active-1"),
+			okPage(t), // empty page terminates enumeration
 		},
 	}
 	client, _ := newClientForListSessionsUnitTest(t, link)
 
 	_ = drainPager(t, client.NewListSessionsForQueuePager("myqueue", nil))
-	require.Len(t, link.calls, 1)
+	require.Len(t, link.calls, 2)
 
 	body := link.calls[0].Value.(map[string]any)
 	ts, ok := body["last-updated-time"].(time.Time)
@@ -251,13 +253,14 @@ func TestClient_ListSessionsForQueue_SessionStateUpdatedAfterIsPropagated(t *tes
 		t: t,
 		responses: []*amqpwrap.RPCResponse{
 			okPage(t, "session-after"),
+			okPage(t), // empty page terminates enumeration
 		},
 	}
 	client, _ := newClientForListSessionsUnitTest(t, link)
 
 	_ = drainPager(t, client.NewListSessionsForQueuePager("myqueue",
 		&ListSessionsOptions{SessionStateUpdatedAfter: &sessionStateUpdatedAfter}))
-	require.Len(t, link.calls, 1)
+	require.Len(t, link.calls, 2)
 
 	body := link.calls[0].Value.(map[string]any)
 	ts, ok := body["last-updated-time"].(time.Time)
@@ -272,17 +275,18 @@ func TestClient_ListSessionsForQueue_RecoversFromConnectionError(t *testing.T) {
 	// handing back the dead cached connection and the fetch would exhaust its retries.
 	link := &scriptedRPCLink{
 		t:    t,
-		errs: []error{io.EOF, nil},
+		errs: []error{io.EOF, nil, nil},
 		responses: []*amqpwrap.RPCResponse{
 			nil, // unused: call #0 returns io.EOF
 			okPage(t, "recovered-1", "recovered-2"),
+			okPage(t), // empty page terminates enumeration
 		},
 	}
 	client, ns := newClientForListSessionsUnitTest(t, link)
 
 	got := drainPager(t, client.NewListSessionsForQueuePager("myqueue", nil))
 	require.Equal(t, []string{"recovered-1", "recovered-2"}, got)
-	require.Len(t, link.calls, 2, "expected one failed then one successful RPC")
+	require.Len(t, link.calls, 3, "failed RPC + recovered RPC + terminating empty page")
 
 	// Recover must have been called once, with the connection revision captured on the
 	// failed attempt (FakeNS hands out revision 100 before any recovery).
@@ -343,23 +347,25 @@ func TestClient_ListSessionsForQueue_RecoversFromConnectionErrorOnLaterPage(t *t
 
 	link := &scriptedRPCLink{
 		t:    t,
-		errs: []error{nil, io.EOF, nil},
+		errs: []error{nil, io.EOF, nil, nil},
 		responses: []*amqpwrap.RPCResponse{
 			okPage(t, page1...),
 			nil, // unused: call #1 returns io.EOF
 			okPage(t, page2...),
+			okPage(t), // empty page terminates enumeration
 		},
 	}
 	client, ns := newClientForListSessionsUnitTest(t, link)
 
 	got := drainPager(t, client.NewListSessionsForQueuePager("myqueue", nil))
 	require.Equal(t, append(append([]string{}, page1...), page2...), got)
-	require.Len(t, link.calls, 3, "page1 + failed page2 + recovered page2")
+	require.Len(t, link.calls, 4, "page1 + failed page2 + recovered page2 + empty terminator")
 
-	// Skip must be preserved across recovery: 0, then 100 (fail), then 100 (retry).
+	// Skip must be preserved across recovery: 0, then 100 (fail), then 100 (retry), then 120.
 	require.Equal(t, int32(0), link.calls[0].Value.(map[string]any)["skip"])
 	require.Equal(t, int32(100), link.calls[1].Value.(map[string]any)["skip"])
 	require.Equal(t, int32(100), link.calls[2].Value.(map[string]any)["skip"])
+	require.Equal(t, int32(120), link.calls[3].Value.(map[string]any)["skip"])
 
 	// Recover was called once, with the revision captured on page 2's failed attempt.
 	require.Equal(t, []uint64{100}, ns.RecoverCalls())
@@ -411,16 +417,19 @@ func TestClient_ListSessionsForSubscription_PaginatesAndSendsCorrectPath(t *test
 		responses: []*amqpwrap.RPCResponse{
 			okPage(t, page1...),
 			okPage(t, page2...),
+			okPage(t), // empty page terminates enumeration
 		},
 	}
 	client, ns := newClientForListSessionsUnitTest(t, link)
 
 	got := drainPager(t, client.NewListSessionsForSubscriptionPager("mytopic", "mysub", nil))
 	require.Equal(t, append(append([]string{}, page1...), page2...), got)
-	require.Len(t, link.calls, 2)
+	require.Len(t, link.calls, 3)
 	require.Equal(t, int32(0), link.calls[0].Value.(map[string]any)["skip"])
 	require.Equal(t, int32(100), link.calls[1].Value.(map[string]any)["skip"])
+	require.Equal(t, int32(125), link.calls[2].Value.(map[string]any)["skip"])
 	require.Equal(t, []string{
+		"mytopic/Subscriptions/mysub/$management",
 		"mytopic/Subscriptions/mysub/$management",
 		"mytopic/Subscriptions/mysub/$management",
 	}, ns.ManagementPaths(),

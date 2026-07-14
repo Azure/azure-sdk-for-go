@@ -251,6 +251,7 @@ func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHi
 		Marker:     o.Marker,
 		Maxresults: o.MaxResults,
 		Prefix:     o.Prefix,
+		StartFrom:  o.StartFrom,
 	}
 }
 

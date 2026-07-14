@@ -8,6 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed `ListBlobsHierarchyOptions` and `NewListBlobsFlatPager` to correctly pass `StartFrom` to the generated client.
 
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.

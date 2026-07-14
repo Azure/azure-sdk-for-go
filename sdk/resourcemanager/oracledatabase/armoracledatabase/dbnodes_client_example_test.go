@@ -31,13 +31,13 @@ func ExampleDbNodesClient_BeginAction_vmActionsOnDbNodesOfVMClusterGeneratedByMa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbNodesClientActionResponse{
-	// 	DbNode: &armoracledatabase.DbNode{
+	// 	DbNode: armoracledatabase.DbNode{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/dbNodes/ocid1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/dbNodes"),
 	// 		Properties: &armoracledatabase.DbNodeProperties{
@@ -97,13 +97,13 @@ func ExampleDbNodesClient_BeginAction_vmActionsOnDbNodesOfVMClusterGeneratedByMi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbNodesClientActionResponse{
-	// 	DbNode: &armoracledatabase.DbNode{
+	// 	DbNode: armoracledatabase.DbNode{
 	// 	},
 	// }
 }
@@ -127,13 +127,13 @@ func ExampleDbNodesClient_BeginAction_dbNodesAction() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbNodesClientActionResponse{
-	// 	DbNode: &armoracledatabase.DbNode{
+	// 	DbNode: armoracledatabase.DbNode{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/dbNodes/ocid1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/dbNodes"),
 	// 		Properties: &armoracledatabase.DbNodeProperties{
@@ -184,7 +184,7 @@ func ExampleDbNodesClient_Get_getDbNodeGeneratedByMaximumSetRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbNodesClientGetResponse{
-	// 	DbNode: &armoracledatabase.DbNode{
+	// 	DbNode: armoracledatabase.DbNode{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/dbNodes/ocid1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/dbNodes"),
 	// 		Properties: &armoracledatabase.DbNodeProperties{
@@ -244,7 +244,7 @@ func ExampleDbNodesClient_Get_getDbNodeGeneratedByMinimumSetRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbNodesClientGetResponse{
-	// 	DbNode: &armoracledatabase.DbNode{
+	// 	DbNode: armoracledatabase.DbNode{
 	// 	},
 	// }
 }
@@ -268,7 +268,7 @@ func ExampleDbNodesClient_Get_dbNodesGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbNodesClientGetResponse{
-	// 	DbNode: &armoracledatabase.DbNode{
+	// 	DbNode: armoracledatabase.DbNode{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1/dbNodes/ocid1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters/dbNodes"),
 	// 		Properties: &armoracledatabase.DbNodeProperties{

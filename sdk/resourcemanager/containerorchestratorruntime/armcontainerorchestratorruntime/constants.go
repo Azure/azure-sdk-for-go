@@ -4,6 +4,10 @@
 
 package armcontainerorchestratorruntime
 
+const (
+	version20240301 string = "2024-03-01"
+)
+
 // AccessMode - Storage Class Access Mode
 type AccessMode string
 

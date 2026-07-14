@@ -4,6 +4,29 @@
 
 package armmongodbatlas
 
+// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
+type ClustersClientCreateOrUpdateResponse struct {
+	// The MongoDB Atlas Cluster resource type. A cluster is a managed database deployment within a project.
+	Cluster
+}
+
+// ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
+type ClustersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ClustersClientGetResponse contains the response from method ClustersClient.Get.
+type ClustersClientGetResponse struct {
+	// The MongoDB Atlas Cluster resource type. A cluster is a managed database deployment within a project.
+	Cluster
+}
+
+// ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
+type ClustersClientListResponse struct {
+	// The response of a Cluster list operation.
+	ClusterListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -43,4 +66,39 @@ type OrganizationsClientListBySubscriptionResponse struct {
 type OrganizationsClientUpdateResponse struct {
 	// The resource model definition for an Azure Organization
 	OrganizationResource
+}
+
+// ProjectsClientCreateOrUpdateResponse contains the response from method ProjectsClient.BeginCreateOrUpdate.
+type ProjectsClientCreateOrUpdateResponse struct {
+	// The MongoDB Atlas Project resource type. A project is a logical grouping of clusters within an organization.
+	Project
+}
+
+// ProjectsClientDeleteResponse contains the response from method ProjectsClient.BeginDelete.
+type ProjectsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ProjectsClientGetResponse contains the response from method ProjectsClient.Get.
+type ProjectsClientGetResponse struct {
+	// The MongoDB Atlas Project resource type. A project is a logical grouping of clusters within an organization.
+	Project
+}
+
+// ProjectsClientListClusterTierRegionsResponse contains the response from method ProjectsClient.ListClusterTierRegions.
+type ProjectsClientListClusterTierRegionsResponse struct {
+	// Response for regions by cluster tier.
+	RegionsByTierResponse
+}
+
+// ProjectsClientListResponse contains the response from method ProjectsClient.NewListPager.
+type ProjectsClientListResponse struct {
+	// The response of a Project list operation.
+	ProjectListResult
+}
+
+// ProjectsClientTierLimitReachedResponse contains the response from method ProjectsClient.TierLimitReached.
+type ProjectsClientTierLimitReachedResponse struct {
+	// Response for tier limit check.
+	TierLimitReachedResponse
 }

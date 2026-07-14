@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-05-01-preview/ScenarioRuns_Cancel.json
-func ExampleScenarioRunsClient_Cancel() {
+func ExampleScenarioRunsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,9 +22,13 @@ func ExampleScenarioRunsClient_Cancel() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewScenarioRunsClient().Cancel(ctx, "exampleRG", "exampleWorkspace", "12345678-1234-1234-1234-123456789012", "abcd1234-5678-9012-3456-789012345678", nil)
+	poller, err := clientFactory.NewScenarioRunsClient().BeginCancel(ctx, "exampleRG", "exampleWorkspace", "12345678-1234-1234-1234-123456789012", "abcd1234-5678-9012-3456-789012345678", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 

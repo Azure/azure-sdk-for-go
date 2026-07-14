@@ -6,5 +6,5 @@ package armproviderhub
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub"
-	moduleVersion = "v3.0.0-beta.1"
+	moduleVersion = "v3.0.0"
 )

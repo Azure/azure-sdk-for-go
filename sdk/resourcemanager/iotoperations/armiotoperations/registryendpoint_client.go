@@ -18,6 +18,8 @@ import (
 
 // RegistryEndpointClient contains the methods for the RegistryEndpoint group.
 // Don't use this type directly, use NewRegistryEndpointClient() instead.
+//
+// Generated from API version 2026-03-01
 type RegistryEndpointClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRegistryEndpointClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Create a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - registryEndpointName - Name of RegistryEndpoint resource
@@ -68,8 +68,6 @@ func (client *RegistryEndpointClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 func (client *RegistryEndpointClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, resource RegistryEndpointResource, options *RegistryEndpointClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryEndpointClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *RegistryEndpointClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *RegistryEndpointClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - registryEndpointName - Name of RegistryEndpoint resource
@@ -153,8 +149,6 @@ func (client *RegistryEndpointClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 func (client *RegistryEndpointClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, options *RegistryEndpointClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryEndpointClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *RegistryEndpointClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - registryEndpointName - Name of RegistryEndpoint resource
@@ -259,8 +251,8 @@ func (client *RegistryEndpointClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *RegistryEndpointClient) getHandleResponse(resp *http.Response) (Re
 }
 
 // NewListByInstanceResourcePager - List RegistryEndpointResource resources by InstanceResource
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - options - RegistryEndpointClientListByInstanceResourceOptions contains the optional parameters for the RegistryEndpointClient.NewListByInstanceResourcePager
@@ -324,8 +314,8 @@ func (client *RegistryEndpointClient) listByInstanceResourceCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

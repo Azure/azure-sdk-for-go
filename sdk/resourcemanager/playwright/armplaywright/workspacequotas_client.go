@@ -18,6 +18,8 @@ import (
 
 // WorkspaceQuotasClient - Operations for managing Playwright workspace quota resources.
 // Don't use this type directly, use NewWorkspaceQuotasClient() instead.
+//
+// Generated from API version 2026-02-01-preview
 type WorkspaceQuotasClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWorkspaceQuotasClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Gets a Playwright workspace quota resource by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - playwrightWorkspaceName - The name of the PlaywrightWorkspace
 //   - quotaName - The name of the PlaywrightWorkspaceQuota
@@ -93,8 +93,8 @@ func (client *WorkspaceQuotasClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *WorkspaceQuotasClient) getHandleResponse(resp *http.Response) (Wor
 }
 
 // NewListByPlaywrightWorkspacePager - Lists quota resources for a given Playwright workspace.
-//
-// Generated from API version 2026-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - playwrightWorkspaceName - The name of the PlaywrightWorkspace
 //   - options - WorkspaceQuotasClientListByPlaywrightWorkspaceOptions contains the optional parameters for the WorkspaceQuotasClient.NewListByPlaywrightWorkspacePager
@@ -158,8 +156,8 @@ func (client *WorkspaceQuotasClient) listByPlaywrightWorkspaceCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

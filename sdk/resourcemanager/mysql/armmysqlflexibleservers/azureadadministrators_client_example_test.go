@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/AzureADAdministratorCreate.json
+// Generated from example definition: 2024-12-30/AzureADAdministratorCreate.json
 func ExampleAzureADAdministratorsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,13 +37,13 @@ func ExampleAzureADAdministratorsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.AzureADAdministratorsClientCreateOrUpdateResponse{
-	// 	AzureADAdministrator: &armmysqlflexibleservers.AzureADAdministrator{
+	// 	AzureADAdministrator: armmysqlflexibleservers.AzureADAdministrator{
 	// 		Name: to.Ptr("ActiveDirectory"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/administrators"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestsvc4/administrators/ActiveDirectory"),
@@ -58,7 +58,7 @@ func ExampleAzureADAdministratorsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/AzureADAdministratorDelete.json
+// Generated from example definition: 2024-12-30/AzureADAdministratorDelete.json
 func ExampleAzureADAdministratorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleAzureADAdministratorsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -84,7 +84,7 @@ func ExampleAzureADAdministratorsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/AzureADAdministratorGet.json
+// Generated from example definition: 2024-12-30/AzureADAdministratorGet.json
 func ExampleAzureADAdministratorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleAzureADAdministratorsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.AzureADAdministratorsClientGetResponse{
-	// 	AzureADAdministrator: &armmysqlflexibleservers.AzureADAdministrator{
+	// 	AzureADAdministrator: armmysqlflexibleservers.AzureADAdministrator{
 	// 		Name: to.Ptr("ActiveDirectory"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/administrators"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestsvc4/administrators/ActiveDirectory"),
@@ -118,7 +118,7 @@ func ExampleAzureADAdministratorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/AzureADAdministratorsListByServer.json
+// Generated from example definition: 2024-12-30/AzureADAdministratorsListByServer.json
 func ExampleAzureADAdministratorsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

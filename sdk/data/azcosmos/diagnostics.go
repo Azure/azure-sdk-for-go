@@ -58,13 +58,12 @@ func (d Diagnostics) ClientElapsedTime() time.Duration {
 }
 
 // StartTimeUTC returns the UTC start time of the request.
-func (d Diagnostics) StartTimeUTC() *time.Time {
+func (d Diagnostics) StartTimeUTC() time.Time {
 	if d.root == nil {
-		return nil
+		return time.Time{}
 	}
 
-	start := d.root.startTime
-	return &start
+	return d.root.startTime
 }
 
 // FailedRequestCount returns the number of failed backend attempts recorded for the request.

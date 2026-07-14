@@ -12,93 +12,98 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Relationships_CreateOrUpdate.json
-func ExampleRelationshipsClient_CreateOrUpdate() {
+// Generated from example definition: 2026-05-01-preview/Relationships_CreateOrUpdate.json
+func ExampleRelationshipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRelationshipsClient().CreateOrUpdate(ctx, "rgopenapi", "model1", "rel1", armcloudhealth.Relationship{
+	poller, err := clientFactory.NewRelationshipsClient().BeginCreateOrUpdate(ctx, "online-store-rg", "online-store", "web-frontend-to-orders-api", armcloudhealth.Relationship{
 		Properties: &armcloudhealth.RelationshipProperties{
-			DisplayName:      to.Ptr("My relationship"),
-			ParentEntityName: to.Ptr("Entity1"),
-			ChildEntityName:  to.Ptr("Entity2"),
-			Labels: map[string]*string{
-				"key9681": to.Ptr("ixfvzsfnpvkkbrce"),
+			DisplayName:      to.Ptr("Web Frontend depends on Orders API"),
+			ParentEntityName: to.Ptr("web-frontend"),
+			ChildEntityName:  to.Ptr("orders-api"),
+			Tags: map[string]*string{
+				"environment": to.Ptr("production"),
+				"team":        to.Ptr("online-store"),
 			},
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.RelationshipsClientCreateOrUpdateResponse{
-	// 	Relationship: &armcloudhealth.Relationship{
+	// 	Relationship: armcloudhealth.Relationship{
 	// 		Properties: &armcloudhealth.RelationshipProperties{
-	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			DisplayName: to.Ptr("My relationship"),
-	// 			ParentEntityName: to.Ptr("Entity1"),
-	// 			ChildEntityName: to.Ptr("Entity2"),
-	// 			Labels: map[string]*string{
-	// 				"key9681": to.Ptr("ixfvzsfnpvkkbrce"),
+	// 			DisplayName: to.Ptr("Web Frontend depends on Orders API"),
+	// 			ParentEntityName: to.Ptr("web-frontend"),
+	// 			ChildEntityName: to.Ptr("orders-api"),
+	// 			Tags: map[string]*string{
+	// 				"environment": to.Ptr("production"),
+	// 				"team": to.Ptr("online-store"),
 	// 			},
+	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.CloudHealth/healthmodels/J1-j5J-E4N1r4I7i226K7-6V-B27V1RiF6S5M6-pl7JgD3-lx4CF/relationships/rel1"),
-	// 		Name: to.Ptr("rel1"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/relationships/web-frontend-to-orders-api"),
+	// 		Name: to.Ptr("web-frontend-to-orders-api"),
 	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels/relationships"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("arz"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Relationships_Delete.json
-func ExampleRelationshipsClient_Delete() {
+// Generated from example definition: 2026-05-01-preview/Relationships_Delete.json
+func ExampleRelationshipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRelationshipsClient().Delete(ctx, "rgopenapi", "model1", "rel1", nil)
+	poller, err := clientFactory.NewRelationshipsClient().BeginDelete(ctx, "online-store-rg", "online-store", "orders-api-to-catalog-storage", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcloudhealth.RelationshipsClientDeleteResponse{
-	// }
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Relationships_Get.json
+// Generated from example definition: 2026-05-01-preview/Relationships_Get.json
 func ExampleRelationshipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRelationshipsClient().Get(ctx, "rgopenapi", "myHealthModel", "Ue-21-F3M12V3w-13x18F8H-7HOk--kq6tP-HB", nil)
+	res, err := clientFactory.NewRelationshipsClient().Get(ctx, "online-store-rg", "online-store", "web-frontend-to-orders-api", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -106,44 +111,44 @@ func ExampleRelationshipsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcloudhealth.RelationshipsClientGetResponse{
-	// 	Relationship: &armcloudhealth.Relationship{
+	// 	Relationship: armcloudhealth.Relationship{
 	// 		Properties: &armcloudhealth.RelationshipProperties{
-	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 			DisplayName: to.Ptr("My relationship"),
-	// 			ParentEntityName: to.Ptr("Entity1"),
-	// 			ChildEntityName: to.Ptr("Entity2"),
-	// 			Labels: map[string]*string{
-	// 				"key9681": to.Ptr("foo"),
+	// 			DisplayName: to.Ptr("Web Frontend depends on Orders API"),
+	// 			ParentEntityName: to.Ptr("web-frontend"),
+	// 			ChildEntityName: to.Ptr("orders-api"),
+	// 			Tags: map[string]*string{
+	// 				"environment": to.Ptr("production"),
+	// 				"team": to.Ptr("online-store"),
 	// 			},
-	// 			DiscoveredBy: to.Ptr("discoveryRule1"),
+	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.CloudHealth/healthmodels/myHealthModel/relationships/Ue-21-F3M12V3w-13x18F8H-7HOk--kq6tP-HB"),
-	// 		Name: to.Ptr("Ue-21-F3M12V3w-13x18F8H-7HOk--kq6tP-HB"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/relationships/web-frontend-to-orders-api"),
+	// 		Name: to.Ptr("web-frontend-to-orders-api"),
 	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels/relationships"),
 	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-	// 			LastModifiedBy: to.Ptr("arz"),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Relationships_ListByHealthModel.json
+// Generated from example definition: 2026-05-01-preview/Relationships_ListByHealthModel.json
 func ExampleRelationshipsClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("4980D7D5-4E07-47AD-AD34-E76C6BC9F061", cred, nil)
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewRelationshipsClient().NewListByHealthModelPager("rgopenapi", "model1", nil)
+	pager := clientFactory.NewRelationshipsClient().NewListByHealthModelPager("online-store-rg", "online-store", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -159,29 +164,120 @@ func ExampleRelationshipsClient_NewListByHealthModelPager() {
 		// 		Value: []*armcloudhealth.Relationship{
 		// 			{
 		// 				Properties: &armcloudhealth.RelationshipProperties{
-		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-		// 					DisplayName: to.Ptr("My relationship"),
-		// 					ParentEntityName: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 					ChildEntityName: to.Ptr("B3P1X3e-FZtZ-4Ak-2VLHGQ-4m4-05DE-XNW5zW3P-46XY-DC3SSX"),
-		// 					Labels: map[string]*string{
-		// 						"key9681": to.Ptr("sdfsdfsdfsdfsd"),
+		// 					DisplayName: to.Ptr("Online Store depends on Web Frontend"),
+		// 					ParentEntityName: to.Ptr("storefront"),
+		// 					ChildEntityName: to.Ptr("web-frontend"),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
 		// 					},
-		// 					DiscoveredBy: to.Ptr("discoveryRule1"),
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
 		// 				},
-		// 				ID: to.Ptr("/subscriptions/4980D7D5-4E07-47AD-AD34-E76C6BC9F061/resourceGroups/rgopenapi/providers/Microsoft.CloudHealth/healthmodels/model1/relationships/cnsofbwhgcen"),
-		// 				Name: to.Ptr("cnsofbwhgcen"),
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/relationships/storefront-to-web-frontend"),
+		// 				Name: to.Ptr("storefront-to-web-frontend"),
 		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/relationships"),
 		// 				SystemData: &armcloudhealth.SystemData{
-		// 					CreatedBy: to.Ptr("cbhzxxlvkmufetjjjwtk"),
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.327Z"); return t}()),
-		// 					LastModifiedBy: to.Ptr("arz"),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-18T14:04:09.328Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.RelationshipProperties{
+		// 					DisplayName: to.Ptr("Web Frontend depends on Orders API"),
+		// 					ParentEntityName: to.Ptr("web-frontend"),
+		// 					ChildEntityName: to.Ptr("orders-api"),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/relationships/web-frontend-to-orders-api"),
+		// 				Name: to.Ptr("web-frontend-to-orders-api"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/relationships"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.RelationshipProperties{
+		// 					DisplayName: to.Ptr("Orders API depends on Orders Database"),
+		// 					ParentEntityName: to.Ptr("orders-api"),
+		// 					ChildEntityName: to.Ptr("orders-db"),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/relationships/orders-api-to-orders-db"),
+		// 				Name: to.Ptr("orders-api-to-orders-db"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/relationships"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.RelationshipProperties{
+		// 					DisplayName: to.Ptr("Orders API depends on Order Queue"),
+		// 					ParentEntityName: to.Ptr("orders-api"),
+		// 					ChildEntityName: to.Ptr("order-queue"),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/relationships/orders-api-to-order-queue"),
+		// 				Name: to.Ptr("orders-api-to-order-queue"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/relationships"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armcloudhealth.RelationshipProperties{
+		// 					DisplayName: to.Ptr("Orders API depends on Catalog Storage"),
+		// 					ParentEntityName: to.Ptr("orders-api"),
+		// 					ChildEntityName: to.Ptr("catalog-storage"),
+		// 					Tags: map[string]*string{
+		// 						"environment": to.Ptr("production"),
+		// 						"team": to.Ptr("online-store"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store/relationships/orders-api-to-catalog-storage"),
+		// 				Name: to.Ptr("orders-api-to-catalog-storage"),
+		// 				Type: to.Ptr("Microsoft.CloudHealth/healthmodels/relationships"),
+		// 				SystemData: &armcloudhealth.SystemData{
+		// 					CreatedBy: to.Ptr("admin@contoso.com"),
+		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}

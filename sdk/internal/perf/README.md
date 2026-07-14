@@ -3,11 +3,38 @@ The `perf` sub-module provides a framework for writing and running performance t
 
 ## Default Command Options
 
-| Flag | Short Flag | Default Value | Description |
-| -----| ---------- | ------------- | ----------- |
-| `--duration` | `-d` | 10 seconds | How long to run an individual performance test |
-| `--test-proxies` | `-x` | N/A | A semicolon separated list of proxy urls. |
-| `--warmup` | `-w` | 3 seconds| How long to allow the connection to warm up. |
+The flags below match the .NET `Azure.Test.Perf` runner (`PerfOptions.cs`) so
+that perf-automation can drive both languages from a single matrix.
+
+| Flag | Short | Default | Description |
+| ---- | ----- | ------- | ----------- |
+| `--duration` | `-d` | 10 | Measurement-phase duration in seconds. |
+| `--warmup` | `-w` | 5 | Warmup duration in seconds. Zero skips warmup. |
+| `--parallel` | `-p` | 1 | Number of goroutines executing the test concurrently. |
+| `--iterations` | `-i` | 1 | How many times the measurement phase is repeated. |
+| `--rate` | `-r` | 0 | Target throughput in ops/sec aggregated across workers. Zero = unlimited. |
+| `--status-interval` |  | 1 | Seconds between live status lines. |
+| `--latency` | `-l` | false | Track per-operation latency and print a percentile summary. |
+| `--job-statistics` |  | false | Print the `#StartJobStatistics` / `#EndJobStatistics` block parsed by perf-automation. |
+| `--no-cleanup` |  | false | Skip `Cleanup` / `GlobalCleanup` at end of run. |
+| `--sync` |  | false | Accepted for CLI parity; no-op in Go. |
+| `--insecure` |  | false | Accepted for CLI parity; the default transport already skips TLS verification for the test proxy. |
+| `--test-proxies` | `-x` |  | Semicolon-separated list of test-proxy URLs. |
+| `--results-file` |  |  | When combined with `--latency`, writes per-operation results as JSON. |
+| `--output-file-prefix` |  |  | Writes run summary artifacts to `<prefix>.json/.csv/.txt/.md`. |
+| `--resource-telemetry` |  | false | Print a `runtime.MemStats` / goroutine-count delta at end of run. |
+| `--config` |  |  | Path to a workload-config JSON file. |
+| `--workload` |  |  | Workload name to select from the config file. |
+| `--debug` |  | false | Print extra debug output. |
+| `--maxprocs` |  | `runtime.NumCPU()` | Override `GOMAXPROCS` for the run. |
+| `--max-io-completion-threads` |  | 0 | Accepted for CLI parity with .NET ThreadPool tuning; no-op in Go. |
+| `--max-worker-threads` |  | 0 | Accepted for CLI parity with .NET ThreadPool tuning; no-op in Go. |
+| `--min-io-completion-threads` |  | 0 | Accepted for CLI parity with .NET ThreadPool tuning; no-op in Go. |
+| `--min-worker-threads` |  | 0 | Accepted for CLI parity with .NET ThreadPool tuning; no-op in Go. |
+
+The runner always samples process CPU and memory in the background; both are
+shown live in the status line (`CPU`, `Memory(MiB)`) and as
+`averageCpuPercent` / `averageMemoryBytes` in the run-summary artifacts.
 
 
 ## Adding Performance Tests to an SDK

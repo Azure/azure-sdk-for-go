@@ -18,6 +18,8 @@ import (
 
 // CheckNameAvailabilityClient contains the methods for the CheckNameAvailability group.
 // Don't use this type directly, use NewCheckNameAvailabilityClient() instead.
+//
+// Generated from API version 2024-09-01
 type CheckNameAvailabilityClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewCheckNameAvailabilityClient(subscriptionID string, credential azcore.Tok
 //
 // Checks the resource name availability.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - location - The name of the Azure region.
 //   - options - CheckNameAvailabilityClientPostOptions contains the optional parameters for the CheckNameAvailabilityClient.Post
 //     method.
@@ -86,8 +86,8 @@ func (client *CheckNameAvailabilityClient) postCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

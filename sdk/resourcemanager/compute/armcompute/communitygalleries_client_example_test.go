@@ -30,7 +30,7 @@ func ExampleCommunityGalleriesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.CommunityGalleriesClientGetResponse{
-	// 	CommunityGallery: &armcompute.CommunityGallery{
+	// 	CommunityGallery: armcompute.CommunityGallery{
 	// 		Location: to.Ptr("myLocation"),
 	// 		Name: to.Ptr("publicGalleryName"),
 	// 		Type: to.Ptr("Microsoft.Compute/locations/communityGallery"),

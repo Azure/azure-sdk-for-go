@@ -95,6 +95,9 @@ type CertificateProfileProperties struct {
 	// Whether to include STREET in the certificate subject name.
 	IncludeStreetAddress *bool
 
+	// Indicates whether the resource is intended for a specific usage scenario.
+	ProgramType *string
+
 	// READ-ONLY; List of renewed certificates.
 	Certificates []*Certificate
 
@@ -276,6 +279,12 @@ type RevokeCertificate struct {
 
 	// Remarks for the revocation.
 	Remarks *string
+}
+
+// RevokeCertificateList - Defines the list of certificates for revocation in certificate profile.
+type RevokeCertificateList struct {
+	// REQUIRED; List of certificates to be revoked in a certificate profile.
+	RevokeCertificates []*RevokeCertificate
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

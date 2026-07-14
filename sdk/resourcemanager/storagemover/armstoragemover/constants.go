@@ -4,6 +4,10 @@
 
 package armstoragemover
 
+const (
+	version20251201 string = "2025-12-01"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

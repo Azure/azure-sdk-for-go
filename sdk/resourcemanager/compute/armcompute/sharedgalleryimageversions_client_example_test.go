@@ -30,7 +30,7 @@ func ExampleSharedGalleryImageVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SharedGalleryImageVersionsClientGetResponse{
-	// 	SharedGalleryImageVersion: &armcompute.SharedGalleryImageVersion{
+	// 	SharedGalleryImageVersion: armcompute.SharedGalleryImageVersion{
 	// 		Properties: &armcompute.SharedGalleryImageVersionProperties{
 	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28Z"); return t}()),
 	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28Z"); return t}()),

@@ -51,10 +51,72 @@ type GuestSubscriptionsClientListBySubscriptionLocationResourceResponse struct {
 	GuestSubscriptionListResult
 }
 
+// MemberCapOverridesClientCreateOrUpdateResponse contains the response from method MemberCapOverridesClient.CreateOrUpdate.
+type MemberCapOverridesClientCreateOrUpdateResponse struct {
+	// Member cap override as a standalone child resource of `SharedLimitCap`.
+	// Use this resource to read or modify a single member's cap without
+	// resending the entire `memberCapOverrides` array on the parent.
+	MemberCapOverride
+}
+
+// MemberCapOverridesClientDeleteResponse contains the response from method MemberCapOverridesClient.Delete.
+type MemberCapOverridesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MemberCapOverridesClientGetResponse contains the response from method MemberCapOverridesClient.Get.
+type MemberCapOverridesClientGetResponse struct {
+	// Member cap override as a standalone child resource of `SharedLimitCap`.
+	// Use this resource to read or modify a single member's cap without
+	// resending the entire `memberCapOverrides` array on the parent.
+	MemberCapOverride
+}
+
+// MemberCapOverridesClientListByParentResponse contains the response from method MemberCapOverridesClient.NewListByParentPager.
+type MemberCapOverridesClientListByParentResponse struct {
+	// The response of a MemberCapOverride list operation.
+	MemberCapOverrideListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// SharedLimitCapsClientCreateOrUpdateResponse contains the response from method SharedLimitCapsClient.CreateOrUpdate.
+type SharedLimitCapsClientCreateOrUpdateResponse struct {
+	// Shared limit cap configuration for a VM family, owned by a host subscription
+	// and propagated to its member subscriptions. The same resource type is
+	// readable by host and member subscriptions, but write operations (PUT/DELETE)
+	// are scoped to the caller's subscription as the host.
+	SharedLimitCap
+}
+
+// SharedLimitCapsClientDeleteResponse contains the response from method SharedLimitCapsClient.Delete.
+type SharedLimitCapsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// SharedLimitCapsClientGetResponse contains the response from method SharedLimitCapsClient.Get.
+type SharedLimitCapsClientGetResponse struct {
+	// Shared limit cap configuration for a VM family, owned by a host subscription
+	// and propagated to its member subscriptions. The same resource type is
+	// readable by host and member subscriptions, but write operations (PUT/DELETE)
+	// are scoped to the caller's subscription as the host.
+	SharedLimitCap
+}
+
+// SharedLimitCapsClientListBySubscriptionLocationResourceResponse contains the response from method SharedLimitCapsClient.NewListBySubscriptionLocationResourcePager.
+type SharedLimitCapsClientListBySubscriptionLocationResourceResponse struct {
+	// The response of a SharedLimitCap list operation.
+	SharedLimitCapListResult
+}
+
+// SharedLimitCapsClientSetMemberCapOverridesResponse contains the response from method SharedLimitCapsClient.SetMemberCapOverrides.
+type SharedLimitCapsClientSetMemberCapOverridesResponse struct {
+	// Response body for the `setMemberCapOverrides` action.
+	SetMemberCapOverridesResult
 }
 
 // SharedLimitsClientCreateResponse contains the response from method SharedLimitsClient.Create.

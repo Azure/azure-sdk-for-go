@@ -30,7 +30,7 @@ func ExampleCreationSupportedClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.CreationSupportedClientGetResponse{
-	// 	CreateResourceSupportedResponse: &armdynatrace.CreateResourceSupportedResponse{
+	// 	CreateResourceSupportedResponse: armdynatrace.CreateResourceSupportedResponse{
 	// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Dynatrace.Observability/monitors?api-version=2024-04-24&$skiptoken=abc123"),
 	// 		Value: []*armdynatrace.CreateResourceSupportedProperties{
 	// 			{
@@ -61,7 +61,7 @@ func ExampleCreationSupportedClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdynatrace.CreationSupportedClientListResponse{
-	// 	CreateResourceSupportedResponse: &armdynatrace.CreateResourceSupportedResponse{
+	// 	CreateResourceSupportedResponse: armdynatrace.CreateResourceSupportedResponse{
 	// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Dynatrace.Observability/monitors?api-version=2024-04-24&$skiptoken=abc123"),
 	// 		Value: []*armdynatrace.CreateResourceSupportedProperties{
 	// 			{

@@ -44,13 +44,13 @@ func ExampleTaskRunsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TaskRunsClientCreateResponse{
-	// 	TaskRun: &armcontainerregistrytasks.TaskRun{
+	// 	TaskRun: armcontainerregistrytasks.TaskRun{
 	// 		Name: to.Ptr("myrun"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/TaskRuns"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/taskRuns/myRun"),
@@ -137,7 +137,7 @@ func ExampleTaskRunsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TaskRunsClientGetResponse{
-	// 	TaskRun: &armcontainerregistrytasks.TaskRun{
+	// 	TaskRun: armcontainerregistrytasks.TaskRun{
 	// 		Name: to.Ptr("myRun"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/TaskRuns"),
 	// 		ID: to.Ptr("/subscriptions/3647315e-0c5b-4ce4-8739-b071e144b2c9/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/taskRuns/myRun"),
@@ -204,7 +204,7 @@ func ExampleTaskRunsClient_GetDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TaskRunsClientGetDetailsResponse{
-	// 	TaskRun: &armcontainerregistrytasks.TaskRun{
+	// 	TaskRun: armcontainerregistrytasks.TaskRun{
 	// 		Name: to.Ptr("myRun"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/TaskRuns"),
 	// 		ID: to.Ptr("/subscriptions/3647315e-0c5b-4ce4-8739-b071e144b2c9/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/taskRuns/myRun"),
@@ -361,13 +361,13 @@ func ExampleTaskRunsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.TaskRunsClientUpdateResponse{
-	// 	TaskRun: &armcontainerregistrytasks.TaskRun{
+	// 	TaskRun: armcontainerregistrytasks.TaskRun{
 	// 		Name: to.Ptr("mytestrun"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/TaskRuns"),
 	// 		ID: to.Ptr("/subscriptions/4385cf00-2d3a-425a-832f-f4285b1c9dce/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/taskRuns/myRun"),

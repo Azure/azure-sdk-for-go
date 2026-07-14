@@ -65,7 +65,7 @@ func ExampleTroubleshootersClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.TroubleshootersClientCreateResponse{
-	// 	TroubleshooterResource: &armselfhelp.TroubleshooterResource{
+	// 	TroubleshooterResource: armselfhelp.TroubleshooterResource{
 	// 		Name: to.Ptr("abf168ed-1b54-454a-86f6-e4b62253d3b1"),
 	// 		Type: to.Ptr("Microsoft.Help/troubleshooters"),
 	// 		ID: to.Ptr("/subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp/providers/Microsoft.Help/troubleshooter/abf168ed-1b54-454a-86f6-e4b62253d3b1"),
@@ -150,7 +150,7 @@ func ExampleTroubleshootersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.TroubleshootersClientGetResponse{
-	// 	TroubleshooterResource: &armselfhelp.TroubleshooterResource{
+	// 	TroubleshooterResource: armselfhelp.TroubleshooterResource{
 	// 		Name: to.Ptr("abf168ed-1b54-454a-86f6-e4b62253d3b1"),
 	// 		Type: to.Ptr("Microsoft.Help/troubleshooters"),
 	// 		ID: to.Ptr("/subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp/providers/Microsoft.Help/troubleshooter/abf168ed-1b54-454a-86f6-e4b62253d3b1"),
@@ -215,7 +215,7 @@ func ExampleTroubleshootersClient_Restart() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.TroubleshootersClientRestartResponse{
-	// 	RestartTroubleshooterResponse: &armselfhelp.RestartTroubleshooterResponse{
+	// 	RestartTroubleshooterResponse: armselfhelp.RestartTroubleshooterResponse{
 	// 		TroubleshooterResourceName: to.Ptr("SampleTroubleshooterResourceName"),
 	// 	},
 	// }

@@ -13,7 +13,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp/v2"
 	"net/http"
-	"net/url"
+	"slices"
 )
 
 // DiscoverySolutionServer is a fake server for instances of the armselfhelp.DiscoverySolutionClient type.
@@ -52,9 +52,7 @@ func (d *DiscoverySolutionServerTransport) Do(req *http.Request) (*http.Response
 }
 
 func (d *DiscoverySolutionServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -70,10 +68,7 @@ func (d *DiscoverySolutionServerTransport) dispatchToMethodFake(req *http.Reques
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -91,16 +86,8 @@ func (d *DiscoverySolutionServerTransport) dispatchNewListPager(req *http.Reques
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
 		qp := req.URL.Query()
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
-		skiptokenUnescaped, err := url.QueryUnescape(qp.Get("$skiptoken"))
-		if err != nil {
-			return nil, err
-		}
-		skiptokenParam := getOptional(skiptokenUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
+		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		var options *armselfhelp.DiscoverySolutionClientListOptions
 		if filterParam != nil || skiptokenParam != nil {
 			options = &armselfhelp.DiscoverySolutionClientListOptions{
@@ -119,7 +106,7 @@ func (d *DiscoverySolutionServerTransport) dispatchNewListPager(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		d.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -1,4 +1,4 @@
 directory: specification/storagesync/resource-manager/Microsoft.StorageSync/StorageSync
-commit: d58b2d8e241284207c7cee7f86eb07343195015d
+commit: 5da908a059fb33ef0ef26906b670df1200bb01b6
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

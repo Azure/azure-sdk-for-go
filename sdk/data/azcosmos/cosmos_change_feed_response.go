@@ -64,8 +64,8 @@ func (c ChangeFeedResponse) GetContinuation() string {
 	return string(c.ETag)
 }
 
-// GetContRanges extracts the continuation token range from the ChangeFeedResponse.
-func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
+// GetContinuationRange extracts the continuation token range from the ChangeFeedResponse.
+func (c ChangeFeedResponse) GetContinuationRange() (min string, max string, ok bool) {
 	if c.FeedRange != nil {
 		return c.FeedRange.MinInclusive, c.FeedRange.MaxExclusive, true
 	}
@@ -80,7 +80,7 @@ func (c ChangeFeedResponse) GetContRanges() (min string, max string, ok bool) {
 // GetCompositeContinuationToken creates a composite continuation token from the response.
 // This token combines the feed range information with the ETag for use in subsequent requests.
 func (c ChangeFeedResponse) GetCompositeContinuationToken() (string, error) {
-	min, max, ok := c.GetContRanges()
+	min, max, ok := c.GetContinuationRange()
 	if !ok {
 		return "", nil
 	}

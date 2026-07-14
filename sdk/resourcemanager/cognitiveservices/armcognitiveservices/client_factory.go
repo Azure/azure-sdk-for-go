@@ -96,6 +96,14 @@ func (c *ClientFactory) NewComputeOperationsClient() *ComputeOperationsClient {
 	}
 }
 
+// NewComputesClient creates a new instance of ComputesClient.
+func (c *ClientFactory) NewComputesClient() *ComputesClient {
+	return &ComputesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDefenderForAISettingsClient creates a new instance of DefenderForAISettingsClient.
 func (c *ClientFactory) NewDefenderForAISettingsClient() *DefenderForAISettingsClient {
 	return &DefenderForAISettingsClient{
@@ -131,6 +139,30 @@ func (c *ClientFactory) NewEncryptionScopesClient() *EncryptionScopesClient {
 // NewLocationBasedModelCapacitiesClient creates a new instance of LocationBasedModelCapacitiesClient.
 func (c *ClientFactory) NewLocationBasedModelCapacitiesClient() *LocationBasedModelCapacitiesClient {
 	return &LocationBasedModelCapacitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedComputeCapacitiesClient creates a new instance of ManagedComputeCapacitiesClient.
+func (c *ClientFactory) NewManagedComputeCapacitiesClient() *ManagedComputeCapacitiesClient {
+	return &ManagedComputeCapacitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedComputeDeploymentsClient creates a new instance of ManagedComputeDeploymentsClient.
+func (c *ClientFactory) NewManagedComputeDeploymentsClient() *ManagedComputeDeploymentsClient {
+	return &ManagedComputeDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedComputeUsagesOperationGroupClient creates a new instance of ManagedComputeUsagesOperationGroupClient.
+func (c *ClientFactory) NewManagedComputeUsagesOperationGroupClient() *ManagedComputeUsagesOperationGroupClient {
+	return &ManagedComputeUsagesOperationGroupClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -346,6 +378,14 @@ func (c *ClientFactory) NewTestRaiExternalSafetyProviderClient() *TestRaiExterna
 // NewUsagesClient creates a new instance of UsagesClient.
 func (c *ClientFactory) NewUsagesClient() *UsagesClient {
 	return &UsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewWorkbenchesClient creates a new instance of WorkbenchesClient.
+func (c *ClientFactory) NewWorkbenchesClient() *WorkbenchesClient {
+	return &WorkbenchesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

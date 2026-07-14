@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/StorageConnectorCRUD/StorageConnectors_Create.json
+// Generated from example definition: 2026-04-01/StorageConnectorCRUD/StorageConnectors_Create.json
 func ExampleConnectorsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleConnectorsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageConnectorCRUD/StorageConnectors_Delete.json
+// Generated from example definition: 2026-04-01/StorageConnectorCRUD/StorageConnectors_Delete.json
 func ExampleConnectorsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleConnectorsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageConnectorCRUD/StorageConnectors_Get.json
+// Generated from example definition: 2026-04-01/StorageConnectorCRUD/StorageConnectors_Get.json
 func ExampleConnectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleConnectorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageConnectorCRUD/StorageConnectors_ListByStorageAccount.json
+// Generated from example definition: 2026-04-01/StorageConnectorCRUD/StorageConnectors_ListByStorageAccount.json
 func ExampleConnectorsClient_NewListByStorageAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleConnectorsClient_NewListByStorageAccountPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageConnectorCRUD/StorageConnectors_TestExistingConnection.json
+// Generated from example definition: 2026-04-01/StorageConnectorCRUD/StorageConnectors_TestExistingConnection.json
 func ExampleConnectorsClient_BeginTestExistingConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleConnectorsClient_BeginTestExistingConnection() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageConnectorCRUD/StorageConnectors_Update.json
+// Generated from example definition: 2026-04-01/StorageConnectorCRUD/StorageConnectors_Update.json
 func ExampleConnectorsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

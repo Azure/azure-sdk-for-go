@@ -18,6 +18,8 @@ import (
 
 // AuthorizationsClient contains the methods for the Authorizations group.
 // Don't use this type directly, use NewAuthorizationsClient() instead.
+//
+// Generated from API version 2025-09-01
 type AuthorizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAuthorizationsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Create a ExpressRouteAuthorization
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - authorizationName - Name of the ExpressRoute Circuit Authorization
@@ -69,8 +69,6 @@ func (client *AuthorizationsClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Create a ExpressRouteAuthorization
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *AuthorizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, authorization ExpressRouteAuthorization, options *AuthorizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AuthorizationsClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *AuthorizationsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, authorization); err != nil {
@@ -128,8 +126,6 @@ func (client *AuthorizationsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Delete a ExpressRouteAuthorization
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - authorizationName - Name of the ExpressRoute Circuit Authorization
@@ -154,8 +150,6 @@ func (client *AuthorizationsClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete a ExpressRouteAuthorization
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *AuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, authorizationName string, options *AuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AuthorizationsClient.BeginDelete"
@@ -201,15 +195,13 @@ func (client *AuthorizationsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a ExpressRouteAuthorization
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - authorizationName - Name of the ExpressRoute Circuit Authorization
@@ -260,8 +252,8 @@ func (client *AuthorizationsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *AuthorizationsClient) getHandleResponse(resp *http.Response) (Auth
 }
 
 // NewListPager - List ExpressRouteAuthorization resources by PrivateCloud
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - privateCloudName - Name of the private cloud
 //   - options - AuthorizationsClientListOptions contains the optional parameters for the AuthorizationsClient.NewListPager method.
@@ -324,8 +314,8 @@ func (client *AuthorizationsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

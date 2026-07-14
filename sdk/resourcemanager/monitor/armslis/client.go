@@ -18,6 +18,8 @@ import (
 
 // Client - Defines operations for managing SLI resources.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2025-03-01-preview
 type Client struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // CreateOrUpdate - Creates or updates an SLI resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - serviceGroupName - The name of the service group.
 //   - sliName - Name of the SLI that is given by the user.
 //   - resource - Resource create parameters.
@@ -82,8 +82,8 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, serviceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -103,8 +103,6 @@ func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientC
 
 // Delete - Deletes an SLI resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - serviceGroupName - The name of the service group.
 //   - sliName - Name of the SLI that is given by the user.
 //   - options - ClientDeleteOptions contains the optional parameters for the Client.Delete method.
@@ -145,15 +143,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, serviceGroupName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an SLI resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-01-preview
 //   - serviceGroupName - The name of the service group.
 //   - sliName - Name of the SLI that is given by the user.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -195,8 +191,8 @@ func (client *Client) getCreateRequest(ctx context.Context, serviceGroupName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -211,8 +207,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 }
 
 // NewListByParentPager - Lists all SLI resources under a parent resource.
-//
-// Generated from API version 2025-03-01-preview
 //   - serviceGroupName - The name of the service group.
 //   - options - ClientListByParentOptions contains the optional parameters for the Client.NewListByParentPager method.
 func (client *Client) NewListByParentPager(serviceGroupName string, options *ClientListByParentOptions) *runtime.Pager[ClientListByParentResponse] {
@@ -250,8 +244,8 @@ func (client *Client) listByParentCreateRequest(ctx context.Context, serviceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

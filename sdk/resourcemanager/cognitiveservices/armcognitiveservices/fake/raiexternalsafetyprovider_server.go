@@ -15,14 +15,13 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // RaiExternalSafetyProviderServer is a fake server for instances of the armcognitiveservices.RaiExternalSafetyProviderClient type.
 type RaiExternalSafetyProviderServer struct {
 	// CreateOrUpdate is the fake for method RaiExternalSafetyProviderClient.CreateOrUpdate
-	// HTTP status codes to indicate success:
-	//   - http.StatusOK (returns armcognitiveservices.RaiExternalSafetyProviderSchema)
-	//   - http.StatusCreated (returns armcognitiveservices.RaiExternalSafetyProvider)
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	CreateOrUpdate func(ctx context.Context, safetyProviderName string, safetyProvider armcognitiveservices.RaiExternalSafetyProviderSchema, options *armcognitiveservices.RaiExternalSafetyProviderClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.RaiExternalSafetyProviderClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method RaiExternalSafetyProviderClient.BeginDelete
@@ -63,9 +62,7 @@ func (r *RaiExternalSafetyProviderServerTransport) Do(req *http.Request) (*http.
 }
 
 func (r *RaiExternalSafetyProviderServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -85,10 +82,7 @@ func (r *RaiExternalSafetyProviderServerTransport) dispatchToMethodFake(req *htt
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -122,10 +116,10 @@ func (r *RaiExternalSafetyProviderServerTransport) dispatchCreateOrUpdate(req *h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiExternalSafetyProviderSchema, req)
 	if err != nil {
 		return nil, err
 	}
@@ -161,7 +155,7 @@ func (r *RaiExternalSafetyProviderServerTransport) dispatchBeginDelete(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		r.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -191,7 +185,7 @@ func (r *RaiExternalSafetyProviderServerTransport) dispatchGet(req *http.Request
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiExternalSafetyProviderSchema, req)

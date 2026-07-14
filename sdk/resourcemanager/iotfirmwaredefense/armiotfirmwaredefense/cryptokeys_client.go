@@ -18,6 +18,8 @@ import (
 
 // CryptoKeysClient contains the methods for the CryptoKeys group.
 // Don't use this type directly, use NewCryptoKeysClient() instead.
+//
+// Generated from API version 2025-08-02
 type CryptoKeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewCryptoKeysClient(subscriptionID string, credential azcore.TokenCredentia
 }
 
 // NewListByFirmwarePager - Lists crypto key analysis results of a firmware.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
@@ -94,8 +94,8 @@ func (client *CryptoKeysClient) listByFirmwareCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

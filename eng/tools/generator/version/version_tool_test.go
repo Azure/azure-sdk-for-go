@@ -184,50 +184,6 @@ func NewClient() *Client {
 		assert.True(t, hasPreview)
 	})
 
-	t.Run("Package with const preview API version", func(t *testing.T) {
-		packageDir := filepath.Join(tempDir, "constpreview")
-		err = os.MkdirAll(packageDir, 0755)
-		require.NoError(t, err)
-
-		goFile := filepath.Join(packageDir, "client.go")
-		goContent := `package constpreview
-
-const defaultClientVersion string = "2023-01-01-preview"
-
-func NewClient() *Client {
-	return &Client{}
-}
-`
-		err = os.WriteFile(goFile, []byte(goContent), 0644)
-		require.NoError(t, err)
-
-		hasPreview, err := containsPreviewAPIVersion(packageDir)
-		assert.NoError(t, err)
-		assert.True(t, hasPreview)
-	})
-
-	t.Run("Package with const stable API version", func(t *testing.T) {
-		packageDir := filepath.Join(tempDir, "conststable")
-		err = os.MkdirAll(packageDir, 0755)
-		require.NoError(t, err)
-
-		goFile := filepath.Join(packageDir, "client.go")
-		goContent := `package conststable
-
-const defaultClientVersion string = "2023-01-01"
-
-func NewClient() *Client {
-	return &Client{}
-}
-`
-		err = os.WriteFile(goFile, []byte(goContent), 0644)
-		require.NoError(t, err)
-
-		hasPreview, err := containsPreviewAPIVersion(packageDir)
-		assert.NoError(t, err)
-		assert.False(t, hasPreview)
-	})
-
 	t.Run("Package without preview API", func(t *testing.T) {
 		packageDir := filepath.Join(tempDir, "stable")
 		err = os.MkdirAll(packageDir, 0755)
@@ -282,6 +238,46 @@ func NewAnotherClient() *AnotherClient {
 		hasPreview, err := containsPreviewAPIVersion(packageDir)
 		assert.NoError(t, err)
 		assert.True(t, hasPreview)
+	})
+
+	t.Run("Package with new-style version const (preview)", func(t *testing.T) {
+		packageDir := filepath.Join(tempDir, "newconstpreview")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		goFile := filepath.Join(packageDir, "constants.go")
+		goContent := `package newconstpreview
+
+const (
+	version20250525Preview string = "2025-05-25-preview"
+)
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		hasPreview, err := containsPreviewAPIVersion(packageDir)
+		assert.NoError(t, err)
+		assert.True(t, hasPreview)
+	})
+
+	t.Run("Package with new-style version const (stable)", func(t *testing.T) {
+		packageDir := filepath.Join(tempDir, "newconststable")
+		err = os.MkdirAll(packageDir, 0755)
+		require.NoError(t, err)
+
+		goFile := filepath.Join(packageDir, "constants.go")
+		goContent := `package newconststable
+
+const (
+	version20191001 string = "2019-10-01"
+)
+`
+		err = os.WriteFile(goFile, []byte(goContent), 0644)
+		require.NoError(t, err)
+
+		hasPreview, err := containsPreviewAPIVersion(packageDir)
+		assert.NoError(t, err)
+		assert.False(t, hasPreview)
 	})
 
 	t.Run("Empty package directory", func(t *testing.T) {
@@ -709,5 +705,85 @@ retract v2.0.0 // bad release
 		require.NoError(t, err)
 
 		require.Contains(t, string(updatedContent), "retract v2.0.0")
+	})
+}
+
+func TestUpdateAutorestMdVersion(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-autorest")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	autorestMdPath := filepath.Join(tempDir, "autorest.md")
+	content := "```yaml\nmodule-version: 1.0.0\n```\n"
+	err = os.WriteFile(autorestMdPath, []byte(content), 0644)
+	require.NoError(t, err)
+
+	err = UpdateAutorestMdVersion(autorestMdPath, "1.2.3")
+	require.NoError(t, err)
+
+	updatedContent, err := os.ReadFile(autorestMdPath)
+	require.NoError(t, err)
+
+	require.Contains(t, string(updatedContent), "module-version: 1.2.3")
+}
+
+func TestUpdateReadmeModule(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-readme")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "foo", "armfoo")
+	err = os.MkdirAll(modulePath, 0755)
+	require.NoError(t, err)
+
+	mockRepo := &mockSDKRepo{root: tempDir}
+
+	readmeContent := "# armfoo\n\ngithub.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo\n"
+	err = os.WriteFile(filepath.Join(modulePath, "README.md"), []byte(readmeContent), 0644)
+	require.NoError(t, err)
+
+	version, err := semver.NewVersion("2.0.0")
+	require.NoError(t, err)
+
+	err = UpdateReadmeModule(modulePath, version, mockRepo)
+	require.NoError(t, err)
+
+	updatedContent, err := os.ReadFile(filepath.Join(modulePath, "README.md"))
+	require.NoError(t, err)
+
+	require.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2")
+}
+
+// TestUpdateAllVersionFilesIgnoresMissingFiles verifies that UpdateAllVersionFiles
+// skips target files that don't exist instead of returning an error.
+func TestUpdateAllVersionFilesIgnoresMissingFiles(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-all-version-files")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	mockRepo := &mockSDKRepo{root: tempDir}
+
+	t.Run("No files present for v1 module", func(t *testing.T) {
+		modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "foo", "armfoo")
+		err := os.MkdirAll(modulePath, 0755)
+		require.NoError(t, err)
+
+		version, err := semver.NewVersion("1.2.3")
+		require.NoError(t, err)
+
+		err = UpdateAllVersionFiles(modulePath, version, mockRepo)
+		require.NoError(t, err)
+	})
+
+	t.Run("No files present for v2+ module", func(t *testing.T) {
+		modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "bar", "armbar")
+		err := os.MkdirAll(modulePath, 0755)
+		require.NoError(t, err)
+
+		version, err := semver.NewVersion("2.0.0")
+		require.NoError(t, err)
+
+		err = UpdateAllVersionFiles(modulePath, version, mockRepo)
+		require.NoError(t, err)
 	})
 }

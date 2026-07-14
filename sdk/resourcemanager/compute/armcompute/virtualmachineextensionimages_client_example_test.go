@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImageGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientGetResponse{
-	// 	VirtualMachineExtensionImage: &armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImage: armcompute.VirtualMachineExtensionImage{
 	// 		Properties: &armcompute.VirtualMachineExtensionImageProperties{
 	// 			OperatingSystem: to.Ptr("aaaaaaaaaaaaaaaaaa"),
 	// 			ComputeRole: to.Ptr("aaaaaaaaaaaaaaaaa"),
@@ -50,7 +50,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImageGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientGetResponse{
-	// 	VirtualMachineExtensionImage: &armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImage: armcompute.VirtualMachineExtensionImage{
 	// 		Name: to.Ptr("aaaaaaaaaaaaaaa"),
 	// 		Location: to.Ptr("aaaaaaaaaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaa"),
@@ -77,7 +77,7 @@ func ExampleVirtualMachineExtensionImagesClient_Get_virtualMachineExtensionImage
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensionImageListTypesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListTypesResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Properties: &armcompute.VirtualMachineExtensionImageProperties{
 	// 				OperatingSystem: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -117,7 +117,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListTypes_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensionImageListTypesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListTypesResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaaaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaa"),
@@ -146,7 +146,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListTypes_virtualMachineExtensio
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExtensionImageListVersionsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListVersionsResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Properties: &armcompute.VirtualMachineExtensionImageProperties{
 	// 				OperatingSystem: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -189,7 +189,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExtensionImageExamples/VirtualMachineExtensionImage_ListVersions_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExtensionImageListVersionsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleVirtualMachineExtensionImagesClient_ListVersions_virtualMachineExten
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionImagesClientListVersionsResponse{
-	// 	VirtualMachineExtensionImageArray: &[]*armcompute.VirtualMachineExtensionImage{
+	// 	VirtualMachineExtensionImageArray: []*armcompute.VirtualMachineExtensionImage{
 	// 		{
 	// 			Name: to.Ptr("aaaaaaaaaaaaaaa"),
 	// 			Location: to.Ptr("aaaaaaaaaaaaa"),

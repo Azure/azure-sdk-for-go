@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // RestorableTablesServer is a fake server for instances of the armcosmos.RestorableTablesClient type.
@@ -53,9 +54,7 @@ func (r *RestorableTablesServerTransport) Do(req *http.Request) (*http.Response,
 }
 
 func (r *RestorableTablesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (r *RestorableTablesServerTransport) dispatchToMethodFake(req *http.Request
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -106,16 +102,8 @@ func (r *RestorableTablesServerTransport) dispatchNewListPager(req *http.Request
 		if err != nil {
 			return nil, err
 		}
-		startTimeUnescaped, err := url.QueryUnescape(qp.Get("startTime"))
-		if err != nil {
-			return nil, err
-		}
-		startTimeParam := getOptional(startTimeUnescaped)
-		endTimeUnescaped, err := url.QueryUnescape(qp.Get("endTime"))
-		if err != nil {
-			return nil, err
-		}
-		endTimeParam := getOptional(endTimeUnescaped)
+		startTimeParam := getOptional(qp.Get("startTime"))
+		endTimeParam := getOptional(qp.Get("endTime"))
 		var options *armcosmos.RestorableTablesClientListOptions
 		if startTimeParam != nil || endTimeParam != nil {
 			options = &armcosmos.RestorableTablesClientListOptions{
@@ -134,7 +122,7 @@ func (r *RestorableTablesServerTransport) dispatchNewListPager(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

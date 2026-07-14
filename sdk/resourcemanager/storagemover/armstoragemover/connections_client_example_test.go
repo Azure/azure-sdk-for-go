@@ -36,7 +36,7 @@ func ExampleConnectionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ConnectionsClientCreateOrUpdateResponse{
-	// 	Connection: &armstoragemover.Connection{
+	// 	Connection: armstoragemover.Connection{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
 	// 		Name: to.Ptr("example-connection"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/connections"),
@@ -66,7 +66,7 @@ func ExampleConnectionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -89,7 +89,7 @@ func ExampleConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ConnectionsClientGetResponse{
-	// 	Connection: &armstoragemover.Connection{
+	// 	Connection: armstoragemover.Connection{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
 	// 		Name: to.Ptr("example-connection"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/connections"),

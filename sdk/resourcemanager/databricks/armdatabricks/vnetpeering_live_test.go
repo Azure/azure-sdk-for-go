@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databricks/armdatabricks/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armdeployments"
 	"github.com/stretchr/testify/suite"
@@ -69,6 +69,9 @@ func (testsuite *VnetpeeringTestSuite) Prepare() {
 		Properties: &armdatabricks.WorkspaceProperties{
 			ManagedResourceGroupID: to.Ptr("/subscriptions/" + testsuite.subscriptionId + "/resourceGroups/myManaged" + testsuite.resourceGroupName),
 		},
+		SKU: &armdatabricks.SKU{
+			Name: to.Ptr("premium"),
+		},
 	}, nil)
 	testsuite.Require().NoError(err)
 	_, err = testutil.PollForTest(testsuite.ctx, workspacesClientCreateOrUpdateResponsePoller)
@@ -98,7 +101,7 @@ func (testsuite *VnetpeeringTestSuite) Prepare() {
 			map[string]any{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2021-05-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]any{
 					"addressSpace": map[string]any{
@@ -110,7 +113,8 @@ func (testsuite *VnetpeeringTestSuite) Prepare() {
 						map[string]any{
 							"name": "default",
 							"properties": map[string]any{
-								"addressPrefix": "10.0.0.0/24",
+								"addressPrefix":         "10.0.0.0/24",
+								"defaultOutboundAccess": false,
 							},
 						},
 					},

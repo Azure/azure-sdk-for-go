@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRegionCollectionGetMetrics.json
+// Generated from example definition: 2026-03-15/CosmosDBRegionCollectionGetMetrics.json
 func ExampleCollectionRegionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleCollectionRegionClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCollectionRegionClient().NewListMetricsPager("rg1", "ddb1", "North Europe", "databaseRid", "collectionRid", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewCollectionRegionClient().NewListMetricsPager("rg1", "ddb1", "North Europe", "databaseRid", "collectionRid", "(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -37,40 +37,40 @@ func ExampleCollectionRegionClient_NewListMetricsPager() {
 		// 	MetricListResult: armcosmos.MetricListResult{
 		// 		Value: []*armcosmos.Metric{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Total Requests"),
-		// 					Value: to.Ptr("Total Requests"),
-		// 				},
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				MetricValues: []*armcosmos.MetricValue{
 		// 					{
-		// 						Count: to.Ptr[int32](0),
-		// 						Average: to.Ptr[float64](0),
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:58:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:03:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
-		// 					},
-		// 					{
 		// 						Count: to.Ptr[int32](0),
 		// 						Average: to.Ptr[float64](0),
+		// 					},
+		// 					{
 		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:08:55.2780000Z"); return t}()),
 		// 						Total: to.Ptr[float64](0),
+		// 						Count: to.Ptr[int32](0),
+		// 						Average: to.Ptr[float64](0),
 		// 					},
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Total Requests"),
+		// 					LocalizedValue: to.Ptr("Total Requests"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},

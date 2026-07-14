@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"reflect"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -100,9 +101,7 @@ func (a *AlertsServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -138,10 +137,7 @@ func (a *AlertsServerTransport) dispatchToMethodFake(req *http.Request, method s
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -171,28 +167,18 @@ func (a *AlertsServerTransport) dispatchChangeState(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	newStateParam, err := parseWithCast(qp.Get("newState"), func(v string) (armalertsmanagement.AlertState, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armalertsmanagement.AlertState(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
 	var options *armalertsmanagement.AlertsClientChangeStateOptions
 	if !reflect.ValueOf(body).IsZero() {
 		options = &armalertsmanagement.AlertsClientChangeStateOptions{
 			Comment: &body,
 		}
 	}
-	respr, errRespr := a.srv.ChangeState(req.Context(), alertIDParam, newStateParam, options)
+	respr, errRespr := a.srv.ChangeState(req.Context(), alertIDParam, armalertsmanagement.AlertState(qp.Get("newState")), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
@@ -221,28 +207,18 @@ func (a *AlertsServerTransport) dispatchChangeStateTenant(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	newStateParam, err := parseWithCast(qp.Get("newState"), func(v string) (armalertsmanagement.AlertState, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armalertsmanagement.AlertState(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
 	var options *armalertsmanagement.AlertsClientChangeStateTenantOptions
 	if !reflect.ValueOf(body).IsZero() {
 		options = &armalertsmanagement.AlertsClientChangeStateTenantOptions{
 			Comment: &body,
 		}
 	}
-	respr, errRespr := a.srv.ChangeStateTenant(req.Context(), alertIDParam, newStateParam, options)
+	respr, errRespr := a.srv.ChangeStateTenant(req.Context(), alertIDParam, armalertsmanagement.AlertState(qp.Get("newState")), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
@@ -265,72 +241,24 @@ func (a *AlertsServerTransport) dispatchNewGetAllPager(req *http.Request) (*http
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		targetResourceUnescaped, err := url.QueryUnescape(qp.Get("targetResource"))
+		targetResourceParam := getOptional(qp.Get("targetResource"))
+		targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
+		targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
+		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
+		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
+		severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
+		alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
+		alertRuleParam := getOptional(qp.Get("alertRule"))
+		smartGroupIDParam := getOptional(qp.Get("smartGroupId"))
+		includeContextParam, err := parseOptional(qp.Get("includeContext"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		targetResourceParam := getOptional(targetResourceUnescaped)
-		targetResourceTypeUnescaped, err := url.QueryUnescape(qp.Get("targetResourceType"))
+		includeEgressConfigParam, err := parseOptional(qp.Get("includeEgressConfig"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		targetResourceTypeParam := getOptional(targetResourceTypeUnescaped)
-		targetResourceGroupUnescaped, err := url.QueryUnescape(qp.Get("targetResourceGroup"))
-		if err != nil {
-			return nil, err
-		}
-		targetResourceGroupParam := getOptional(targetResourceGroupUnescaped)
-		monitorServiceUnescaped, err := url.QueryUnescape(qp.Get("monitorService"))
-		if err != nil {
-			return nil, err
-		}
-		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(monitorServiceUnescaped))
-		monitorConditionUnescaped, err := url.QueryUnescape(qp.Get("monitorCondition"))
-		if err != nil {
-			return nil, err
-		}
-		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(monitorConditionUnescaped))
-		severityUnescaped, err := url.QueryUnescape(qp.Get("severity"))
-		if err != nil {
-			return nil, err
-		}
-		severityParam := getOptional(armalertsmanagement.Severity(severityUnescaped))
-		alertStateUnescaped, err := url.QueryUnescape(qp.Get("alertState"))
-		if err != nil {
-			return nil, err
-		}
-		alertStateParam := getOptional(armalertsmanagement.AlertState(alertStateUnescaped))
-		alertRuleUnescaped, err := url.QueryUnescape(qp.Get("alertRule"))
-		if err != nil {
-			return nil, err
-		}
-		alertRuleParam := getOptional(alertRuleUnescaped)
-		smartGroupIDUnescaped, err := url.QueryUnescape(qp.Get("smartGroupId"))
-		if err != nil {
-			return nil, err
-		}
-		smartGroupIDParam := getOptional(smartGroupIDUnescaped)
-		includeContextUnescaped, err := url.QueryUnescape(qp.Get("includeContext"))
-		if err != nil {
-			return nil, err
-		}
-		includeContextParam, err := parseOptional(includeContextUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		includeEgressConfigUnescaped, err := url.QueryUnescape(qp.Get("includeEgressConfig"))
-		if err != nil {
-			return nil, err
-		}
-		includeEgressConfigParam, err := parseOptional(includeEgressConfigUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		pageCountUnescaped, err := url.QueryUnescape(qp.Get("pageCount"))
-		if err != nil {
-			return nil, err
-		}
-		pageCountParam, err := parseOptional(pageCountUnescaped, func(v string) (int64, error) {
+		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 64)
 			if parseErr != nil {
 				return 0, parseErr
@@ -340,31 +268,11 @@ func (a *AlertsServerTransport) dispatchNewGetAllPager(req *http.Request) (*http
 		if err != nil {
 			return nil, err
 		}
-		sortByUnescaped, err := url.QueryUnescape(qp.Get("sortBy"))
-		if err != nil {
-			return nil, err
-		}
-		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(sortByUnescaped))
-		sortOrderUnescaped, err := url.QueryUnescape(qp.Get("sortOrder"))
-		if err != nil {
-			return nil, err
-		}
-		sortOrderParam := getOptional(armalertsmanagement.SortOrder(sortOrderUnescaped))
-		selectUnescaped, err := url.QueryUnescape(qp.Get("select"))
-		if err != nil {
-			return nil, err
-		}
-		selectParam := getOptional(selectUnescaped)
-		timeRangeUnescaped, err := url.QueryUnescape(qp.Get("timeRange"))
-		if err != nil {
-			return nil, err
-		}
-		timeRangeParam := getOptional(armalertsmanagement.TimeRange(timeRangeUnescaped))
-		customTimeRangeUnescaped, err := url.QueryUnescape(qp.Get("customTimeRange"))
-		if err != nil {
-			return nil, err
-		}
-		customTimeRangeParam := getOptional(customTimeRangeUnescaped)
+		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(qp.Get("sortBy")))
+		sortOrderParam := getOptional(armalertsmanagement.SortOrder(qp.Get("sortOrder")))
+		selectParam := getOptional(qp.Get("select"))
+		timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
+		customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
 		var options *armalertsmanagement.AlertsClientGetAllOptions
 		if targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || smartGroupIDParam != nil || includeContextParam != nil || includeEgressConfigParam != nil || pageCountParam != nil || sortByParam != nil || sortOrderParam != nil || selectParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
 			options = &armalertsmanagement.AlertsClientGetAllOptions{
@@ -398,7 +306,7 @@ func (a *AlertsServerTransport) dispatchNewGetAllPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newGetAllPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -415,72 +323,24 @@ func (a *AlertsServerTransport) dispatchNewGetAllTenantPager(req *http.Request) 
 	newGetAllTenantPager := a.newGetAllTenantPager.get(req)
 	if newGetAllTenantPager == nil {
 		qp := req.URL.Query()
-		targetResourceUnescaped, err := url.QueryUnescape(qp.Get("targetResource"))
+		targetResourceParam := getOptional(qp.Get("targetResource"))
+		targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
+		targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
+		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
+		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
+		severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
+		alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
+		alertRuleParam := getOptional(qp.Get("alertRule"))
+		smartGroupIDParam := getOptional(qp.Get("smartGroupId"))
+		includeContextParam, err := parseOptional(qp.Get("includeContext"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		targetResourceParam := getOptional(targetResourceUnescaped)
-		targetResourceTypeUnescaped, err := url.QueryUnescape(qp.Get("targetResourceType"))
+		includeEgressConfigParam, err := parseOptional(qp.Get("includeEgressConfig"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
-		targetResourceTypeParam := getOptional(targetResourceTypeUnescaped)
-		targetResourceGroupUnescaped, err := url.QueryUnescape(qp.Get("targetResourceGroup"))
-		if err != nil {
-			return nil, err
-		}
-		targetResourceGroupParam := getOptional(targetResourceGroupUnescaped)
-		monitorServiceUnescaped, err := url.QueryUnescape(qp.Get("monitorService"))
-		if err != nil {
-			return nil, err
-		}
-		monitorServiceParam := getOptional(armalertsmanagement.MonitorService(monitorServiceUnescaped))
-		monitorConditionUnescaped, err := url.QueryUnescape(qp.Get("monitorCondition"))
-		if err != nil {
-			return nil, err
-		}
-		monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(monitorConditionUnescaped))
-		severityUnescaped, err := url.QueryUnescape(qp.Get("severity"))
-		if err != nil {
-			return nil, err
-		}
-		severityParam := getOptional(armalertsmanagement.Severity(severityUnescaped))
-		alertStateUnescaped, err := url.QueryUnescape(qp.Get("alertState"))
-		if err != nil {
-			return nil, err
-		}
-		alertStateParam := getOptional(armalertsmanagement.AlertState(alertStateUnescaped))
-		alertRuleUnescaped, err := url.QueryUnescape(qp.Get("alertRule"))
-		if err != nil {
-			return nil, err
-		}
-		alertRuleParam := getOptional(alertRuleUnescaped)
-		smartGroupIDUnescaped, err := url.QueryUnescape(qp.Get("smartGroupId"))
-		if err != nil {
-			return nil, err
-		}
-		smartGroupIDParam := getOptional(smartGroupIDUnescaped)
-		includeContextUnescaped, err := url.QueryUnescape(qp.Get("includeContext"))
-		if err != nil {
-			return nil, err
-		}
-		includeContextParam, err := parseOptional(includeContextUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		includeEgressConfigUnescaped, err := url.QueryUnescape(qp.Get("includeEgressConfig"))
-		if err != nil {
-			return nil, err
-		}
-		includeEgressConfigParam, err := parseOptional(includeEgressConfigUnescaped, strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		pageCountUnescaped, err := url.QueryUnescape(qp.Get("pageCount"))
-		if err != nil {
-			return nil, err
-		}
-		pageCountParam, err := parseOptional(pageCountUnescaped, func(v string) (int64, error) {
+		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 64)
 			if parseErr != nil {
 				return 0, parseErr
@@ -490,31 +350,11 @@ func (a *AlertsServerTransport) dispatchNewGetAllTenantPager(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		sortByUnescaped, err := url.QueryUnescape(qp.Get("sortBy"))
-		if err != nil {
-			return nil, err
-		}
-		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(sortByUnescaped))
-		sortOrderUnescaped, err := url.QueryUnescape(qp.Get("sortOrder"))
-		if err != nil {
-			return nil, err
-		}
-		sortOrderParam := getOptional(armalertsmanagement.SortOrder(sortOrderUnescaped))
-		selectUnescaped, err := url.QueryUnescape(qp.Get("select"))
-		if err != nil {
-			return nil, err
-		}
-		selectParam := getOptional(selectUnescaped)
-		timeRangeUnescaped, err := url.QueryUnescape(qp.Get("timeRange"))
-		if err != nil {
-			return nil, err
-		}
-		timeRangeParam := getOptional(armalertsmanagement.TimeRange(timeRangeUnescaped))
-		customTimeRangeUnescaped, err := url.QueryUnescape(qp.Get("customTimeRange"))
-		if err != nil {
-			return nil, err
-		}
-		customTimeRangeParam := getOptional(customTimeRangeUnescaped)
+		sortByParam := getOptional(armalertsmanagement.AlertsSortByFields(qp.Get("sortBy")))
+		sortOrderParam := getOptional(armalertsmanagement.SortOrder(qp.Get("sortOrder")))
+		selectParam := getOptional(qp.Get("select"))
+		timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
+		customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
 		var options *armalertsmanagement.AlertsClientGetAllTenantOptions
 		if targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || smartGroupIDParam != nil || includeContextParam != nil || includeEgressConfigParam != nil || pageCountParam != nil || sortByParam != nil || sortOrderParam != nil || selectParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
 			options = &armalertsmanagement.AlertsClientGetAllTenantOptions{
@@ -548,7 +388,7 @@ func (a *AlertsServerTransport) dispatchNewGetAllTenantPager(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newGetAllTenantPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -577,7 +417,7 @@ func (a *AlertsServerTransport) dispatchGetByID(req *http.Request) (*http.Respon
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
@@ -606,7 +446,7 @@ func (a *AlertsServerTransport) dispatchGetByIDTenant(req *http.Request) (*http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Alert, req)
@@ -643,7 +483,7 @@ func (a *AlertsServerTransport) dispatchNewGetEnrichmentsPager(req *http.Request
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newGetEnrichmentsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -672,7 +512,7 @@ func (a *AlertsServerTransport) dispatchGetHistory(req *http.Request) (*http.Res
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertModification, req)
@@ -701,7 +541,7 @@ func (a *AlertsServerTransport) dispatchGetHistoryTenant(req *http.Request) (*ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertModification, req)
@@ -722,74 +562,20 @@ func (a *AlertsServerTransport) dispatchGetSummary(req *http.Request) (*http.Res
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	groupbyParam, err := parseWithCast(qp.Get("groupby"), func(v string) (armalertsmanagement.AlertsSummaryGroupByFields, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armalertsmanagement.AlertsSummaryGroupByFields(p), nil
-	})
+	includeSmartGroupsCountParam, err := parseOptional(qp.Get("includeSmartGroupsCount"), strconv.ParseBool)
 	if err != nil {
 		return nil, err
 	}
-	includeSmartGroupsCountUnescaped, err := url.QueryUnescape(qp.Get("includeSmartGroupsCount"))
-	if err != nil {
-		return nil, err
-	}
-	includeSmartGroupsCountParam, err := parseOptional(includeSmartGroupsCountUnescaped, strconv.ParseBool)
-	if err != nil {
-		return nil, err
-	}
-	targetResourceUnescaped, err := url.QueryUnescape(qp.Get("targetResource"))
-	if err != nil {
-		return nil, err
-	}
-	targetResourceParam := getOptional(targetResourceUnescaped)
-	targetResourceTypeUnescaped, err := url.QueryUnescape(qp.Get("targetResourceType"))
-	if err != nil {
-		return nil, err
-	}
-	targetResourceTypeParam := getOptional(targetResourceTypeUnescaped)
-	targetResourceGroupUnescaped, err := url.QueryUnescape(qp.Get("targetResourceGroup"))
-	if err != nil {
-		return nil, err
-	}
-	targetResourceGroupParam := getOptional(targetResourceGroupUnescaped)
-	monitorServiceUnescaped, err := url.QueryUnescape(qp.Get("monitorService"))
-	if err != nil {
-		return nil, err
-	}
-	monitorServiceParam := getOptional(armalertsmanagement.MonitorService(monitorServiceUnescaped))
-	monitorConditionUnescaped, err := url.QueryUnescape(qp.Get("monitorCondition"))
-	if err != nil {
-		return nil, err
-	}
-	monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(monitorConditionUnescaped))
-	severityUnescaped, err := url.QueryUnescape(qp.Get("severity"))
-	if err != nil {
-		return nil, err
-	}
-	severityParam := getOptional(armalertsmanagement.Severity(severityUnescaped))
-	alertStateUnescaped, err := url.QueryUnescape(qp.Get("alertState"))
-	if err != nil {
-		return nil, err
-	}
-	alertStateParam := getOptional(armalertsmanagement.AlertState(alertStateUnescaped))
-	alertRuleUnescaped, err := url.QueryUnescape(qp.Get("alertRule"))
-	if err != nil {
-		return nil, err
-	}
-	alertRuleParam := getOptional(alertRuleUnescaped)
-	timeRangeUnescaped, err := url.QueryUnescape(qp.Get("timeRange"))
-	if err != nil {
-		return nil, err
-	}
-	timeRangeParam := getOptional(armalertsmanagement.TimeRange(timeRangeUnescaped))
-	customTimeRangeUnescaped, err := url.QueryUnescape(qp.Get("customTimeRange"))
-	if err != nil {
-		return nil, err
-	}
-	customTimeRangeParam := getOptional(customTimeRangeUnescaped)
+	targetResourceParam := getOptional(qp.Get("targetResource"))
+	targetResourceTypeParam := getOptional(qp.Get("targetResourceType"))
+	targetResourceGroupParam := getOptional(qp.Get("targetResourceGroup"))
+	monitorServiceParam := getOptional(armalertsmanagement.MonitorService(qp.Get("monitorService")))
+	monitorConditionParam := getOptional(armalertsmanagement.MonitorCondition(qp.Get("monitorCondition")))
+	severityParam := getOptional(armalertsmanagement.Severity(qp.Get("severity")))
+	alertStateParam := getOptional(armalertsmanagement.AlertState(qp.Get("alertState")))
+	alertRuleParam := getOptional(qp.Get("alertRule"))
+	timeRangeParam := getOptional(armalertsmanagement.TimeRange(qp.Get("timeRange")))
+	customTimeRangeParam := getOptional(qp.Get("customTimeRange"))
 	var options *armalertsmanagement.AlertsClientGetSummaryOptions
 	if includeSmartGroupsCountParam != nil || targetResourceParam != nil || targetResourceTypeParam != nil || targetResourceGroupParam != nil || monitorServiceParam != nil || monitorConditionParam != nil || severityParam != nil || alertStateParam != nil || alertRuleParam != nil || timeRangeParam != nil || customTimeRangeParam != nil {
 		options = &armalertsmanagement.AlertsClientGetSummaryOptions{
@@ -806,12 +592,12 @@ func (a *AlertsServerTransport) dispatchGetSummary(req *http.Request) (*http.Res
 			CustomTimeRange:         customTimeRangeParam,
 		}
 	}
-	respr, errRespr := a.srv.GetSummary(req.Context(), groupbyParam, options)
+	respr, errRespr := a.srv.GetSummary(req.Context(), armalertsmanagement.AlertsSummaryGroupByFields(qp.Get("groupby")), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertsSummary, req)
@@ -826,22 +612,12 @@ func (a *AlertsServerTransport) dispatchMetaData(req *http.Request) (*http.Respo
 		return nil, &nonRetriableError{errors.New("fake for method MetaData not implemented")}
 	}
 	qp := req.URL.Query()
-	identifierParam, err := parseWithCast(qp.Get("identifier"), func(v string) (armalertsmanagement.Identifier, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armalertsmanagement.Identifier(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.MetaData(req.Context(), identifierParam, nil)
+	respr, errRespr := a.srv.MetaData(req.Context(), armalertsmanagement.Identifier(qp.Get("identifier")), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AlertsMetaData, req)

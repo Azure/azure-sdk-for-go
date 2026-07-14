@@ -37,3 +37,30 @@ const (
 		t.Errorf("expected value generated.BlobTypeBlockBlob, got %q", got.Value)
 	}
 }
+
+func TestAddConst_UntypedSelectorExprValue(t *testing.T) {
+	dir := t.TempDir()
+	src := `package foo
+
+const (
+	EventUpload = exported.EventUpload
+)
+`
+	if err := os.WriteFile(filepath.Join(dir, "foo.go"), []byte(src), 0644); err != nil {
+		t.Fatal(err)
+	}
+	c, err := Get(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got, ok := c.Consts["EventUpload"]
+	if !ok {
+		t.Fatalf("expected const EventUpload, got %#v", c.Consts)
+	}
+	if got.Type != "*ast.SelectorExpr" {
+		t.Errorf("expected sentinel type *ast.SelectorExpr, got %q", got.Type)
+	}
+	if got.Value != "exported.EventUpload" {
+		t.Errorf("expected value exported.EventUpload, got %q", got.Value)
+	}
+}

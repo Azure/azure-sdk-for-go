@@ -31,13 +31,13 @@ func ExampleNetworkSecurityGroupsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.NetworkSecurityGroupsClientCreateOrUpdateResponse{
-	// 	NetworkSecurityGroup: &armazurestackhcivm.NetworkSecurityGroup{
+	// 	NetworkSecurityGroup: armazurestackhcivm.NetworkSecurityGroup{
 	// 		Name: to.Ptr("testnsg"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/networkSecurityGroups"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/networkSecurityGroups/testnsg"),
@@ -66,7 +66,7 @@ func ExampleNetworkSecurityGroupsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -89,7 +89,7 @@ func ExampleNetworkSecurityGroupsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.NetworkSecurityGroupsClientGetResponse{
-	// 	NetworkSecurityGroup: &armazurestackhcivm.NetworkSecurityGroup{
+	// 	NetworkSecurityGroup: armazurestackhcivm.NetworkSecurityGroup{
 	// 		Name: to.Ptr("testnsg"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/networkSecurityGroups"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/rg1/providers/Microsoft.AzureStackHCI/networkSecurityGroups/testnsg"),
@@ -221,13 +221,13 @@ func ExampleNetworkSecurityGroupsClient_BeginUpdateTags() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.NetworkSecurityGroupsClientUpdateTagsResponse{
-	// 	NetworkSecurityGroup: &armazurestackhcivm.NetworkSecurityGroup{
+	// 	NetworkSecurityGroup: armazurestackhcivm.NetworkSecurityGroup{
 	// 		Name: to.Ptr("testnsg"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/networkSecurityGroups"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/networkSecurityGroups/testnsg"),

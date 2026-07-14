@@ -1,5 +1,12 @@
 # Release History
 
+## 2.1.0 (2026-06-19)
+### Features Added
+
+- New field `PerformanceTier` in struct `FileSystemResourceProperties`
+- New field `PerformanceTier` in struct `FileSystemResourceUpdateProperties`
+
+
 ## 2.0.0 (2024-07-31)
 ### Breaking Changes
 

@@ -81,13 +81,13 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientCreateOrUpdateResponse{
-	// 	EnterpriseMccCacheNodeResource: &armconnectedcache.EnterpriseMccCacheNodeResource{
+	// 	EnterpriseMccCacheNodeResource: armconnectedcache.EnterpriseMccCacheNodeResource{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/DOTest/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/MccRPTest1/enterpriseMccCacheNodes/MCCCachenode1"),
 	// 		Name: to.Ptr("MccRPTest1"),
@@ -218,7 +218,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -241,7 +241,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetResponse{
-	// 	EnterpriseMccCacheNodeResource: &armconnectedcache.EnterpriseMccCacheNodeResource{
+	// 	EnterpriseMccCacheNodeResource: armconnectedcache.EnterpriseMccCacheNodeResource{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/DOTest/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/MccRPTest1/enterpriseMccCacheNodes/MCCCachenode1"),
 	// 		Name: to.Ptr("MccRPTest1"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/enterpriseMccCustomers/enterpriseMccCacheNodes"),
@@ -374,7 +374,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistor
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{
-	// 	MccCacheNodeAutoUpdateHistory: &armconnectedcache.MccCacheNodeAutoUpdateHistory{
+	// 	MccCacheNodeAutoUpdateHistory: armconnectedcache.MccCacheNodeAutoUpdateHistory{
 	// 		Properties: &armconnectedcache.MccCacheNodeAutoUpdateHistoryProperties{
 	// 			CustomerID: to.Ptr("fqyulypmqacwoifqnddnkcexbgm"),
 	// 			CacheNodeID: to.Ptr("elwtomk"),
@@ -438,7 +438,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeInstallDetails()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{
-	// 	MccCacheNodeInstallDetails: &armconnectedcache.MccCacheNodeInstallDetails{
+	// 	MccCacheNodeInstallDetails: armconnectedcache.MccCacheNodeInstallDetails{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/MccRPTest1/enterpriseMccCacheNodes/MCCCachenode1"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/enterpriseMccCustomers/enterpriseMccCacheNodes"),
@@ -483,7 +483,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsH
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{
-	// 	MccCacheNodeIssueHistory: &armconnectedcache.MccCacheNodeIssueHistory{
+	// 	MccCacheNodeIssueHistory: armconnectedcache.MccCacheNodeIssueHistory{
 	// 		Properties: &armconnectedcache.MccCacheNodeIssueHistoryProperties{
 	// 			CustomerID: to.Ptr("xqsblxpzcdxwwlzejepoyqrhbrpqgz"),
 	// 			CacheNodeID: to.Ptr("enw"),
@@ -536,7 +536,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeTLSCertificateHi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse{
-	// 	MccCacheNodeTLSCertificateHistory: &armconnectedcache.MccCacheNodeTLSCertificateHistory{
+	// 	MccCacheNodeTLSCertificateHistory: armconnectedcache.MccCacheNodeTLSCertificateHistory{
 	// 		Properties: &armconnectedcache.MccCacheNodeTLSCertificateProperties{
 	// 			CustomerID: to.Ptr("hzqoghvbmzvdk"),
 	// 			CacheNodeID: to.Ptr("bzbrwogbsuat"),
@@ -737,7 +737,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconnectedcache.EnterpriseMccCacheNodesOperationsClientUpdateResponse{
-	// 	EnterpriseMccCacheNodeResource: &armconnectedcache.EnterpriseMccCacheNodeResource{
+	// 	EnterpriseMccCacheNodeResource: armconnectedcache.EnterpriseMccCacheNodeResource{
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rgConnectedCache/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/MccRPTest1/enterpriseMccCacheNodes/MCCCachenode1"),
 	// 		Name: to.Ptr("MccRPTest1"),
 	// 		Type: to.Ptr("Microsoft.ConnectedCache/enterpriseMccCustomers/enterpriseMccCacheNodes"),

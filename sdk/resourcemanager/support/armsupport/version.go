@@ -6,5 +6,5 @@ package armsupport
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/support/armsupport"
-	moduleVersion = "v2.0.0-beta.4"
+	moduleVersion = "v2.0.0"
 )

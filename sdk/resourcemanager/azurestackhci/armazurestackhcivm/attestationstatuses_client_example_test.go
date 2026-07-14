@@ -30,7 +30,7 @@ func ExampleAttestationStatusesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhcivm.AttestationStatusesClientGetResponse{
-	// 	AttestationStatus: &armazurestackhcivm.AttestationStatus{
+	// 	AttestationStatus: armazurestackhcivm.AttestationStatus{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/virtualMachineInstances/AttestationStatus"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.HybridCompute/machines/DemoVM/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/attestationStatus/default"),

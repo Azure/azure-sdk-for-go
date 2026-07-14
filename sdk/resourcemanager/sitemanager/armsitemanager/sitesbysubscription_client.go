@@ -18,6 +18,8 @@ import (
 
 // SitesBySubscriptionClient contains the methods for the SitesBySubscription group.
 // Don't use this type directly, use NewSitesBySubscriptionClient() instead.
+//
+// Generated from API version 2025-06-01
 type SitesBySubscriptionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSitesBySubscriptionClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - siteName - The name of the Site
 //   - resource - Resource create parameters.
 //   - options - SitesBySubscriptionClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesBySubscriptionClient.BeginCreateOrUpdate
@@ -66,8 +66,6 @@ func (client *SitesBySubscriptionClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SitesBySubscriptionClient) createOrUpdate(ctx context.Context, siteName string, resource Site, options *SitesBySubscriptionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SitesBySubscriptionClient.BeginCreateOrUpdate"
@@ -105,8 +103,8 @@ func (client *SitesBySubscriptionClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -117,8 +115,6 @@ func (client *SitesBySubscriptionClient) createOrUpdateCreateRequest(ctx context
 
 // Delete - Delete a Site
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - siteName - The name of the Site
 //   - options - SitesBySubscriptionClientDeleteOptions contains the optional parameters for the SitesBySubscriptionClient.Delete
 //     method.
@@ -159,15 +155,13 @@ func (client *SitesBySubscriptionClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Site
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - siteName - The name of the Site
 //   - options - SitesBySubscriptionClientGetOptions contains the optional parameters for the SitesBySubscriptionClient.Get method.
 func (client *SitesBySubscriptionClient) Get(ctx context.Context, siteName string, options *SitesBySubscriptionClientGetOptions) (SitesBySubscriptionClientGetResponse, error) {
@@ -208,8 +202,8 @@ func (client *SitesBySubscriptionClient) getCreateRequest(ctx context.Context, s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -224,8 +218,6 @@ func (client *SitesBySubscriptionClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - List Site resources by subscription ID
-//
-// Generated from API version 2025-06-01
 //   - options - SitesBySubscriptionClientListOptions contains the optional parameters for the SitesBySubscriptionClient.NewListPager
 //     method.
 func (client *SitesBySubscriptionClient) NewListPager(options *SitesBySubscriptionClientListOptions) *runtime.Pager[SitesBySubscriptionClientListResponse] {
@@ -263,8 +255,8 @@ func (client *SitesBySubscriptionClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -280,8 +272,6 @@ func (client *SitesBySubscriptionClient) listHandleResponse(resp *http.Response)
 
 // Update - Update a Site
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - siteName - The name of the Site
 //   - properties - Resource create parameters.
 //   - options - SitesBySubscriptionClientUpdateOptions contains the optional parameters for the SitesBySubscriptionClient.Update
@@ -324,8 +314,8 @@ func (client *SitesBySubscriptionClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -25,7 +25,6 @@ func ExampleValidationsClient_ValidateOrganization() {
 	}
 	res, err := clientFactory.NewValidationsClient().ValidateOrganization(ctx, "rgconfluent", "bqmqthdyixbkhlgw", armconfluent.OrganizationResource{
 		Properties: &armconfluent.OrganizationResourceProperties{
-			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 			OfferDetail: &armconfluent.OfferDetail{
 				PublisherID:    to.Ptr("jvmchwpbqvavlgmuwquhqrnacgpvlobkkavwppwvhjfqcy"),
 				ID:             to.Ptr("ufewkfngssvswmxfurnchnvgmnjuzzsoys"),
@@ -37,7 +36,6 @@ func ExampleValidationsClient_ValidateOrganization() {
 				PrivateOfferIDs: []*string{
 					to.Ptr("nrbzkbcpvsakewlgubfmej"),
 				},
-				Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
 			},
 			UserDetail: &armconfluent.UserDetail{
 				FirstName:         to.Ptr("gqxqhtniapwvnsliaifhvmbtvvrciebktpeadanapfcqzflomz"),
@@ -62,7 +60,7 @@ func ExampleValidationsClient_ValidateOrganization() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.ValidationsClientValidateOrganizationResponse{
-	// 	OrganizationResource: &armconfluent.OrganizationResource{
+	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
 	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
@@ -123,7 +121,6 @@ func ExampleValidationsClient_ValidateOrganizationV2() {
 	}
 	res, err := clientFactory.NewValidationsClient().ValidateOrganizationV2(ctx, "rgconfluent", "qhipfdfhxjzvwlergbvldnwhttfb", armconfluent.OrganizationResource{
 		Properties: &armconfluent.OrganizationResourceProperties{
-			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 			OfferDetail: &armconfluent.OfferDetail{
 				PublisherID:    to.Ptr("jvmchwpbqvavlgmuwquhqrnacgpvlobkkavwppwvhjfqcy"),
 				ID:             to.Ptr("ufewkfngssvswmxfurnchnvgmnjuzzsoys"),
@@ -135,7 +132,6 @@ func ExampleValidationsClient_ValidateOrganizationV2() {
 				PrivateOfferIDs: []*string{
 					to.Ptr("nrbzkbcpvsakewlgubfmej"),
 				},
-				Status: to.Ptr(armconfluent.SaaSOfferStatusStarted),
 			},
 			UserDetail: &armconfluent.UserDetail{
 				FirstName:         to.Ptr("gqxqhtniapwvnsliaifhvmbtvvrciebktpeadanapfcqzflomz"),
@@ -160,7 +156,7 @@ func ExampleValidationsClient_ValidateOrganizationV2() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.ValidationsClientValidateOrganizationV2Response{
-	// 	ValidationResponse: &armconfluent.ValidationResponse{
+	// 	ValidationResponse: armconfluent.ValidationResponse{
 	// 		Info: map[string]*string{
 	// 			"key7115": to.Ptr("owvfyhravpcrkzc"),
 	// 		},

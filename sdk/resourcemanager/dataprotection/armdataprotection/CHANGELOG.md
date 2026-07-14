@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.1 (2026-04-01)
+## 4.1.0 (2026-06-24)
 ### Features Added
 
 - New enum type `BlobBackupPatternType` with values `BlobBackupPatternTypePrefix`

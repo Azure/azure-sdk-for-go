@@ -136,6 +136,12 @@ type ScheduledActionsClientVirtualMachinesCancelOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteCreateFlex
+// method.
+type ScheduledActionsClientVirtualMachinesExecuteCreateFlexOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ScheduledActionsClientVirtualMachinesExecuteCreateOptions contains the optional parameters for the ScheduledActionsClient.VirtualMachinesExecuteCreate
 // method.
 type ScheduledActionsClientVirtualMachinesExecuteCreateOptions struct {

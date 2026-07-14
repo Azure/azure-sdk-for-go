@@ -32,7 +32,7 @@ func ExampleServicesClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerorchestratorruntime.ServicesClientCreateOrUpdateResponse{
-	// 	ServiceResource: &armcontainerorchestratorruntime.ServiceResource{
+	// 	ServiceResource: armcontainerorchestratorruntime.ServiceResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example/providers/Microsoft.Kubernetes/connectedClusters/cluster1/providers/Microsoft.KubernetesRuntime/services/storageclass"),
 	// 		Name: to.Ptr("storageclass"),
 	// 		Type: to.Ptr("Microsoft.KubernetesRuntime/services"),
@@ -84,7 +84,7 @@ func ExampleServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerorchestratorruntime.ServicesClientGetResponse{
-	// 	ServiceResource: &armcontainerorchestratorruntime.ServiceResource{
+	// 	ServiceResource: armcontainerorchestratorruntime.ServiceResource{
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/example/providers/Microsoft.Kubernetes/connectedClusters/cluster1/providers/Microsoft.KubernetesRuntime/services/storageclass"),
 	// 		Name: to.Ptr("storageclass"),
 	// 		Type: to.Ptr("Microsoft.KubernetesRuntime/services"),

@@ -87,7 +87,7 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 			map[string]interface{}{
 				"name":       "[parameters('virtualNetworksName')]",
 				"type":       "Microsoft.Network/virtualNetworks",
-				"apiVersion": "2021-05-01",
+				"apiVersion": "2024-07-01",
 				"location":   "[parameters('location')]",
 				"properties": map[string]interface{}{
 					"addressSpace": map[string]interface{}{
@@ -99,7 +99,8 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 						map[string]interface{}{
 							"name": "vmsssubnet",
 							"properties": map[string]interface{}{
-								"addressPrefix": "10.0.0.0/24",
+								"addressPrefix":         "10.0.0.0/24",
+								"defaultOutboundAccess": false,
 							},
 						},
 					},
@@ -277,7 +278,7 @@ func (testsuite *AutoscaleTestSuite) Prepare() {
 					},
 				},
 				"sku": map[string]interface{}{
-					"name":     "Standard_DS1_v2",
+					"name":     "Standard_B2s",
 					"capacity": float64(2),
 					"tier":     "Standard",
 				},
@@ -395,15 +396,4 @@ func (testsuite *AutoscaleTestSuite) TestEventcategories() {
 		testsuite.Require().NoError(err)
 		break
 	}
-}
-
-// Microsoft.Insights/operations
-func (testsuite *AutoscaleTestSuite) TestOperations() {
-	var err error
-	// From step Operations_List
-	fmt.Println("Call operation: Operations_List")
-	operationsClient, err := armmonitor.NewOperationsClient(testsuite.cred, testsuite.options)
-	testsuite.Require().NoError(err)
-	_, err = operationsClient.List(testsuite.ctx, nil)
-	testsuite.Require().NoError(err)
 }

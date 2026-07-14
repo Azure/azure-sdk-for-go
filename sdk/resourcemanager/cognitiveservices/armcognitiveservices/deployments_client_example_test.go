@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-15-preview/PutDeployment.json
-func ExampleDeploymentsClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-05-15-preview/PutDeployment.json
+func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -43,13 +43,13 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DeploymentsClientCreateOrUpdateResponse{
-	// 	Deployment: &armcognitiveservices.Deployment{
+	// 	Deployment: armcognitiveservices.Deployment{
 	// 		Name: to.Ptr("deploymentName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
@@ -71,7 +71,84 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/DeleteDeployment.json
+// Generated from example definition: 2026-05-15-preview/PutDeploymentWithSpeculativeDecoding.json
+func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDecoding() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDeploymentsClient().BeginCreateOrUpdate(ctx, "resourceGroupName", "accountName", "deploymentName", armcognitiveservices.Deployment{
+		Properties: &armcognitiveservices.DeploymentProperties{
+			DeploymentState: to.Ptr(armcognitiveservices.DeploymentStateRunning),
+			Model: &armcognitiveservices.DeploymentModel{
+				Format:  to.Ptr("Fireworks"),
+				Name:    to.Ptr("FW-Qwen3-14B"),
+				Version: to.Ptr("1"),
+			},
+			SpeculativeDecoding: &armcognitiveservices.DeploymentSpeculativeDecoding{
+				DraftModel: &armcognitiveservices.DeploymentModel{
+					Format:  to.Ptr("FireworksCustom"),
+					Name:    to.Ptr("testDraftModel"),
+					Version: to.Ptr("1"),
+					Source:  to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/projectName"),
+				},
+				DraftTokenCount: to.Ptr[int32](4),
+			},
+			ServiceTier: to.Ptr(armcognitiveservices.ServiceTierDefault),
+		},
+		SKU: &armcognitiveservices.SKU{
+			Name:     to.Ptr("GlobalProvisionedManaged"),
+			Capacity: to.Ptr[int32](80),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.DeploymentsClientCreateOrUpdateResponse{
+	// 	Deployment: armcognitiveservices.Deployment{
+	// 		Name: to.Ptr("deploymentName"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
+	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
+	// 		Properties: &armcognitiveservices.DeploymentProperties{
+	// 			DeploymentState: to.Ptr(armcognitiveservices.DeploymentStateRunning),
+	// 			Model: &armcognitiveservices.DeploymentModel{
+	// 				Format: to.Ptr("Fireworks"),
+	// 				Name: to.Ptr("FW-Qwen3-14B"),
+	// 				Version: to.Ptr("1"),
+	// 			},
+	// 			SpeculativeDecoding: &armcognitiveservices.DeploymentSpeculativeDecoding{
+	// 				DraftModel: &armcognitiveservices.DeploymentModel{
+	// 					Format: to.Ptr("FireworksCustom"),
+	// 					Name: to.Ptr("testDraftModel"),
+	// 					Version: to.Ptr("1"),
+	// 					Source: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/projectName"),
+	// 				},
+	// 				DraftTokenCount: to.Ptr[int32](4),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
+	// 			ServiceTier: to.Ptr(armcognitiveservices.ServiceTierDefault),
+	// 		},
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("GlobalProvisionedManaged"),
+	// 			Capacity: to.Ptr[int32](80),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-15-preview/DeleteDeployment.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +165,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -97,7 +174,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/GetDeployment.json
+// Generated from example definition: 2026-05-15-preview/GetDeployment.json
 func ExampleDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +193,7 @@ func ExampleDeploymentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DeploymentsClientGetResponse{
-	// 	Deployment: &armcognitiveservices.Deployment{
+	// 	Deployment: armcognitiveservices.Deployment{
 	// 		Name: to.Ptr("deploymentName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
@@ -138,7 +215,7 @@ func ExampleDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ListDeployments.json
+// Generated from example definition: 2026-05-15-preview/ListDeployments.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +265,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/ListDeploymentSkus.json
+// Generated from example definition: 2026-05-15-preview/ListDeploymentSkus.json
 func ExampleDeploymentsClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +313,7 @@ func ExampleDeploymentsClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-15-preview/PauseDeployment.json
+// Generated from example definition: 2026-05-15-preview/PauseDeployment.json
 func ExampleDeploymentsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +332,7 @@ func ExampleDeploymentsClient_Pause() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DeploymentsClientPauseResponse{
-	// 	Deployment: &armcognitiveservices.Deployment{
+	// 	Deployment: armcognitiveservices.Deployment{
 	// 		Name: to.Ptr("deploymentName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
@@ -276,7 +353,7 @@ func ExampleDeploymentsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/ResumeDeployment.json
+// Generated from example definition: 2026-05-15-preview/ResumeDeployment.json
 func ExampleDeploymentsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +372,7 @@ func ExampleDeploymentsClient_Resume() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DeploymentsClientResumeResponse{
-	// 	Deployment: &armcognitiveservices.Deployment{
+	// 	Deployment: armcognitiveservices.Deployment{
 	// 		Name: to.Ptr("deploymentName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
 	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),
@@ -316,7 +393,7 @@ func ExampleDeploymentsClient_Resume() {
 	// }
 }
 
-// Generated from example definition: 2026-01-15-preview/UpdateDeployment.json
+// Generated from example definition: 2026-05-15-preview/UpdateDeployment.json
 func ExampleDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,13 +415,13 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.DeploymentsClientUpdateResponse{
-	// 	Deployment: &armcognitiveservices.Deployment{
+	// 	Deployment: armcognitiveservices.Deployment{
 	// 		Name: to.Ptr("deploymentName"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/deployments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/deployments/deploymentName"),

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-02-preview/LoadBalancers_Create_Or_Update.json
+// Generated from example definition: 2026-04-02-preview/LoadBalancers_Create_Or_Update.json
 func ExampleLoadBalancersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleLoadBalancersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/LoadBalancers_Delete.json
+// Generated from example definition: 2026-04-02-preview/LoadBalancers_Delete.json
 func ExampleLoadBalancersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleLoadBalancersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-02-preview/LoadBalancers_Get.json
+// Generated from example definition: 2026-04-02-preview/LoadBalancers_Get.json
 func ExampleLoadBalancersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleLoadBalancersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/LoadBalancers_List.json
+// Generated from example definition: 2026-04-02-preview/LoadBalancers_List.json
 func ExampleLoadBalancersClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

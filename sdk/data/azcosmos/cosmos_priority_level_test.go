@@ -15,9 +15,3 @@ func TestPriorityLevelValues(t *testing.T) {
 	require.Equal(t, PriorityLevelHigh, values[0], "expected first value to be High")
 	require.Equal(t, PriorityLevelLow, values[1], "expected second value to be Low")
 }
-
-func TestPriorityLevelToPtr(t *testing.T) {
-	ptr := PriorityLevelHigh.ToPtr()
-	require.NotNil(t, ptr, "expected non-nil pointer")
-	require.Equal(t, PriorityLevelHigh, *ptr, "expected High")
-}

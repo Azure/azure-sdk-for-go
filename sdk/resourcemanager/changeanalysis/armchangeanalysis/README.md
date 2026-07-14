@@ -1,5 +1,7 @@
 # Azure Change Analysis Module for Go
 
+> **DEPRECATED**: The Change Analysis service was retired on 2025-10-31. There is no replacement package because the service and its APIs are no longer available.
+
 The `armchangeanalysis` module provides operations for working with Azure Change Analysis.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/changeanalysis/armchangeanalysis)

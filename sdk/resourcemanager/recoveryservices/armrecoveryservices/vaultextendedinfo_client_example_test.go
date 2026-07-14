@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01/UpdateVaultExtendedInfo_Put.json
+// Generated from example definition: 2026-05-01/UpdateVaultExtendedInfo_Put.json
 func ExampleVaultExtendedInfoClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleVaultExtendedInfoClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultExtendedInfoClientCreateOrUpdateResponse{
-	// 	VaultExtendedInfoResource: &armrecoveryservices.VaultExtendedInfoResource{
+	// 	VaultExtendedInfoResource: armrecoveryservices.VaultExtendedInfoResource{
 	// 		Name: to.Ptr("vaultExtendedInfo"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/extendedInformation"),
 	// 		Etag: to.Ptr("f0d0260b-b92d-4458-ba0a-32c6cdabacb7"),
@@ -49,7 +49,7 @@ func ExampleVaultExtendedInfoClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01/GETVaultExtendedInfo.json
+// Generated from example definition: 2026-05-01/GETVaultExtendedInfo.json
 func ExampleVaultExtendedInfoClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleVaultExtendedInfoClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultExtendedInfoClientGetResponse{
-	// 	VaultExtendedInfoResource: &armrecoveryservices.VaultExtendedInfoResource{
+	// 	VaultExtendedInfoResource: armrecoveryservices.VaultExtendedInfoResource{
 	// 		Name: to.Ptr("vaultExtendedInfo"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/extendedInformation"),
 	// 		Etag: to.Ptr("f0d0260b-b92d-4458-ba0a-32c6cdabacb7"),
@@ -81,7 +81,7 @@ func ExampleVaultExtendedInfoClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01/UpdateVaultExtendedInfo.json
+// Generated from example definition: 2026-05-01/UpdateVaultExtendedInfo.json
 func ExampleVaultExtendedInfoClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleVaultExtendedInfoClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservices.VaultExtendedInfoClientUpdateResponse{
-	// 	VaultExtendedInfoResource: &armrecoveryservices.VaultExtendedInfoResource{
+	// 	VaultExtendedInfoResource: armrecoveryservices.VaultExtendedInfoResource{
 	// 		Name: to.Ptr("vaultExtendedInfo"),
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/extendedInformation"),
 	// 		Etag: to.Ptr("f0d0260b-b92d-4458-ba0a-32c6cdabacb7"),

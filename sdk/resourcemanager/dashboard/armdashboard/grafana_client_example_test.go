@@ -31,7 +31,7 @@ func ExampleGrafanaClient_CheckEnterpriseDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.GrafanaClientCheckEnterpriseDetailsResponse{
-	// 	EnterpriseDetails: &armdashboard.EnterpriseDetails{
+	// 	EnterpriseDetails: armdashboard.EnterpriseDetails{
 	// 		MarketplaceTrialQuota: &armdashboard.MarketplaceTrialQuota{
 	// 			AvailablePromotion: to.Ptr(armdashboard.AvailablePromotionNone),
 	// 			GrafanaResourceID: to.Ptr("/subscriptions/e1e3b30d-e7ec-4e25-8587-db037bcb9a4d/resourcegroups/amg-local-script-test-rg/providers/microsoft.dashboard/grafana/eus2-enterprise-1001-07"),
@@ -126,13 +126,13 @@ func ExampleGrafanaClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.GrafanaClientCreateResponse{
-	// 	ManagedGrafana: &armdashboard.ManagedGrafana{
+	// 	ManagedGrafana: armdashboard.ManagedGrafana{
 	// 		Name: to.Ptr("myWorkspace"),
 	// 		Type: to.Ptr("Microsoft.Dashboard/grafana"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
@@ -230,7 +230,7 @@ func ExampleGrafanaClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -258,7 +258,7 @@ func ExampleGrafanaClient_FetchAvailablePlugins() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.GrafanaClientFetchAvailablePluginsResponse{
-	// 	GrafanaAvailablePluginListResponse: &armdashboard.GrafanaAvailablePluginListResponse{
+	// 	GrafanaAvailablePluginListResponse: armdashboard.GrafanaAvailablePluginListResponse{
 	// 		Value: []*armdashboard.GrafanaAvailablePlugin{
 	// 			{
 	// 				Name: to.Ptr("Plugin A"),
@@ -292,7 +292,7 @@ func ExampleGrafanaClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.GrafanaClientGetResponse{
-	// 	ManagedGrafana: &armdashboard.ManagedGrafana{
+	// 	ManagedGrafana: armdashboard.ManagedGrafana{
 	// 		Name: to.Ptr("myWorkspace"),
 	// 		Type: to.Ptr("Microsoft.Dashboard/grafana"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
@@ -634,13 +634,13 @@ func ExampleGrafanaClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.GrafanaClientUpdateResponse{
-	// 	ManagedGrafana: &armdashboard.ManagedGrafana{
+	// 	ManagedGrafana: armdashboard.ManagedGrafana{
 	// 		Name: to.Ptr("myWorkspace"),
 	// 		Type: to.Ptr("Microsoft.Dashboard/grafana"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),

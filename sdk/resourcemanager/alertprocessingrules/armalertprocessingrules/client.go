@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2021-08-08
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // CreateOrUpdate - Create or update an alert processing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - alertProcessingRuleName - The name of the alert processing rule that needs to be fetched.
 //   - alertProcessingRule - Alert processing rule to be created/updated.
@@ -89,8 +89,8 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210808)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, alertProcessingRule); err != nil {
@@ -113,8 +113,6 @@ func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientC
 
 // Delete - Delete an alert processing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - alertProcessingRuleName - The name of the alert processing rule that needs to be fetched.
 //   - options - ClientDeleteOptions contains the optional parameters for the Client.Delete method.
@@ -160,8 +158,8 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210808)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -176,8 +174,6 @@ func (client *Client) deleteHandleResponse(resp *http.Response) (ClientDeleteRes
 
 // GetByName - Get an alert processing rule by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - alertProcessingRuleName - The name of the alert processing rule that needs to be fetched.
 //   - options - ClientGetByNameOptions contains the optional parameters for the Client.GetByName method.
@@ -223,8 +219,8 @@ func (client *Client) getByNameCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210808)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -242,8 +238,6 @@ func (client *Client) getByNameHandleResponse(resp *http.Response) (ClientGetByN
 }
 
 // NewListByResourceGroupPager - List all alert processing rules in a resource group.
-//
-// Generated from API version 2021-08-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
 //     method.
@@ -286,8 +280,8 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210808)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -305,8 +299,6 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 }
 
 // NewListBySubscriptionPager - List all alert processing rules in a subscription.
-//
-// Generated from API version 2021-08-08
 //   - options - ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListBySubscriptionResponse]{
@@ -343,8 +335,8 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, _ *Cl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210808)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -363,8 +355,6 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 
 // Update - Enable, disable, or update tags for an alert processing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-08-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - alertProcessingRuleName - The name of the alert processing rule that needs to be fetched.
 //   - alertProcessingRulePatch - Parameters supplied to the operation.
@@ -411,8 +401,8 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-08-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210808)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, alertProcessingRulePatch); err != nil {

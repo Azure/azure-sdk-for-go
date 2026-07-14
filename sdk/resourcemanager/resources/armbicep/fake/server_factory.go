@@ -50,7 +50,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "DecompileOperationGroupClient":
-		initServer(s, &s.trDecompileOperationGroupServer, func() *DecompileOperationGroupServerTransport {
+		initServer(&s.trMu, &s.trDecompileOperationGroupServer, func() *DecompileOperationGroupServerTransport {
 			return NewDecompileOperationGroupServerTransport(&s.srv.DecompileOperationGroupServer)
 		})
 		resp, err = s.trDecompileOperationGroupServer.Do(req)
@@ -63,12 +63,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

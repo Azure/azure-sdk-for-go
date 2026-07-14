@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-30/MsiOperationsList.json
+// Generated from example definition: 2025-05-31-preview/MsiOperationsList.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,36 +35,36 @@ func ExampleOperationsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmsi.OperationsClientListResponse{
 		// 	OperationListResult: armmsi.OperationListResult{
-		// 		NextLink: to.Ptr("https://serviceRoot/providers/Microsoft.ManagedIdentity/operations?api-version=2024-11-30&$skiptoken=X'12345'"),
 		// 		Value: []*armmsi.Operation{
 		// 			{
-		// 				Name: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/read"),
 		// 				Display: &armmsi.OperationDisplay{
 		// 					Description: to.Ptr("Gets an existing user assigned identity"),
 		// 					Operation: to.Ptr("Get User Assigned Identity"),
-		// 					Provider: to.Ptr("Managed Service Identity"),
 		// 					Resource: to.Ptr("User Assigned Identities"),
+		// 					Provider: to.Ptr("Managed Service Identity"),
 		// 				},
+		// 				Name: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/read"),
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/write"),
 		// 				Display: &armmsi.OperationDisplay{
 		// 					Description: to.Ptr("Creates a new user assigned identity or updates the tags associated with an existing user assigned identity"),
 		// 					Operation: to.Ptr("Create/Update User Assigned Identity"),
-		// 					Provider: to.Ptr("Managed Service Identity"),
 		// 					Resource: to.Ptr("User Assigned Identities"),
+		// 					Provider: to.Ptr("Managed Service Identity"),
 		// 				},
+		// 				Name: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/write"),
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/delete"),
 		// 				Display: &armmsi.OperationDisplay{
 		// 					Description: to.Ptr("Deletes an existing user assigned identity"),
 		// 					Operation: to.Ptr("Delete User Assigned Identity"),
-		// 					Provider: to.Ptr("Managed Service Identity"),
 		// 					Resource: to.Ptr("User Assigned Identities"),
+		// 					Provider: to.Ptr("Managed Service Identity"),
 		// 				},
+		// 				Name: to.Ptr("Microsoft.ManagedIdentity/userAssignedIdentities/delete"),
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://serviceRoot/providers/Microsoft.ManagedIdentity/operations?api-version=2025-05-31-preview&$skiptoken=X'12345'"),
 		// 	},
 		// }
 	}

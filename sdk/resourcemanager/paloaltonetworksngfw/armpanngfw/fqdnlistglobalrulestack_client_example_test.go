@@ -40,13 +40,13 @@ func ExampleFqdnListGlobalRulestackClient_BeginCreateOrUpdate_fqdnListGlobalRule
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse{
-	// 	FqdnListGlobalRulestackResource: &armpanngfw.FqdnListGlobalRulestackResource{
+	// 	FqdnListGlobalRulestackResource: armpanngfw.FqdnListGlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -96,13 +96,13 @@ func ExampleFqdnListGlobalRulestackClient_BeginCreateOrUpdate_fqdnListGlobalRule
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListGlobalRulestackClientCreateOrUpdateResponse{
-	// 	FqdnListGlobalRulestackResource: &armpanngfw.FqdnListGlobalRulestackResource{
+	// 	FqdnListGlobalRulestackResource: armpanngfw.FqdnListGlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval/fqdnlists/armid1"),
 	// 		Properties: &armpanngfw.FqdnObject{
 	// 			FqdnList: []*string{
@@ -131,7 +131,7 @@ func ExampleFqdnListGlobalRulestackClient_BeginDelete_fqdnListGlobalRulestackDel
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -157,7 +157,7 @@ func ExampleFqdnListGlobalRulestackClient_BeginDelete_fqdnListGlobalRulestackDel
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -185,7 +185,7 @@ func ExampleFqdnListGlobalRulestackClient_Get_fqdnListGlobalRulestackGetMaximumS
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListGlobalRulestackClientGetResponse{
-	// 	FqdnListGlobalRulestackResource: &armpanngfw.FqdnListGlobalRulestackResource{
+	// 	FqdnListGlobalRulestackResource: armpanngfw.FqdnListGlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -230,7 +230,7 @@ func ExampleFqdnListGlobalRulestackClient_Get_fqdnListGlobalRulestackGetMinimumS
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FqdnListGlobalRulestackClientGetResponse{
-	// 	FqdnListGlobalRulestackResource: &armpanngfw.FqdnListGlobalRulestackResource{
+	// 	FqdnListGlobalRulestackResource: armpanngfw.FqdnListGlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval/fqdnlists/armid1"),
 	// 		Properties: &armpanngfw.FqdnObject{
 	// 			FqdnList: []*string{

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableGremlinDatabaseList.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableGremlinDatabaseList.json
 func ExampleRestorableGremlinDatabasesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,33 +37,33 @@ func ExampleRestorableGremlinDatabasesClient_NewListPager() {
 		// 	RestorableGremlinDatabasesListResult: armcosmos.RestorableGremlinDatabasesListResult{
 		// 		Value: []*armcosmos.RestorableGremlinDatabaseGetResult{
 		// 			{
-		// 				Name: to.Ptr("59c21367-b98b-4a8e-abb7-b6f46600decc"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableGremlinDatabases"),
 		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/36f09704-6be3-4f33-aa05-17b73e504c75/restorableGremlinDatabases/59c21367-b98b-4a8e-abb7-b6f46600decc"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableGremlinDatabases"),
+		// 				Name: to.Ptr("59c21367-b98b-4a8e-abb7-b6f46600decc"),
 		// 				Properties: &armcosmos.RestorableGremlinDatabaseProperties{
 		// 					Resource: &armcosmos.RestorableGremlinDatabasePropertiesResource{
 		// 						Rid: to.Ptr("DLB14gAAAA=="),
-		// 						CanUndelete: to.Ptr("invalid"),
 		// 						EventTimestamp: to.Ptr("2020-09-02T19:45:03Z"),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
 		// 						OwnerID: to.Ptr("Database1"),
 		// 						OwnerResourceID: to.Ptr("PD5DALigDgw="),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
+		// 						CanUndelete: to.Ptr("invalid"),
 		// 					},
 		// 				},
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("8456cb17-cdb0-4c6a-8db8-d0ff3f886257"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableGremlinDatabases"),
 		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorableGremlinDatabases/8456cb17-cdb0-4c6a-8db8-d0ff3f886257"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableGremlinDatabases"),
+		// 				Name: to.Ptr("8456cb17-cdb0-4c6a-8db8-d0ff3f886257"),
 		// 				Properties: &armcosmos.RestorableGremlinDatabaseProperties{
 		// 					Resource: &armcosmos.RestorableGremlinDatabasePropertiesResource{
 		// 						Rid: to.Ptr("ESXNLAAAAA=="),
-		// 						CanUndelete: to.Ptr("notRestorable"),
-		// 						CanUndeleteReason: to.Ptr("Database already exists. Only deleted resources can be restored within same account."),
 		// 						EventTimestamp: to.Ptr("2020-09-02T19:53:42Z"),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeDelete),
 		// 						OwnerID: to.Ptr("Database1"),
 		// 						OwnerResourceID: to.Ptr("PD5DALigDgw="),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeDelete),
+		// 						CanUndelete: to.Ptr("notRestorable"),
+		// 						CanUndeleteReason: to.Ptr("Database already exists. Only deleted resources can be restored within same account."),
 		// 					},
 		// 				},
 		// 			},

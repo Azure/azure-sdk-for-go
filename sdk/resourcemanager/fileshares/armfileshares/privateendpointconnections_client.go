@@ -18,6 +18,8 @@ import (
 
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
+//
+// Generated from API version 2026-06-01
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // BeginCreate - Update the state of specified private endpoint connection associated with the file share.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -69,8 +69,6 @@ func (client *PrivateEndpointConnectionsClient) BeginCreate(ctx context.Context,
 
 // Create - Update the state of specified private endpoint connection associated with the file share.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 func (client *PrivateEndpointConnectionsClient) create(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginCreate"
@@ -116,8 +114,8 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -128,8 +126,6 @@ func (client *PrivateEndpointConnectionsClient) createCreateRequest(ctx context.
 
 // BeginDelete - Deletes the specified private endpoint connection associated with the file share.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -155,8 +151,6 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 
 // Delete - Deletes the specified private endpoint connection associated with the file share.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -202,15 +196,13 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the specified private endpoint connection associated with the file share.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
@@ -262,8 +254,8 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -278,8 +270,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByFileSharePager - Get a PrivateEndpointConnection List.
-//
-// Generated from API version 2026-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The resource name of the file share, as seen by the administrator through Azure Resource Manager.
 //   - options - PrivateEndpointConnectionsClientListByFileShareOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByFileSharePager
@@ -327,8 +317,8 @@ func (client *PrivateEndpointConnectionsClient) listByFileShareCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // AccessReviewInstanceContactedReviewersClient contains the methods for the AccessReviewInstanceContactedReviewers group.
 // Don't use this type directly, use NewAccessReviewInstanceContactedReviewersClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type AccessReviewInstanceContactedReviewersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewAccessReviewInstanceContactedReviewersClient(subscriptionID string, cred
 }
 
 // NewListPager - Get access review instance contacted reviewers
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - options - AccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the AccessReviewInstanceContactedReviewersClient.NewListPager
@@ -89,8 +89,8 @@ func (client *AccessReviewInstanceContactedReviewersClient) listCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

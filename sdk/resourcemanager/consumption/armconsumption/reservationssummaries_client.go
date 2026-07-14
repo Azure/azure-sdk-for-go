@@ -18,6 +18,8 @@ import (
 
 // ReservationsSummariesClient contains the methods for the ReservationsSummaries group.
 // Don't use this type directly, use NewReservationsSummariesClient() instead.
+//
+// Generated from API version 2024-08-01
 type ReservationsSummariesClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewReservationsSummariesClient(credential azcore.TokenCredential, options *
 // NewListPager - Lists the reservations summaries for the defined scope daily or monthly grain. Note: ARM has a payload size
 // limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should
 // be made with smaller date ranges.
-//
-// Generated from API version 2024-08-01
 //   - resourceScope - The fully qualified Azure Resource manager identifier of the resource.
 //   - grain - Can be daily or monthly
 //   - options - ReservationsSummariesClientListOptions contains the optional parameters for the ReservationsSummariesClient.NewListPager
@@ -83,7 +83,7 @@ func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", version20240801)
 	if options != nil && options.EndDate != nil {
 		reqQP.Set("endDate", *options.EndDate)
 	}
@@ -97,7 +97,7 @@ func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context
 	if options != nil && options.StartDate != nil {
 		reqQP.Set("startDate", *options.StartDate)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -114,8 +114,6 @@ func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Respons
 // NewListByReservationOrderPager - Lists the reservations summaries for daily or monthly grain. Note: ARM has a payload size
 // limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases, API call should
 // be made with smaller date ranges.
-//
-// Generated from API version 2024-08-01
 //   - reservationOrderID - Order Id of the reservation
 //   - grain - Can be daily or monthly
 //   - options - ReservationsSummariesClientListByReservationOrderOptions contains the optional parameters for the ReservationsSummariesClient.NewListByReservationOrderPager
@@ -158,9 +156,9 @@ func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(c
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", version20240801)
 	reqQP.Set("grain", string(grain))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -177,8 +175,6 @@ func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(
 // NewListByReservationOrderAndReservationPager - Lists the reservations summaries for daily or monthly grain. Note: ARM has
 // a payload size limit of 12MB, so currently callers get 400 when the response size exceeds the ARM limit. In such cases,
 // API call should be made with smaller date ranges.
-//
-// Generated from API version 2024-08-01
 //   - reservationOrderID - Order Id of the reservation
 //   - reservationID - Id of the reservation
 //   - grain - Can be daily or monthly
@@ -226,9 +222,9 @@ func (client *ReservationsSummariesClient) listByReservationOrderAndReservationC
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", version20240801)
 	reqQP.Set("grain", string(grain))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

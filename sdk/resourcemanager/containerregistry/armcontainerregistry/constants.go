@@ -4,6 +4,10 @@
 
 package armcontainerregistry
 
+const (
+	version20260301Preview string = "2026-03-01-preview"
+)
+
 // Action - The action of IP ACL rule.
 type Action string
 
@@ -47,6 +51,22 @@ func PossibleActivationStatusValues() []ActivationStatus {
 	return []ActivationStatus{
 		ActivationStatusActive,
 		ActivationStatusInactive,
+	}
+}
+
+// AdditionalAuthenticationType - The type of authentication configuration used by a cache rule to access an upstream registry.
+type AdditionalAuthenticationType string
+
+const (
+	// AdditionalAuthenticationTypeGoogleArtifactRegistry - Google Artifact Registry (GAR) authentication via workload identity
+	// federation.
+	AdditionalAuthenticationTypeGoogleArtifactRegistry AdditionalAuthenticationType = "GoogleArtifactRegistry"
+)
+
+// PossibleAdditionalAuthenticationTypeValues returns the possible values for the AdditionalAuthenticationType const type.
+func PossibleAdditionalAuthenticationTypeValues() []AdditionalAuthenticationType {
+	return []AdditionalAuthenticationType{
+		AdditionalAuthenticationTypeGoogleArtifactRegistry,
 	}
 }
 
@@ -826,6 +846,24 @@ func PossibleWebhookStatusValues() []WebhookStatus {
 	return []WebhookStatus{
 		WebhookStatusDisabled,
 		WebhookStatusEnabled,
+	}
+}
+
+// WritableCacheRepos - Whether to allow cache operations that write to repositories in this registry.
+type WritableCacheRepos string
+
+const (
+	// WritableCacheReposDisabled - Cache write operations are disabled.
+	WritableCacheReposDisabled WritableCacheRepos = "Disabled"
+	// WritableCacheReposEnabled - Cache write operations are enabled.
+	WritableCacheReposEnabled WritableCacheRepos = "Enabled"
+)
+
+// PossibleWritableCacheReposValues returns the possible values for the WritableCacheRepos const type.
+func PossibleWritableCacheReposValues() []WritableCacheRepos {
+	return []WritableCacheRepos{
+		WritableCacheReposDisabled,
+		WritableCacheReposEnabled,
 	}
 }
 

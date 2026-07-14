@@ -58,17 +58,17 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "DpsCertificateClient":
-		initServer(s, &s.trDpsCertificateServer, func() *DpsCertificateServerTransport {
+		initServer(&s.trMu, &s.trDpsCertificateServer, func() *DpsCertificateServerTransport {
 			return NewDpsCertificateServerTransport(&s.srv.DpsCertificateServer)
 		})
 		resp, err = s.trDpsCertificateServer.Do(req)
 	case "IotDpsResourceClient":
-		initServer(s, &s.trIotDpsResourceServer, func() *IotDpsResourceServerTransport {
+		initServer(&s.trMu, &s.trIotDpsResourceServer, func() *IotDpsResourceServerTransport {
 			return NewIotDpsResourceServerTransport(&s.srv.IotDpsResourceServer)
 		})
 		resp, err = s.trIotDpsResourceServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -79,12 +79,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

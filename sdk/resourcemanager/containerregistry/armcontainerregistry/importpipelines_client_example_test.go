@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineCreate.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineCreate.json
 func ExampleImportPipelinesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,13 +50,13 @@ func ExampleImportPipelinesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ImportPipelinesClientCreateResponse{
-	// 	ImportPipeline: &armcontainerregistry.ImportPipeline{
+	// 	ImportPipeline: armcontainerregistry.ImportPipeline{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/importPipelines/myImportPipeline"),
 	// 		Name: to.Ptr("myImportPipeline"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/importPipelines"),
@@ -93,7 +93,7 @@ func ExampleImportPipelinesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineDelete.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineDelete.json
 func ExampleImportPipelinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleImportPipelinesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -119,7 +119,7 @@ func ExampleImportPipelinesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineGet.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineGet.json
 func ExampleImportPipelinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleImportPipelinesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ImportPipelinesClientGetResponse{
-	// 	ImportPipeline: &armcontainerregistry.ImportPipeline{
+	// 	ImportPipeline: armcontainerregistry.ImportPipeline{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/importPipelines/myImportPipeline"),
 	// 		Name: to.Ptr("myImportPipeline"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/importPipelines"),
@@ -175,7 +175,7 @@ func ExampleImportPipelinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineList.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineList.json
 func ExampleImportPipelinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

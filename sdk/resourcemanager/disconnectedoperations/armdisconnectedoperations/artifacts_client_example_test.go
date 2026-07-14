@@ -30,7 +30,7 @@ func ExampleArtifactsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ArtifactsClientGetResponse{
-	// 	Artifact: &armdisconnectedoperations.Artifact{
+	// 	Artifact: armdisconnectedoperations.Artifact{
 	// 		Properties: &armdisconnectedoperations.ArtifactProperties{
 	// 			ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 			ArtifactOrder: to.Ptr[int32](1),
@@ -124,7 +124,7 @@ func ExampleArtifactsClient_ListDownloadURI() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdisconnectedoperations.ArtifactsClientListDownloadURIResponse{
-	// 	ArtifactDownloadResult: &armdisconnectedoperations.ArtifactDownloadResult{
+	// 	ArtifactDownloadResult: armdisconnectedoperations.ArtifactDownloadResult{
 	// 		ProvisioningState: to.Ptr(armdisconnectedoperations.ResourceProvisioningStateSucceeded),
 	// 		ArtifactOrder: to.Ptr[int32](1),
 	// 		Title: to.Ptr("artifact pat 1"),

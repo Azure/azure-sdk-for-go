@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-01-preview/DeleteUpdateSummaries.json
+// Generated from example definition: 2026-04-30/DeleteUpdateSummaries.json
 func ExampleUpdateSummariesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleUpdateSummariesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -39,7 +39,7 @@ func ExampleUpdateSummariesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/GetUpdateSummaries.json
+// Generated from example definition: 2026-04-30/GetUpdateSummaries.json
 func ExampleUpdateSummariesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleUpdateSummariesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdateSummariesClientGetResponse{
-	// 	UpdateSummaries: &armazurestackhci.UpdateSummaries{
+	// 	UpdateSummaries: armazurestackhci.UpdateSummaries{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updateSummaries"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updateSummaries/default"),
@@ -90,7 +90,7 @@ func ExampleUpdateSummariesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ListUpdateSummaries.json
+// Generated from example definition: 2026-04-30/ListUpdateSummaries.json
 func ExampleUpdateSummariesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleUpdateSummariesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/PutUpdateSummaries.json
+// Generated from example definition: 2026-04-30/PutUpdateSummaries.json
 func ExampleUpdateSummariesClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleUpdateSummariesClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.UpdateSummariesClientPutResponse{
-	// 	UpdateSummaries: &armazurestackhci.UpdateSummaries{
+	// 	UpdateSummaries: armazurestackhci.UpdateSummaries{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/updateSummaries"),
 	// 		ID: to.Ptr("/subscriptions/b8d594e5-51f3-4c11-9c54-a7771b81c712/resourceGroups/testrg/providers/Microsoft.AzureStackHCI/clusters/testcluster/updateSummaries/default"),

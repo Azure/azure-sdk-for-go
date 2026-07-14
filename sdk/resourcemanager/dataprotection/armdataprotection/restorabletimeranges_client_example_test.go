@@ -35,7 +35,7 @@ func ExampleRestorableTimeRangesClient_Find() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.RestorableTimeRangesClientFindResponse{
-	// 	AzureBackupFindRestorableTimeRangesResponseResource: &armdataprotection.AzureBackupFindRestorableTimeRangesResponseResource{
+	// 	AzureBackupFindRestorableTimeRangesResponseResource: armdataprotection.AzureBackupFindRestorableTimeRangesResponseResource{
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances/findRestorableTimeRanges"),
 	// 		ID: to.Ptr("zblobbackuptestsa58"),
 	// 		Properties: &armdataprotection.AzureBackupFindRestorableTimeRangesResponse{

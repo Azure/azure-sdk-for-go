@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // RoleEligibilityScheduleInstancesServer is a fake server for instances of the armauthorization.RoleEligibilityScheduleInstancesClient type.
@@ -58,9 +59,7 @@ func (r *RoleEligibilityScheduleInstancesServerTransport) Do(req *http.Request) 
 }
 
 func (r *RoleEligibilityScheduleInstancesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (r *RoleEligibilityScheduleInstancesServerTransport) dispatchToMethodFake(r
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -115,7 +111,7 @@ func (r *RoleEligibilityScheduleInstancesServerTransport) dispatchGet(req *http.
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RoleEligibilityScheduleInstance, req)
@@ -142,11 +138,7 @@ func (r *RoleEligibilityScheduleInstancesServerTransport) dispatchNewListForScop
 		if err != nil {
 			return nil, err
 		}
-		filterUnescaped, err := url.QueryUnescape(qp.Get("$filter"))
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(filterUnescaped)
+		filterParam := getOptional(qp.Get("$filter"))
 		var options *armauthorization.RoleEligibilityScheduleInstancesClientListForScopeOptions
 		if filterParam != nil {
 			options = &armauthorization.RoleEligibilityScheduleInstancesClientListForScopeOptions{
@@ -164,7 +156,7 @@ func (r *RoleEligibilityScheduleInstancesServerTransport) dispatchNewListForScop
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListForScopePager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

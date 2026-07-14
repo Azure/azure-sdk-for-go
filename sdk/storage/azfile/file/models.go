@@ -606,7 +606,8 @@ type downloadOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 
-	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
@@ -646,7 +647,8 @@ type DownloadBufferOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 
-	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
@@ -669,7 +671,8 @@ type DownloadFileOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 
-	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
@@ -1050,7 +1053,8 @@ type uploadFromReaderOptions struct {
 	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
 	Progress func(bytesTransferred int64)
 
-	// Concurrency indicates the maximum number of chunks to upload in parallel (default is 5)
+	// Concurrency indicates the maximum number of chunks to upload in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// LeaseAccessConditions contains optional parameters to access leased entity.
@@ -1078,7 +1082,8 @@ type UploadStreamOptions struct {
 	ChunkSize int64
 
 	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.
-	// Each concurrent upload will create a buffer of size ChunkSize.  The default value is one.
+	// Each concurrent upload will create a buffer of size ChunkSize.  The default is based on
+	// CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency int
 
 	// LeaseAccessConditions contains optional parameters to access leased entity.
@@ -1087,7 +1092,7 @@ type UploadStreamOptions struct {
 
 func (u *UploadStreamOptions) setDefaults() {
 	if u.Concurrency == 0 {
-		u.Concurrency = 1
+		u.Concurrency = int(shared.DefaultStreamConcurrencyValue())
 	}
 
 	if u.ChunkSize < _1MiB {

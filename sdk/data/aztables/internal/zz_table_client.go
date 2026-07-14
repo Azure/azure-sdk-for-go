@@ -28,8 +28,6 @@ type TableClient struct {
 
 // Create - Creates a new table under the given account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - tableProperties - The Table properties.
 //   - options - TableClientCreateOptions contains the optional parameters for the TableClient.Create method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
@@ -62,16 +60,16 @@ func (client *TableClient) createCreateRequest(ctx context.Context, tablePropert
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
-	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.ResponsePreference != nil {
 		req.Raw().Header["Prefer"] = []string{string(*options.ResponsePreference)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if err := runtime.MarshalAsJSON(req, tableProperties); err != nil {
 		return nil, err
 	}
@@ -108,8 +106,6 @@ func (client *TableClient) createHandleResponse(resp *http.Response) (TableClien
 
 // Delete - Operation permanently deletes the specified table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - options - TableClientDeleteOptions contains the optional parameters for the TableClient.Delete method.
 func (client *TableClient) Delete(ctx context.Context, table string, options *TableClientDeleteOptions) (TableClientDeleteResponse, error) {
@@ -141,11 +137,11 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, table string
 	if err != nil {
 		return nil, err
 	}
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -173,8 +169,6 @@ func (client *TableClient) deleteHandleResponse(resp *http.Response) (TableClien
 
 // DeleteEntity - Deletes the specified entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
@@ -217,20 +211,20 @@ func (client *TableClient) DeleteEntityCreateRequest(ctx context.Context, table 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
+	req.Raw().Header["If-Match"] = []string{ifMatch}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
-	req.Raw().Header["If-Match"] = []string{ifMatch}
-	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -259,8 +253,6 @@ func (client *TableClient) deleteEntityHandleResponse(resp *http.Response) (Tabl
 // GetAccessPolicy - Retrieves details about any stored access policies specified on the table that may be used with Shared
 // Access Signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - options - TableClientGetAccessPolicyOptions contains the optional parameters for the TableClient.GetAccessPolicy method.
 func (client *TableClient) GetAccessPolicy(ctx context.Context, table string, options *TableClientGetAccessPolicyOptions) (TableClientGetAccessPolicyResponse, error) {
@@ -293,16 +285,16 @@ func (client *TableClient) getAccessPolicyCreateRequest(ctx context.Context, tab
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("comp", "acl")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	reqQP.Set("comp", "acl")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -333,8 +325,6 @@ func (client *TableClient) getAccessPolicyHandleResponse(resp *http.Response) (T
 
 // InsertEntity - Insert entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - options - TableClientInsertEntityOptions contains the optional parameters for the TableClient.InsertEntity method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
@@ -368,22 +358,22 @@ func (client *TableClient) InsertEntityCreateRequest(ctx context.Context, table 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.ResponsePreference != nil {
 		req.Raw().Header["Prefer"] = []string{string(*options.ResponsePreference)}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.TableEntityProperties != nil {
 		if err := runtime.MarshalAsJSON(req, options.TableEntityProperties); err != nil {
 			return nil, err
@@ -429,8 +419,6 @@ func (client *TableClient) insertEntityHandleResponse(resp *http.Response) (Tabl
 
 // MergeEntity - Merge entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
@@ -471,22 +459,22 @@ func (client *TableClient) MergeEntityCreateRequest(ctx context.Context, table s
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.TableEntityProperties != nil {
 		if err := runtime.MarshalAsJSON(req, options.TableEntityProperties); err != nil {
 			return nil, err
@@ -523,8 +511,6 @@ func (client *TableClient) mergeEntityHandleResponse(resp *http.Response) (Table
 
 // Query - Queries tables under the given account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - options - TableClientQueryOptions contains the optional parameters for the TableClient.Query method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
 func (client *TableClient) Query(ctx context.Context, options *TableClientQueryOptions, queryOptions *QueryOptions) (TableClientQueryResponse, error) {
@@ -553,28 +539,28 @@ func (client *TableClient) queryCreateRequest(ctx context.Context, options *Tabl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
+	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
-	}
-	if queryOptions != nil && queryOptions.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	if queryOptions != nil && queryOptions.Select != nil {
 		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if queryOptions != nil && queryOptions.Filter != nil {
-		reqQP.Set("$filter", *queryOptions.Filter)
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	if options != nil && options.NextTableName != nil {
 		reqQP.Set("NextTableName", *options.NextTableName)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
-	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -608,8 +594,6 @@ func (client *TableClient) queryHandleResponse(resp *http.Response) (TableClient
 
 // QueryEntities - Queries entities in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - options - TableClientQueryEntitiesOptions contains the optional parameters for the TableClient.QueryEntities method.
 //   - QueryOptions - QueryOptions contains a group of parameters for the TableClient.Query method.
@@ -643,20 +627,17 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	if queryOptions != nil && queryOptions.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
-	}
 	if queryOptions != nil && queryOptions.Select != nil {
 		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if queryOptions != nil && queryOptions.Filter != nil {
-		reqQP.Set("$filter", *queryOptions.Filter)
+	if queryOptions != nil && queryOptions.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*queryOptions.Top), 10))
 	}
 	if options != nil && options.NextPartitionKey != nil {
 		reqQP.Set("NextPartitionKey", *options.NextPartitionKey)
@@ -664,13 +645,16 @@ func (client *TableClient) queryEntitiesCreateRequest(ctx context.Context, table
 	if options != nil && options.NextRowKey != nil {
 		reqQP.Set("NextRowKey", *options.NextRowKey)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
-	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -707,8 +691,6 @@ func (client *TableClient) queryEntitiesHandleResponse(resp *http.Response) (Tab
 
 // QueryEntityWithPartitionAndRowKey - Queries a single entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
@@ -750,8 +732,8 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	if queryOptions != nil && queryOptions.Filter != nil {
+		reqQP.Set("$filter", *queryOptions.Filter)
 	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
@@ -759,16 +741,16 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyCreateRequest(ctx co
 	if queryOptions != nil && queryOptions.Select != nil {
 		reqQP.Set("$select", *queryOptions.Select)
 	}
-	if queryOptions != nil && queryOptions.Filter != nil {
-		reqQP.Set("$filter", *queryOptions.Filter)
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
-	req.Raw().Header["Accept"] = []string{"application/json;odata=minimalmetadata"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	return req, nil
 }
 
@@ -808,8 +790,6 @@ func (client *TableClient) queryEntityWithPartitionAndRowKeyHandleResponse(resp 
 
 // SetAccessPolicy - Sets stored access policies for the table that may be used with Shared Access Signatures.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - options - TableClientSetAccessPolicyOptions contains the optional parameters for the TableClient.SetAccessPolicy method.
 func (client *TableClient) SetAccessPolicy(ctx context.Context, table string, options *TableClientSetAccessPolicyOptions) (TableClientSetAccessPolicyResponse, error) {
@@ -842,16 +822,16 @@ func (client *TableClient) setAccessPolicyCreateRequest(ctx context.Context, tab
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
+	reqQP.Set("comp", "acl")
 	if options != nil && options.Timeout != nil {
 		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
-	reqQP.Set("comp", "acl")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["Accept"] = []string{"application/xml"}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	type wrapper struct {
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		TableACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
@@ -889,8 +869,6 @@ func (client *TableClient) setAccessPolicyHandleResponse(resp *http.Response) (T
 
 // UpdateEntity - Update entity in a table.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2019-02-02
 //   - table - The name of the table.
 //   - partitionKey - The partition key of the entity.
 //   - rowKey - The row key of the entity.
@@ -931,22 +909,22 @@ func (client *TableClient) UpdateEntityCreateRequest(ctx context.Context, table 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Timeout != nil {
-		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
-	}
 	if queryOptions != nil && queryOptions.Format != nil {
 		reqQP.Set("$format", string(*queryOptions.Format))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
-	if options != nil && options.RequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
 	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["DataServiceVersion"] = []string{"3.0"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{"2019-02-02"}
 	if options != nil && options.TableEntityProperties != nil {
 		if err := runtime.MarshalAsJSON(req, options.TableEntityProperties); err != nil {
 			return nil, err

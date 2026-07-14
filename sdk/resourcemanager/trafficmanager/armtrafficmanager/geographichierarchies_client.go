@@ -11,10 +11,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // GeographicHierarchiesClient contains the methods for the GeographicHierarchies group.
 // Don't use this type directly, use NewGeographicHierarchiesClient() instead.
+//
+// Generated from API version 2024-04-01-preview
 type GeographicHierarchiesClient struct {
 	internal *arm.Client
 }
@@ -35,8 +38,6 @@ func NewGeographicHierarchiesClient(credential azcore.TokenCredential, options *
 
 // GetDefault - Gets the default Geographic Hierarchy used by the Geographic traffic routing method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-01-preview
 //   - options - GeographicHierarchiesClientGetDefaultOptions contains the optional parameters for the GeographicHierarchiesClient.GetDefault
 //     method.
 func (client *GeographicHierarchiesClient) GetDefault(ctx context.Context, options *GeographicHierarchiesClientGetDefaultOptions) (GeographicHierarchiesClientGetDefaultResponse, error) {
@@ -69,8 +70,8 @@ func (client *GeographicHierarchiesClient) getDefaultCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

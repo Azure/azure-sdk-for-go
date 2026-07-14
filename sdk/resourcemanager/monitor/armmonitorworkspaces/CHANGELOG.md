@@ -1,0 +1,14 @@
+# Release History
+
+## 1.0.0 (2026-06-12)
+
+### Other Changes
+
+- General availability of the `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitorworkspaces` package.
+
+## 0.1.0 (2026-05-20)
+### Other Changes
+
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitorworkspaces` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).
+
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

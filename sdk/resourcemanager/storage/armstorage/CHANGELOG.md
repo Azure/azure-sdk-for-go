@@ -1,5 +1,24 @@
 # Release History
 
+## 4.1.0 (2026-06-01)
+### Features Added
+
+- New enum type `AdvancedPlatformMetricsFilterType` with values `AdvancedPlatformMetricsFilterTypeAllContainersFilter`, `AdvancedPlatformMetricsFilterTypeContainerListFilter`, `AdvancedPlatformMetricsFilterTypeContainerPrefixFilter`
+- New enum type `AdvancedPlatformMetricsRuleType` with values `AdvancedPlatformMetricsRuleTypeContainerLevelCapacityMetrics`
+- New enum type `MetricsEmitted` with values `MetricsEmittedContainerBlobCount`, `MetricsEmittedContainerUsedSize`
+- New function `NewAdvancedPlatformMetricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdvancedPlatformMetricsClient, error)`
+- New function `*AdvancedPlatformMetricsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, resource AdvancedPlatformMetricsRule, options *AdvancedPlatformMetricsClientCreateOrUpdateOptions) (AdvancedPlatformMetricsClientCreateOrUpdateResponse, error)`
+- New function `*AdvancedPlatformMetricsClient.Delete(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, options *AdvancedPlatformMetricsClientDeleteOptions) (AdvancedPlatformMetricsClientDeleteResponse, error)`
+- New function `*AdvancedPlatformMetricsClient.Get(ctx context.Context, resourceGroupName string, accountName string, advancedPlatformMetricsRuleType AdvancedPlatformMetricsRuleType, options *AdvancedPlatformMetricsClientGetOptions) (AdvancedPlatformMetricsClientGetResponse, error)`
+- New function `*AdvancedPlatformMetricsClient.NewListPager(resourceGroupName string, accountName string, options *AdvancedPlatformMetricsClientListOptions) *runtime.Pager[AdvancedPlatformMetricsClientListResponse]`
+- New function `*ClientFactory.NewAdvancedPlatformMetricsClient() *AdvancedPlatformMetricsClient`
+- New struct `AdvancedPlatformMetricsRule`
+- New struct `AdvancedPlatformMetricsRuleConfig`
+- New struct `AdvancedPlatformMetricsRuleListResult`
+- New struct `AdvancedPlatformMetricsRuleProperties`
+- New field `GuardrailBandwidthScalar`, `GuardrailIOScalar` in struct `FileShareLimits`
+
+
 ## 4.0.0 (2026-05-19)
 ### Breaking Changes
 

@@ -186,9 +186,11 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	if options.Logging.AllowedHeaders == nil {
+		options.Logging.AllowedHeaders = getAllowedHeaders()
+	}
 	return azcore.NewClient(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
-			AllowedHeaders: getAllowedHeaders(),
 			PerCall: []policy.Policy{
 				&headerPolicies{
 					enableContentResponseOnWrite: options.EnableContentResponseOnWrite,
@@ -198,8 +200,17 @@ func newClient(authPolicy policy.Policy, gem *globalEndpointManager, options *Cl
 				&globalEndpointManagerPolicy{gem: gem},
 			},
 			PerRetry: []policy.Policy{
-				authPolicy,
+				// clientRetryPolicy is listed before authPolicy so that
+				// its internal retry loop (continue inside Do) naturally
+				// re-invokes authPolicy via req.Next() on each attempt.
+				// This refreshes the Authorization header from the
+				// credential cache on every internal retry — important
+				// for short-lived AAD/MSI tokens that may expire across
+				// the cumulative same-region + cross-region retry
+				// window. Cosmos master/resource keys are unaffected
+				// because they are static.
 				&clientRetryPolicy{gem: gem},
+				authPolicy,
 			},
 			Tracing: azruntime.TracingOptions{
 				Namespace: "Microsoft.DocumentDB",
@@ -212,9 +223,11 @@ func newInternalPipeline(authPolicy policy.Policy, options *ClientOptions) azrun
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	if options.Logging.AllowedHeaders == nil {
+		options.Logging.AllowedHeaders = getAllowedHeaders()
+	}
 	return azruntime.NewPipeline(moduleName, serviceLibVersion,
 		azruntime.PipelineOptions{
-			AllowedHeaders: getAllowedHeaders(),
 			PerRetry: []policy.Policy{
 				authPolicy,
 			},
@@ -647,79 +660,12 @@ func addDefaultHeaders(req *policy.Request) {
 }
 
 func getAllowedHeaders() []string {
-	return []string{
-		cosmosHeaderRequestCharge,
-		cosmosHeaderActivityId,
-		cosmosHeaderEtag,
-		cosmosHeaderSubstatus,
-		cosmosHeaderPopulateQuotaInfo,
-		cosmosHeaderPreTriggerInclude,
-		cosmosHeaderPostTriggerInclude,
-		cosmosHeaderIndexingDirective,
-		cosmosHeaderSessionToken,
-		cosmosHeaderConsistencyLevel,
-		cosmosHeaderPrefer,
-		cosmosHeaderIsUpsert,
-		cosmosHeaderOfferThroughput,
-		cosmosHeaderOfferAutoscale,
-		cosmosHeaderQuery,
-		cosmosHeaderOfferReplacePending,
-		cosmosHeaderOfferMinimumThroughput,
-		cosmosHeaderResponseContinuationTokenLimitInKb,
-		cosmosHeaderEnableScanInQuery,
-		cosmosHeaderMaxItemCount,
-		cosmosHeaderContinuationToken,
-		cosmosHeaderPopulateIndexMetrics,
-		cosmosHeaderPopulateQueryMetrics,
-		cosmosHeaderQueryMetrics,
-		cosmosHeaderIndexUtilization,
-		cosmosHeaderCorrelatedActivityId,
-		cosmosHeaderIsBatchRequest,
-		cosmosHeaderIsBatchAtomic,
-		cosmosHeaderIsBatchOrdered,
-		cosmosHeaderSDKSupportedCapabilities,
-		headerXmsDate,
-		headerContentType,
-		headerIfMatch,
-		headerIfNoneMatch,
-		headerXmsVersion,
-		headerContentLocation,
-		headerXmsGatewayVersion,
-		headerLsn,
-		headerXmsCosmosLlsn,
-		headerXmsCosmosItemLlsn,
-		headerXmsItemLsn,
-		headerXmsCosmosQuorumAckedLlsn,
-		headerXmsCurrentReplicaSetSize,
-		headerXmsCurrentWriteQuorum,
-		headerXmsGlobalCommittedLsn,
-		headerXmsLastStateChangeUtc,
-		headerXmsNumberOfReadRegions,
-		headerXmsQuorumAckedLsn,
-		headerXmsRequestDurationMs,
-		headerXmsResourceQuota,
-		headerXmsResourceUsage,
-		headerXmsSchemaVersion,
-		headerXmsServiceVersion,
-		headerXmsTransportRequestId,
-		headerXmsXpRole,
-		headerCollectionPartitionIndex,
-		headerCollectionServiceIndex,
-		headerXmsDocumentDbPartitionKeyRangeId,
-		cosmosHeaderPhysicalPartitionId,
-		headerStrictTransportSecurity,
-		headerXmsDatabaseAccountConsumedMb,
-		headerXmsDatabaseAccountProvisionedMb,
-		headerXmsDatabaseAccountReservedMb,
-		headerXmsMaxMediaStorageUsageMb,
-		headerXmsMediaStorageUsageMb,
-		headerXmsContentPath,
-		headerXmsAltContentPath,
-		cosmosHeaderMaxContentLength,
-		cosmosHeaderIsPartitionKeyDeletePending,
-		cosmosHeaderQueryExecutionInfo,
-		headerXmsItemCount,
-		cosmosHeaderPriorityLevel,
-		cosmosHeaderThroughputBucket,
+	headers := make([]string, 0, len(allKnownHttpHeaders))
+	for _, h := range allKnownHttpHeaders {
+		if h == headerAuthorization || h == "Proxy-Authorization" || h == "Transfer-Encoding" {
+			continue
+		}
+		headers = append(headers, h)
 	}
+	return headers
 }

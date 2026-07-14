@@ -18,6 +18,8 @@ import (
 
 // SpotPlacementScoresClient contains the methods for the SpotPlacementScores group.
 // Don't use this type directly, use NewSpotPlacementScoresClient() instead.
+//
+// Generated from API version 2025-06-05
 type SpotPlacementScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSpotPlacementScoresClient(subscriptionID string, credential azcore.Token
 
 // Get - Gets Spot Placement Scores metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-05
 //   - location - The name of the Azure region.
 //   - options - SpotPlacementScoresClientGetOptions contains the optional parameters for the SpotPlacementScoresClient.Get method.
 func (client *SpotPlacementScoresClient) Get(ctx context.Context, location string, options *SpotPlacementScoresClientGetOptions) (SpotPlacementScoresClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-05")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250605)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -100,8 +100,6 @@ func (client *SpotPlacementScoresClient) getHandleResponse(resp *http.Response) 
 
 // Post - Generates placement scores for Spot VM skus.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-05
 //   - location - The name of the Azure region.
 //   - spotPlacementScoresInput - SpotPlacementScores object supplied in the body of the Post spot placement scores operation.
 //   - options - SpotPlacementScoresClientPostOptions contains the optional parameters for the SpotPlacementScoresClient.Post
@@ -144,8 +142,8 @@ func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-05")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250605)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, spotPlacementScoresInput); err != nil {

@@ -12,11 +12,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
 	"net/http"
 	"net/url"
 	"reflect"
 	"regexp"
+	"slices"
 )
 
 // AccountsServer is a fake server for instances of the armnetapp.AccountsClient type.
@@ -49,6 +50,10 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetapp.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse])
 
+	// BeginRefreshLdapBindPassword is the fake for method AccountsClient.BeginRefreshLdapBindPassword
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRefreshLdapBindPassword func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginRefreshLdapBindPasswordOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse], errResp azfake.ErrorResponder)
+
 	// BeginRenewCredentials is the fake for method AccountsClient.BeginRenewCredentials
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRenewCredentials func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginRenewCredentialsOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse], errResp azfake.ErrorResponder)
@@ -74,6 +79,7 @@ func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 		beginGetChangeKeyVaultInformation: newTracker[azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse]](),
 		newListPager:                      newTracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]](),
 		newListBySubscriptionPager:        newTracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]](),
+		beginRefreshLdapBindPassword:      newTracker[azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse]](),
 		beginRenewCredentials:             newTracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]](),
 		beginTransitionToCmk:              newTracker[azfake.PollerResponder[armnetapp.AccountsClientTransitionToCmkResponse]](),
 		beginUpdate:                       newTracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]](),
@@ -90,6 +96,7 @@ type AccountsServerTransport struct {
 	beginGetChangeKeyVaultInformation *tracker[azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse]]
 	newListPager                      *tracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]]
 	newListBySubscriptionPager        *tracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]]
+	beginRefreshLdapBindPassword      *tracker[azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse]]
 	beginRenewCredentials             *tracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]]
 	beginTransitionToCmk              *tracker[azfake.PollerResponder[armnetapp.AccountsClientTransitionToCmkResponse]]
 	beginUpdate                       *tracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]]
@@ -107,9 +114,7 @@ func (a *AccountsServerTransport) Do(req *http.Request) (*http.Response, error) 
 }
 
 func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -132,6 +137,8 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AccountsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
+			case "AccountsClient.BeginRefreshLdapBindPassword":
+				res.resp, res.err = a.dispatchBeginRefreshLdapBindPassword(req)
 			case "AccountsClient.BeginRenewCredentials":
 				res.resp, res.err = a.dispatchBeginRenewCredentials(req)
 			case "AccountsClient.BeginTransitionToCmk":
@@ -143,10 +150,7 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -200,7 +204,7 @@ func (a *AccountsServerTransport) dispatchBeginChangeKeyVault(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginChangeKeyVault.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -248,7 +252,7 @@ func (a *AccountsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		a.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -292,7 +296,7 @@ func (a *AccountsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -326,7 +330,7 @@ func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Account, req)
@@ -369,7 +373,7 @@ func (a *AccountsServerTransport) dispatchBeginGetChangeKeyVaultInformation(req 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginGetChangeKeyVaultInformation.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
@@ -407,7 +411,7 @@ func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -440,13 +444,57 @@ func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		a.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchBeginRefreshLdapBindPassword(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginRefreshLdapBindPassword == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshLdapBindPassword not implemented")}
+	}
+	beginRefreshLdapBindPassword := a.beginRefreshLdapBindPassword.get(req)
+	if beginRefreshLdapBindPassword == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshLdapBindPassword`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginRefreshLdapBindPassword(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRefreshLdapBindPassword = &respr
+		a.beginRefreshLdapBindPassword.add(req, beginRefreshLdapBindPassword)
+	}
+
+	resp, err := server.PollerResponderNext(beginRefreshLdapBindPassword, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginRefreshLdapBindPassword.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRefreshLdapBindPassword) {
+		a.beginRefreshLdapBindPassword.remove(req)
+	}
+
 	return resp, nil
 }
 
@@ -483,7 +531,7 @@ func (a *AccountsServerTransport) dispatchBeginRenewCredentials(req *http.Reques
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginRenewCredentials.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -537,7 +585,7 @@ func (a *AccountsServerTransport) dispatchBeginTransitionToCmk(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginTransitionToCmk.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -585,7 +633,7 @@ func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		a.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

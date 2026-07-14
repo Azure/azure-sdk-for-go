@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"time"
 )
 
@@ -71,9 +72,7 @@ func (m *MaintenancesServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (m *MaintenancesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -97,10 +96,7 @@ func (m *MaintenancesServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -138,7 +134,7 @@ func (m *MaintenancesServerTransport) dispatchGet(req *http.Request) (*http.Resp
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Maintenance, req)
@@ -175,7 +171,7 @@ func (m *MaintenancesServerTransport) dispatchInitiateChecks(req *http.Request) 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Maintenance, req)
@@ -206,29 +202,13 @@ func (m *MaintenancesServerTransport) dispatchNewListPager(req *http.Request) (*
 		if err != nil {
 			return nil, err
 		}
-		stateNameUnescaped, err := url.QueryUnescape(qp.Get("stateName"))
+		stateNameParam := getOptional(armavs.MaintenanceStateName(qp.Get("stateName")))
+		statusParam := getOptional(armavs.MaintenanceStatusFilter(qp.Get("status")))
+		fromParam, err := parseOptional(qp.Get("from"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 		if err != nil {
 			return nil, err
 		}
-		stateNameParam := getOptional(armavs.MaintenanceStateName(stateNameUnescaped))
-		statusUnescaped, err := url.QueryUnescape(qp.Get("status"))
-		if err != nil {
-			return nil, err
-		}
-		statusParam := getOptional(armavs.MaintenanceStatusFilter(statusUnescaped))
-		fromUnescaped, err := url.QueryUnescape(qp.Get("from"))
-		if err != nil {
-			return nil, err
-		}
-		fromParam, err := parseOptional(fromUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
-		if err != nil {
-			return nil, err
-		}
-		toUnescaped, err := url.QueryUnescape(qp.Get("to"))
-		if err != nil {
-			return nil, err
-		}
-		toParam, err := parseOptional(toUnescaped, func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
+		toParam, err := parseOptional(qp.Get("to"), func(v string) (time.Time, error) { return time.Parse(time.RFC3339Nano, v) })
 		if err != nil {
 			return nil, err
 		}
@@ -252,7 +232,7 @@ func (m *MaintenancesServerTransport) dispatchNewListPager(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		m.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -293,7 +273,7 @@ func (m *MaintenancesServerTransport) dispatchReschedule(req *http.Request) (*ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Maintenance, req)
@@ -334,7 +314,7 @@ func (m *MaintenancesServerTransport) dispatchSchedule(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Maintenance, req)

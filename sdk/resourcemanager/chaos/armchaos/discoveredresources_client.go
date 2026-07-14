@@ -18,6 +18,8 @@ import (
 
 // DiscoveredResourcesClient contains the methods for the DiscoveredResources group.
 // Don't use this type directly, use NewDiscoveredResourcesClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type DiscoveredResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDiscoveredResourcesClient(subscriptionID string, credential azcore.Token
 
 // Get - Get a discovered resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - discoveredResourceName - Name of the discovered resource.
@@ -93,8 +93,8 @@ func (client *DiscoveredResourcesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *DiscoveredResourcesClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByWorkspacePager - Get a list of discovered resources for a workspace.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - options - DiscoveredResourcesClientListByWorkspaceOptions contains the optional parameters for the DiscoveredResourcesClient.NewListByWorkspacePager
@@ -158,8 +156,8 @@ func (client *DiscoveredResourcesClient) listByWorkspaceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

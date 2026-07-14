@@ -30,7 +30,7 @@ func ExampleProvisionedNetworksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armavs.ProvisionedNetworksClientGetResponse{
-	// 	ProvisionedNetwork: &armavs.ProvisionedNetwork{
+	// 	ProvisionedNetwork: armavs.ProvisionedNetwork{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.AVS/privateClouds/cloud1/provisionedNetworks/vsan"),
 	// 		Name: to.Ptr("vsan"),
 	// 		Properties: &armavs.ProvisionedNetworkProperties{

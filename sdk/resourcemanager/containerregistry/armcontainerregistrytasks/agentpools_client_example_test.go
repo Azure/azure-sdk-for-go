@@ -39,13 +39,13 @@ func ExampleAgentPoolsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.AgentPoolsClientCreateResponse{
-	// 	AgentPool: &armcontainerregistrytasks.AgentPool{
+	// 	AgentPool: armcontainerregistrytasks.AgentPool{
 	// 		Name: to.Ptr("myAgentPool"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/agentPools"),
 	// 		ID: to.Ptr("/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourceGroups/huanwudfwestgroup/providers/Microsoft.ContainerRegistry/registries/huanglidfwest01/agentPools/testagent26"),
@@ -77,7 +77,7 @@ func ExampleAgentPoolsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -100,7 +100,7 @@ func ExampleAgentPoolsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.AgentPoolsClientGetResponse{
-	// 	AgentPool: &armcontainerregistrytasks.AgentPool{
+	// 	AgentPool: armcontainerregistrytasks.AgentPool{
 	// 		Name: to.Ptr("myAgentPool"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/agentPools"),
 	// 		ID: to.Ptr("/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourceGroups/huanwudfwestgroup/providers/Microsoft.ContainerRegistry/registries/huanglidfwest01/agentPools/testagent26"),
@@ -134,7 +134,7 @@ func ExampleAgentPoolsClient_GetQueueStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.AgentPoolsClientGetQueueStatusResponse{
-	// 	AgentPoolQueueStatus: &armcontainerregistrytasks.AgentPoolQueueStatus{
+	// 	AgentPoolQueueStatus: armcontainerregistrytasks.AgentPoolQueueStatus{
 	// 		Count: to.Ptr[int32](10),
 	// 	},
 	// }
@@ -204,13 +204,13 @@ func ExampleAgentPoolsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistrytasks.AgentPoolsClientUpdateResponse{
-	// 	AgentPool: &armcontainerregistrytasks.AgentPool{
+	// 	AgentPool: armcontainerregistrytasks.AgentPool{
 	// 		Name: to.Ptr("myAgentPool"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/agentPools"),
 	// 		ID: to.Ptr("/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourceGroups/huanwudfwestgroup/providers/Microsoft.ContainerRegistry/registries/huanglidfwest01/agentPools/testagent26"),

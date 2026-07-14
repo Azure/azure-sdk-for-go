@@ -18,6 +18,8 @@ import (
 
 // GetUsagesInLocationClient contains the methods for the GetUsagesInLocation group.
 // Don't use this type directly, use NewGetUsagesInLocationClient() instead.
+//
+// Generated from API version 2025-05-01
 type GetUsagesInLocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewGetUsagesInLocationClient(subscriptionID string, credential azcore.Token
 // NewListPager - Lists subscription core usages for all skus used in a location, for a given type of quota.
 //
 // List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
-//
-// Generated from API version 2025-05-01
 //   - location - The location name.
 //   - options - GetUsagesInLocationClientListOptions contains the optional parameters for the GetUsagesInLocationClient.NewListPager
 //     method.
@@ -86,8 +86,8 @@ func (client *GetUsagesInLocationClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

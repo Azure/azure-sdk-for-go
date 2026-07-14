@@ -4,6 +4,10 @@
 
 package armslis
 
+const (
+	version20250301Preview string = "2025-03-01-preview"
+)
+
 // Category - Defines the category of an SLI
 type Category string
 
@@ -29,25 +33,25 @@ const (
 	// ConditionOperatorContains - Contains the value.
 	ConditionOperatorContains ConditionOperator = "contains"
 	// ConditionOperatorEqual - Equal to.
-	ConditionOperatorEqual ConditionOperator = "=="
+	ConditionOperatorEqual ConditionOperator = "eq"
 	// ConditionOperatorGreaterThan - Greater than.
-	ConditionOperatorGreaterThan ConditionOperator = ">"
+	ConditionOperatorGreaterThan ConditionOperator = "gt"
 	// ConditionOperatorGreaterThanOrEqual - Greater than or equal to.
-	ConditionOperatorGreaterThanOrEqual ConditionOperator = ">="
-	// ConditionOperatorIn - In operator.
-	ConditionOperatorIn ConditionOperator = "@in"
+	ConditionOperatorGreaterThanOrEqual ConditionOperator = "gte"
+	// ConditionOperatorIn - Matches when `value` is one of the items in the `^^`-delimited list (for example, `value` = "east^^west^^north").
+	ConditionOperatorIn ConditionOperator = "in"
 	// ConditionOperatorLessThan - Less than.
-	ConditionOperatorLessThan ConditionOperator = "<"
+	ConditionOperatorLessThan ConditionOperator = "lt"
 	// ConditionOperatorLessThanOrEqual - Less than or equal to.
-	ConditionOperatorLessThanOrEqual ConditionOperator = "<="
+	ConditionOperatorLessThanOrEqual ConditionOperator = "lte"
 	// ConditionOperatorNotContains - Does not contain the value.
-	ConditionOperatorNotContains ConditionOperator = "!contains"
+	ConditionOperatorNotContains ConditionOperator = "notcontains"
 	// ConditionOperatorNotEqual - Not equal to.
-	ConditionOperatorNotEqual ConditionOperator = "!="
-	// ConditionOperatorNotIn - Not in.
-	ConditionOperatorNotIn ConditionOperator = "!in"
+	ConditionOperatorNotEqual ConditionOperator = "ne"
+	// ConditionOperatorNotIn - Matches when `value` is none of the items in the `^^`-delimited list (for example, `value` = "east^^west^^north").
+	ConditionOperatorNotIn ConditionOperator = "notin"
 	// ConditionOperatorNotStartsWith - Does not start with.
-	ConditionOperatorNotStartsWith ConditionOperator = "!startswith"
+	ConditionOperatorNotStartsWith ConditionOperator = "notstartswith"
 	// ConditionOperatorStartsWith - Starts with.
 	ConditionOperatorStartsWith ConditionOperator = "startswith"
 )
@@ -179,20 +183,23 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 type SamplingType string
 
 const (
-	// SamplingTypeAvg - Average value.
-	SamplingTypeAvg SamplingType = "avg"
+	// SamplingTypeAverage - Average value.
+	SamplingTypeAverage SamplingType = "Average"
+	// SamplingTypeCount - Count of occurrences.
+	SamplingTypeCount SamplingType = "Count"
 	// SamplingTypeMax - Maximum value.
-	SamplingTypeMax SamplingType = "max"
+	SamplingTypeMax SamplingType = "Max"
 	// SamplingTypeMin - Minimum value.
-	SamplingTypeMin SamplingType = "min"
+	SamplingTypeMin SamplingType = "Min"
 	// SamplingTypeSum - Summation.
-	SamplingTypeSum SamplingType = "sum"
+	SamplingTypeSum SamplingType = "Sum"
 )
 
 // PossibleSamplingTypeValues returns the possible values for the SamplingType const type.
 func PossibleSamplingTypeValues() []SamplingType {
 	return []SamplingType{
-		SamplingTypeAvg,
+		SamplingTypeAverage,
+		SamplingTypeCount,
 		SamplingTypeMax,
 		SamplingTypeMin,
 		SamplingTypeSum,
@@ -296,13 +303,13 @@ type WindowUptimeCriteriaComparator string
 
 const (
 	// WindowUptimeCriteriaComparatorGreaterThan - Greater than the target value.
-	WindowUptimeCriteriaComparatorGreaterThan WindowUptimeCriteriaComparator = ">"
+	WindowUptimeCriteriaComparatorGreaterThan WindowUptimeCriteriaComparator = "gt"
 	// WindowUptimeCriteriaComparatorGreaterThanOrEqual - Greater than or equal to the target value.
-	WindowUptimeCriteriaComparatorGreaterThanOrEqual WindowUptimeCriteriaComparator = ">="
+	WindowUptimeCriteriaComparatorGreaterThanOrEqual WindowUptimeCriteriaComparator = "gte"
 	// WindowUptimeCriteriaComparatorLessThan - Less than the target value.
-	WindowUptimeCriteriaComparatorLessThan WindowUptimeCriteriaComparator = "<"
+	WindowUptimeCriteriaComparatorLessThan WindowUptimeCriteriaComparator = "lt"
 	// WindowUptimeCriteriaComparatorLessThanOrEqual - Less than or equal to the target value.
-	WindowUptimeCriteriaComparatorLessThanOrEqual WindowUptimeCriteriaComparator = "<="
+	WindowUptimeCriteriaComparatorLessThanOrEqual WindowUptimeCriteriaComparator = "lte"
 )
 
 // PossibleWindowUptimeCriteriaComparatorValues returns the possible values for the WindowUptimeCriteriaComparator const type.

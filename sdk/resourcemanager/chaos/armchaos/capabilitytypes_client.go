@@ -18,6 +18,8 @@ import (
 
 // CapabilityTypesClient contains the methods for the CapabilityTypes group.
 // Don't use this type directly, use NewCapabilityTypesClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type CapabilityTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCapabilityTypesClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get a Capability Type resource for given Target Type and location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - capabilityTypeName - String that represents a Capability Type resource name.
@@ -93,8 +93,8 @@ func (client *CapabilityTypesClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *CapabilityTypesClient) getHandleResponse(resp *http.Response) (Cap
 }
 
 // NewListPager - Get a list of Capability Type resources for given Target Type and location.
-//
-// Generated from API version 2026-05-01-preview
 //   - location - The name of the Azure region.
 //   - targetTypeName - String that represents a Target Type resource name.
 //   - options - CapabilityTypesClientListOptions contains the optional parameters for the CapabilityTypesClient.NewListPager
@@ -158,11 +156,11 @@ func (client *CapabilityTypesClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

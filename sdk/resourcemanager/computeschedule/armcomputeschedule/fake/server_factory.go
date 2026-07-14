@@ -66,23 +66,23 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "OccurrenceExtensionClient":
-		initServer(s, &s.trOccurrenceExtensionServer, func() *OccurrenceExtensionServerTransport {
+		initServer(&s.trMu, &s.trOccurrenceExtensionServer, func() *OccurrenceExtensionServerTransport {
 			return NewOccurrenceExtensionServerTransport(&s.srv.OccurrenceExtensionServer)
 		})
 		resp, err = s.trOccurrenceExtensionServer.Do(req)
 	case "OccurrencesClient":
-		initServer(s, &s.trOccurrencesServer, func() *OccurrencesServerTransport { return NewOccurrencesServerTransport(&s.srv.OccurrencesServer) })
+		initServer(&s.trMu, &s.trOccurrencesServer, func() *OccurrencesServerTransport { return NewOccurrencesServerTransport(&s.srv.OccurrencesServer) })
 		resp, err = s.trOccurrencesServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ScheduledActionExtensionClient":
-		initServer(s, &s.trScheduledActionExtensionServer, func() *ScheduledActionExtensionServerTransport {
+		initServer(&s.trMu, &s.trScheduledActionExtensionServer, func() *ScheduledActionExtensionServerTransport {
 			return NewScheduledActionExtensionServerTransport(&s.srv.ScheduledActionExtensionServer)
 		})
 		resp, err = s.trScheduledActionExtensionServer.Do(req)
 	case "ScheduledActionsClient":
-		initServer(s, &s.trScheduledActionsServer, func() *ScheduledActionsServerTransport {
+		initServer(&s.trMu, &s.trScheduledActionsServer, func() *ScheduledActionsServerTransport {
 			return NewScheduledActionsServerTransport(&s.srv.ScheduledActionsServer)
 		})
 		resp, err = s.trScheduledActionsServer.Do(req)
@@ -95,12 +95,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

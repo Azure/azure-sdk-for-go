@@ -16,14 +16,14 @@ func unmarshalStorageClassTypePropertiesClassification(rawMsg json.RawMessage) (
 	}
 	var b StorageClassTypePropertiesClassification
 	switch m["type"] {
-	case string(SCTypeNative):
-		b = &NativeStorageClassTypeProperties{}
-	case string(SCTypeRWX):
-		b = &RwxStorageClassTypeProperties{}
 	case string(SCTypeBlob):
 		b = &BlobStorageClassTypeProperties{}
 	case string(SCTypeNFS):
 		b = &NfsStorageClassTypeProperties{}
+	case string(SCTypeNative):
+		b = &NativeStorageClassTypeProperties{}
+	case string(SCTypeRWX):
+		b = &RwxStorageClassTypeProperties{}
 	case string(SCTypeSMB):
 		b = &SmbStorageClassTypeProperties{}
 	default:

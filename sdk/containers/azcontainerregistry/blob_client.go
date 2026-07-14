@@ -28,8 +28,6 @@ type BlobClient struct {
 // CancelUpload - Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished
 // uploads will eventually timeout.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - options - BlobClientCancelUploadOptions contains the optional parameters for the BlobClient.CancelUpload method.
 func (client *BlobClient) CancelUpload(ctx context.Context, location string, options *BlobClientCancelUploadOptions) (BlobClientCancelUploadResponse, error) {
@@ -65,8 +63,6 @@ func (client *BlobClient) cancelUploadCreateRequest(ctx context.Context, locatio
 
 // CheckBlobExists - Same as GET, except only the headers are returned.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - options - BlobClientCheckBlobExistsOptions contains the optional parameters for the BlobClient.CheckBlobExists method.
@@ -127,8 +123,6 @@ func (client *BlobClient) checkBlobExistsHandleResponse(resp *http.Response) (Bl
 
 // CheckChunkExists - Same as GET, except only the headers are returned.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - rangeParam - Format : bytes=-, HTTP Range header specifying blob chunk.
@@ -192,8 +186,6 @@ func (client *BlobClient) checkChunkExistsHandleResponse(resp *http.Response) (B
 // completeUpload - Complete the upload, providing all the data in the body, if necessary. A request without a body will just
 // complete the upload with previously uploaded content.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - digest - Digest of a BLOB
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.completeUpload method.
@@ -227,7 +219,7 @@ func (client *BlobClient) completeUploadCreateRequest(ctx context.Context, diges
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("digest", digest)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -249,8 +241,6 @@ func (client *BlobClient) completeUploadHandleResponse(resp *http.Response) (Blo
 
 // DeleteBlob - Removes an already uploaded blob.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - options - BlobClientDeleteBlobOptions contains the optional parameters for the BlobClient.DeleteBlob method.
@@ -303,8 +293,6 @@ func (client *BlobClient) deleteBlobHandleResponse(resp *http.Response) (BlobCli
 
 // GetBlob - Retrieve the blob from the registry identified by digest.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - options - BlobClientGetBlobOptions contains the optional parameters for the BlobClient.GetBlob method.
@@ -368,8 +356,6 @@ func (client *BlobClient) getBlobHandleResponse(resp *http.Response) (BlobClient
 // requests. Support can be detected by issuing a HEAD request. If the header
 // Accept-Range: bytes is returned, range requests can be used to fetch partial content.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - digest - Digest of a BLOB
 //   - rangeParam - Format : bytes=-, HTTP Range header specifying blob chunk.
@@ -434,8 +420,6 @@ func (client *BlobClient) getChunkHandleResponse(resp *http.Response) (BlobClien
 // GetUploadStatus - Retrieve status of upload identified by uuid. The primary purpose of this endpoint is to resolve the
 // current status of a resumable upload.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - options - BlobClientGetUploadStatusOptions contains the optional parameters for the BlobClient.GetUploadStatus method.
 func (client *BlobClient) GetUploadStatus(ctx context.Context, location string, options *BlobClientGetUploadStatusOptions) (BlobClientGetUploadStatusResponse, error) {
@@ -484,8 +468,6 @@ func (client *BlobClient) getUploadStatusHandleResponse(resp *http.Response) (Bl
 
 // MountBlob - Mount a blob identified by the mount parameter from another repository.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - from - Name of the source repository.
 //   - mount - Digest of blob to mount from the source repository.
@@ -524,7 +506,7 @@ func (client *BlobClient) mountBlobCreateRequest(ctx context.Context, name strin
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("from", from)
 	reqQP.Set("mount", mount)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -546,8 +528,6 @@ func (client *BlobClient) mountBlobHandleResponse(resp *http.Response) (BlobClie
 
 // StartUpload - Initiate a resumable blob upload with an empty request body.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - name - Name of the image (including the namespace)
 //   - options - BlobClientStartUploadOptions contains the optional parameters for the BlobClient.StartUpload method.
 func (client *BlobClient) StartUpload(ctx context.Context, name string, options *BlobClientStartUploadOptions) (BlobClientStartUploadResponse, error) {
@@ -602,8 +582,6 @@ func (client *BlobClient) startUploadHandleResponse(resp *http.Response) (BlobCl
 
 // uploadChunk - Upload a stream of data without completing the upload.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - location - Link acquired from upload start or previous chunk. Note, do not include initial / (must do substring(1) )
 //   - chunkData - Raw data of blob
 //   - options - blobClientUploadChunkOptions contains the optional parameters for the BlobClient.uploadChunk method.

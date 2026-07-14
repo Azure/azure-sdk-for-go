@@ -4,6 +4,10 @@
 
 package armcontainerregistrytasks
 
+const (
+	version20250301Preview string = "2025-03-01-preview"
+)
+
 // Architecture - The OS architecture.
 type Architecture string
 

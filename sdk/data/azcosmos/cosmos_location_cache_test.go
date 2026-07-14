@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strings"
 	"testing"
 	"time"
 )
@@ -17,7 +18,7 @@ var loc3Endpoint *url.URL
 var loc4Endpoint *url.URL
 var writeEndpoints []url.URL
 var readEndpoints []url.URL
-var endpointsByLoc map[string]url.URL
+var endpointsByLoc map[regionId]url.URL
 var loc1 accountRegion
 var loc2 accountRegion
 var loc3 accountRegion
@@ -52,19 +53,35 @@ func TestMain(m *testing.M) {
 		os.Exit(1)
 	}
 
-	loc1 = accountRegion{Name: "location1", Endpoint: loc1Endpoint.String()}
-	loc2 = accountRegion{Name: "location2", Endpoint: loc2Endpoint.String()}
-	loc3 = accountRegion{Name: "location3", Endpoint: loc3Endpoint.String()}
-	loc4 = accountRegion{Name: "location4", Endpoint: loc4Endpoint.String()}
+	loc1 = accountRegion{Name: newRegionId("location1"), Endpoint: loc1Endpoint.String()}
+	loc2 = accountRegion{Name: newRegionId("location2"), Endpoint: loc2Endpoint.String()}
+	loc3 = accountRegion{Name: newRegionId("location3"), Endpoint: loc3Endpoint.String()}
+	loc4 = accountRegion{Name: newRegionId("location4"), Endpoint: loc4Endpoint.String()}
 
 	writeEndpoints = []url.URL{*loc1Endpoint, *loc2Endpoint, *loc3Endpoint}
 	readEndpoints = []url.URL{*loc1Endpoint, *loc2Endpoint, *loc4Endpoint}
-	endpointsByLoc = map[string]url.URL{"location1": *loc1Endpoint, "location2": *loc2Endpoint, "location3": *loc3Endpoint, "location4": *loc4Endpoint}
+	endpointsByLoc = map[regionId]url.URL{newRegionId("location1"): *loc1Endpoint, newRegionId("location2"): *loc2Endpoint, newRegionId("location3"): *loc3Endpoint, newRegionId("location4"): *loc4Endpoint}
 
 	prefLocs = make([]string, 0)
 
+	// Shrink pkrange cache retry delays globally for this test binary so
+	// tests that exercise the per-page retry path don't sleep for seconds.
+	// Production is unaffected — tests run in a separate process — but any
+	// in-process caller in the same `go test` run sees the shrunken values.
+	changeFeedPageRetryBaseDelay = 1 * time.Millisecond
+	changeFeedPageRetryJitter = 1 * time.Millisecond
+	changeFeedPageRetryMaxDelay = 5 * time.Millisecond
+
 	status := m.Run()
 	os.Exit(status)
+}
+
+func endpointListToString(endpoints []url.URL) string {
+	var endpointStr strings.Builder
+	for _, endpoint := range endpoints {
+		endpointStr.WriteString(endpoint.String() + ",")
+	}
+	return endpointStr.String()
 }
 
 func CreateDatabaseAccount(useMultipleWriteLocations bool, enforceSingleMasterWriteLoc bool) accountProperties {
@@ -86,7 +103,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 	lc := ResetLocationCache()
 	var firstCheckTime time.Time
 	// mark endpoint unavailable for first time
-	err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
+	_, err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -103,7 +120,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 	}
 	// mark endpoint unavailable for second time
 	time.Sleep(100 * time.Millisecond)
-	err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -123,7 +140,7 @@ func TestMarkEndpointUnavailable(t *testing.T) {
 func TestRefreshStaleEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
 	// mark endpoint unavailable for first time
-	err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
+	_, err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -142,11 +159,11 @@ func TestRefreshStaleEndpoints(t *testing.T) {
 
 func TestIsEndpointUnavailable(t *testing.T) {
 	lc := ResetLocationCache()
-	err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
+	_, err := lc.markEndpointUnavailableForRead(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
-	err = lc.markEndpointUnavailableForWrite(*loc2Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc2Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
@@ -197,7 +214,7 @@ func TestGetLocation(t *testing.T) {
 			continue
 		}
 		expected, actual := region.Name, lc.getLocation(*url)
-		if expected != actual {
+		if !expected.Equal(actual) {
 			t.Errorf("Expected GetLocation to return Write Region %s, but was %s", expected, actual)
 		}
 	}
@@ -209,7 +226,7 @@ func TestGetLocation(t *testing.T) {
 			continue
 		}
 		expected, actual := region.Name, lc.getLocation(*url)
-		if expected != actual {
+		if !expected.Equal(actual) {
 			t.Errorf("Expected GetLocation to return Read Region %s, but was %s", expected, actual)
 		}
 	}
@@ -254,26 +271,27 @@ func TestGetPrefAvailableEndpoints(t *testing.T) {
 		t.Fatalf("Received error Reading DB account: %s", err.Error())
 	}
 	// marks loc1 unavailable, which will put it last in the preferred available endpoint list
-	err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
 	// loc1: unavailable, loc2: available, loc5: non-existent
-	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, "location5"}
-	prefWriteEndpoints := lc.getPrefAvailableEndpoints(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, write, lc.defaultEndpoint)
-	// loc2: preferred + available, default: fallback endpoint, loc1: unavailable + preferred
-	expectedWriteEndpoints := []*url.URL{loc2Endpoint, defaultEndpoint, loc1Endpoint}
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, newRegionId("location5")}
+	prefWriteEndpoints := lc.getPrefAvailableEndpointsLocked(lc.locationInfo.availWriteEndpointsByLocation, lc.locationInfo.availWriteLocations, lc.locationInfo.prefLocations, write, lc.defaultEndpoint)
+	prefWriteEndpointsString := endpointListToString(prefWriteEndpoints)
+	// loc2: preferred + available; loc1: unavailable + preferred (moved to
+	// tail). The trailing default-endpoint fallback was removed when we
+	// stopped routing data-plane traffic to the customer-supplied endpoint.
+	expectedWriteEndpoints := endpointListToString([]url.URL{*loc2Endpoint, *loc1Endpoint})
 
-	for i, endpoint := range expectedWriteEndpoints {
-		if endpoint.String() != prefWriteEndpoints[i].String() {
-			t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), prefWriteEndpoints[i].String())
-		}
+	if prefWriteEndpointsString != expectedWriteEndpoints {
+		t.Errorf("Expected preferred available write endpoints to be %s, but was %s", expectedWriteEndpoints, prefWriteEndpointsString)
 	}
 }
 
 func TestReadEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
-	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	err := lc.databaseAccountRead(dbAcct)
 	if err != nil {
@@ -281,47 +299,40 @@ func TestReadEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	expectedReadEndpoints := []*url.URL{loc2Endpoint, loc4Endpoint, loc1Endpoint}
+	// Previously the code skipped loc1 in the main pref loop (because it
+	// equalled the write fallback), pushing it to the tail. Now loc1 is
+	// included in preferred order, giving a more intuitive result.
+	expectedReadEndpoints := endpointListToString([]url.URL{*loc1Endpoint, *loc2Endpoint, *loc4Endpoint})
 	actualReadEndpoints, err := lc.readEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting read endpoints: %s", err.Error())
 	}
-	if len(expectedReadEndpoints) != len(actualReadEndpoints) {
-		t.Errorf("Expected %d read endpoints, but got %d", len(expectedReadEndpoints), len(actualReadEndpoints))
-	} else {
-		for i, endpoint := range expectedReadEndpoints {
-			if endpoint.String() != actualReadEndpoints[i].String() {
-				t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), actualReadEndpoints[i].String())
-			}
-		}
+	actualReadEndpointsOrder := endpointListToString(actualReadEndpoints)
+	if actualReadEndpointsOrder != expectedReadEndpoints {
+		t.Errorf("Expected read endpoints %s, but was %s", expectedReadEndpoints, actualReadEndpointsOrder)
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	err = lc.markEndpointUnavailableForRead(*loc2Endpoint)
+	_, err = lc.markEndpointUnavailableForRead(*loc2Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
-	expectedReadEndpoints = []*url.URL{loc4Endpoint, loc1Endpoint, loc2Endpoint}
+	// loc2 is now unavailable, so it gets moved to the end of the list
+	expectedReadEndpoints = endpointListToString([]url.URL{*loc1Endpoint, *loc4Endpoint, *loc2Endpoint})
 	actualReadEndpoints, err = lc.readEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting read endpoints: %s", err.Error())
 	}
-	if len(expectedReadEndpoints) != len(actualReadEndpoints) {
-		t.Errorf("Expected %d read endpoints, but got %d", len(expectedReadEndpoints), len(actualReadEndpoints))
-	} else {
-		for i, endpoint := range expectedReadEndpoints {
-			if endpoint.String() != actualReadEndpoints[i].String() {
-				t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), actualReadEndpoints[i].String())
-			}
-		}
+	actualReadEndpointsOrder = endpointListToString(actualReadEndpoints)
+	if actualReadEndpointsOrder != expectedReadEndpoints {
+		t.Errorf("Expected read endpoints %s, but was %s", expectedReadEndpoints, actualReadEndpointsOrder)
 	}
-
 }
 
 func TestWriteEndpoints(t *testing.T) {
 	lc := ResetLocationCache()
 	lc.enableMultipleWriteLocations = true
-	lc.locationInfo.prefLocations = []string{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, loc3.Name, loc4.Name}
 	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
 	err := lc.databaseAccountRead(dbAcct)
 	if err != nil {
@@ -329,7 +340,9 @@ func TestWriteEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	expectedWriteEndpoints := []*url.URL{loc1Endpoint, loc2Endpoint, loc3Endpoint, defaultEndpoint}
+	// Trailing default-endpoint fallback was removed: route lists must
+	// contain only regional endpoints.
+	expectedWriteEndpoints := []*url.URL{loc1Endpoint, loc2Endpoint, loc3Endpoint}
 	actualWriteEndpoints, err := lc.writeEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting write endpoints: %s", err.Error())
@@ -345,11 +358,11 @@ func TestWriteEndpoints(t *testing.T) {
 	}
 
 	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
-	err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
+	_, err = lc.markEndpointUnavailableForWrite(*loc1Endpoint)
 	if err != nil {
 		t.Fatalf("Received error marking endpoint unavailable: %s", err.Error())
 	}
-	expectedWriteEndpoints = []*url.URL{loc2Endpoint, loc3Endpoint, defaultEndpoint, loc1Endpoint}
+	expectedWriteEndpoints = []*url.URL{loc2Endpoint, loc3Endpoint, loc1Endpoint}
 	actualWriteEndpoints, err = lc.writeEndpoints()
 	if err != nil {
 		t.Fatalf("Received error getting write endpoints: %s", err.Error())
@@ -362,5 +375,97 @@ func TestWriteEndpoints(t *testing.T) {
 				t.Errorf("Expected endpoint %s, but was %s", endpoint.String(), actualWriteEndpoints[i].String())
 			}
 		}
+	}
+}
+
+func TestReadEndpointsUsesDefaultEndpointAsFallback(t *testing.T) {
+	lc := ResetLocationCache()
+	lc.enableMultipleWriteLocations = true
+	lc.locationInfo.prefLocations = []regionId{loc1.Name, loc2.Name, loc3.Name}
+	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
+	err := lc.databaseAccountRead(dbAcct)
+	if err != nil {
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
+
+	// Get write endpoints - loc1 should be first (most preferred)
+	actualWriteEndpoints, err := lc.writeEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting write endpoints: %s", err.Error())
+	}
+
+	// Get read endpoints
+	actualReadEndpoints, err := lc.readEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting read endpoints: %s", err.Error())
+	}
+
+	// Assert the expected ordering of endpoints
+	actualWriteEndpointsOrder := endpointListToString(actualWriteEndpoints)
+	actualReadEndpointsOrder := endpointListToString(actualReadEndpoints)
+
+	// The correct order is:
+	// For write: loc1, loc2, loc3 (no default endpoint - traffic is routed
+	// through regional endpoints only; the default endpoint is excluded from
+	// the route list per side #1's refactor)
+	// For read: loc1, loc2
+	// loc3 is not enabled for read, and loc4 (which IS enabled for read) is not in the preferred locations list
+	expectedWriteEndpointOrder := endpointListToString([]url.URL{*loc1Endpoint, *loc2Endpoint, *loc3Endpoint})
+	expectedReadEndpointOrder := endpointListToString([]url.URL{*loc1Endpoint, *loc2Endpoint})
+
+	if actualWriteEndpointsOrder != expectedWriteEndpointOrder {
+		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointsOrder)
+	}
+
+	if actualReadEndpointsOrder != expectedReadEndpointOrder {
+		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointsOrder)
+	}
+}
+
+func TestWriteEndpointUsedAsFallbackForRead(t *testing.T) {
+	lc := ResetLocationCache()
+	lc.enableMultipleWriteLocations = true
+	lc.locationInfo.prefLocations = []regionId{loc3.Name, loc2.Name, loc1.Name}
+	dbAcct := CreateDatabaseAccount(lc.enableMultipleWriteLocations, false)
+	err := lc.databaseAccountRead(dbAcct)
+	if err != nil {
+		t.Fatalf("Received error Reading DB account: %s", err.Error())
+	}
+
+	lc.lastUpdateTime = time.Now().Add(-1*defaultExpirationTime - 1*time.Second)
+
+	// Get write endpoints - loc1 should be first (most preferred)
+	actualWriteEndpoints, err := lc.writeEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting write endpoints: %s", err.Error())
+	}
+
+	// Get read endpoints
+	actualReadEndpoints, err := lc.readEndpoints()
+	if err != nil {
+		t.Fatalf("Received error getting read endpoints: %s", err.Error())
+	}
+
+	// Assert the expected ordering of endpoints
+	actualWriteEndpointsOrder := endpointListToString(actualWriteEndpoints)
+	actualReadEndpointsOrder := endpointListToString(actualReadEndpoints)
+
+	// The correct order is:
+	// For write: loc3, loc2, loc1 (no default endpoint - side #1 routes only
+	// through regional endpoints)
+	// For read: loc2, loc1
+	// loc3 is not enabled for read; the write-fallback approach of appending
+	// the most-preferred write endpoint to reads was removed in side #1's refactor.
+	expectedWriteEndpointOrder := endpointListToString([]url.URL{*loc3Endpoint, *loc2Endpoint, *loc1Endpoint})
+	expectedReadEndpointOrder := endpointListToString([]url.URL{*loc2Endpoint, *loc1Endpoint})
+
+	if actualWriteEndpointsOrder != expectedWriteEndpointOrder {
+		t.Errorf("Expected write endpoint order %s, but was %s", expectedWriteEndpointOrder, actualWriteEndpointsOrder)
+	}
+
+	if actualReadEndpointsOrder != expectedReadEndpointOrder {
+		t.Errorf("Expected read endpoint order %s, but was %s", expectedReadEndpointOrder, actualReadEndpointsOrder)
 	}
 }

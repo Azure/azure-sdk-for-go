@@ -219,13 +219,10 @@ type ScenarioConfigurationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ScenarioConfigurationsClientExecuteResponse contains the response from method ScenarioConfigurationsClient.Execute.
+// ScenarioConfigurationsClientExecuteResponse contains the response from method ScenarioConfigurationsClient.BeginExecute.
 type ScenarioConfigurationsClientExecuteResponse struct {
-	// The Location header contains the URL where the status of the long running operation can be checked.
-	Location *string
-
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
-	RetryAfter *int32
+	// Model that represents the scenario run.
+	ScenarioRun
 }
 
 // ScenarioConfigurationsClientFixResourcePermissionsResponse contains the response from method ScenarioConfigurationsClient.BeginFixResourcePermissions.
@@ -252,13 +249,10 @@ type ScenarioConfigurationsClientValidateResponse struct {
 	Validation
 }
 
-// ScenarioRunsClientCancelResponse contains the response from method ScenarioRunsClient.Cancel.
+// ScenarioRunsClientCancelResponse contains the response from method ScenarioRunsClient.BeginCancel.
 type ScenarioRunsClientCancelResponse struct {
-	// The Location header contains the URL where the status of the long running operation can be checked.
-	Location *string
-
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
-	RetryAfter *int32
+	// Model that represents the scenario run.
+	ScenarioRun
 }
 
 // ScenarioRunsClientGetResponse contains the response from method ScenarioRunsClient.Get.
@@ -266,10 +260,10 @@ type ScenarioRunsClientGetResponse struct {
 	// Model that represents the scenario run.
 	ScenarioRun
 
-	// The Location header contains the URL where the status of the long running operation can be checked.
+	// The URL where the status of the long-running operation can be polled.
 	Location *string
 
-	// The Retry-After header can indicate how long the client should wait before polling the operation status.
+	// The number of seconds the client should wait before polling again.
 	RetryAfter *int32
 }
 

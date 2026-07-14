@@ -18,6 +18,8 @@ import (
 
 // ManagedApplyMaintenanceWindowClient contains the methods for the ManagedApplyMaintenanceWindow group.
 // Don't use this type directly, use NewManagedApplyMaintenanceWindowClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type ManagedApplyMaintenanceWindowClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -39,11 +41,8 @@ func NewManagedApplyMaintenanceWindowClient(subscriptionID string, credential az
 	return client, nil
 }
 
-// Post - Action to Apply Maintenance window on the Service Fabric Managed Clusters, right now. Any pending update will be
-// applied.
+// Post - Action to Apply Maintenance window on the Service Fabric Managed Clusters. Any pending update will be applied.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - options - ManagedApplyMaintenanceWindowClientPostOptions contains the optional parameters for the ManagedApplyMaintenanceWindowClient.Post
@@ -70,7 +69,7 @@ func (client *ManagedApplyMaintenanceWindowClient) Post(ctx context.Context, res
 }
 
 // postCreateRequest creates the Post request.
-func (client *ManagedApplyMaintenanceWindowClient) postCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ManagedApplyMaintenanceWindowClientPostOptions) (*policy.Request, error) {
+func (client *ManagedApplyMaintenanceWindowClient) postCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *ManagedApplyMaintenanceWindowClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applyMaintenanceWindow"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -89,7 +88,14 @@ func (client *ManagedApplyMaintenanceWindowClient) postCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
 	return req, nil
 }

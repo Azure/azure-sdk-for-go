@@ -6,5 +6,5 @@ package armdynatrace
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dynatrace/armdynatrace"
-	moduleVersion = "v2.2.0-beta.1"
+	moduleVersion = "v2.2.0"
 )

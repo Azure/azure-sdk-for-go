@@ -13,12 +13,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
 // ScenarioConfigurationsClient contains the methods for the ScenarioConfigurations group.
 // Don't use this type directly, use NewScenarioConfigurationsClient() instead.
+//
+// Generated from API version 2026-05-01-preview
 type ScenarioConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +43,6 @@ func NewScenarioConfigurationsClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Create or update a scenario definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -70,8 +69,6 @@ func (client *ScenarioConfigurationsClient) BeginCreateOrUpdate(ctx context.Cont
 
 // CreateOrUpdate - Create or update a scenario definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *ScenarioConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, resource ScenarioConfiguration, options *ScenarioConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScenarioConfigurationsClient.BeginCreateOrUpdate"
@@ -121,8 +118,8 @@ func (client *ScenarioConfigurationsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -133,8 +130,6 @@ func (client *ScenarioConfigurationsClient) createOrUpdateCreateRequest(ctx cont
 
 // BeginDelete - Delete a scenario definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -160,8 +155,6 @@ func (client *ScenarioConfigurationsClient) BeginDelete(ctx context.Context, res
 
 // Delete - Delete a scenario definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *ScenarioConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScenarioConfigurationsClient.BeginDelete"
@@ -211,45 +204,62 @@ func (client *ScenarioConfigurationsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Execute - Execute the scenario execution with the given scenario configuration.
+// BeginExecute - Execute the scenario execution with the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
 //   - scenarioConfigurationName - Name of the scenario definition.
-//   - options - ScenarioConfigurationsClientExecuteOptions contains the optional parameters for the ScenarioConfigurationsClient.Execute
+//   - options - ScenarioConfigurationsClientBeginExecuteOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginExecute
 //     method.
-func (client *ScenarioConfigurationsClient) Execute(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientExecuteOptions) (ScenarioConfigurationsClientExecuteResponse, error) {
+func (client *ScenarioConfigurationsClient) BeginExecute(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginExecuteOptions) (*runtime.Poller[ScenarioConfigurationsClientExecuteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.execute(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientExecuteResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScenarioConfigurationsClientExecuteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Execute - Execute the scenario execution with the given scenario configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScenarioConfigurationsClient) execute(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginExecuteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ScenarioConfigurationsClient.Execute"
+	const operationName = "ScenarioConfigurationsClient.BeginExecute"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.executeCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, scenarioConfigurationName, options)
 	if err != nil {
-		return ScenarioConfigurationsClientExecuteResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScenarioConfigurationsClientExecuteResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ScenarioConfigurationsClientExecuteResponse{}, err
+		return nil, err
 	}
-	resp, err := client.executeHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // executeCreateRequest creates the Execute request.
-func (client *ScenarioConfigurationsClient) executeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientExecuteOptions) (*policy.Request, error) {
+func (client *ScenarioConfigurationsClient) executeCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, _ *ScenarioConfigurationsClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/configurations/{scenarioConfigurationName}/execute"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -276,32 +286,13 @@ func (client *ScenarioConfigurationsClient) executeCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// executeHandleResponse handles the Execute response.
-func (client *ScenarioConfigurationsClient) executeHandleResponse(resp *http.Response) (ScenarioConfigurationsClientExecuteResponse, error) {
-	result := ScenarioConfigurationsClientExecuteResponse{}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return ScenarioConfigurationsClientExecuteResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	return result, nil
 }
 
 // BeginFixResourcePermissions - Fixes resource permissions for the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -315,7 +306,8 @@ func (client *ScenarioConfigurationsClient) BeginFixResourcePermissions(ctx cont
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientFixResourcePermissionsResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -327,8 +319,6 @@ func (client *ScenarioConfigurationsClient) BeginFixResourcePermissions(ctx cont
 
 // FixResourcePermissions - Fixes resource permissions for the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *ScenarioConfigurationsClient) fixResourcePermissions(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginFixResourcePermissionsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScenarioConfigurationsClient.BeginFixResourcePermissions"
@@ -378,8 +368,8 @@ func (client *ScenarioConfigurationsClient) fixResourcePermissionsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
@@ -392,8 +382,6 @@ func (client *ScenarioConfigurationsClient) fixResourcePermissionsCreateRequest(
 
 // Get - Get a scenario definition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -450,8 +438,8 @@ func (client *ScenarioConfigurationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -466,8 +454,6 @@ func (client *ScenarioConfigurationsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListAllPager - Get a list of scenario definitions.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -520,8 +506,8 @@ func (client *ScenarioConfigurationsClient) listAllCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -537,8 +523,6 @@ func (client *ScenarioConfigurationsClient) listAllHandleResponse(resp *http.Res
 
 // BeginValidate - Validate the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
@@ -552,7 +536,8 @@ func (client *ScenarioConfigurationsClient) BeginValidate(ctx context.Context, r
 			return nil, err
 		}
 		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioConfigurationsClientValidateResponse]{
-			Tracer: client.internal.Tracer(),
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
@@ -564,8 +549,6 @@ func (client *ScenarioConfigurationsClient) BeginValidate(ctx context.Context, r
 
 // Validate - Validate the given scenario configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-05-01-preview
 func (client *ScenarioConfigurationsClient) validate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, scenarioConfigurationName string, options *ScenarioConfigurationsClientBeginValidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ScenarioConfigurationsClient.BeginValidate"
@@ -615,7 +598,7 @@ func (client *ScenarioConfigurationsClient) validateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

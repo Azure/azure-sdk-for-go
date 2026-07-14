@@ -66,21 +66,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "BgpPeersClient":
-		initServer(s, &s.trBgpPeersServer, func() *BgpPeersServerTransport { return NewBgpPeersServerTransport(&s.srv.BgpPeersServer) })
+		initServer(&s.trMu, &s.trBgpPeersServer, func() *BgpPeersServerTransport { return NewBgpPeersServerTransport(&s.srv.BgpPeersServer) })
 		resp, err = s.trBgpPeersServer.Do(req)
 	case "LoadBalancersClient":
-		initServer(s, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
+		initServer(&s.trMu, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
 			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
 		})
 		resp, err = s.trLoadBalancersServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ServicesClient":
-		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
+		initServer(&s.trMu, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
 	case "StorageClassClient":
-		initServer(s, &s.trStorageClassServer, func() *StorageClassServerTransport { return NewStorageClassServerTransport(&s.srv.StorageClassServer) })
+		initServer(&s.trMu, &s.trStorageClassServer, func() *StorageClassServerTransport { return NewStorageClassServerTransport(&s.srv.StorageClassServer) })
 		resp, err = s.trStorageClassServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -91,12 +91,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

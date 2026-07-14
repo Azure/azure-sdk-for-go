@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/KubernetesClusterFeatures_Create.json
+// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Create.json
 func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,13 +43,13 @@ func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.KubernetesClusterFeaturesClientCreateOrUpdateResponse{
-	// 	KubernetesClusterFeature: &armnetworkcloud.KubernetesClusterFeature{
+	// 	KubernetesClusterFeature: armnetworkcloud.KubernetesClusterFeature{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName/features/featureName"),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("featureName"),
@@ -84,7 +84,7 @@ func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/KubernetesClusterFeatures_Delete.json
+// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Delete.json
 func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,11 +101,11 @@ func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/KubernetesClusterFeatures_Get.json
+// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Get.json
 func ExampleKubernetesClusterFeaturesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleKubernetesClusterFeaturesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.KubernetesClusterFeaturesClientGetResponse{
-	// 	KubernetesClusterFeature: &armnetworkcloud.KubernetesClusterFeature{
+	// 	KubernetesClusterFeature: armnetworkcloud.KubernetesClusterFeature{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName/features/featureName"),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("featureName"),
@@ -159,7 +159,7 @@ func ExampleKubernetesClusterFeaturesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/KubernetesClusterFeatures_ListByKubernetesCluster.json
+// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_ListByKubernetesCluster.json
 func ExampleKubernetesClusterFeaturesClient_NewListByKubernetesClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleKubernetesClusterFeaturesClient_NewListByKubernetesClusterPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/KubernetesClusterFeatures_Patch.json
+// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Patch.json
 func ExampleKubernetesClusterFeaturesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,13 +252,13 @@ func ExampleKubernetesClusterFeaturesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.KubernetesClusterFeaturesClientUpdateResponse{
-	// 	KubernetesClusterFeature: &armnetworkcloud.KubernetesClusterFeature{
+	// 	KubernetesClusterFeature: armnetworkcloud.KubernetesClusterFeature{
 	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName/features/featureName"),
 	// 		Location: to.Ptr("location"),
 	// 		Name: to.Ptr("featureName"),

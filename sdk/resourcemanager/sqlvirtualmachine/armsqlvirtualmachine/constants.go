@@ -4,6 +4,10 @@
 
 package armsqlvirtualmachine
 
+const (
+	version20231001 string = "2023-10-01"
+)
+
 // AdditionalOsPatch - Additional VM Patching solution enabled on the Virtual Machine
 type AdditionalOsPatch string
 

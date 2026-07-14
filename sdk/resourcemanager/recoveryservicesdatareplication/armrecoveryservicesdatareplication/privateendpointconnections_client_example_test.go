@@ -29,7 +29,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -52,7 +52,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armrecoveryservicesdatareplication.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armrecoveryservicesdatareplication.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationVaults/vault1/privateEndpointConnections/connection1"),
 	// 		Name: to.Ptr("kadsmyhrosefybpbwvwxs"),
 	// 		Type: to.Ptr("ztysngp"),
@@ -148,7 +148,7 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.PrivateEndpointConnectionsClientUpdateResponse{
-	// 	PrivateEndpointConnection: &armrecoveryservicesdatareplication.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armrecoveryservicesdatareplication.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationVaults/vault1/privateEndpointConnections/connection1"),
 	// 		Name: to.Ptr("kadsmyhrosefybpbwvwxs"),
 	// 		Type: to.Ptr("ztysngp"),

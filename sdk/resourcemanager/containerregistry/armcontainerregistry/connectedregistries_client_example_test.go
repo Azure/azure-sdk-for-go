@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryCreate.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryCreate.json
 func ExampleConnectedRegistriesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,13 +52,13 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ConnectedRegistriesClientCreateResponse{
-	// 	ConnectedRegistry: &armcontainerregistry.ConnectedRegistry{
+	// 	ConnectedRegistry: armcontainerregistry.ConnectedRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/connectedRegistries/myConnectedRegistry"),
 	// 		Name: to.Ptr("myConnectedRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/connectedRegistries"),
@@ -95,7 +95,7 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryDeactivate.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryDeactivate.json
 func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -121,7 +121,7 @@ func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryDelete.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryDelete.json
 func ExampleConnectedRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleConnectedRegistriesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -147,7 +147,7 @@ func ExampleConnectedRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryGet.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryGet.json
 func ExampleConnectedRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleConnectedRegistriesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ConnectedRegistriesClientGetResponse{
-	// 	ConnectedRegistry: &armcontainerregistry.ConnectedRegistry{
+	// 	ConnectedRegistry: armcontainerregistry.ConnectedRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/connectedRegistries/myConnectedRegistry"),
 	// 		Name: to.Ptr("myConnectedRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/connectedRegistries"),
@@ -210,7 +210,7 @@ func ExampleConnectedRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryList.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryList.json
 func ExampleConnectedRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleConnectedRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryResync.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryResync.json
 func ExampleConnectedRegistriesClient_Resync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleConnectedRegistriesClient_Resync() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ConnectedRegistriesClientResyncResponse{
-	// 	ConnectedRegistry: &armcontainerregistry.ConnectedRegistry{
+	// 	ConnectedRegistry: armcontainerregistry.ConnectedRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/connectedRegistries/myConnectedRegistry"),
 	// 		Name: to.Ptr("myConnectedRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/connectedRegistries"),
@@ -343,7 +343,7 @@ func ExampleConnectedRegistriesClient_Resync() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryUpdate.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryUpdate.json
 func ExampleConnectedRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,13 +384,13 @@ func ExampleConnectedRegistriesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerregistry.ConnectedRegistriesClientUpdateResponse{
-	// 	ConnectedRegistry: &armcontainerregistry.ConnectedRegistry{
+	// 	ConnectedRegistry: armcontainerregistry.ConnectedRegistry{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/connectedRegistries/myConnectedRegistry"),
 	// 		Name: to.Ptr("myConnectedRegistry"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/connectedRegistries"),

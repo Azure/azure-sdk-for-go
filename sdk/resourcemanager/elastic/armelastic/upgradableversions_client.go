@@ -18,6 +18,8 @@ import (
 
 // UpgradableVersionsClient contains the methods for the UpgradableVersions group.
 // Don't use this type directly, use NewUpgradableVersionsClient() instead.
+//
+// Generated from API version 2025-06-01
 type UpgradableVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewUpgradableVersionsClient(subscriptionID string, credential azcore.TokenC
 
 // Details - List all upgradable versions for your Elastic monitor resource, helping you plan and execute upgrades.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - UpgradableVersionsClientDetailsOptions contains the optional parameters for the UpgradableVersionsClient.Details
@@ -89,8 +89,8 @@ func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

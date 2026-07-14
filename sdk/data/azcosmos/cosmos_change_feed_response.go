@@ -37,7 +37,7 @@ func newChangeFeedResponse(resp *http.Response) (ChangeFeedResponse, error) {
 
 	// Always close the body, including the 304 short-circuit below. The
 	// drain loop emits one response per queue head, so a quiet container
-	// can yield N intermediate 304s per GetChangeFeed call — leaking those
+	// can yield N intermediate 304s per ReadChangeFeed call — leaking those
 	// bodies (which still have an http.Response.Body even when empty) until
 	// GC would compound across calls.
 	defer func() { _ = resp.Body.Close() }()

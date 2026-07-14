@@ -3,8 +3,8 @@
 
 package azcosmos
 
-// GetFeedRangesOptions includes options for the GetFeedRanges operation.
+// FeedRangesOptions includes options for the ReadFeedRanges operation.
 // It currently has no fields and is reserved for future use.
-type GetFeedRangesOptions struct {
+type FeedRangesOptions struct {
 	// for future use
 }

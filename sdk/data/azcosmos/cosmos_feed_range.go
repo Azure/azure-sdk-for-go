@@ -13,7 +13,7 @@ import (
 // ErrFeedRangeUnresolved is returned when a customer-supplied FeedRange does not
 // overlap any current physical partition key range, even after a forced cache
 // refresh. Callers can use errors.Is to detect this and fall back to
-// re-deriving FeedRanges from GetFeedRanges.
+// re-deriving FeedRanges from ReadFeedRanges.
 //
 // This typically indicates one of:
 //   - The FeedRange was constructed for a different container.

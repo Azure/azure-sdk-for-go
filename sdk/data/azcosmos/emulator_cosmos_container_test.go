@@ -633,7 +633,7 @@ func TestEmulatorContainerPartitionKeyRangesAndFeedRanges(t *testing.T) {
 	}
 
 	// Get Feed Ranges (which internally calls getPartitionKeyRanges)
-	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
+	feedRanges, err := container.ReadFeedRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to get feed ranges: %v", err)
 	}
@@ -718,7 +718,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 	time.Sleep(2 * time.Second)
 
 	// Get Feed Ranges (which internally calls getPartitionKeyRanges)
-	feedRanges, err := container.GetFeedRanges(context.TODO(), nil)
+	feedRanges, err := container.ReadFeedRanges(context.TODO(), nil)
 	if err != nil {
 		t.Fatalf("Failed to get feed ranges: %v", err)
 	}
@@ -730,7 +730,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 
 		options.FeedRange = &feedRanges[0]
-		resp, err := container.GetChangeFeed(context.TODO(), options)
+		resp, err := container.ReadChangeFeed(context.TODO(), options)
 		if err != nil {
 			t.Fatalf("Failed to get change feed: %v", err)
 		}
@@ -787,7 +787,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 				Continuation: &resp.ContinuationToken,
 			}
 
-			resp2, err := container.GetChangeFeed(context.TODO(), options2)
+			resp2, err := container.ReadChangeFeed(context.TODO(), options2)
 			if err != nil {
 				t.Fatalf("Failed to get change feed with composite token: %v", err)
 			}
@@ -805,7 +805,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 			},
 			MaxItemCount: 100,
 		}
-		baselineResp, err := container.GetChangeFeed(context.TODO(), baselineOptions)
+		baselineResp, err := container.ReadChangeFeed(context.TODO(), baselineOptions)
 		if err != nil {
 			t.Fatalf("Failed to get baseline change feed: %v", err)
 		}
@@ -841,7 +841,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 		options.FeedRange = &feedRanges[0] // Add required FeedRange
 
-		resp, err := container.GetChangeFeed(context.TODO(), options)
+		resp, err := container.ReadChangeFeed(context.TODO(), options)
 		if err != nil {
 			t.Fatalf("Failed to get change feed with If-Modified-Since: %v", err)
 		}
@@ -878,7 +878,7 @@ func TestEmulatorContainerChangeFeed(t *testing.T) {
 		}
 		futureOptions.FeedRange = &feedRanges[0] // Add required FeedRange
 
-		futureResp, err := container.GetChangeFeed(context.TODO(), futureOptions)
+		futureResp, err := container.ReadChangeFeed(context.TODO(), futureOptions)
 		if err != nil {
 			t.Fatalf("Failed to get change feed with future If-Modified-Since: %v", err)
 		}

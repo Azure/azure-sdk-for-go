@@ -53,7 +53,7 @@ func TestEmulatorChangeFeed_F1_SubRangeOfPhysicalRange(t *testing.T) {
 	// range and the request was silently dropped; post-F1 it resolves via
 	// overlap-match and the page is returned.
 	subRange := &FeedRange{MinInclusive: "10", MaxExclusive: "80"}
-	resp, err := container.GetChangeFeed(context.TODO(), &ChangeFeedOptions{
+	resp, err := container.ReadChangeFeed(context.TODO(), &ChangeFeedOptions{
 		FeedRange:    subRange,
 		MaxItemCount: 10,
 	})
@@ -107,7 +107,7 @@ func TestEmulatorChangeFeed_F1_WideRangeMultiDrain(t *testing.T) {
 	var token *string
 	for iter := 0; iter < 20; iter++ { // safety cap
 		opts := &ChangeFeedOptions{FeedRange: wide, MaxItemCount: 10, Continuation: token}
-		resp, err := container.GetChangeFeed(context.TODO(), opts)
+		resp, err := container.ReadChangeFeed(context.TODO(), opts)
 		require.NoError(t, err)
 
 		// Verify token shape.
@@ -171,7 +171,7 @@ func TestEmulatorChangeFeed_F1_CrossContainerTokenRejected(t *testing.T) {
 	require.NoError(t, err)
 	time.Sleep(2 * time.Second)
 
-	respA, err := containerA.GetChangeFeed(context.TODO(), &ChangeFeedOptions{
+	respA, err := containerA.ReadChangeFeed(context.TODO(), &ChangeFeedOptions{
 		FeedRange: &FeedRange{MinInclusive: "", MaxExclusive: "FF"},
 	})
 	require.NoError(t, err)
@@ -179,7 +179,7 @@ func TestEmulatorChangeFeed_F1_CrossContainerTokenRejected(t *testing.T) {
 
 	// Hand container-a's token to container-b → must be rejected.
 	tokenA := respA.ContinuationToken
-	_, err = containerB.GetChangeFeed(context.TODO(), &ChangeFeedOptions{
+	_, err = containerB.ReadChangeFeed(context.TODO(), &ChangeFeedOptions{
 		Continuation: &tokenA,
 	})
 	require.Error(t, err, "cross-container continuation token must be rejected")

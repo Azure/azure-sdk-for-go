@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Topics_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Create_MaximumSet_Gen.json
 func ExampleTopicsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleTopicsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Delete_MaximumSet_Gen.json
 func ExampleTopicsClient_BeginDelete_topicsDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleTopicsClient_BeginDelete_topicsDeleteMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Delete_MinimumSet_Gen.json
 func ExampleTopicsClient_BeginDelete_topicsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleTopicsClient_BeginDelete_topicsDeleteMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Get_MaximumSet_Gen.json
 func ExampleTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_List_MaximumSet_Gen.json
 func ExampleTopicsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

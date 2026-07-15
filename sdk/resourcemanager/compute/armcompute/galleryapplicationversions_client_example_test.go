@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Create.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Create.json
 func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Delete.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Delete.json
 func ExampleGalleryApplicationVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleGalleryApplicationVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Get.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Get.json
 func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion()
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
 func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWithReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,7 +332,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWi
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
 func ExampleGalleryApplicationVersionsClient_NewListByGalleryApplicationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +415,7 @@ func ExampleGalleryApplicationVersionsClient_NewListByGalleryApplicationPager() 
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Update.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Update.json
 func ExampleGalleryApplicationVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

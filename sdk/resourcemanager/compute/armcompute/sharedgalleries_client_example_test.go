@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/sharedGalleryExamples/SharedGallery_Get.json
+// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGallery_Get.json
 func ExampleSharedGalleriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleSharedGalleriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/sharedGalleryExamples/SharedGallery_List.json
+// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGallery_List.json
 func ExampleSharedGalleriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -167,6 +167,18 @@ type BaselinesClientListResponse struct {
 	MetricBaselinesResponse
 }
 
+// CombineClientCreateNotificationsAtTenantActionGroupResourceLevelResponse contains the response from method CombineClient.BeginCreateNotificationsAtTenantActionGroupResourceLevel.
+type CombineClientCreateNotificationsAtTenantActionGroupResourceLevelResponse struct {
+	// The details of the test notification results.
+	TestNotificationDetailsResponse
+}
+
+// CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse contains the response from method CombineClient.GetTestNotificationsAtTenantActionGroupResourceLevel.
+type CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse struct {
+	// The details of the test notification results.
+	TestNotificationDetailsResponse
+}
+
 // DataCollectionEndpointsClientCreateResponse contains the response from method DataCollectionEndpointsClient.Create.
 type DataCollectionEndpointsClientCreateResponse struct {
 	// Definition of ARM tracked top level resource.
@@ -287,6 +299,41 @@ type DataCollectionRulesClientListBySubscriptionResponse struct {
 type DataCollectionRulesClientUpdateResponse struct {
 	// Definition of ARM tracked top level resource.
 	DataCollectionRuleResource
+}
+
+// DiagnosticSettingsCategoryClientGetResponse contains the response from method DiagnosticSettingsCategoryClient.Get.
+type DiagnosticSettingsCategoryClientGetResponse struct {
+	// The diagnostic settings category resource.
+	DiagnosticSettingsCategoryResource
+}
+
+// DiagnosticSettingsCategoryClientListResponse contains the response from method DiagnosticSettingsCategoryClient.NewListPager.
+type DiagnosticSettingsCategoryClientListResponse struct {
+	// Represents a collection of diagnostic setting category resources.
+	DiagnosticSettingsCategoryResourceCollection
+}
+
+// DiagnosticSettingsClientCreateOrUpdateResponse contains the response from method DiagnosticSettingsClient.CreateOrUpdate.
+type DiagnosticSettingsClientCreateOrUpdateResponse struct {
+	// The diagnostic setting resource.
+	DiagnosticSettingsResource
+}
+
+// DiagnosticSettingsClientDeleteResponse contains the response from method DiagnosticSettingsClient.Delete.
+type DiagnosticSettingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DiagnosticSettingsClientGetResponse contains the response from method DiagnosticSettingsClient.Get.
+type DiagnosticSettingsClientGetResponse struct {
+	// The diagnostic setting resource.
+	DiagnosticSettingsResource
+}
+
+// DiagnosticSettingsClientListResponse contains the response from method DiagnosticSettingsClient.NewListPager.
+type DiagnosticSettingsClientListResponse struct {
+	// Represents a collection of alert rule resources.
+	DiagnosticSettingsResourceCollection
 }
 
 // EventCategoriesClientListResponse contains the response from method EventCategoriesClient.NewListPager.
@@ -583,8 +630,43 @@ type ServiceDiagnosticSettingsClientUpdateResponse struct {
 	ServiceDiagnosticSettingsResource
 }
 
+// TenantActionGroupsClientCreateOrUpdateResponse contains the response from method TenantActionGroupsClient.CreateOrUpdate.
+type TenantActionGroupsClientCreateOrUpdateResponse struct {
+	// A tenant action group resource.
+	TenantActionGroupResource
+}
+
+// TenantActionGroupsClientDeleteResponse contains the response from method TenantActionGroupsClient.Delete.
+type TenantActionGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TenantActionGroupsClientGetResponse contains the response from method TenantActionGroupsClient.Get.
+type TenantActionGroupsClientGetResponse struct {
+	// A tenant action group resource.
+	TenantActionGroupResource
+}
+
+// TenantActionGroupsClientListByManagementGroupIDResponse contains the response from method TenantActionGroupsClient.NewListByManagementGroupIDPager.
+type TenantActionGroupsClientListByManagementGroupIDResponse struct {
+	// A list of tenant action groups.
+	TenantActionGroupList
+}
+
+// TenantActionGroupsClientUpdateResponse contains the response from method TenantActionGroupsClient.Update.
+type TenantActionGroupsClientUpdateResponse struct {
+	// A tenant action group resource.
+	TenantActionGroupResource
+}
+
 // TenantActivityLogsClientListResponse contains the response from method TenantActivityLogsClient.NewListPager.
 type TenantActivityLogsClientListResponse struct {
 	// Represents collection of events.
 	EventDataCollection
+}
+
+// VMInsightsClientGetOnboardingStatusResponse contains the response from method VMInsightsClient.GetOnboardingStatus.
+type VMInsightsClientGetOnboardingStatusResponse struct {
+	// VM Insights onboarding status for a resource.
+	VMInsightsOnboardingStatus
 }

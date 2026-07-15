@@ -1,5 +1,55 @@
 # Release History
 
+## 0.13.0 (2026-07-15)
+### Features Added
+
+- New enum type `CategoryType` with values `CategoryTypeLogs`, `CategoryTypeMetrics`
+- New enum type `DataStatus` with values `DataStatusNotPresent`, `DataStatusPresent`
+- New enum type `OnboardingStatus` with values `OnboardingStatusNotOnboarded`, `OnboardingStatusOnboarded`, `OnboardingStatusUnknown`
+- New function `*ClientFactory.NewCombineClient() *CombineClient`
+- New function `*ClientFactory.NewDiagnosticSettingsCategoryClient() *DiagnosticSettingsCategoryClient`
+- New function `*ClientFactory.NewDiagnosticSettingsClient() *DiagnosticSettingsClient`
+- New function `*ClientFactory.NewTenantActionGroupsClient() *TenantActionGroupsClient`
+- New function `*ClientFactory.NewVMInsightsClient() *VMInsightsClient`
+- New function `NewCombineClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CombineClient, error)`
+- New function `*CombineClient.BeginCreateNotificationsAtTenantActionGroupResourceLevel(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, notificationRequest TenantNotificationRequestBody, options *CombineClientBeginCreateNotificationsAtTenantActionGroupResourceLevelOptions) (*runtime.Poller[CombineClientCreateNotificationsAtTenantActionGroupResourceLevelResponse], error)`
+- New function `*CombineClient.GetTestNotificationsAtTenantActionGroupResourceLevel(ctx context.Context, managementGroupID string, tenantActionGroupName string, notificationID string, xmsClientTenantID string, options *CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelOptions) (CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse, error)`
+- New function `NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsCategoryClient, error)`
+- New function `*DiagnosticSettingsCategoryClient.Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryClientGetOptions) (DiagnosticSettingsCategoryClientGetResponse, error)`
+- New function `*DiagnosticSettingsCategoryClient.NewListPager(resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) *runtime.Pager[DiagnosticSettingsCategoryClientListResponse]`
+- New function `NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsClient, error)`
+- New function `*DiagnosticSettingsClient.CreateOrUpdate(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsClientCreateOrUpdateOptions) (DiagnosticSettingsClientCreateOrUpdateResponse, error)`
+- New function `*DiagnosticSettingsClient.Delete(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsClientDeleteOptions) (DiagnosticSettingsClientDeleteResponse, error)`
+- New function `*DiagnosticSettingsClient.Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsClientGetOptions) (DiagnosticSettingsClientGetResponse, error)`
+- New function `*DiagnosticSettingsClient.NewListPager(resourceURI string, options *DiagnosticSettingsClientListOptions) *runtime.Pager[DiagnosticSettingsClientListResponse]`
+- New function `NewTenantActionGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantActionGroupsClient, error)`
+- New function `*TenantActionGroupsClient.CreateOrUpdate(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, actionGroup TenantActionGroupResource, options *TenantActionGroupsClientCreateOrUpdateOptions) (TenantActionGroupsClientCreateOrUpdateResponse, error)`
+- New function `*TenantActionGroupsClient.Delete(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, options *TenantActionGroupsClientDeleteOptions) (TenantActionGroupsClientDeleteResponse, error)`
+- New function `*TenantActionGroupsClient.Get(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, options *TenantActionGroupsClientGetOptions) (TenantActionGroupsClientGetResponse, error)`
+- New function `*TenantActionGroupsClient.NewListByManagementGroupIDPager(managementGroupID string, xmsClientTenantID string, options *TenantActionGroupsClientListByManagementGroupIDOptions) *runtime.Pager[TenantActionGroupsClientListByManagementGroupIDResponse]`
+- New function `*TenantActionGroupsClient.Update(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch ActionGroupPatchBody, options *TenantActionGroupsClientUpdateOptions) (TenantActionGroupsClientUpdateResponse, error)`
+- New function `NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VMInsightsClient, error)`
+- New function `*VMInsightsClient.GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsClientGetOnboardingStatusOptions) (VMInsightsClientGetOnboardingStatusResponse, error)`
+- New struct `DataContainer`
+- New struct `DiagnosticSettings`
+- New struct `DiagnosticSettingsCategory`
+- New struct `DiagnosticSettingsCategoryResource`
+- New struct `DiagnosticSettingsCategoryResourceCollection`
+- New struct `DiagnosticSettingsResource`
+- New struct `DiagnosticSettingsResourceCollection`
+- New struct `TenantActionGroup`
+- New struct `TenantActionGroupList`
+- New struct `TenantActionGroupResource`
+- New struct `TenantNotificationRequestBody`
+- New struct `VMInsightsOnboardingStatus`
+- New struct `VMInsightsOnboardingStatusProperties`
+- New struct `WorkspaceInfo`
+- New struct `WorkspaceInfoProperties`
+- New field `Message` in struct `ActionDetail`
+- New field `CategoryGroup` in struct `LogSettings`
+- New field `Category` in struct `MetricSettings`
+
+
 ## 0.12.0 (2026-05-20)
 ### Breaking Changes
 

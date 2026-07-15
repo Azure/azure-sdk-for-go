@@ -80,71 +80,14 @@ type ActionDetail struct {
 	// The mechanism type
 	MechanismType *string
 
-	// The mechanism type
-	MechanismType *string
-
-	// The detail of the friendly error message
-	Message *string
-
-	// The name of the action
-	Name *string
-
 	// The name of the action
 	Name *string
 
 	// The send time
 	SendTime *string
 
-	// The send time
-	SendTime *string
-
 	// The status of the action
 	Status *string
-
-	// The status of the action
-	Status *string
-
-	// The substatus of the action
-	SubState *string
-
-	// The substatus of the action
-	SubState *string
-}
-
-// ActionDetail - The action detail
-type ActionDetail struct {
-	// The detail of the friendly error message
-	Detail *string
-
-	// The mechanism type
-	MechanismType *string
-
-	// The mechanism type
-	MechanismType *string
-
-	// The detail of the friendly error message
-	Message *string
-
-	// The name of the action
-	Name *string
-
-	// The name of the action
-	Name *string
-
-	// The send time
-	SendTime *string
-
-	// The send time
-	SendTime *string
-
-	// The status of the action
-	Status *string
-
-	// The status of the action
-	Status *string
-
-	// The substatus of the action
-	SubState *string
 
 	// The substatus of the action
 	SubState *string
@@ -219,30 +162,6 @@ type ActionGroupPatchBody struct {
 
 	// The action group settings for an update operation.
 	Properties *ActionGroupPatch
-
-	// The action group settings for an update operation.
-	Properties *ActionGroupPatch
-
-	// Resource tags
-	Tags map[string]*string
-
-	// Resource tags
-	Tags map[string]*string
-}
-
-// ActionGroupPatchBody - An action group object for the body of patch operations.
-type ActionGroupPatchBody struct {
-	// Managed service identity (system assigned and/or user assigned identities)
-	Identity *ManagedServiceIdentity
-
-	// The action group settings for an update operation.
-	Properties *ActionGroupPatch
-
-	// The action group settings for an update operation.
-	Properties *ActionGroupPatch
-
-	// Resource tags
-	Tags map[string]*string
 
 	// Resource tags
 	Tags map[string]*string
@@ -2007,15 +1926,8 @@ type LogProfileResourcePatch struct {
 
 // LogSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
 type LogSettings struct {
-	// REQUIRED; REQUIRED; a value indicating whether this log is enabled.
+	// REQUIRED; a value indicating whether this log is enabled.
 	Enabled *bool
-
-	// REQUIRED; REQUIRED; a value indicating whether this log is enabled.
-	Enabled *bool
-
-	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
-	// categories for a resource, first perform a GET diagnostic settings operation.
-	Category *string
 
 	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
 	// categories for a resource, first perform a GET diagnostic settings operation.
@@ -2024,36 +1936,6 @@ type LogSettings struct {
 	// Name of a Diagnostic Log category group for a resource type this setting is applied to. To obtain the list of Diagnostic
 	// Log categories for a resource, first perform a GET diagnostic settings operation.
 	CategoryGroup *string
-
-	// the retention policy for this log.
-	RetentionPolicy *RetentionPolicy
-
-	// the retention policy for this log.
-	RetentionPolicy *RetentionPolicy
-}
-
-// LogSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
-type LogSettings struct {
-	// REQUIRED; REQUIRED; a value indicating whether this log is enabled.
-	Enabled *bool
-
-	// REQUIRED; REQUIRED; a value indicating whether this log is enabled.
-	Enabled *bool
-
-	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
-	// categories for a resource, first perform a GET diagnostic settings operation.
-	Category *string
-
-	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
-	// categories for a resource, first perform a GET diagnostic settings operation.
-	Category *string
-
-	// Name of a Diagnostic Log category group for a resource type this setting is applied to. To obtain the list of Diagnostic
-	// Log categories for a resource, first perform a GET diagnostic settings operation.
-	CategoryGroup *string
-
-	// the retention policy for this log.
-	RetentionPolicy *RetentionPolicy
 
 	// the retention policy for this log.
 	RetentionPolicy *RetentionPolicy
@@ -2554,46 +2436,12 @@ type MetricNamespaceName struct {
 
 // MetricSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric.
 type MetricSettings struct {
-	// REQUIRED; REQUIRED; a value indicating whether this timegrain is enabled.
+	// REQUIRED; a value indicating whether this category is enabled.
 	Enabled *bool
-
-	// REQUIRED; REQUIRED; a value indicating whether this category is enabled.
-	Enabled *bool
-
-	// REQUIRED; REQUIRED; the timegrain of the metric in ISO8601 format.
-	TimeGrain *string
 
 	// Name of a Diagnostic Metric category for a resource type this setting is applied to. To obtain the list of Diagnostic metric
 	// categories for a resource, first perform a GET diagnostic settings operation.
 	Category *string
-
-	// the retention policy for this timegrain.
-	RetentionPolicy *RetentionPolicy
-
-	// the retention policy for this category.
-	RetentionPolicy *RetentionPolicy
-
-	// the timegrain of the metric in ISO8601 format.
-	TimeGrain *string
-}
-
-// MetricSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric.
-type MetricSettings struct {
-	// REQUIRED; REQUIRED; a value indicating whether this timegrain is enabled.
-	Enabled *bool
-
-	// REQUIRED; REQUIRED; a value indicating whether this category is enabled.
-	Enabled *bool
-
-	// REQUIRED; REQUIRED; the timegrain of the metric in ISO8601 format.
-	TimeGrain *string
-
-	// Name of a Diagnostic Metric category for a resource type this setting is applied to. To obtain the list of Diagnostic metric
-	// categories for a resource, first perform a GET diagnostic settings operation.
-	Category *string
-
-	// the retention policy for this timegrain.
-	RetentionPolicy *RetentionPolicy
 
 	// the retention policy for this category.
 	RetentionPolicy *RetentionPolicy
@@ -4041,7 +3889,28 @@ type TenantActionGroup struct {
 	VoiceReceivers []*VoiceReceiver
 
 	// The list of webhook receivers that are part of this tenant action group.
-	WebhookReceivers []*WebhookReceiver
+	WebhookReceivers []*TenantActionGroupWebhookReceiver
+}
+
+// TenantActionGroupActionDetail - The action detail
+type TenantActionGroupActionDetail struct {
+	// The mechanism type
+	MechanismType *string
+
+	// The detail of the friendly error message
+	Message *string
+
+	// The name of the action
+	Name *string
+
+	// The send time
+	SendTime *string
+
+	// The status of the action
+	Status *string
+
+	// The substatus of the action
+	SubState *string
 }
 
 // TenantActionGroupList - A list of tenant action groups.
@@ -4051,6 +3920,15 @@ type TenantActionGroupList struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// TenantActionGroupPatchBody - A tenant action group object for the body of patch operations.
+type TenantActionGroupPatchBody struct {
+	// The action group settings for an update operation.
+	Properties *ActionGroupPatch
+
+	// Resource tags
+	Tags map[string]*string
 }
 
 // TenantActionGroupResource - A tenant action group resource.
@@ -4077,6 +3955,48 @@ type TenantActionGroupResource struct {
 	Type *string
 }
 
+// TenantActionGroupTestNotificationDetailsResponse - The details of the test notification results.
+type TenantActionGroupTestNotificationDetailsResponse struct {
+	// REQUIRED; The overall state
+	State *string
+
+	// The list of action detail
+	ActionDetails []*TenantActionGroupActionDetail
+
+	// The completed time
+	CompletedTime *string
+
+	// The context info
+	Context *Context
+
+	// The created time
+	CreatedTime *string
+}
+
+// TenantActionGroupWebhookReceiver - A webhook receiver.
+type TenantActionGroupWebhookReceiver struct {
+	// REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within a tenant action group.
+	Name *string
+
+	// REQUIRED; The URI where webhooks should be sent.
+	ServiceURI *string
+
+	// Indicates the identifier uri for aad auth.
+	IdentifierURI *string
+
+	// Indicates the webhook app object Id for aad auth.
+	ObjectID *string
+
+	// Indicates the tenant id for aad auth.
+	TenantID *string
+
+	// Indicates whether or not use AAD authentication.
+	UseAADAuth *bool
+
+	// Indicates whether to use common alert schema.
+	UseCommonAlertSchema *bool
+}
+
 // TenantNotificationRequestBody - The request body which contain contact detail metadata
 type TenantNotificationRequestBody struct {
 	// REQUIRED; The value of the supported alert type. Supported alert type value is: servicehealth
@@ -4095,19 +4015,13 @@ type TenantNotificationRequestBody struct {
 	VoiceReceivers []*VoiceReceiver
 
 	// The list of webhook receivers that are part of this action group.
-	WebhookReceivers []*WebhookReceiver
+	WebhookReceivers []*TenantActionGroupWebhookReceiver
 }
 
 // TestNotificationDetailsResponse - The details of the test notification results.
 type TestNotificationDetailsResponse struct {
-	// REQUIRED; REQUIRED; The overall state
+	// REQUIRED; The overall state
 	State *string
-
-	// REQUIRED; REQUIRED; The overall state
-	State *string
-
-	// The list of action detail
-	ActionDetails []*ActionDetail
 
 	// The list of action detail
 	ActionDetails []*ActionDetail
@@ -4115,50 +4029,8 @@ type TestNotificationDetailsResponse struct {
 	// The completed time
 	CompletedTime *string
 
-	// The completed time
-	CompletedTime *string
-
 	// The context info
 	Context *Context
-
-	// The context info
-	Context *Context
-
-	// The created time
-	CreatedTime *string
-
-	// The created time
-	CreatedTime *string
-}
-
-// TestNotificationDetailsResponse - The details of the test notification results.
-type TestNotificationDetailsResponse struct {
-	// REQUIRED; REQUIRED; The overall state
-	State *string
-
-	// REQUIRED; REQUIRED; The overall state
-	State *string
-
-	// The list of action detail
-	ActionDetails []*ActionDetail
-
-	// The list of action detail
-	ActionDetails []*ActionDetail
-
-	// The completed time
-	CompletedTime *string
-
-	// The completed time
-	CompletedTime *string
-
-	// The context info
-	Context *Context
-
-	// The context info
-	Context *Context
-
-	// The created time
-	CreatedTime *string
 
 	// The created time
 	CreatedTime *string
@@ -4301,21 +4173,11 @@ type WebhookNotification struct {
 
 // WebhookReceiver - A webhook receiver.
 type WebhookReceiver struct {
-	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within a tenant action
-	// group.
+	// REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within an action group.
 	Name *string
 
-	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within an action group.
-	Name *string
-
-	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
+	// REQUIRED; The URI where webhooks should be sent.
 	ServiceURI *string
-
-	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
-	ServiceURI *string
-
-	// Indicates the identifier uri for aad auth.
-	IdentifierURI *string
 
 	// Indicates the identifier uri for aad auth.
 	IdentifierURI *string
@@ -4326,72 +4188,11 @@ type WebhookReceiver struct {
 	// Indicates the webhook app object Id for aad auth.
 	ObjectID *string
 
-	// Indicates the webhook app object Id for aad auth.
-	ObjectID *string
-
-	// Indicates the tenant id for aad auth.
-	TenantID *string
-
 	// Indicates the tenant id for aad auth.
 	TenantID *string
 
 	// Indicates whether or not use AAD authentication.
 	UseAADAuth *bool
-
-	// Indicates whether or not use AAD authentication.
-	UseAADAuth *bool
-
-	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool
-
-	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool
-}
-
-// WebhookReceiver - A webhook receiver.
-type WebhookReceiver struct {
-	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within a tenant action
-	// group.
-	Name *string
-
-	// REQUIRED; REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within an action group.
-	Name *string
-
-	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
-	ServiceURI *string
-
-	// REQUIRED; REQUIRED; The URI where webhooks should be sent.
-	ServiceURI *string
-
-	// Indicates the identifier uri for aad auth.
-	IdentifierURI *string
-
-	// Indicates the identifier uri for aad auth.
-	IdentifierURI *string
-
-	// The principal id of the managed identity. The value can be "None", "SystemAssigned"
-	ManagedIdentity *string
-
-	// Indicates the webhook app object Id for aad auth.
-	ObjectID *string
-
-	// Indicates the webhook app object Id for aad auth.
-	ObjectID *string
-
-	// Indicates the tenant id for aad auth.
-	TenantID *string
-
-	// Indicates the tenant id for aad auth.
-	TenantID *string
-
-	// Indicates whether or not use AAD authentication.
-	UseAADAuth *bool
-
-	// Indicates whether or not use AAD authentication.
-	UseAADAuth *bool
-
-	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool
 
 	// Indicates whether to use common alert schema.
 	UseCommonAlertSchema *bool

@@ -39,7 +39,7 @@ type TenantActionGroupsServer struct {
 
 	// Update is the fake for method TenantActionGroupsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch armmonitor.ActionGroupPatchBody, options *armmonitor.TenantActionGroupsClientUpdateOptions) (resp azfake.Responder[armmonitor.TenantActionGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+	Update func(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch armmonitor.TenantActionGroupPatchBody, options *armmonitor.TenantActionGroupsClientUpdateOptions) (resp azfake.Responder[armmonitor.TenantActionGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTenantActionGroupsServerTransport creates a new instance of TenantActionGroupsServerTransport with the provided implementation.
@@ -256,7 +256,7 @@ func (t *TenantActionGroupsServerTransport) dispatchUpdate(req *http.Request) (*
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armmonitor.ActionGroupPatchBody](req)
+	body, err := server.UnmarshalRequestAsJSON[armmonitor.TenantActionGroupPatchBody](req)
 	if err != nil {
 		return nil, err
 	}

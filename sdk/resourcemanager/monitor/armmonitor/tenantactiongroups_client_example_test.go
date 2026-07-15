@@ -65,7 +65,7 @@ func ExampleTenantActionGroupsClient_CreateOrUpdate() {
 					PhoneNumber: to.Ptr("2062022299"),
 				},
 			},
-			WebhookReceivers: []*armmonitor.WebhookReceiver{
+			WebhookReceivers: []*armmonitor.TenantActionGroupWebhookReceiver{
 				{
 					Name:                 to.Ptr("Sample webhook 1"),
 					ServiceURI:           to.Ptr("http://www.example.com/webhook1"),
@@ -134,7 +134,7 @@ func ExampleTenantActionGroupsClient_CreateOrUpdate() {
 	// 					PhoneNumber: to.Ptr("2062022299"),
 	// 				},
 	// 			},
-	// 			WebhookReceivers: []*armmonitor.WebhookReceiver{
+	// 			WebhookReceivers: []*armmonitor.TenantActionGroupWebhookReceiver{
 	// 				{
 	// 					Name: to.Ptr("Sample webhook 1"),
 	// 					ServiceURI: to.Ptr("http://www.example.com/webhook1"),
@@ -241,7 +241,7 @@ func ExampleTenantActionGroupsClient_Get() {
 	// 					PhoneNumber: to.Ptr("2062022299"),
 	// 				},
 	// 			},
-	// 			WebhookReceivers: []*armmonitor.WebhookReceiver{
+	// 			WebhookReceivers: []*armmonitor.TenantActionGroupWebhookReceiver{
 	// 				{
 	// 					Name: to.Ptr("Sample webhook 1"),
 	// 					ServiceURI: to.Ptr("http://www.example.com/webhook1"),
@@ -332,7 +332,7 @@ func ExampleTenantActionGroupsClient_NewListByManagementGroupIDPager() {
 		// 							PhoneNumber: to.Ptr("2062022299"),
 		// 						},
 		// 					},
-		// 					WebhookReceivers: []*armmonitor.WebhookReceiver{
+		// 					WebhookReceivers: []*armmonitor.TenantActionGroupWebhookReceiver{
 		// 						{
 		// 							Name: to.Ptr("Sample webhook 1"),
 		// 							ServiceURI: to.Ptr("http://www.example.com/webhook1"),
@@ -369,7 +369,7 @@ func ExampleTenantActionGroupsClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewTenantActionGroupsClient().Update(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", armmonitor.ActionGroupPatchBody{
+	res, err := clientFactory.NewTenantActionGroupsClient().Update(ctx, "72f988bf-86f1-41af-91ab-2d7cd011db47", "testTenantActionGroup", "72f988bf-86f1-41af-91ab-2d7cd011db47", armmonitor.TenantActionGroupPatchBody{
 		Properties: &armmonitor.ActionGroupPatch{
 			Enabled: to.Ptr(false),
 		},
@@ -428,7 +428,7 @@ func ExampleTenantActionGroupsClient_Update() {
 	// 					PhoneNumber: to.Ptr("2062022299"),
 	// 				},
 	// 			},
-	// 			WebhookReceivers: []*armmonitor.WebhookReceiver{
+	// 			WebhookReceivers: []*armmonitor.TenantActionGroupWebhookReceiver{
 	// 				{
 	// 					Name: to.Ptr("Sample webhook 1"),
 	// 					ServiceURI: to.Ptr("http://www.example.com/webhook1"),

@@ -62,7 +62,7 @@ func ExampleCombineClient_BeginCreateNotificationsAtTenantActionGroupResourceLev
 				PhoneNumber: to.Ptr("1234567890"),
 			},
 		},
-		WebhookReceivers: []*armmonitor.WebhookReceiver{
+		WebhookReceivers: []*armmonitor.TenantActionGroupWebhookReceiver{
 			{
 				Name:                 to.Ptr("Sample webhook 1"),
 				ServiceURI:           to.Ptr("http://www.example.com/webhook1"),
@@ -90,8 +90,8 @@ func ExampleCombineClient_BeginCreateNotificationsAtTenantActionGroupResourceLev
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmonitor.CombineClientCreateNotificationsAtTenantActionGroupResourceLevelResponse{
-	// 	TestNotificationDetailsResponse: armmonitor.TestNotificationDetailsResponse{
-	// 		ActionDetails: []*armmonitor.ActionDetail{
+	// 	TenantActionGroupTestNotificationDetailsResponse: armmonitor.TenantActionGroupTestNotificationDetailsResponse{
+	// 		ActionDetails: []*armmonitor.TenantActionGroupActionDetail{
 	// 			{
 	// 				Name: to.Ptr("AzureAppPush-name"),
 	// 				MechanismType: to.Ptr("AzureAppPush"),
@@ -165,8 +165,8 @@ func ExampleCombineClient_GetTestNotificationsAtTenantActionGroupResourceLevel()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmonitor.CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse{
-	// 	TestNotificationDetailsResponse: armmonitor.TestNotificationDetailsResponse{
-	// 		ActionDetails: []*armmonitor.ActionDetail{
+	// 	TenantActionGroupTestNotificationDetailsResponse: armmonitor.TenantActionGroupTestNotificationDetailsResponse{
+	// 		ActionDetails: []*armmonitor.TenantActionGroupActionDetail{
 	// 			{
 	// 				Name: to.Ptr("AzureAppPush-name"),
 	// 				MechanismType: to.Ptr("AzureAppPush"),

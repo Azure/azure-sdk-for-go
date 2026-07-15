@@ -170,13 +170,13 @@ type BaselinesClientListResponse struct {
 // CombineClientCreateNotificationsAtTenantActionGroupResourceLevelResponse contains the response from method CombineClient.BeginCreateNotificationsAtTenantActionGroupResourceLevel.
 type CombineClientCreateNotificationsAtTenantActionGroupResourceLevelResponse struct {
 	// The details of the test notification results.
-	TestNotificationDetailsResponse
+	TenantActionGroupTestNotificationDetailsResponse
 }
 
 // CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse contains the response from method CombineClient.GetTestNotificationsAtTenantActionGroupResourceLevel.
 type CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse struct {
 	// The details of the test notification results.
-	TestNotificationDetailsResponse
+	TenantActionGroupTestNotificationDetailsResponse
 }
 
 // DataCollectionEndpointsClientCreateResponse contains the response from method DataCollectionEndpointsClient.Create.

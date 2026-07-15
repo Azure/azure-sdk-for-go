@@ -165,7 +165,7 @@ func (c *CombineServerTransport) dispatchGetTestNotificationsAtTenantActionGroup
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TestNotificationDetailsResponse, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TenantActionGroupTestNotificationDetailsResponse, req)
 	if err != nil {
 		return nil, err
 	}

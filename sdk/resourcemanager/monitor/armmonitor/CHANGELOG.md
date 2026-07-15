@@ -27,7 +27,7 @@
 - New function `*TenantActionGroupsClient.Delete(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, options *TenantActionGroupsClientDeleteOptions) (TenantActionGroupsClientDeleteResponse, error)`
 - New function `*TenantActionGroupsClient.Get(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, options *TenantActionGroupsClientGetOptions) (TenantActionGroupsClientGetResponse, error)`
 - New function `*TenantActionGroupsClient.NewListByManagementGroupIDPager(managementGroupID string, xmsClientTenantID string, options *TenantActionGroupsClientListByManagementGroupIDOptions) *runtime.Pager[TenantActionGroupsClientListByManagementGroupIDResponse]`
-- New function `*TenantActionGroupsClient.Update(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch ActionGroupPatchBody, options *TenantActionGroupsClientUpdateOptions) (TenantActionGroupsClientUpdateResponse, error)`
+- New function `*TenantActionGroupsClient.Update(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch TenantActionGroupPatchBody, options *TenantActionGroupsClientUpdateOptions) (TenantActionGroupsClientUpdateResponse, error)`
 - New function `NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VMInsightsClient, error)`
 - New function `*VMInsightsClient.GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsClientGetOnboardingStatusOptions) (VMInsightsClientGetOnboardingStatusResponse, error)`
 - New struct `DataContainer`
@@ -38,14 +38,17 @@
 - New struct `DiagnosticSettingsResource`
 - New struct `DiagnosticSettingsResourceCollection`
 - New struct `TenantActionGroup`
+- New struct `TenantActionGroupActionDetail`
 - New struct `TenantActionGroupList`
+- New struct `TenantActionGroupPatchBody`
 - New struct `TenantActionGroupResource`
+- New struct `TenantActionGroupTestNotificationDetailsResponse`
+- New struct `TenantActionGroupWebhookReceiver`
 - New struct `TenantNotificationRequestBody`
 - New struct `VMInsightsOnboardingStatus`
 - New struct `VMInsightsOnboardingStatusProperties`
 - New struct `WorkspaceInfo`
 - New struct `WorkspaceInfoProperties`
-- New field `Message` in struct `ActionDetail`
 - New field `CategoryGroup` in struct `LogSettings`
 - New field `Category` in struct `MetricSettings`
 

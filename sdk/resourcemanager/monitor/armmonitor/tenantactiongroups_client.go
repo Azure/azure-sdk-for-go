@@ -278,7 +278,7 @@ func (client *TenantActionGroupsClient) listByManagementGroupIDHandleResponse(re
 //   - tenantActionGroupPatch - Parameters supplied to the operation.
 //   - options - TenantActionGroupsClientUpdateOptions contains the optional parameters for the TenantActionGroupsClient.Update
 //     method.
-func (client *TenantActionGroupsClient) Update(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch ActionGroupPatchBody, options *TenantActionGroupsClientUpdateOptions) (TenantActionGroupsClientUpdateResponse, error) {
+func (client *TenantActionGroupsClient) Update(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch TenantActionGroupPatchBody, options *TenantActionGroupsClientUpdateOptions) (TenantActionGroupsClientUpdateResponse, error) {
 	var err error
 	const operationName = "TenantActionGroupsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -301,7 +301,7 @@ func (client *TenantActionGroupsClient) Update(ctx context.Context, managementGr
 }
 
 // updateCreateRequest creates the Update request.
-func (client *TenantActionGroupsClient) updateCreateRequest(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch ActionGroupPatchBody, _ *TenantActionGroupsClientUpdateOptions) (*policy.Request, error) {
+func (client *TenantActionGroupsClient) updateCreateRequest(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch TenantActionGroupPatchBody, _ *TenantActionGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Insights/tenantActionGroups/{tenantActionGroupName}"
 	if managementGroupID == "" {
 		return nil, errors.New("parameter managementGroupID cannot be empty")

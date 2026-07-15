@@ -173,7 +173,7 @@ func (client *CombineClient) getTestNotificationsAtTenantActionGroupResourceLeve
 // getTestNotificationsAtTenantActionGroupResourceLevelHandleResponse handles the GetTestNotificationsAtTenantActionGroupResourceLevel response.
 func (client *CombineClient) getTestNotificationsAtTenantActionGroupResourceLevelHandleResponse(resp *http.Response) (CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse, error) {
 	result := CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TestNotificationDetailsResponse); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.TenantActionGroupTestNotificationDetailsResponse); err != nil {
 		return CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse{}, err
 	}
 	return result, nil

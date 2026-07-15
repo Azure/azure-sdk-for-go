@@ -295,7 +295,8 @@ func TestTryTimeoutDisabledByNegativeValue(t *testing.T) {
 
 func TestTryTimeoutInstallsPerAttemptDeadline(t *testing.T) {
 	// A positive TryTimeout installs a fresh per-attempt deadline of roughly that
-	// duration on every attempt, independent of the (deadline-less) caller ctx.
+	// duration on every attempt; the caller ctx here is deadline-less, so that
+	// deadline reflects TryTimeout alone.
 	err := Retry(context.Background(), testLogEvent, "notused", func(ctx context.Context, args *RetryFnArgs) error {
 		deadline, hasDeadline := ctx.Deadline()
 		require.True(t, hasDeadline, "a per-attempt deadline should be installed when TryTimeout > 0")

@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added `RetryOptions.TryTimeout`, the maximum duration of a single retry attempt (not the whole operation), matching the concept behind the .NET SDK's `ServiceBusRetryOptions.TryTimeout`. When set to a positive value each attempt gets a fresh TryTimeout, recomputed independently of the caller's context, so a single slow attempt cannot consume the entire operation. The default is zero, which means no per-attempt timeout (opt-in), preserving the historical behavior; set a positive value such as 60 seconds to match the .NET per-attempt default. A negative value is also treated as no per-attempt timeout. (#26421)
+- Added `RetryOptions.TryTimeout`, the maximum duration of a single retry attempt (not the whole operation), matching the concept behind the .NET SDK's `ServiceBusRetryOptions.TryTimeout`. When set to a positive value each attempt gets a fresh TryTimeout, recomputed per attempt but still capped by the caller's remaining deadline, so a single slow attempt cannot consume the entire operation. The default is zero, which means no per-attempt timeout (opt-in), preserving the historical behavior; set a positive value such as 60 seconds to match the .NET per-attempt default. A negative value is also treated as no per-attempt timeout. (#26421)
 
 ### Breaking Changes
 

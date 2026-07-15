@@ -77,10 +77,10 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 			LastErr: err,
 		}
 
-		// Bound each attempt by TryTimeout, recomputed fresh per attempt and
-		// independent of the caller's context. When TryTimeout <= 0 the attempt is
-		// bounded only by the caller ctx. Management RPCs read the deadline off the
-		// context they are given, so when this attemptCtx carries a per-attempt
+		// Bound each attempt by TryTimeout, recomputed fresh per attempt but still
+		// derived from (and capped by) the caller's context. When TryTimeout <= 0 the
+		// attempt is bounded only by the caller ctx. Management RPCs read the deadline
+		// off the context they are given, so when this attemptCtx carries a per-attempt
 		// deadline that bound is advertised as the AMQP server-timeout.
 		attemptCtx := ctx
 		cancel := func() {}

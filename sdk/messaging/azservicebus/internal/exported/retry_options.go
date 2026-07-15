@@ -26,8 +26,9 @@ type RetryOptions struct {
 
 	// TryTimeout specifies the maximum duration of a single attempt, not the whole
 	// operation. When set to a positive value, each retry attempt is bounded by a
-	// fresh TryTimeout, recomputed independently of the caller's context, so a
-	// single slow attempt cannot consume the entire operation. An attempt that
+	// fresh TryTimeout, recomputed per attempt (so a slow attempt does not shrink
+	// later attempts' budgets) but still capped by the caller's remaining deadline,
+	// so a single slow attempt cannot consume the entire operation. An attempt that
 	// exceeds TryTimeout is treated as a retryable failure (subject to MaxRetries);
 	// the overall bound remains the caller's context.
 	//

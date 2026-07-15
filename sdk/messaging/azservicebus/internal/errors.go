@@ -14,6 +14,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 )
 
@@ -65,6 +66,13 @@ func TransformError(err error) error {
 		// one scenario where this error pops up is if you're waiting for an available
 		// session and there are none available. It waits, up to one minute, and then
 		// returns this error.
+		return exported.NewError(exported.CodeTimeout, err)
+	}
+
+	if errors.Is(err, utils.ErrTryTimeoutExhausted) {
+		// Every retry attempt exhausted its per-attempt TryTimeout while the caller's
+		// context stayed alive. Surface this as a timeout the caller can act on, rather
+		// than a bare context.DeadlineExceeded that reads like a caller cancellation.
 		return exported.NewError(exported.CodeTimeout, err)
 	}
 
@@ -133,6 +141,13 @@ func IsCancelError(err error) bool {
 		return false
 	}
 
+	// An exhausted per-attempt TryTimeout wraps context.DeadlineExceeded but is not a
+	// caller cancellation: it means the operation ran out of retry attempts while the
+	// caller's context was still alive. Keep it distinguishable from a real cancel.
+	if errors.Is(err, utils.ErrTryTimeoutExhausted) {
+		return false
+	}
+
 	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 		return true
 	}
@@ -192,6 +207,15 @@ func GetRecoveryKind(err error) RecoveryKind {
 
 	if IsCancelError(err) {
 		return RecoveryKindFatal
+	}
+
+	// An exhausted per-attempt TryTimeout is a transient timeout (the broker was slower
+	// than the per-attempt bound on every attempt), not a fatal error. Classify it like
+	// com.microsoft:timeout so callers keep retrying rather than aborting; in particular
+	// this keeps the CBS token-refresh loop alive across slow periods instead of
+	// permanently stopping it.
+	if errors.Is(err, utils.ErrTryTimeoutExhausted) {
+		return RecoveryKindNone
 	}
 
 	if errors.Is(err, amqpwrap.ErrConnResetNeeded) {

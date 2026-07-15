@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/utils"
 	"github.com/Azure/go-amqp"
 	"github.com/stretchr/testify/require"
 )
@@ -151,6 +152,27 @@ func Test_IsNonRetriable(t *testing.T) {
 	for _, err := range errs {
 		require.EqualValues(t, RecoveryKindFatal, GetRecoveryKind(err))
 	}
+}
+
+func Test_ExhaustedTryTimeoutIsRetryableTimeout(t *testing.T) {
+	// An exhausted per-attempt TryTimeout wraps context.DeadlineExceeded (so the
+	// underlying deadline stays in the chain) but must NOT be treated as a caller
+	// cancellation: it is a transient timeout that surfaces to users as CodeTimeout.
+	err := fmt.Errorf("%w: %w", utils.ErrTryTimeoutExhausted, context.DeadlineExceeded)
+
+	require.False(t, IsCancelError(err), "an exhausted TryTimeout is not a caller cancellation")
+	require.Equal(t, RecoveryKindNone, GetRecoveryKind(err), "an exhausted TryTimeout is a transient timeout, not fatal")
+	require.ErrorIs(t, err, context.DeadlineExceeded, "the underlying deadline error stays in the chain")
+
+	transformed := TransformError(err)
+
+	var sbErr *exported.Error
+	require.ErrorAs(t, transformed, &sbErr)
+	require.Equal(t, exported.CodeTimeout, sbErr.Code, "surfaced to users as a timeout")
+
+	// A bare / plainly-wrapped context.DeadlineExceeded (no sentinel) stays fatal.
+	require.True(t, IsCancelError(context.DeadlineExceeded))
+	require.Equal(t, RecoveryKindFatal, GetRecoveryKind(context.DeadlineExceeded))
 }
 
 func Test_ServiceBusError_NoRecoveryNeeded(t *testing.T) {

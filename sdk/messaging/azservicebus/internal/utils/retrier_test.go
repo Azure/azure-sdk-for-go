@@ -314,7 +314,9 @@ func TestTryTimeoutInstallsPerAttemptDeadline(t *testing.T) {
 func TestTryTimeoutExhaustedAllAttemptsTimeout(t *testing.T) {
 	// When every attempt exceeds the per-attempt TryTimeout while the caller ctx
 	// stays alive, Retry retries up to MaxRetries and then returns the last attempt's
-	// context.DeadlineExceeded (a terminal error), without looping forever.
+	// context.DeadlineExceeded wrapped in ErrTryTimeoutExhausted, so it is a
+	// distinguishable retryable timeout rather than a caller-cancellation, without
+	// looping forever.
 	isFatalFn := func(err error) bool {
 		return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
 	}
@@ -333,6 +335,7 @@ func TestTryTimeoutExhaustedAllAttemptsTimeout(t *testing.T) {
 	})
 
 	require.ErrorIs(t, err, context.DeadlineExceeded, "exhausted per-attempt timeouts surface the last attempt's deadline error")
+	require.ErrorIs(t, err, ErrTryTimeoutExhausted, "the exhausted-timeout case is marked so it is distinguishable from caller cancellation")
 	require.EqualValues(t, 4, called, "the initial attempt plus MaxRetries retries all time out")
 }
 
@@ -362,6 +365,7 @@ func TestTryTimeoutCallerDeadlineIsTerminal(t *testing.T) {
 	})
 
 	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.NotErrorIs(t, err, ErrTryTimeoutExhausted, "a caller-deadline expiry is terminal, not an exhausted per-attempt timeout")
 	require.EqualValues(t, 1, called, "caller-deadline expiry is terminal, not a retryable per-attempt timeout")
 }
 

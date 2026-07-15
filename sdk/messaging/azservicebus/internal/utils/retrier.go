@@ -6,6 +6,7 @@ package utils
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math"
 	"math/rand"
 	"time"
@@ -16,6 +17,13 @@ import (
 
 // EventRetry is the name for retry events
 const EventRetry = "azsb.Retry"
+
+// ErrTryTimeoutExhausted marks a Retry return where every attempt exhausted its
+// per-attempt TryTimeout while the caller's context stayed alive. It wraps the
+// last attempt's context.DeadlineExceeded so errors.Is(err, context.DeadlineExceeded)
+// stays true, while remaining distinguishable from a caller cancellation. Error
+// classification treats this as a retryable timeout rather than a terminal cancel.
+var ErrTryTimeoutExhausted = errors.New("all retry attempts exhausted their per-attempt TryTimeout")
 
 type RetryFnArgs struct {
 	// I is the iteration of the retry "loop" and starts at 0.
@@ -46,6 +54,11 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 	setDefaults(&ro)
 
 	var err error
+
+	// attemptTimedOut records whether the most recent attempt exceeded its per-attempt
+	// TryTimeout. It is declared outside the loop so its final value survives loop exit,
+	// which is how the exhausted-per-attempt-timeout return below is detected.
+	attemptTimedOut := false
 
 	for i := int32(0); i <= ro.MaxRetries; i++ {
 		if i > 0 {
@@ -81,7 +94,7 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 		// Capture whether the per-attempt deadline fired before releasing it. cancel()
 		// runs explicitly at the end of each iteration (not via defer) so we do not
 		// accumulate one live context per attempt across the whole loop.
-		attemptTimedOut := ro.TryTimeout > 0 && errors.Is(attemptCtx.Err(), context.DeadlineExceeded)
+		attemptTimedOut = ro.TryTimeout > 0 && errors.Is(attemptCtx.Err(), context.DeadlineExceeded)
 		cancel()
 
 		if args.resetAttempts {
@@ -125,6 +138,14 @@ func Retry(ctx context.Context, eventName log.Event, operation string, fn func(c
 		}
 
 		return nil
+	}
+
+	if attemptTimedOut && ctx.Err() == nil && err != nil {
+		// Every attempt exhausted its per-attempt TryTimeout while the caller's
+		// context stayed alive. Wrap the last context.DeadlineExceeded with a sentinel
+		// so this exhausted-timeout case is distinguishable from caller cancellation,
+		// and is classified as a retryable timeout (not a terminal cancel) downstream.
+		return fmt.Errorf("%w: %w", ErrTryTimeoutExhausted, err)
 	}
 
 	return err

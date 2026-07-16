@@ -918,26 +918,9 @@ func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Resp
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - options - ContainerClientListBlobFlatSegmentApacheArrowOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegmentApacheArrow
 //     method.
-func (client *ContainerClient) ListBlobFlatSegmentApacheArrow(ctx context.Context, options *ContainerClientListBlobFlatSegmentApacheArrowOptions) (ContainerClientListBlobFlatSegmentApacheArrowResponse, error) {
-	var err error
-	req, err := client.listBlobFlatSegmentApacheArrowCreateRequest(ctx, options)
-	if err != nil {
-		return ContainerClientListBlobFlatSegmentApacheArrowResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ContainerClientListBlobFlatSegmentApacheArrowResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerClientListBlobFlatSegmentApacheArrowResponse{}, err
-	}
-	resp, err := client.listBlobFlatSegmentApacheArrowHandleResponse(httpResp)
-	return resp, err
-}
-
+//
 // listBlobFlatSegmentApacheArrowCreateRequest creates the ListBlobFlatSegmentApacheArrow request.
-func (client *ContainerClient) listBlobFlatSegmentApacheArrowCreateRequest(ctx context.Context, options *ContainerClientListBlobFlatSegmentApacheArrowOptions) (*policy.Request, error) {
+func (client *ContainerClient) ListBlobFlatSegmentApacheArrowCreateRequest(ctx context.Context, options *ContainerClientListBlobFlatSegmentApacheArrowOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -977,7 +960,7 @@ func (client *ContainerClient) listBlobFlatSegmentApacheArrowCreateRequest(ctx c
 }
 
 // listBlobFlatSegmentApacheArrowHandleResponse handles the ListBlobFlatSegmentApacheArrow response.
-func (client *ContainerClient) listBlobFlatSegmentApacheArrowHandleResponse(resp *http.Response) (ContainerClientListBlobFlatSegmentApacheArrowResponse, error) {
+func (client *ContainerClient) ListBlobFlatSegmentApacheArrowHandleResponse(resp *http.Response) (ContainerClientListBlobFlatSegmentApacheArrowResponse, error) {
 	result := ContainerClientListBlobFlatSegmentApacheArrowResponse{Body: resp.Body}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
@@ -1102,26 +1085,9 @@ func (client *ContainerClient) ListBlobHierarchySegmentHandleResponse(resp *http
 //     appearance of the delimiter character. The delimiter may be a single character or a string.
 //   - options - ContainerClientListBlobHierarchySegmentApacheArrowOptions contains the optional parameters for the ContainerClient.ListBlobHierarchySegmentApacheArrow
 //     method.
-func (client *ContainerClient) ListBlobHierarchySegmentApacheArrow(ctx context.Context, delimiter string, options *ContainerClientListBlobHierarchySegmentApacheArrowOptions) (ContainerClientListBlobHierarchySegmentApacheArrowResponse, error) {
-	var err error
-	req, err := client.listBlobHierarchySegmentApacheArrowCreateRequest(ctx, delimiter, options)
-	if err != nil {
-		return ContainerClientListBlobHierarchySegmentApacheArrowResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ContainerClientListBlobHierarchySegmentApacheArrowResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerClientListBlobHierarchySegmentApacheArrowResponse{}, err
-	}
-	resp, err := client.listBlobHierarchySegmentApacheArrowHandleResponse(httpResp)
-	return resp, err
-}
-
+//
 // listBlobHierarchySegmentApacheArrowCreateRequest creates the ListBlobHierarchySegmentApacheArrow request.
-func (client *ContainerClient) listBlobHierarchySegmentApacheArrowCreateRequest(ctx context.Context, delimiter string, options *ContainerClientListBlobHierarchySegmentApacheArrowOptions) (*policy.Request, error) {
+func (client *ContainerClient) ListBlobHierarchySegmentApacheArrowCreateRequest(ctx context.Context, delimiter string, options *ContainerClientListBlobHierarchySegmentApacheArrowOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -1162,7 +1128,7 @@ func (client *ContainerClient) listBlobHierarchySegmentApacheArrowCreateRequest(
 }
 
 // listBlobHierarchySegmentApacheArrowHandleResponse handles the ListBlobHierarchySegmentApacheArrow response.
-func (client *ContainerClient) listBlobHierarchySegmentApacheArrowHandleResponse(resp *http.Response) (ContainerClientListBlobHierarchySegmentApacheArrowResponse, error) {
+func (client *ContainerClient) ListBlobHierarchySegmentApacheArrowHandleResponse(resp *http.Response) (ContainerClientListBlobHierarchySegmentApacheArrowResponse, error) {
 	result := ContainerClientListBlobHierarchySegmentApacheArrowResponse{Body: resp.Body}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val

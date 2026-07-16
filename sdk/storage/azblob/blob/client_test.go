@@ -3891,6 +3891,31 @@ func (s *BlobRecordedTestsSuite) TestBlobSetTierInvalidAndValid() {
 	}
 }
 
+func (s *BlobRecordedTestsSuite) TestDownloadStreamAccessTierHeaders() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blockBlobName := testcommon.GenerateBlobName(testName)
+	bbClient := testcommon.CreateNewBlockBlob(context.Background(), _require, blockBlobName, containerClient)
+
+	_, err = bbClient.SetTier(context.Background(), blob.AccessTierCool, nil)
+	_require.NoError(err)
+
+	downloadResp, err := bbClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	_ = downloadResp.Body.Close()
+
+	_require.NotNil(downloadResp.AccessTier)
+	_require.Equal(*downloadResp.AccessTier, string(blob.AccessTierCool))
+	_require.NotNil(downloadResp.AccessTierChangeTime)
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobClientPartsSASQueryTimes() {
 	_require := require.New(s.T())
 	StartTimesInputs := []string{

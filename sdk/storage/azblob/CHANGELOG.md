@@ -4,10 +4,12 @@
 
 ### Features Added
 * Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
+* Blob put operations now return both `ContentMD5` and `ContentCRC64` in the response when a Content-MD5 header is provided (service version 2026-10-06+).
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed `UploadFile`/`UploadBuffer` responses not including `ContentCRC64` when returned by the service.
 
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.

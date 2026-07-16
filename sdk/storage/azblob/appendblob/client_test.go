@@ -4071,3 +4071,29 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockMultipleWithStructuredMe
 	expectedData := slices.Concat(block1, block2)
 	_require.Equal(expectedData, downloadedData)
 }
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockMD5WithCRC64Return() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	abName := testcommon.GenerateBlobName(testName)
+	abClient := testcommon.CreateNewAppendBlob(context.Background(), _require, abName, containerClient)
+
+	contentSize := 8 * 1024
+	content := make([]byte, contentSize)
+	contentMD5 := md5.Sum(content)
+	body := streaming.NopCloser(bytes.NewReader(content))
+
+	appendResp, err := abClient.AppendBlock(context.Background(), body, &appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5[:]),
+	})
+	_require.NoError(err)
+	_require.NotNil(appendResp.ContentMD5)
+	_require.NotNil(appendResp.ContentCRC64)
+}

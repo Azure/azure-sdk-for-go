@@ -19,7 +19,7 @@ import (
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 type ServiceClient struct {
 	internal *azcore.Client
 	url      string
@@ -66,7 +66,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -135,7 +135,7 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
 		return nil, err
@@ -232,7 +232,7 @@ func (client *ServiceClient) listSharesSegmentCreateRequest(ctx context.Context,
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -302,7 +302,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
 		return nil, err

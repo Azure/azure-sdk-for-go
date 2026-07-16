@@ -5,7 +5,7 @@
 package generated
 
 const (
-	version20260606 string = "2026-06-06"
+	version20261006 string = "2026-10-06"
 )
 
 // AccessRight - Access rights of the access policy.

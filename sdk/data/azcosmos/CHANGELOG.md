@@ -2,9 +2,11 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.5.1-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
+
+* Restored the query engine feature originally present in 1.5.0-beta releases (but removed for the 1.5.0 GA release).
 
 ### Breaking Changes
 

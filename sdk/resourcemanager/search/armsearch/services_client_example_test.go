@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/SearchCheckNameAvailability.json
+// Generated from example definition: 2026-09-01-preview/SearchCheckNameAvailability.json
 func ExampleServicesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleServicesClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: &armsearch.CheckNameAvailabilityOutput{
+	// 	CheckNameAvailabilityOutput: armsearch.CheckNameAvailabilityOutput{
 	// 		IsNameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr(armsearch.UnavailableNameReasonAlreadyExists),
 	// 		Message: to.Ptr(""),
@@ -42,7 +42,7 @@ func ExampleServicesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateService.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateService.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,13 +73,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -135,7 +135,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateService() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceAuthOptions.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceAuthOptions.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,13 +171,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -232,7 +232,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceAuthOp
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceDisableLocalAuth.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceDisableLocalAuth.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,13 +264,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisabl
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -321,7 +321,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceDisabl
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,13 +353,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -415,7 +415,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -456,13 +456,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -523,7 +523,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,13 +565,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -633,7 +633,102 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceToAllo
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceWithCmkEnforcement.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithAutoGeneratedDomainNameLabelScope.json
+func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithAutoGeneratedDomainNameLabelScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsearch.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", armsearch.Service{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"app-name": to.Ptr("My e-commerce app"),
+		},
+		SKU: &armsearch.SKU{
+			Name: to.Ptr(armsearch.SKUNameStandard),
+		},
+		Properties: &armsearch.ServiceProperties{
+			ReplicaCount:                      to.Ptr[int32](3),
+			PartitionCount:                    to.Ptr[int32](1),
+			HostingMode:                       to.Ptr(armsearch.HostingModeDefault),
+			ComputeType:                       to.Ptr(armsearch.ComputeTypeDefault),
+			AutoGeneratedDomainNameLabelScope: to.Ptr(armsearch.AutoGeneratedDomainNameLabelScopeTenantReuse),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsearch.ServicesClientCreateOrUpdateResponse{
+	// 	Service: armsearch.Service{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
+	// 		Name: to.Ptr("mysearchservice"),
+	// 		Location: to.Ptr("westus"),
+	// 		Type: to.Ptr("Microsoft.Search/searchServices"),
+	// 		Tags: map[string]*string{
+	// 			"app-name": to.Ptr("My e-commerce app"),
+	// 		},
+	// 		SKU: &armsearch.SKU{
+	// 			Name: to.Ptr(armsearch.SKUNameStandard),
+	// 		},
+	// 		Properties: &armsearch.ServiceProperties{
+	// 			ReplicaCount: to.Ptr[int32](3),
+	// 			PartitionCount: to.Ptr[int32](1),
+	// 			Endpoint: to.Ptr("https://mysearchservice-12345678abcdefgh.sg.search.windows.net/"),
+	// 			Status: to.Ptr(armsearch.SearchServiceStatusProvisioning),
+	// 			StatusDetails: to.Ptr(""),
+	// 			HostingMode: to.Ptr(armsearch.HostingModeDefault),
+	// 			ComputeType: to.Ptr(armsearch.ComputeTypeDefault),
+	// 			ProvisioningState: to.Ptr(armsearch.ProvisioningStateProvisioning),
+	// 			PublicNetworkAccess: to.Ptr(armsearch.PublicNetworkAccessEnabled),
+	// 			NetworkRuleSet: &armsearch.NetworkRuleSet{
+	// 				IPRules: []*armsearch.IPRule{
+	// 				},
+	// 				Bypass: to.Ptr(armsearch.SearchBypassNone),
+	// 			},
+	// 			PrivateEndpointConnections: []*armsearch.PrivateEndpointConnection{
+	// 			},
+	// 			SharedPrivateLinkResources: []*armsearch.SharedPrivateLinkResource{
+	// 			},
+	// 			EncryptionWithCmk: &armsearch.EncryptionWithCmk{
+	// 				Enforcement: to.Ptr(armsearch.SearchEncryptionWithCmkUnspecified),
+	// 				EncryptionComplianceStatus: to.Ptr(armsearch.SearchEncryptionComplianceStatusCompliant),
+	// 			},
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			AuthOptions: &armsearch.DataPlaneAuthOptions{
+	// 				AADOrAPIKey: &armsearch.DataPlaneAADOrAPIKeyAuthOption{
+	// 					AADAuthFailureMode: to.Ptr(armsearch.AADAuthFailureModeHttp401WithBearerChallenge),
+	// 				},
+	// 			},
+	// 			DataExfiltrationProtections: []*armsearch.SearchDataExfiltrationProtection{
+	// 			},
+	// 			UpgradeAvailable: to.Ptr(armsearch.UpgradeAvailableNotAvailable),
+	// 			AutoGeneratedDomainNameLabelScope: to.Ptr(armsearch.AutoGeneratedDomainNameLabelScopeTenantReuse),
+	// 		},
+	// 		SystemData: &armsearch.SystemData{
+	// 			CreatedBy: to.Ptr("My e-commerce app"),
+	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithCmkEnforcement.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCmkEnforcement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -667,13 +762,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -729,7 +824,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithCm
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceWithDataExfiltration.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithDataExfiltration.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDataExfiltration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,13 +858,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -826,7 +921,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithDa
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceWithIdentity.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithIdentity.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -863,13 +958,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -936,7 +1031,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithId
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceWithServerless.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithServerless.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithServerless() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -964,13 +1059,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/myserverlessservice"),
 	// 		Name: to.Ptr("myserverlessservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1023,7 +1118,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithSe
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithServiceLevelCmkMultiTenantFederatedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1074,13 +1169,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1157,7 +1252,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithSe
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateWithKnowledgeRetrieval.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateWithKnowledgeRetrieval.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithKnowledgeRetrieval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1189,13 +1284,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithKnowledge
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1252,7 +1347,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithKnowledge
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchCreateOrUpdateWithSemanticSearch.json
+// Generated from example definition: 2026-09-01-preview/SearchCreateOrUpdateWithSemanticSearch.json
 func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticSearch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1284,13 +1379,13 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientCreateOrUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1347,7 +1442,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateWithSemanticS
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchDeleteService.json
+// Generated from example definition: 2026-09-01-preview/SearchDeleteService.json
 func ExampleServicesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1369,7 +1464,7 @@ func ExampleServicesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchGetService.json
+// Generated from example definition: 2026-09-01-preview/SearchGetService.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1388,7 +1483,7 @@ func ExampleServicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientGetResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1445,7 +1540,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchListServicesByResourceGroup.json
+// Generated from example definition: 2026-09-01-preview/SearchListServicesByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1582,7 +1677,7 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchListServicesBySubscription.json
+// Generated from example definition: 2026-09-01-preview/SearchListServicesBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1719,7 +1814,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateService.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateService.json
 func ExampleServicesClient_Update_searchUpdateService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1746,7 +1841,7 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1803,7 +1898,7 @@ func ExampleServicesClient_Update_searchUpdateService() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceAuthOptions.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceAuthOptions.json
 func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1835,7 +1930,7 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1891,7 +1986,7 @@ func ExampleServicesClient_Update_searchUpdateServiceAuthOptions() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceDisableLocalAuth.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceDisableLocalAuth.json
 func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1919,7 +2014,7 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -1971,7 +2066,7 @@ func ExampleServicesClient_Update_searchUpdateServiceDisableLocalAuth() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPrivateEndpoints.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1996,7 +2091,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2053,7 +2148,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPrivateEnd
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPs.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCustomIPs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2089,7 +2184,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2148,7 +2243,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
 func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2184,7 +2279,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2244,7 +2339,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToAllowAccessFromPublicCust
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceToRemoveIdentity.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceToRemoveIdentity.json
 func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2270,7 +2365,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2325,7 +2420,7 @@ func ExampleServicesClient_Update_searchUpdateServiceToRemoveIdentity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceWithCmkEnforcement.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithCmkEnforcement.json
 func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2355,7 +2450,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2412,7 +2507,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithCmkEnforcement() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceWithDataExfiltration.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithDataExfiltration.json
 func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2442,7 +2537,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2500,7 +2595,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithDataExfiltration() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceWithKnowledgeRetrieval.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithKnowledgeRetrieval.json
 func ExampleServicesClient_Update_searchUpdateServiceWithKnowledgeRetrieval() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2528,7 +2623,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithKnowledgeRetrieval() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2586,7 +2681,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithKnowledgeRetrieval() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceWithSemanticSearch.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithSemanticSearch.json
 func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2614,7 +2709,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2672,7 +2767,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSemanticSearch() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchUpdateServiceWithSku.json
+// Generated from example definition: 2026-09-01-preview/SearchUpdateServiceWithSku.json
 func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2699,7 +2794,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpdateResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),
@@ -2754,7 +2849,7 @@ func ExampleServicesClient_Update_searchUpdateServiceWithSku() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/UpgradeSearchServiceToLatestVersion.json
+// Generated from example definition: 2026-09-01-preview/UpgradeSearchServiceToLatestVersion.json
 func ExampleServicesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2771,13 +2866,13 @@ func ExampleServicesClient_BeginUpgrade() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.ServicesClientUpgradeResponse{
-	// 	Service: &armsearch.Service{
+	// 	Service: armsearch.Service{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice"),
 	// 		Name: to.Ptr("mysearchservice"),
 	// 		Location: to.Ptr("westus"),

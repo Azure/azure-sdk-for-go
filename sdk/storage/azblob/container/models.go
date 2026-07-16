@@ -192,6 +192,21 @@ func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
 	return include
 }
 
+// StorageResponseFormat specifies the format the service should use to return list results.
+type StorageResponseFormat = exported.StorageResponseFormat
+
+const (
+	// StorageResponseFormatAuto lets the SDK choose the response format.
+	// For the current release this resolves to XML; a future release will resolve to Arrow.
+	StorageResponseFormatAuto = exported.StorageResponseFormatAuto
+
+	// StorageResponseFormatXML requests the service to return results in XML format.
+	StorageResponseFormatXML = exported.StorageResponseFormatXML
+
+	// StorageResponseFormatArrow requests the service to return results in Apache Arrow IPC format.
+	StorageResponseFormatArrow = exported.StorageResponseFormatArrow
+)
+
 // ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.
 type ListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
@@ -214,12 +229,11 @@ type ListBlobsFlatOptions struct {
 	// list, multiple entity levels are supported. (Inclusive)
 	StartFrom *string
 	// End listing before this blob name (exclusive). Can be combined with StartFrom for range listing.
-	// Only supported when UseArrowFormat is true.
+	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
-	// UseArrowFormat requests the service to return results in Apache Arrow IPC format for improved performance.
-	// If the service does not support Arrow format, it will transparently fall back to XML.
-	// Arrow format is only supported on non-HNS (hierarchical namespace) accounts via the Blob endpoint.
-	UseArrowFormat *bool
+	// ResponseFormat specifies the format the service should use to return list results.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	ResponseFormat StorageResponseFormat
 }
 
 func (o *ListBlobsFlatOptions) formatArrow() generated.ContainerClientListBlobFlatSegmentApacheArrowOptions {
@@ -260,12 +274,11 @@ type ListBlobsHierarchyOptions struct {
 	// list, multiple entity levels are supported. (Inclusive)
 	StartFrom *string
 	// End listing before this blob name (exclusive). Can be combined with StartFrom for range listing.
-	// Only supported when UseArrowFormat is true.
+	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
-	// UseArrowFormat requests the service to return results in Apache Arrow IPC format for improved performance.
-	// If the service does not support Arrow format, it will transparently fall back to XML.
-	// Arrow format is only supported on non-HNS (hierarchical namespace) accounts via the Blob endpoint.
-	UseArrowFormat *bool
+	// ResponseFormat specifies the format the service should use to return list results.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	ResponseFormat StorageResponseFormat
 }
 
 func (o *ListBlobsHierarchyOptions) format() generated.ContainerClientListBlobHierarchySegmentOptions {

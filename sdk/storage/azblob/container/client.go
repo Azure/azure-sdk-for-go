@@ -280,9 +280,7 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
 		listOptions.StartFrom = o.StartFrom
-		if o.UseArrowFormat != nil && *o.UseArrowFormat {
-			useArrow = true
-		}
+		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
 	}
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsFlatResponse]{
 		More: func(page ListBlobsFlatResponse) bool {
@@ -330,9 +328,7 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 	arrowOptions := o.formatArrow()
 	var useArrow bool
 	if o != nil {
-		if o.UseArrowFormat != nil && *o.UseArrowFormat {
-			useArrow = true
-		}
+		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
 	}
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsHierarchyResponse]{
 		More: func(page ListBlobsHierarchyResponse) bool {

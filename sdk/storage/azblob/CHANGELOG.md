@@ -4,6 +4,7 @@
 
 ### Features Added
 * Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
+* Added `StorageResponseFormat` enum (`Auto`, `XML`, `Arrow`) for list blobs operations. Set `ResponseFormat` on `ListBlobsFlatOptions`/`ListBlobsHierarchyOptions` to opt into Apache Arrow format for improved performance. `Auto` defaults to XML for this release.
 
 ### Breaking Changes
 

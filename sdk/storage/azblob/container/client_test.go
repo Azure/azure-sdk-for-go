@@ -3622,7 +3622,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowFormat() 
 	}
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 	})
 
 	count := 0
@@ -3652,7 +3652,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowFormatFal
 
 	// When the account doesn't support Arrow, it should fall back to XML transparently.
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 	})
 
 	for pager.More() {
@@ -3673,7 +3673,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowEmptyCont
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 	})
 
 	for pager.More() {
@@ -3703,7 +3703,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowWithPrefi
 
 	prefix := "prefix1/"
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 		Prefix:         &prefix,
 	})
 
@@ -3736,7 +3736,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowWithMetad
 	_require.NoError(err)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 		Include:        container.ListBlobsInclude{Metadata: true},
 	})
 
@@ -3769,7 +3769,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowPaginatio
 
 	maxResults := int32(3)
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 		MaxResults:     &maxResults,
 	})
 
@@ -3802,7 +3802,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsHierarchyArrowForm
 	testcommon.CreateNewBlockBlob(context.Background(), _require, "dir2/file3.txt", containerClient)
 
 	pager := containerClient.NewListBlobsHierarchyPager("/", &container.ListBlobsHierarchyOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 	})
 
 	var allItems []*container.BlobItem
@@ -3843,7 +3843,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowStartFrom
 	startFrom := "b"
 	endBefore := "d"
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 		StartFrom:      &startFrom,
 		EndBefore:      &endBefore,
 	})
@@ -3880,7 +3880,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowWithSnaps
 	_require.NoError(err)
 
 	pager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 		Include:        container.ListBlobsInclude{Snapshots: true},
 	})
 
@@ -3929,7 +3929,7 @@ func (s *ContainerUnrecordedTestsSuite) TestContainerListBlobsFlatArrowMatchesXM
 
 	// List with Arrow
 	arrowPager := containerClient.NewListBlobsFlatPager(&container.ListBlobsFlatOptions{
-		UseArrowFormat: to.Ptr(true),
+		ResponseFormat: container.StorageResponseFormatArrow,
 	})
 	var arrowNames []string
 	for arrowPager.More() {

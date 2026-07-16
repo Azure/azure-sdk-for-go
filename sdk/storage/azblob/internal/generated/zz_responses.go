@@ -346,6 +346,15 @@ type BlobClientDownloadResponse struct {
 	// AcceptRanges contains the information returned from the Accept-Ranges header response.
 	AcceptRanges *string
 
+	// AccessTier contains the information returned from the x-ms-access-tier header response.
+	AccessTier *string
+
+	// AccessTierChangeTime contains the information returned from the x-ms-access-tier-change-time header response.
+	AccessTierChangeTime *time.Time
+
+	// AccessTierInferred contains the information returned from the x-ms-access-tier-inferred header response.
+	AccessTierInferred *bool
+
 	// BlobCommittedBlockCount contains the information returned from the x-ms-blob-committed-block-count header response.
 	BlobCommittedBlockCount *int32
 
@@ -471,6 +480,9 @@ type BlobClientDownloadResponse struct {
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// SmartAccessTier contains the information returned from the x-ms-smart-access-tier header response.
+	SmartAccessTier *string
 
 	// StructuredBodyType contains the information returned from the x-ms-structured-body header response.
 	StructuredBodyType *string
@@ -1095,6 +1107,9 @@ type BlockBlobClientPutBlobFromURLResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
+	// ContentCRC64 contains the information returned from the x-ms-content-crc64 header response.
+	ContentCRC64 []byte
+
 	// ContentMD5 contains the information returned from the Content-MD5 header response.
 	ContentMD5 []byte
 
@@ -1460,10 +1475,52 @@ type ContainerClientGetPropertiesResponse struct {
 	Version *string
 }
 
+// ContainerClientListBlobFlatSegmentApacheArrowResponse contains the response from method ContainerClient.ListBlobFlatSegmentApacheArrow.
+type ContainerClientListBlobFlatSegmentApacheArrowResponse struct {
+	// Body contains the streaming response.
+	Body io.ReadCloser
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // ContainerClientListBlobFlatSegmentResponse contains the response from method ContainerClient.NewListBlobFlatSegmentPager.
 type ContainerClientListBlobFlatSegmentResponse struct {
 	// An enumeration of blobs
 	ListBlobsFlatSegmentResponse
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// ContentType contains the information returned from the Content-Type header response.
+	ContentType *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
+// ContainerClientListBlobHierarchySegmentApacheArrowResponse contains the response from method ContainerClient.ListBlobHierarchySegmentApacheArrow.
+type ContainerClientListBlobHierarchySegmentApacheArrowResponse struct {
+	// Body contains the streaming response.
+	Body io.ReadCloser
 
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string

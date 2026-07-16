@@ -489,6 +489,13 @@ func (client *BlockBlobClient) putBlobFromURLHandleResponse(resp *http.Response)
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
+	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+		contentCRC64, err := base64.StdEncoding.DecodeString(val)
+		if err != nil {
+			return BlockBlobClientPutBlobFromURLResponse{}, err
+		}
+		result.ContentCRC64 = contentCRC64
+	}
 	if val := resp.Header.Get("Content-MD5"); val != "" {
 		contentMD5, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {

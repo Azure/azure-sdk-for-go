@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e1470c23ac1cb2a15cd5ef1e2b2dd187a3de13e9/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-06-06/blob.json"
+input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/71d693b624c8e5bfd8ccdb413807a28861103f23/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-12-06/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 containing-module: github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
 output-folder: ../generated
@@ -488,4 +488,15 @@ directive:
     return $.
       replace (/datetime\.RFC1123\((\*[^)]+)\)\.String\(\)/g, `($1).In(gmt).Format(time.RFC1123)`).
       replace (/\t"github\.com\/Azure\/azure-sdk-for-go\/sdk\/azcore\/runtime\/datetime"\n/g, ``);
+```
+
+### Remove x-ms-pageable from Apache Arrow hierarchy list (unsupported for binary responses)
+
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy&arrow"]["get"]
+  transform: >
+    delete $["x-ms-pageable"];
+```
 

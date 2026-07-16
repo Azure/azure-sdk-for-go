@@ -913,6 +913,94 @@ func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Resp
 	return result, nil
 }
 
+// ListBlobFlatSegmentApacheArrow - The List Blobs operation returns a list of the blobs under the specified container. This
+// operation is for Apache Arrow use case so response is returned as raw to be deserialized by the client.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - ContainerClientListBlobFlatSegmentApacheArrowOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegmentApacheArrow
+//     method.
+func (client *ContainerClient) ListBlobFlatSegmentApacheArrow(ctx context.Context, options *ContainerClientListBlobFlatSegmentApacheArrowOptions) (ContainerClientListBlobFlatSegmentApacheArrowResponse, error) {
+	var err error
+	req, err := client.listBlobFlatSegmentApacheArrowCreateRequest(ctx, options)
+	if err != nil {
+		return ContainerClientListBlobFlatSegmentApacheArrowResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerClientListBlobFlatSegmentApacheArrowResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ContainerClientListBlobFlatSegmentApacheArrowResponse{}, err
+	}
+	resp, err := client.listBlobFlatSegmentApacheArrowHandleResponse(httpResp)
+	return resp, err
+}
+
+// listBlobFlatSegmentApacheArrowCreateRequest creates the ListBlobFlatSegmentApacheArrow request.
+func (client *ContainerClient) listBlobFlatSegmentApacheArrowCreateRequest(ctx context.Context, options *ContainerClientListBlobFlatSegmentApacheArrowOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("comp", "list")
+	if options != nil && options.EndBefore != nil {
+		reqQP.Set("endBefore", *options.EndBefore)
+	}
+	if options != nil && options.Include != nil {
+		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
+	}
+	if options != nil && options.Marker != nil {
+		reqQP.Set("marker", *options.Marker)
+	}
+	if options != nil && options.Maxresults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+	}
+	if options != nil && options.Prefix != nil {
+		reqQP.Set("prefix", *options.Prefix)
+	}
+	reqQP.Set("restype", "container")
+	if options != nil && options.StartFrom != nil {
+		reqQP.Set("startFrom", *options.StartFrom)
+	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	runtime.SkipBodyDownload(req)
+	req.Raw().Header["Accept"] = []string{"application/vnd.apache.arrow.stream,application/xml"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
+	return req, nil
+}
+
+// listBlobFlatSegmentApacheArrowHandleResponse handles the ListBlobFlatSegmentApacheArrow response.
+func (client *ContainerClient) listBlobFlatSegmentApacheArrowHandleResponse(resp *http.Response) (ContainerClientListBlobFlatSegmentApacheArrowResponse, error) {
+	result := ContainerClientListBlobFlatSegmentApacheArrowResponse{Body: resp.Body}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ContainerClientListBlobFlatSegmentApacheArrowResponse{}, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	return result, nil
+}
+
 // NewListBlobHierarchySegmentPager - [Update] The List Blobs operation returns a list of the blobs under the specified container
 //   - delimiter - When the request includes this parameter, the operation returns a BlobPrefix element in the response body that
 //     acts as a placeholder for all blobs whose names begin with the same substring up to the
@@ -1001,6 +1089,99 @@ func (client *ContainerClient) ListBlobHierarchySegmentHandleResponse(resp *http
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListBlobsHierarchySegmentResponse); err != nil {
 		return ContainerClientListBlobHierarchySegmentResponse{}, err
+	}
+	return result, nil
+}
+
+// ListBlobHierarchySegmentApacheArrow - [Update] The List Blobs operation returns a list of the blobs under the specified
+// container. This operation is for Apache Arrow use case so response is returned as raw to be deserialized by the
+// client.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - delimiter - When the request includes this parameter, the operation returns a BlobPrefix element in the response body that
+//     acts as a placeholder for all blobs whose names begin with the same substring up to the
+//     appearance of the delimiter character. The delimiter may be a single character or a string.
+//   - options - ContainerClientListBlobHierarchySegmentApacheArrowOptions contains the optional parameters for the ContainerClient.ListBlobHierarchySegmentApacheArrow
+//     method.
+func (client *ContainerClient) ListBlobHierarchySegmentApacheArrow(ctx context.Context, delimiter string, options *ContainerClientListBlobHierarchySegmentApacheArrowOptions) (ContainerClientListBlobHierarchySegmentApacheArrowResponse, error) {
+	var err error
+	req, err := client.listBlobHierarchySegmentApacheArrowCreateRequest(ctx, delimiter, options)
+	if err != nil {
+		return ContainerClientListBlobHierarchySegmentApacheArrowResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerClientListBlobHierarchySegmentApacheArrowResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ContainerClientListBlobHierarchySegmentApacheArrowResponse{}, err
+	}
+	resp, err := client.listBlobHierarchySegmentApacheArrowHandleResponse(httpResp)
+	return resp, err
+}
+
+// listBlobHierarchySegmentApacheArrowCreateRequest creates the ListBlobHierarchySegmentApacheArrow request.
+func (client *ContainerClient) listBlobHierarchySegmentApacheArrowCreateRequest(ctx context.Context, delimiter string, options *ContainerClientListBlobHierarchySegmentApacheArrowOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("comp", "list")
+	reqQP.Set("delimiter", delimiter)
+	if options != nil && options.EndBefore != nil {
+		reqQP.Set("endBefore", *options.EndBefore)
+	}
+	if options != nil && options.Include != nil {
+		reqQP.Set("include", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Include), "[]")), ","))
+	}
+	if options != nil && options.Marker != nil {
+		reqQP.Set("marker", *options.Marker)
+	}
+	if options != nil && options.Maxresults != nil {
+		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+	}
+	if options != nil && options.Prefix != nil {
+		reqQP.Set("prefix", *options.Prefix)
+	}
+	reqQP.Set("restype", "container")
+	if options != nil && options.StartFrom != nil {
+		reqQP.Set("startFrom", *options.StartFrom)
+	}
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	runtime.SkipBodyDownload(req)
+	req.Raw().Header["Accept"] = []string{"application/vnd.apache.arrow.stream,application/xml"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
+	return req, nil
+}
+
+// listBlobHierarchySegmentApacheArrowHandleResponse handles the ListBlobHierarchySegmentApacheArrow response.
+func (client *ContainerClient) listBlobHierarchySegmentApacheArrowHandleResponse(resp *http.Response) (ContainerClientListBlobHierarchySegmentApacheArrowResponse, error) {
+	result := ContainerClientListBlobHierarchySegmentApacheArrowResponse{Body: resp.Body}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ContainerClientListBlobHierarchySegmentApacheArrowResponse{}, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
 	}
 	return result, nil
 }

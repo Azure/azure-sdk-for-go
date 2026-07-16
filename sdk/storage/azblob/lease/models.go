@@ -22,11 +22,18 @@ type BlobAcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BlobAcquireOptions) format() (generated.BlobClientAcquireLeaseOptions, *ModifiedAccessConditions) {
-	if o == nil {
-		return generated.BlobClientAcquireLeaseOptions{}, nil
+func (o *BlobAcquireOptions) format(leaseID *string) *generated.BlobClientAcquireLeaseOptions {
+	opts := &generated.BlobClientAcquireLeaseOptions{
+		ProposedLeaseID: leaseID,
 	}
-	return generated.BlobClientAcquireLeaseOptions{}, o.ModifiedAccessConditions
+	if o != nil && o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // BlobBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
@@ -40,19 +47,27 @@ type BlobBreakOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BlobBreakOptions) format() (*generated.BlobClientBreakLeaseOptions, *ModifiedAccessConditions) {
+func (o *BlobBreakOptions) format() *generated.BlobClientBreakLeaseOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
+	var period *int32
 	if o.BreakPeriod != nil {
-		period := leasePeriodPointer(*o.BreakPeriod)
-		return &generated.BlobClientBreakLeaseOptions{
-			BreakPeriod: period,
-		}, o.ModifiedAccessConditions
+		period = leasePeriodPointer(*o.BreakPeriod)
 	}
 
-	return nil, o.ModifiedAccessConditions
+	opts := &generated.BlobClientBreakLeaseOptions{
+		BreakPeriod: period,
+	}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // BlobChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
@@ -60,12 +75,20 @@ type BlobChangeOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BlobChangeOptions) format() (*generated.BlobClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
+func (o *BlobChangeOptions) format() *generated.BlobClientChangeLeaseOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
 
-	return nil, o.ModifiedAccessConditions, nil
+	opts := &generated.BlobClientChangeLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // BlobRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.
@@ -73,12 +96,20 @@ type BlobRenewOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BlobRenewOptions) format() (*generated.BlobClientRenewLeaseOptions, *ModifiedAccessConditions) {
+func (o *BlobRenewOptions) format() *generated.BlobClientRenewLeaseOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
-	return nil, o.ModifiedAccessConditions
+	opts := &generated.BlobClientRenewLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // BlobReleaseOptions contains the optional parameters for the LeaseClient.ReleaseLease method.
@@ -86,12 +117,20 @@ type BlobReleaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *BlobReleaseOptions) format() (*generated.BlobClientReleaseLeaseOptions, *ModifiedAccessConditions) {
+func (o *BlobReleaseOptions) format() *generated.BlobClientReleaseLeaseOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
-	return nil, o.ModifiedAccessConditions
+	opts := &generated.BlobClientReleaseLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfMatch = o.ModifiedAccessConditions.IfMatch
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // ContainerAcquireOptions contains the optional parameters for the LeaseClient.AcquireLease method.
@@ -99,11 +138,17 @@ type ContainerAcquireOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ContainerAcquireOptions) format() (generated.ContainerClientAcquireLeaseOptions, *ModifiedAccessConditions) {
-	if o == nil {
-		return generated.ContainerClientAcquireLeaseOptions{}, nil
+func (o *ContainerAcquireOptions) format(leaseID *string) *generated.ContainerClientAcquireLeaseOptions {
+	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+	opts := &generated.ContainerClientAcquireLeaseOptions{
+		ProposedLeaseID: leaseID,
 	}
-	return generated.ContainerClientAcquireLeaseOptions{}, o.ModifiedAccessConditions
+	if o != nil && o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // ContainerBreakOptions contains the optional parameters for the LeaseClient.BreakLease method.
@@ -117,19 +162,26 @@ type ContainerBreakOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ContainerBreakOptions) format() (*generated.ContainerClientBreakLeaseOptions, *ModifiedAccessConditions) {
+func (o *ContainerBreakOptions) format() *generated.ContainerClientBreakLeaseOptions {
 	if o == nil {
-		return nil, nil
+		return nil
 	}
 
+	var period *int32
 	if o.BreakPeriod != nil {
-		period := leasePeriodPointer(*o.BreakPeriod)
-		return &generated.ContainerClientBreakLeaseOptions{
-			BreakPeriod: period,
-		}, o.ModifiedAccessConditions
+		period = leasePeriodPointer(*o.BreakPeriod)
 	}
 
-	return nil, o.ModifiedAccessConditions
+	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+	opts := &generated.ContainerClientBreakLeaseOptions{
+		BreakPeriod: period,
+	}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // ContainerChangeOptions contains the optional parameters for the LeaseClient.ChangeLease method.
@@ -137,11 +189,19 @@ type ContainerChangeOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ContainerChangeOptions) format() (*generated.ContainerClientChangeLeaseOptions, *ModifiedAccessConditions, error) {
+func (o *ContainerChangeOptions) format() *generated.ContainerClientChangeLeaseOptions {
 	if o == nil {
-		return nil, nil, nil
+		return nil
 	}
-	return nil, o.ModifiedAccessConditions, nil
+	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+
+	opts := &generated.ContainerClientChangeLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+	}
+
+	return opts
 }
 
 // ContainerRenewOptions contains the optional parameters for the LeaseClient.RenewLease method.
@@ -149,12 +209,19 @@ type ContainerRenewOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ContainerRenewOptions) format() (*generated.ContainerClientRenewLeaseOptions, *ModifiedAccessConditions) {
+func (o *ContainerRenewOptions) format() *generated.ContainerClientRenewLeaseOptions {
 	if o == nil {
-		return nil, nil
+		return nil
+	}
+	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+
+	opts := &generated.ContainerClientRenewLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
 
-	return nil, o.ModifiedAccessConditions
+	return opts
 }
 
 // ContainerReleaseOptions contains the optional parameters for the LeaseClient.ReleaseLease method.
@@ -162,12 +229,19 @@ type ContainerReleaseOptions struct {
 	ModifiedAccessConditions *ModifiedAccessConditions
 }
 
-func (o *ContainerReleaseOptions) format() (*generated.ContainerClientReleaseLeaseOptions, *ModifiedAccessConditions) {
+func (o *ContainerReleaseOptions) format() *generated.ContainerClientReleaseLeaseOptions {
 	if o == nil {
-		return nil, nil
+		return nil
+	}
+	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+
+	opts := &generated.ContainerClientReleaseLeaseOptions{}
+	if o.ModifiedAccessConditions != nil {
+		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
+		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
 	}
 
-	return nil, o.ModifiedAccessConditions
+	return opts
 }
 
 func leasePeriodPointer(period int32) *int32 {

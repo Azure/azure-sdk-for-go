@@ -2,6 +2,16 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
+## 1.5.1-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.5.0 (2026-07-13)
 
 ### Breaking Changes
@@ -121,12 +131,6 @@
 ### Features Added
 
 * Added an initial API for integrating an external client-side Query Engine with the Cosmos DB Go SDK. This API is unstable and not recommended for production use. See [PR 24273](https://github.com/Azure/azure-sdk-for-go/pull/24273) for more details.
-
-## 1.4.1 (2025-08-27)
-
-### Bugs Fixed
-
-* Fixed bug where the correct header was not being sent for writes on multiple write region accounts. See [PR 25127](https://github.com/Azure/azure-sdk-for-go/pull/25127)
 
 ## 1.4.0 (2025-04-29)
 

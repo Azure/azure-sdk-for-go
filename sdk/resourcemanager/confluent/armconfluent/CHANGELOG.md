@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-07-15)
+## 2.0.0-beta.2 (2026-07-16)
 ### Features Added
 
 - New function `NewAccessPointResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessPointResourcesClient, error)`

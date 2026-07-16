@@ -3,11 +3,11 @@
     "language": "en",
     "languageId": "golang",
     "dictionaries": [
-      "powershell",
-      "golang",
-      "softwareTerms",
-      "en_US",
-      "en-gb"
+        "powershell",
+        "golang",
+        "softwareTerms",
+        "en_US",
+        "en-gb"
     ],
     "ignorePaths": [
         "eng/common/**",
@@ -19,30 +19,30 @@
         "**/recordings/**/*"
     ],
     "words": [
-        "azcore",
+        "AMQP",
+        "armiotsecurity",
+        "armkubernetesconfiguration",
+        "armkusto",
         "azappconfig",
+        "azblob",
+        "azcore",
+        "azcosmos",
         "azidentity",
-        "unpopulate",
+        "azruntime",
+        "azservicebus",
         "etag",
+        "Kubernetes",
+        "Kusto",
+        "mgmt",
+        "msix",
+        "nolint",
+        "odata",
+        "Reimage",
+        "skus",
         "stretchr",
         "Unmarshaller",
-        "AMQP",
-        "Kusto",
-        "azblob",
-        "Kubernetes",
-        "vnet",
-        "skus",
-        "azservicebus",
-        "azcosmos",
-        "Reimage",
-        "nolint",
-        "armkusto",
-        "msix",
-        "armiotsecurity",
-        "odata",
-        "mgmt",
-        "armkubernetesconfiguration",
-        "azruntime"
+        "unpopulate",
+        "vnet"
     ],
     "allowCompoundWords": true,
     "overrides": [
@@ -50,9 +50,9 @@
             "filename": "{*.sum,*.mod}",
             "words": [
                 "davecgh",
-                "pmezard",
                 "gover",
-                "objx"
+                "objx",
+                "pmezard"
             ]
         }
     ]

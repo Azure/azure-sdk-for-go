@@ -6,5 +6,5 @@ package armqumulo
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/liftrqumulo/armqumulo"
-	moduleVersion = "v2.1.0"
+	moduleVersion = "v2.1.1-beta.1"
 )

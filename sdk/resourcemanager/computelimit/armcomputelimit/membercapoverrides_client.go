@@ -19,7 +19,7 @@ import (
 // MemberCapOverridesClient - Operations for individual member cap overrides under a SharedLimitCap.
 // Don't use this type directly, use NewMemberCapOverridesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-07-31
 type MemberCapOverridesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -95,7 +95,7 @@ func (client *MemberCapOverridesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -166,7 +166,7 @@ func (client *MemberCapOverridesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -223,7 +223,7 @@ func (client *MemberCapOverridesClient) getCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,7 +286,7 @@ func (client *MemberCapOverridesClient) listByParentCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

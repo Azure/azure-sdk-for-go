@@ -19,7 +19,7 @@ import (
 // GuestSubscriptionsClient - Location-scoped operations for guest subscriptions.
 // Don't use this type directly, use NewGuestSubscriptionsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-07-31
 type GuestSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *GuestSubscriptionsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -156,7 +156,7 @@ func (client *GuestSubscriptionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -208,7 +208,7 @@ func (client *GuestSubscriptionsClient) getCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +266,7 @@ func (client *GuestSubscriptionsClient) listBySubscriptionLocationResourceCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

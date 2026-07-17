@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armbulkactions.ClientFactory type.
 type ServerFactory struct {
+	// LaunchBulkInstancesOperationServer contains the fakes for client LaunchBulkInstancesOperationClient
+	LaunchBulkInstancesOperationServer LaunchBulkInstancesOperationServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -36,6 +39,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                  *ServerFactory
 	trMu                                 sync.Mutex
+	trLaunchBulkInstancesOperationServer *LaunchBulkInstancesOperationServerTransport
 	trOperationsServer                   *OperationsServerTransport
 	trVirtualMachineBulkOperationsServer *VirtualMachineBulkOperationsServerTransport
 }
@@ -53,6 +57,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "LaunchBulkInstancesOperationClient":
+		initServer(&s.trMu, &s.trLaunchBulkInstancesOperationServer, func() *LaunchBulkInstancesOperationServerTransport {
+			return NewLaunchBulkInstancesOperationServerTransport(&s.srv.LaunchBulkInstancesOperationServer)
+		})
+		resp, err = s.trLaunchBulkInstancesOperationServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

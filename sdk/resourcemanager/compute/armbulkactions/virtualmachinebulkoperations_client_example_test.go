@@ -12,20 +12,94 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkCancel_MaximumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachineBulkOperationsBulkCancelGeneratedByMaximumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_virtualMachineBulkOperationsBulkAcknowledgeOperationErrorsExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkCancelOperations(ctx, "myResourceGroup", "eastus2euap", armbulkactions.CancelOperationsContent{
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkAcknowledgeOperationErrors(ctx, "rgBulkactions", "useast2euap", armbulkactions.AcknowledgeBulkOperationErrorsRequest{
 		OperationIDs: []*string{
-			to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+			to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{
+	// 	AcknowledgeBulkOperationErrorsResponse: armbulkactions.AcknowledgeBulkOperationErrorsResponse{
+	// 		Acknowledged: []*string{
+	// 			to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
+	// 		},
+	// 		NotFound: []*string{
+	// 			to.Ptr("bf559658-9f2b-5180-985f-3dbb5678901d"),
+	// 		},
+	// 		Skipped: []*string{
+	// 			to.Ptr("cf669768-af3c-6291-a96g-4ecc6789012e"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_virtualMachineBulkOperationsBulkAcknowledgeOperationErrorsMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkAcknowledgeOperationErrors(ctx, "rgBulkactions", "useast2euap", armbulkactions.AcknowledgeBulkOperationErrorsRequest{
+		OperationIDs: []*string{
+			to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{
+	// 	AcknowledgeBulkOperationErrorsResponse: armbulkactions.AcknowledgeBulkOperationErrorsResponse{
+	// 		Acknowledged: []*string{
+	// 			to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
+	// 		},
+	// 		NotFound: []*string{
+	// 			to.Ptr("bf559658-9f2b-5180-985f-3dbb5678901d"),
+	// 		},
+	// 		Skipped: []*string{
+	// 			to.Ptr("cf669768-af3c-6291-a96g-4ecc6789012e"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCancel_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachineBulkOperationsBulkCancelExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkCancelOperations(ctx, "rgBulkactions", "useast2euap", armbulkactions.CancelOperationsContent{
+		OperationIDs: []*string{
+			to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
 		},
 	}, nil)
 	if err != nil {
@@ -42,31 +116,34 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachi
 	// 				ErrorCode: to.Ptr("TestErrorCode"),
 	// 				ErrorDetails: to.Ptr("Test error details"),
 	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+	// 					OperationID: to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
 	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("401789D7-9B98-4B5A-AF58-808C415E37B4"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationStateUnknown),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
 	// 					Timezone: to.Ptr("UTC"),
 	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
-	// 						ErrorCode: to.Ptr("TestErrorCode"),
-	// 						ErrorDetails: to.Ptr("Test error details"),
+	// 						ErrorCode: to.Ptr("OperationCancelledByUser"),
+	// 						ErrorDetails: to.Ptr("Operation was cancelled by the user."),
 	// 					},
 	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
-	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
 	// 						Status: to.Ptr("succeeded"),
 	// 						Error: &armbulkactions.ResourceOperationError{
 	// 							ErrorCode: to.Ptr("TestErrorCode"),
 	// 							ErrorDetails: to.Ptr("Test error details"),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					RetryPolicy: &armbulkactions.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](20),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
 	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr(""),
 	// 					},
 	// 				},
 	// 			},
@@ -75,20 +152,20 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkCancel_MinimumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachineBulkOperationsBulkCancelGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCancel_MinimumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachineBulkOperationsBulkCancelExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkCancelOperations(ctx, "myResourceGroup", "eastus2euap", armbulkactions.CancelOperationsContent{
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkCancelOperations(ctx, "rgBulkactions", "useast2euap", armbulkactions.CancelOperationsContent{
 		OperationIDs: []*string{
-			to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+			to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
 		},
 	}, nil)
 	if err != nil {
@@ -107,22 +184,963 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkDeallocate_MaximumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_virtualMachineBulkOperationsBulkDeallocateGeneratedByMaximumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCreate_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkCreateOperation_virtualMachineBulkOperationsBulkCreateExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkDeallocateOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteDeallocateContent{
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkCreateOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteCreateContent{
+		ResourceConfigParameters: &armbulkactions.ResourceProvisionPayload{
+			BaseProfile: map[string]any{
+				"plan": map[string]any{
+					"name":          "iemasqqkbixbewezyrhnpntjd",
+					"publisher":     "bvggylbvfstnscuupuithafvvgc",
+					"product":       "bguuzrknnuohugjhernflurpx",
+					"promotionCode": "bxgonranwqoryfkhkfaumdgz",
+					"version":       "uyxetqmmzvqianqv",
+				},
+				"zones": []any{
+					"wczj",
+				},
+				"identity": map[string]any{
+					"type": "SystemAssigned",
+					"userAssignedIdentities": map[string]any{
+						"key7": map[string]any{},
+					},
+				},
+				"extendedLocation": map[string]any{
+					"name": "gbnxzymbdkxhwjpqkur",
+					"type": "EdgeZone",
+				},
+				"placement": map[string]any{
+					"zonePlacementPolicy": "Any",
+					"includeZones": []any{
+						"inagtbtedobdea",
+					},
+					"excludeZones": []any{
+						"pvvwrhuhdpvbacwmesblpgwzk",
+					},
+				},
+				"tags": map[string]any{
+					"key6824": "cefndldgkx",
+				},
+				"properties": map[string]any{
+					"scheduledEventsPolicy": map[string]any{
+						"userInitiatedRedeploy": map[string]any{
+							"automaticallyApprove": true,
+						},
+						"userInitiatedReboot": map[string]any{
+							"automaticallyApprove": true,
+						},
+						"scheduledEventsAdditionalPublishingTargets": map[string]any{
+							"eventGridAndResourceGraph": map[string]any{
+								"enable":                    true,
+								"scheduledEventsApiVersion": "lifncbftlkounuyfn",
+							},
+						},
+						"allInstancesDown": map[string]any{
+							"automaticallyApprove": true,
+						},
+					},
+					"storageProfile": map[string]any{
+						"imageReference": map[string]any{
+							"publisher":               "ojlplghybdamadvsrq",
+							"offer":                   "uvnqoxhkxefqwbsvjgbswqy",
+							"sku":                     "hajdxhjmlkx",
+							"version":                 "u",
+							"sharedGalleryImageId":    "fz",
+							"communityGalleryImageId": "tsfpcq",
+							"id":                      "cdbrkpdicibtlliq",
+						},
+						"osDisk": map[string]any{
+							"osType": "Windows",
+							"encryptionSettings": map[string]any{
+								"diskEncryptionKey": map[string]any{
+									"secretUrl": "vzkogocyw",
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+								},
+								"keyEncryptionKey": map[string]any{
+									"keyUrl": "mjjkvgpoohatw",
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+								},
+								"enabled": true,
+							},
+							"name": "opogpznvctmraoajgizcyrfvpt",
+							"vhd": map[string]any{
+								"uri": "elpzggtxubepzgjqvdbjmbu",
+							},
+							"image": map[string]any{
+								"uri": "elpzggtxubepzgjqvdbjmbu",
+							},
+							"caching":                 "None",
+							"writeAcceleratorEnabled": true,
+							"diffDiskSettings": map[string]any{
+								"option":    "Local",
+								"placement": "CacheDisk",
+							},
+							"createOption": "FromImage",
+							"diskSizeGB":   2,
+							"managedDisk": map[string]any{
+								"storageAccountType": "Standard_LRS",
+								"diskEncryptionSet": map[string]any{
+									"id": "magvkzhdmzhktjlqkkk",
+								},
+								"securityProfile": map[string]any{
+									"securityEncryptionType": "VMGuestStateOnly",
+									"diskEncryptionSet": map[string]any{
+										"id": "magvkzhdmzhktjlqkkk",
+									},
+								},
+								"id": "numddbqmkxuu",
+							},
+							"deleteOption": "Delete",
+						},
+						"dataDisks": []any{
+							map[string]any{
+								"lun":  7,
+								"name": "nbthfzqsxyqvqnbgcljxbwyyoj",
+								"vhd": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"image": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"caching":                 "None",
+								"writeAcceleratorEnabled": true,
+								"createOption":            "FromImage",
+								"diskSizeGB":              19,
+								"managedDisk": map[string]any{
+									"storageAccountType": "Standard_LRS",
+									"diskEncryptionSet": map[string]any{
+										"id": "magvkzhdmzhktjlqkkk",
+									},
+									"securityProfile": map[string]any{
+										"securityEncryptionType": "VMGuestStateOnly",
+										"diskEncryptionSet": map[string]any{
+											"id": "magvkzhdmzhktjlqkkk",
+										},
+									},
+									"id": "numddbqmkxuu",
+								},
+								"sourceResource": map[string]any{
+									"id": "qnukyordmomtjjqabovlsxl",
+								},
+								"toBeDetached": true,
+								"detachOption": "ForceDetach",
+								"deleteOption": "Delete",
+							},
+						},
+						"diskControllerType": "SCSI",
+					},
+					"hardwareProfile": map[string]any{
+						"vmSize": "szrnjqwbruz",
+						"vmSizeProperties": map[string]any{
+							"vCpusAvailable": 24,
+							"vCpusPerCore":   6,
+						},
+					},
+					"additionalCapabilities": map[string]any{
+						"ultraSSDEnabled":    true,
+						"hibernationEnabled": true,
+					},
+					"osProfile": map[string]any{
+						"computerName":  "bplxnfp",
+						"adminUsername": "fxzbi",
+						"adminPassword": "<a-password-goes-here>",
+						"customData":    "hbdlirohsgnbrahscboc",
+						"windowsConfiguration": map[string]any{
+							"provisionVMAgent":       true,
+							"enableAutomaticUpdates": true,
+							"timeZone":               "t",
+							"additionalUnattendContent": []any{
+								map[string]any{
+									"passName":      "OobeSystem",
+									"componentName": "Microsoft-Windows-Shell-Setup",
+									"settingName":   "AutoLogon",
+									"content":       "rguazthnx",
+								},
+							},
+							"patchSettings": map[string]any{
+								"patchMode":         "Manual",
+								"enableHotpatching": true,
+								"assessmentMode":    "ImageDefault",
+								"automaticByPlatformSettings": map[string]any{
+									"rebootSetting": "Unknown",
+									"bypassPlatformSafetyChecksOnUserSchedule": true,
+								},
+							},
+							"winRM": map[string]any{
+								"listeners": []any{
+									map[string]any{
+										"protocol":       "Http",
+										"certificateUrl": "quhfapfpyeeocwvwtvuggoqqwt",
+									},
+								},
+							},
+						},
+						"linuxConfiguration": map[string]any{
+							"disablePasswordAuthentication": true,
+							"ssh": map[string]any{
+								"publicKeys": []any{
+									map[string]any{
+										"path":    "mrdfxnfjazxog",
+										"keyData": "wfhrknkehgesontscqyrewfmhgwt",
+									},
+								},
+							},
+							"provisionVMAgent": true,
+							"patchSettings": map[string]any{
+								"patchMode":      "ImageDefault",
+								"assessmentMode": "ImageDefault",
+								"automaticByPlatformSettings": map[string]any{
+									"rebootSetting": "Unknown",
+									"bypassPlatformSafetyChecksOnUserSchedule": true,
+								},
+							},
+							"enableVMAgentPlatformUpdates": true,
+						},
+						"secrets": []any{
+							map[string]any{
+								"sourceVault": map[string]any{
+									"id": "lvzxxyypkeqlflftmfn",
+								},
+								"vaultCertificates": []any{
+									map[string]any{
+										"certificateUrl":   "crgbpfdvlohwkupdjp",
+										"certificateStore": "hyx",
+									},
+								},
+							},
+						},
+						"allowExtensionOperations":    true,
+						"requireGuestProvisionSignal": true,
+					},
+					"networkProfile": map[string]any{
+						"networkInterfaces": []any{
+							map[string]any{
+								"properties": map[string]any{
+									"primary":      true,
+									"deleteOption": "Delete",
+								},
+								"id": "ymfxctb",
+							},
+						},
+						"networkApiVersion": "2020-11-01",
+						"networkInterfaceConfigurations": []any{
+							map[string]any{
+								"name": "qrkzoctmzjketostzabnra",
+								"properties": map[string]any{
+									"primary":                     true,
+									"deleteOption":                "Delete",
+									"enableAcceleratedNetworking": true,
+									"disableTcpStateTracking":     true,
+									"enableFpga":                  true,
+									"enableIPForwarding":          true,
+									"networkSecurityGroup": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+									"dnsSettings": map[string]any{
+										"dnsServers": []any{
+											"tqcqopnanyyiavfwhqbkarxtrfqbww",
+										},
+									},
+									"ipConfigurations": []any{
+										map[string]any{
+											"name": "gqymuvgzzfmxqvdadx",
+											"properties": map[string]any{
+												"subnet": map[string]any{
+													"id": "lvzxxyypkeqlflftmfn",
+												},
+												"primary": true,
+												"publicIPAddressConfiguration": map[string]any{
+													"name": "cwxsqjijtwbsyqdwht",
+													"properties": map[string]any{
+														"idleTimeoutInMinutes": 17,
+														"deleteOption":         "Delete",
+														"dnsSettings": map[string]any{
+															"domainNameLabel":      "fampou",
+															"domainNameLabelScope": "TenantReuse",
+														},
+														"ipTags": []any{
+															map[string]any{
+																"ipTagType": "hkjoxhqadudjartwooezaxl",
+																"tag":       "xywunkjglkmmwfpf",
+															},
+														},
+														"publicIPPrefix": map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+														"publicIPAddressVersion":   "IPv4",
+														"publicIPAllocationMethod": "Dynamic",
+													},
+													"sku": map[string]any{
+														"name": "Basic",
+														"tier": "Regional",
+													},
+													"tags": map[string]any{
+														"key5442": "qhpwpnylvmdthxazhxamnbhdfpf",
+													},
+												},
+												"privateIPAddressVersion": "IPv4",
+												"applicationSecurityGroups": []any{
+													map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+												},
+												"applicationGatewayBackendAddressPools": []any{
+													map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+												},
+												"loadBalancerBackendAddressPools": []any{
+													map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+												},
+											},
+										},
+									},
+									"dscpConfiguration": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+									"auxiliaryMode": "None",
+									"auxiliarySku":  "None",
+								},
+								"tags": map[string]any{
+									"key9436": "bjbadzbfvpszbsickv",
+								},
+							},
+						},
+					},
+					"securityProfile": map[string]any{
+						"uefiSettings": map[string]any{
+							"secureBootEnabled": true,
+							"vTpmEnabled":       true,
+						},
+						"encryptionAtHost": true,
+						"securityType":     "TrustedLaunch",
+						"encryptionIdentity": map[string]any{
+							"userAssignedIdentityResourceId": "tnajlgbwcepmhytzb",
+						},
+						"proxyAgentSettings": map[string]any{
+							"enabled":          true,
+							"mode":             "Audit",
+							"keyIncarnationId": 4,
+							"wireServer": map[string]any{
+								"mode":                                "Audit",
+								"inVMAccessControlProfileReferenceId": "xvlzroy",
+							},
+							"imds": map[string]any{
+								"mode":                                "Audit",
+								"inVMAccessControlProfileReferenceId": "xvlzroy",
+							},
+							"addProxyAgentExtension": true,
+						},
+					},
+					"diagnosticsProfile": map[string]any{
+						"bootDiagnostics": map[string]any{
+							"enabled":    true,
+							"storageUri": "pxuhtzehlfsqolbdleirgj",
+						},
+					},
+					"licenseType":          "ymwuemwuntbignqyvzqflvjpcdus",
+					"extensionsTimeBudget": "dnyqmcijikzkltjav",
+					"scheduledEventsProfile": map[string]any{
+						"terminateNotificationProfile": map[string]any{
+							"notBeforeTimeout": "owbwifqrlsdmm",
+							"enable":           true,
+						},
+						"osImageNotificationProfile": map[string]any{
+							"notBeforeTimeout": "ataqykjdakdvyyzdspaqnhd",
+							"enable":           true,
+						},
+					},
+					"userData": "nwjvxe",
+					"capacityReservation": map[string]any{
+						"capacityReservationGroup": map[string]any{
+							"id": "lvzxxyypkeqlflftmfn",
+						},
+					},
+					"applicationProfile": map[string]any{
+						"galleryApplications": []any{
+							map[string]any{
+								"tags":                            "cmygipvpkegyclvpznfu",
+								"order":                           8,
+								"packageReferenceId":              "afrfkjdrtzftmwramfyu",
+								"configurationReference":          "nmfaspclhidtznslsps",
+								"treatFailureAsDeploymentFailure": true,
+								"enableAutomaticUpgrade":          true,
+							},
+						},
+					},
+					"vmExtensions": []any{
+						map[string]any{
+							"name": "jkpmcxwuahpzwkvexgzpypk",
+							"properties": map[string]any{
+								"forceUpdateTag":          "dockqxgatsfzhctxrncuw",
+								"publisher":               "qesyfldbfoaexyoywhcxafdtdwcg",
+								"type":                    "ptlmlzpbpbkfbu",
+								"typeHandlerVersion":      "crllsludntz",
+								"autoUpgradeMinorVersion": true,
+								"enableAutomaticUpgrade":  true,
+								"settings":                map[string]any{},
+								"protectedSettings":       map[string]any{},
+								"suppressFailures":        true,
+								"protectedSettingsFromKeyVault": map[string]any{
+									"secretUrl": "vzkogocyw",
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+								},
+								"provisionAfterExtensions": []any{
+									"onbtyoeifafiktrkmal",
+								},
+							},
+						},
+					},
+				},
+				"computeApiVersion": "axcvphjtsdjzcwqczcglmq",
+				"name":              "dbozdvegpdvqxltqipvmqsfgunpe",
+			},
+			ResourceOverrides: []map[string]any{
+				{
+					"plan": map[string]any{
+						"name":          "iemasqqkbixbewezyrhnpntjd",
+						"publisher":     "bvggylbvfstnscuupuithafvvgc",
+						"product":       "bguuzrknnuohugjhernflurpx",
+						"promotionCode": "bxgonranwqoryfkhkfaumdgz",
+						"version":       "uyxetqmmzvqianqv",
+					},
+					"zones": []any{
+						"wczj",
+					},
+					"identity": map[string]any{
+						"type": "SystemAssigned",
+						"userAssignedIdentities": map[string]any{
+							"key7": map[string]any{},
+						},
+					},
+					"extendedLocation": map[string]any{
+						"name": "gbnxzymbdkxhwjpqkur",
+						"type": "EdgeZone",
+					},
+					"placement": map[string]any{
+						"zonePlacementPolicy": "Any",
+						"includeZones": []any{
+							"inagtbtedobdea",
+						},
+						"excludeZones": []any{
+							"pvvwrhuhdpvbacwmesblpgwzk",
+						},
+					},
+					"tags": map[string]any{
+						"key6824": "cefndldgkx",
+					},
+					"properties": map[string]any{
+						"scheduledEventsPolicy": map[string]any{
+							"userInitiatedRedeploy": map[string]any{
+								"automaticallyApprove": true,
+							},
+							"userInitiatedReboot": map[string]any{
+								"automaticallyApprove": true,
+							},
+							"scheduledEventsAdditionalPublishingTargets": map[string]any{
+								"eventGridAndResourceGraph": map[string]any{
+									"enable":                    true,
+									"scheduledEventsApiVersion": "lifncbftlkounuyfn",
+								},
+							},
+							"allInstancesDown": map[string]any{
+								"automaticallyApprove": true,
+							},
+						},
+						"storageProfile": map[string]any{
+							"imageReference": map[string]any{
+								"publisher":               "ojlplghybdamadvsrq",
+								"offer":                   "uvnqoxhkxefqwbsvjgbswqy",
+								"sku":                     "hajdxhjmlkx",
+								"version":                 "u",
+								"sharedGalleryImageId":    "fz",
+								"communityGalleryImageId": "tsfpcq",
+								"id":                      "cdbrkpdicibtlliq",
+							},
+							"osDisk": map[string]any{
+								"osType": "Windows",
+								"encryptionSettings": map[string]any{
+									"diskEncryptionKey": map[string]any{
+										"secretUrl": "vzkogocyw",
+										"sourceVault": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+									},
+									"keyEncryptionKey": map[string]any{
+										"keyUrl": "mjjkvgpoohatw",
+										"sourceVault": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+									},
+									"enabled": true,
+								},
+								"name": "opogpznvctmraoajgizcyrfvpt",
+								"vhd": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"image": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"caching":                 "None",
+								"writeAcceleratorEnabled": true,
+								"diffDiskSettings": map[string]any{
+									"option":    "Local",
+									"placement": "CacheDisk",
+								},
+								"createOption": "FromImage",
+								"diskSizeGB":   2,
+								"managedDisk": map[string]any{
+									"storageAccountType": "Standard_LRS",
+									"diskEncryptionSet": map[string]any{
+										"id": "magvkzhdmzhktjlqkkk",
+									},
+									"securityProfile": map[string]any{
+										"securityEncryptionType": "VMGuestStateOnly",
+										"diskEncryptionSet": map[string]any{
+											"id": "magvkzhdmzhktjlqkkk",
+										},
+									},
+									"id": "numddbqmkxuu",
+								},
+								"deleteOption": "Delete",
+							},
+							"dataDisks": []any{
+								map[string]any{
+									"lun":  7,
+									"name": "nbthfzqsxyqvqnbgcljxbwyyoj",
+									"vhd": map[string]any{
+										"uri": "elpzggtxubepzgjqvdbjmbu",
+									},
+									"image": map[string]any{
+										"uri": "elpzggtxubepzgjqvdbjmbu",
+									},
+									"caching":                 "None",
+									"writeAcceleratorEnabled": true,
+									"createOption":            "FromImage",
+									"diskSizeGB":              19,
+									"managedDisk": map[string]any{
+										"storageAccountType": "Standard_LRS",
+										"diskEncryptionSet": map[string]any{
+											"id": "magvkzhdmzhktjlqkkk",
+										},
+										"securityProfile": map[string]any{
+											"securityEncryptionType": "VMGuestStateOnly",
+											"diskEncryptionSet": map[string]any{
+												"id": "magvkzhdmzhktjlqkkk",
+											},
+										},
+										"id": "numddbqmkxuu",
+									},
+									"sourceResource": map[string]any{
+										"id": "qnukyordmomtjjqabovlsxl",
+									},
+									"toBeDetached": true,
+									"detachOption": "ForceDetach",
+									"deleteOption": "Delete",
+								},
+							},
+							"diskControllerType": "SCSI",
+						},
+						"hardwareProfile": map[string]any{
+							"vmSize": "szrnjqwbruz",
+							"vmSizeProperties": map[string]any{
+								"vCpusAvailable": 24,
+								"vCpusPerCore":   6,
+							},
+						},
+						"additionalCapabilities": map[string]any{
+							"ultraSSDEnabled":    true,
+							"hibernationEnabled": true,
+						},
+						"osProfile": map[string]any{
+							"computerName":  "bplxnfp",
+							"adminUsername": "fxzbi",
+							"adminPassword": "<a-password-goes-here>",
+							"customData":    "hbdlirohsgnbrahscboc",
+							"windowsConfiguration": map[string]any{
+								"provisionVMAgent":       true,
+								"enableAutomaticUpdates": true,
+								"timeZone":               "t",
+								"additionalUnattendContent": []any{
+									map[string]any{
+										"passName":      "OobeSystem",
+										"componentName": "Microsoft-Windows-Shell-Setup",
+										"settingName":   "AutoLogon",
+										"content":       "rguazthnx",
+									},
+								},
+								"patchSettings": map[string]any{
+									"patchMode":         "Manual",
+									"enableHotpatching": true,
+									"assessmentMode":    "ImageDefault",
+									"automaticByPlatformSettings": map[string]any{
+										"rebootSetting": "Unknown",
+										"bypassPlatformSafetyChecksOnUserSchedule": true,
+									},
+								},
+								"winRM": map[string]any{
+									"listeners": []any{
+										map[string]any{
+											"protocol":       "Http",
+											"certificateUrl": "quhfapfpyeeocwvwtvuggoqqwt",
+										},
+									},
+								},
+							},
+							"linuxConfiguration": map[string]any{
+								"disablePasswordAuthentication": true,
+								"ssh": map[string]any{
+									"publicKeys": []any{
+										map[string]any{
+											"path":    "mrdfxnfjazxog",
+											"keyData": "wfhrknkehgesontscqyrewfmhgwt",
+										},
+									},
+								},
+								"provisionVMAgent": true,
+								"patchSettings": map[string]any{
+									"patchMode":      "ImageDefault",
+									"assessmentMode": "ImageDefault",
+									"automaticByPlatformSettings": map[string]any{
+										"rebootSetting": "Unknown",
+										"bypassPlatformSafetyChecksOnUserSchedule": true,
+									},
+								},
+								"enableVMAgentPlatformUpdates": true,
+							},
+							"secrets": []any{
+								map[string]any{
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+									"vaultCertificates": []any{
+										map[string]any{
+											"certificateUrl":   "crgbpfdvlohwkupdjp",
+											"certificateStore": "hyx",
+										},
+									},
+								},
+							},
+							"allowExtensionOperations":    true,
+							"requireGuestProvisionSignal": true,
+						},
+						"networkProfile": map[string]any{
+							"networkInterfaces": []any{
+								map[string]any{
+									"properties": map[string]any{
+										"primary":      true,
+										"deleteOption": "Delete",
+									},
+									"id": "ymfxctb",
+								},
+							},
+							"networkApiVersion": "2020-11-01",
+							"networkInterfaceConfigurations": []any{
+								map[string]any{
+									"name": "qrkzoctmzjketostzabnra",
+									"properties": map[string]any{
+										"primary":                     true,
+										"deleteOption":                "Delete",
+										"enableAcceleratedNetworking": true,
+										"disableTcpStateTracking":     true,
+										"enableFpga":                  true,
+										"enableIPForwarding":          true,
+										"networkSecurityGroup": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+										"dnsSettings": map[string]any{
+											"dnsServers": []any{
+												"tqcqopnanyyiavfwhqbkarxtrfqbww",
+											},
+										},
+										"ipConfigurations": []any{
+											map[string]any{
+												"name": "gqymuvgzzfmxqvdadx",
+												"properties": map[string]any{
+													"subnet": map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+													"primary": true,
+													"publicIPAddressConfiguration": map[string]any{
+														"name": "cwxsqjijtwbsyqdwht",
+														"properties": map[string]any{
+															"idleTimeoutInMinutes": 17,
+															"deleteOption":         "Delete",
+															"dnsSettings": map[string]any{
+																"domainNameLabel":      "fampou",
+																"domainNameLabelScope": "TenantReuse",
+															},
+															"ipTags": []any{
+																map[string]any{
+																	"ipTagType": "hkjoxhqadudjartwooezaxl",
+																	"tag":       "xywunkjglkmmwfpf",
+																},
+															},
+															"publicIPPrefix": map[string]any{
+																"id": "lvzxxyypkeqlflftmfn",
+															},
+															"publicIPAddressVersion":   "IPv4",
+															"publicIPAllocationMethod": "Dynamic",
+														},
+														"sku": map[string]any{
+															"name": "Basic",
+															"tier": "Regional",
+														},
+														"tags": map[string]any{
+															"key5442": "qhpwpnylvmdthxazhxamnbhdfpf",
+														},
+													},
+													"privateIPAddressVersion": "IPv4",
+													"applicationSecurityGroups": []any{
+														map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+													},
+													"applicationGatewayBackendAddressPools": []any{
+														map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+													},
+													"loadBalancerBackendAddressPools": []any{
+														map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+													},
+												},
+											},
+										},
+										"dscpConfiguration": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+										"auxiliaryMode": "None",
+										"auxiliarySku":  "None",
+									},
+									"tags": map[string]any{
+										"key9436": "bjbadzbfvpszbsickv",
+									},
+								},
+							},
+						},
+						"securityProfile": map[string]any{
+							"uefiSettings": map[string]any{
+								"secureBootEnabled": true,
+								"vTpmEnabled":       true,
+							},
+							"encryptionAtHost": true,
+							"securityType":     "TrustedLaunch",
+							"encryptionIdentity": map[string]any{
+								"userAssignedIdentityResourceId": "tnajlgbwcepmhytzb",
+							},
+							"proxyAgentSettings": map[string]any{
+								"enabled":          true,
+								"mode":             "Audit",
+								"keyIncarnationId": 4,
+								"wireServer": map[string]any{
+									"mode":                                "Audit",
+									"inVMAccessControlProfileReferenceId": "xvlzroy",
+								},
+								"imds": map[string]any{
+									"mode":                                "Audit",
+									"inVMAccessControlProfileReferenceId": "xvlzroy",
+								},
+								"addProxyAgentExtension": true,
+							},
+						},
+						"diagnosticsProfile": map[string]any{
+							"bootDiagnostics": map[string]any{
+								"enabled":    true,
+								"storageUri": "pxuhtzehlfsqolbdleirgj",
+							},
+						},
+						"licenseType":          "ymwuemwuntbignqyvzqflvjpcdus",
+						"extensionsTimeBudget": "dnyqmcijikzkltjav",
+						"scheduledEventsProfile": map[string]any{
+							"terminateNotificationProfile": map[string]any{
+								"notBeforeTimeout": "owbwifqrlsdmm",
+								"enable":           true,
+							},
+							"osImageNotificationProfile": map[string]any{
+								"notBeforeTimeout": "ataqykjdakdvyyzdspaqnhd",
+								"enable":           true,
+							},
+						},
+						"userData": "nwjvxe",
+						"capacityReservation": map[string]any{
+							"capacityReservationGroup": map[string]any{
+								"id": "lvzxxyypkeqlflftmfn",
+							},
+						},
+						"applicationProfile": map[string]any{
+							"galleryApplications": []any{
+								map[string]any{
+									"tags":                            "cmygipvpkegyclvpznfu",
+									"order":                           8,
+									"packageReferenceId":              "afrfkjdrtzftmwramfyu",
+									"configurationReference":          "nmfaspclhidtznslsps",
+									"treatFailureAsDeploymentFailure": true,
+									"enableAutomaticUpgrade":          true,
+								},
+							},
+						},
+						"vmExtensions": []any{
+							map[string]any{
+								"name": "jkpmcxwuahpzwkvexgzpypk",
+								"properties": map[string]any{
+									"forceUpdateTag":          "dockqxgatsfzhctxrncuw",
+									"publisher":               "qesyfldbfoaexyoywhcxafdtdwcg",
+									"type":                    "ptlmlzpbpbkfbu",
+									"typeHandlerVersion":      "crllsludntz",
+									"autoUpgradeMinorVersion": true,
+									"enableAutomaticUpgrade":  true,
+									"settings":                map[string]any{},
+									"protectedSettings":       map[string]any{},
+									"suppressFailures":        true,
+									"protectedSettingsFromKeyVault": map[string]any{
+										"secretUrl": "vzkogocyw",
+										"sourceVault": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+									},
+									"provisionAfterExtensions": []any{
+										"onbtyoeifafiktrkmal",
+									},
+								},
+							},
+						},
+					},
+					"computeApiVersion": "axcvphjtsdjzcwqczcglmq",
+					"name":              "dbozdvegpdvqxltqipvmqsfgunpe",
+				},
+			},
+			ResourceCount:  to.Ptr[int32](23),
+			ResourcePrefix: to.Ptr("flivkboavfhjuiucwdjof"),
+		},
 		ExecutionParameters: &armbulkactions.ExecutionParameters{
 			RetryPolicy: &armbulkactions.RetryPolicy{
 				RetryCount:           to.Ptr[int32](2),
-				RetryWindowInMinutes: to.Ptr[int32](20),
+				RetryWindowInMinutes: to.Ptr[int32](19),
+				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkCreateOperationResponse{
+	// 	CreateResourceOperationResponse: armbulkactions.CreateResourceOperationResponse{
+	// 		Description: to.Ptr("Create Resource request"),
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
+	// 		Results: []*armbulkactions.ResourceOperation{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 				ErrorCode: to.Ptr("TestErrorCode"),
+	// 				ErrorDetails: to.Ptr("Test error details"),
+	// 				Operation: &armbulkactions.ResourceOperationDetails{
+	// 					OperationID: to.Ptr("198fe806-a50d-4a3f-95cf-af162ac59599"),
+	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeCreate),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
+	// 					Timezone: to.Ptr("UTC"),
+	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
+	// 						ErrorCode: to.Ptr("TestErrorCode"),
+	// 						ErrorDetails: to.Ptr("Test error details"),
+	// 					},
+	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeDeallocate),
+	// 						Status: to.Ptr("succeeded"),
+	// 						Error: &armbulkactions.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("TestErrorCode"),
+	// 							ErrorDetails: to.Ptr("Test error details"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+	// 					RetryPolicy: &armbulkactions.RetryPolicy{
+	// 						RetryCount: to.Ptr[int32](2),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
+	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr(""),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCreate_MinimumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkCreateOperation_virtualMachineBulkOperationsBulkCreateExampleGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkCreateOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteCreateContent{
+		ResourceConfigParameters: &armbulkactions.ResourceProvisionPayload{
+			ResourceCount: to.Ptr[int32](23),
+		},
+		ExecutionParameters: &armbulkactions.ExecutionParameters{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkCreateOperationResponse{
+	// 	CreateResourceOperationResponse: armbulkactions.CreateResourceOperationResponse{
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
+	// 		Description: to.Ptr("Bulk create operation"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkDeallocateOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteDeallocateContent{
+		ExecutionParameters: &armbulkactions.ExecutionParameters{
+			RetryPolicy: &armbulkactions.RetryPolicy{
+				RetryCount:           to.Ptr[int32](2),
+				RetryWindowInMinutes: to.Ptr[int32](19),
 				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
 			},
 		},
@@ -140,98 +1158,67 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_virtualMa
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{
 	// 	DeallocateResourceOperationResponse: armbulkactions.DeallocateResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
+	// 		Description: to.Ptr("Deallocate Resource request"),
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
 	// 		Results: []*armbulkactions.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 				ErrorCode: to.Ptr("TestErrorCode"),
 	// 				ErrorDetails: to.Ptr("Test error details"),
 	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+	// 					OperationID: to.Ptr("9ba180c5-57d1-4afd-b569-5709d43aa1fa"),
 	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("401789D7-9B98-4B5A-AF58-808C415E37B4"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationStateUnknown),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
 	// 					Timezone: to.Ptr("UTC"),
 	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
 	// 						ErrorCode: to.Ptr("TestErrorCode"),
 	// 						ErrorDetails: to.Ptr("Test error details"),
 	// 					},
 	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
-	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeDeallocate),
 	// 						Status: to.Ptr("succeeded"),
 	// 						Error: &armbulkactions.ResourceOperationError{
 	// 							ErrorCode: to.Ptr("TestErrorCode"),
 	// 							ErrorDetails: to.Ptr("Test error details"),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					RetryPolicy: &armbulkactions.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](20),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
 	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr(""),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		Description: to.Ptr("Deallocate Resource request"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkDeallocate_MinimumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_virtualMachineBulkOperationsBulkDeallocateGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDelete_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkDeallocateOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteDeallocateContent{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{
-	// 	DeallocateResourceOperationResponse: armbulkactions.DeallocateResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
-	// 		Description: to.Ptr("Deallocate Resource request"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkDelete_MaximumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_virtualMachineBulkOperationsBulkDeleteGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkDeleteOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteDeleteContent{
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkDeleteOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteDeleteContent{
 		ExecutionParameters: &armbulkactions.ExecutionParameters{
 			RetryPolicy: &armbulkactions.RetryPolicy{
 				RetryCount:           to.Ptr[int32](2),
-				RetryWindowInMinutes: to.Ptr[int32](20),
+				RetryWindowInMinutes: to.Ptr[int32](19),
 				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
 			},
 		},
@@ -250,96 +1237,65 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_virtualMachin
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{
 	// 	DeleteResourceOperationResponse: armbulkactions.DeleteResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
+	// 		Description: to.Ptr("Delete Resource request"),
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
 	// 		Results: []*armbulkactions.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 				ErrorCode: to.Ptr("TestErrorCode"),
 	// 				ErrorDetails: to.Ptr("Test error details"),
 	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+	// 					OperationID: to.Ptr("8df6e5f3-1b1c-44e4-bcb5-3642f2b626d1"),
 	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("401789D7-9B98-4B5A-AF58-808C415E37B4"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationStateUnknown),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
 	// 					Timezone: to.Ptr("UTC"),
 	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
 	// 						ErrorCode: to.Ptr("TestErrorCode"),
 	// 						ErrorDetails: to.Ptr("Test error details"),
 	// 					},
 	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
-	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeDelete),
 	// 						Status: to.Ptr("succeeded"),
 	// 						Error: &armbulkactions.ResourceOperationError{
 	// 							ErrorCode: to.Ptr("TestErrorCode"),
 	// 							ErrorDetails: to.Ptr("Test error details"),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					RetryPolicy: &armbulkactions.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](20),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
 	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr(""),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		Description: to.Ptr("Delete Resource request"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkDelete_MinimumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_virtualMachineBulkOperationsBulkDeleteGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMachineBulkOperationsBulkGetOperationsStatusExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkDeleteOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteDeleteContent{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{
-	// 	DeleteResourceOperationResponse: armbulkactions.DeleteResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
-	// 		Description: to.Ptr("Delete Resource request"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkGetOperationsStatus_MaximumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMachineBulkOperationsBulkGetOperationsStatusGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkGetOperationsStatus(ctx, "myResourceGroup", "eastus2euap", armbulkactions.GetOperationStatusContent{
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkGetOperationsStatus(ctx, "rgBulkactions", "useast2euap", armbulkactions.GetOperationStatusContent{
 		OperationIDs: []*string{
-			to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+			to.Ptr("406e7856-f94b-48ae-93ee-b062afee54e5"),
 		},
 	}, nil)
 	if err != nil {
@@ -356,31 +1312,34 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMa
 	// 				ErrorCode: to.Ptr("TestErrorCode"),
 	// 				ErrorDetails: to.Ptr("Test error details"),
 	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+	// 					OperationID: to.Ptr("406e7856-f94b-48ae-93ee-b062afee54e5"),
 	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("401789D7-9B98-4B5A-AF58-808C415E37B4"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationStateUnknown),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
 	// 					Timezone: to.Ptr("UTC"),
 	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
 	// 						ErrorCode: to.Ptr("TestErrorCode"),
 	// 						ErrorDetails: to.Ptr("Test error details"),
 	// 					},
 	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
-	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationType("Cancel")),
 	// 						Status: to.Ptr("succeeded"),
 	// 						Error: &armbulkactions.ResourceOperationError{
 	// 							ErrorCode: to.Ptr("TestErrorCode"),
 	// 							ErrorDetails: to.Ptr("Test error details"),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					RetryPolicy: &armbulkactions.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](20),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
 	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr(""),
 	// 					},
 	// 				},
 	// 			},
@@ -389,20 +1348,20 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMa
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkGetOperationsStatus_MinimumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMachineBulkOperationsBulkGetOperationsStatusGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MinimumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMachineBulkOperationsBulkGetOperationsStatusExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkGetOperationsStatus(ctx, "myResourceGroup", "eastus2euap", armbulkactions.GetOperationStatusContent{
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkGetOperationsStatus(ctx, "rgBulkactions", "useast2euap", armbulkactions.GetOperationStatusContent{
 		OperationIDs: []*string{
-			to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+			to.Ptr("406e7856-f94b-48ae-93ee-b062afee54e5"),
 		},
 	}, nil)
 	if err != nil {
@@ -421,28 +1380,31 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMa
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkHibernate_MaximumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_virtualMachineBulkOperationsBulkHibernateGeneratedByMaximumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkHibernate_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkHibernateOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteHibernateContent{
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkHibernateOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteHibernateContent{
 		ExecutionParameters: &armbulkactions.ExecutionParameters{
 			RetryPolicy: &armbulkactions.RetryPolicy{
 				RetryCount:           to.Ptr[int32](2),
-				RetryWindowInMinutes: to.Ptr[int32](20),
+				RetryWindowInMinutes: to.Ptr[int32](19),
 				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
 			},
 		},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+		ResourcesWithContext: &armbulkactions.ResourcesWithContext{
+			Resources: []*armbulkactions.ResourceWithContext{
+				{
+					ResourceID:      to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					ResourceContext: to.Ptr("hibernateContext"),
+				},
 			},
 		},
 	}, nil)
@@ -454,98 +1416,172 @@ func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_virtualMac
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{
 	// 	HibernateResourceOperationResponse: armbulkactions.HibernateResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
+	// 		Description: to.Ptr("Hibernate Resource request"),
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
 	// 		Results: []*armbulkactions.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 				ErrorCode: to.Ptr("TestErrorCode"),
 	// 				ErrorDetails: to.Ptr("Test error details"),
 	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+	// 					OperationID: to.Ptr("c9b2885b-d4bd-4fe5-978d-9367c5ebca6b"),
 	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("401789D7-9B98-4B5A-AF58-808C415E37B4"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationStateUnknown),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
 	// 					Timezone: to.Ptr("UTC"),
 	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
 	// 						ErrorCode: to.Ptr("TestErrorCode"),
 	// 						ErrorDetails: to.Ptr("Test error details"),
 	// 					},
 	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
-	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeHibernate),
 	// 						Status: to.Ptr("succeeded"),
 	// 						Error: &armbulkactions.ResourceOperationError{
 	// 							ErrorCode: to.Ptr("TestErrorCode"),
 	// 							ErrorDetails: to.Ptr("Test error details"),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					RetryPolicy: &armbulkactions.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](20),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
 	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr("hibernateContext"),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		Description: to.Ptr("Hibernate Resource request"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkHibernate_MinimumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_virtualMachineBulkOperationsBulkHibernateGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_virtualMachineBulkOperationsBulkListOperationErrorsExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkHibernateOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteHibernateContent{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewVirtualMachineBulkOperationsClient().NewBulkListOperationErrorsPager("rgBulkactions", "useast2euap", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{
+		// 	ListBulkOperationErrorsResponse: armbulkactions.ListBulkOperationErrorsResponse{
+		// 		Value: []*armbulkactions.ResourceOperation{
+		// 			{
+		// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+		// 				ErrorCode: to.Ptr("TestErrorCode"),
+		// 				ErrorDetails: to.Ptr("Test error details"),
+		// 				Operation: &armbulkactions.ResourceOperationDetails{
+		// 					OperationID: to.Ptr("af449548-8e1a-4079-874e-2caa4ff783cc"),
+		// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+		// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
+		// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+		// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+		// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
+		// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
+		// 					Timezone: to.Ptr("UTC"),
+		// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
+		// 						ErrorCode: to.Ptr("OperationCancelledByUser"),
+		// 						ErrorDetails: to.Ptr("Operation was cancelled by the user."),
+		// 					},
+		// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
+		// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
+		// 						Status: to.Ptr("succeeded"),
+		// 						Error: &armbulkactions.ResourceOperationError{
+		// 							ErrorCode: to.Ptr("TestErrorCode"),
+		// 							ErrorDetails: to.Ptr("Test error details"),
+		// 						},
+		// 					},
+		// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+		// 					RetryPolicy: &armbulkactions.RetryPolicy{
+		// 						RetryCount: to.Ptr[int32](2),
+		// 						RetryWindowInMinutes: to.Ptr[int32](19),
+		// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+		// 					},
+		// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+		// 						ResourceContext: to.Ptr(""),
+		// 					},
+		// 				},
+		// 				VirtualMachineInfo: &armbulkactions.VirtualMachineInfo{
+		// 					VMSize: to.Ptr("Standard_D2ads_v5"),
+		// 					Zone: to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/useast2euap/listBulkOperationErrors?api-version=2026-07-06-preview&continuationToken=abc123"),
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{
-	// 	HibernateResourceOperationResponse: armbulkactions.HibernateResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
-	// 		Description: to.Ptr("Hibernate Resource request"),
-	// 	},
-	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkStart_MaximumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachineBulkOperationsBulkStartGeneratedByMaximumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_virtualMachineBulkOperationsBulkListOperationErrorsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkStartOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteStartContent{
+	pager := clientFactory.NewVirtualMachineBulkOperationsClient().NewBulkListOperationErrorsPager("rgBulkactions", "useast2euap", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armbulkactions.VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{
+		// 	ListBulkOperationErrorsResponse: armbulkactions.ListBulkOperationErrorsResponse{
+		// 		Value: []*armbulkactions.ResourceOperation{
+		// 			{
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkReimageOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkReimageOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteReimageRequest{
 		ExecutionParameters: &armbulkactions.ExecutionParameters{
 			RetryPolicy: &armbulkactions.RetryPolicy{
 				RetryCount:           to.Ptr[int32](2),
-				RetryWindowInMinutes: to.Ptr[int32](20),
+				RetryWindowInMinutes: to.Ptr[int32](19),
 				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
 			},
 		},
@@ -554,6 +1590,29 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachine
 				to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 			},
 		},
+		ReimageParameters: &armbulkactions.ReimagePayload{
+			BaseProfile: &armbulkactions.VirtualMachineReimageParameters{
+				TempDisk:     to.Ptr(true),
+				ExactVersion: to.Ptr("zjmkrnqjmzs"),
+				OSProfile: &armbulkactions.OSProfileProvisioningData{
+					AdminPassword: to.Ptr("<a-password-goes-here>"),
+					CustomData:    to.Ptr("teyngslcznlxihiitqbul"),
+				},
+			},
+			ResourceOverrides: []*armbulkactions.ReimageResourceOverride{
+				{
+					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					Profile: &armbulkactions.VirtualMachineReimageParameters{
+						TempDisk:     to.Ptr(true),
+						ExactVersion: to.Ptr("zjmkrnqjmzs"),
+						OSProfile: &armbulkactions.OSProfileProvisioningData{
+							AdminPassword: to.Ptr("<a-password-goes-here>"),
+							CustomData:    to.Ptr("teyngslcznlxihiitqbul"),
+						},
+					},
+				},
+			},
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -561,66 +1620,78 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachine
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkStartOperationResponse{
-	// 	StartResourceOperationResponse: armbulkactions.StartResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
+	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkReimageOperationResponse{
+	// 	ReimageResourceOperationResponse: armbulkactions.ReimageResourceOperationResponse{
+	// 		Description: to.Ptr("Reimage Resource request"),
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
 	// 		Results: []*armbulkactions.ResourceOperation{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 				ErrorCode: to.Ptr("TestErrorCode"),
 	// 				ErrorDetails: to.Ptr("Test error details"),
 	// 				Operation: &armbulkactions.ResourceOperationDetails{
-	// 					OperationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef0123456789"),
+	// 					OperationID: to.Ptr("0437c0c9-328e-4585-9808-31ee9460b19f"),
 	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
-	// 					SubscriptionID: to.Ptr("401789D7-9B98-4B5A-AF58-808C415E37B4"),
-	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
-	// 					State: to.Ptr(armbulkactions.OperationStateUnknown),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
 	// 					Timezone: to.Ptr("UTC"),
 	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
 	// 						ErrorCode: to.Ptr("TestErrorCode"),
 	// 						ErrorDetails: to.Ptr("Test error details"),
 	// 					},
 	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
-	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationType("Reimage")),
 	// 						Status: to.Ptr("succeeded"),
 	// 						Error: &armbulkactions.ResourceOperationError{
 	// 							ErrorCode: to.Ptr("TestErrorCode"),
 	// 							ErrorDetails: to.Ptr("Test error details"),
 	// 						},
 	// 					},
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-05T04:20:47.877Z"); return t}()),
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
 	// 					RetryPolicy: &armbulkactions.RetryPolicy{
 	// 						RetryCount: to.Ptr[int32](2),
-	// 						RetryWindowInMinutes: to.Ptr[int32](20),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
 	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr(""),
 	// 					},
 	// 				},
 	// 			},
 	// 		},
-	// 		Description: to.Ptr("Start Resource request"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-06/VirtualMachineBulkOperations_BulkStart_MinimumSet_Gen.json
-func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachineBulkOperationsBulkStartGeneratedByMinimumSetRule() {
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkStart_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armbulkactions.NewClientFactory("401789D7-9B98-4B5A-AF58-808C415E37B4", cred, nil)
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkStartOperation(ctx, "myResourceGroup", "eastus2euap", armbulkactions.ExecuteStartContent{
-		ExecutionParameters: &armbulkactions.ExecutionParameters{},
-		Resources: &armbulkactions.Resources{
-			IDs: []*string{
-				to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkStartOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteStartContent{
+		ExecutionParameters: &armbulkactions.ExecutionParameters{
+			RetryPolicy: &armbulkactions.RetryPolicy{
+				RetryCount:           to.Ptr[int32](2),
+				RetryWindowInMinutes: to.Ptr[int32](19),
+				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+			},
+		},
+		ResourcesWithContext: &armbulkactions.ResourcesWithContext{
+			Resources: []*armbulkactions.ResourceWithContext{
+				{
+					ResourceID:      to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+					ResourceContext: to.Ptr("startContext"),
+				},
 			},
 		},
 	}, nil)
@@ -632,9 +1703,1023 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachine
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkStartOperationResponse{
 	// 	StartResourceOperationResponse: armbulkactions.StartResourceOperationResponse{
-	// 		Type: to.Ptr("VirtualMachine"),
-	// 		Location: to.Ptr("eastus2euap"),
 	// 		Description: to.Ptr("Start Resource request"),
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
+	// 		Results: []*armbulkactions.ResourceOperation{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 				ErrorCode: to.Ptr("TestErrorCode"),
+	// 				ErrorDetails: to.Ptr("Test error details"),
+	// 				Operation: &armbulkactions.ResourceOperationDetails{
+	// 					OperationID: to.Ptr("dbfcca08-7423-421b-a45f-a5cf5d00a85c"),
+	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
+	// 					Timezone: to.Ptr("UTC"),
+	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
+	// 						ErrorCode: to.Ptr("TestErrorCode"),
+	// 						ErrorDetails: to.Ptr("Test error details"),
+	// 					},
+	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeStart),
+	// 						Status: to.Ptr("succeeded"),
+	// 						Error: &armbulkactions.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("TestErrorCode"),
+	// 							ErrorDetails: to.Ptr("Test error details"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+	// 					RetryPolicy: &armbulkactions.RetryPolicy{
+	// 						RetryCount: to.Ptr[int32](2),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
+	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr("startContext"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MaximumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkVdiFlexCreateOperation_virtualMachineBulkOperationsBulkVdiFlexCreateExample() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkVdiFlexCreateOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteVdiCreateRequest{
+		ResourceConfigParameters: &armbulkactions.ResourceProvisionVdiPayload{
+			BaseProfile: map[string]any{
+				"plan": map[string]any{
+					"name":          "iemasqqkbixbewezyrhnpntjd",
+					"publisher":     "bvggylbvfstnscuupuithafvvgc",
+					"product":       "bguuzrknnuohugjhernflurpx",
+					"promotionCode": "bxgonranwqoryfkhkfaumdgz",
+					"version":       "uyxetqmmzvqianqv",
+				},
+				"zones": []any{
+					"wczj",
+				},
+				"identity": map[string]any{
+					"type": "SystemAssigned",
+					"userAssignedIdentities": map[string]any{
+						"key7": map[string]any{},
+					},
+				},
+				"extendedLocation": map[string]any{
+					"name": "gbnxzymbdkxhwjpqkur",
+					"type": "EdgeZone",
+				},
+				"placement": map[string]any{
+					"zonePlacementPolicy": "Any",
+					"includeZones": []any{
+						"inagtbtedobdea",
+					},
+					"excludeZones": []any{
+						"pvvwrhuhdpvbacwmesblpgwzk",
+					},
+				},
+				"tags": map[string]any{
+					"key6824": "cefndldgkx",
+				},
+				"properties": map[string]any{
+					"scheduledEventsPolicy": map[string]any{
+						"userInitiatedRedeploy": map[string]any{
+							"automaticallyApprove": true,
+						},
+						"userInitiatedReboot": map[string]any{
+							"automaticallyApprove": true,
+						},
+						"scheduledEventsAdditionalPublishingTargets": map[string]any{
+							"eventGridAndResourceGraph": map[string]any{
+								"enable":                    true,
+								"scheduledEventsApiVersion": "lifncbftlkounuyfn",
+							},
+						},
+						"allInstancesDown": map[string]any{
+							"automaticallyApprove": true,
+						},
+					},
+					"storageProfile": map[string]any{
+						"imageReference": map[string]any{
+							"publisher":               "ojlplghybdamadvsrq",
+							"offer":                   "uvnqoxhkxefqwbsvjgbswqy",
+							"sku":                     "hajdxhjmlkx",
+							"version":                 "u",
+							"sharedGalleryImageId":    "fz",
+							"communityGalleryImageId": "tsfpcq",
+							"id":                      "cdbrkpdicibtlliq",
+						},
+						"osDisk": map[string]any{
+							"osType": "Windows",
+							"encryptionSettings": map[string]any{
+								"diskEncryptionKey": map[string]any{
+									"secretUrl": "vzkogocyw",
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+								},
+								"keyEncryptionKey": map[string]any{
+									"keyUrl": "mjjkvgpoohatw",
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+								},
+								"enabled": true,
+							},
+							"name": "opogpznvctmraoajgizcyrfvpt",
+							"vhd": map[string]any{
+								"uri": "elpzggtxubepzgjqvdbjmbu",
+							},
+							"image": map[string]any{
+								"uri": "elpzggtxubepzgjqvdbjmbu",
+							},
+							"caching":                 "None",
+							"writeAcceleratorEnabled": true,
+							"diffDiskSettings": map[string]any{
+								"option":    "Local",
+								"placement": "CacheDisk",
+							},
+							"createOption": "FromImage",
+							"diskSizeGB":   2,
+							"managedDisk": map[string]any{
+								"storageAccountType": "Standard_LRS",
+								"diskEncryptionSet": map[string]any{
+									"id": "magvkzhdmzhktjlqkkk",
+								},
+								"securityProfile": map[string]any{
+									"securityEncryptionType": "VMGuestStateOnly",
+									"diskEncryptionSet": map[string]any{
+										"id": "magvkzhdmzhktjlqkkk",
+									},
+								},
+								"id": "numddbqmkxuu",
+							},
+							"deleteOption": "Delete",
+						},
+						"dataDisks": []any{
+							map[string]any{
+								"lun":  7,
+								"name": "nbthfzqsxyqvqnbgcljxbwyyoj",
+								"vhd": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"image": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"caching":                 "None",
+								"writeAcceleratorEnabled": true,
+								"createOption":            "FromImage",
+								"diskSizeGB":              19,
+								"managedDisk": map[string]any{
+									"storageAccountType": "Standard_LRS",
+									"diskEncryptionSet": map[string]any{
+										"id": "magvkzhdmzhktjlqkkk",
+									},
+									"securityProfile": map[string]any{
+										"securityEncryptionType": "VMGuestStateOnly",
+										"diskEncryptionSet": map[string]any{
+											"id": "magvkzhdmzhktjlqkkk",
+										},
+									},
+									"id": "numddbqmkxuu",
+								},
+								"sourceResource": map[string]any{
+									"id": "qnukyordmomtjjqabovlsxl",
+								},
+								"toBeDetached": true,
+								"detachOption": "ForceDetach",
+								"deleteOption": "Delete",
+							},
+						},
+						"diskControllerType": "SCSI",
+					},
+					"hardwareProfile": map[string]any{
+						"vmSize": "szrnjqwbruz",
+						"vmSizeProperties": map[string]any{
+							"vCpusAvailable": 24,
+							"vCpusPerCore":   6,
+						},
+					},
+					"additionalCapabilities": map[string]any{
+						"ultraSSDEnabled":    true,
+						"hibernationEnabled": true,
+					},
+					"osProfile": map[string]any{
+						"computerName":  "bplxnfp",
+						"adminUsername": "fxzbi",
+						"adminPassword": "<a-password-goes-here>",
+						"customData":    "hbdlirohsgnbrahscboc",
+						"windowsConfiguration": map[string]any{
+							"provisionVMAgent":       true,
+							"enableAutomaticUpdates": true,
+							"timeZone":               "t",
+							"additionalUnattendContent": []any{
+								map[string]any{
+									"passName":      "OobeSystem",
+									"componentName": "Microsoft-Windows-Shell-Setup",
+									"settingName":   "AutoLogon",
+									"content":       "rguazthnx",
+								},
+							},
+							"patchSettings": map[string]any{
+								"patchMode":         "Manual",
+								"enableHotpatching": true,
+								"assessmentMode":    "ImageDefault",
+								"automaticByPlatformSettings": map[string]any{
+									"rebootSetting": "Unknown",
+									"bypassPlatformSafetyChecksOnUserSchedule": true,
+								},
+							},
+							"winRM": map[string]any{
+								"listeners": []any{
+									map[string]any{
+										"protocol":       "Http",
+										"certificateUrl": "quhfapfpyeeocwvwtvuggoqqwt",
+									},
+								},
+							},
+						},
+						"linuxConfiguration": map[string]any{
+							"disablePasswordAuthentication": true,
+							"ssh": map[string]any{
+								"publicKeys": []any{
+									map[string]any{
+										"path":    "mrdfxnfjazxog",
+										"keyData": "wfhrknkehgesontscqyrewfmhgwt",
+									},
+								},
+							},
+							"provisionVMAgent": true,
+							"patchSettings": map[string]any{
+								"patchMode":      "ImageDefault",
+								"assessmentMode": "ImageDefault",
+								"automaticByPlatformSettings": map[string]any{
+									"rebootSetting": "Unknown",
+									"bypassPlatformSafetyChecksOnUserSchedule": true,
+								},
+							},
+							"enableVMAgentPlatformUpdates": true,
+						},
+						"secrets": []any{
+							map[string]any{
+								"sourceVault": map[string]any{
+									"id": "lvzxxyypkeqlflftmfn",
+								},
+								"vaultCertificates": []any{
+									map[string]any{
+										"certificateUrl":   "crgbpfdvlohwkupdjp",
+										"certificateStore": "hyx",
+									},
+								},
+							},
+						},
+						"allowExtensionOperations":    true,
+						"requireGuestProvisionSignal": true,
+					},
+					"networkProfile": map[string]any{
+						"networkInterfaces": []any{
+							map[string]any{
+								"properties": map[string]any{
+									"primary":      true,
+									"deleteOption": "Delete",
+								},
+								"id": "ymfxctb",
+							},
+						},
+						"networkApiVersion": "2020-11-01",
+						"networkInterfaceConfigurations": []any{
+							map[string]any{
+								"name": "qrkzoctmzjketostzabnra",
+								"properties": map[string]any{
+									"primary":                     true,
+									"deleteOption":                "Delete",
+									"enableAcceleratedNetworking": true,
+									"disableTcpStateTracking":     true,
+									"enableFpga":                  true,
+									"enableIPForwarding":          true,
+									"networkSecurityGroup": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+									"dnsSettings": map[string]any{
+										"dnsServers": []any{
+											"tqcqopnanyyiavfwhqbkarxtrfqbww",
+										},
+									},
+									"ipConfigurations": []any{
+										map[string]any{
+											"name": "gqymuvgzzfmxqvdadx",
+											"properties": map[string]any{
+												"subnet": map[string]any{
+													"id": "lvzxxyypkeqlflftmfn",
+												},
+												"primary": true,
+												"publicIPAddressConfiguration": map[string]any{
+													"name": "cwxsqjijtwbsyqdwht",
+													"properties": map[string]any{
+														"idleTimeoutInMinutes": 17,
+														"deleteOption":         "Delete",
+														"dnsSettings": map[string]any{
+															"domainNameLabel":      "fampou",
+															"domainNameLabelScope": "TenantReuse",
+														},
+														"ipTags": []any{
+															map[string]any{
+																"ipTagType": "hkjoxhqadudjartwooezaxl",
+																"tag":       "xywunkjglkmmwfpf",
+															},
+														},
+														"publicIPPrefix": map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+														"publicIPAddressVersion":   "IPv4",
+														"publicIPAllocationMethod": "Dynamic",
+													},
+													"sku": map[string]any{
+														"name": "Basic",
+														"tier": "Regional",
+													},
+													"tags": map[string]any{
+														"key5442": "qhpwpnylvmdthxazhxamnbhdfpf",
+													},
+												},
+												"privateIPAddressVersion": "IPv4",
+												"applicationSecurityGroups": []any{
+													map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+												},
+												"applicationGatewayBackendAddressPools": []any{
+													map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+												},
+												"loadBalancerBackendAddressPools": []any{
+													map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+												},
+											},
+										},
+									},
+									"dscpConfiguration": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+									"auxiliaryMode": "None",
+									"auxiliarySku":  "None",
+								},
+								"tags": map[string]any{
+									"key9436": "bjbadzbfvpszbsickv",
+								},
+							},
+						},
+					},
+					"securityProfile": map[string]any{
+						"uefiSettings": map[string]any{
+							"secureBootEnabled": true,
+							"vTpmEnabled":       true,
+						},
+						"encryptionAtHost": true,
+						"securityType":     "TrustedLaunch",
+						"encryptionIdentity": map[string]any{
+							"userAssignedIdentityResourceId": "tnajlgbwcepmhytzb",
+						},
+						"proxyAgentSettings": map[string]any{
+							"enabled":          true,
+							"mode":             "Audit",
+							"keyIncarnationId": 4,
+							"wireServer": map[string]any{
+								"mode":                                "Audit",
+								"inVMAccessControlProfileReferenceId": "xvlzroy",
+							},
+							"imds": map[string]any{
+								"mode":                                "Audit",
+								"inVMAccessControlProfileReferenceId": "xvlzroy",
+							},
+							"addProxyAgentExtension": true,
+						},
+					},
+					"diagnosticsProfile": map[string]any{
+						"bootDiagnostics": map[string]any{
+							"enabled":    true,
+							"storageUri": "pxuhtzehlfsqolbdleirgj",
+						},
+					},
+					"licenseType":          "ymwuemwuntbignqyvzqflvjpcdus",
+					"extensionsTimeBudget": "dnyqmcijikzkltjav",
+					"scheduledEventsProfile": map[string]any{
+						"terminateNotificationProfile": map[string]any{
+							"notBeforeTimeout": "owbwifqrlsdmm",
+							"enable":           true,
+						},
+						"osImageNotificationProfile": map[string]any{
+							"notBeforeTimeout": "ataqykjdakdvyyzdspaqnhd",
+							"enable":           true,
+						},
+					},
+					"userData": "nwjvxe",
+					"capacityReservation": map[string]any{
+						"capacityReservationGroup": map[string]any{
+							"id": "lvzxxyypkeqlflftmfn",
+						},
+					},
+					"applicationProfile": map[string]any{
+						"galleryApplications": []any{
+							map[string]any{
+								"tags":                            "cmygipvpkegyclvpznfu",
+								"order":                           8,
+								"packageReferenceId":              "afrfkjdrtzftmwramfyu",
+								"configurationReference":          "nmfaspclhidtznslsps",
+								"treatFailureAsDeploymentFailure": true,
+								"enableAutomaticUpgrade":          true,
+							},
+						},
+					},
+					"vmExtensions": []any{
+						map[string]any{
+							"name": "jkpmcxwuahpzwkvexgzpypk",
+							"properties": map[string]any{
+								"forceUpdateTag":          "dockqxgatsfzhctxrncuw",
+								"publisher":               "qesyfldbfoaexyoywhcxafdtdwcg",
+								"type":                    "ptlmlzpbpbkfbu",
+								"typeHandlerVersion":      "crllsludntz",
+								"autoUpgradeMinorVersion": true,
+								"enableAutomaticUpgrade":  true,
+								"settings":                map[string]any{},
+								"protectedSettings":       map[string]any{},
+								"suppressFailures":        true,
+								"protectedSettingsFromKeyVault": map[string]any{
+									"secretUrl": "vzkogocyw",
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+								},
+								"provisionAfterExtensions": []any{
+									"onbtyoeifafiktrkmal",
+								},
+							},
+						},
+					},
+				},
+				"computeApiVersion": "axcvphjtsdjzcwqczcglmq",
+				"name":              "dbozdvegpdvqxltqipvmqsfgunpe",
+			},
+			ResourceOverrides: []map[string]any{
+				{
+					"plan": map[string]any{
+						"name":          "iemasqqkbixbewezyrhnpntjd",
+						"publisher":     "bvggylbvfstnscuupuithafvvgc",
+						"product":       "bguuzrknnuohugjhernflurpx",
+						"promotionCode": "bxgonranwqoryfkhkfaumdgz",
+						"version":       "uyxetqmmzvqianqv",
+					},
+					"zones": []any{
+						"wczj",
+					},
+					"identity": map[string]any{
+						"type": "SystemAssigned",
+						"userAssignedIdentities": map[string]any{
+							"key7": map[string]any{},
+						},
+					},
+					"extendedLocation": map[string]any{
+						"name": "gbnxzymbdkxhwjpqkur",
+						"type": "EdgeZone",
+					},
+					"placement": map[string]any{
+						"zonePlacementPolicy": "Any",
+						"includeZones": []any{
+							"inagtbtedobdea",
+						},
+						"excludeZones": []any{
+							"pvvwrhuhdpvbacwmesblpgwzk",
+						},
+					},
+					"tags": map[string]any{
+						"key6824": "cefndldgkx",
+					},
+					"properties": map[string]any{
+						"scheduledEventsPolicy": map[string]any{
+							"userInitiatedRedeploy": map[string]any{
+								"automaticallyApprove": true,
+							},
+							"userInitiatedReboot": map[string]any{
+								"automaticallyApprove": true,
+							},
+							"scheduledEventsAdditionalPublishingTargets": map[string]any{
+								"eventGridAndResourceGraph": map[string]any{
+									"enable":                    true,
+									"scheduledEventsApiVersion": "lifncbftlkounuyfn",
+								},
+							},
+							"allInstancesDown": map[string]any{
+								"automaticallyApprove": true,
+							},
+						},
+						"storageProfile": map[string]any{
+							"imageReference": map[string]any{
+								"publisher":               "ojlplghybdamadvsrq",
+								"offer":                   "uvnqoxhkxefqwbsvjgbswqy",
+								"sku":                     "hajdxhjmlkx",
+								"version":                 "u",
+								"sharedGalleryImageId":    "fz",
+								"communityGalleryImageId": "tsfpcq",
+								"id":                      "cdbrkpdicibtlliq",
+							},
+							"osDisk": map[string]any{
+								"osType": "Windows",
+								"encryptionSettings": map[string]any{
+									"diskEncryptionKey": map[string]any{
+										"secretUrl": "vzkogocyw",
+										"sourceVault": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+									},
+									"keyEncryptionKey": map[string]any{
+										"keyUrl": "mjjkvgpoohatw",
+										"sourceVault": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+									},
+									"enabled": true,
+								},
+								"name": "opogpznvctmraoajgizcyrfvpt",
+								"vhd": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"image": map[string]any{
+									"uri": "elpzggtxubepzgjqvdbjmbu",
+								},
+								"caching":                 "None",
+								"writeAcceleratorEnabled": true,
+								"diffDiskSettings": map[string]any{
+									"option":    "Local",
+									"placement": "CacheDisk",
+								},
+								"createOption": "FromImage",
+								"diskSizeGB":   2,
+								"managedDisk": map[string]any{
+									"storageAccountType": "Standard_LRS",
+									"diskEncryptionSet": map[string]any{
+										"id": "magvkzhdmzhktjlqkkk",
+									},
+									"securityProfile": map[string]any{
+										"securityEncryptionType": "VMGuestStateOnly",
+										"diskEncryptionSet": map[string]any{
+											"id": "magvkzhdmzhktjlqkkk",
+										},
+									},
+									"id": "numddbqmkxuu",
+								},
+								"deleteOption": "Delete",
+							},
+							"dataDisks": []any{
+								map[string]any{
+									"lun":  7,
+									"name": "nbthfzqsxyqvqnbgcljxbwyyoj",
+									"vhd": map[string]any{
+										"uri": "elpzggtxubepzgjqvdbjmbu",
+									},
+									"image": map[string]any{
+										"uri": "elpzggtxubepzgjqvdbjmbu",
+									},
+									"caching":                 "None",
+									"writeAcceleratorEnabled": true,
+									"createOption":            "FromImage",
+									"diskSizeGB":              19,
+									"managedDisk": map[string]any{
+										"storageAccountType": "Standard_LRS",
+										"diskEncryptionSet": map[string]any{
+											"id": "magvkzhdmzhktjlqkkk",
+										},
+										"securityProfile": map[string]any{
+											"securityEncryptionType": "VMGuestStateOnly",
+											"diskEncryptionSet": map[string]any{
+												"id": "magvkzhdmzhktjlqkkk",
+											},
+										},
+										"id": "numddbqmkxuu",
+									},
+									"sourceResource": map[string]any{
+										"id": "qnukyordmomtjjqabovlsxl",
+									},
+									"toBeDetached": true,
+									"detachOption": "ForceDetach",
+									"deleteOption": "Delete",
+								},
+							},
+							"diskControllerType": "SCSI",
+						},
+						"hardwareProfile": map[string]any{
+							"vmSize": "szrnjqwbruz",
+							"vmSizeProperties": map[string]any{
+								"vCpusAvailable": 24,
+								"vCpusPerCore":   6,
+							},
+						},
+						"additionalCapabilities": map[string]any{
+							"ultraSSDEnabled":    true,
+							"hibernationEnabled": true,
+						},
+						"osProfile": map[string]any{
+							"computerName":  "bplxnfp",
+							"adminUsername": "fxzbi",
+							"adminPassword": "<a-password-goes-here>",
+							"customData":    "hbdlirohsgnbrahscboc",
+							"windowsConfiguration": map[string]any{
+								"provisionVMAgent":       true,
+								"enableAutomaticUpdates": true,
+								"timeZone":               "t",
+								"additionalUnattendContent": []any{
+									map[string]any{
+										"passName":      "OobeSystem",
+										"componentName": "Microsoft-Windows-Shell-Setup",
+										"settingName":   "AutoLogon",
+										"content":       "rguazthnx",
+									},
+								},
+								"patchSettings": map[string]any{
+									"patchMode":         "Manual",
+									"enableHotpatching": true,
+									"assessmentMode":    "ImageDefault",
+									"automaticByPlatformSettings": map[string]any{
+										"rebootSetting": "Unknown",
+										"bypassPlatformSafetyChecksOnUserSchedule": true,
+									},
+								},
+								"winRM": map[string]any{
+									"listeners": []any{
+										map[string]any{
+											"protocol":       "Http",
+											"certificateUrl": "quhfapfpyeeocwvwtvuggoqqwt",
+										},
+									},
+								},
+							},
+							"linuxConfiguration": map[string]any{
+								"disablePasswordAuthentication": true,
+								"ssh": map[string]any{
+									"publicKeys": []any{
+										map[string]any{
+											"path":    "mrdfxnfjazxog",
+											"keyData": "wfhrknkehgesontscqyrewfmhgwt",
+										},
+									},
+								},
+								"provisionVMAgent": true,
+								"patchSettings": map[string]any{
+									"patchMode":      "ImageDefault",
+									"assessmentMode": "ImageDefault",
+									"automaticByPlatformSettings": map[string]any{
+										"rebootSetting": "Unknown",
+										"bypassPlatformSafetyChecksOnUserSchedule": true,
+									},
+								},
+								"enableVMAgentPlatformUpdates": true,
+							},
+							"secrets": []any{
+								map[string]any{
+									"sourceVault": map[string]any{
+										"id": "lvzxxyypkeqlflftmfn",
+									},
+									"vaultCertificates": []any{
+										map[string]any{
+											"certificateUrl":   "crgbpfdvlohwkupdjp",
+											"certificateStore": "hyx",
+										},
+									},
+								},
+							},
+							"allowExtensionOperations":    true,
+							"requireGuestProvisionSignal": true,
+						},
+						"networkProfile": map[string]any{
+							"networkInterfaces": []any{
+								map[string]any{
+									"properties": map[string]any{
+										"primary":      true,
+										"deleteOption": "Delete",
+									},
+									"id": "ymfxctb",
+								},
+							},
+							"networkApiVersion": "2020-11-01",
+							"networkInterfaceConfigurations": []any{
+								map[string]any{
+									"name": "qrkzoctmzjketostzabnra",
+									"properties": map[string]any{
+										"primary":                     true,
+										"deleteOption":                "Delete",
+										"enableAcceleratedNetworking": true,
+										"disableTcpStateTracking":     true,
+										"enableFpga":                  true,
+										"enableIPForwarding":          true,
+										"networkSecurityGroup": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+										"dnsSettings": map[string]any{
+											"dnsServers": []any{
+												"tqcqopnanyyiavfwhqbkarxtrfqbww",
+											},
+										},
+										"ipConfigurations": []any{
+											map[string]any{
+												"name": "gqymuvgzzfmxqvdadx",
+												"properties": map[string]any{
+													"subnet": map[string]any{
+														"id": "lvzxxyypkeqlflftmfn",
+													},
+													"primary": true,
+													"publicIPAddressConfiguration": map[string]any{
+														"name": "cwxsqjijtwbsyqdwht",
+														"properties": map[string]any{
+															"idleTimeoutInMinutes": 17,
+															"deleteOption":         "Delete",
+															"dnsSettings": map[string]any{
+																"domainNameLabel":      "fampou",
+																"domainNameLabelScope": "TenantReuse",
+															},
+															"ipTags": []any{
+																map[string]any{
+																	"ipTagType": "hkjoxhqadudjartwooezaxl",
+																	"tag":       "xywunkjglkmmwfpf",
+																},
+															},
+															"publicIPPrefix": map[string]any{
+																"id": "lvzxxyypkeqlflftmfn",
+															},
+															"publicIPAddressVersion":   "IPv4",
+															"publicIPAllocationMethod": "Dynamic",
+														},
+														"sku": map[string]any{
+															"name": "Basic",
+															"tier": "Regional",
+														},
+														"tags": map[string]any{
+															"key5442": "qhpwpnylvmdthxazhxamnbhdfpf",
+														},
+													},
+													"privateIPAddressVersion": "IPv4",
+													"applicationSecurityGroups": []any{
+														map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+													},
+													"applicationGatewayBackendAddressPools": []any{
+														map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+													},
+													"loadBalancerBackendAddressPools": []any{
+														map[string]any{
+															"id": "lvzxxyypkeqlflftmfn",
+														},
+													},
+												},
+											},
+										},
+										"dscpConfiguration": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+										"auxiliaryMode": "None",
+										"auxiliarySku":  "None",
+									},
+									"tags": map[string]any{
+										"key9436": "bjbadzbfvpszbsickv",
+									},
+								},
+							},
+						},
+						"securityProfile": map[string]any{
+							"uefiSettings": map[string]any{
+								"secureBootEnabled": true,
+								"vTpmEnabled":       true,
+							},
+							"encryptionAtHost": true,
+							"securityType":     "TrustedLaunch",
+							"encryptionIdentity": map[string]any{
+								"userAssignedIdentityResourceId": "tnajlgbwcepmhytzb",
+							},
+							"proxyAgentSettings": map[string]any{
+								"enabled":          true,
+								"mode":             "Audit",
+								"keyIncarnationId": 4,
+								"wireServer": map[string]any{
+									"mode":                                "Audit",
+									"inVMAccessControlProfileReferenceId": "xvlzroy",
+								},
+								"imds": map[string]any{
+									"mode":                                "Audit",
+									"inVMAccessControlProfileReferenceId": "xvlzroy",
+								},
+								"addProxyAgentExtension": true,
+							},
+						},
+						"diagnosticsProfile": map[string]any{
+							"bootDiagnostics": map[string]any{
+								"enabled":    true,
+								"storageUri": "pxuhtzehlfsqolbdleirgj",
+							},
+						},
+						"licenseType":          "ymwuemwuntbignqyvzqflvjpcdus",
+						"extensionsTimeBudget": "dnyqmcijikzkltjav",
+						"scheduledEventsProfile": map[string]any{
+							"terminateNotificationProfile": map[string]any{
+								"notBeforeTimeout": "owbwifqrlsdmm",
+								"enable":           true,
+							},
+							"osImageNotificationProfile": map[string]any{
+								"notBeforeTimeout": "ataqykjdakdvyyzdspaqnhd",
+								"enable":           true,
+							},
+						},
+						"userData": "nwjvxe",
+						"capacityReservation": map[string]any{
+							"capacityReservationGroup": map[string]any{
+								"id": "lvzxxyypkeqlflftmfn",
+							},
+						},
+						"applicationProfile": map[string]any{
+							"galleryApplications": []any{
+								map[string]any{
+									"tags":                            "cmygipvpkegyclvpznfu",
+									"order":                           8,
+									"packageReferenceId":              "afrfkjdrtzftmwramfyu",
+									"configurationReference":          "nmfaspclhidtznslsps",
+									"treatFailureAsDeploymentFailure": true,
+									"enableAutomaticUpgrade":          true,
+								},
+							},
+						},
+						"vmExtensions": []any{
+							map[string]any{
+								"name": "jkpmcxwuahpzwkvexgzpypk",
+								"properties": map[string]any{
+									"forceUpdateTag":          "dockqxgatsfzhctxrncuw",
+									"publisher":               "qesyfldbfoaexyoywhcxafdtdwcg",
+									"type":                    "ptlmlzpbpbkfbu",
+									"typeHandlerVersion":      "crllsludntz",
+									"autoUpgradeMinorVersion": true,
+									"enableAutomaticUpgrade":  true,
+									"settings":                map[string]any{},
+									"protectedSettings":       map[string]any{},
+									"suppressFailures":        true,
+									"protectedSettingsFromKeyVault": map[string]any{
+										"secretUrl": "vzkogocyw",
+										"sourceVault": map[string]any{
+											"id": "lvzxxyypkeqlflftmfn",
+										},
+									},
+									"provisionAfterExtensions": []any{
+										"onbtyoeifafiktrkmal",
+									},
+								},
+							},
+						},
+					},
+					"computeApiVersion": "axcvphjtsdjzcwqczcglmq",
+					"name":              "dbozdvegpdvqxltqipvmqsfgunpe",
+				},
+			},
+			ResourceCount:  to.Ptr[int32](10),
+			ResourcePrefix: to.Ptr("mwbopevxbjcunljvruov"),
+			FlexProperties: &armbulkactions.FlexProperties{
+				VMSizeProfiles: []*armbulkactions.VMSizeProfile{
+					{
+						Name: to.Ptr("frbnnpdkq"),
+						Rank: to.Ptr[int32](7),
+					},
+				},
+				OSType: to.Ptr(armbulkactions.OsTypeWindows),
+				PriorityProfile: &armbulkactions.PriorityProfile{
+					Type:               to.Ptr(armbulkactions.PriorityTypeRegular),
+					MaxPricePerVM:      to.Ptr[float32](23),
+					EvictionPolicy:     to.Ptr(armbulkactions.EvictionPolicyDelete),
+					AllocationStrategy: to.Ptr(armbulkactions.AllocationStrategyLowestPrice),
+				},
+				ZoneAllocationPolicy: &armbulkactions.ZoneAllocationPolicy{
+					DistributionStrategy: to.Ptr(armbulkactions.DistributionStrategyBestEffortSingleZone),
+					ZonePreferences: []*armbulkactions.ZonePreference{
+						{
+							Zone: to.Ptr("ixksjnaxwelhfpsoyjfaezievquqv"),
+							Rank: to.Ptr[int32](19),
+						},
+					},
+				},
+				MinCapacity: to.Ptr[int32](5),
+			},
+		},
+		ExecutionParameters: &armbulkactions.ExecutionParameters{
+			RetryPolicy: &armbulkactions.RetryPolicy{
+				RetryCount:           to.Ptr[int32](2),
+				RetryWindowInMinutes: to.Ptr[int32](19),
+				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse{
+	// 	CreateResourceOperationResponse: armbulkactions.CreateResourceOperationResponse{
+	// 		Description: to.Ptr("VdiFlexCreate Resource request"),
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
+	// 		Results: []*armbulkactions.ResourceOperation{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 				ErrorCode: to.Ptr("TestErrorCode"),
+	// 				ErrorDetails: to.Ptr("Test error details"),
+	// 				Operation: &armbulkactions.ResourceOperationDetails{
+	// 					OperationID: to.Ptr("aad5caeb-de67-481a-98a9-997dcdd2c085"),
+	// 					ResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 					OpType: to.Ptr(armbulkactions.ResourceOperationTypeCreate),
+	// 					SubscriptionID: to.Ptr("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2"),
+	// 					Deadline: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+	// 					DeadlineType: to.Ptr(armbulkactions.DeadlineTypeInitiateAt),
+	// 					State: to.Ptr(armbulkactions.OperationStatePendingScheduling),
+	// 					Timezone: to.Ptr("UTC"),
+	// 					ResourceOperationError: &armbulkactions.ResourceOperationError{
+	// 						ErrorCode: to.Ptr("TestErrorCode"),
+	// 						ErrorDetails: to.Ptr("Test error details"),
+	// 					},
+	// 					FallbackOperationInfo: &armbulkactions.FallbackOperationInfo{
+	// 						LastOpType: to.Ptr(armbulkactions.ResourceOperationTypeDeallocate),
+	// 						Status: to.Ptr("succeeded"),
+	// 						Error: &armbulkactions.ResourceOperationError{
+	// 							ErrorCode: to.Ptr("TestErrorCode"),
+	// 							ErrorDetails: to.Ptr("Test error details"),
+	// 						},
+	// 					},
+	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:45.098Z"); return t}()),
+	// 					RetryPolicy: &armbulkactions.RetryPolicy{
+	// 						RetryCount: to.Ptr[int32](2),
+	// 						RetryWindowInMinutes: to.Ptr[int32](19),
+	// 						OnFailureAction: to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+	// 					},
+	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
+	// 						ResourceContext: to.Ptr(""),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MinimumSet_Gen.json
+func ExampleVirtualMachineBulkOperationsClient_BulkVdiFlexCreateOperation_virtualMachineBulkOperationsBulkVdiFlexCreateExampleGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbulkactions.NewClientFactory("1FBA3C66-5C9C-4391-B72F-9F52735FC9F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineBulkOperationsClient().BulkVdiFlexCreateOperation(ctx, "rgBulkactions", "useast2euap", armbulkactions.ExecuteVdiCreateRequest{
+		ResourceConfigParameters: &armbulkactions.ResourceProvisionVdiPayload{
+			ResourceCount: to.Ptr[int32](10),
+			FlexProperties: &armbulkactions.FlexProperties{
+				VMSizeProfiles: []*armbulkactions.VMSizeProfile{
+					{
+						Name: to.Ptr("Standard_D2ads_v5"),
+						Rank: to.Ptr[int32](7),
+					},
+				},
+				OSType:          to.Ptr(armbulkactions.OsTypeWindows),
+				PriorityProfile: &armbulkactions.PriorityProfile{},
+			},
+		},
+		ExecutionParameters: &armbulkactions.ExecutionParameters{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbulkactions.VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse{
+	// 	CreateResourceOperationResponse: armbulkactions.CreateResourceOperationResponse{
+	// 		Type: to.Ptr("VirtualMachines"),
+	// 		Location: to.Ptr("useast2euap"),
+	// 		Description: to.Ptr("Bulk VDI flex create operation"),
 	// 	},
 	// }
 }

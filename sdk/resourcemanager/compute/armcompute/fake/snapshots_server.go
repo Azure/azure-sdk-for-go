@@ -52,6 +52,14 @@ type SnapshotsServer struct {
 	// BeginUpdate is the fake for method SnapshotsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, snapshotName string, snapshot armcompute.SnapshotUpdate, options *armcompute.SnapshotsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateImmutabilityPolicy is the fake for method SnapshotsClient.BeginUpdateImmutabilityPolicy
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateImmutabilityPolicy func(ctx context.Context, resourceGroupName string, snapshotName string, immutabilityPolicyData armcompute.ImmutabilityPolicyData, options *armcompute.SnapshotsClientBeginUpdateImmutabilityPolicyOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateImmutabilityPolicyLock is the fake for method SnapshotsClient.BeginUpdateImmutabilityPolicyLock
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateImmutabilityPolicyLock func(ctx context.Context, resourceGroupName string, snapshotName string, immutabilityPolicyData armcompute.ImmutabilityPolicyLockData, options *armcompute.SnapshotsClientBeginUpdateImmutabilityPolicyLockOptions) (resp azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyLockResponse], errResp azfake.ErrorResponder)
 }
 
 // NewSnapshotsServerTransport creates a new instance of SnapshotsServerTransport with the provided implementation.
@@ -59,28 +67,32 @@ type SnapshotsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewSnapshotsServerTransport(srv *SnapshotsServer) *SnapshotsServerTransport {
 	return &SnapshotsServerTransport{
-		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
-		beginGrantAccess:            newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
-		beginRevokeAccess:           newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
+		srv:                               srv,
+		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]](),
+		beginDelete:                       newTracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]](),
+		beginGrantAccess:                  newTracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]](),
+		newListPager:                      newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]](),
+		newListByResourceGroupPager:       newTracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]](),
+		beginRevokeAccess:                 newTracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]](),
+		beginUpdate:                       newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]](),
+		beginUpdateImmutabilityPolicy:     newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyResponse]](),
+		beginUpdateImmutabilityPolicyLock: newTracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyLockResponse]](),
 	}
 }
 
 // SnapshotsServerTransport connects instances of armcompute.SnapshotsClient to instances of SnapshotsServer.
 // Don't use this type directly, use NewSnapshotsServerTransport instead.
 type SnapshotsServerTransport struct {
-	srv                         *SnapshotsServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
-	beginGrantAccess            *tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
-	beginRevokeAccess           *tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
+	srv                               *SnapshotsServer
+	beginCreateOrUpdate               *tracker[azfake.PollerResponder[armcompute.SnapshotsClientCreateOrUpdateResponse]]
+	beginDelete                       *tracker[azfake.PollerResponder[armcompute.SnapshotsClientDeleteResponse]]
+	beginGrantAccess                  *tracker[azfake.PollerResponder[armcompute.SnapshotsClientGrantAccessResponse]]
+	newListPager                      *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListResponse]]
+	newListByResourceGroupPager       *tracker[azfake.PagerResponder[armcompute.SnapshotsClientListByResourceGroupResponse]]
+	beginRevokeAccess                 *tracker[azfake.PollerResponder[armcompute.SnapshotsClientRevokeAccessResponse]]
+	beginUpdate                       *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateResponse]]
+	beginUpdateImmutabilityPolicy     *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyResponse]]
+	beginUpdateImmutabilityPolicyLock *tracker[azfake.PollerResponder[armcompute.SnapshotsClientUpdateImmutabilityPolicyLockResponse]]
 }
 
 // Do implements the policy.Transporter interface for SnapshotsServerTransport.
@@ -120,6 +132,10 @@ func (s *SnapshotsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = s.dispatchBeginRevokeAccess(req)
 			case "SnapshotsClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SnapshotsClient.BeginUpdateImmutabilityPolicy":
+				res.resp, res.err = s.dispatchBeginUpdateImmutabilityPolicy(req)
+			case "SnapshotsClient.BeginUpdateImmutabilityPolicyLock":
+				res.resp, res.err = s.dispatchBeginUpdateImmutabilityPolicyLock(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -466,6 +482,102 @@ func (s *SnapshotsServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	if !server.PollerResponderMore(beginUpdate) {
 		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchBeginUpdateImmutabilityPolicy(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdateImmutabilityPolicy == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateImmutabilityPolicy not implemented")}
+	}
+	beginUpdateImmutabilityPolicy := s.beginUpdateImmutabilityPolicy.get(req)
+	if beginUpdateImmutabilityPolicy == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateImmutabilityPolicy`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.ImmutabilityPolicyData](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		snapshotNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdateImmutabilityPolicy(req.Context(), resourceGroupNameParam, snapshotNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateImmutabilityPolicy = &respr
+		s.beginUpdateImmutabilityPolicy.add(req, beginUpdateImmutabilityPolicy)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateImmutabilityPolicy, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdateImmutabilityPolicy.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateImmutabilityPolicy) {
+		s.beginUpdateImmutabilityPolicy.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *SnapshotsServerTransport) dispatchBeginUpdateImmutabilityPolicyLock(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdateImmutabilityPolicyLock == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateImmutabilityPolicyLock not implemented")}
+	}
+	beginUpdateImmutabilityPolicyLock := s.beginUpdateImmutabilityPolicyLock.get(req)
+	if beginUpdateImmutabilityPolicyLock == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/snapshots/(?P<snapshotName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateImmutabilityPolicyLock`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.ImmutabilityPolicyLockData](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		snapshotNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("snapshotName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdateImmutabilityPolicyLock(req.Context(), resourceGroupNameParam, snapshotNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateImmutabilityPolicyLock = &respr
+		s.beginUpdateImmutabilityPolicyLock.add(req, beginUpdateImmutabilityPolicyLock)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateImmutabilityPolicyLock, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdateImmutabilityPolicyLock.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateImmutabilityPolicyLock) {
+		s.beginUpdateImmutabilityPolicyLock.remove(req)
 	}
 
 	return resp, nil

@@ -117,11 +117,17 @@ type ServerFactory struct {
 	// SharedGalleryImagesServer contains the fakes for client SharedGalleryImagesClient
 	SharedGalleryImagesServer SharedGalleryImagesServer
 
+	// SharedGalleryInvitesServer contains the fakes for client SharedGalleryInvitesClient
+	SharedGalleryInvitesServer SharedGalleryInvitesServer
+
 	// SnapshotsServer contains the fakes for client SnapshotsClient
 	SnapshotsServer SnapshotsServer
 
 	// SoftDeletedResourceServer contains the fakes for client SoftDeletedResourceClient
 	SoftDeletedResourceServer SoftDeletedResourceServer
+
+	// TenantLevelSharedGalleryInvitesServer contains the fakes for client TenantLevelSharedGalleryInvitesClient
+	TenantLevelSharedGalleryInvitesServer TenantLevelSharedGalleryInvitesServer
 
 	// UsageServer contains the fakes for client UsageClient
 	UsageServer UsageServer
@@ -217,8 +223,10 @@ type ServerFactoryTransport struct {
 	trSharedGalleriesServer                           *SharedGalleriesServerTransport
 	trSharedGalleryImageVersionsServer                *SharedGalleryImageVersionsServerTransport
 	trSharedGalleryImagesServer                       *SharedGalleryImagesServerTransport
+	trSharedGalleryInvitesServer                      *SharedGalleryInvitesServerTransport
 	trSnapshotsServer                                 *SnapshotsServerTransport
 	trSoftDeletedResourceServer                       *SoftDeletedResourceServerTransport
+	trTenantLevelSharedGalleryInvitesServer           *TenantLevelSharedGalleryInvitesServerTransport
 	trUsageServer                                     *UsageServerTransport
 	trVirtualMachineExtensionImagesServer             *VirtualMachineExtensionImagesServerTransport
 	trVirtualMachineExtensionsServer                  *VirtualMachineExtensionsServerTransport
@@ -405,6 +413,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSharedGalleryImagesServerTransport(&s.srv.SharedGalleryImagesServer)
 		})
 		resp, err = s.trSharedGalleryImagesServer.Do(req)
+	case "SharedGalleryInvitesClient":
+		initServer(&s.trMu, &s.trSharedGalleryInvitesServer, func() *SharedGalleryInvitesServerTransport {
+			return NewSharedGalleryInvitesServerTransport(&s.srv.SharedGalleryInvitesServer)
+		})
+		resp, err = s.trSharedGalleryInvitesServer.Do(req)
 	case "SnapshotsClient":
 		initServer(&s.trMu, &s.trSnapshotsServer, func() *SnapshotsServerTransport { return NewSnapshotsServerTransport(&s.srv.SnapshotsServer) })
 		resp, err = s.trSnapshotsServer.Do(req)
@@ -413,6 +426,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSoftDeletedResourceServerTransport(&s.srv.SoftDeletedResourceServer)
 		})
 		resp, err = s.trSoftDeletedResourceServer.Do(req)
+	case "TenantLevelSharedGalleryInvitesClient":
+		initServer(&s.trMu, &s.trTenantLevelSharedGalleryInvitesServer, func() *TenantLevelSharedGalleryInvitesServerTransport {
+			return NewTenantLevelSharedGalleryInvitesServerTransport(&s.srv.TenantLevelSharedGalleryInvitesServer)
+		})
+		resp, err = s.trTenantLevelSharedGalleryInvitesServer.Do(req)
 	case "UsageClient":
 		initServer(&s.trMu, &s.trUsageServer, func() *UsageServerTransport { return NewUsageServerTransport(&s.srv.UsageServer) })
 		resp, err = s.trUsageServer.Do(req)

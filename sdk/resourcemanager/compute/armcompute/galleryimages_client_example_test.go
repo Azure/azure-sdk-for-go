@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Create.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Create.json
 func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Delete.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Delete.json
 func ExampleGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Get.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Get.json
 func ExampleGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_ListByGallery.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_ListByGallery.json
 func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Update.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Update.json
 func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_UpdateFeatures.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_UpdateFeatures.json
 func ExampleGalleryImagesClient_BeginUpdate_updateAGalleryImageFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

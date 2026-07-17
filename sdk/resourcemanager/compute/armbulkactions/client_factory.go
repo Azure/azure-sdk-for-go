@@ -32,14 +32,6 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewLaunchBulkInstancesOperationClient creates a new instance of LaunchBulkInstancesOperationClient.
-func (c *ClientFactory) NewLaunchBulkInstancesOperationClient() *LaunchBulkInstancesOperationClient {
-	return &LaunchBulkInstancesOperationClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{

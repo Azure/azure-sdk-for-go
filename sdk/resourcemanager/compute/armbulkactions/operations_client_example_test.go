@@ -11,8 +11,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-06-preview/Operations_List_MaximumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
+// Generated from example definition: 2026-06-06/Operations_List_MaximumSet_Gen.json
+func ExampleOperationsClient_NewListPager_operationsListGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -37,26 +37,47 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGenExample() {
 		// 	OperationListResult: armbulkactions.OperationListResult{
 		// 		Value: []*armbulkactions.Operation{
 		// 			{
-		// 				Name: to.Ptr("ecnqrvixqzvpakdwjtuqfqefea"),
-		// 				IsDataAction: to.Ptr(true),
+		// 				Name: to.Ptr("Microsoft.Compute/locations/virtualMachinesBulkGetOperationStatus/action"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armbulkactions.OperationDisplay{
-		// 					Provider: to.Ptr("hebgqucdqhz"),
-		// 					Resource: to.Ptr("sfmntcssufduur"),
-		// 					Operation: to.Ptr("lmogjdp"),
-		// 					Description: to.Ptr("qiegbrwnshzndwsbthmf"),
+		// 					Provider: to.Ptr("Microsoft Compute"),
+		// 					Resource: to.Ptr("Virtual Machines Bulk Get Operation Status"),
+		// 					Operation: to.Ptr("Bulk Get Operations Status"),
+		// 					Description: to.Ptr("BulkGetOperationsStatus: Polling endpoint to read status of operations performed on virtual machines"),
 		// 				},
-		// 				Origin: to.Ptr(armbulkactions.OriginUser),
-		// 				ActionType: to.Ptr(armbulkactions.ActionTypeInternal),
+		// 				Origin: to.Ptr(armbulkactions.OriginUserSystem),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Compute/locations/virtualMachinesBulkStart/action"),
+		// 				IsDataAction: to.Ptr(false),
+		// 				Display: &armbulkactions.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft Compute"),
+		// 					Resource: to.Ptr("Virtual Machines Bulk Start"),
+		// 					Operation: to.Ptr("Bulk Start Virtual Machines"),
+		// 					Description: to.Ptr("BulkStart: Execute start operation for a batch of virtual machines, this operation is triggered as soon as Computeschedule receives it."),
+		// 				},
+		// 				Origin: to.Ptr(armbulkactions.OriginUserSystem),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Compute/locations/virtualMachinesBulkHibernate/action"),
+		// 				IsDataAction: to.Ptr(false),
+		// 				Display: &armbulkactions.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft Compute"),
+		// 					Resource: to.Ptr("Virtual Machines Bulk Hibernate"),
+		// 					Operation: to.Ptr("Bulk Hibernate Virtual Machines"),
+		// 					Description: to.Ptr("BulkHibernate: Execute hibernate operation for a batch of virtual machines, this operation is triggered as soon as Computeschedule receives it."),
+		// 				},
+		// 				Origin: to.Ptr(armbulkactions.OriginUserSystem),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/amvyn"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Compute/operations?api-version=2026-06-06&$skiptoken=opaque-page-token"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/Operations_List_MinimumSet_Gen.json
-func ExampleOperationsClient_NewListPager_operationsListMinimumGenExample() {
+// Generated from example definition: 2026-06-06/Operations_List_MinimumSet_Gen.json
+func ExampleOperationsClient_NewListPager_operationsListGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -79,6 +100,8 @@ func ExampleOperationsClient_NewListPager_operationsListMinimumGenExample() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armbulkactions.OperationsClientListResponse{
 		// 	OperationListResult: armbulkactions.OperationListResult{
+		// 		Value: []*armbulkactions.Operation{
+		// 		},
 		// 	},
 		// }
 	}

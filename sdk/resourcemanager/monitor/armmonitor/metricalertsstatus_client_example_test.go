@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-03-01-preview/getMetricAlertStatus.json
+// Generated from example definition: 2026-01-01/getMetricAlertStatus.json
 func ExampleMetricAlertsStatusClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleMetricAlertsStatusClient_List() {
 	// }
 }
 
-// Generated from example definition: 2024-03-01-preview/getMetricAlertStatusByName.json
+// Generated from example definition: 2026-01-01/getMetricAlertStatusByName.json
 func ExampleMetricAlertsStatusClient_ListByName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

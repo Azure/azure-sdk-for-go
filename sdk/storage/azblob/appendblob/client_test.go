@@ -4095,5 +4095,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockMD5WithCRC64Return() {
 	})
 	_require.NoError(err)
 	_require.NotNil(appendResp.ContentMD5)
+	_require.Equal(appendResp.ContentMD5, contentMD5[:])
 	_require.NotNil(appendResp.ContentCRC64)
 }

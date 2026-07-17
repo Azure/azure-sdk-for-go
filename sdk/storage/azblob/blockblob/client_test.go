@@ -7742,5 +7742,6 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockMD5WithCRC64Return() {
 	})
 	_require.NoError(err)
 	_require.NotNil(putResp.ContentMD5)
+	_require.Equal(putResp.ContentMD5, contentMD5[:])
 	_require.NotNil(putResp.ContentCRC64)
 }

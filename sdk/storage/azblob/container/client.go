@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -310,7 +311,7 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 			}
 			// If Arrow was requested and the service returned Arrow, parse it.
 			// Otherwise fall back to XML parsing (handles Photon-not-enabled case).
-			if useArrow && resp.Header.Get(shared.HeaderContentType) == arrow.ArrowContentType {
+			if useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType) {
 				return arrow.HandleFlatListResponse(resp)
 			}
 			return c.generated().ListBlobFlatSegmentHandleResponse(resp)
@@ -356,7 +357,7 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return ListBlobsHierarchyResponse{}, runtime.NewResponseError(resp)
 			}
-			if useArrow && resp.Header.Get(shared.HeaderContentType) == arrow.ArrowContentType {
+			if useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType) {
 				return arrow.HandleHierarchyListResponse(resp)
 			}
 			return c.generated().ListBlobHierarchySegmentHandleResponse(resp)

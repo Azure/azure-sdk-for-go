@@ -114,22 +114,6 @@ directive:
         replace(/\(client \*ContainerClient\) listBlobFlatSegmentHandleResponse\(/, `(client *ContainerClient) ListBlobFlatSegmentHandleResponse(`);
 ```
 
-### Remove wrapper/pager methods and export Arrow generated methods in container client
-
-``` yaml
-directive:
-  - from: zz_container_client.go
-    where: $
-    transform: >-
-      return $.
-        replace(/func \(client \*ContainerClient\) ListBlobFlatSegmentApacheArrow\(.+\/\/ listBlobFlatSegmentApacheArrowCreateRequest creates the ListBlobFlatSegmentApacheArrow request/s, `//\n// listBlobFlatSegmentApacheArrowCreateRequest creates the ListBlobFlatSegmentApacheArrow request`).
-        replace(/\(client \*ContainerClient\) listBlobFlatSegmentApacheArrowCreateRequest\(/g, `(client *ContainerClient) ListBlobFlatSegmentApacheArrowCreateRequest(`).
-        replace(/\(client \*ContainerClient\) listBlobFlatSegmentApacheArrowHandleResponse\(/g, `(client *ContainerClient) ListBlobFlatSegmentApacheArrowHandleResponse(`).
-        replace(/func \(client \*ContainerClient\) ListBlobHierarchySegmentApacheArrow\(.+\/\/ listBlobHierarchySegmentApacheArrowCreateRequest creates the ListBlobHierarchySegmentApacheArrow request/s, `//\n// listBlobHierarchySegmentApacheArrowCreateRequest creates the ListBlobHierarchySegmentApacheArrow request`).
-        replace(/\(client \*ContainerClient\) listBlobHierarchySegmentApacheArrowCreateRequest\(/g, `(client *ContainerClient) ListBlobHierarchySegmentApacheArrowCreateRequest(`).
-        replace(/\(client \*ContainerClient\) listBlobHierarchySegmentApacheArrowHandleResponse\(/g, `(client *ContainerClient) ListBlobHierarchySegmentApacheArrowHandleResponse(`);
-```
-
 ### Remove pager methods and export various generated methods in service client
 
 ``` yaml

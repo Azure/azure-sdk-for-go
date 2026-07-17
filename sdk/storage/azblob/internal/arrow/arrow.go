@@ -37,13 +37,16 @@ const (
 func HandleFlatListResponse(resp *http.Response) (generated.ContainerClientListBlobFlatSegmentResponse, error) {
 	result := generated.ContainerClientListBlobFlatSegmentResponse{}
 
-	// Extract response headers
-	extractResponseHeaders(resp, &result.ClientRequestID, &result.ContentType, &result.Date, &result.RequestID, &result.Version)
+	h := extractResponseHeaders(resp)
+	result.ClientRequestID = h.ClientRequestID
+	result.ContentType = h.ContentType
+	result.Date = h.Date
+	result.RequestID = h.RequestID
+	result.Version = h.Version
 
-	// Parse Arrow IPC stream
 	items, nextMarker, err := parseArrowStream(resp.Body)
 	if err != nil {
-		return result, fmt.Errorf("failed to parse Arrow IPC response: %w", err)
+		return result, fmt.Errorf("failed to parse Arrow IPC response: %s", err.Error())
 	}
 
 	result.ListBlobsFlatSegmentResponse = generated.ListBlobsFlatSegmentResponse{
@@ -60,11 +63,16 @@ func HandleFlatListResponse(resp *http.Response) (generated.ContainerClientListB
 func HandleHierarchyListResponse(resp *http.Response) (generated.ContainerClientListBlobHierarchySegmentResponse, error) {
 	result := generated.ContainerClientListBlobHierarchySegmentResponse{}
 
-	extractResponseHeaders(resp, &result.ClientRequestID, &result.ContentType, &result.Date, &result.RequestID, &result.Version)
+	h := extractResponseHeaders(resp)
+	result.ClientRequestID = h.ClientRequestID
+	result.ContentType = h.ContentType
+	result.Date = h.Date
+	result.RequestID = h.RequestID
+	result.Version = h.Version
 
 	items, nextMarker, err := parseArrowStream(resp.Body)
 	if err != nil {
-		return result, fmt.Errorf("failed to parse Arrow IPC response: %w", err)
+		return result, fmt.Errorf("failed to parse Arrow IPC response: %s", err.Error())
 	}
 
 	// Separate blob items from blob prefixes based on ResourceType field.
@@ -92,31 +100,41 @@ func HandleHierarchyListResponse(resp *http.Response) (generated.ContainerClient
 	return result, nil
 }
 
-func extractResponseHeaders(resp *http.Response, clientRequestID, contentType **string, date **time.Time, requestID, version **string) {
+type responseHeaders struct {
+	ClientRequestID *string
+	ContentType     *string
+	Date            *time.Time
+	RequestID       *string
+	Version         *string
+}
+
+func extractResponseHeaders(resp *http.Response) responseHeaders {
+	var h responseHeaders
 	if val := resp.Header.Get(shared.HeaderXmsClientRequestID); val != "" {
-		*clientRequestID = &val
+		h.ClientRequestID = &val
 	}
 	if val := resp.Header.Get(shared.HeaderContentType); val != "" {
-		*contentType = &val
+		h.ContentType = &val
 	}
 	if val := resp.Header.Get(shared.HeaderDate); val != "" {
 		if t, err := time.Parse(time.RFC1123, val); err == nil {
-			*date = &t
+			h.Date = &t
 		}
 	}
 	if val := resp.Header.Get(shared.HeaderXmsRequestID); val != "" {
-		*requestID = &val
+		h.RequestID = &val
 	}
 	if val := resp.Header.Get(shared.HeaderXmsVersion); val != "" {
-		*version = &val
+		h.Version = &val
 	}
+	return h
 }
 
 // parseArrowStream reads an Arrow IPC stream and converts it to BlobItems.
 func parseArrowStream(body io.Reader) ([]*generated.BlobItem, *string, error) {
 	reader, err := ipc.NewReader(body, ipc.WithAllocator(memory.DefaultAllocator))
 	if err != nil {
-		return nil, nil, fmt.Errorf("failed to create Arrow IPC reader: %w", err)
+		return nil, nil, fmt.Errorf("failed to create Arrow IPC reader: %s", err.Error())
 	}
 	defer reader.Release()
 
@@ -159,7 +177,7 @@ func parseArrowStream(body io.Reader) ([]*generated.BlobItem, *string, error) {
 	}
 
 	if err := reader.Err(); err != nil {
-		return nil, nil, fmt.Errorf("error reading Arrow record batches: %w", err)
+		return nil, nil, fmt.Errorf("error reading Arrow record batches: %s", err.Error())
 	}
 
 	return items, nextMarker, nil

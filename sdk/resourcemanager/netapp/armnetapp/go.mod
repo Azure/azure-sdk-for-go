@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10
 
 go 1.25.0
 

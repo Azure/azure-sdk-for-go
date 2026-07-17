@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -50,10 +50,6 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetapp.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse])
 
-	// BeginRefreshLdapBindPassword is the fake for method AccountsClient.BeginRefreshLdapBindPassword
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginRefreshLdapBindPassword func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginRefreshLdapBindPasswordOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse], errResp azfake.ErrorResponder)
-
 	// BeginRenewCredentials is the fake for method AccountsClient.BeginRenewCredentials
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRenewCredentials func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginRenewCredentialsOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse], errResp azfake.ErrorResponder)
@@ -79,7 +75,6 @@ func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 		beginGetChangeKeyVaultInformation: newTracker[azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse]](),
 		newListPager:                      newTracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]](),
 		newListBySubscriptionPager:        newTracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]](),
-		beginRefreshLdapBindPassword:      newTracker[azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse]](),
 		beginRenewCredentials:             newTracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]](),
 		beginTransitionToCmk:              newTracker[azfake.PollerResponder[armnetapp.AccountsClientTransitionToCmkResponse]](),
 		beginUpdate:                       newTracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]](),
@@ -96,7 +91,6 @@ type AccountsServerTransport struct {
 	beginGetChangeKeyVaultInformation *tracker[azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse]]
 	newListPager                      *tracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]]
 	newListBySubscriptionPager        *tracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]]
-	beginRefreshLdapBindPassword      *tracker[azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse]]
 	beginRenewCredentials             *tracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]]
 	beginTransitionToCmk              *tracker[azfake.PollerResponder[armnetapp.AccountsClientTransitionToCmkResponse]]
 	beginUpdate                       *tracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]]
@@ -137,8 +131,6 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchNewListPager(req)
 			case "AccountsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AccountsClient.BeginRefreshLdapBindPassword":
-				res.resp, res.err = a.dispatchBeginRefreshLdapBindPassword(req)
 			case "AccountsClient.BeginRenewCredentials":
 				res.resp, res.err = a.dispatchBeginRenewCredentials(req)
 			case "AccountsClient.BeginTransitionToCmk":
@@ -451,50 +443,6 @@ func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchBeginRefreshLdapBindPassword(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginRefreshLdapBindPassword == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginRefreshLdapBindPassword not implemented")}
-	}
-	beginRefreshLdapBindPassword := a.beginRefreshLdapBindPassword.get(req)
-	if beginRefreshLdapBindPassword == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/refreshLdapBindPassword`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginRefreshLdapBindPassword(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginRefreshLdapBindPassword = &respr
-		a.beginRefreshLdapBindPassword.add(req, beginRefreshLdapBindPassword)
-	}
-
-	resp, err := server.PollerResponderNext(beginRefreshLdapBindPassword, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		a.beginRefreshLdapBindPassword.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginRefreshLdapBindPassword) {
-		a.beginRefreshLdapBindPassword.remove(req)
-	}
-
 	return resp, nil
 }
 

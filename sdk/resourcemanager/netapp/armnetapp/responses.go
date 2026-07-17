@@ -44,11 +44,6 @@ type AccountsClientListResponse struct {
 	AccountList
 }
 
-// AccountsClientRefreshLdapBindPasswordResponse contains the response from method AccountsClient.BeginRefreshLdapBindPassword.
-type AccountsClientRefreshLdapBindPasswordResponse struct {
-	// placeholder for future response values
-}
-
 // AccountsClientRenewCredentialsResponse contains the response from method AccountsClient.BeginRenewCredentials.
 type AccountsClientRenewCredentialsResponse struct {
 	// placeholder for future response values
@@ -63,41 +58,6 @@ type AccountsClientTransitionToCmkResponse struct {
 type AccountsClientUpdateResponse struct {
 	// NetApp account resource
 	Account
-}
-
-// ActiveDirectoryConfigsClientCreateOrUpdateResponse contains the response from method ActiveDirectoryConfigsClient.BeginCreateOrUpdate.
-type ActiveDirectoryConfigsClientCreateOrUpdateResponse struct {
-	// Active Directory Configuration resource
-	ActiveDirectoryConfig
-}
-
-// ActiveDirectoryConfigsClientDeleteResponse contains the response from method ActiveDirectoryConfigsClient.BeginDelete.
-type ActiveDirectoryConfigsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ActiveDirectoryConfigsClientGetResponse contains the response from method ActiveDirectoryConfigsClient.Get.
-type ActiveDirectoryConfigsClientGetResponse struct {
-	// Active Directory Configuration resource
-	ActiveDirectoryConfig
-}
-
-// ActiveDirectoryConfigsClientListByResourceGroupResponse contains the response from method ActiveDirectoryConfigsClient.NewListByResourceGroupPager.
-type ActiveDirectoryConfigsClientListByResourceGroupResponse struct {
-	// The response of a ActiveDirectoryConfig list operation.
-	ActiveDirectoryConfigListResult
-}
-
-// ActiveDirectoryConfigsClientListBySubscriptionResponse contains the response from method ActiveDirectoryConfigsClient.NewListBySubscriptionPager.
-type ActiveDirectoryConfigsClientListBySubscriptionResponse struct {
-	// The response of a ActiveDirectoryConfig list operation.
-	ActiveDirectoryConfigListResult
-}
-
-// ActiveDirectoryConfigsClientUpdateResponse contains the response from method ActiveDirectoryConfigsClient.BeginUpdate.
-type ActiveDirectoryConfigsClientUpdateResponse struct {
-	// Active Directory Configuration resource
-	ActiveDirectoryConfig
 }
 
 // BackupPoliciesClientCreateResponse contains the response from method BackupPoliciesClient.BeginCreate.
@@ -304,262 +264,6 @@ type CachesClientResetSmbPasswordResponse struct {
 type CachesClientUpdateResponse struct {
 	// Cache resource
 	Cache
-}
-
-// ElasticAccountsClientCreateOrUpdateResponse contains the response from method ElasticAccountsClient.BeginCreateOrUpdate.
-type ElasticAccountsClientCreateOrUpdateResponse struct {
-	// NetApp elastic account resource
-	ElasticAccount
-}
-
-// ElasticAccountsClientDeleteResponse contains the response from method ElasticAccountsClient.BeginDelete.
-type ElasticAccountsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticAccountsClientGetResponse contains the response from method ElasticAccountsClient.Get.
-type ElasticAccountsClientGetResponse struct {
-	// NetApp elastic account resource
-	ElasticAccount
-}
-
-// ElasticAccountsClientListByResourceGroupResponse contains the response from method ElasticAccountsClient.NewListByResourceGroupPager.
-type ElasticAccountsClientListByResourceGroupResponse struct {
-	// The response of a ElasticAccount list operation.
-	ElasticAccountListResult
-}
-
-// ElasticAccountsClientListBySubscriptionResponse contains the response from method ElasticAccountsClient.NewListBySubscriptionPager.
-type ElasticAccountsClientListBySubscriptionResponse struct {
-	// The response of a ElasticAccount list operation.
-	ElasticAccountListResult
-}
-
-// ElasticAccountsClientUpdateResponse contains the response from method ElasticAccountsClient.BeginUpdate.
-type ElasticAccountsClientUpdateResponse struct {
-	// NetApp elastic account resource
-	ElasticAccount
-}
-
-// ElasticBackupPoliciesClientCreateOrUpdateResponse contains the response from method ElasticBackupPoliciesClient.BeginCreateOrUpdate.
-type ElasticBackupPoliciesClientCreateOrUpdateResponse struct {
-	// NetApp Elastic Backup Policy resource
-	ElasticBackupPolicy
-}
-
-// ElasticBackupPoliciesClientDeleteResponse contains the response from method ElasticBackupPoliciesClient.BeginDelete.
-type ElasticBackupPoliciesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticBackupPoliciesClientGetResponse contains the response from method ElasticBackupPoliciesClient.Get.
-type ElasticBackupPoliciesClientGetResponse struct {
-	// NetApp Elastic Backup Policy resource
-	ElasticBackupPolicy
-}
-
-// ElasticBackupPoliciesClientListByElasticAccountResponse contains the response from method ElasticBackupPoliciesClient.NewListByElasticAccountPager.
-type ElasticBackupPoliciesClientListByElasticAccountResponse struct {
-	// The response of a ElasticBackupPolicy list operation.
-	ElasticBackupPolicyListResult
-}
-
-// ElasticBackupPoliciesClientUpdateResponse contains the response from method ElasticBackupPoliciesClient.BeginUpdate.
-type ElasticBackupPoliciesClientUpdateResponse struct {
-	// NetApp Elastic Backup Policy resource
-	ElasticBackupPolicy
-}
-
-// ElasticBackupVaultsClientCreateOrUpdateResponse contains the response from method ElasticBackupVaultsClient.BeginCreateOrUpdate.
-type ElasticBackupVaultsClientCreateOrUpdateResponse struct {
-	// NetApp elastic backup vault resource
-	ElasticBackupVault
-}
-
-// ElasticBackupVaultsClientDeleteResponse contains the response from method ElasticBackupVaultsClient.BeginDelete.
-type ElasticBackupVaultsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticBackupVaultsClientGetResponse contains the response from method ElasticBackupVaultsClient.Get.
-type ElasticBackupVaultsClientGetResponse struct {
-	// NetApp elastic backup vault resource
-	ElasticBackupVault
-}
-
-// ElasticBackupVaultsClientListByElasticAccountResponse contains the response from method ElasticBackupVaultsClient.NewListByElasticAccountPager.
-type ElasticBackupVaultsClientListByElasticAccountResponse struct {
-	// The response of a ElasticBackupVault list operation.
-	ElasticBackupVaultListResult
-}
-
-// ElasticBackupVaultsClientUpdateResponse contains the response from method ElasticBackupVaultsClient.BeginUpdate.
-type ElasticBackupVaultsClientUpdateResponse struct {
-	// NetApp elastic backup vault resource
-	ElasticBackupVault
-}
-
-// ElasticBackupsClientCreateOrUpdateResponse contains the response from method ElasticBackupsClient.BeginCreateOrUpdate.
-type ElasticBackupsClientCreateOrUpdateResponse struct {
-	// NetApp Elastic Backup under an elastic Backup Vault
-	ElasticBackup
-}
-
-// ElasticBackupsClientDeleteResponse contains the response from method ElasticBackupsClient.BeginDelete.
-type ElasticBackupsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticBackupsClientGetResponse contains the response from method ElasticBackupsClient.Get.
-type ElasticBackupsClientGetResponse struct {
-	// NetApp Elastic Backup under an elastic Backup Vault
-	ElasticBackup
-}
-
-// ElasticBackupsClientListByVaultResponse contains the response from method ElasticBackupsClient.NewListByVaultPager.
-type ElasticBackupsClientListByVaultResponse struct {
-	// The response of a ElasticBackup list operation.
-	ElasticBackupListResult
-}
-
-// ElasticBackupsClientUpdateResponse contains the response from method ElasticBackupsClient.BeginUpdate.
-type ElasticBackupsClientUpdateResponse struct {
-	// NetApp Elastic Backup under an elastic Backup Vault
-	ElasticBackup
-}
-
-// ElasticCapacityPoolsClientChangeZoneResponse contains the response from method ElasticCapacityPoolsClient.BeginChangeZone.
-type ElasticCapacityPoolsClientChangeZoneResponse struct {
-	// NetApp Elastic Capacity Pool resource
-	ElasticCapacityPool
-}
-
-// ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse contains the response from method ElasticCapacityPoolsClient.CheckVolumeFilePathAvailability.
-type ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse struct {
-	// Information regarding availability of a resource.
-	CheckElasticResourceAvailabilityResponse
-}
-
-// ElasticCapacityPoolsClientCreateOrUpdateResponse contains the response from method ElasticCapacityPoolsClient.BeginCreateOrUpdate.
-type ElasticCapacityPoolsClientCreateOrUpdateResponse struct {
-	// NetApp Elastic Capacity Pool resource
-	ElasticCapacityPool
-}
-
-// ElasticCapacityPoolsClientDeleteResponse contains the response from method ElasticCapacityPoolsClient.BeginDelete.
-type ElasticCapacityPoolsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticCapacityPoolsClientGetResponse contains the response from method ElasticCapacityPoolsClient.Get.
-type ElasticCapacityPoolsClientGetResponse struct {
-	// NetApp Elastic Capacity Pool resource
-	ElasticCapacityPool
-}
-
-// ElasticCapacityPoolsClientListByElasticAccountResponse contains the response from method ElasticCapacityPoolsClient.NewListByElasticAccountPager.
-type ElasticCapacityPoolsClientListByElasticAccountResponse struct {
-	// The response of a ElasticCapacityPool list operation.
-	ElasticCapacityPoolListResult
-}
-
-// ElasticCapacityPoolsClientUpdateResponse contains the response from method ElasticCapacityPoolsClient.BeginUpdate.
-type ElasticCapacityPoolsClientUpdateResponse struct {
-	// NetApp Elastic Capacity Pool resource
-	ElasticCapacityPool
-}
-
-// ElasticSnapshotPoliciesClientCreateOrUpdateResponse contains the response from method ElasticSnapshotPoliciesClient.BeginCreateOrUpdate.
-type ElasticSnapshotPoliciesClientCreateOrUpdateResponse struct {
-	// NetApp Elastic Snapshot Policy under an Elastic Account
-	ElasticSnapshotPolicy
-}
-
-// ElasticSnapshotPoliciesClientDeleteResponse contains the response from method ElasticSnapshotPoliciesClient.BeginDelete.
-type ElasticSnapshotPoliciesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticSnapshotPoliciesClientGetResponse contains the response from method ElasticSnapshotPoliciesClient.Get.
-type ElasticSnapshotPoliciesClientGetResponse struct {
-	// NetApp Elastic Snapshot Policy under an Elastic Account
-	ElasticSnapshotPolicy
-}
-
-// ElasticSnapshotPoliciesClientListByElasticAccountResponse contains the response from method ElasticSnapshotPoliciesClient.NewListByElasticAccountPager.
-type ElasticSnapshotPoliciesClientListByElasticAccountResponse struct {
-	// The response of a ElasticSnapshotPolicy list operation.
-	ElasticSnapshotPolicyListResult
-}
-
-// ElasticSnapshotPoliciesClientListElasticVolumesResponse contains the response from method ElasticSnapshotPoliciesClient.NewListElasticVolumesPager.
-type ElasticSnapshotPoliciesClientListElasticVolumesResponse struct {
-	// Elastic Volumes associated with Elastic Snapshot Policy
-	ElasticSnapshotPolicyVolumeList
-}
-
-// ElasticSnapshotPoliciesClientUpdateResponse contains the response from method ElasticSnapshotPoliciesClient.BeginUpdate.
-type ElasticSnapshotPoliciesClientUpdateResponse struct {
-	// NetApp Elastic Snapshot Policy under an Elastic Account
-	ElasticSnapshotPolicy
-}
-
-// ElasticSnapshotsClientCreateOrUpdateResponse contains the response from method ElasticSnapshotsClient.BeginCreateOrUpdate.
-type ElasticSnapshotsClientCreateOrUpdateResponse struct {
-	// NetApp Elastic Snapshot under an Elastic Volume
-	ElasticSnapshot
-}
-
-// ElasticSnapshotsClientDeleteResponse contains the response from method ElasticSnapshotsClient.BeginDelete.
-type ElasticSnapshotsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticSnapshotsClientGetResponse contains the response from method ElasticSnapshotsClient.Get.
-type ElasticSnapshotsClientGetResponse struct {
-	// NetApp Elastic Snapshot under an Elastic Volume
-	ElasticSnapshot
-}
-
-// ElasticSnapshotsClientListByElasticVolumeResponse contains the response from method ElasticSnapshotsClient.NewListByElasticVolumePager.
-type ElasticSnapshotsClientListByElasticVolumeResponse struct {
-	// The response of a ElasticSnapshot list operation.
-	ElasticSnapshotListResult
-}
-
-// ElasticVolumesClientCreateOrUpdateResponse contains the response from method ElasticVolumesClient.BeginCreateOrUpdate.
-type ElasticVolumesClientCreateOrUpdateResponse struct {
-	// NetApp Elastic Volume resource
-	ElasticVolume
-}
-
-// ElasticVolumesClientDeleteResponse contains the response from method ElasticVolumesClient.BeginDelete.
-type ElasticVolumesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ElasticVolumesClientGetResponse contains the response from method ElasticVolumesClient.Get.
-type ElasticVolumesClientGetResponse struct {
-	// NetApp Elastic Volume resource
-	ElasticVolume
-}
-
-// ElasticVolumesClientListByElasticPoolResponse contains the response from method ElasticVolumesClient.NewListByElasticPoolPager.
-type ElasticVolumesClientListByElasticPoolResponse struct {
-	// The response of a ElasticVolume list operation.
-	ElasticVolumeListResult
-}
-
-// ElasticVolumesClientRevertResponse contains the response from method ElasticVolumesClient.BeginRevert.
-type ElasticVolumesClientRevertResponse struct {
-	// NetApp Elastic Volume resource
-	ElasticVolume
-}
-
-// ElasticVolumesClientUpdateResponse contains the response from method ElasticVolumesClient.BeginUpdate.
-type ElasticVolumesClientUpdateResponse struct {
-	// NetApp Elastic Volume resource
-	ElasticVolume
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -775,6 +479,7 @@ type SnapshotsClientUpdateResponse struct {
 // SubvolumesClientCreateResponse contains the response from method SubvolumesClient.BeginCreate.
 type SubvolumesClientCreateResponse struct {
 	// Subvolume Information properties
+	// Deprecated. This resource type will be removed in a future API version.
 	SubvolumeInfo
 }
 
@@ -792,6 +497,7 @@ type SubvolumesClientGetMetadataResponse struct {
 // SubvolumesClientGetResponse contains the response from method SubvolumesClient.Get.
 type SubvolumesClientGetResponse struct {
 	// Subvolume Information properties
+	// Deprecated. This resource type will be removed in a future API version.
 	SubvolumeInfo
 }
 
@@ -804,6 +510,7 @@ type SubvolumesClientListByVolumeResponse struct {
 // SubvolumesClientUpdateResponse contains the response from method SubvolumesClient.BeginUpdate.
 type SubvolumesClientUpdateResponse struct {
 	// Subvolume Information properties
+	// Deprecated. This resource type will be removed in a future API version.
 	SubvolumeInfo
 }
 

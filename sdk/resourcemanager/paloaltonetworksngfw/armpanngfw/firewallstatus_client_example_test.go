@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/FirewallStatus_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FirewallStatus_Get_MaximumSet_Gen.json
 func ExampleFirewallStatusClient_Get_firewallStatusGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleFirewallStatusClient_Get_firewallStatusGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FirewallStatus_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FirewallStatus_Get_MinimumSet_Gen.json
 func ExampleFirewallStatusClient_Get_firewallStatusGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleFirewallStatusClient_Get_firewallStatusGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FirewallStatus_ListByFirewalls_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FirewallStatus_ListByFirewalls_MaximumSet_Gen.json
 func ExampleFirewallStatusClient_NewListByFirewallsPager_firewallStatusListByFirewallsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleFirewallStatusClient_NewListByFirewallsPager_firewallStatusListByFir
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.FirewallStatusClientListByFirewallsResponse{
 		// 	FirewallStatusResourceListResult: armpanngfw.FirewallStatusResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1/statuses?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1/statuses?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.FirewallStatusResource{
 		// 			{
 		// 				Name: to.Ptr("default"),
@@ -138,7 +138,7 @@ func ExampleFirewallStatusClient_NewListByFirewallsPager_firewallStatusListByFir
 	}
 }
 
-// Generated from example definition: 2025-10-08/FirewallStatus_ListByFirewalls_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FirewallStatus_ListByFirewalls_MinimumSet_Gen.json
 func ExampleFirewallStatusClient_NewListByFirewallsPager_firewallStatusListByFirewallsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -47,6 +47,14 @@ func (c *ClientFactory) NewCertificateObjectLocalRulestackClient() *CertificateO
 	}
 }
 
+// NewCustomCaptureConfigurationsFirewallResourcesClient creates a new instance of CustomCaptureConfigurationsFirewallResourcesClient.
+func (c *ClientFactory) NewCustomCaptureConfigurationsFirewallResourcesClient() *CustomCaptureConfigurationsFirewallResourcesClient {
+	return &CustomCaptureConfigurationsFirewallResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewFirewallStatusClient creates a new instance of FirewallStatusClient.
 func (c *ClientFactory) NewFirewallStatusClient() *FirewallStatusClient {
 	return &FirewallStatusClient{

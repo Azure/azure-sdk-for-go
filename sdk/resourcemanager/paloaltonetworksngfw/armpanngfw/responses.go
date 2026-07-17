@@ -50,6 +50,31 @@ type CertificateObjectLocalRulestackClientListByLocalRulestacksResponse struct {
 	CertificateObjectLocalRulestackResourceListResult
 }
 
+// CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.CreateOrUpdate.
+type CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateResponse struct {
+	// Custom Capture Configuration on a firewall (singleton). Sync child resource — caller polls GET to track pcapStatus until
+	// terminal (Success / Failed).
+	CustomCaptureConfigurationsFirewallResource
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.Delete.
+type CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientGetResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.Get.
+type CustomCaptureConfigurationsFirewallResourcesClientGetResponse struct {
+	// Custom Capture Configuration on a firewall (singleton). Sync child resource — caller polls GET to track pcapStatus until
+	// terminal (Success / Failed).
+	CustomCaptureConfigurationsFirewallResource
+}
+
+// CustomCaptureConfigurationsFirewallResourcesClientListByFirewallResponse contains the response from method CustomCaptureConfigurationsFirewallResourcesClient.NewListByFirewallPager.
+type CustomCaptureConfigurationsFirewallResourcesClientListByFirewallResponse struct {
+	// The response of a CustomCaptureConfigurationsFirewallResource list operation.
+	CustomCaptureConfigurationsFirewallResourceListResult
+}
+
 // FirewallStatusClientGetResponse contains the response from method FirewallStatusClient.Get.
 type FirewallStatusClientGetResponse struct {
 	// Firewall Status

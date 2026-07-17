@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,6 +40,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 				ResourceID:  to.Ptr("lrs1"),
 				RulestackID: to.Ptr("PANRSID"),
 			},
+			FirewallSKU: to.Ptr("PREMIUM"),
 			DNSSettings: &armpanngfw.DNSSettings{
 				DNSServers: []*armpanngfw.IPAddress{
 					{
@@ -183,6 +184,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	// 				ResourceID: to.Ptr("aaaaaaaaaa"),
 	// 				RulestackID: to.Ptr("aaaaaaaaaaaaaaaa"),
 	// 			},
+	// 			FirewallSKU: to.Ptr("PREMIUM"),
 	// 			DNSSettings: &armpanngfw.DNSSettings{
 	// 				DNSServers: []*armpanngfw.IPAddress{
 	// 					{
@@ -313,7 +315,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -388,7 +390,7 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSe
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_Delete_MaximumSet_Gen.json
 func ExampleFirewallsClient_BeginDelete_firewallsDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +416,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_Delete_MinimumSet_Gen.json
 func ExampleFirewallsClient_BeginDelete_firewallsDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,7 +442,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_Get_MaximumSet_Gen.json
 func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,6 +483,7 @@ func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	// 				ResourceID: to.Ptr("aaaaaaaaaa"),
 	// 				RulestackID: to.Ptr("aaaaaaaaaaaaaaaa"),
 	// 			},
+	// 			FirewallSKU: to.Ptr("PREMIUM"),
 	// 			DNSSettings: &armpanngfw.DNSSettings{
 	// 				DNSServers: []*armpanngfw.IPAddress{
 	// 					{
@@ -611,7 +614,7 @@ func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_Get_MinimumSet_Gen.json
 func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -634,6 +637,7 @@ func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.FirewallDeploymentProperties{
+	// 			FirewallSKU: to.Ptr("STANDARD"),
 	// 			DNSSettings: &armpanngfw.DNSSettings{
 	// 			},
 	// 			MarketplaceDetails: &armpanngfw.MarketplaceDetails{
@@ -659,7 +663,7 @@ func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_getGlobalRulestack_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -684,7 +688,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMaximu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_getGlobalRulestack_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -709,7 +713,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMinimu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_getLogProfile_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_getLogProfile_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -823,7 +827,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_getLogProfile_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_getLogProfile_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -847,7 +851,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_getSupportInfo_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_getSupportInfo_MaximumSet_Gen.json
 func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -884,7 +888,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMaximumSetGen(
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_getSupportInfo_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_getSupportInfo_MinimumSet_Gen.json
 func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -908,7 +912,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMinimumSetGen(
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -932,7 +936,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.FirewallsClientListByResourceGroupResponse{
 		// 	FirewallResourceListResult: armpanngfw.FirewallResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.FirewallResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaa"),
@@ -956,6 +960,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 		// 						ResourceID: to.Ptr("aaaaaaaaaa"),
 		// 						RulestackID: to.Ptr("aaaaaaaaaaaaaaaa"),
 		// 					},
+		// 					FirewallSKU: to.Ptr("PREMIUM"),
 		// 					DNSSettings: &armpanngfw.DNSSettings{
 		// 						DNSServers: []*armpanngfw.IPAddress{
 		// 							{
@@ -1089,7 +1094,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 	}
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1118,6 +1123,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 		// 				ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armpanngfw.FirewallDeploymentProperties{
+		// 					FirewallSKU: to.Ptr("STANDARD"),
 		// 					DNSSettings: &armpanngfw.DNSSettings{
 		// 					},
 		// 					MarketplaceDetails: &armpanngfw.MarketplaceDetails{
@@ -1146,7 +1152,7 @@ func ExampleFirewallsClient_NewListByResourceGroupPager_firewallsListByResourceG
 	}
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_ListBySubscription_MaximumSet_Gen.json
 func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1170,7 +1176,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.FirewallsClientListBySubscriptionResponse{
 		// 	FirewallResourceListResult: armpanngfw.FirewallResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/providers/PaloAltoNetworks.Cloudngfw/firewalls?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/providers/PaloAltoNetworks.Cloudngfw/firewalls?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.FirewallResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaa"),
@@ -1194,6 +1200,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// 						ResourceID: to.Ptr("aaaaaaaaaa"),
 		// 						RulestackID: to.Ptr("aaaaaaaaaaaaaaaa"),
 		// 					},
+		// 					FirewallSKU: to.Ptr("PREMIUM"),
 		// 					DNSSettings: &armpanngfw.DNSSettings{
 		// 						DNSServers: []*armpanngfw.IPAddress{
 		// 							{
@@ -1327,7 +1334,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 	}
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_ListBySubscription_MinimumSet_Gen.json
 func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1356,6 +1363,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 		// 				ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armpanngfw.FirewallDeploymentProperties{
+		// 					FirewallSKU: to.Ptr("STANDARD"),
 		// 					DNSSettings: &armpanngfw.DNSSettings{
 		// 					},
 		// 					MarketplaceDetails: &armpanngfw.MarketplaceDetails{
@@ -1384,7 +1392,7 @@ func ExampleFirewallsClient_NewListBySubscriptionPager_firewallsListBySubscripti
 	}
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_saveLogProfile_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_saveLogProfile_MaximumSet_Gen.json
 func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1493,7 +1501,7 @@ func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMaximumSetGen(
 	}
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_saveLogProfile_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_saveLogProfile_MinimumSet_Gen.json
 func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1510,7 +1518,7 @@ func ExampleFirewallsClient_SaveLogProfile_firewallsSaveLogProfileMinimumSetGen(
 	}
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_Update_MaximumSet_Gen.json
 func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1772,6 +1780,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	// 				},
 	// 			},
 	// 			PanEtag: to.Ptr("2bf4a339-294d-4c25-b0b2-ef649e9f5c12"),
+	// 			FirewallSKU: to.Ptr("STANDARD"),
 	// 			PanoramaConfig: &armpanngfw.PanoramaConfig{
 	// 				CgName: to.Ptr("PanoramaCollectorGroup"),
 	// 				ConfigString: to.Ptr("bas64EncodedString"),
@@ -1805,7 +1814,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/Firewalls_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/Firewalls_Update_MinimumSet_Gen.json
 func ExampleFirewallsClient_Update_firewallsUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1827,6 +1836,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMinimumSetGen() {
 	// 	FirewallResource: armpanngfw.FirewallResource{
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.FirewallDeploymentProperties{
+	// 			FirewallSKU: to.Ptr("STANDARD"),
 	// 			DNSSettings: &armpanngfw.DNSSettings{
 	// 			},
 	// 			MarketplaceDetails: &armpanngfw.MarketplaceDetails{

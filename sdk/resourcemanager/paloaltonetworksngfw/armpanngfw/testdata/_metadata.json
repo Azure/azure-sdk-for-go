@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "PaloAltoNetworks.Cloudngfw": "2025-10-08"
+    "PaloAltoNetworks.Cloudngfw": "2026-05-11-preview"
   },
-  "emitterVersion": "0.14.2"
+  "emitterVersion": "0.14.3"
 }

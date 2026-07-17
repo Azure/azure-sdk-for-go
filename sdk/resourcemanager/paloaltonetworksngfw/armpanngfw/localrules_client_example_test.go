@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/LocalRules_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMaximum
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleLocalRulesClient_BeginCreateOrUpdate_localRulesCreateOrUpdateMinimum
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_Delete_MaximumSet_Gen.json
 func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_Delete_MinimumSet_Gen.json
 func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleLocalRulesClient_BeginDelete_localRulesDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_Get_MaximumSet_Gen.json
 func ExampleLocalRulesClient_Get_localRulesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +375,7 @@ func ExampleLocalRulesClient_Get_localRulesGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_Get_MinimumSet_Gen.json
 func ExampleLocalRulesClient_Get_localRulesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleLocalRulesClient_Get_localRulesGetMinimumSetGen() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.LocalRulesClientGetResponse{
 	// 	LocalRulesResource: armpanngfw.LocalRulesResource{
-	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/grs1/localrules/1"),
+	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/localrules/1"),
 	// 		Properties: &armpanngfw.RuleEntry{
 	// 			RuleName: to.Ptr("aaaaaa"),
 	// 		},
@@ -403,7 +403,7 @@ func ExampleLocalRulesClient_Get_localRulesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_getCounters_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_getCounters_MaximumSet_Gen.json
 func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -451,7 +451,7 @@ func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_getCounters_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_getCounters_MinimumSet_Gen.json
 func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExampleLocalRulesClient_GetCounters_localRulesGetCountersMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_ListByLocalRulestacks_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_ListByLocalRulestacks_MaximumSet_Gen.json
 func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocalRulestacksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +501,7 @@ func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocal
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.LocalRulesClientListByLocalRulestacksResponse{
 		// 	LocalRulesResourceListResult: armpanngfw.LocalRulesResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/localRules?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/localRules?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.LocalRulesResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
@@ -589,7 +589,7 @@ func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocal
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_ListByLocalRulestacks_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_ListByLocalRulestacks_MinimumSet_Gen.json
 func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocalRulestacksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -626,7 +626,7 @@ func ExampleLocalRulesClient_NewListByLocalRulestacksPager_localRulesListByLocal
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_refreshCounters_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_refreshCounters_MaximumSet_Gen.json
 func ExampleLocalRulesClient_RefreshCounters_localRulesRefreshCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +644,7 @@ func ExampleLocalRulesClient_RefreshCounters_localRulesRefreshCountersMaximumSet
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_refreshCounters_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_refreshCounters_MinimumSet_Gen.json
 func ExampleLocalRulesClient_RefreshCounters_localRulesRefreshCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +661,7 @@ func ExampleLocalRulesClient_RefreshCounters_localRulesRefreshCountersMinimumSet
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_resetCounters_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_resetCounters_MaximumSet_Gen.json
 func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -691,7 +691,7 @@ func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMaximumSetGen(
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRules_resetCounters_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRules_resetCounters_MinimumSet_Gen.json
 func ExampleLocalRulesClient_ResetCounters_localRulesResetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

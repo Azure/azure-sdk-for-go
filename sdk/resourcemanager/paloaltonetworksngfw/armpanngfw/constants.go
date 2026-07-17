@@ -5,7 +5,7 @@
 package armpanngfw
 
 const (
-	version20251008 string = "2025-10-08"
+	version20260511Preview string = "2026-05-11-preview"
 )
 
 type ActionEnum string
@@ -110,6 +110,71 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// CustomCaptureConfigurationsProtocol - Network protocol filter for packet capture.
+type CustomCaptureConfigurationsProtocol string
+
+const (
+	// CustomCaptureConfigurationsProtocolTCP - Transmission Control Protocol.
+	CustomCaptureConfigurationsProtocolTCP CustomCaptureConfigurationsProtocol = "TCP"
+	// CustomCaptureConfigurationsProtocolUDP - User Datagram Protocol.
+	CustomCaptureConfigurationsProtocolUDP CustomCaptureConfigurationsProtocol = "UDP"
+)
+
+// PossibleCustomCaptureConfigurationsProtocolValues returns the possible values for the CustomCaptureConfigurationsProtocol const type.
+func PossibleCustomCaptureConfigurationsProtocolValues() []CustomCaptureConfigurationsProtocol {
+	return []CustomCaptureConfigurationsProtocol{
+		CustomCaptureConfigurationsProtocolTCP,
+		CustomCaptureConfigurationsProtocolUDP,
+	}
+}
+
+// CustomCaptureConfigurationsStage - Firewall stage at which to capture packets.
+type CustomCaptureConfigurationsStage string
+
+const (
+	// CustomCaptureConfigurationsStageDrop - Capture packets that were dropped by the firewall.
+	CustomCaptureConfigurationsStageDrop CustomCaptureConfigurationsStage = "Drop"
+	// CustomCaptureConfigurationsStageFirewall - Capture packets at the firewall processing stage.
+	CustomCaptureConfigurationsStageFirewall CustomCaptureConfigurationsStage = "Firewall"
+	// CustomCaptureConfigurationsStageReceive - Capture packets when received by the firewall.
+	CustomCaptureConfigurationsStageReceive CustomCaptureConfigurationsStage = "Receive"
+	// CustomCaptureConfigurationsStageTransmit - Capture packets when transmitted by the firewall.
+	CustomCaptureConfigurationsStageTransmit CustomCaptureConfigurationsStage = "Transmit"
+)
+
+// PossibleCustomCaptureConfigurationsStageValues returns the possible values for the CustomCaptureConfigurationsStage const type.
+func PossibleCustomCaptureConfigurationsStageValues() []CustomCaptureConfigurationsStage {
+	return []CustomCaptureConfigurationsStage{
+		CustomCaptureConfigurationsStageDrop,
+		CustomCaptureConfigurationsStageFirewall,
+		CustomCaptureConfigurationsStageReceive,
+		CustomCaptureConfigurationsStageTransmit,
+	}
+}
+
+// CustomCaptureConfigurationsStatus - Current state of the custom capture operation. Single source of truth — clients poll
+// until this reaches a terminal value (Success / Failed).
+type CustomCaptureConfigurationsStatus string
+
+const (
+	// CustomCaptureConfigurationsStatusFailed - Capture failed; see properties.pcapDetailReason and the root error envelope for
+	// details.
+	CustomCaptureConfigurationsStatusFailed CustomCaptureConfigurationsStatus = "Failed"
+	// CustomCaptureConfigurationsStatusInProgress - Capture is still running.
+	CustomCaptureConfigurationsStatusInProgress CustomCaptureConfigurationsStatus = "InProgress"
+	// CustomCaptureConfigurationsStatusSuccess - Capture completed successfully and the file has been written to storage.
+	CustomCaptureConfigurationsStatusSuccess CustomCaptureConfigurationsStatus = "Success"
+)
+
+// PossibleCustomCaptureConfigurationsStatusValues returns the possible values for the CustomCaptureConfigurationsStatus const type.
+func PossibleCustomCaptureConfigurationsStatusValues() []CustomCaptureConfigurationsStatus {
+	return []CustomCaptureConfigurationsStatus{
+		CustomCaptureConfigurationsStatusFailed,
+		CustomCaptureConfigurationsStatusInProgress,
+		CustomCaptureConfigurationsStatusSuccess,
 	}
 }
 

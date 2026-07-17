@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/PostRules_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_CreateOrUpdate_MaximumSet_Gen.json
 func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMaximumSe
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_CreateOrUpdate_MinimumSet_Gen.json
 func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExamplePostRulesClient_BeginCreateOrUpdate_postRulesCreateOrUpdateMinimumSe
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_Delete_MaximumSet_Gen.json
 func ExamplePostRulesClient_BeginDelete_postRulesDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExamplePostRulesClient_BeginDelete_postRulesDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_Delete_MinimumSet_Gen.json
 func ExamplePostRulesClient_BeginDelete_postRulesDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExamplePostRulesClient_BeginDelete_postRulesDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_Get_MaximumSet_Gen.json
 func ExamplePostRulesClient_Get_postRulesGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -375,7 +375,7 @@ func ExamplePostRulesClient_Get_postRulesGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_Get_MinimumSet_Gen.json
 func ExamplePostRulesClient_Get_postRulesGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExamplePostRulesClient_Get_postRulesGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_getCounters_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_getCounters_MaximumSet_Gen.json
 func ExamplePostRulesClient_GetCounters_postRulesGetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -451,7 +451,7 @@ func ExamplePostRulesClient_GetCounters_postRulesGetCountersMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_getCounters_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_getCounters_MinimumSet_Gen.json
 func ExamplePostRulesClient_GetCounters_postRulesGetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExamplePostRulesClient_GetCounters_postRulesGetCountersMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_List_MaximumSet_Gen.json
 func ExamplePostRulesClient_NewListPager_postRulesListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +501,7 @@ func ExamplePostRulesClient_NewListPager_postRulesListMaximumSetGen() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.PostRulesClientListResponse{
 		// 	PostRulesResourceListResult: armpanngfw.PostRulesResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/lrs1/postRules?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/lrs1/postRules?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.PostRulesResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaa"),
@@ -589,7 +589,7 @@ func ExamplePostRulesClient_NewListPager_postRulesListMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-10-08/PostRules_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_List_MinimumSet_Gen.json
 func ExamplePostRulesClient_NewListPager_postRulesListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -626,7 +626,7 @@ func ExamplePostRulesClient_NewListPager_postRulesListMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-10-08/PostRules_refreshCounters_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_refreshCounters_MaximumSet_Gen.json
 func ExamplePostRulesClient_RefreshCounters_postRulesRefreshCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +644,7 @@ func ExamplePostRulesClient_RefreshCounters_postRulesRefreshCountersMaximumSetGe
 	}
 }
 
-// Generated from example definition: 2025-10-08/PostRules_refreshCounters_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_refreshCounters_MinimumSet_Gen.json
 func ExamplePostRulesClient_RefreshCounters_postRulesRefreshCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +661,7 @@ func ExamplePostRulesClient_RefreshCounters_postRulesRefreshCountersMinimumSetGe
 	}
 }
 
-// Generated from example definition: 2025-10-08/PostRules_resetCounters_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_resetCounters_MaximumSet_Gen.json
 func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -691,7 +691,7 @@ func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PostRules_resetCounters_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PostRules_resetCounters_MinimumSet_Gen.json
 func ExamplePostRulesClient_ResetCounters_postRulesResetCountersMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

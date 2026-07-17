@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MaximumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_CreateProductSerialNumber_paloAltoNetworksCloudngfwOperationsCreateProductSerialNumberMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_CreateProductSerialNumber_
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_createProductSerialNumber_MinimumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_CreateProductSerialNumber_paloAltoNetworksCloudngfwOperationsCreateProductSerialNumberMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_CreateProductSerialNumber_
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MaximumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListCloudManagerTenants_paloAltoNetworksCloudngfwOperationsListCloudManagerTenantsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListCloudManagerTenants_pa
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_listCloudManagerTenants_MinimumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListCloudManagerTenants_paloAltoNetworksCloudngfwOperationsListCloudManagerTenantsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListCloudManagerTenants_pa
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MaximumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListProductSerialNumberStatus_paloAltoNetworksCloudngfwOperationsListProductSerialNumberStatusMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListProductSerialNumberSta
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_listProductSerialNumberStatus_MinimumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListProductSerialNumberStatus_paloAltoNetworksCloudngfwOperationsListProductSerialNumberStatusMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListProductSerialNumberSta
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MaximumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListSupportInfo_paloAltoNetworksCloudngfwOperationsListSupportInfoMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListSupportInfo_paloAltoNe
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PaloAltoNetworksCloudngfwOperations_listSupportInfo_MinimumSet_Gen.json
 func ExamplePaloAltoNetworksCloudngfwOperationsClient_ListSupportInfo_paloAltoNetworksCloudngfwOperationsListSupportInfoMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_BeginCreateOrUpdate_metricsObjectFirewallCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleMetricsObjectFirewallClient_BeginCreateOrUpdate_metricsObjectFirewal
 	// }
 }
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_BeginCreateOrUpdate_metricsObjectFirewallCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleMetricsObjectFirewallClient_BeginCreateOrUpdate_metricsObjectFirewal
 	// }
 }
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_Delete_MaximumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_BeginDelete_metricsObjectFirewallDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleMetricsObjectFirewallClient_BeginDelete_metricsObjectFirewallDeleteM
 	}
 }
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_Delete_MinimumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_BeginDelete_metricsObjectFirewallDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleMetricsObjectFirewallClient_BeginDelete_metricsObjectFirewallDeleteM
 	}
 }
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_Get_MaximumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_Get_metricsObjectFirewallGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleMetricsObjectFirewallClient_Get_metricsObjectFirewallGetMaximumSetGe
 	// }
 }
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_Get_MinimumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_Get_metricsObjectFirewallGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleMetricsObjectFirewallClient_Get_metricsObjectFirewallGetMinimumSetGe
 	// }
 }
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_ListByFirewalls_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_ListByFirewalls_MaximumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_NewListByFirewallsPager_metricsObjectFirewallListByFirewallsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleMetricsObjectFirewallClient_NewListByFirewallsPager_metricsObjectFir
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.MetricsObjectFirewallClientListByFirewallsResponse{
 		// 	MetricsObjectFirewallResourceListResult: armpanngfw.MetricsObjectFirewallResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/aaaaaaaaaaaaaaaaaaaaaaaaa/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1/metrics?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/aaaaaaaaaaaaaaaaaaaaaaaaa/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1/metrics?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.MetricsObjectFirewallResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaa"),
@@ -264,7 +264,7 @@ func ExampleMetricsObjectFirewallClient_NewListByFirewallsPager_metricsObjectFir
 	}
 }
 
-// Generated from example definition: 2025-10-08/MetricsObjectFirewall_ListByFirewalls_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/MetricsObjectFirewall_ListByFirewalls_MinimumSet_Gen.json
 func ExampleMetricsObjectFirewallClient_NewListByFirewallsPager_metricsObjectFirewallListByFirewallsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

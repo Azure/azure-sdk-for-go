@@ -19,7 +19,7 @@ import (
 // CertificateObjectLocalRulestackClient contains the methods for the CertificateObjectLocalRulestack group.
 // Don't use this type directly, use NewCertificateObjectLocalRulestackClient() instead.
 //
-// Generated from API version 2025-10-08
+// Generated from API version 2026-05-11-preview
 type CertificateObjectLocalRulestackClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -113,7 +113,7 @@ func (client *CertificateObjectLocalRulestackClient) createOrUpdateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -194,7 +194,7 @@ func (client *CertificateObjectLocalRulestackClient) deleteCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -252,7 +252,7 @@ func (client *CertificateObjectLocalRulestackClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -315,7 +315,7 @@ func (client *CertificateObjectLocalRulestackClient) listByLocalRulestacksCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

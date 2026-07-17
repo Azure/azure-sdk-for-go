@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_BeginCreateOrUpdate_certificateObjectGlobalRulestackCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginCreateOrUpdate_certifica
 	// }
 }
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_BeginCreateOrUpdate_certificateObjectGlobalRulestackCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginCreateOrUpdate_certifica
 	// }
 }
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_Delete_MaximumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_BeginDelete_certificateObjectGlobalRulestackDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginDelete_certificateObject
 	// }
 }
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_Delete_MinimumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_BeginDelete_certificateObjectGlobalRulestackDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleCertificateObjectGlobalRulestackClient_BeginDelete_certificateObject
 	// }
 }
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_Get_MaximumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_Get_certificateObjectGlobalRulestackGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleCertificateObjectGlobalRulestackClient_Get_certificateObjectGlobalRu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_Get_MinimumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_Get_certificateObjectGlobalRulestackGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleCertificateObjectGlobalRulestackClient_Get_certificateObjectGlobalRu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_List_MaximumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_NewListPager_certificateObjectGlobalRulestackListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleCertificateObjectGlobalRulestackClient_NewListPager_certificateObjec
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.CertificateObjectGlobalRulestackClientListResponse{
 		// 	CertificateObjectGlobalRulestackResourceListResult: armpanngfw.CertificateObjectGlobalRulestackResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/certificates?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/certificates?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.CertificateObjectGlobalRulestackResource{
 		// 			{
 		// 				Name: to.Ptr("armid1"),
@@ -280,7 +280,7 @@ func ExampleCertificateObjectGlobalRulestackClient_NewListPager_certificateObjec
 	}
 }
 
-// Generated from example definition: 2025-10-08/CertificateObjectGlobalRulestack_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/CertificateObjectGlobalRulestack_List_MinimumSet_Gen.json
 func ExampleCertificateObjectGlobalRulestackClient_NewListPager_certificateObjectGlobalRulestackListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

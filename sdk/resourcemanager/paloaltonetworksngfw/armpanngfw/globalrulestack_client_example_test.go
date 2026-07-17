@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_commit_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_commit_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMaximumSetGen
 	}
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_commit_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_commit_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleGlobalRulestackClient_BeginCommit_globalRulestackCommitMinimumSetGen
 	}
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_Delete_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMaximumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_Delete_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleGlobalRulestackClient_BeginDelete_globalRulestackDeleteMinimumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_Get_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_Get_globalRulestackGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleGlobalRulestackClient_Get_globalRulestackGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_Get_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_Get_globalRulestackGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleGlobalRulestackClient_Get_globalRulestackGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_getChangeLog_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_getChangeLog_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +373,7 @@ func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMaximu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_getChangeLog_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_getChangeLog_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +400,7 @@ func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMinimu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_List_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -424,7 +424,7 @@ func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMaximumSetGen(
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.GlobalRulestackClientListResponse{
 		// 	GlobalRulestackResourceListResult: armpanngfw.GlobalRulestackResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subid/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subid/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.GlobalRulestackResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -479,7 +479,7 @@ func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMaximumSetGen(
 	}
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_List_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,7 +516,7 @@ func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMinimumSetGen(
 	}
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listAdvancedSecurityObjects_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackListAdvancedSecurityObjectsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -552,7 +552,7 @@ func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listAdvancedSecurityObjects_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackListAdvancedSecurityObjectsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,7 +583,7 @@ func ExampleGlobalRulestackClient_ListAdvancedSecurityObjects_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listAppIds_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listAppIds_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +607,7 @@ func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMaximumSet
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListAppIDsResponse{
 	// 	ListAppIDResponse: armpanngfw.ListAppIDResponse{
-	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listAppIds?api-version=2025-10-08&$skiptoken=xyz"),
+	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listAppIds?api-version=2026-05-11-preview&$skiptoken=xyz"),
 	// 		Value: []*string{
 	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		},
@@ -615,7 +615,7 @@ func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMaximumSet
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listAppIds_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listAppIds_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -642,7 +642,7 @@ func ExampleGlobalRulestackClient_ListAppIDs_globalRulestackListAppIdsMinimumSet
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listCountries_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listCountries_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -664,7 +664,7 @@ func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMaxi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListCountriesResponse{
 	// 	CountriesResponse: armpanngfw.CountriesResponse{
-	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listCountries?api-version=2025-10-08&$skiptoken=xyz"),
+	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listCountries?api-version=2026-05-11-preview&$skiptoken=xyz"),
 	// 		Value: []*armpanngfw.Country{
 	// 			{
 	// 				Description: to.Ptr("aaaaa"),
@@ -675,7 +675,7 @@ func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMaxi
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listCountries_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listCountries_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -704,7 +704,7 @@ func ExampleGlobalRulestackClient_ListCountries_globalRulestackListCountriesMini
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listFirewalls_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -732,7 +732,7 @@ func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMaxi
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listFirewalls_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -759,7 +759,7 @@ func ExampleGlobalRulestackClient_ListFirewalls_globalRulestackListFirewallsMini
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listPredefinedUrlCategories_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackListPredefinedUrlCategoriesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -781,7 +781,7 @@ func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackLis
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.GlobalRulestackClientListPredefinedURLCategoriesResponse{
 	// 	PredefinedURLCategoriesResponse: armpanngfw.PredefinedURLCategoriesResponse{
-	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listPredefinedUrlCategories?api-version=2025-10-08&$skiptoken=xyz"),
+	// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/listPredefinedUrlCategories?api-version=2026-05-11-preview&$skiptoken=xyz"),
 	// 		Value: []*armpanngfw.PredefinedURLCategory{
 	// 			{
 	// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -792,7 +792,7 @@ func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listPredefinedUrlCategories_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackListPredefinedUrlCategoriesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -822,7 +822,7 @@ func ExampleGlobalRulestackClient_ListPredefinedURLCategories_globalRulestackLis
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listSecurityServices_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecurityServicesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -858,7 +858,7 @@ func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecuri
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_listSecurityServices_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecurityServicesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -889,7 +889,7 @@ func ExampleGlobalRulestackClient_ListSecurityServices_globalRulestackListSecuri
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_revert_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_revert_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_Revert_globalRulestackRevertMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -906,7 +906,7 @@ func ExampleGlobalRulestackClient_Revert_globalRulestackRevertMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_revert_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_revert_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_Revert_globalRulestackRevertMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -923,7 +923,7 @@ func ExampleGlobalRulestackClient_Revert_globalRulestackRevertMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_Update_MaximumSet_Gen.json
 func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1024,7 +1024,7 @@ func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/GlobalRulestack_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/GlobalRulestack_Update_MinimumSet_Gen.json
 func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

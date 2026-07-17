@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_BeginCreateOrUpdate_prefixListGlobalRulestackCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExamplePrefixListGlobalRulestackClient_BeginCreateOrUpdate_prefixListGlobal
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_BeginCreateOrUpdate_prefixListGlobalRulestackCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExamplePrefixListGlobalRulestackClient_BeginCreateOrUpdate_prefixListGlobal
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_Delete_MaximumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_BeginDelete_prefixListGlobalRulestackDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExamplePrefixListGlobalRulestackClient_BeginDelete_prefixListGlobalRulestac
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_Delete_MinimumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_BeginDelete_prefixListGlobalRulestackDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExamplePrefixListGlobalRulestackClient_BeginDelete_prefixListGlobalRulestac
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_Get_MaximumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_Get_prefixListGlobalRulestackGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExamplePrefixListGlobalRulestackClient_Get_prefixListGlobalRulestackGetMaxi
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_Get_MinimumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_Get_prefixListGlobalRulestackGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExamplePrefixListGlobalRulestackClient_Get_prefixListGlobalRulestackGetMini
 	// }
 }
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_List_MaximumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_NewListPager_prefixListGlobalRulestackListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExamplePrefixListGlobalRulestackClient_NewListPager_prefixListGlobalRulesta
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.PrefixListGlobalRulestackClientListResponse{
 		// 	PrefixListGlobalRulestackResourceListResult: armpanngfw.PrefixListGlobalRulestackResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/prefixlists?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/prefixlists?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.PrefixListGlobalRulestackResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -290,7 +290,7 @@ func ExamplePrefixListGlobalRulestackClient_NewListPager_prefixListGlobalRulesta
 	}
 }
 
-// Generated from example definition: 2025-10-08/PrefixListGlobalRulestack_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/PrefixListGlobalRulestack_List_MinimumSet_Gen.json
 func ExamplePrefixListGlobalRulestackClient_NewListPager_prefixListGlobalRulestackListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

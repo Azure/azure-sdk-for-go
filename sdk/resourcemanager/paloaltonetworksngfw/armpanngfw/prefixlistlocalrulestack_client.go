@@ -19,7 +19,7 @@ import (
 // PrefixListLocalRulestackClient contains the methods for the PrefixListLocalRulestack group.
 // Don't use this type directly, use NewPrefixListLocalRulestackClient() instead.
 //
-// Generated from API version 2025-10-08
+// Generated from API version 2026-05-11-preview
 type PrefixListLocalRulestackClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -113,7 +113,7 @@ func (client *PrefixListLocalRulestackClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -194,7 +194,7 @@ func (client *PrefixListLocalRulestackClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -252,7 +252,7 @@ func (client *PrefixListLocalRulestackClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -315,7 +315,7 @@ func (client *PrefixListLocalRulestackClient) listByLocalRulestacksCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

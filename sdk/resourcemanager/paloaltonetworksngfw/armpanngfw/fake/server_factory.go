@@ -21,6 +21,9 @@ type ServerFactory struct {
 	// CertificateObjectLocalRulestackServer contains the fakes for client CertificateObjectLocalRulestackClient
 	CertificateObjectLocalRulestackServer CertificateObjectLocalRulestackServer
 
+	// CustomCaptureConfigurationsFirewallResourcesServer contains the fakes for client CustomCaptureConfigurationsFirewallResourcesClient
+	CustomCaptureConfigurationsFirewallResourcesServer CustomCaptureConfigurationsFirewallResourcesServer
+
 	// FirewallStatusServer contains the fakes for client FirewallStatusClient
 	FirewallStatusServer FirewallStatusServer
 
@@ -76,24 +79,25 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armpanngfw.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                         *ServerFactory
-	trMu                                        sync.Mutex
-	trCertificateObjectGlobalRulestackServer    *CertificateObjectGlobalRulestackServerTransport
-	trCertificateObjectLocalRulestackServer     *CertificateObjectLocalRulestackServerTransport
-	trFirewallStatusServer                      *FirewallStatusServerTransport
-	trFirewallsServer                           *FirewallsServerTransport
-	trFqdnListGlobalRulestackServer             *FqdnListGlobalRulestackServerTransport
-	trFqdnListLocalRulestackServer              *FqdnListLocalRulestackServerTransport
-	trGlobalRulestackServer                     *GlobalRulestackServerTransport
-	trLocalRulesServer                          *LocalRulesServerTransport
-	trLocalRulestacksServer                     *LocalRulestacksServerTransport
-	trMetricsObjectFirewallServer               *MetricsObjectFirewallServerTransport
-	trOperationsServer                          *OperationsServerTransport
-	trPaloAltoNetworksCloudngfwOperationsServer *PaloAltoNetworksCloudngfwOperationsServerTransport
-	trPostRulesServer                           *PostRulesServerTransport
-	trPreRulesServer                            *PreRulesServerTransport
-	trPrefixListGlobalRulestackServer           *PrefixListGlobalRulestackServerTransport
-	trPrefixListLocalRulestackServer            *PrefixListLocalRulestackServerTransport
+	srv                                                  *ServerFactory
+	trMu                                                 sync.Mutex
+	trCertificateObjectGlobalRulestackServer             *CertificateObjectGlobalRulestackServerTransport
+	trCertificateObjectLocalRulestackServer              *CertificateObjectLocalRulestackServerTransport
+	trCustomCaptureConfigurationsFirewallResourcesServer *CustomCaptureConfigurationsFirewallResourcesServerTransport
+	trFirewallStatusServer                               *FirewallStatusServerTransport
+	trFirewallsServer                                    *FirewallsServerTransport
+	trFqdnListGlobalRulestackServer                      *FqdnListGlobalRulestackServerTransport
+	trFqdnListLocalRulestackServer                       *FqdnListLocalRulestackServerTransport
+	trGlobalRulestackServer                              *GlobalRulestackServerTransport
+	trLocalRulesServer                                   *LocalRulesServerTransport
+	trLocalRulestacksServer                              *LocalRulestacksServerTransport
+	trMetricsObjectFirewallServer                        *MetricsObjectFirewallServerTransport
+	trOperationsServer                                   *OperationsServerTransport
+	trPaloAltoNetworksCloudngfwOperationsServer          *PaloAltoNetworksCloudngfwOperationsServerTransport
+	trPostRulesServer                                    *PostRulesServerTransport
+	trPreRulesServer                                     *PreRulesServerTransport
+	trPrefixListGlobalRulestackServer                    *PrefixListGlobalRulestackServerTransport
+	trPrefixListLocalRulestackServer                     *PrefixListLocalRulestackServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -119,6 +123,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCertificateObjectLocalRulestackServerTransport(&s.srv.CertificateObjectLocalRulestackServer)
 		})
 		resp, err = s.trCertificateObjectLocalRulestackServer.Do(req)
+	case "CustomCaptureConfigurationsFirewallResourcesClient":
+		initServer(&s.trMu, &s.trCustomCaptureConfigurationsFirewallResourcesServer, func() *CustomCaptureConfigurationsFirewallResourcesServerTransport {
+			return NewCustomCaptureConfigurationsFirewallResourcesServerTransport(&s.srv.CustomCaptureConfigurationsFirewallResourcesServer)
+		})
+		resp, err = s.trCustomCaptureConfigurationsFirewallResourcesServer.Do(req)
 	case "FirewallStatusClient":
 		initServer(&s.trMu, &s.trFirewallStatusServer, func() *FirewallStatusServerTransport {
 			return NewFirewallStatusServerTransport(&s.srv.FirewallStatusServer)

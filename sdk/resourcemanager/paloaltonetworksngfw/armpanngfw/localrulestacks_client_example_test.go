@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_commit_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_commit_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_BeginCommit_localRulestacksCommitMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleLocalRulestacksClient_BeginCommit_localRulestacksCommitMaximumSetGen
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_commit_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_commit_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_BeginCommit_localRulestacksCommitMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleLocalRulestacksClient_BeginCommit_localRulestacksCommitMinimumSetGen
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleLocalRulestacksClient_BeginCreateOrUpdate_localRulestacksCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_Delete_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_BeginDelete_localRulestacksDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleLocalRulestacksClient_BeginDelete_localRulestacksDeleteMaximumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_Delete_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_BeginDelete_localRulestacksDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleLocalRulestacksClient_BeginDelete_localRulestacksDeleteMinimumSetGen
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_Get_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_Get_localRulestacksGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +325,7 @@ func ExampleLocalRulestacksClient_Get_localRulestacksGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_Get_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_Get_localRulestacksGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleLocalRulestacksClient_Get_localRulestacksGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_getChangeLog_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_getChangeLog_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_GetChangeLog_localRulestacksGetChangeLogMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +382,7 @@ func ExampleLocalRulestacksClient_GetChangeLog_localRulestacksGetChangeLogMaximu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_getChangeLog_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_getChangeLog_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_GetChangeLog_localRulestacksGetChangeLogMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleLocalRulestacksClient_GetChangeLog_localRulestacksGetChangeLogMinimu
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_getSupportInfo_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_getSupportInfo_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_GetSupportInfo_localRulestacksGetSupportInfoMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleLocalRulestacksClient_GetSupportInfo_localRulestacksGetSupportInfoMa
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_getSupportInfo_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_getSupportInfo_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_GetSupportInfo_localRulestacksGetSupportInfoMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +470,7 @@ func ExampleLocalRulestacksClient_GetSupportInfo_localRulestacksGetSupportInfoMi
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listAdvancedSecurityObjects_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listAdvancedSecurityObjects_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksListAdvancedSecurityObjectsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -506,7 +506,7 @@ func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksLis
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listAdvancedSecurityObjects_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listAdvancedSecurityObjects_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksListAdvancedSecurityObjectsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -537,7 +537,7 @@ func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksLis
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listAppIds_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listAppIds_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListAppIDsPager_localRulestacksListAppIdsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,7 +565,7 @@ func ExampleLocalRulestacksClient_NewListAppIDsPager_localRulestacksListAppIdsMa
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.LocalRulestacksClientListAppIDsResponse{
 		// 	ListAppIDResponse: armpanngfw.ListAppIDResponse{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/listAppIds?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/listAppIds?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*string{
 		// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
 		// 		},
@@ -574,7 +574,7 @@ func ExampleLocalRulestacksClient_NewListAppIDsPager_localRulestacksListAppIdsMa
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listAppIds_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listAppIds_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListAppIDsPager_localRulestacksListAppIdsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +606,7 @@ func ExampleLocalRulestacksClient_NewListAppIDsPager_localRulestacksListAppIdsMi
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListByResourceGroupPager_localRulestacksListByResourceGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -630,7 +630,7 @@ func ExampleLocalRulestacksClient_NewListByResourceGroupPager_localRulestacksLis
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.LocalRulestacksClientListByResourceGroupResponse{
 		// 	LocalRulestackResourceListResult: armpanngfw.LocalRulestackResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.LocalRulestackResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -688,7 +688,7 @@ func ExampleLocalRulestacksClient_NewListByResourceGroupPager_localRulestacksLis
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListByResourceGroupPager_localRulestacksListByResourceGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -725,7 +725,7 @@ func ExampleLocalRulestacksClient_NewListByResourceGroupPager_localRulestacksLis
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_ListBySubscription_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListBySubscriptionPager_localRulestacksListBySubscriptionMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -749,7 +749,7 @@ func ExampleLocalRulestacksClient_NewListBySubscriptionPager_localRulestacksList
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.LocalRulestacksClientListBySubscriptionResponse{
 		// 	LocalRulestackResourceListResult: armpanngfw.LocalRulestackResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/providers/PaloAltoNetworks.Cloudngfw/localRulestacks?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/providers/PaloAltoNetworks.Cloudngfw/localRulestacks?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.LocalRulestackResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -807,7 +807,7 @@ func ExampleLocalRulestacksClient_NewListBySubscriptionPager_localRulestacksList
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_ListBySubscription_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListBySubscriptionPager_localRulestacksListBySubscriptionMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -844,7 +844,7 @@ func ExampleLocalRulestacksClient_NewListBySubscriptionPager_localRulestacksList
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listCountries_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listCountries_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListCountriesPager_localRulestacksListCountriesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -870,7 +870,7 @@ func ExampleLocalRulestacksClient_NewListCountriesPager_localRulestacksListCount
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.LocalRulestacksClientListCountriesResponse{
 		// 	CountriesResponse: armpanngfw.CountriesResponse{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/listCountries?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/listCountries?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.Country{
 		// 			{
 		// 				Description: to.Ptr("aaaaa"),
@@ -882,7 +882,7 @@ func ExampleLocalRulestacksClient_NewListCountriesPager_localRulestacksListCount
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listCountries_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listCountries_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListCountriesPager_localRulestacksListCountriesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -916,7 +916,7 @@ func ExampleLocalRulestacksClient_NewListCountriesPager_localRulestacksListCount
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listFirewalls_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listFirewalls_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -944,7 +944,7 @@ func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMaxi
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listFirewalls_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listFirewalls_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -971,7 +971,7 @@ func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMini
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRulestacksListPredefinedUrlCategoriesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -997,7 +997,7 @@ func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRules
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.LocalRulestacksClientListPredefinedURLCategoriesResponse{
 		// 	PredefinedURLCategoriesResponse: armpanngfw.PredefinedURLCategoriesResponse{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/listPredefinedUrlCategories?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourceGroups/rgopenapi/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/lrs1/listPredefinedUrlCategories?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.PredefinedURLCategory{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -1009,7 +1009,7 @@ func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRules
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listPredefinedUrlCategories_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRulestacksListPredefinedUrlCategoriesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1044,7 +1044,7 @@ func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRules
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecurityServicesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1080,7 +1080,7 @@ func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecuri
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecurityServicesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1111,7 +1111,7 @@ func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecuri
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_revert_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_revert_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_Revert_localRulestacksRevertMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1128,7 +1128,7 @@ func ExampleLocalRulestacksClient_Revert_localRulestacksRevertMaximumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_revert_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_revert_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_Revert_localRulestacksRevertMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1145,7 +1145,7 @@ func ExampleLocalRulestacksClient_Revert_localRulestacksRevertMinimumSetGen() {
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_Update_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_Update_localRulestacksUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1251,7 +1251,7 @@ func ExampleLocalRulestacksClient_Update_localRulestacksUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/LocalRulestacks_Update_MinimumSet_Gen.json
 func ExampleLocalRulestacksClient_Update_localRulestacksUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

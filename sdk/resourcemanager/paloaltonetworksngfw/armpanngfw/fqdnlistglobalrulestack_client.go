@@ -19,7 +19,7 @@ import (
 // FqdnListGlobalRulestackClient contains the methods for the FqdnListGlobalRulestack group.
 // Don't use this type directly, use NewFqdnListGlobalRulestackClient() instead.
 //
-// Generated from API version 2025-10-08
+// Generated from API version 2026-05-11-preview
 type FqdnListGlobalRulestackClient struct {
 	internal *arm.Client
 }
@@ -101,7 +101,7 @@ func (client *FqdnListGlobalRulestackClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -173,7 +173,7 @@ func (client *FqdnListGlobalRulestackClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -222,7 +222,7 @@ func (client *FqdnListGlobalRulestackClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -276,7 +276,7 @@ func (client *FqdnListGlobalRulestackClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
+	reqQP.Set("api-version", version20260511Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

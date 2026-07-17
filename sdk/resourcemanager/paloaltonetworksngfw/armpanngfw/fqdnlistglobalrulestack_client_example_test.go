@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_BeginCreateOrUpdate_fqdnListGlobalRulestackCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleFqdnListGlobalRulestackClient_BeginCreateOrUpdate_fqdnListGlobalRule
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_BeginCreateOrUpdate_fqdnListGlobalRulestackCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleFqdnListGlobalRulestackClient_BeginCreateOrUpdate_fqdnListGlobalRule
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_Delete_MaximumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_BeginDelete_fqdnListGlobalRulestackDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleFqdnListGlobalRulestackClient_BeginDelete_fqdnListGlobalRulestackDel
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_Delete_MinimumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_BeginDelete_fqdnListGlobalRulestackDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleFqdnListGlobalRulestackClient_BeginDelete_fqdnListGlobalRulestackDel
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_Get_MaximumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_Get_fqdnListGlobalRulestackGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleFqdnListGlobalRulestackClient_Get_fqdnListGlobalRulestackGetMaximumS
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_Get_MinimumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_Get_fqdnListGlobalRulestackGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleFqdnListGlobalRulestackClient_Get_fqdnListGlobalRulestackGetMinimumS
 	// }
 }
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_List_MaximumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_NewListPager_fqdnListGlobalRulestackListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExampleFqdnListGlobalRulestackClient_NewListPager_fqdnListGlobalRulestackLi
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armpanngfw.FqdnListGlobalRulestackClientListResponse{
 		// 	FqdnListGlobalRulestackResourceListResult: armpanngfw.FqdnListGlobalRulestackResourceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/fqdnlists?api-version=2025-10-08&$skiptoken=xyz"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/praval/fqdnlists?api-version=2026-05-11-preview&$skiptoken=xyz"),
 		// 		Value: []*armpanngfw.FqdnListGlobalRulestackResource{
 		// 			{
 		// 				Name: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -297,7 +297,7 @@ func ExampleFqdnListGlobalRulestackClient_NewListPager_fqdnListGlobalRulestackLi
 	}
 }
 
-// Generated from example definition: 2025-10-08/FqdnListGlobalRulestack_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-11-preview/FqdnListGlobalRulestack_List_MinimumSet_Gen.json
 func ExampleFqdnListGlobalRulestackClient_NewListPager_fqdnListGlobalRulestackListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

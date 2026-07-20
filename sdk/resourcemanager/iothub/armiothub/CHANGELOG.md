@@ -1,5 +1,21 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-07-20)
+### Breaking Changes
+
+- Type of `RoutingTwin.Tags` has been changed from `any` to `map[string]any`
+- Type of `RoutingTwinProperties.Desired` has been changed from `any` to `map[string]any`
+- Type of `RoutingTwinProperties.Reported` has been changed from `any` to `map[string]any`
+- `IotHubSKUGEN2` from enum `IotHubSKU` has been removed
+- `IotHubSKUTierGeneration2` from enum `IotHubSKUTier` has been removed
+
+### Features Added
+
+- New enum type `EventStreamAuthenticationType` with values `EventStreamAuthenticationTypeIdentityBased`
+- New struct `RoutingEventStreamProperties`
+- New field `EventStreams` in struct `RoutingEndpoints`
+
+
 ## 2.0.0-beta.1 (2026-05-20)
 ### Breaking Changes
 

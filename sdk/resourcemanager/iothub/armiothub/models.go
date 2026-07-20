@@ -219,7 +219,7 @@ type DeviceRegistry struct {
 	// The identity used to manage the ADR namespace from the data plane.
 	IdentityResourceID *string
 
-	// The identifier of the Azure Device Registry namespace associated with the GEN2 SKU hub.
+	// The identifier of the Azure Device Registry namespace
 	NamespaceResourceID *string
 }
 
@@ -948,6 +948,9 @@ type RoutingEndpoints struct {
 	// the built-in Event Hubs endpoint.
 	EventHubs []*RoutingEventHubProperties
 
+	// The list of event stream endpoints that IoT hub routes messages to, based on the routing rules.
+	EventStreams []*RoutingEventStreamProperties
+
 	// The list of Service Bus queue endpoints that IoT hub routes the messages to, based on the routing rules.
 	ServiceBusQueues []*RoutingServiceBusQueueEndpointProperties
 
@@ -988,6 +991,38 @@ type RoutingEventHubProperties struct {
 
 	// The subscription identifier of the event hub endpoint.
 	SubscriptionID *string
+}
+
+// RoutingEventStreamProperties - The properties related to an event stream endpoint.
+type RoutingEventStreamProperties struct {
+	// REQUIRED; The url of the underlying event hub namespace of the event stream endpoint. It must include the protocol sb://
+	EndpointURI *string
+
+	// REQUIRED; Event hub name on the event hub namespace
+	EntityPath *string
+
+	// REQUIRED; The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
+	// hyphens and has a maximum length of 64 characters. The following names are reserved: events, fileNotifications, $default.
+	// Endpoint names must be unique across endpoint types.
+	Name *string
+
+	// Method used to authenticate against the event stream endpoint
+	AuthenticationType *EventStreamAuthenticationType
+
+	// The unique GUID of the target event stream under the workspace.
+	EventStreamID *string
+
+	// Managed identity properties of routing event stream endpoint.
+	Identity *ManagedIdentity
+
+	// The unique GUID of the custom source for the event stream.
+	SourceID *string
+
+	// The unique GUID of the target Microsoft Fabric workspace for the event stream endpoint.
+	WorkspaceID *string
+
+	// READ-ONLY; Id of the event stream endpoint
+	ID *string
 }
 
 // RoutingMessage - Routing message
@@ -1139,15 +1174,15 @@ type RoutingTwin struct {
 	Properties *RoutingTwinProperties
 
 	// Twin Tags
-	Tags any
+	Tags map[string]any
 }
 
 type RoutingTwinProperties struct {
 	// Twin desired properties
-	Desired any
+	Desired map[string]any
 
-	// Twin desired properties
-	Reported any
+	// Twin reported properties
+	Reported map[string]any
 }
 
 // SKUDescription - SKU properties.

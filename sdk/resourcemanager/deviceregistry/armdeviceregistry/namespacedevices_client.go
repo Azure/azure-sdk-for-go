@@ -329,8 +329,6 @@ func (client *NamespaceDevicesClient) listByResourceGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// BeginRevoke - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - deviceName - The name of the device.
@@ -354,7 +352,7 @@ func (client *NamespaceDevicesClient) BeginRevoke(ctx context.Context, resourceG
 	}
 }
 
-// Revoke - A long-running resource action.
+// Revoke -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NamespaceDevicesClient) revoke(ctx context.Context, resourceGroupName string, namespaceName string, deviceName string, body DeviceCredentialsRevokeRequest, options *NamespaceDevicesClientBeginRevokeOptions) (*http.Response, error) {
 	var err error

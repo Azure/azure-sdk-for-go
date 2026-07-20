@@ -18,6 +18,8 @@ import (
 
 // ProductsAndConfigurationsClient contains the methods for the ProductsAndConfigurations group.
 // Don't use this type directly, use NewProductsAndConfigurationsClient() instead.
+//
+// Generated from API version 2024-02-01
 type ProductsAndConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewProductsAndConfigurationsClient(subscriptionID string, credential azcore
 }
 
 // NewListConfigurationsPager - List configurations for the given product family, product line and product for the given subscription.
-//
-// Generated from API version 2024-02-01
 //   - configurationsRequest - Filters for showing the configurations.
 //   - options - ProductsAndConfigurationsClientListConfigurationsOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListConfigurationsPager
 //     method.
@@ -83,8 +83,8 @@ func (client *ProductsAndConfigurationsClient) listConfigurationsCreateRequest(c
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, configurationsRequest); err != nil {
@@ -103,8 +103,6 @@ func (client *ProductsAndConfigurationsClient) listConfigurationsHandleResponse(
 }
 
 // NewListProductFamiliesPager - List product families for the given subscription.
-//
-// Generated from API version 2024-02-01
 //   - productFamiliesRequest - Filters for showing the product families.
 //   - options - ProductsAndConfigurationsClientListProductFamiliesOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesPager
 //     method.
@@ -149,8 +147,8 @@ func (client *ProductsAndConfigurationsClient) listProductFamiliesCreateRequest(
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, productFamiliesRequest); err != nil {
@@ -169,8 +167,6 @@ func (client *ProductsAndConfigurationsClient) listProductFamiliesHandleResponse
 }
 
 // NewListProductFamiliesMetadataPager - List product families metadata for the given subscription.
-//
-// Generated from API version 2024-02-01
 //   - options - ProductsAndConfigurationsClientListProductFamiliesMetadataOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager
 //     method.
 func (client *ProductsAndConfigurationsClient) NewListProductFamiliesMetadataPager(options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) *runtime.Pager[ProductsAndConfigurationsClientListProductFamiliesMetadataResponse] {
@@ -211,8 +207,8 @@ func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataCreate
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

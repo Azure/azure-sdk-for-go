@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -54,9 +54,7 @@ func (l *LegacyPeeringsServerTransport) Do(req *http.Request) (*http.Response, e
 }
 
 func (l *LegacyPeeringsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -72,10 +70,7 @@ func (l *LegacyPeeringsServerTransport) dispatchToMethodFake(req *http.Request, 
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -99,25 +94,7 @@ func (l *LegacyPeeringsServerTransport) dispatchNewListPager(req *http.Request) 
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		peeringLocationParam, err := url.QueryUnescape(qp.Get("peeringLocation"))
-		if err != nil {
-			return nil, err
-		}
-		kindParam, err := parseWithCast(qp.Get("kind"), func(v string) (armpeering.LegacyPeeringsKind, error) {
-			p, unescapeErr := url.QueryUnescape(v)
-			if unescapeErr != nil {
-				return "", unescapeErr
-			}
-			return armpeering.LegacyPeeringsKind(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		asnUnescaped, err := url.QueryUnescape(qp.Get("asn"))
-		if err != nil {
-			return nil, err
-		}
-		asnParam, err := parseOptional(asnUnescaped, func(v string) (int32, error) {
+		asnParam, err := parseOptional(qp.Get("asn"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -127,11 +104,7 @@ func (l *LegacyPeeringsServerTransport) dispatchNewListPager(req *http.Request) 
 		if err != nil {
 			return nil, err
 		}
-		directPeeringTypeUnescaped, err := url.QueryUnescape(qp.Get("directPeeringType"))
-		if err != nil {
-			return nil, err
-		}
-		directPeeringTypeParam := getOptional(armpeering.DirectPeeringType(directPeeringTypeUnescaped))
+		directPeeringTypeParam := getOptional(armpeering.DirectPeeringType(qp.Get("directPeeringType")))
 		var options *armpeering.LegacyPeeringsClientListOptions
 		if asnParam != nil || directPeeringTypeParam != nil {
 			options = &armpeering.LegacyPeeringsClientListOptions{
@@ -139,7 +112,7 @@ func (l *LegacyPeeringsServerTransport) dispatchNewListPager(req *http.Request) 
 				DirectPeeringType: directPeeringTypeParam,
 			}
 		}
-		resp := l.srv.NewListPager(peeringLocationParam, kindParam, options)
+		resp := l.srv.NewListPager(qp.Get("peeringLocation"), armpeering.LegacyPeeringsKind(qp.Get("kind")), options)
 		newListPager = &resp
 		l.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armpeering.LegacyPeeringsClientListResponse, createLink func() string) {
@@ -150,7 +123,7 @@ func (l *LegacyPeeringsServerTransport) dispatchNewListPager(req *http.Request) 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

@@ -18,6 +18,8 @@ import (
 
 // OutboundFirewallRulesClient contains the methods for the OutboundFirewallRules group.
 // Don't use this type directly, use NewOutboundFirewallRulesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type OutboundFirewallRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewOutboundFirewallRulesClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Create a outbound firewall rule with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - OutboundFirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the OutboundFirewallRulesClient.BeginCreateOrUpdate
@@ -66,8 +66,6 @@ func (client *OutboundFirewallRulesClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Create a outbound firewall rule with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *OutboundFirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, options *OutboundFirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OutboundFirewallRulesClient.BeginCreateOrUpdate"
@@ -113,16 +111,14 @@ func (client *OutboundFirewallRulesClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDelete - Deletes a outbound firewall rule with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - OutboundFirewallRulesClientBeginDeleteOptions contains the optional parameters for the OutboundFirewallRulesClient.BeginDelete
@@ -146,8 +142,6 @@ func (client *OutboundFirewallRulesClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Deletes a outbound firewall rule with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *OutboundFirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, outboundRuleFqdn string, options *OutboundFirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OutboundFirewallRulesClient.BeginDelete"
@@ -193,15 +187,13 @@ func (client *OutboundFirewallRulesClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an outbound firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - OutboundFirewallRulesClientGetOptions contains the optional parameters for the OutboundFirewallRulesClient.Get
@@ -252,8 +244,8 @@ func (client *OutboundFirewallRulesClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -268,8 +260,6 @@ func (client *OutboundFirewallRulesClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByServerPager - Gets all outbound firewall rules on a server.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - OutboundFirewallRulesClientListByServerOptions contains the optional parameters for the OutboundFirewallRulesClient.NewListByServerPager
@@ -317,8 +307,8 @@ func (client *OutboundFirewallRulesClient) listByServerCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

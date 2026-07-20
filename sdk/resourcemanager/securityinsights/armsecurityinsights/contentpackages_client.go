@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultContentPackagesClientVersion string = "2025-07-01-preview"
-
 // ContentPackagesClient contains the methods for the ContentPackages group.
 // Don't use this type directly, use NewContentPackagesClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *ContentPackagesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentPackagesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,7 +178,7 @@ func (client *ContentPackagesClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", defaultContentPackagesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

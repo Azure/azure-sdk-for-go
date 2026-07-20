@@ -18,6 +18,8 @@ import (
 
 // ResourceActionsClient contains the methods for the ResourceActions group.
 // Don't use this type directly, use NewResourceActionsClient() instead.
+//
+// Generated from API version 2024-09-01
 type ResourceActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewResourceActionsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginDeleteResources - Deletes resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceActionName - The resource action name.
 //   - properties - The properties supplied to the DeleteResources operation.
@@ -67,8 +67,6 @@ func (client *ResourceActionsClient) BeginDeleteResources(ctx context.Context, p
 
 // DeleteResources - Deletes resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ResourceActionsClient) deleteResources(ctx context.Context, providerNamespace string, resourceActionName string, properties ResourceManagementAction, options *ResourceActionsClientBeginDeleteResourcesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ResourceActionsClient.BeginDeleteResources"
@@ -110,8 +108,8 @@ func (client *ResourceActionsClient) deleteResourcesCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err

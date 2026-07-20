@@ -313,8 +313,6 @@ func (client *CredentialsClient) listByResourceGroupHandleResponse(resp *http.Re
 	return result, nil
 }
 
-// BeginSynchronize - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - options - CredentialsClientBeginSynchronizeOptions contains the optional parameters for the CredentialsClient.BeginSynchronize
@@ -336,7 +334,7 @@ func (client *CredentialsClient) BeginSynchronize(ctx context.Context, resourceG
 	}
 }
 
-// Synchronize - A long-running resource action.
+// Synchronize -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CredentialsClient) synchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*http.Response, error) {
 	var err error

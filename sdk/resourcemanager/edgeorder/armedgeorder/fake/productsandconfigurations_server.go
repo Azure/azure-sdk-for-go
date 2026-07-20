@@ -11,10 +11,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgeorder/armedgeorder"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // ProductsAndConfigurationsServer is a fake server for instances of the armedgeorder.ProductsAndConfigurationsClient type.
@@ -65,9 +65,7 @@ func (p *ProductsAndConfigurationsServerTransport) Do(req *http.Request) (*http.
 }
 
 func (p *ProductsAndConfigurationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -87,10 +85,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchToMethodFake(req *htt
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -118,11 +113,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListConfigurations
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armedgeorder.ProductsAndConfigurationsClientListConfigurationsOptions
 		if skipTokenParam != nil {
 			options = &armedgeorder.ProductsAndConfigurationsClientListConfigurationsOptions{
@@ -140,7 +131,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListConfigurations
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListConfigurationsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -167,16 +158,8 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamilie
 		if err != nil {
 			return nil, err
 		}
-		expandUnescaped, err := url.QueryUnescape(qp.Get("$expand"))
-		if err != nil {
-			return nil, err
-		}
-		expandParam := getOptional(expandUnescaped)
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		expandParam := getOptional(qp.Get("$expand"))
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesOptions
 		if expandParam != nil || skipTokenParam != nil {
 			options = &armedgeorder.ProductsAndConfigurationsClientListProductFamiliesOptions{
@@ -195,7 +178,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamilie
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListProductFamiliesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -218,11 +201,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamilie
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataOptions
 		if skipTokenParam != nil {
 			options = &armedgeorder.ProductsAndConfigurationsClientListProductFamiliesMetadataOptions{
@@ -240,7 +219,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamilie
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListProductFamiliesMetadataPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

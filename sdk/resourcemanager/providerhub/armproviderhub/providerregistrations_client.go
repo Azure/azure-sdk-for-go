@@ -18,6 +18,8 @@ import (
 
 // ProviderRegistrationsClient contains the methods for the ProviderRegistrations group.
 // Don't use this type directly, use NewProviderRegistrationsClient() instead.
+//
+// Generated from API version 2024-09-01
 type ProviderRegistrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewProviderRegistrationsClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Creates or updates the provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - properties - The provider registration properties supplied to the CreateOrUpdate operation.
 //   - options - ProviderRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProviderRegistrationsClient.BeginCreateOrUpdate
@@ -66,8 +66,6 @@ func (client *ProviderRegistrationsClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Creates or updates the provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, properties ProviderRegistration, options *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProviderRegistrationsClient.BeginCreateOrUpdate"
@@ -105,8 +103,8 @@ func (client *ProviderRegistrationsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -117,8 +115,6 @@ func (client *ProviderRegistrationsClient) createOrUpdateCreateRequest(ctx conte
 
 // Delete - Deletes a provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ProviderRegistrationsClientDeleteOptions contains the optional parameters for the ProviderRegistrationsClient.Delete
 //     method.
@@ -159,15 +155,13 @@ func (client *ProviderRegistrationsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GenerateOperations - Generates the operations api for the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ProviderRegistrationsClientGenerateOperationsOptions contains the optional parameters for the ProviderRegistrationsClient.GenerateOperations
 //     method.
@@ -209,8 +203,8 @@ func (client *ProviderRegistrationsClient) generateOperationsCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -226,8 +220,6 @@ func (client *ProviderRegistrationsClient) generateOperationsHandleResponse(resp
 
 // Get - Gets the provider registration details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ProviderRegistrationsClientGetOptions contains the optional parameters for the ProviderRegistrationsClient.Get
 //     method.
@@ -269,8 +261,8 @@ func (client *ProviderRegistrationsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -285,8 +277,6 @@ func (client *ProviderRegistrationsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListPager - Gets the list of the provider registrations in the subscription.
-//
-// Generated from API version 2024-09-01
 //   - options - ProviderRegistrationsClientListOptions contains the optional parameters for the ProviderRegistrationsClient.NewListPager
 //     method.
 func (client *ProviderRegistrationsClient) NewListPager(options *ProviderRegistrationsClientListOptions) *runtime.Pager[ProviderRegistrationsClientListResponse] {
@@ -324,8 +314,8 @@ func (client *ProviderRegistrationsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

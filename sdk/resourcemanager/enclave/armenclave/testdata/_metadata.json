@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Mission": "2026-03-01-preview"
   },
-  "emitterVersion": "0.14.3"
+  "emitterVersion": "0.15.0"
 }

@@ -18,6 +18,8 @@ import (
 
 // ConnectionMonitorTestsClient contains the methods for the ConnectionMonitorTests group.
 // Don't use this type directly, use NewConnectionMonitorTestsClient() instead.
+//
+// Generated from API version 2025-05-01
 type ConnectionMonitorTestsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewConnectionMonitorTestsClient(subscriptionID string, credential azcore.To
 // CreateOrUpdate - Creates or updates a connection monitor test with the specified name under the given subscription, resource
 // group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -96,8 +96,8 @@ func (client *ConnectionMonitorTestsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionMonitorTest); err != nil {
@@ -118,8 +118,6 @@ func (client *ConnectionMonitorTestsClient) createOrUpdateHandleResponse(resp *h
 // Delete - Deletes an existing connection monitor test with the specified name under the given subscription, resource group
 // and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -170,16 +168,14 @@ func (client *ConnectionMonitorTestsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing connection monitor test with the specified name under the given subscription, resource group and
 // peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -231,8 +227,8 @@ func (client *ConnectionMonitorTestsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -248,8 +244,6 @@ func (client *ConnectionMonitorTestsClient) getHandleResponse(resp *http.Respons
 
 // NewListByPeeringServicePager - Lists all connection monitor tests under the given subscription, resource group and peering
 // service.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - options - ConnectionMonitorTestsClientListByPeeringServiceOptions contains the optional parameters for the ConnectionMonitorTestsClient.NewListByPeeringServicePager
@@ -297,8 +291,8 @@ func (client *ConnectionMonitorTestsClient) listByPeeringServiceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

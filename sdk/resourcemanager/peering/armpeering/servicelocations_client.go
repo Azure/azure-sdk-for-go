@@ -18,6 +18,8 @@ import (
 
 // ServiceLocationsClient contains the methods for the ServiceLocations group.
 // Don't use this type directly, use NewServiceLocationsClient() instead.
+//
+// Generated from API version 2025-05-01
 type ServiceLocationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewServiceLocationsClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListPager - Lists all of the available locations for peering service.
-//
-// Generated from API version 2025-05-01
 //   - options - ServiceLocationsClientListOptions contains the optional parameters for the ServiceLocationsClient.NewListPager
 //     method.
 func (client *ServiceLocationsClient) NewListPager(options *ServiceLocationsClientListOptions) *runtime.Pager[ServiceLocationsClientListResponse] {
@@ -79,11 +79,11 @@ func (client *ServiceLocationsClient) listCreateRequest(ctx context.Context, opt
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
+	reqQP.Set("api-version", version20250501)
 	if options != nil && options.Country != nil {
 		reqQP.Set("country", *options.Country)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

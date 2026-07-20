@@ -18,6 +18,8 @@ import (
 
 // DefaultRolloutsClient contains the methods for the DefaultRollouts group.
 // Don't use this type directly, use NewDefaultRolloutsClient() instead.
+//
+// Generated from API version 2024-09-01
 type DefaultRolloutsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - properties - The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -67,8 +67,6 @@ func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, pr
 
 // CreateOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DefaultRolloutsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -122,8 +120,6 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 
 // Delete - Deletes the rollout resource. Rollout must be in terminal state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - options - DefaultRolloutsClientDeleteOptions contains the optional parameters for the DefaultRolloutsClient.Delete method.
@@ -168,15 +164,13 @@ func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, pr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the default rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - options - DefaultRolloutsClientGetOptions contains the optional parameters for the DefaultRolloutsClient.Get method.
@@ -222,8 +216,8 @@ func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, provi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -238,8 +232,6 @@ func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (Def
 }
 
 // NewListByProviderRegistrationPager - Gets the list of the rollouts for the given provider.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - DefaultRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the DefaultRolloutsClient.NewListByProviderRegistrationPager
 //     method.
@@ -282,8 +274,8 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -299,8 +291,6 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(re
 
 // Stop - Stops or cancels the rollout, if in progress.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - options - DefaultRolloutsClientStopOptions contains the optional parameters for the DefaultRolloutsClient.Stop method.
@@ -345,7 +335,7 @@ func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, prov
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

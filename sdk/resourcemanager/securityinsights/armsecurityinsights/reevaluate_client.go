@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultReevaluateClientVersion string = "2025-07-01-preview"
-
 // ReevaluateClient contains the methods for the Reevaluate group.
 // Don't use this type directly, use NewReevaluateClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *ReevaluateClient) recommendationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReevaluateClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

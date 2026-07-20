@@ -18,6 +18,8 @@ import (
 
 // TransparentDataEncryptionsClient contains the methods for the TransparentDataEncryptions group.
 // Don't use this type directly, use NewTransparentDataEncryptionsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type TransparentDataEncryptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTransparentDataEncryptionsClient(subscriptionID string, credential azcor
 
 // BeginCreateOrUpdate - Updates a logical database's transparent data encryption configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -70,8 +70,6 @@ func (client *TransparentDataEncryptionsClient) BeginCreateOrUpdate(ctx context.
 
 // CreateOrUpdate - Updates a logical database's transparent data encryption configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *TransparentDataEncryptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, parameters LogicalDatabaseTransparentDataEncryption, options *TransparentDataEncryptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TransparentDataEncryptionsClient.BeginCreateOrUpdate"
@@ -121,8 +119,8 @@ func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,8 +131,6 @@ func (client *TransparentDataEncryptionsClient) createOrUpdateCreateRequest(ctx 
 
 // Get - Gets a logical database's transparent data encryption.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -191,8 +187,8 @@ func (client *TransparentDataEncryptionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -207,8 +203,6 @@ func (client *TransparentDataEncryptionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByDatabasePager - Gets a list of the logical database's transparent data encryption.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -261,8 +255,8 @@ func (client *TransparentDataEncryptionsClient) listByDatabaseCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -278,8 +272,6 @@ func (client *TransparentDataEncryptionsClient) listByDatabaseHandleResponse(res
 
 // BeginResume - Resume ongoing logical database's Transparent Data Encryption scan configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -305,8 +297,6 @@ func (client *TransparentDataEncryptionsClient) BeginResume(ctx context.Context,
 
 // Resume - Resume ongoing logical database's Transparent Data Encryption scan configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *TransparentDataEncryptionsClient) resume(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginResumeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TransparentDataEncryptionsClient.BeginResume"
@@ -356,16 +346,14 @@ func (client *TransparentDataEncryptionsClient) resumeCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginSuspend - Suspend ongoing logical database's Transparent Data Encryption scan configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -391,8 +379,6 @@ func (client *TransparentDataEncryptionsClient) BeginSuspend(ctx context.Context
 
 // Suspend - Suspend ongoing logical database's Transparent Data Encryption scan configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *TransparentDataEncryptionsClient) suspend(ctx context.Context, resourceGroupName string, serverName string, databaseName string, tdeName TransparentDataEncryptionName, options *TransparentDataEncryptionsClientBeginSuspendOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TransparentDataEncryptionsClient.BeginSuspend"
@@ -442,8 +428,8 @@ func (client *TransparentDataEncryptionsClient) suspendCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -19,6 +19,10 @@ schedules:
     branches:
       include:
         - main
+    # This pipeline detects external @azure-tools/typespec-go emitter releases,
+    # which are not commits to this repo. Without always:true the scheduled run is
+    # skipped whenever main has not changed, silently stopping weekly regeneration.
+    always: true
 
 parameters:
   - name: UseLatestSpec

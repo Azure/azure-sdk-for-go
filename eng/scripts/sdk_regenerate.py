@@ -342,7 +342,10 @@ def regenerate_sdk(use_latest_spec: bool, service_filter: str, sdk_root: str, ty
         "typespec_go_commit_hash": get_typespec_go_commit_hash(typespec_go_root)
     }
     # get all tsp-location.yaml
-    commit_id = get_latest_commit_id()
+    # The latest azure-rest-api-specs commit is only needed to repoint each package
+    # at HEAD in latest-spec mode; skip the lookup otherwise so a released-emitter
+    # regeneration does not depend on an unrelated (and unused) GitHub request.
+    commit_id = get_latest_commit_id() if use_latest_spec else None
     sdk_resourcemanager_path = Path(sdk_root) / "sdk" / "resourcemanager"
     for item in sdk_resourcemanager_path.rglob("tsp-location.yaml"):
         package_folder = item.parent

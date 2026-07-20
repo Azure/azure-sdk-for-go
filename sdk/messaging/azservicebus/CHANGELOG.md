@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added `Client.NewListSessionsForQueuePager()` and `Client.NewListSessionsForSubscriptionPager()` to list the IDs of sessions in session-enabled queues and subscriptions. By default they list sessions that have active messages; set `SessionStateUpdatedAfter` to instead list sessions whose session state was updated after a given time. (PR#26688)
+
 ### Breaking Changes
 
 ### Bugs Fixed

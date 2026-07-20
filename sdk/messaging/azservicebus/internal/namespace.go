@@ -70,7 +70,10 @@ type NamespaceForAMQPLinks interface {
 	Check() error
 	NegotiateClaim(ctx context.Context, entityPath string) (context.CancelFunc, <-chan struct{}, error)
 	NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uint64, error)
-	NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error)
+	// NewRPCLink creates a management RPC link and returns the connection revision (id)
+	// it was created on. The revision can be passed to Recover so that a connection is only
+	// recreated if it has not already been recovered by another caller.
+	NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error)
 	GetEntityAudience(entityPath string) string
 
 	// Recover destroys the currently held AMQP connection and recreates it, if needed.
@@ -245,18 +248,19 @@ func (ns *Namespace) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, 
 }
 
 // NewRPCLink creates a new amqp-common *rpc.Link with the internally cached *amqp.Client.
-func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {
-	client, _, err := ns.GetAMQPClientImpl(ctx)
+func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
+	client, connID, err := ns.GetAMQPClientImpl(ctx)
 
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
-	return NewRPCLink(ctx, RPCLinkArgs{
+	link, err := NewRPCLink(ctx, RPCLinkArgs{
 		Client:   client,
 		Address:  managementPath,
 		LogEvent: exported.EventReceiver,
 	})
+	return link, connID, err
 }
 
 // Close closes the current cached client.

@@ -114,12 +114,13 @@ func (mr *MockNamespaceForAMQPLinksMockRecorder) NewAMQPSession(ctx interface{})
 }
 
 // NewRPCLink mocks base method.
-func (m *MockNamespaceForAMQPLinks) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {
+func (m *MockNamespaceForAMQPLinks) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewRPCLink", ctx, managementPath)
 	ret0, _ := ret[0].(amqpwrap.RPCLink)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(uint64)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // NewRPCLink indicates an expected call of NewRPCLink.

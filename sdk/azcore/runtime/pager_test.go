@@ -234,6 +234,77 @@ ExitLoop:
 	require.Equal(t, 2, pageCount)
 }
 
+func TestPagerFirstPageRetryAfterError(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest), mock.WithBody([]byte(`{"message": "didn't work", "code": "PageError"}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [1, 2, 3]}`)))
+	pl := exported.NewPipeline(srv)
+
+	pager := NewPager(PagingHandler[PageResponse]{
+		More: func(current PageResponse) bool {
+			return current.NextPage
+		},
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			return pageResponseFetcher(ctx, pl, srv.URL())
+		},
+	})
+	require.True(t, pager.firstPage)
+
+	// the first page fails, so the pager must not advance
+	page, err := pager.NextPage(context.Background())
+	require.Error(t, err)
+	require.Empty(t, page)
+	require.True(t, pager.More())
+	require.Nil(t, pager.current)
+
+	// a second call sends the same request again and succeeds
+	page, err = pager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, []int{1, 2, 3}, page.Values)
+	require.False(t, pager.More())
+}
+
+func TestPagerSecondPageRetryAfterError(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [1, 2], "next": true}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest), mock.WithBody([]byte(`{"message": "didn't work", "code": "PageError"}`)))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`{"values": [3, 4]}`)))
+	pl := exported.NewPipeline(srv)
+
+	pager := NewPager(PagingHandler[PageResponse]{
+		More: func(current PageResponse) bool {
+			return current.NextPage
+		},
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			return pageResponseFetcher(ctx, pl, srv.URL())
+		},
+	})
+	require.True(t, pager.firstPage)
+
+	page, err := pager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, []int{1, 2}, page.Values)
+	require.True(t, page.NextPage)
+
+	// the second page fails, so the pager keeps the first page as its current page
+	page, err = pager.NextPage(context.Background())
+	require.Error(t, err)
+	var respErr *exported.ResponseError
+	require.True(t, errors.As(err, &respErr))
+	require.Equal(t, "PageError", respErr.ErrorCode)
+	require.True(t, pager.More())
+	require.NotNil(t, pager.current)
+	require.Equal(t, []int{1, 2}, pager.current.Values)
+
+	// a third call sends the same request again and succeeds
+	page, err = pager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, []int{3, 4}, page.Values)
+	require.False(t, pager.More())
+}
+
 func TestPagerResponderError(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()

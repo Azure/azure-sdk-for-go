@@ -74,16 +74,76 @@ def find_typespec_go_tgz(typespec_go_root: str) -> Path:
     raise FileNotFoundError("Cannot find .tgz for typespec-go")
 
 
-def update_dev_dependencies(emitter_package: dict, source_deps: dict):
-    """Update devDependencies in emitter_package with versions from source_deps."""
+def update_dev_dependencies(emitter_package: dict, source_deps: dict) -> List[str]:
+    """Update devDependencies in emitter_package with versions from source_deps.
+
+    Returns the list of devDependency names that were not found in source_deps
+    (i.e. gen-time libraries outside the emitter's own dependency closure, such as
+    @azure-tools/typespec-azure-portal-core and @azure-tools/typespec-liftr-base),
+    so the caller can resolve their versions separately."""
+    unresolved: List[str] = []
     if "devDependencies" not in emitter_package:
-        return
+        return unresolved
     for package_name in emitter_package["devDependencies"].keys():
         if package_name in source_deps:
             emitter_package["devDependencies"][package_name] = source_deps[package_name]
             logging.info(f"Updated {package_name} to version {source_deps[package_name]}")
         else:
-            logging.info(f"Package {package_name} not found in dependencies, keeping existing version")
+            unresolved.append(package_name)
+    return unresolved
+
+
+def get_workspace_package_version(typespec_go_root: str, package_name: str) -> Optional[str]:
+    """In dev mode, read a sibling workspace package's version from the checked-out
+    typespec-azure monorepo. Workspace package directories drop the scope prefix, so
+    `@azure-tools/typespec-azure-portal-core` lives at
+    `packages/typespec-azure-portal-core`. Returns None if the package is not part of
+    the monorepo (for example the external @azure-tools/typespec-liftr-base)."""
+    if not typespec_go_root:
+        return None
+    dir_name = package_name.split("/", 1)[-1]
+    candidate = Path(typespec_go_root).parent / dir_name / "package.json"
+    if not candidate.exists():
+        return None
+    try:
+        with open(candidate, "r", encoding="utf-8") as f:
+            return json.load(f).get("version")
+    except Exception as e:
+        logging.warning(f"Could not read workspace version for {package_name} at {candidate}: {e}")
+        return None
+
+
+def get_registry_latest_version(package_name: str) -> Optional[str]:
+    """Return the latest published version of a package from the npm registry, or None."""
+    try:
+        url = f"https://registry.npmjs.org/{package_name}/latest"
+        with urllib.request.urlopen(url) as response:
+            info = json.loads(response.read().decode())
+        return info.get("version")
+    except Exception as e:
+        logging.warning(f"Could not fetch latest version of {package_name} from npm registry: {e}")
+        return None
+
+
+def resolve_extra_dependencies(emitter_package: dict, unresolved: List[str], use_dev_package: bool, typespec_go_root: str):
+    """Resolve versions for gen-time devDependencies that are not part of the emitter's
+    own dependency closure (for example @azure-tools/typespec-azure-portal-core and
+    @azure-tools/typespec-liftr-base). These libraries are imported directly by some
+    specs and released in lockstep with the rest of the typespec-azure wave, so pinning
+    them to a stale version breaks generation against the current wave. Prefer the
+    checked-out workspace version in dev mode and fall back to the latest published
+    version otherwise."""
+    for package_name in unresolved:
+        version = None
+        if use_dev_package:
+            version = get_workspace_package_version(typespec_go_root, package_name)
+        if version is None:
+            version = get_registry_latest_version(package_name)
+        if version is None:
+            logging.info(f"Package {package_name} not found in dependencies or registry, keeping existing version")
+            continue
+        emitter_package["devDependencies"][package_name] = version
+        logging.info(f"Resolved extra dependency {package_name} to version {version}")
 
 
 def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package: bool):
@@ -108,7 +168,8 @@ def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package
         dev_deps = get_packed_tgz_deps(typespec_go_tgz)
 
         # Update devDependencies in emitter_package
-        update_dev_dependencies(emitter_package, dev_deps)
+        unresolved = update_dev_dependencies(emitter_package, dev_deps)
+        resolve_extra_dependencies(emitter_package, unresolved, use_dev_package=True, typespec_go_root=typespec_go_root)
 
         # Update emitter-package.json to use the dev package path
         emitter_package["dependencies"]["@azure-tools/typespec-go"] = typespec_go_tgz.absolute().as_posix()
@@ -126,7 +187,8 @@ def update_emitter_package(sdk_root: str, typespec_go_root: str, use_dev_package
 
         # Update devDependencies in emitter_package
         dev_deps = package_info["devDependencies"]
-        update_dev_dependencies(emitter_package, dev_deps)
+        unresolved = update_dev_dependencies(emitter_package, dev_deps)
+        resolve_extra_dependencies(emitter_package, unresolved, use_dev_package=False, typespec_go_root=typespec_go_root)
     
     # Print the complete emitter_package before writing
     logging.info("Complete emitter-package.json content:")

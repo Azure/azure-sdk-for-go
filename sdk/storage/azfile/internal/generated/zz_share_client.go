@@ -20,7 +20,7 @@ import (
 // ShareClient contains the methods for the Share group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-06-06
+// Generated from API version 2026-10-06
 type ShareClient struct {
 	internal *azcore.Client
 	url      string
@@ -76,7 +76,7 @@ func (client *ShareClient) acquireLeaseCreateRequest(ctx context.Context, option
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -165,7 +165,7 @@ func (client *ShareClient) breakLeaseCreateRequest(ctx context.Context, options 
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -261,7 +261,7 @@ func (client *ShareClient) changeLeaseCreateRequest(ctx context.Context, leaseID
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -380,7 +380,7 @@ func (client *ShareClient) createCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.Quota != nil {
 		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -491,7 +491,7 @@ func (client *ShareClient) createPermissionCreateRequest(ctx context.Context, pe
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, permission); err != nil {
 		return nil, err
@@ -570,7 +570,7 @@ func (client *ShareClient) createSnapshotCreateRequest(ctx context.Context, opti
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -658,7 +658,7 @@ func (client *ShareClient) deleteCreateRequest(ctx context.Context, options *Sha
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -742,7 +742,7 @@ func (client *ShareClient) getAccessPolicyCreateRequest(ctx context.Context, opt
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -828,7 +828,7 @@ func (client *ShareClient) getPermissionCreateRequest(ctx context.Context, fileP
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -902,7 +902,7 @@ func (client *ShareClient) getPropertiesCreateRequest(ctx context.Context, optio
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1127,7 +1127,7 @@ func (client *ShareClient) getStatisticsCreateRequest(ctx context.Context, optio
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1212,7 +1212,7 @@ func (client *ShareClient) releaseLeaseCreateRequest(ctx context.Context, leaseI
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1294,7 +1294,7 @@ func (client *ShareClient) renewLeaseCreateRequest(ctx context.Context, leaseID 
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1378,7 +1378,7 @@ func (client *ShareClient) restoreCreateRequest(ctx context.Context, options *Sh
 	if options != nil && options.FileRequestIntent != nil {
 		req.Raw().Header["x-ms-file-request-intent"] = []string{string(*options.FileRequestIntent)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1492,7 +1492,7 @@ func (client *ShareClient) setAccessPolicyCreateRequest(ctx context.Context, sha
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	type wrapper struct {
 		XMLName  xml.Name             `xml:"SignedIdentifiers"`
 		ShareACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
@@ -1585,7 +1585,7 @@ func (client *ShareClient) setMetadataCreateRequest(ctx context.Context, options
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 
@@ -1693,7 +1693,7 @@ func (client *ShareClient) setPropertiesCreateRequest(ctx context.Context, optio
 	if options != nil && options.Quota != nil {
 		req.Raw().Header["x-ms-share-quota"] = []string{strconv.FormatInt(int64(*options.Quota), 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20260606}
+	req.Raw().Header["x-ms-version"] = []string{version20261006}
 	return req, nil
 }
 

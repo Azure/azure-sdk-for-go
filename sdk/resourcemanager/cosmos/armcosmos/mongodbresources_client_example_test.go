@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 	"time"
 )
@@ -63,13 +63,13 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse{
-	// 	MongoDBCollectionGetResults: &armcosmos.MongoDBCollectionGetResults{
+	// 	MongoDBCollectionGetResults: armcosmos.MongoDBCollectionGetResults{
 	// 		Name: to.Ptr("collectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
@@ -141,13 +141,13 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBCollection_cosmosDbMo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse{
-	// 	MongoDBCollectionGetResults: &armcosmos.MongoDBCollectionGetResults{
+	// 	MongoDBCollectionGetResults: armcosmos.MongoDBCollectionGetResults{
 	// 		Name: to.Ptr("collectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
@@ -213,13 +213,13 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMong
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse{
-	// 	MongoDBDatabaseGetResults: &armcosmos.MongoDBDatabaseGetResults{
+	// 	MongoDBDatabaseGetResults: armcosmos.MongoDBDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
@@ -267,13 +267,13 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoDBDatabase_cosmosDbMong
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoDBDatabaseResponse{
-	// 	MongoDBDatabaseGetResults: &armcosmos.MongoDBDatabaseGetResults{
+	// 	MongoDBDatabaseGetResults: armcosmos.MongoDBDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
@@ -329,13 +329,13 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoRoleDefinitionResponse{
-	// 	MongoRoleDefinitionGetResults: &armcosmos.MongoRoleDefinitionGetResults{
+	// 	MongoRoleDefinitionGetResults: armcosmos.MongoRoleDefinitionGetResults{
 	// 		Name: to.Ptr("myMongoDbRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongoDbRoleDefinitionId"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myMongoDbRoleDefinitionId"),
@@ -397,13 +397,13 @@ func ExampleMongoDBResourcesClient_BeginCreateUpdateMongoUserDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientCreateUpdateMongoUserDefinitionResponse{
-	// 	MongoUserDefinitionGetResults: &armcosmos.MongoUserDefinitionGetResults{
+	// 	MongoUserDefinitionGetResults: armcosmos.MongoUserDefinitionGetResults{
 	// 		Name: to.Ptr("myUserName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbUserDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
@@ -440,7 +440,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBCollection() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -461,7 +461,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoDBDatabase() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -482,7 +482,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -508,7 +508,7 @@ func ExampleMongoDBResourcesClient_BeginDeleteMongoUserDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -536,7 +536,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBCollectionResponse{
-	// 	MongoDBCollectionGetResults: &armcosmos.MongoDBCollectionGetResults{
+	// 	MongoDBCollectionGetResults: armcosmos.MongoDBCollectionGetResults{
 	// 		Name: to.Ptr("collectionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName"),
@@ -591,7 +591,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBCollectionThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName/throughputSettings/default"),
@@ -633,7 +633,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabase() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBDatabaseResponse{
-	// 	MongoDBDatabaseGetResults: &armcosmos.MongoDBDatabaseGetResults{
+	// 	MongoDBDatabaseGetResults: armcosmos.MongoDBDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName"),
@@ -671,7 +671,7 @@ func ExampleMongoDBResourcesClient_GetMongoDBDatabaseThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/throughputSettings/default"),
@@ -713,7 +713,7 @@ func ExampleMongoDBResourcesClient_GetMongoRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoRoleDefinitionResponse{
-	// 	MongoRoleDefinitionGetResults: &armcosmos.MongoRoleDefinitionGetResults{
+	// 	MongoRoleDefinitionGetResults: armcosmos.MongoRoleDefinitionGetResults{
 	// 		Name: to.Ptr("myMongoRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbRoleDefinitions/myMongoDbRoleDefinitionId"),
@@ -763,7 +763,7 @@ func ExampleMongoDBResourcesClient_GetMongoUserDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientGetMongoUserDefinitionResponse{
-	// 	MongoUserDefinitionGetResults: &armcosmos.MongoUserDefinitionGetResults{
+	// 	MongoUserDefinitionGetResults: armcosmos.MongoUserDefinitionGetResults{
 	// 		Name: to.Ptr("myUserId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbUserDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/mongodbUserDefinitions/myUserId"),
@@ -802,13 +802,13 @@ func ExampleMongoDBResourcesClient_BeginListMongoDBCollectionPartitionMerge() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
 	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
 	// 			{
 	// 				ID: to.Ptr("0"),
@@ -1076,13 +1076,13 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -1117,13 +1117,13 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBCollectionToManualThroughp
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBCollectionToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -1155,13 +1155,13 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -1196,13 +1196,13 @@ func ExampleMongoDBResourcesClient_BeginMigrateMongoDBDatabaseToManualThroughput
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -1259,13 +1259,13 @@ func ExampleMongoDBResourcesClient_BeginMongoDBContainerRedistributeThroughput()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -1326,13 +1326,13 @@ func ExampleMongoDBResourcesClient_BeginMongoDBContainerRetrieveThroughputDistri
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -1372,13 +1372,13 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabasePartitionMerge() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMongoDBDatabasePartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
 	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
 	// 			{
 	// 				ID: to.Ptr("0"),
@@ -1459,13 +1459,13 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRedistributeThroughput() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -1526,13 +1526,13 @@ func ExampleMongoDBResourcesClient_BeginMongoDBDatabaseRetrieveThroughputDistrib
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -1572,13 +1572,13 @@ func ExampleMongoDBResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientRetrieveContinuousBackupInformationResponse{
-	// 	BackupInformation: &armcosmos.BackupInformation{
+	// 	BackupInformation: armcosmos.BackupInformation{
 	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
 	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
 	// 		},
@@ -1611,13 +1611,13 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBCollectionThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientUpdateMongoDBCollectionThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/mongodbCollections/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/mongodbCollections/collectionName/throughputSettings/default"),
@@ -1663,13 +1663,13 @@ func ExampleMongoDBResourcesClient_BeginUpdateMongoDBDatabaseThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.MongoDBResourcesClientUpdateMongoDBDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/mongodbDatabases/databaseName/throughputSettings/default"),

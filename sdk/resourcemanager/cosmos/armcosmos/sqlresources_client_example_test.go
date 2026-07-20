@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos"
 	"log"
 	"time"
 )
@@ -44,13 +44,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateClientEncryptionKeyResponse{
-	// 	ClientEncryptionKeyGetResults: &armcosmos.ClientEncryptionKeyGetResults{
+	// 	ClientEncryptionKeyGetResults: armcosmos.ClientEncryptionKeyGetResults{
 	// 		Name: to.Ptr("cekName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
@@ -242,13 +242,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
 	// 		Name: to.Ptr("containerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
@@ -453,13 +453,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlContaine
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		Name: to.Ptr("containerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
@@ -591,13 +591,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer_cosmosDbSqlMaterial
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/mvContainerName"),
 	// 		Name: to.Ptr("mvContainerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
@@ -678,13 +678,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse{
-	// 	SQLDatabaseGetResults: &armcosmos.SQLDatabaseGetResults{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
@@ -735,13 +735,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase_cosmosDbSqlDatabaseR
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLDatabaseResponse{
-	// 	SQLDatabaseGetResults: &armcosmos.SQLDatabaseGetResults{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
@@ -783,13 +783,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLRoleAssignmentResponse{
-	// 	SQLRoleAssignmentGetResults: &armcosmos.SQLRoleAssignmentGetResults{
+	// 	SQLRoleAssignmentGetResults: armcosmos.SQLRoleAssignmentGetResults{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
@@ -837,13 +837,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLRoleDefinitionResponse{
-	// 	SQLRoleDefinitionGetResults: &armcosmos.SQLRoleDefinitionGetResults{
+	// 	SQLRoleDefinitionGetResults: armcosmos.SQLRoleDefinitionGetResults{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
@@ -892,13 +892,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLStoredProcedureResponse{
-	// 	SQLStoredProcedureGetResults: &armcosmos.SQLStoredProcedureGetResults{
+	// 	SQLStoredProcedureGetResults: armcosmos.SQLStoredProcedureGetResults{
 	// 		Name: to.Ptr("storedProcedureName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlStoredProcedures"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
@@ -942,13 +942,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLTriggerResponse{
-	// 	SQLTriggerGetResults: &armcosmos.SQLTriggerGetResults{
+	// 	SQLTriggerGetResults: armcosmos.SQLTriggerGetResults{
 	// 		Name: to.Ptr("triggerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlTriggers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
@@ -992,13 +992,13 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientCreateUpdateSQLUserDefinedFunctionResponse{
-	// 	SQLUserDefinedFunctionGetResults: &armcosmos.SQLUserDefinedFunctionGetResults{
+	// 	SQLUserDefinedFunctionGetResults: armcosmos.SQLUserDefinedFunctionGetResults{
 	// 		Name: to.Ptr("userDefinedFunctionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlUserDefinedFunctions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
@@ -1032,7 +1032,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1053,7 +1053,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1074,7 +1074,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1100,7 +1100,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1126,7 +1126,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1147,7 +1147,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1168,7 +1168,7 @@ func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1191,7 +1191,7 @@ func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetClientEncryptionKeyResponse{
-	// 	ClientEncryptionKeyGetResults: &armcosmos.ClientEncryptionKeyGetResults{
+	// 	ClientEncryptionKeyGetResults: armcosmos.ClientEncryptionKeyGetResults{
 	// 		Name: to.Ptr("cekName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/clientEncryptionKey"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/accountName/sqlDatabases/databaseName/clientEncryptionKeys/cekName"),
@@ -1234,7 +1234,7 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLContainerResponse{
-	// 	SQLContainerGetResults: &armcosmos.SQLContainerGetResults{
+	// 	SQLContainerGetResults: armcosmos.SQLContainerGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/containers/containerName"),
 	// 		Name: to.Ptr("containerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers"),
@@ -1442,7 +1442,7 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLContainerThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/throughputSettings"),
@@ -1507,7 +1507,7 @@ func ExampleSQLResourcesClient_GetSQLDatabase() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLDatabaseResponse{
-	// 	SQLDatabaseGetResults: &armcosmos.SQLDatabaseGetResults{
+	// 	SQLDatabaseGetResults: armcosmos.SQLDatabaseGetResults{
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName"),
@@ -1547,7 +1547,7 @@ func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),
@@ -1589,7 +1589,7 @@ func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLRoleAssignmentResponse{
-	// 	SQLRoleAssignmentGetResults: &armcosmos.SQLRoleAssignmentGetResults{
+	// 	SQLRoleAssignmentGetResults: armcosmos.SQLRoleAssignmentGetResults{
 	// 		Name: to.Ptr("myRoleAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleAssignments/myRoleAssignmentId"),
@@ -1621,7 +1621,7 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLRoleDefinitionResponse{
-	// 	SQLRoleDefinitionGetResults: &armcosmos.SQLRoleDefinitionGetResults{
+	// 	SQLRoleDefinitionGetResults: armcosmos.SQLRoleDefinitionGetResults{
 	// 		Name: to.Ptr("myRoleDefinitionId"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlRoleDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
@@ -1666,7 +1666,7 @@ func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLStoredProcedureResponse{
-	// 	SQLStoredProcedureGetResults: &armcosmos.SQLStoredProcedureGetResults{
+	// 	SQLStoredProcedureGetResults: armcosmos.SQLStoredProcedureGetResults{
 	// 		Name: to.Ptr("storedProcedureName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlStoredProcedures"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlStoredProcedures/storedProcedureName"),
@@ -1702,7 +1702,7 @@ func ExampleSQLResourcesClient_GetSQLTrigger() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLTriggerResponse{
-	// 	SQLTriggerGetResults: &armcosmos.SQLTriggerGetResults{
+	// 	SQLTriggerGetResults: armcosmos.SQLTriggerGetResults{
 	// 		Name: to.Ptr("triggerName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlTriggers"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlTriggers/triggerName"),
@@ -1740,7 +1740,7 @@ func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientGetSQLUserDefinedFunctionResponse{
-	// 	SQLUserDefinedFunctionGetResults: &armcosmos.SQLUserDefinedFunctionGetResults{
+	// 	SQLUserDefinedFunctionGetResults: armcosmos.SQLUserDefinedFunctionGetResults{
 	// 		Name: to.Ptr("userDefinedFunctionName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/sqlUserDefinedFunctions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/sqlUserDefinedFunctions/userDefinedFunctionName"),
@@ -1849,13 +1849,13 @@ func ExampleSQLResourcesClient_BeginListSQLContainerPartitionMerge() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientListSQLContainerPartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
 	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
 	// 			{
 	// 				ID: to.Ptr("0"),
@@ -2523,13 +2523,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2564,13 +2564,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLContainerToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2602,13 +2602,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToAutoscaleResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2643,13 +2643,13 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
 	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
@@ -2683,13 +2683,13 @@ func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientRetrieveContinuousBackupInformationResponse{
-	// 	BackupInformation: &armcosmos.BackupInformation{
+	// 	BackupInformation: armcosmos.BackupInformation{
 	// 		ContinuousBackupInformation: &armcosmos.ContinuousBackupInformation{
 	// 			LatestRestorableTimestamp: to.Ptr("2021-02-05T02:40:50Z"),
 	// 		},
@@ -2739,13 +2739,13 @@ func ExampleSQLResourcesClient_BeginSQLContainerRedistributeThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLContainerRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -2806,13 +2806,13 @@ func ExampleSQLResourcesClient_BeginSQLContainerRetrieveThroughputDistribution()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 				PhysicalPartitionThroughputInfo: []*armcosmos.PhysicalPartitionThroughputInfoResource{
@@ -2852,13 +2852,13 @@ func ExampleSQLResourcesClient_BeginSQLDatabasePartitionMerge() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLDatabasePartitionMergeResponse{
-	// 	PhysicalPartitionStorageInfoCollection: &armcosmos.PhysicalPartitionStorageInfoCollection{
+	// 	PhysicalPartitionStorageInfoCollection: armcosmos.PhysicalPartitionStorageInfoCollection{
 	// 		PhysicalPartitionStorageInfoCollection: []*armcosmos.PhysicalPartitionStorageInfo{
 	// 			{
 	// 				ID: to.Ptr("0"),
@@ -2931,13 +2931,13 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRedistributeThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLDatabaseRedistributeThroughputResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 			},
@@ -2976,13 +2976,13 @@ func ExampleSQLResourcesClient_BeginSQLDatabaseRetrieveThroughputDistribution() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse{
-	// 	PhysicalPartitionThroughputInfoResult: &armcosmos.PhysicalPartitionThroughputInfoResult{
+	// 	PhysicalPartitionThroughputInfoResult: armcosmos.PhysicalPartitionThroughputInfoResult{
 	// 		Properties: &armcosmos.PhysicalPartitionThroughputInfoResultProperties{
 	// 			Resource: &armcosmos.PhysicalPartitionThroughputInfoResultPropertiesResource{
 	// 			},
@@ -3016,13 +3016,13 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientUpdateSQLContainerThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/sqlContainers/containerName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/sqlContainers/throughputSettings"),
@@ -3091,13 +3091,13 @@ func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.SQLResourcesClientUpdateSQLDatabaseThroughputResponse{
-	// 	ThroughputSettingsGetResults: &armcosmos.ThroughputSettingsGetResults{
+	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/sqlDatabases/throughputSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/sqlDatabases/databaseName/throughputSettings/default"),

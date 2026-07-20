@@ -18,6 +18,8 @@ import (
 
 // NetworkPacketBrokersClient contains the methods for the NetworkPacketBrokers group.
 // Don't use this type directly, use NewNetworkPacketBrokersClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkPacketBrokersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkPacketBrokersClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreate - Creates a Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *NetworkPacketBrokersClient) BeginCreate(ctx context.Context, resou
 
 // Create - Creates a Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkPacketBrokersClient) create(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, body NetworkPacketBroker, options *NetworkPacketBrokersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkPacketBrokersClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *NetworkPacketBrokersClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *NetworkPacketBrokersClient) createCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - options - NetworkPacketBrokersClientBeginDeleteOptions contains the optional parameters for the NetworkPacketBrokersClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *NetworkPacketBrokersClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Deletes Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkPacketBrokersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, options *NetworkPacketBrokersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkPacketBrokersClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *NetworkPacketBrokersClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves details of this Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - options - NetworkPacketBrokersClientGetOptions contains the optional parameters for the NetworkPacketBrokersClient.Get
@@ -245,8 +237,8 @@ func (client *NetworkPacketBrokersClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -261,8 +253,6 @@ func (client *NetworkPacketBrokersClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByResourceGroupPager - Displays NetworkPacketBrokers list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkPacketBrokersClientListByResourceGroupOptions contains the optional parameters for the NetworkPacketBrokersClient.NewListByResourceGroupPager
 //     method.
@@ -305,8 +295,8 @@ func (client *NetworkPacketBrokersClient) listByResourceGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *NetworkPacketBrokersClient) listByResourceGroupHandleResponse(resp
 }
 
 // NewListBySubscriptionPager - Displays Network Packet Brokers list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkPacketBrokersClientListBySubscriptionOptions contains the optional parameters for the NetworkPacketBrokersClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkPacketBrokersClient) NewListBySubscriptionPager(options *NetworkPacketBrokersClientListBySubscriptionOptions) *runtime.Pager[NetworkPacketBrokersClientListBySubscriptionResponse] {
@@ -360,8 +348,8 @@ func (client *NetworkPacketBrokersClient) listBySubscriptionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -377,8 +365,6 @@ func (client *NetworkPacketBrokersClient) listBySubscriptionHandleResponse(resp 
 
 // BeginUpdate - API to update certain properties of the Network Packet Broker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - body - Network Packet Broker properties to update.
@@ -403,8 +389,6 @@ func (client *NetworkPacketBrokersClient) BeginUpdate(ctx context.Context, resou
 
 // Update - API to update certain properties of the Network Packet Broker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkPacketBrokersClient) update(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, body NetworkPacketBrokerPatch, options *NetworkPacketBrokersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkPacketBrokersClient.BeginUpdate"
@@ -446,8 +430,8 @@ func (client *NetworkPacketBrokersClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

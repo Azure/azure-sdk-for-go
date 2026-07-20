@@ -18,6 +18,8 @@ import (
 
 // NetworkDevicesClient contains the methods for the NetworkDevices group.
 // Don't use this type directly, use NewNetworkDevicesClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkDevicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkDevicesClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreate - Create a Network Device resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *NetworkDevicesClient) BeginCreate(ctx context.Context, resourceGro
 
 // Create - Create a Network Device resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) create(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevice, options *NetworkDevicesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *NetworkDevicesClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *NetworkDevicesClient) createCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkDevicesClientBeginDeleteOptions contains the optional parameters for the NetworkDevicesClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *NetworkDevicesClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *NetworkDevicesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the Network Device resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkDevicesClientGetOptions contains the optional parameters for the NetworkDevicesClient.Get method.
@@ -244,8 +236,8 @@ func (client *NetworkDevicesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *NetworkDevicesClient) getHandleResponse(resp *http.Response) (Netw
 }
 
 // NewListByResourceGroupPager - List all the Network Device resources in a given resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkDevicesClientListByResourceGroupOptions contains the optional parameters for the NetworkDevicesClient.NewListByResourceGroupPager
 //     method.
@@ -304,8 +294,8 @@ func (client *NetworkDevicesClient) listByResourceGroupCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *NetworkDevicesClient) listByResourceGroupHandleResponse(resp *http
 }
 
 // NewListBySubscriptionPager - List all the Network Device resources in a given subscription.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkDevicesClientListBySubscriptionOptions contains the optional parameters for the NetworkDevicesClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkDevicesClient) NewListBySubscriptionPager(options *NetworkDevicesClientListBySubscriptionOptions) *runtime.Pager[NetworkDevicesClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *NetworkDevicesClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *NetworkDevicesClient) listBySubscriptionHandleResponse(resp *http.
 
 // BeginReboot - Reboot the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - body - Request payload.
@@ -402,8 +388,6 @@ func (client *NetworkDevicesClient) BeginReboot(ctx context.Context, resourceGro
 
 // Reboot - Reboot the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) reboot(ctx context.Context, resourceGroupName string, networkDeviceName string, body RebootProperties, options *NetworkDevicesClientBeginRebootOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginReboot"
@@ -445,8 +429,8 @@ func (client *NetworkDevicesClient) rebootCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -457,8 +441,6 @@ func (client *NetworkDevicesClient) rebootCreateRequest(ctx context.Context, res
 
 // BeginRefreshConfiguration - Refreshes the configuration the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkDevicesClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkDevicesClient.BeginRefreshConfiguration
@@ -482,8 +464,6 @@ func (client *NetworkDevicesClient) BeginRefreshConfiguration(ctx context.Contex
 
 // RefreshConfiguration - Refreshes the configuration the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) refreshConfiguration(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginRefreshConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginRefreshConfiguration"
@@ -525,8 +505,8 @@ func (client *NetworkDevicesClient) refreshConfigurationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -536,8 +516,6 @@ func (client *NetworkDevicesClient) refreshConfigurationCreateRequest(ctx contex
 // Updates the Network Device to use the latest certificates. Does not generate new certificates. Allows network devices missed
 // during a previous certificate rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkDevicesClientBeginResyncCertificatesOptions contains the optional parameters for the NetworkDevicesClient.BeginResyncCertificates
@@ -564,8 +542,6 @@ func (client *NetworkDevicesClient) BeginResyncCertificates(ctx context.Context,
 // Updates the Network Device to use the latest certificates. Does not generate new certificates. Allows network devices missed
 // during a previous certificate rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) resyncCertificates(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginResyncCertificatesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginResyncCertificates"
@@ -607,8 +583,8 @@ func (client *NetworkDevicesClient) resyncCertificatesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -618,8 +594,6 @@ func (client *NetworkDevicesClient) resyncCertificatesCreateRequest(ctx context.
 // Updates the Network Device to use the latest passwords. Does not generate new passwords. Allows network devices missed
 // during a previous password rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - options - NetworkDevicesClientBeginResyncPasswordsOptions contains the optional parameters for the NetworkDevicesClient.BeginResyncPasswords
@@ -646,8 +620,6 @@ func (client *NetworkDevicesClient) BeginResyncPasswords(ctx context.Context, re
 // Updates the Network Device to use the latest passwords. Does not generate new passwords. Allows network devices missed
 // during a previous password rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) resyncPasswords(ctx context.Context, resourceGroupName string, networkDeviceName string, options *NetworkDevicesClientBeginResyncPasswordsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginResyncPasswords"
@@ -689,16 +661,14 @@ func (client *NetworkDevicesClient) resyncPasswordsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRunRoCommand - Run the RO Command on the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - body - Request the command.
@@ -723,8 +693,6 @@ func (client *NetworkDevicesClient) BeginRunRoCommand(ctx context.Context, resou
 
 // RunRoCommand - Run the RO Command on the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) runRoCommand(ctx context.Context, resourceGroupName string, networkDeviceName string, body DeviceRoCommand, options *NetworkDevicesClientBeginRunRoCommandOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginRunRoCommand"
@@ -766,8 +734,8 @@ func (client *NetworkDevicesClient) runRoCommandCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -778,8 +746,6 @@ func (client *NetworkDevicesClient) runRoCommandCreateRequest(ctx context.Contex
 
 // BeginRunRwCommand - Run the RW Command on the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - body - Request the command.
@@ -804,8 +770,6 @@ func (client *NetworkDevicesClient) BeginRunRwCommand(ctx context.Context, resou
 
 // RunRwCommand - Run the RW Command on the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) runRwCommand(ctx context.Context, resourceGroupName string, networkDeviceName string, body DeviceRwCommand, options *NetworkDevicesClientBeginRunRwCommandOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginRunRwCommand"
@@ -847,8 +811,8 @@ func (client *NetworkDevicesClient) runRwCommandCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -859,8 +823,6 @@ func (client *NetworkDevicesClient) runRwCommandCreateRequest(ctx context.Contex
 
 // BeginUpdate - Update certain properties of the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - body - Network Device properties to update.
@@ -885,8 +847,6 @@ func (client *NetworkDevicesClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Update certain properties of the Network Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) update(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevicePatchParameters, options *NetworkDevicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginUpdate"
@@ -928,8 +888,8 @@ func (client *NetworkDevicesClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -940,8 +900,6 @@ func (client *NetworkDevicesClient) updateCreateRequest(ctx context.Context, res
 
 // BeginUpdateAdministrativeState - Updates the Administrative state of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - body - Request payload.
@@ -966,8 +924,6 @@ func (client *NetworkDevicesClient) BeginUpdateAdministrativeState(ctx context.C
 
 // UpdateAdministrativeState - Updates the Administrative state of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateDeviceAdministrativeState, options *NetworkDevicesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginUpdateAdministrativeState"
@@ -1009,8 +965,8 @@ func (client *NetworkDevicesClient) updateAdministrativeStateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -1021,8 +977,6 @@ func (client *NetworkDevicesClient) updateAdministrativeStateCreateRequest(ctx c
 
 // BeginUpgrade - Upgrades the version of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkDeviceName - Name of the Network Device.
 //   - body - Request payload.
@@ -1047,8 +1001,6 @@ func (client *NetworkDevicesClient) BeginUpgrade(ctx context.Context, resourceGr
 
 // Upgrade - Upgrades the version of the Network Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkDevicesClient) upgrade(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDeviceUpgradeRequest, options *NetworkDevicesClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkDevicesClient.BeginUpgrade"
@@ -1090,8 +1042,8 @@ func (client *NetworkDevicesClient) upgradeCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

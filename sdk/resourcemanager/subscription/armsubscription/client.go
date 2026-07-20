@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type Client struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // BeginAcceptOwnership - Accept subscription ownership.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - body - The request body
 //   - options - ClientBeginAcceptOwnershipOptions contains the optional parameters for the Client.BeginAcceptOwnership method.
@@ -62,8 +62,6 @@ func (client *Client) BeginAcceptOwnership(ctx context.Context, subscriptionID s
 
 // AcceptOwnership - Accept subscription ownership.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 func (client *Client) acceptOwnership(ctx context.Context, subscriptionID string, body AcceptOwnershipRequest, options *ClientBeginAcceptOwnershipOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginAcceptOwnership"
@@ -97,8 +95,8 @@ func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscrip
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
@@ -108,8 +106,6 @@ func (client *Client) acceptOwnershipCreateRequest(ctx context.Context, subscrip
 
 // AcceptOwnershipStatus - Accept subscription ownership status.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - options - ClientAcceptOwnershipStatusOptions contains the optional parameters for the Client.AcceptOwnershipStatus method.
 func (client *Client) AcceptOwnershipStatus(ctx context.Context, subscriptionID string, options *ClientAcceptOwnershipStatusOptions) (ClientAcceptOwnershipStatusResponse, error) {
@@ -146,8 +142,8 @@ func (client *Client) acceptOwnershipStatusCreateRequest(ctx context.Context, su
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -163,8 +159,6 @@ func (client *Client) acceptOwnershipStatusHandleResponse(resp *http.Response) (
 
 // Cancel - The operation to cancel a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - ClientCancelOptions contains the optional parameters for the Client.Cancel method.
 func (client *Client) Cancel(ctx context.Context, subscriptionID string, options *ClientCancelOptions) (ClientCancelResponse, error) {
@@ -201,8 +195,8 @@ func (client *Client) cancelCreateRequest(ctx context.Context, subscriptionID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -218,8 +212,6 @@ func (client *Client) cancelHandleResponse(resp *http.Response) (ClientCancelRes
 
 // Enable - The operation to enable a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - ClientEnableOptions contains the optional parameters for the Client.Enable method.
 func (client *Client) Enable(ctx context.Context, subscriptionID string, options *ClientEnableOptions) (ClientEnableResponse, error) {
@@ -256,8 +248,8 @@ func (client *Client) enableCreateRequest(ctx context.Context, subscriptionID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -273,8 +265,6 @@ func (client *Client) enableHandleResponse(resp *http.Response) (ClientEnableRes
 
 // Rename - The operation to rename a subscription
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - body - The request body
 //   - options - ClientRenameOptions contains the optional parameters for the Client.Rename method.
@@ -312,8 +302,8 @@ func (client *Client) renameCreateRequest(ctx context.Context, subscriptionID st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -11,6 +11,53 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-02-01/GetOperationResult.json
+func ExampleOperationsClient_GetOperationResult() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOperationsClient().GetOperationResult(ctx, "HelloWorld", "swaggerExample", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.OperationsClientGetOperationResultResponse{
+	// 	Vault: armrecoveryservices.Vault{
+	// 		Name: to.Ptr("swaggerExample"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-12-15T12%3A36%3A51.68Z'\""),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample"),
+	// 		Identity: &armrecoveryservices.IdentityData{
+	// 			Type: to.Ptr(armrecoveryservices.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armrecoveryservices.UserIdentity{
+	// 				"/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi": &armrecoveryservices.UserIdentity{
+	// 					ClientID: to.Ptr("fbe75b66-01c5-4f87-a220-233af3270436"),
+	// 					PrincipalID: to.Ptr("075a0ca6-43f6-4434-9abf-c9b1b79f9219"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armrecoveryservices.VaultProperties{
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 		SKU: &armrecoveryservices.SKU{
+	// 			Name: to.Ptr(armrecoveryservices.SKUNameStandard),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"PatchKey": to.Ptr("PatchKeyUpdated"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-02-01/ListOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -490,4 +537,33 @@ func ExampleOperationsClient_NewListPager() {
 		// 	},
 		// }
 	}
+}
+
+// Generated from example definition: 2025-02-01/GetOperationStatus.json
+func ExampleOperationsClient_OperationStatusGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservices.NewClientFactory("77777777-b0c6-47a2-b37c-d8e65a629c18", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOperationsClient().OperationStatusGet(ctx, "HelloWorld", "swaggerExample", "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservices.OperationsClientOperationStatusGetResponse{
+	// 	OperationResource: armrecoveryservices.OperationResource{
+	// 		Name: to.Ptr("YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA=="),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-20T09:49:46Z"); return t}()),
+	// 		ID: to.Ptr("/subscriptions/77777777-b0c6-47a2-b37c-d8e65a629c18/resourceGroups/HelloWorld/providers/Microsoft.RecoveryServices/vaults/swaggerExample/operationStatus/YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA=="),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-20T09:49:44.0478496Z"); return t}()),
+	// 		Status: to.Ptr("Succeeded"),
+	// 	},
+	// }
 }

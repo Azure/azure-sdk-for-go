@@ -18,6 +18,8 @@ import (
 
 // MarketplaceAgreementsClient contains the methods for the MarketplaceAgreements group.
 // Don't use this type directly, use NewMarketplaceAgreementsClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type MarketplaceAgreementsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewMarketplaceAgreementsClient(subscriptionID string, credential azcore.Tok
 //
 // Create Datadog marketplace agreement in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - body - The request body
 //   - options - MarketplaceAgreementsClientCreateOrUpdateOptions contains the optional parameters for the MarketplaceAgreementsClient.CreateOrUpdate
 //     method.
@@ -82,8 +82,8 @@ func (client *MarketplaceAgreementsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -104,8 +104,6 @@ func (client *MarketplaceAgreementsClient) createOrUpdateHandleResponse(resp *ht
 // NewListPager - List Datadog marketplace agreements in the subscription.
 //
 // List Datadog marketplace agreements in the subscription.
-//
-// Generated from API version 2025-12-26-preview
 //   - options - MarketplaceAgreementsClientListOptions contains the optional parameters for the MarketplaceAgreementsClient.NewListPager
 //     method.
 func (client *MarketplaceAgreementsClient) NewListPager(options *MarketplaceAgreementsClientListOptions) *runtime.Pager[MarketplaceAgreementsClientListResponse] {
@@ -143,8 +141,8 @@ func (client *MarketplaceAgreementsClient) listCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

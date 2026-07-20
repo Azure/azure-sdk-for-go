@@ -18,6 +18,8 @@ import (
 
 // ServerDNSAliasesClient contains the methods for the ServerDNSAliases group.
 // Don't use this type directly, use NewServerDNSAliasesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerDNSAliasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServerDNSAliasesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginAcquire - Acquires server DNS alias from another server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - dnsAliasName - The name of the server dns alias.
@@ -67,8 +67,6 @@ func (client *ServerDNSAliasesClient) BeginAcquire(ctx context.Context, resource
 
 // Acquire - Acquires server DNS alias from another server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerDNSAliasesClient) acquire(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, parameters ServerDNSAliasAcquisition, options *ServerDNSAliasesClientBeginAcquireOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerDNSAliasesClient.BeginAcquire"
@@ -114,8 +112,8 @@ func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -126,8 +124,6 @@ func (client *ServerDNSAliasesClient) acquireCreateRequest(ctx context.Context, 
 
 // BeginCreateOrUpdate - Creates a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - dnsAliasName - The name of the server dns alias.
@@ -152,8 +148,6 @@ func (client *ServerDNSAliasesClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Creates a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerDNSAliasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerDNSAliasesClient.BeginCreateOrUpdate"
@@ -199,16 +193,14 @@ func (client *ServerDNSAliasesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDelete - Deletes the server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - dnsAliasName - The name of the server dns alias.
@@ -233,8 +225,6 @@ func (client *ServerDNSAliasesClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Deletes the server DNS alias with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerDNSAliasesClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, dnsAliasName string, options *ServerDNSAliasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerDNSAliasesClient.BeginDelete"
@@ -280,15 +270,13 @@ func (client *ServerDNSAliasesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a server DNS alias.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - dnsAliasName - The name of the server dns alias.
@@ -339,8 +327,8 @@ func (client *ServerDNSAliasesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -355,8 +343,6 @@ func (client *ServerDNSAliasesClient) getHandleResponse(resp *http.Response) (Se
 }
 
 // NewListByServerPager - Gets a list of server DNS aliases for a server.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerDNSAliasesClientListByServerOptions contains the optional parameters for the ServerDNSAliasesClient.NewListByServerPager
@@ -404,8 +390,8 @@ func (client *ServerDNSAliasesClient) listByServerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

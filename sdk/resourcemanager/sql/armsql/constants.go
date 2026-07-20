@@ -4,6 +4,10 @@
 
 package armsql
 
+const (
+	version20250201Preview string = "2025-02-01-preview"
+)
+
 type AdministratorName string
 
 const (

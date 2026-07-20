@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultProductPackagesClientVersion string = "2025-07-01-preview"
-
 // ProductPackagesClient contains the methods for the ProductPackages group.
 // Don't use this type directly, use NewProductPackagesClient() instead.
 //
@@ -110,7 +108,7 @@ func (client *ProductPackagesClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", defaultProductPackagesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

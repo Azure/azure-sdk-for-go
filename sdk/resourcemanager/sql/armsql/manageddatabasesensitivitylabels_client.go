@@ -19,6 +19,8 @@ import (
 
 // ManagedDatabaseSensitivityLabelsClient contains the methods for the ManagedDatabaseSensitivityLabels group.
 // Don't use this type directly, use NewManagedDatabaseSensitivityLabelsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseSensitivityLabelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewManagedDatabaseSensitivityLabelsClient(subscriptionID string, credential
 
 // CreateOrUpdate - Creates or updates the sensitivity label of a given column
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -112,8 +112,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -133,8 +133,6 @@ func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateHandleRespon
 
 // Delete - Deletes the sensitivity label of a given column
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -201,15 +199,13 @@ func (client *ManagedDatabaseSensitivityLabelsClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DisableRecommendation - Disables sensitivity recommendations on a given column
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -276,16 +272,14 @@ func (client *ManagedDatabaseSensitivityLabelsClient) disableRecommendationCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // EnableRecommendation - Enables sensitivity recommendations on a given column (recommendations are enabled by default on
 // all columns)
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -352,15 +346,13 @@ func (client *ManagedDatabaseSensitivityLabelsClient) enableRecommendationCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the sensitivity label of a given column
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -432,8 +424,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -448,8 +440,6 @@ func (client *ManagedDatabaseSensitivityLabelsClient) getHandleResponse(resp *ht
 }
 
 // NewListByDatabasePager - Gets the sensitivity labels of a given database
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -505,8 +495,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listByDatabaseCreateReques
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -521,8 +511,6 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listByDatabaseHandleRespon
 }
 
 // NewListCurrentByDatabasePager - Gets the sensitivity labels of a given database
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -584,8 +572,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseCreat
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -600,8 +588,6 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseHandl
 }
 
 // NewListRecommendedByDatabasePager - Gets the sensitivity labels of a given database
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -660,11 +646,11 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseC
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.IncludeDisabledRecommendations != nil {
 		reqQP.Set("includeDisabledRecommendations", strconv.FormatBool(*options.IncludeDisabledRecommendations))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -680,8 +666,6 @@ func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseH
 
 // Update - Update sensitivity labels of a given database using an operations batch.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -732,8 +716,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) updateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err

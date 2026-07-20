@@ -18,6 +18,8 @@ import (
 
 // ThroughputPoolsClient contains the methods for the ThroughputPools group.
 // Don't use this type directly, use NewThroughputPoolsClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type ThroughputPoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewThroughputPoolsClient(subscriptionID string, credential azcore.TokenCred
 }
 
 // NewListPager - Lists all the Azure Cosmos DB Throughput Pools available under the subscription.
-//
-// Generated from API version 2025-11-01-preview
 //   - options - ThroughputPoolsClientListOptions contains the optional parameters for the ThroughputPoolsClient.NewListPager
 //     method.
 func (client *ThroughputPoolsClient) NewListPager(options *ThroughputPoolsClientListOptions) *runtime.Pager[ThroughputPoolsClientListResponse] {
@@ -79,8 +79,8 @@ func (client *ThroughputPoolsClient) listCreateRequest(ctx context.Context, _ *T
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -95,8 +95,6 @@ func (client *ThroughputPoolsClient) listHandleResponse(resp *http.Response) (Th
 }
 
 // NewListByResourceGroupPager - List all the ThroughputPools in a given resource group.
-//
-// Generated from API version 2025-11-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ThroughputPoolsClientListByResourceGroupOptions contains the optional parameters for the ThroughputPoolsClient.NewListByResourceGroupPager
 //     method.
@@ -139,8 +137,8 @@ func (client *ThroughputPoolsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

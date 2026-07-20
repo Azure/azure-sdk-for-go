@@ -199,8 +199,6 @@ func (client *EdgeActionVersionsClient) deleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
-// BeginDeployVersionCode - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - version - The name of the Edge Action version
@@ -224,7 +222,7 @@ func (client *EdgeActionVersionsClient) BeginDeployVersionCode(ctx context.Conte
 	}
 }
 
-// DeployVersionCode - A long-running resource action.
+// DeployVersionCode -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EdgeActionVersionsClient) deployVersionCode(ctx context.Context, resourceGroupName string, edgeActionName string, version string, body VersionCode, options *EdgeActionVersionsClientBeginDeployVersionCodeOptions) (*http.Response, error) {
 	var err error

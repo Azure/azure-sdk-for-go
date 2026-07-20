@@ -18,6 +18,8 @@ import (
 
 // NetworkFabricControllersClient contains the methods for the NetworkFabricControllers group.
 // Don't use this type directly, use NewNetworkFabricControllersClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkFabricControllersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkFabricControllersClient(subscriptionID string, credential azcore.
 
 // BeginCreate - Creates a Network Fabric Controller.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *NetworkFabricControllersClient) BeginCreate(ctx context.Context, r
 
 // Create - Creates a Network Fabric Controller.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricControllersClient) create(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body NetworkFabricController, options *NetworkFabricControllersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricControllersClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *NetworkFabricControllersClient) createCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *NetworkFabricControllersClient) createCreateRequest(ctx context.Co
 
 // BeginDelete - Deletes the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - options - NetworkFabricControllersClientBeginDeleteOptions contains the optional parameters for the NetworkFabricControllersClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *NetworkFabricControllersClient) BeginDelete(ctx context.Context, r
 
 // Delete - Deletes the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricControllersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFabricControllerName string, options *NetworkFabricControllersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricControllersClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *NetworkFabricControllersClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Shows the provisioning status of Network Fabric Controller.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - options - NetworkFabricControllersClientGetOptions contains the optional parameters for the NetworkFabricControllersClient.Get
@@ -245,8 +237,8 @@ func (client *NetworkFabricControllersClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -261,8 +253,6 @@ func (client *NetworkFabricControllersClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListByResourceGroupPager - Lists all the NetworkFabricControllers thats available in the resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkFabricControllersClientListByResourceGroupOptions contains the optional parameters for the NetworkFabricControllersClient.NewListByResourceGroupPager
 //     method.
@@ -305,8 +295,8 @@ func (client *NetworkFabricControllersClient) listByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *NetworkFabricControllersClient) listByResourceGroupHandleResponse(
 }
 
 // NewListBySubscriptionPager - Lists all the NetworkFabricControllers by subscription.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkFabricControllersClientListBySubscriptionOptions contains the optional parameters for the NetworkFabricControllersClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkFabricControllersClient) NewListBySubscriptionPager(options *NetworkFabricControllersClientListBySubscriptionOptions) *runtime.Pager[NetworkFabricControllersClientListBySubscriptionResponse] {
@@ -360,8 +348,8 @@ func (client *NetworkFabricControllersClient) listBySubscriptionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -377,8 +365,6 @@ func (client *NetworkFabricControllersClient) listBySubscriptionHandleResponse(r
 
 // BeginUpdate - Updates are currently not supported for the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricControllerName - Name of the Network Fabric Controller.
 //   - body - Network Fabric Controller properties to update.
@@ -403,8 +389,6 @@ func (client *NetworkFabricControllersClient) BeginUpdate(ctx context.Context, r
 
 // Update - Updates are currently not supported for the Network Fabric Controller resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricControllersClient) update(ctx context.Context, resourceGroupName string, networkFabricControllerName string, body NetworkFabricControllerPatch, options *NetworkFabricControllersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricControllersClient.BeginUpdate"
@@ -446,8 +430,8 @@ func (client *NetworkFabricControllersClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultTriggeredAnalyticsRuleRunClientVersion string = "2025-07-01-preview"
-
 // TriggeredAnalyticsRuleRunClient contains the methods for the TriggeredAnalyticsRuleRun group.
 // Don't use this type directly, use NewTriggeredAnalyticsRuleRunClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *TriggeredAnalyticsRuleRunClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTriggeredAnalyticsRuleRunClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

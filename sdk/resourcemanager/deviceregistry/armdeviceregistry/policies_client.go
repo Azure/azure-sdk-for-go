@@ -411,8 +411,6 @@ func (client *PoliciesClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// BeginRevokeIssuer - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - policyName - The name of the Policy proxy resource.
@@ -435,7 +433,7 @@ func (client *PoliciesClient) BeginRevokeIssuer(ctx context.Context, resourceGro
 	}
 }
 
-// RevokeIssuer - A long-running resource action.
+// RevokeIssuer -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) revokeIssuer(ctx context.Context, resourceGroupName string, namespaceName string, policyName string, options *PoliciesClientBeginRevokeIssuerOptions) (*http.Response, error) {
 	var err error

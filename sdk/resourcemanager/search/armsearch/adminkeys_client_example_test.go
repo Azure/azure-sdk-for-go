@@ -7,7 +7,7 @@ package armsearch_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleAdminKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.AdminKeysClientGetResponse{
-	// 	AdminKeyResult: &armsearch.AdminKeyResult{
+	// 	AdminKeyResult: armsearch.AdminKeyResult{
 	// 		PrimaryKey: to.Ptr("<your primary admin API key>"),
 	// 		SecondaryKey: to.Ptr("<your secondary admin API key>"),
 	// 	},
@@ -56,7 +56,7 @@ func ExampleAdminKeysClient_Regenerate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.AdminKeysClientRegenerateResponse{
-	// 	AdminKeyResult: &armsearch.AdminKeyResult{
+	// 	AdminKeyResult: armsearch.AdminKeyResult{
 	// 		PrimaryKey: to.Ptr("<your primary admin API key>"),
 	// 		SecondaryKey: to.Ptr("<your secondary admin API key>"),
 	// 	},

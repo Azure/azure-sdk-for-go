@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 	"log"
 )
 
@@ -89,13 +89,13 @@ func ExampleMonitoredSubscriptionsClient_BeginCreateorUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitoredSubscriptionsClientCreateorUpdateResponse{
-	// 	MonitoredSubscriptionProperties: &armdatadog.MonitoredSubscriptionProperties{
+	// 	MonitoredSubscriptionProperties: armdatadog.MonitoredSubscriptionProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Datadog/monitors/monitoredSubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/monitors/myMonitor/monitoredSubscriptions/default"),
@@ -180,7 +180,7 @@ func ExampleMonitoredSubscriptionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -208,7 +208,7 @@ func ExampleMonitoredSubscriptionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitoredSubscriptionsClientGetResponse{
-	// 	MonitoredSubscriptionProperties: &armdatadog.MonitoredSubscriptionProperties{
+	// 	MonitoredSubscriptionProperties: armdatadog.MonitoredSubscriptionProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Datadog/monitors/monitoredSubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/monitors/myMonitor/monitoredSubscriptions/default"),
@@ -449,13 +449,13 @@ func ExampleMonitoredSubscriptionsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitoredSubscriptionsClientUpdateResponse{
-	// 	MonitoredSubscriptionProperties: &armdatadog.MonitoredSubscriptionProperties{
+	// 	MonitoredSubscriptionProperties: armdatadog.MonitoredSubscriptionProperties{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Datadog/monitors/monitoredSubscriptions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/monitors/myMonitor/monitoredSubscriptions/default"),

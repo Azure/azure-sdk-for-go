@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.DatabaseWatcher": "2025-01-02"
   },
-  "emitterVersion": "0.14.2"
+  "emitterVersion": "0.15.0"
 }

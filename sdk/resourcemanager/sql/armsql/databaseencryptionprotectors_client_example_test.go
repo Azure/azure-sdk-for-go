@@ -7,7 +7,7 @@ package armsql_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql"
 	"log"
 )
 

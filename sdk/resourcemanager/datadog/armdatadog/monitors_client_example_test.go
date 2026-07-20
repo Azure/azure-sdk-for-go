@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datadog/armdatadog"
 	"log"
 )
 
@@ -58,13 +58,13 @@ func ExampleMonitorsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorsClientCreateResponse{
-	// 	MonitorResource: &armdatadog.MonitorResource{
+	// 	MonitorResource: armdatadog.MonitorResource{
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Microsoft.Datadog/monitors"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/monitors/myMonitor"),
@@ -110,7 +110,7 @@ func ExampleMonitorsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -138,7 +138,7 @@ func ExampleMonitorsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorsClientGetResponse{
-	// 	MonitorResource: &armdatadog.MonitorResource{
+	// 	MonitorResource: armdatadog.MonitorResource{
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Microsoft.Datadog/monitors"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/monitors/myMonitor"),
@@ -185,7 +185,7 @@ func ExampleMonitorsClient_GetDefaultApplicationKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorsClientGetDefaultApplicationKeyResponse{
-	// 	ApplicationKey: &armdatadog.ApplicationKey{
+	// 	ApplicationKey: armdatadog.ApplicationKey{
 	// 		Name: to.Ptr("MyApplicationKey"),
 	// 		CreatedBy: to.Ptr("john@example.com"),
 	// 		Key: to.Ptr("aaaaaaaaaaaaaaaa1111111111111111"),
@@ -212,7 +212,7 @@ func ExampleMonitorsClient_GetDefaultKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorsClientGetDefaultKeyResponse{
-	// 	APIKey: &armdatadog.APIKey{
+	// 	APIKey: armdatadog.APIKey{
 	// 		Name: to.Ptr("<API_KEY_NAME>"),
 	// 		Created: to.Ptr("2019-04-05 09:20:30"),
 	// 		CreatedBy: to.Ptr("john@example.com"),
@@ -551,7 +551,7 @@ func ExampleMonitorsClient_ManageSreAgentConnectors() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorsClientManageSreAgentConnectorsResponse{
-	// 	SreAgentConfigurationListResponse: &armdatadog.SreAgentConfigurationListResponse{
+	// 	SreAgentConfigurationListResponse: armdatadog.SreAgentConfigurationListResponse{
 	// 		Value: []*armdatadog.SreAgentConfiguration{
 	// 			{
 	// 				McpConnectorResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Datadog/mcpConnectors/myMcpConnector1"),
@@ -583,7 +583,7 @@ func ExampleMonitorsClient_RefreshSetPasswordLink() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorsClientRefreshSetPasswordLinkResponse{
-	// 	SetPasswordLink: &armdatadog.SetPasswordLink{
+	// 	SetPasswordLink: armdatadog.SetPasswordLink{
 	// 		SetPasswordLink: to.Ptr("https://datadoghq.com/reset_password/tokenvalue123"),
 	// 	},
 	// }
@@ -635,13 +635,13 @@ func ExampleMonitorsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.MonitorsClientUpdateResponse{
-	// 	MonitorResource: &armdatadog.MonitorResource{
+	// 	MonitorResource: armdatadog.MonitorResource{
 	// 		Name: to.Ptr("myMonitor"),
 	// 		Type: to.Ptr("Microsoft.Datadog/monitors"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/monitors/myMonitor"),

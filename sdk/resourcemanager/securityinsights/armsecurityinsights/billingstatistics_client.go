@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultBillingStatisticsClientVersion string = "2025-07-01-preview"
-
 // BillingStatisticsClient contains the methods for the BillingStatistics group.
 // Don't use this type directly, use NewBillingStatisticsClient() instead.
 //
@@ -95,7 +93,7 @@ func (client *BillingStatisticsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultBillingStatisticsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,7 +156,7 @@ func (client *BillingStatisticsClient) listCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultBillingStatisticsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

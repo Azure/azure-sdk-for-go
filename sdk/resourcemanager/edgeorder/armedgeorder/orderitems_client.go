@@ -19,6 +19,8 @@ import (
 
 // OrderItemsClient contains the methods for the OrderItems group.
 // Don't use this type directly, use NewOrderItemsClient() instead.
+//
+// Generated from API version 2024-02-01
 type OrderItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewOrderItemsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Cancel - Cancel order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - cancellationReason - Reason for cancellation.
@@ -89,8 +89,8 @@ func (client *OrderItemsClient) cancelCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cancellationReason); err != nil {
 		return nil, err
@@ -102,8 +102,6 @@ func (client *OrderItemsClient) cancelCreateRequest(ctx context.Context, resourc
 // the Update order item
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - orderItemResource - Order item details from request body.
@@ -129,8 +127,6 @@ func (client *OrderItemsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Update order item
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) create(ctx context.Context, resourceGroupName string, orderItemName string, orderItemResource OrderItemResource, options *OrderItemsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginCreate"
@@ -172,8 +168,8 @@ func (client *OrderItemsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, orderItemResource); err != nil {
@@ -184,8 +180,6 @@ func (client *OrderItemsClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Delete an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - options - OrderItemsClientBeginDeleteOptions contains the optional parameters for the OrderItemsClient.BeginDelete method.
@@ -208,8 +202,6 @@ func (client *OrderItemsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, orderItemName string, options *OrderItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginDelete"
@@ -251,15 +243,13 @@ func (client *OrderItemsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - options - OrderItemsClientGetOptions contains the optional parameters for the OrderItemsClient.Get method.
@@ -308,8 +298,8 @@ func (client *OrderItemsClient) getCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -324,8 +314,6 @@ func (client *OrderItemsClient) getHandleResponse(resp *http.Response) (OrderIte
 }
 
 // NewListByResourceGroupPager - List order items at resource group level.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - OrderItemsClientListByResourceGroupOptions contains the optional parameters for the OrderItemsClient.NewListByResourceGroupPager
 //     method.
@@ -380,8 +368,8 @@ func (client *OrderItemsClient) listByResourceGroupCreateRequest(ctx context.Con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -396,8 +384,6 @@ func (client *OrderItemsClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - List order items at subscription level.
-//
-// Generated from API version 2024-02-01
 //   - options - OrderItemsClientListBySubscriptionOptions contains the optional parameters for the OrderItemsClient.NewListBySubscriptionPager
 //     method.
 func (client *OrderItemsClient) NewListBySubscriptionPager(options *OrderItemsClientListBySubscriptionOptions) *runtime.Pager[OrderItemsClientListBySubscriptionResponse] {
@@ -447,8 +433,8 @@ func (client *OrderItemsClient) listBySubscriptionCreateRequest(ctx context.Cont
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -464,8 +450,6 @@ func (client *OrderItemsClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // BeginReturn - Return order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - returnOrderItemDetails - Return order item details.
@@ -489,8 +473,6 @@ func (client *OrderItemsClient) BeginReturn(ctx context.Context, resourceGroupNa
 
 // Return - Return order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) returnOperation(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, options *OrderItemsClientBeginReturnOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginReturn"
@@ -532,8 +514,8 @@ func (client *OrderItemsClient) returnCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, returnOrderItemDetails); err != nil {
 		return nil, err
@@ -543,8 +525,6 @@ func (client *OrderItemsClient) returnCreateRequest(ctx context.Context, resourc
 
 // BeginUpdate - Update the properties of an existing order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - orderItemUpdateParameter - Order item update parameters from request body.
@@ -568,8 +548,6 @@ func (client *OrderItemsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Update the properties of an existing order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) update(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginUpdate"
@@ -611,8 +589,8 @@ func (client *OrderItemsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

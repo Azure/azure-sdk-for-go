@@ -3,6 +3,7 @@
 ## 1.7.1-beta.1 (Unreleased)
 
 ### Features Added
+* Added `NewListRangesPager` method on file `Client` for paginated range listing with continuation token and `MaxResults` support.
 
 ### Breaking Changes
 

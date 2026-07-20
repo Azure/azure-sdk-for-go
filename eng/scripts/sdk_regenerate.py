@@ -183,22 +183,52 @@ def update_commit_id(file: Path, commit_id: str):
 
 
 def get_api_version_from_metadata(package_folder: Path) -> Optional[str]:
-    """Extract API version from metadata.json file if it exists."""
+    """Return the api-version emitter option value from metadata.json, if any.
+
+    Supports the legacy ``{"apiVersion": "..."}`` string and the current
+    ``{"apiVersions": {namespace: version}}`` map. Returns a plain version when
+    all namespaces share one version, otherwise a compact JSON namespace->version
+    map that the emitter uses to regenerate each namespace at its own version.
+    """
     # Construct the metadata.json path based on the package folder structure
     # {package_folder}/testdata/_metadata.json
     metadata_path = package_folder / "testdata" / "_metadata.json"
-    
-    if metadata_path.exists():
-        try:
-            with open(metadata_path, "r") as f:
-                metadata = json.load(f)
-                api_version = metadata.get("apiVersion")
-                if api_version:
-                    logging.info(f"Found API version {api_version} in metadata.json for {package_folder.name}")
-                    return api_version
-        except (json.JSONDecodeError, FileNotFoundError) as e:
-            logging.warning(f"Failed to read metadata.json for {package_folder.name}: {e}")
-    
+
+    if not metadata_path.exists():
+        return None
+
+    try:
+        with open(metadata_path, "r") as f:
+            metadata = json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError) as e:
+        logging.warning(f"Failed to read metadata.json for {package_folder.name}: {e}")
+        return None
+
+    # current format: a map of namespace -> API version
+    api_versions = metadata.get("apiVersions")
+    if isinstance(api_versions, dict):
+        # drop namespaces without a version, keeping the namespace->version map
+        versions = {ns: ver for ns, ver in api_versions.items() if ver}
+        if versions:
+            distinct = set(versions.values())
+            if len(distinct) == 1:
+                api_version = next(iter(distinct))
+                logging.info(f"Found API version {api_version} in metadata.json for {package_folder.name}")
+                return api_version
+            # multiple namespaces at different versions: pass the whole map so the
+            # emitter regenerates each service namespace at its recorded version
+            api_version = json.dumps(versions, separators=(",", ":"))
+            logging.info(
+                f"Found multiple API versions {versions} in metadata.json for "
+                f"{package_folder.name}, passing per-namespace versions"
+            )
+            return api_version
+
+    # legacy format: a single API version string
+    api_version = metadata.get("apiVersion")
+    if api_version:
+        logging.info(f"Found API version {api_version} in metadata.json for {package_folder.name}")
+        return api_version
     return None
 
 

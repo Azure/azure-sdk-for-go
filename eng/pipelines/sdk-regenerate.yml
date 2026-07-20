@@ -86,6 +86,11 @@ jobs:
         inputs:
           versionSpec: '$(NodeVersion)'
 
+      # Point npm / pnpm / npx at the authenticated azure-sdk-for-js internal feed
+      # by writing an authenticated $HOME/.npmrc, so every install below (corepack,
+      # pnpm install, tsp-client) resolves packages from the internal registry.
+      - template: /eng/common/pipelines/templates/steps/create-authenticated-npmrc.yml
+
       - ${{ if eq(parameters.UseDevPackage, true) }}:
           - script: |
               npm i -g corepack@latest

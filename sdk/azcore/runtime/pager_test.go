@@ -164,10 +164,12 @@ func TestPagerFetcherError(t *testing.T) {
 		},
 	})
 	require.True(t, pager.firstPage)
+	require.True(t, pager.More())
 
 	page, err := pager.NextPage(context.Background())
 	require.Error(t, err)
 	require.Empty(t, page)
+	require.False(t, pager.More())
 }
 
 func TestPagerPipelineError(t *testing.T) {
@@ -185,10 +187,42 @@ func TestPagerPipelineError(t *testing.T) {
 		},
 	})
 	require.True(t, pager.firstPage)
+	require.True(t, pager.More())
 
 	page, err := pager.NextPage(context.Background())
 	require.Error(t, err)
 	require.Empty(t, page)
+	require.False(t, pager.More())
+}
+
+func TestPagerRetryAfterError(t *testing.T) {
+	attempts := 0
+	pager := NewPager(PagingHandler[PageResponse]{
+		More: func(current PageResponse) bool {
+			return current.NextPage
+		},
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			attempts++
+			if attempts == 1 {
+				return PageResponse{}, errors.New("transient failure")
+			}
+			return PageResponse{Values: []int{1, 2, 3}}, nil
+		},
+	})
+	require.True(t, pager.More())
+
+	// the first fetch fails, placing the pager in a terminal state
+	page, err := pager.NextPage(context.Background())
+	require.Error(t, err)
+	require.Empty(t, page)
+	require.False(t, pager.More())
+
+	// a manual retry succeeds, clearing the error and recovering the pager
+	page, err = pager.NextPage(context.Background())
+	require.NoError(t, err)
+	require.Equal(t, []int{1, 2, 3}, page.Values)
+	require.False(t, pager.More())
+	require.Equal(t, 2, attempts)
 }
 
 func TestPagerSecondPageError(t *testing.T) {
@@ -227,10 +261,11 @@ func TestPagerSecondPageError(t *testing.T) {
 			var respErr *exported.ResponseError
 			require.True(t, errors.As(err, &respErr))
 			require.Equal(t, "PageError", respErr.ErrorCode)
-			goto ExitLoop
+			// a subsequent-page error puts the pager in a terminal state, so
+			// More returns false and the loop terminates on its own.
+			require.False(t, pager.More())
 		}
 	}
-ExitLoop:
 	require.Equal(t, 2, pageCount)
 }
 

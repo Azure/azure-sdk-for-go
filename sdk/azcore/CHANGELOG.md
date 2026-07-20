@@ -1,12 +1,14 @@
 # Release History
 
-## 1.22.1-beta.1 (Unreleased)
+## 1.22.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed an issue where `runtime.Pager[T].More` could return `true` indefinitely after `NextPage` failed to retrieve the first page, causing `for pager.More()` loops to spin. `More` now returns `false` after a page fetch returns an error; a subsequent successful `NextPage` call clears the error and resumes iteration.
 
 ### Other Changes
 

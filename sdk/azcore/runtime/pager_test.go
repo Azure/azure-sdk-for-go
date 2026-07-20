@@ -206,7 +206,9 @@ func TestPagerRetryAfterError(t *testing.T) {
 			if attempts == 1 {
 				return PageResponse{}, errors.New("transient failure")
 			}
-			return PageResponse{Values: []int{1, 2, 3}}, nil
+			// the recovered page advertises another page so that More can only
+			// return true if the recorded error was cleared.
+			return PageResponse{Values: []int{1, 2, 3}, NextPage: true}, nil
 		},
 	})
 	require.True(t, pager.More())
@@ -217,11 +219,13 @@ func TestPagerRetryAfterError(t *testing.T) {
 	require.Empty(t, page)
 	require.False(t, pager.More())
 
-	// a manual retry succeeds, clearing the error and recovering the pager
+	// a manual retry succeeds, clearing the error and recovering the pager.
+	// because the recovered page reports another page, More must return true;
+	// if fetchErr weren't cleared, More would remain false.
 	page, err = pager.NextPage(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, []int{1, 2, 3}, page.Values)
-	require.False(t, pager.More())
+	require.True(t, pager.More())
 	require.Equal(t, 2, attempts)
 }
 

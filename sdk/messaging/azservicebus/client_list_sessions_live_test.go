@@ -126,23 +126,19 @@ func TestClient_ListSessionsForQueue_SessionStateUpdatedAfter_Live(t *testing.T)
 	// A cutoff comfortably after the state updates.
 	after := time.Now().Add(1 * time.Hour)
 
-	// A past cutoff lists the three state sessions and excludes the message-only session
-	// (which has no session state).
+	// A past cutoff lists exactly the three state sessions and excludes the message-only
+	// session (which has no session state).
 	gotBefore := collectAllSessions(t, ctx, client.NewListSessionsForQueuePager(queue,
 		&ListSessionsOptions{SessionStateUpdatedAfter: &before}))
-	for _, sessionID := range stateSessions {
-		require.Containsf(t, gotBefore, sessionID, "a past cutoff must list state session %s", sessionID)
-	}
-	require.NotContains(t, gotBefore, messageOnlySession,
-		"mode two must not list a session that has a message but no session state")
+	require.ElementsMatch(t, stateSessions, gotBefore,
+		"a past cutoff must list exactly the state sessions and not the message-only session")
 
-	// A future cutoff excludes the same sessions, proving the filter is applied rather than
-	// ignored (if it were ignored, both cutoffs would return the same set).
+	// A future cutoff returns nothing: the state sessions were updated before it, and the
+	// message-only session has no state, so mode two lists neither. If the filter were ignored,
+	// the state sessions would still appear.
 	gotAfter := collectAllSessions(t, ctx, client.NewListSessionsForQueuePager(queue,
 		&ListSessionsOptions{SessionStateUpdatedAfter: &after}))
-	for _, sessionID := range stateSessions {
-		require.NotContainsf(t, gotAfter, sessionID, "a future cutoff must not list state session %s", sessionID)
-	}
+	require.Empty(t, gotAfter, "a future cutoff must return no sessions")
 }
 
 // collectAllSessions drains a session pager and returns every session ID across all pages.

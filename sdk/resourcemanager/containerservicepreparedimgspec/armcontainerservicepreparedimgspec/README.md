@@ -1,6 +1,6 @@
-# Azure Containerservicepreparedimgspec Module for Go
+# Azure Container Service Prepared Image Specification Module for Go
 
-The `armcontainerservicepreparedimgspec` module provides operations for working with Azure Containerservicepreparedimgspec.
+The `armcontainerservicepreparedimgspec` module provides operations for working with Azure Container Service Prepared Image Specification resources.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/containerservicepreparedimgspec/armcontainerservicepreparedimgspec)
 
@@ -15,7 +15,7 @@ The `armcontainerservicepreparedimgspec` module provides operations for working 
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Containerservicepreparedimgspec module:
+Install the Azure Container Service Prepared Image Specification module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicepreparedimgspec/armcontainerservicepreparedimgspec
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerservicepre
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Containerservicepreparedimgspec.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Container Service Prepared Image Specification.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Containerservicepreparedimgspec module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+The Azure Container Service Prepared Image Specification module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armcontainerservicepreparedimgspec.NewClientFactory(<subscription ID>, cred, nil)

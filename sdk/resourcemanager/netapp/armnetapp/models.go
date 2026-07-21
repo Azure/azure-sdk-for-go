@@ -2593,9 +2593,6 @@ type VolumeProperties struct {
 	// Specifies whether the volume operates in Breakthrough Mode.
 	BreakthroughMode *BreakthroughMode
 
-	// Specifies whether the volume operates in Breakthrough Mode.
-	BreakthroughModeOld *BreakthroughMode
-
 	// Pool Resource Id used in case of creating a volume through volume group
 	CapacityPoolResourceID *string
 

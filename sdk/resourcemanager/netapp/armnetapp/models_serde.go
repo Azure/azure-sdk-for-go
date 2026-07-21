@@ -6298,7 +6298,6 @@ func (v VolumeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupId", v.BackupID)
 	populate(objectMap, "baremetalTenantId", v.BaremetalTenantID)
 	populate(objectMap, "breakthroughMode", v.BreakthroughMode)
-	populate(objectMap, "breakthroughModeOld", v.BreakthroughModeOld)
 	populate(objectMap, "capacityPoolResourceId", v.CapacityPoolResourceID)
 	populate(objectMap, "cloneProgress", v.CloneProgress)
 	populate(objectMap, "coolAccess", v.CoolAccess)
@@ -6381,9 +6380,6 @@ func (v *VolumeProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "breakthroughMode":
 			err = unpopulate(val, "BreakthroughMode", &v.BreakthroughMode)
-			delete(rawMsg, key)
-		case "breakthroughModeOld":
-			err = unpopulate(val, "BreakthroughModeOld", &v.BreakthroughModeOld)
 			delete(rawMsg, key)
 		case "capacityPoolResourceId":
 			err = unpopulate(val, "CapacityPoolResourceID", &v.CapacityPoolResourceID)

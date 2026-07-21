@@ -104,7 +104,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 					LdapOverTLS:        to.Ptr(false),
 					LdapSigning:        to.Ptr(false),
 					OrganizationalUnit: to.Ptr("OU=Engineering"),
-					Password:           to.Ptr("ad_password"),
+					Password:           to.Ptr("<REDACTED>"),
 					Site:               to.Ptr("SiteName"),
 					SmbServerName:      to.Ptr("SMBServer"),
 					Username:           to.Ptr("ad_user_name"),

@@ -195,38 +195,34 @@ func TestPagerPipelineError(t *testing.T) {
 	require.False(t, pager.More())
 }
 
-func TestPagerRetryAfterError(t *testing.T) {
+func TestPagerTerminalAfterError(t *testing.T) {
 	attempts := 0
+	sentinel := errors.New("transient failure")
 	pager := NewPager(PagingHandler[PageResponse]{
 		More: func(current PageResponse) bool {
 			return current.NextPage
 		},
 		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
 			attempts++
-			if attempts == 1 {
-				return PageResponse{}, errors.New("transient failure")
-			}
-			// the recovered page advertises another page so that More can only
-			// return true if the recorded error was cleared.
-			return PageResponse{Values: []int{1, 2, 3}, NextPage: true}, nil
+			return PageResponse{}, sentinel
 		},
 	})
 	require.True(t, pager.More())
 
 	// the first fetch fails, placing the pager in a terminal state
 	page, err := pager.NextPage(context.Background())
-	require.Error(t, err)
+	require.ErrorIs(t, err, sentinel)
 	require.Empty(t, page)
 	require.False(t, pager.More())
+	require.Equal(t, 1, attempts)
 
-	// a manual retry succeeds, clearing the error and recovering the pager.
-	// because the recovered page reports another page, More must return true;
-	// if fetchErr weren't cleared, More would remain false.
+	// the pager is terminal: NextPage returns the stored error without
+	// re-invoking the fetcher, so stateful handlers can't be corrupted.
 	page, err = pager.NextPage(context.Background())
-	require.NoError(t, err)
-	require.Equal(t, []int{1, 2, 3}, page.Values)
-	require.True(t, pager.More())
-	require.Equal(t, 2, attempts)
+	require.ErrorIs(t, err, sentinel)
+	require.Empty(t, page)
+	require.False(t, pager.More())
+	require.Equal(t, 1, attempts)
 }
 
 func TestPagerSecondPageError(t *testing.T) {

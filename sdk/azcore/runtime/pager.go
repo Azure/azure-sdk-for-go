@@ -53,10 +53,8 @@ func NewPager[T any](handler PagingHandler[T]) *Pager[T] {
 // More returns true if there are more pages to retrieve.
 //
 // If a prior call to [Pager.NextPage] returned an error while fetching a page,
-// More returns false so that a for loop over the pager terminates instead of
-// retrying indefinitely. Calling NextPage again after such an error will retry
-// the failed page; if that retry succeeds, More resumes reporting whether
-// additional pages are available.
+// the Pager enters a terminal state and More returns false so that a for loop
+// over the pager terminates instead of retrying indefinitely.
 func (p *Pager[T]) More() bool {
 	// a failed fetch puts the Pager in a terminal state; there are no more pages
 	// to retrieve regardless of whether it was the first or a subsequent page.
@@ -71,11 +69,16 @@ func (p *Pager[T]) More() bool {
 
 // NextPage advances the pager to the next page.
 //
-// If fetching the page returns an error, the pager is left unchanged: the error
-// is recorded so that [Pager.More] returns false, and the same page can be
-// retried by calling NextPage again. A successful call clears any recorded
-// error and advances the pager.
+// If fetching the page returns an error, the Pager enters a terminal state:
+// [Pager.More] returns false and every subsequent call to NextPage returns the
+// same error without invoking the fetcher again.
 func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
+	if p.fetchErr != nil {
+		// a prior fetch failed; the Pager is in a terminal state. return the
+		// stored error rather than re-invoking the fetcher, which may not be
+		// safe to retry (e.g. stateful handlers that latch into a done state).
+		return *new(T), p.fetchErr
+	}
 	if p.current != nil {
 		if p.firstPage {
 			// we get here if it's an LRO-pager, we already have the first page
@@ -98,9 +101,6 @@ func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 		p.fetchErr = err
 		return *new(T), err
 	}
-	// the fetch succeeded, clear any prior error so a caller that retries a
-	// failed page can resume iterating instead of being permanently blocked.
-	p.fetchErr = nil
 	p.current = &resp
 	return *p.current, nil
 }

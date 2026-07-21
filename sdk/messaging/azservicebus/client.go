@@ -391,7 +391,8 @@ type ListSessionsResponse struct {
 // and [Client.NewListSessionsForSubscriptionPager].
 type ListSessionsOptions struct {
 	// SessionStateUpdatedAfter, if set, lists only sessions whose session state was updated
-	// after this time. If nil, lists sessions that have active messages in the entity.
+	// after this time. If nil, lists sessions that have active messages in the entity, as
+	// well as sessions that have session state set but no active messages.
 	SessionStateUpdatedAfter *time.Time
 }
 

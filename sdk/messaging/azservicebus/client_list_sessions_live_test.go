@@ -38,22 +38,34 @@ func TestClient_ListSessionsForQueue_Live(t *testing.T) {
 	// One message to each of 120 distinct sessions forces skip/top pagination across
 	// two pages (100 + 20).
 	const sessionCount = 120
-	want := make([]string, sessionCount)
+	want := make([]string, 0, sessionCount+1)
 
 	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
 
 	for i := 0; i < sessionCount; i++ {
-		want[i] = fmt.Sprintf("session-%03d", i)
+		sessionID := fmt.Sprintf("session-%03d", i)
+		want = append(want, sessionID)
 		require.NoError(t, sender.SendMessage(ctx, &Message{
 			Body:      []byte("hello"),
-			SessionID: &want[i],
+			SessionID: &sessionID,
 		}, nil))
 	}
 	require.NoError(t, sender.Close(ctx))
 
-	// Active-messages mode (nil options => far-future sentinel): the service must return
-	// exactly the sessions that currently have active messages, across all pages.
+	// A session that has session state set but no active message. Active-messages mode must
+	// still list it: the default lists sessions with active messages as well as sessions that
+	// have session state set but no active messages. Without this session the ElementsMatch
+	// below would pass whether or not state-only sessions are included.
+	const stateOnlySession = "state-only-000"
+	stateReceiver, err := client.AcceptSessionForQueue(ctx, queue, stateOnlySession, nil)
+	require.NoError(t, err)
+	require.NoError(t, stateReceiver.SetSessionState(ctx, []byte("state"), nil))
+	require.NoError(t, stateReceiver.Close(ctx))
+	want = append(want, stateOnlySession)
+
+	// Active-messages mode (nil options => far-future sentinel): the service must return the
+	// sessions that have active messages plus the state-only session, across all pages.
 	var got []string
 	pager := client.NewListSessionsForQueuePager(queue, nil)
 	for pager.More() {

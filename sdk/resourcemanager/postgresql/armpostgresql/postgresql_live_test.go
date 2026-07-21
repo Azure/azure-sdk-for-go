@@ -391,6 +391,31 @@ func (testsuite *PostgresqlTestSuite) TestServerAdministrators() {
 	testsuite.Require().NoError(err)
 }
 
+// Microsoft.DBforPostgreSQL/servers/{serverName}/keys/{keyName}
+func (testsuite *PostgresqlTestSuite) TestServerKeys() {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		testsuite.T().Skip("ServerKeys live test requires recording or live mode")
+	}
+
+	var err error
+	// From step ServerKeys_List
+	fmt.Println("Call operation: ServerKeys_List")
+	serverKeysClient, err := armpostgresql.NewServerKeysClient(testsuite.subscriptionId, testsuite.cred, testsuite.options)
+	testsuite.Require().NoError(err)
+	serverKeysClientNewListPager := serverKeysClient.NewListPager(testsuite.resourceGroupName, testsuite.serverName, nil)
+	for serverKeysClientNewListPager.More() {
+		result, err := serverKeysClientNewListPager.NextPage(testsuite.ctx)
+		testsuite.Require().NoError(err)
+		if len(result.Value) > 0 {
+			// From step ServerKeys_Get
+			fmt.Println("Call operation: ServerKeys_Get")
+			_, err = serverKeysClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, *result.Value[0].Name, nil)
+			testsuite.Require().NoError(err)
+		}
+		break
+	}
+}
+
 // Microsoft.DBforPostgreSQL/servers/replicas
 func (testsuite *PostgresqlTestSuite) TestReplicas() {
 	var err error

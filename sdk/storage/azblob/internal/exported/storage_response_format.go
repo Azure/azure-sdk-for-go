@@ -11,10 +11,11 @@ const (
 	// For the current release this resolves to XML; a future release will resolve to Arrow.
 	StorageResponseFormatAuto StorageResponseFormat = ""
 
-	// StorageResponseFormatXML requests the service to return results in XML format.
+	// StorageResponseFormatXML forces XML-only responses. Use when you need raw XML responses (e.g. debugging).
 	StorageResponseFormatXML StorageResponseFormat = "xml"
 
-	// StorageResponseFormatArrow requests the service to return results in Apache Arrow IPC format.
+	// StorageResponseFormatArrow sends both Arrow and XML in the Accept header; the service returns Arrow
+	// when Photon is enabled, otherwise falls back to XML. The SDK handles both transparently.
 	// Arrow format is only supported on non-HNS (hierarchical namespace) accounts via the Blob endpoint.
 	StorageResponseFormatArrow StorageResponseFormat = "arrow"
 )

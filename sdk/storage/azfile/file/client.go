@@ -302,7 +302,7 @@ func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions)
 // and a continuation token for retrieving the next page. Set MaxResults on the options to control page size.
 // When PrevShareSnapshot is set, the pager returns ranges that have changed between the previous snapshot
 // and the target (diff mode).
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/list-ranges.
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/list-ranges.
 func (f *Client) NewListRangesPager(options *ListRangesOptions) *runtime.Pager[ListRangesSegmentResponse] {
 	listOptions := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return runtime.NewPager(runtime.PagingHandler[ListRangesSegmentResponse]{

@@ -144,6 +144,7 @@
 - New struct `BulkCreateCustomProperties`
 - New struct `BulkCreateCustomVMSizeProfile`
 - New struct `BulkCreateCustomZoneAllocationPolicy`
+- New struct `BulkInstancesInnerError`
 - New struct `BulkactionVMExtension`
 - New struct `BulkactionVMProperties`
 - New struct `CancelOccurrenceRequest`

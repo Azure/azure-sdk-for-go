@@ -98,6 +98,11 @@ The initial packaging discussion is scoped to mainstream targets:
 | macOS | ARM64/Apple Silicon, x64/Intel |
 | Linux glibc | x64/amd64, ARM64 |
 
+Windows also has a native ABI/toolchain dimension. The implementation design is
+expected to produce both GNU/MinGW-compatible `.a` artifacts for cgo linking and
+MSVC-compatible `.lib` artifacts where needed, but this decision record does not
+finalize that split.
+
 Linux musl/Alpine is intentionally not counted in the baseline until the Go
 packaging plan decides whether it is in scope for the initial release.
 

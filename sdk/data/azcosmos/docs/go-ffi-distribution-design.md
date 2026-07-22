@@ -28,6 +28,12 @@ the SDK needs roughly this matrix:
 | Linux glibc | amd64, arm64 |
 | Optional or follow-up | Windows x86, Linux musl/Alpine, additional long-tail targets |
 
+Windows targets also need an ABI/toolchain dimension. The implementation design
+is expected to produce both GNU/MinGW-compatible `.a` artifacts for cgo linking
+and MSVC-compatible `.lib` artifacts where needed, but this document does not
+finalize that artifact split. Before GA, the Windows support matrix must state
+which Rust target triples and link artifacts are used for each Go target.
+
 With an optimized native driver around **~5 MB per target**, a six-target matrix
 is roughly **~30 MB before compression**. Expanding to ten targets approaches the
 earlier **~50 MB** mental model. The design question is not only binary size; it
@@ -140,8 +146,8 @@ github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
 ├── client.go
 ├── internal/core/
 ├── internal/native/
-│   ├── windows-amd64/azurecosmos.lib
-│   ├── windows-arm64/azurecosmos.lib
+│   ├── windows-amd64/{libazurecosmos.a or azurecosmos.lib}
+│   ├── windows-arm64/{libazurecosmos.a or azurecosmos.lib}
 │   ├── darwin-amd64/libazurecosmos.a
 │   ├── darwin-arm64/libazurecosmos.a
 │   ├── linux-amd64-gnu/libazurecosmos.a

@@ -21,7 +21,7 @@ type APIError struct {
 	Details []*APIErrorBase
 
 	// The API inner error
-	Innererror *BulkInstancesInnerError
+	Innererror *InnerError
 
 	// The error message.
 	Message *string
@@ -840,8 +840,8 @@ type InnerError struct {
 	Innererror *InnerError
 }
 
-// BulkInstancesInnerError - Inner error details.
-type BulkInstancesInnerError struct {
+// InnerError - Inner error details.
+type InnerError struct {
 	// One of a server-defined set of error codes.
 	Code *string
 
@@ -852,7 +852,7 @@ type BulkInstancesInnerError struct {
 	ExceptionType *string
 
 	// Inner error.
-	Innererror *BulkInstancesInnerError
+	Innererror *InnerError
 }
 
 // KeyVaultKeyReference - Describes a reference to Key Vault Key

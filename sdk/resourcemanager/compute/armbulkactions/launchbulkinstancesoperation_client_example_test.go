@@ -3072,7 +3072,7 @@ func ExampleLaunchBulkInstancesOperationClient_NewListVirtualMachinesPager() {
 		// 							Message: to.Ptr("kwfytcvltzldrfrbbjrxtoexgzr"),
 		// 						},
 		// 					},
-		// 					Innererror: &armbulkactions.BulkInstancesInnerError{
+		// 					Innererror: &armbulkactions.InnerError{
 		// 						ExceptionType: to.Ptr("skecnvde"),
 		// 						ErrorDetail: to.Ptr("ssejyhopfvcartkes"),
 		// 					},

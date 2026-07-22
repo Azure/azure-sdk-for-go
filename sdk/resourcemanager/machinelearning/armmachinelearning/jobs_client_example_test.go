@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Job/cancel.json
+// Generated from example definition: 2026-05-15-preview/Job/cancel.json
 func ExampleJobsClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleJobsClient_BeginCancel() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/AutoMLJob/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Job/AutoMLJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateAutoMlJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateAutoMlJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/CommandJob/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Job/CommandJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +385,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/CommandJob/createOrUpdateRayDistribution.json
+// Generated from example definition: 2026-05-15-preview/Job/CommandJob/createOrUpdateRayDistribution.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJobWithRayDistribution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,7 +483,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateCommandJobWithRayDistributio
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/DistillationJob/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Job/DistillationJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateDistillationJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,7 +625,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateDistillationJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/FineTuningJob/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Job/FineTuningJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateFineTuningJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -757,7 +757,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateFineTuningJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/PipelineJob/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Job/PipelineJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdatePipelineJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -875,7 +875,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdatePipelineJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/SweepJob/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Job/SweepJob/createOrUpdate.json
 func ExampleJobsClient_CreateOrUpdate_createOrUpdateSweepJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1045,7 +1045,7 @@ func ExampleJobsClient_CreateOrUpdate_createOrUpdateSweepJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/delete.json
+// Generated from example definition: 2026-05-15-preview/Job/delete.json
 func ExampleJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1071,7 +1071,7 @@ func ExampleJobsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/AutoMLJob/get.json
+// Generated from example definition: 2026-05-15-preview/Job/AutoMLJob/get.json
 func ExampleJobsClient_Get_getAutoMlJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1176,7 +1176,7 @@ func ExampleJobsClient_Get_getAutoMlJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/CommandJob/get.json
+// Generated from example definition: 2026-05-15-preview/Job/CommandJob/get.json
 func ExampleJobsClient_Get_getCommandJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1283,7 +1283,7 @@ func ExampleJobsClient_Get_getCommandJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/DistillationJob/get.json
+// Generated from example definition: 2026-05-15-preview/Job/DistillationJob/get.json
 func ExampleJobsClient_Get_getDistillationJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1382,7 +1382,7 @@ func ExampleJobsClient_Get_getDistillationJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/FineTuningJob/get.json
+// Generated from example definition: 2026-05-15-preview/Job/FineTuningJob/get.json
 func ExampleJobsClient_Get_getFineTuningJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1476,7 +1476,7 @@ func ExampleJobsClient_Get_getFineTuningJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/PipelineJob/get.json
+// Generated from example definition: 2026-05-15-preview/Job/PipelineJob/get.json
 func ExampleJobsClient_Get_getPipelineJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1554,7 +1554,7 @@ func ExampleJobsClient_Get_getPipelineJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/SweepJob/get.json
+// Generated from example definition: 2026-05-15-preview/Job/SweepJob/get.json
 func ExampleJobsClient_Get_getSweepJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1658,7 +1658,7 @@ func ExampleJobsClient_Get_getSweepJob() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/AutoMLJob/list.json
+// Generated from example definition: 2026-05-15-preview/Job/AutoMLJob/list.json
 func ExampleJobsClient_NewListPager_listAutoMlJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1772,7 +1772,7 @@ func ExampleJobsClient_NewListPager_listAutoMlJob() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/CommandJob/list.json
+// Generated from example definition: 2026-05-15-preview/Job/CommandJob/list.json
 func ExampleJobsClient_NewListPager_listCommandJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1891,7 +1891,7 @@ func ExampleJobsClient_NewListPager_listCommandJob() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/DistillationJob/list.json
+// Generated from example definition: 2026-05-15-preview/Job/DistillationJob/list.json
 func ExampleJobsClient_NewListPager_listDistillationJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2003,7 +2003,7 @@ func ExampleJobsClient_NewListPager_listDistillationJob() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/FineTuningJob/list.json
+// Generated from example definition: 2026-05-15-preview/Job/FineTuningJob/list.json
 func ExampleJobsClient_NewListPager_listFineTuningJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2110,7 +2110,7 @@ func ExampleJobsClient_NewListPager_listFineTuningJob() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/PipelineJob/list.json
+// Generated from example definition: 2026-05-15-preview/Job/PipelineJob/list.json
 func ExampleJobsClient_NewListPager_listPipelineJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2200,7 +2200,7 @@ func ExampleJobsClient_NewListPager_listPipelineJob() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Job/SweepJob/list.json
+// Generated from example definition: 2026-05-15-preview/Job/SweepJob/list.json
 func ExampleJobsClient_NewListPager_listSweepJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

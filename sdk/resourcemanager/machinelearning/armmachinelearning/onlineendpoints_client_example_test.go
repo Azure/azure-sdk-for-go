@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/createOrUpdate.json
 func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleOnlineEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/delete.json
 func ExampleOnlineEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleOnlineEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/get.json
 func ExampleOnlineEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleOnlineEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/getToken.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/getToken.json
 func ExampleOnlineEndpointsClient_GetToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +240,7 @@ func ExampleOnlineEndpointsClient_GetToken() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/list.json
 func ExampleOnlineEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +327,7 @@ func ExampleOnlineEndpointsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/listKeys.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/listKeys.json
 func ExampleOnlineEndpointsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleOnlineEndpointsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/regenerateKeys.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/regenerateKeys.json
 func ExampleOnlineEndpointsClient_BeginRegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -382,7 +382,7 @@ func ExampleOnlineEndpointsClient_BeginRegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/OnlineEndpoint/update.json
+// Generated from example definition: 2026-05-15-preview/Workspace/OnlineEndpoint/update.json
 func ExampleOnlineEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

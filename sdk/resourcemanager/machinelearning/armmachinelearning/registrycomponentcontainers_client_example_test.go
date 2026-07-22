@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentContainer/createOrUpdate.json
 func ExampleRegistryComponentContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleRegistryComponentContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/delete.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentContainer/delete.json
 func ExampleRegistryComponentContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleRegistryComponentContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/get.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentContainer/get.json
 func ExampleRegistryComponentContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleRegistryComponentContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/list.json
+// Generated from example definition: 2026-05-15-preview/Registry/ComponentContainer/list.json
 func ExampleRegistryComponentContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

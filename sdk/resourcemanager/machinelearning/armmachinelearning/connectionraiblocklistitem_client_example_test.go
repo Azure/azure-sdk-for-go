@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklistItem/addBulk.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklistItem/addBulk.json
 func ExampleConnectionRaiBlocklistItemClient_BeginAddBulk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleConnectionRaiBlocklistItemClient_BeginAddBulk() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklistItem/create.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklistItem/create.json
 func ExampleConnectionRaiBlocklistItemClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleConnectionRaiBlocklistItemClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklistItem/delete.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklistItem/delete.json
 func ExampleConnectionRaiBlocklistItemClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleConnectionRaiBlocklistItemClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklistItem/deleteBulk.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklistItem/deleteBulk.json
 func ExampleConnectionRaiBlocklistItemClient_BeginDeleteBulk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleConnectionRaiBlocklistItemClient_BeginDeleteBulk() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklistItem/get.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklistItem/get.json
 func ExampleConnectionRaiBlocklistItemClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

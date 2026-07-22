@@ -20,7 +20,7 @@ import (
 // FeaturesClient contains the methods for the Features group.
 // Don't use this type directly, use NewFeaturesClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-05-15-preview
 type FeaturesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -106,7 +106,7 @@ func (client *FeaturesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -183,7 +183,7 @@ func (client *FeaturesClient) listCreateRequest(ctx context.Context, resourceGro
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.Description != nil {
 		reqQP.Set("description", *options.Description)
 	}

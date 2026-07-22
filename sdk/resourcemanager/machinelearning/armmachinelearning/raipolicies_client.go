@@ -19,7 +19,7 @@ import (
 // RaiPoliciesClient contains the methods for the RaiPolicies group.
 // Don't use this type directly, use NewRaiPoliciesClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-05-15-preview
 type RaiPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -95,7 +95,7 @@ func (client *RaiPoliciesClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}

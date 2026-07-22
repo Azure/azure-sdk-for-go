@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/RaiBlocklistItem/list.json
+// Generated from example definition: 2026-05-15-preview/WorkspaceConnection/RaiBlocklistItem/list.json
 func ExampleConnectionRaiBlocklistItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

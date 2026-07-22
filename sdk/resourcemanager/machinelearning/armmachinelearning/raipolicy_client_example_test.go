@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/RaiPolicy/create.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/RaiPolicy/create.json
 func ExampleRaiPolicyClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleRaiPolicyClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/RaiPolicy/delete.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/RaiPolicy/delete.json
 func ExampleRaiPolicyClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleRaiPolicyClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Endpoint/RaiPolicy/get.json
+// Generated from example definition: 2026-05-15-preview/Endpoint/RaiPolicy/get.json
 func ExampleRaiPolicyClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

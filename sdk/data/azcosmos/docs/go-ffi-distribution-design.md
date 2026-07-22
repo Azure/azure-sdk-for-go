@@ -69,6 +69,13 @@ package azcosmos
 import _ "github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-linux-amd64"
 ```
 
+Fourth, normal builds should benefit from Go's lazy module loading. A module can
+list multiple platform driver modules in `require`, while a single-platform
+`go get` / `go build` only needs the driver reached by the active build-tagged
+import. Full-graph workflows such as `go mod download all`, vendoring, proxy
+prewarming, or CI validation that intentionally walks the complete build list
+may still fetch the whole default driver matrix.
+
 ## 3. Design goals
 
 | Goal | Why it matters |
@@ -355,16 +362,16 @@ dimension. If both are supported, the design needs an explicit convention such
 as a custom `musl` build tag, a separate opt-in package, or a default Linux
 choice with the other variant documented as optional.
 
-**Size gist:** if the default `azcosmos` module requires six default driver
-modules, customers may still download/cache roughly the same ~30 MB matrix
-before compression. The difference is that the payload is split into separate
-module ZIPs, optional targets can stay out of the default path, and the final app
-still links only the current platform's native driver.
+**Size gist:** for ordinary `go get` / `go build` workflows, customers should
+fetch the active platform driver module rather than the full default matrix. A
+full-graph command such as `go mod download all`, vendoring, proxy prewarming, or
+CI validation can still fetch all default driver modules. The final app links
+only the current platform's native driver.
 
 | Area | Effect |
 |---|---|
 | Customer experience | Good. Common platforms still use `go get azcosmos` / `go build`. |
-| Download footprint | Better than one giant module in cache shape, but the default `azcosmos` module may still cause all default driver module ZIPs to be downloaded. |
+| Download footprint | Normal builds fetch the active driver module; full-graph workflows can fetch the default driver matrix. |
 | Version safety | Manageable if all modules are released together and exact versions are pinned. |
 | Repository impact | Still high for `azure-sdk-for-go` contributors because the repo contains all native modules. |
 | Long-tail targets | Better. Optional targets can be extra modules not included in default `azcosmos`. |
@@ -415,15 +422,14 @@ package azcosmos
 import _ "github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-linux-amd64-gnu"
 ```
 
-**Size gist:** for customers, this is similar to Option B if `azcosmos` still
-depends on the default driver modules. The default download/cache can still be
-the default matrix, but the binary modules come from a separate repository and
-the final app links only one target.
+**Size gist:** for customers, this is similar to Option B. Ordinary builds fetch
+the active driver module from the separate native-driver repository; full-graph
+workflows can fetch the full default matrix. The final app links only one target.
 
 | Area | Effect |
 |---|---|
 | Customer experience | Good for default platforms if `azcosmos` wires driver imports automatically. |
-| Download footprint | Similar to Option B from the customer's module-cache perspective. |
+| Download footprint | Same customer behavior as Option B, but the active driver module comes from a separate repository. |
 | Version safety | Requires stronger release discipline across repositories. |
 | Repository impact | Better for Azure SDK for Go contributors; binary churn lives elsewhere. |
 | Governance | Needs clear ownership, release, security, signing, and support boundaries. |
@@ -601,8 +607,8 @@ is still useful for bundled paths because it catches packaging mistakes.
 | Model | Common-platform customer flow | Customer-visible native setup | Download behavior |
 |---|---|---|---|
 | A. Single bundled module | `go get azcosmos`; `go build` | cgo toolchain only | Downloads whole default matrix in one module |
-| B. Split modules, same repo | `go get azcosmos`; `go build` | cgo toolchain only | Downloads default driver modules as dependencies; links only the active target |
-| C. Split modules, separate repo | `go get azcosmos`; `go build` | cgo toolchain only | Downloads driver modules from a second repo through Go module system |
+| B. Split modules, same repo | `go get azcosmos`; `go build` | cgo toolchain only | Normal builds fetch active driver module; full-graph workflows can fetch default matrix |
+| C. Split modules, separate repo | `go get azcosmos`; `go build` | cgo toolchain only | Same as Option B, but the active driver module comes from a separate repo |
 | Advanced dynamic library | imports/configures advanced path | customer-managed native library | Downloads only Go wrapper; customer supplies native payload |
 
 ## 13. Repository and release comparison

@@ -100,6 +100,7 @@
 - New function `*OccurrencesClient.Get(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientGetOptions) (OccurrencesClientGetResponse, error)`
 - New function `*OccurrencesClient.NewListByScheduledActionPager(resourceGroupName string, scheduledActionName string, options *OccurrencesClientListByScheduledActionOptions) *runtime.Pager[OccurrencesClientListByScheduledActionResponse]`
 - New function `*OccurrencesClient.NewListResourcesPager(resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientListResourcesOptions) *runtime.Pager[OccurrencesClientListResourcesResponse]`
+- New function `PossibleModeValues() []Mode`
 - New function `NewScheduledActionExtensionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionExtensionClient, error)`
 - New function `*ScheduledActionExtensionClient.NewListByVMsPager(resourceURI string, options *ScheduledActionExtensionClientListByVMsOptions) *runtime.Pager[ScheduledActionExtensionClientListByVMsResponse]`
 - New function `NewScheduledActionOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionOperationStatusClient, error)`

@@ -8,6 +8,7 @@ import (
 	"errors"
 	"net"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock"
@@ -53,6 +54,115 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 
 	var netOpError net.Error
 	require.ErrorAs(t, err, &netOpError)
+}
+
+// TestRPCLinkServerTimeoutScoping verifies that RPC() adds a server-timeout only
+// for Service Bus management operations (those whose "operation" property has the
+// "com.microsoft:" prefix) and leaves CBS ($cbs put-token) requests untouched. It
+// also confirms the value equals serverTimeoutMillis(ctx): the remaining deadline
+// when one exists (never exceeding the client-side wait) or the 60s default when
+// the context has no deadline.
+func TestRPCLinkServerTimeoutScoping(t *testing.T) {
+	newLink := func(t *testing.T) (*rpcLink, *rpcTester) {
+		tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000)}
+		link, err := NewRPCLink(context.Background(), RPCLinkArgs{
+			Client:   &rpcTesterClient{session: tester},
+			Address:  "some-address",
+			LogEvent: "rpctesting",
+		})
+		require.NoError(t, err)
+		t.Cleanup(func() { require.NoError(t, link.Close(context.Background())) })
+		return link.(*rpcLink), tester
+	}
+
+	okResponse := func() []*rpcTestResp {
+		return []*rpcTestResp{{M: exampleMessageWithStatusCode(200)}}
+	}
+
+	t.Run("management op with deadline uses remaining time, not the 60s default", func(t *testing.T) {
+		link, tester := newLink(t)
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		_, err := link.RPC(ctx, &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation":       "com.microsoft:peek-message",
+				rpcTesterProperty: okResponse(),
+			},
+		})
+		require.NoError(t, err)
+
+		st, ok := tester.SentMessages[0].ApplicationProperties["server-timeout"].(uint)
+		require.True(t, ok, "server-timeout must be set for a management op")
+		// ~10s remaining: never the 60s default, and never above the client-side deadline.
+		require.LessOrEqual(t, st, uint(10000))
+		require.Greater(t, st, uint(9000))
+	})
+
+	t.Run("management op without deadline gets the 60s default", func(t *testing.T) {
+		link, tester := newLink(t)
+
+		_, err := link.RPC(context.Background(), &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation":       "com.microsoft:renew-lock",
+				rpcTesterProperty: okResponse(),
+			},
+		})
+		require.NoError(t, err)
+		require.Equal(t, uint(60000), tester.SentMessages[0].ApplicationProperties["server-timeout"])
+	})
+
+	t.Run("CBS put-token is not given a server-timeout", func(t *testing.T) {
+		link, tester := newLink(t)
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		_, err := link.RPC(ctx, &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation":       "put-token",
+				rpcTesterProperty: okResponse(),
+			},
+		})
+		require.NoError(t, err)
+
+		_, ok := tester.SentMessages[0].ApplicationProperties["server-timeout"]
+		require.False(t, ok, "CBS put-token must not be given a server-timeout")
+	})
+
+	t.Run("an explicitly-set server-timeout is not overwritten", func(t *testing.T) {
+		link, tester := newLink(t)
+
+		_, err := link.RPC(context.Background(), &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation":       "com.microsoft:cancel-scheduled-message",
+				"server-timeout":  uint(1234),
+				rpcTesterProperty: okResponse(),
+			},
+		})
+		require.NoError(t, err)
+		require.Equal(t, uint(1234), tester.SentMessages[0].ApplicationProperties["server-timeout"])
+	})
+
+	t.Run("a preset com.microsoft:server-timeout is left as the sole timeout key", func(t *testing.T) {
+		// ScheduleMessages and CancelScheduledMessages set the vendor-prefixed
+		// "com.microsoft:server-timeout" key themselves. RPC() must respect that and
+		// not also add a bare "server-timeout", so the message carries exactly one
+		// timeout key (the one the operation chose).
+		link, tester := newLink(t)
+
+		_, err := link.RPC(context.Background(), &amqp.Message{
+			ApplicationProperties: map[string]any{
+				"operation":                    "com.microsoft:schedule-message",
+				"com.microsoft:server-timeout": uint(1234),
+				rpcTesterProperty:              okResponse(),
+			},
+		})
+		require.NoError(t, err)
+
+		_, ok := tester.SentMessages[0].ApplicationProperties["server-timeout"]
+		require.False(t, ok, "RPC() must not add a bare server-timeout when com.microsoft:server-timeout is already set")
+		require.Equal(t, uint(1234), tester.SentMessages[0].ApplicationProperties["com.microsoft:server-timeout"])
+	})
 }
 
 func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
@@ -266,6 +376,10 @@ type rpcTester struct {
 
 	ResponsesCh chan *rpcTestResp
 	t           *testing.T
+
+	// SentMessages captures every message passed to Send, in order, so tests
+	// can assert on the application properties the RPC link set (e.g. server-timeout).
+	SentMessages []*amqp.Message
 }
 
 type rpcTestResp struct {
@@ -323,6 +437,8 @@ func (tester *rpcTester) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*
 
 func (tester *rpcTester) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 	require.NotEmpty(tester.t, msg.Properties.MessageID)
+
+	tester.SentMessages = append(tester.SentMessages, msg)
 
 	// we'll let the payload dictate the response
 	if msg.ApplicationProperties["test-send-error"] != nil {

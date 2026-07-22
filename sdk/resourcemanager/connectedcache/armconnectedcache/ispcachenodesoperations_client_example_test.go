@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleIspCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_Delete_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleIspCacheNodesOperationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_Get_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +349,7 @@ func ExampleIspCacheNodesOperationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetBgpCidrs_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetBgpCidrs_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetBgpCidrs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,7 +393,7 @@ func ExampleIspCacheNodesOperationsClient_GetBgpCidrs() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +457,7 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetCacheNodeInstallDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeInstallDetails() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +555,7 @@ func ExampleIspCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_ListByIspCustomerResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_ListByIspCustomerResource_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_NewListByIspCustomerResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -698,7 +698,7 @@ func ExampleIspCacheNodesOperationsClient_NewListByIspCustomerResourcePager() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCacheNodesOperations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCacheNodesOperations_Update_MaximumSet_Gen.json
 func ExampleIspCacheNodesOperationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

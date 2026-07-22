@@ -575,14 +575,27 @@ All models need a version contract between:
 - native Rust driver library
 - C ABI version
 
-The safest customer-facing rule is exact version alignment:
+**Go module versions cannot enforce this contract.** A `require` line sets a
+*minimum* version, not a pin. Under Minimal Version Selection (MVS), any other
+module in the customer's build graph can raise a driver module to a newer
+version than the wrapper declared. The wrapper has no way to demand exact
+module-version equality, so correctness must rest on an **ABI-compatibility
+contract**, not on matching module version strings.
+
+The rule is: the wrapper declares the native ABI it needs, and any
+MVS-selected driver is acceptable as long as it stays ABI-compatible.
 
 ```text
 azcosmos v1.2.3
-  requires azcosmos-core v1.2.3
-  requires azcosmos-driver-* v1.2.3
-  expects native ABI version 1.2.3
+  requires native ABI major 1, minimum minor 2
+  accepts any driver module whose native ABI is 1.x with x >= 2
+  (MVS may select azcosmos-driver-* v1.2.3, v1.3.0, or newer —
+   all valid while the ABI stays 1.x compatible)
 ```
+
+ABI compatibility follows the usual rule: same major, minor greater-than-or-equal
+to what the wrapper needs. A major bump means incompatible; the wrapper must
+reject it.
 
 At minimum, the native driver should expose an ABI/version function:
 
@@ -590,17 +603,18 @@ At minimum, the native driver should expose an ABI/version function:
 const char* azurecosmos_abi_version(void);
 ```
 
-The Go wrapper can validate it during initialization and produce a direct error
-if the linked library is wrong:
+The Go wrapper validates it during initialization against a compatibility
+*range*, not an exact string, and fails only on genuine incompatibility:
 
 ```text
-azcosmos: native driver ABI mismatch:
-  Go wrapper expects 1.2.3
-  linked native driver reports 1.2.1
+azcosmos: native driver ABI incompatible:
+  Go wrapper requires ABI major 1, minor >= 2
+  linked native driver reports ABI 2.0  (major mismatch)
 ```
 
-This validation matters most for manual, dynamic, or optional-driver paths. It
-is still useful for bundled paths because it catches packaging mistakes.
+A newer-but-compatible driver (for example ABI 1.4 when the wrapper needs 1.2)
+must pass. This validation matters most for manual, dynamic, or optional-driver
+paths, and still catches packaging mistakes on bundled paths.
 
 ## 12. Customer experience comparison
 
@@ -630,12 +644,15 @@ These are the questions that likely need board-level alignment:
    or should some platforms be opt-in?
 3. Should native driver packages live in a separate Azure-owned repository to
    keep binary payload out of `azure-sdk-for-go`?
-4. Does the Azure SDK release system support synchronized versioning across a
+4. Under MVS, the customer graph can select a newer driver module than the
+   wrapper declared. What is the ABI-compatibility policy that keeps this safe —
+   same-major / minimum-minor, and who owns bumping the major?
+5. Does the Azure SDK release system support synchronized versioning across a
    public SDK module, core wrapper module, and several driver modules?
-5. How should optional/long-tail platforms be activated: direct blank import,
+6. How should optional/long-tail platforms be activated: direct blank import,
    Azure SDK metapackage, dynamic/manual native path, or unsupported?
-6. What is the signing, checksum, and provenance story for native artifacts?
-7. What exact error should customers see when no driver is configured for their
+7. What is the signing, checksum, and provenance story for native artifacts?
+8. What exact error should customers see when no driver is configured for their
    target?
 
 ## 15. Current read

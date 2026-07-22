@@ -1,5 +1,12 @@
 # Release History
 
+## 10.2.0 (2026-07-21)
+### Features Added
+
+- New enum type `BreakthroughMode` with values `BreakthroughModeDisabled`, `BreakthroughModeEnabled`
+- New field `BreakthroughMode` in struct `VolumeProperties`
+
+
 ## 11.0.0-beta.1 (2026-06-30)
 ### Breaking Changes
 

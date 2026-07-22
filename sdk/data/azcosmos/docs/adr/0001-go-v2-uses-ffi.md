@@ -44,8 +44,9 @@ logic in Go and carrying long-term Rust-to-Go drift risk.
 
 ## Discussion
 
-See [`../go-v2-ffi-decision.md`](../go-v2-ffi-decision.md) for the meeting
-context, pure-Go spike evidence, packaging concerns, tentative platform matrix,
-and market reference points. See
-[`../go-ffi-distribution-design.md`](../go-ffi-distribution-design.md) for the
-native-driver distribution design discussion.
+See
+[`go-v2-ffi-decision.md`](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/azcosmos/docs/go-v2-ffi-decision.md)
+for the meeting context, pure-Go spike evidence, packaging concerns, tentative
+platform matrix, and market reference points. See
+[`go-ffi-distribution-design.md`](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/azcosmos/docs/go-ffi-distribution-design.md)
+for the native-driver distribution design discussion.

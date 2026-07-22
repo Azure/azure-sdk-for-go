@@ -8,19 +8,19 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2025-09-16-preview/machine/Machine_AssessPatches.json
+// Generated from example definition: 2026-06-16-preview/machine/Machine_AssessPatches.json
 func ExampleMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -58,20 +58,20 @@ func ExampleMachinesClient_BeginAssessPatches() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_CreateOrUpdate.json
+// Generated from example definition: 2026-06-16-preview/machine/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMachinesClient().CreateOrUpdate(ctx, "myResourceGroup", "myMachine", armhybridcompute.Machine{
-		Identity: &armhybridcompute.Identity{
-			Type: to.Ptr("SystemAssigned"),
+		Identity: &armhybridcompute.ManagedServiceIdentity{
+			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Location: to.Ptr("eastus2euap"),
 		Properties: &armhybridcompute.MachineProperties{
@@ -87,8 +87,8 @@ func ExampleMachinesClient_CreateOrUpdate() {
 					},
 				},
 			},
-			ParentClusterResourceID:    to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+			ParentClusterResourceID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 			TpmEkCertificate:           to.Ptr("string"),
 			VMID:                       to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		},
@@ -103,11 +103,11 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -180,8 +180,8 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TpmEkCertificate: to.Ptr("string"),
 	// 			VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
@@ -190,14 +190,14 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Delete.json
+// Generated from example definition: 2026-06-16-preview/machine/Machines_Delete.json
 func ExampleMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -211,14 +211,14 @@ func ExampleMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Get.json
+// Generated from example definition: 2026-06-16-preview/machine/Machines_Get.json
 func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -233,11 +233,11 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -370,8 +370,8 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceStatuses: &armhybridcompute.ServiceStatuses{
 	// 				ExtensionService: &armhybridcompute.ServiceStatus{
@@ -405,14 +405,14 @@ func ExampleMachinesClient_Get_getMachine() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
+// Generated from example definition: 2026-06-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
 func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -428,11 +428,11 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -475,7 +475,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 					AssignedLicense: &armhybridcompute.License{
 	// 						Name: to.Ptr("{licenseName}"),
 	// 						Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-	// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
 	// 						Location: to.Ptr("eastus2euap"),
 	// 						Properties: &armhybridcompute.LicenseProperties{
 	// 							LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -488,7 +488,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 								Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 	// 							},
 	// 							LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-	// 							TenantID: to.Ptr("{tenandId}"),
+	// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 						},
 	// 					},
 	// 					EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -583,8 +583,8 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceStatuses: &armhybridcompute.ServiceStatuses{
 	// 				ExtensionService: &armhybridcompute.ServiceStatus{
@@ -617,14 +617,14 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machine_InstallPatches.json
+// Generated from example definition: 2026-06-16-preview/machine/Machine_InstallPatches.json
 func ExampleMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -674,14 +674,14 @@ func ExampleMachinesClient_BeginInstallPatches() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_ListByResourceGroup.json
+// Generated from example definition: 2026-06-16-preview/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -702,11 +702,11 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("myMachine"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		// 					PrincipalID: to.Ptr("f7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					TenantID: to.Ptr("c4098ccc-91b8-46c2-a205-d82ab1a62a8f"),
 		// 				},
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -790,7 +790,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -798,11 +798,11 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("myMachine2"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine2"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine2"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		// 					PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					TenantID: to.Ptr("c4098ccc-91b8-46c2-a205-d82ab1a62a8f"),
 		// 				},
 		// 				Location: to.Ptr("westus2"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -886,8 +886,8 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 					ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -898,14 +898,14 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_ListBySubscription.json
+// Generated from example definition: 2026-06-16-preview/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -922,16 +922,16 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armhybridcompute.MachinesClientListBySubscriptionResponse{
 		// 	MachineListResult: armhybridcompute.MachineListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2025-09-16-preview&$skiptoken=nextPageToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-06-16-preview&$skiptoken=nextPageToken"),
 		// 		Value: []*armhybridcompute.Machine{
 		// 			{
 		// 				Name: to.Ptr("myMachine"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
-		// 					PrincipalID: to.Ptr("string"),
-		// 					TenantID: to.Ptr("string"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -1015,7 +1015,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -1023,11 +1023,11 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 			{
 		// 				Name: to.Ptr("myMachine2"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup2/providers/Microsoft.HybridCompute/machines/myMachine2"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup2/providers/Microsoft.HybridCompute/machines/myMachine2"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		// 					PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					TenantID: to.Ptr("c4098ccc-91b8-46c2-a205-d82ab1a62a8f"),
 		// 				},
 		// 				Location: to.Ptr("westus2"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -1111,7 +1111,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+		// 					ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -1122,20 +1122,20 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Update.json
+// Generated from example definition: 2026-06-16-preview/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMachinesClient().Update(ctx, "myResourceGroup", "myMachine", armhybridcompute.MachineUpdate{
-		Identity: &armhybridcompute.Identity{
-			Type: to.Ptr("SystemAssigned"),
+		Identity: &armhybridcompute.ManagedServiceIdentity{
+			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armhybridcompute.MachineUpdateProperties{
 			IdentityKeyStore: to.Ptr("TPM"),
@@ -1157,8 +1157,8 @@ func ExampleMachinesClient_Update() {
 					},
 				},
 			},
-			ParentClusterResourceID:    to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+			ParentClusterResourceID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 			TpmEkCertificate:           to.Ptr("string"),
 		},
 	}, nil)
@@ -1172,11 +1172,11 @@ func ExampleMachinesClient_Update() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -1245,8 +1245,8 @@ func ExampleMachinesClient_Update() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TpmEkCertificate: to.Ptr("string"),
 	// 			VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),

@@ -8,18 +8,18 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/runCommand/RunCommands_CreateOrUpdate.json
+// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_CreateOrUpdate.json
 func ExampleMachineRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -61,7 +61,7 @@ func ExampleMachineRunCommandsClient_BeginCreateOrUpdate() {
 	// 	MachineRunCommand: armhybridcompute.MachineRunCommand{
 	// 		Name: to.Ptr("myRunCommand"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines/runcommands"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Properties: &armhybridcompute.MachineRunCommandProperties{
 	// 			AsyncExecution: to.Ptr(false),
@@ -88,14 +88,14 @@ func ExampleMachineRunCommandsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/runCommand/RunCommands_Delete.json
+// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_Delete.json
 func ExampleMachineRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -109,14 +109,14 @@ func ExampleMachineRunCommandsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/runCommand/RunCommands_Get.json
+// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_Get.json
 func ExampleMachineRunCommandsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -131,7 +131,7 @@ func ExampleMachineRunCommandsClient_Get() {
 	// 	MachineRunCommand: armhybridcompute.MachineRunCommand{
 	// 		Name: to.Ptr("myRunCommand"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines/runcommands"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand"),
 	// 		Location: to.Ptr("eastus2"),
 	// 		Properties: &armhybridcompute.MachineRunCommandProperties{
 	// 			AsyncExecution: to.Ptr(false),
@@ -171,14 +171,14 @@ func ExampleMachineRunCommandsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/runCommand/RunCommands_List.json
+// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_List.json
 func ExampleMachineRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -199,7 +199,7 @@ func ExampleMachineRunCommandsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("myRunCommand_1"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines/runcommands"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand_1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand_1"),
 		// 				Location: to.Ptr("eastus2"),
 		// 				Properties: &armhybridcompute.MachineRunCommandProperties{
 		// 					AsyncExecution: to.Ptr(false),
@@ -235,7 +235,7 @@ func ExampleMachineRunCommandsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("myRunCommand_2"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines/runcommands"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand_2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/runcommands/myRunCommand_2"),
 		// 				Location: to.Ptr("eastus2"),
 		// 				Properties: &armhybridcompute.MachineRunCommandProperties{
 		// 					AsyncExecution: to.Ptr(false),

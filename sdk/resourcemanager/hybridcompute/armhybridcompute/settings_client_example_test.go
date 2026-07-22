@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/settings/SettingsGet.json
+// Generated from example definition: 2026-06-16-preview/settings/SettingsGet.json
 func ExampleSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleSettingsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridCompute/settings/default"),
 	// 		Properties: &armhybridcompute.SettingsProperties{
 	// 			GatewayProperties: &armhybridcompute.SettingsGatewayProperties{
-	// 				GatewayResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/gateways/newGateway"),
+	// 				GatewayResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/gateways/newGateway"),
 	// 			},
 	// 			TenantID: to.Ptr("00000000-1111-2222-5555-444444444444"),
 	// 		},
@@ -45,7 +45,7 @@ func ExampleSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/settings/SettingsPatch.json
+// Generated from example definition: 2026-06-16-preview/settings/SettingsPatch.json
 func ExampleSettingsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleSettingsClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/settings/SettingsUpdate.json
+// Generated from example definition: 2026-06-16-preview/settings/SettingsUpdate.json
 func ExampleSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

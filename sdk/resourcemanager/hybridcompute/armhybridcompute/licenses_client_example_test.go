@@ -8,18 +8,18 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/license/License_CreateOrUpdate.json
+// Generated from example definition: 2026-06-16-preview/license/License_CreateOrUpdate.json
 func ExampleLicensesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -50,7 +50,7 @@ func ExampleLicensesClient_BeginCreateOrUpdate() {
 	// 	License: armhybridcompute.License{
 	// 		Name: to.Ptr("{licenseName}"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.LicenseProperties{
 	// 			LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -63,20 +63,20 @@ func ExampleLicensesClient_BeginCreateOrUpdate() {
 	// 				Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 	// 			},
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-	// 			TenantID: to.Ptr("{tenandId}"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/license/License_Delete.json
+// Generated from example definition: 2026-06-16-preview/license/License_Delete.json
 func ExampleLicensesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -95,14 +95,14 @@ func ExampleLicensesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/license/License_Get.json
+// Generated from example definition: 2026-06-16-preview/license/License_Get.json
 func ExampleLicensesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -117,7 +117,7 @@ func ExampleLicensesClient_Get() {
 	// 	License: armhybridcompute.License{
 	// 		Name: to.Ptr("{licenseName}"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.LicenseProperties{
 	// 			LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -130,20 +130,20 @@ func ExampleLicensesClient_Get() {
 	// 				Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 	// 			},
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-	// 			TenantID: to.Ptr("{tenandId}"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/license/License_ListByResourceGroup.json
+// Generated from example definition: 2026-06-16-preview/license/License_ListByResourceGroup.json
 func ExampleLicensesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -164,7 +164,7 @@ func ExampleLicensesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("{licenseName}"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.LicenseProperties{
 		// 					LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -177,7 +177,7 @@ func ExampleLicensesClient_NewListByResourceGroupPager() {
 		// 						Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 		// 					},
 		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-		// 					TenantID: to.Ptr("{tenandId}"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 			},
 		// 		},
@@ -186,14 +186,14 @@ func ExampleLicensesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/license/License_ListBySubscription.json
+// Generated from example definition: 2026-06-16-preview/license/License_ListBySubscription.json
 func ExampleLicensesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -214,7 +214,7 @@ func ExampleLicensesClient_NewListBySubscriptionPager() {
 		// 			{
 		// 				Name: to.Ptr("{licenseName}"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.LicenseProperties{
 		// 					LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -227,7 +227,7 @@ func ExampleLicensesClient_NewListBySubscriptionPager() {
 		// 						Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 		// 					},
 		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-		// 					TenantID: to.Ptr("{tenandId}"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 			},
 		// 		},
@@ -236,14 +236,14 @@ func ExampleLicensesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/license/License_Update.json
+// Generated from example definition: 2026-06-16-preview/license/License_Update.json
 func ExampleLicensesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -273,7 +273,7 @@ func ExampleLicensesClient_BeginUpdate() {
 	// 	License: armhybridcompute.License{
 	// 		Name: to.Ptr("{licenseName}"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/licenses/{licenseName}"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/licenses/{licenseName}"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.LicenseProperties{
 	// 			LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -286,20 +286,20 @@ func ExampleLicensesClient_BeginUpdate() {
 	// 				Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 	// 			},
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-	// 			TenantID: to.Ptr("{tenandId}"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/license/License_ValidateLicense.json
+// Generated from example definition: 2026-06-16-preview/license/License_ValidateLicense.json
 func ExampleLicensesClient_BeginValidateLicense() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -330,7 +330,7 @@ func ExampleLicensesClient_BeginValidateLicense() {
 	// 	License: armhybridcompute.License{
 	// 		Name: to.Ptr("{licenseName}"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.LicenseProperties{
 	// 			LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -343,7 +343,7 @@ func ExampleLicensesClient_BeginValidateLicense() {
 	// 				Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 	// 			},
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-	// 			TenantID: to.Ptr("{tenandId}"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 	},
 	// }

@@ -1,5 +1,24 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-07-13)
+### Breaking Changes
+
+- Type of `Machine.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Type of `MachineUpdate.Identity` has been changed from `*Identity` to `*ManagedServiceIdentity`
+- Struct `Identity` has been removed
+
+### Features Added
+
+- New value `LicenseTargetWindowsServer2016` added to enum type `LicenseTarget`
+- New enum type `MachineStatusReason` with values `MachineStatusReasonCloned`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `GatewayBypass` in struct `GatewayProperties`
+- New field `GatewayBypass` in struct `GatewayUpdateProperties`
+- New field `StatusReason` in struct `MachineProperties`
+
+
 ## 2.1.0-beta.3 (2026-05-20)
 ### Features Added
 

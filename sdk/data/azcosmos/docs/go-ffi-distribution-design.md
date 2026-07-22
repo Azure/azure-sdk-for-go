@@ -97,7 +97,7 @@ bundled platform-specific static builds as the default, with dynamic/manual
 linking as an escape hatch for special cases.
 
 References:
-[`kafka/README.md#librdkafka`](https://github.com/confluentinc/confluent-kafka-go/blob/master/kafka/README.md#librdkafka)
+[`kafka/README.md#build-tags`](https://github.com/confluentinc/confluent-kafka-go/blob/master/kafka/README.md#build-tags)
 and
 [`librdkafka_vendor`](https://pkg.go.dev/github.com/confluentinc/confluent-kafka-go/v2/kafka/librdkafka_vendor).
 

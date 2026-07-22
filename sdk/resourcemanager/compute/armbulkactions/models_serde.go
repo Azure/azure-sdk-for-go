@@ -726,6 +726,37 @@ func (b *BulkCreateCustomZoneAllocationPolicy) UnmarshalJSON(data []byte) error 
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type BulkInstancesInnerError.
+func (b BulkInstancesInnerError) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "errorDetail", b.ErrorDetail)
+	populate(objectMap, "exceptionType", b.ExceptionType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type BulkInstancesInnerError.
+func (b *BulkInstancesInnerError) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "errorDetail":
+			err = unpopulate(val, "ErrorDetail", &b.ErrorDetail)
+			delete(rawMsg, key)
+		case "exceptionType":
+			err = unpopulate(val, "ExceptionType", &b.ExceptionType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", b, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type BulkactionVMExtension.
 func (b BulkactionVMExtension) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2069,8 +2100,6 @@ func (i *ImageReference) UnmarshalJSON(data []byte) error {
 func (i InnerError) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", i.Code)
-	populate(objectMap, "errorDetail", i.ErrorDetail)
-	populate(objectMap, "exceptionType", i.ExceptionType)
 	populate(objectMap, "innererror", i.Innererror)
 	return json.Marshal(objectMap)
 }
@@ -2086,51 +2115,6 @@ func (i *InnerError) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "code":
 			err = unpopulate(val, "Code", &i.Code)
-			delete(rawMsg, key)
-		case "errorDetail":
-			err = unpopulate(val, "ErrorDetail", &i.ErrorDetail)
-			delete(rawMsg, key)
-		case "exceptionType":
-			err = unpopulate(val, "ExceptionType", &i.ExceptionType)
-			delete(rawMsg, key)
-		case "innererror":
-			err = unpopulate(val, "Innererror", &i.Innererror)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type InnerError.
-func (i InnerError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "code", i.Code)
-	populate(objectMap, "errorDetail", i.ErrorDetail)
-	populate(objectMap, "exceptionType", i.ExceptionType)
-	populate(objectMap, "innererror", i.Innererror)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type InnerError.
-func (i *InnerError) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "code":
-			err = unpopulate(val, "Code", &i.Code)
-			delete(rawMsg, key)
-		case "errorDetail":
-			err = unpopulate(val, "ErrorDetail", &i.ErrorDetail)
-			delete(rawMsg, key)
-		case "exceptionType":
-			err = unpopulate(val, "ExceptionType", &i.ExceptionType)
 			delete(rawMsg, key)
 		case "innererror":
 			err = unpopulate(val, "Innererror", &i.Innererror)

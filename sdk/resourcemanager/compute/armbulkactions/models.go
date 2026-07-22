@@ -21,7 +21,7 @@ type APIError struct {
 	Details []*APIErrorBase
 
 	// The API inner error
-	Innererror *InnerError
+	Innererror *BulkInstancesInnerError
 
 	// The error message.
 	Message *string
@@ -290,6 +290,15 @@ type BulkCreateCustomZoneAllocationPolicy struct {
 
 	// The zone preferences for allocation priority
 	ZonePreferences []*ZonePreference
+}
+
+// BulkInstancesInnerError - Inner error details.
+type BulkInstancesInnerError struct {
+	// The internal error message or exception dump.
+	ErrorDetail *string
+
+	// The exception type.
+	ExceptionType *string
 }
 
 // BulkactionVMExtension - Defines a virtual machine extension.
@@ -825,31 +834,10 @@ type ImageReference struct {
 	Version *string
 }
 
-// InnerError - Inner error details.
+// InnerError - An object containing more specific information about the error. As per Azure REST API guidelines - https://aka.ms/AzureRestApiGuidelines#handling-errors.
 type InnerError struct {
 	// One of a server-defined set of error codes.
 	Code *string
-
-	// The internal error message or exception dump.
-	ErrorDetail *string
-
-	// The exception type.
-	ExceptionType *string
-
-	// Inner error.
-	Innererror *InnerError
-}
-
-// InnerError - Inner error details.
-type InnerError struct {
-	// One of a server-defined set of error codes.
-	Code *string
-
-	// The internal error message or exception dump.
-	ErrorDetail *string
-
-	// The exception type.
-	ExceptionType *string
 
 	// Inner error.
 	Innererror *InnerError

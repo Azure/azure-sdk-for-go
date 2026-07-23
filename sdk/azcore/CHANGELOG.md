@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+* Documented the behavior of `runtime.Pager` when `NextPage` returns an error: the pager does not advance, `More` continues to return `true`, and a later call to `NextPage` retries the failed page. Callers that do not want a retry must exit the paging loop on error.
+
 ## 1.22.0 (2026-06-04)
 
 ### Features Added

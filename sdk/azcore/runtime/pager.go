@@ -22,6 +22,10 @@ type PagingHandler[T any] struct {
 	More func(T) bool
 
 	// Fetcher fetches the first and subsequent pages.
+	// When Fetcher returns an error, the Pager does not advance, and
+	// NextPage can call Fetcher again with the same arguments.
+	// A Fetcher that must not repeat a failed request has to record
+	// that state itself and return an error on later calls.
 	Fetcher func(context.Context, *T) (T, error)
 
 	// Tracer contains the Tracer from the client that's creating the Pager.
@@ -29,6 +33,8 @@ type PagingHandler[T any] struct {
 }
 
 // Pager provides operations for iterating over paged responses.
+// An error from NextPage does not end iteration. Call NextPage again
+// to retry the failed page, or stop calling NextPage to end iteration.
 // Methods on this type are not safe for concurrent use.
 type Pager[T any] struct {
 	current   *T
@@ -48,6 +54,9 @@ func NewPager[T any](handler PagingHandler[T]) *Pager[T] {
 }
 
 // More returns true if there are more pages to retrieve.
+// An error from NextPage does not change the result of More.
+// When NextPage returns an error, exit the paging loop, or call
+// NextPage again to retry the failed page.
 func (p *Pager[T]) More() bool {
 	if p.current != nil {
 		return p.handler.More(*p.current)
@@ -56,6 +65,10 @@ func (p *Pager[T]) More() bool {
 }
 
 // NextPage advances the pager to the next page.
+// When it returns an error, the pager does not advance. More returns
+// the same value as before the failed call, and a later call to
+// NextPage sends the same request again. Exit the paging loop when
+// NextPage returns an error if you do not want a retry.
 func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 	if p.current != nil {
 		if p.firstPage {

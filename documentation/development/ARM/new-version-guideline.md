@@ -31,7 +31,7 @@ var resourceGroups []*armresources.ResourceGroup
 for pager.More() {
     nextResult, err := pager.NextPage(ctx)
     if err != nil {
-        // handle error...
+        log.Fatalf("failed to advance page: %v", err)
     }
     if nextResult.ResourceGroupListResult.Value != nil {
         resourceGroups = append(resourceGroups, nextResult.ResourceGroupListResult.Value...)

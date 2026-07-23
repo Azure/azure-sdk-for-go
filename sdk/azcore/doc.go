@@ -190,7 +190,12 @@ and determining if there are more pages to fetch.  No IO calls are made until th
 	pager := widgetClient.NewListWidgetsPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(context.TODO())
-		// handle err
+		if err != nil {
+			// The pager does not advance on error, and More continues to return true.
+			// A later call to NextPage retries the failed page.  Exit the loop if you
+			// do not want a retry.
+			break
+		}
 		for _, widget := range page.Values {
 			// process widget
 		}

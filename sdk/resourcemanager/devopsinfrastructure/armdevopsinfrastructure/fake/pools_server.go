@@ -16,10 +16,15 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // PoolsServer is a fake server for instances of the armdevopsinfrastructure.PoolsClient type.
 type PoolsServer struct {
+	// CheckNameAvailability is the fake for method PoolsClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, body armdevopsinfrastructure.CheckNameAvailability, options *armdevopsinfrastructure.PoolsClientCheckNameAvailabilityOptions) (resp azfake.Responder[armdevopsinfrastructure.PoolsClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method PoolsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, poolName string, resource armdevopsinfrastructure.Pool, options *armdevopsinfrastructure.PoolsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -27,6 +32,10 @@ type PoolsServer struct {
 	// BeginDelete is the fake for method PoolsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, poolName string, options *armdevopsinfrastructure.PoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdevopsinfrastructure.PoolsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// DeleteResources is the fake for method PoolsClient.DeleteResources
+	// HTTP status codes to indicate success: http.StatusOK
+	DeleteResources func(ctx context.Context, resourceGroupName string, poolName string, body armdevopsinfrastructure.DeleteResourcesDetails, options *armdevopsinfrastructure.PoolsClientDeleteResourcesOptions) (resp azfake.Responder[armdevopsinfrastructure.PoolsClientDeleteResourcesResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -82,9 +91,7 @@ func (p *PoolsServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -93,10 +100,14 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 		}
 		if !intercepted {
 			switch method {
+			case "PoolsClient.CheckNameAvailability":
+				res.resp, res.err = p.dispatchCheckNameAvailability(req)
 			case "PoolsClient.BeginCreateOrUpdate":
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PoolsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PoolsClient.DeleteResources":
+				res.resp, res.err = p.dispatchDeleteResources(req)
 			case "PoolsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PoolsClient.NewListByResourceGroupPager":
@@ -110,10 +121,7 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -122,6 +130,35 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (p *PoolsServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if p.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdevopsinfrastructure.CheckNameAvailability](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (p *PoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -133,7 +170,7 @@ func (p *PoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdevopsinfrastructure.Pool](req)
@@ -161,7 +198,7 @@ func (p *PoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		p.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -181,7 +218,7 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -205,7 +242,7 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -216,6 +253,43 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
+func (p *PoolsServerTransport) dispatchDeleteResources(req *http.Request) (*http.Response, error) {
+	if p.srv.DeleteResources == nil {
+		return nil, &nonRetriableError{errors.New("fake for method DeleteResources not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resources`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armdevopsinfrastructure.DeleteResourcesDetails](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.DeleteResources(req.Context(), resourceGroupNameParam, poolNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -223,7 +297,7 @@ func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if matches == nil || len(matches) < 3 {
+	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -239,7 +313,7 @@ func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Pool, req)
@@ -258,7 +332,7 @@ func (p *PoolsServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
@@ -276,7 +350,7 @@ func (p *PoolsServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -295,7 +369,7 @@ func (p *PoolsServerTransport) dispatchNewListBySubscriptionPager(req *http.Requ
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 1 {
+		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		resp := p.srv.NewListBySubscriptionPager(nil)
@@ -309,7 +383,7 @@ func (p *PoolsServerTransport) dispatchNewListBySubscriptionPager(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -328,7 +402,7 @@ func (p *PoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/pools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 3 {
+		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		body, err := server.UnmarshalRequestAsJSON[armdevopsinfrastructure.PoolUpdate](req)
@@ -356,7 +430,7 @@ func (p *PoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		p.beginUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}

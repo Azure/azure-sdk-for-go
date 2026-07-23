@@ -12,8 +12,39 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-10-19/CreateOrUpdatePool.json
-func ExamplePoolsClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-07-03-preview/Pools_CheckNameAvailability.json
+func ExamplePoolsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevopsinfrastructure.NewClientFactory("a2e95d27-c161-4b61-bda4-11512c14c2c2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolsClient().CheckNameAvailability(ctx, armdevopsinfrastructure.CheckNameAvailability{
+		Name: to.Ptr("mydevopspool"),
+		Type: to.Ptr(armdevopsinfrastructure.ResourceTypeMicrosoftDevOpsInfrastructurePools),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevopsinfrastructure.PoolsClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armdevopsinfrastructure.CheckNameAvailabilityResult{
+	// 		Available: to.Ptr(armdevopsinfrastructure.AvailabilityStatusUnavailable),
+	// 		Message: to.Ptr("Managed DevOps pool mydevopspool is already in use. Please choose a pool name that has not been taken."),
+	// 		Name: to.Ptr("mydevopspool"),
+	// 		Reason: to.Ptr(armdevopsinfrastructure.CheckNameAvailabilityReasonAlreadyExists),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-03-preview/CreateOrUpdatePool.json
+func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -30,10 +61,13 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 			MaximumConcurrency:         to.Ptr[int32](10),
 			DevCenterProjectResourceID: to.Ptr("/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"),
 			OrganizationProfile: &armdevopsinfrastructure.AzureDevOpsOrganizationProfile{
-				Kind: to.Ptr("AzureDevOps"),
+				Kind:              to.Ptr("AzureDevOps"),
+				Description:       to.Ptr("Managed by Managed DevOps Pools"),
+				UpdateDescription: to.Ptr(true),
 				Organizations: []*armdevopsinfrastructure.Organization{
 					{
-						URL: to.Ptr("https://mseng.visualstudio.com"),
+						URL:        to.Ptr("https://mseng.visualstudio.com"),
+						OpenAccess: to.Ptr(true),
 					},
 				},
 			},
@@ -47,8 +81,26 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 				},
 				Images: []*armdevopsinfrastructure.PoolImage{
 					{
-						ResourceID: to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+						ResourceID:    to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+						EphemeralType: to.Ptr(armdevopsinfrastructure.EphemeralTypeNVMeDisk),
+						ProvisioningScriptStorageAccountResourceID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/provisioningscriptsa"),
+						ProvisioningScriptManagedIdentityClientID:  to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
+						ProvisioningScriptShouldRestart:            to.Ptr(true),
+						ProvisioningScriptEntryPoint:               to.Ptr("scripts/setup-agent.ps1"),
 					},
+				},
+				OSProfile: &armdevopsinfrastructure.OsProfile{
+					SecretsManagementSettings: &armdevopsinfrastructure.SecretsManagementSettings{
+						CertificateStoreName: to.Ptr(armdevopsinfrastructure.CertificateStoreNameOptionRoot),
+						ObservedCertificates: []*string{
+							to.Ptr("https://abc.vault.azure.net/secrets/one"),
+						},
+						KeyExportable: to.Ptr(false),
+					},
+				},
+				NetworkProfile: &armdevopsinfrastructure.NetworkProfile{
+					SubnetID:             to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
+					StaticIPAddressCount: to.Ptr[int32](2),
 				},
 			},
 		},
@@ -58,19 +110,21 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdevopsinfrastructure.PoolsClientCreateOrUpdateResponse{
-	// 	Pool: &armdevopsinfrastructure.Pool{
+	// 	Pool: armdevopsinfrastructure.Pool{
 	// 		Properties: &armdevopsinfrastructure.PoolProperties{
 	// 			ProvisioningState: to.Ptr(armdevopsinfrastructure.ProvisioningStateSucceeded),
 	// 			MaximumConcurrency: to.Ptr[int32](10),
 	// 			DevCenterProjectResourceID: to.Ptr("/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"),
 	// 			OrganizationProfile: &armdevopsinfrastructure.AzureDevOpsOrganizationProfile{
 	// 				Kind: to.Ptr("AzureDevOps"),
+	// 				Description: to.Ptr("Managed by Managed DevOps Pools"),
+	// 				UpdateDescription: to.Ptr(true),
 	// 				Organizations: []*armdevopsinfrastructure.Organization{
 	// 					{
 	// 						URL: to.Ptr("https://mseng.visualstudio.com"),
@@ -88,6 +142,29 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	// 				Images: []*armdevopsinfrastructure.PoolImage{
 	// 					{
 	// 						ResourceID: to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+	// 						EphemeralType: to.Ptr(armdevopsinfrastructure.EphemeralTypeAutomatic),
+	// 						IsEphemeral: to.Ptr(true),
+	// 						ProvisioningScriptStorageAccountResourceID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/provisioningscriptsa"),
+	// 						ProvisioningScriptManagedIdentityClientID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
+	// 						ProvisioningScriptShouldRestart: to.Ptr(true),
+	// 						ProvisioningScriptEntryPoint: to.Ptr("scripts/setup-agent.ps1"),
+	// 					},
+	// 				},
+	// 				OSProfile: &armdevopsinfrastructure.OsProfile{
+	// 					SecretsManagementSettings: &armdevopsinfrastructure.SecretsManagementSettings{
+	// 						CertificateStoreName: to.Ptr(armdevopsinfrastructure.CertificateStoreNameOptionRoot),
+	// 						ObservedCertificates: []*string{
+	// 							to.Ptr("https://abc.vault.azure.net/secrets/one"),
+	// 						},
+	// 						KeyExportable: to.Ptr(false),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armdevopsinfrastructure.NetworkProfile{
+	// 					SubnetID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
+	// 					StaticIPAddressCount: to.Ptr[int32](2),
+	// 					IPAddresses: []*string{
+	// 						to.Ptr("1.1.1.1"),
+	// 						to.Ptr("2.2.2.2"),
 	// 					},
 	// 				},
 	// 			},
@@ -98,7 +175,155 @@ func ExamplePoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-10-19/DeletePool.json
+// Generated from example definition: 2026-07-03-preview/CreateOrUpdatePool_InstanceMix.json
+func ExamplePoolsClient_BeginCreateOrUpdate_poolsCreateOrUpdateInstanceMix() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevopsinfrastructure.NewClientFactory("a2e95d27-c161-4b61-bda4-11512c14c2c2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoolsClient().BeginCreateOrUpdate(ctx, "rg", "pool", armdevopsinfrastructure.Pool{
+		Location: to.Ptr("eastus"),
+		Properties: &armdevopsinfrastructure.PoolProperties{
+			ProvisioningState:          to.Ptr(armdevopsinfrastructure.ProvisioningStateSucceeded),
+			MaximumConcurrency:         to.Ptr[int32](10),
+			DevCenterProjectResourceID: to.Ptr("/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"),
+			OrganizationProfile: &armdevopsinfrastructure.AzureDevOpsOrganizationProfile{
+				Kind:              to.Ptr("AzureDevOps"),
+				Description:       to.Ptr("Managed by Managed DevOps Pools"),
+				UpdateDescription: to.Ptr(true),
+				Organizations: []*armdevopsinfrastructure.Organization{
+					{
+						URL:        to.Ptr("https://mseng.visualstudio.com"),
+						OpenAccess: to.Ptr(true),
+					},
+				},
+			},
+			AgentProfile: &armdevopsinfrastructure.StatelessAgentProfile{
+				Kind: to.Ptr("Stateless"),
+			},
+			FabricProfile: &armdevopsinfrastructure.VmssFabricProfile{
+				Kind: to.Ptr("Vmss"),
+				SKU: &armdevopsinfrastructure.DevOpsAzureSKU{
+					Name: to.Ptr("Mix"),
+					VMSizes: []*armdevopsinfrastructure.VMSize{
+						{
+							Name: to.Ptr("Standard_E2ads_v5"),
+						},
+						{
+							Name: to.Ptr("Standard_D2ads_v5"),
+						},
+					},
+				},
+				Images: []*armdevopsinfrastructure.PoolImage{
+					{
+						ResourceID:    to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+						EphemeralType: to.Ptr(armdevopsinfrastructure.EphemeralTypeAutomatic),
+						ProvisioningScriptStorageAccountResourceID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/provisioningscriptsa"),
+						ProvisioningScriptManagedIdentityClientID:  to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
+						ProvisioningScriptShouldRestart:            to.Ptr(true),
+						ProvisioningScriptEntryPoint:               to.Ptr("scripts/setup-agent.ps1"),
+					},
+				},
+				OSProfile: &armdevopsinfrastructure.OsProfile{
+					SecretsManagementSettings: &armdevopsinfrastructure.SecretsManagementSettings{
+						CertificateStoreName: to.Ptr(armdevopsinfrastructure.CertificateStoreNameOptionRoot),
+						ObservedCertificates: []*string{
+							to.Ptr("https://abc.vault.azure.net/secrets/one"),
+						},
+						KeyExportable: to.Ptr(false),
+					},
+				},
+				NetworkProfile: &armdevopsinfrastructure.NetworkProfile{
+					SubnetID:             to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
+					StaticIPAddressCount: to.Ptr[int32](2),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevopsinfrastructure.PoolsClientCreateOrUpdateResponse{
+	// 	Pool: armdevopsinfrastructure.Pool{
+	// 		Properties: &armdevopsinfrastructure.PoolProperties{
+	// 			ProvisioningState: to.Ptr(armdevopsinfrastructure.ProvisioningStateSucceeded),
+	// 			MaximumConcurrency: to.Ptr[int32](10),
+	// 			DevCenterProjectResourceID: to.Ptr("/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"),
+	// 			OrganizationProfile: &armdevopsinfrastructure.AzureDevOpsOrganizationProfile{
+	// 				Kind: to.Ptr("AzureDevOps"),
+	// 				Description: to.Ptr("Managed by Managed DevOps Pools"),
+	// 				UpdateDescription: to.Ptr(true),
+	// 				Organizations: []*armdevopsinfrastructure.Organization{
+	// 					{
+	// 						URL: to.Ptr("https://mseng.visualstudio.com"),
+	// 					},
+	// 				},
+	// 			},
+	// 			AgentProfile: &armdevopsinfrastructure.StatelessAgentProfile{
+	// 				Kind: to.Ptr("Stateless"),
+	// 			},
+	// 			FabricProfile: &armdevopsinfrastructure.VmssFabricProfile{
+	// 				Kind: to.Ptr("Vmss"),
+	// 				SKU: &armdevopsinfrastructure.DevOpsAzureSKU{
+	// 					Name: to.Ptr("Mix"),
+	// 					VMSizes: []*armdevopsinfrastructure.VMSize{
+	// 						{
+	// 							Name: to.Ptr("Standard_E2ads_v5"),
+	// 						},
+	// 						{
+	// 							Name: to.Ptr("Standard_D2ads_v5"),
+	// 						},
+	// 					},
+	// 				},
+	// 				Images: []*armdevopsinfrastructure.PoolImage{
+	// 					{
+	// 						ResourceID: to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+	// 						EphemeralType: to.Ptr(armdevopsinfrastructure.EphemeralTypeAutomatic),
+	// 						IsEphemeral: to.Ptr(true),
+	// 						ProvisioningScriptStorageAccountResourceID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Storage/storageAccounts/provisioningscriptsa"),
+	// 						ProvisioningScriptManagedIdentityClientID: to.Ptr("0f8fad5b-d9cb-469f-a165-70867728950e"),
+	// 						ProvisioningScriptShouldRestart: to.Ptr(true),
+	// 						ProvisioningScriptEntryPoint: to.Ptr("scripts/setup-agent.ps1"),
+	// 					},
+	// 				},
+	// 				OSProfile: &armdevopsinfrastructure.OsProfile{
+	// 					SecretsManagementSettings: &armdevopsinfrastructure.SecretsManagementSettings{
+	// 						CertificateStoreName: to.Ptr(armdevopsinfrastructure.CertificateStoreNameOptionRoot),
+	// 						ObservedCertificates: []*string{
+	// 							to.Ptr("https://abc.vault.azure.net/secrets/one"),
+	// 						},
+	// 						KeyExportable: to.Ptr(false),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armdevopsinfrastructure.NetworkProfile{
+	// 					SubnetID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.Network/virtualNetworks/vnet/subnets/subnet"),
+	// 					StaticIPAddressCount: to.Ptr[int32](2),
+	// 					IPAddresses: []*string{
+	// 						to.Ptr("1.1.1.1"),
+	// 						to.Ptr("2.2.2.2"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/rg/providers/Microsoft.DevOpsInfrastructure/Pools/pool"),
+	// 		Location: to.Ptr("eastus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-03-preview/DeletePool.json
 func ExamplePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,11 +340,38 @@ func ExamplePoolsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2024-10-19/GetPool.json
+// Generated from example definition: 2026-07-03-preview/Pools_DeleteResources.json
+func ExamplePoolsClient_DeleteResources() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevopsinfrastructure.NewClientFactory("a2e95d27-c161-4b61-bda4-11512c14c2c2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPoolsClient().DeleteResources(ctx, "my-resource-group", "my-dev-ops-pool", armdevopsinfrastructure.DeleteResourcesDetails{
+		ResourceIDs: []*string{
+			to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/my-resource-group/providers/Microsoft.DevOpsInfrastructure/pools/my-dev-ops-pool/resources/dd8cc705c_0"),
+			to.Ptr("/subscriptions/a2e95d27-c161-4b61-bda4-11512c14c2c2/resourceGroups/my-resource-group/providers/Microsoft.DevOpsInfrastructure/pools/my-dev-ops-pool/resources/dd8cc705c_1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevopsinfrastructure.PoolsClientDeleteResourcesResponse{
+	// }
+}
+
+// Generated from example definition: 2026-07-03-preview/GetPool.json
 func ExamplePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,13 +390,15 @@ func ExamplePoolsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdevopsinfrastructure.PoolsClientGetResponse{
-	// 	Pool: &armdevopsinfrastructure.Pool{
+	// 	Pool: armdevopsinfrastructure.Pool{
 	// 		Properties: &armdevopsinfrastructure.PoolProperties{
 	// 			ProvisioningState: to.Ptr(armdevopsinfrastructure.ProvisioningStateSucceeded),
 	// 			MaximumConcurrency: to.Ptr[int32](10),
 	// 			DevCenterProjectResourceID: to.Ptr("/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"),
 	// 			OrganizationProfile: &armdevopsinfrastructure.AzureDevOpsOrganizationProfile{
 	// 				Kind: to.Ptr("AzureDevOps"),
+	// 				Description: to.Ptr("Managed by Managed DevOps Pools"),
+	// 				UpdateDescription: to.Ptr(true),
 	// 				Organizations: []*armdevopsinfrastructure.Organization{
 	// 					{
 	// 						URL: to.Ptr("https://mseng.visualstudio.com"),
@@ -162,6 +416,8 @@ func ExamplePoolsClient_Get() {
 	// 				Images: []*armdevopsinfrastructure.PoolImage{
 	// 					{
 	// 						ResourceID: to.Ptr("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"),
+	// 						EphemeralType: to.Ptr(armdevopsinfrastructure.EphemeralTypeAutomatic),
+	// 						IsEphemeral: to.Ptr(true),
 	// 					},
 	// 				},
 	// 			},
@@ -172,7 +428,7 @@ func ExamplePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-10-19/ListPoolsBySubscriptionAndResourceGroup.json
+// Generated from example definition: 2026-07-03-preview/ListPoolsBySubscriptionAndResourceGroup.json
 func ExamplePoolsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +463,7 @@ func ExamplePoolsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-19/ListPoolsBySubscription.json
+// Generated from example definition: 2026-07-03-preview/ListPoolsBySubscription.json
 func ExamplePoolsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +498,7 @@ func ExamplePoolsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-10-19/UpdatePool.json
+// Generated from example definition: 2026-07-03-preview/UpdatePool.json
 func ExamplePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,13 +515,13 @@ func ExamplePoolsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdevopsinfrastructure.PoolsClientUpdateResponse{
-	// 	Pool: &armdevopsinfrastructure.Pool{
+	// 	Pool: armdevopsinfrastructure.Pool{
 	// 		Location: to.Ptr("eastus"),
 	// 	},
 	// }

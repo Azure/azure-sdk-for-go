@@ -18,6 +18,8 @@ import (
 
 // SubscriptionUsagesClient contains the methods for the SubscriptionUsages group.
 // Don't use this type directly, use NewSubscriptionUsagesClient() instead.
+//
+// Generated from API version 2026-07-03-preview
 type SubscriptionUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -26,7 +28,7 @@ type SubscriptionUsagesClient struct {
 // NewSubscriptionUsagesClient creates a new instance of SubscriptionUsagesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
-//   - options - pass nil to accept the default values.
+//   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionUsagesClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
@@ -40,8 +42,6 @@ func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewUsagesPager - List Quota resources by subscription ID
-//
-// Generated from API version 2024-10-19
 //   - location - The name of the Azure region.
 //   - options - SubscriptionUsagesClientUsagesOptions contains the optional parameters for the SubscriptionUsagesClient.NewUsagesPager
 //     method.
@@ -84,8 +84,8 @@ func (client *SubscriptionUsagesClient) usagesCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-10-19")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260703Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

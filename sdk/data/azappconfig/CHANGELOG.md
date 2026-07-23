@@ -7,13 +7,19 @@
   * Added `Description` field to the `Setting` and `Snapshot` structs.
   * Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
   * Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
+* Added a new `FeatureFlagClient` for interacting with the dedicated feature flag endpoint.
+  * Added constructors `NewFeatureFlagClient`, `NewFeatureFlagClientFromConnectionString`, and factory method `Client.NewFeatureFlagClient`.
+  * Added methods `AddFeatureFlag`, `SetFeatureFlag`, `GetFeatureFlag`, `DeleteFeatureFlag`, `NewListFeatureFlagsPager`, and `NewListFeatureFlagRevisionsPager`.
+  * Added types `FeatureFlag`, `FeatureFlagSelector`, `FeatureFlagAllocation`, `FeatureFlagConditions`, `FeatureFlagFilter`, `FeatureFlagTelemetryConfiguration`, `FeatureFlagVariantDefinition`, `GroupAllocation`, `PercentileAllocation`, and `UserAllocation`.
+  * Added option and response types for each feature flag operation.
+  * Added field selector constants `FeatureFlagFields*`, and the `RequirementType` and `StatusOverride` enums with corresponding constants.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
-* Updated to API version `2026-04-01`.
+* Updated to API version `2026-05-01-preview`.
 * Updated dependencies.
 
 ## 2.2.0 (2026-04-14)

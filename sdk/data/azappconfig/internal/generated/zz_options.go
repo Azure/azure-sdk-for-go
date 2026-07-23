@@ -129,6 +129,10 @@ type AzureAppConfigurationClientCheckLabelsOptions struct {
 	// A filter for the name of the returned labels.
 	Name *string
 
+	// A filter used to indicate the resource type of the labels. Accepted values: 'kv' for key-value labels, 'ff' for feature
+	// flag labels.
+	ResourceType *string
+
 	// Used to select what fields are present in the returned resource(s).
 	Select []LabelFields
 
@@ -348,6 +352,10 @@ type AzureAppConfigurationClientGetLabelsOptions struct {
 	// A filter for the name of the returned labels.
 	Name *string
 
+	// A filter used to indicate the resource type of the labels. Accepted values: 'kv' for key-value labels, 'ff' for feature
+	// flag labels.
+	ResourceType *string
+
 	// Used to select what fields are present in the returned resource(s).
 	Select []LabelFields
 
@@ -491,6 +499,246 @@ type AzureAppConfigurationClientUpdateSnapshotOptions struct {
 	// Used to perform an operation only if the targeted resource's etag does not
 	// match the value provided.
 	IfNoneMatch *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientCheckFeatureFlagOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.CheckFeatureFlag
+// method.
+type AzureAppConfigurationFeatureFlagClientCheckFeatureFlagOptions struct {
+	// Requests the server to respond with the state of the resource at the specified
+	// time.
+	AcceptDatetime *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the
+	// value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not
+	// match the value provided.
+	IfNoneMatch *string
+
+	// The label of the feature flag to retrieve.
+	Label *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []FeatureFlagFields
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+
+	// A filter used to query by tags. Syntax reference:
+	// https://aka.ms/azconfig/docs/keyvaluefiltering
+	Tags []string
+}
+
+// AzureAppConfigurationFeatureFlagClientCheckFeatureFlagRevisionsOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.CheckFeatureFlagRevisions
+// method.
+type AzureAppConfigurationFeatureFlagClientCheckFeatureFlagRevisionsOptions struct {
+	// Instructs the server to return elements that appear after the element referred
+	// to by the specified token.
+	After *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// A filter used to match labels. Syntax reference:
+	// https://aka.ms/azconfig/docs/restapirevisions
+	Label *string
+
+	// A filter used to match names.
+	Name *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []FeatureFlagFields
+
+	// A filter used to query by tags. Syntax reference:
+	// https://aka.ms/azconfig/docs/restapirevisions
+	Tags []string
+}
+
+// AzureAppConfigurationFeatureFlagClientCheckFeatureFlagsOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.CheckFeatureFlags
+// method.
+type AzureAppConfigurationFeatureFlagClientCheckFeatureFlagsOptions struct {
+	// Requests the server to respond with the state of the resource at the specified
+	// time.
+	AcceptDatetime *string
+
+	// Instructs the server to return elements that appear after the element referred
+	// to by the specified token.
+	After *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the
+	// value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not
+	// match the value provided.
+	IfNoneMatch *string
+
+	// A filter used to match labels. Syntax reference:
+	// https://aka.ms/azconfig/docs/keyvaluefiltering
+	Label *string
+
+	// A filter used to match feature flag names.
+	Name *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []FeatureFlagFields
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+
+	// A filter used to query by tags. Syntax reference:
+	// https://aka.ms/azconfig/docs/keyvaluefiltering
+	Tags []string
+}
+
+// AzureAppConfigurationFeatureFlagClientDeleteFeatureFlagOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.DeleteFeatureFlag
+// method.
+type AzureAppConfigurationFeatureFlagClientDeleteFeatureFlagOptions struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the
+	// value provided.
+	IfMatch *string
+
+	// The label of the feature flag to delete.
+	Label *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientGetFeatureFlagOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.GetFeatureFlag
+// method.
+type AzureAppConfigurationFeatureFlagClientGetFeatureFlagOptions struct {
+	// Requests the server to respond with the state of the resource at the specified
+	// time.
+	AcceptDatetime *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the
+	// value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not
+	// match the value provided.
+	IfNoneMatch *string
+
+	// The label of the feature flag to retrieve.
+	Label *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []FeatureFlagFields
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+
+	// A filter used to query by tags. Syntax reference:
+	// https://aka.ms/azconfig/docs/keyvaluefiltering
+	Tags []string
+}
+
+// AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.NewGetFeatureFlagRevisionsPager
+// method.
+type AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsOptions struct {
+	// Instructs the server to return elements that appear after the element referred
+	// to by the specified token.
+	After *string
+
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the
+	// value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not
+	// match the value provided.
+	IfNoneMatch *string
+
+	// A filter used to match labels. Syntax reference:
+	// https://aka.ms/azconfig/docs/restapirevisions
+	Label *string
+
+	// A filter used to match names.
+	Name *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []FeatureFlagFields
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+
+	// A filter used to query by tags. Syntax reference:
+	// https://aka.ms/azconfig/docs/restapirevisions
+	Tags []string
+}
+
+// AzureAppConfigurationFeatureFlagClientGetFeatureFlagsOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.NewGetFeatureFlagsPager
+// method.
+type AzureAppConfigurationFeatureFlagClientGetFeatureFlagsOptions struct {
+	// Requests the server to respond with the state of the resource at the specified
+	// time.
+	AcceptDatetime *string
+
+	// Instructs the server to return elements that appear after the element referred
+	// to by the specified token.
+	After *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the
+	// value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not
+	// match the value provided.
+	IfNoneMatch *string
+
+	// A filter used to match labels. Syntax reference:
+	// https://aka.ms/azconfig/docs/keyvaluefiltering
+	Label *string
+
+	// A filter used to match feature flag names.
+	Name *string
+
+	// Used to select what fields are present in the returned resource(s).
+	Select []FeatureFlagFields
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+
+	// A filter used to query by tags. Syntax reference:
+	// https://aka.ms/azconfig/docs/keyvaluefiltering
+	Tags []string
+}
+
+// AzureAppConfigurationFeatureFlagClientPutFeatureFlagOptions contains the optional parameters for the AzureAppConfigurationFeatureFlagClient.PutFeatureFlag
+// method.
+type AzureAppConfigurationFeatureFlagClientPutFeatureFlagOptions struct {
+	// An opaque, globally-unique, client-generated string identifier for the request.
+	ClientRequestID *string
+
+	// Used to perform an operation only if the targeted resource's etag matches the
+	// value provided.
+	IfMatch *string
+
+	// Used to perform an operation only if the targeted resource's etag does not
+	// match the value provided.
+	IfNoneMatch *string
+
+	// The label of the feature flag to create.
+	Label *string
 
 	// Used to guarantee real-time consistency between requests.
 	SyncToken *string

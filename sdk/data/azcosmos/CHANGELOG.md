@@ -23,6 +23,8 @@
 * Removed the `NewFeedRange` constructor. Construct a `FeedRange` directly using a struct initializer instead. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
 * Removed the `PriorityLevel.ToPtr` method. Use [`to.Ptr`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/to#Ptr) from `azcore` instead. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
 
+* Fixed cross-region failover being preempted when the caller's `context` is cancelled (or its deadline expires) while a read is in flight against an unhealthy region. The retry policy now applies the cross-region failover decision before honoring caller cancellation: the unhealthy region is marked unavailable so subsequent callers fail over, and the failover read is completed on a detached, internally bounded `context.WithoutCancel` background attempt against the next preferred region. The cancelled caller still surfaces its own cancellation. This is the Go port of [azure-cosmos-dotnet-v3#5844](https://github.com/Azure/azure-cosmos-dotnet-v3/pull/5844) and addresses [issue 26649](https://github.com/Azure/azure-sdk-for-go/issues/26649).
+
 ### Other Changes
 
 * The per-account metadata caches (the shared container-properties and partition-key-range caches, see [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)) are now held in the process-wide registry via weak references. This lets the garbage collector reclaim a `Client`'s caches once the client is discarded, greatly reducing the memory retained when a `Client` is dropped without calling `Close`. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).

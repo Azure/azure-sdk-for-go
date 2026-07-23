@@ -1139,6 +1139,121 @@ func TestCallerDeadlineDuringBackoffShortCircuits(t *testing.T) {
 	assert.LessOrEqual(t, srv.Requests(), 2)
 }
 
+// cancelOnRegionATransport routes by host like routingMockTransport, but the
+// first time it sees the unhealthy region's host it cancels the caller's
+// context (simulating the caller's deadline firing while the request to the
+// unhealthy region is in flight) and returns a not-sent transport error.
+// Subsequent requests route to the real backing server for the resolved host.
+type cancelOnRegionATransport struct {
+	byHost  map[string]*mock.Server
+	badHost string
+	cancel  context.CancelFunc
+	fired   bool
+}
+
+func (c *cancelOnRegionATransport) Do(req *http.Request) (*http.Response, error) {
+	if req.URL.Host == c.badHost && !c.fired {
+		c.fired = true
+		c.cancel()
+		return nil, &net.DNSError{}
+	}
+	srv, ok := c.byHost[req.URL.Host]
+	if !ok {
+		return nil, fmt.Errorf("no mock server registered for host %q", req.URL.Host)
+	}
+	return srv.Do(req)
+}
+
+// TestCallerCancellationDoesNotPreemptCrossRegionFailover proves and locks in
+// the fix for azure-sdk-for-go#26649 (Go port of azure-cosmos-dotnet-v3#5844):
+// when the caller's context is cancelled while a control-plane read is in
+// flight against an unhealthy region, the cross-region failover decision must
+// not be silently preempted. The caller still surfaces its cancellation (as in
+// .NET's detached executor, and as enforced by azcore's outer retry policy),
+// but the policy (a) marks the bad region unavailable synchronously so
+// subsequent callers fail over, and (b) completes a detached background attempt
+// against the next preferred region.
+//
+// Pre-fix, the policy returned the caller's cancellation immediately on the
+// first transport error: the bad region was never marked and no attempt against
+// the failover region was ever made.
+func TestCallerCancellationDoesNotPreemptCrossRegionFailover(t *testing.T) {
+	badSrv, badClose := mock.NewTLSServer()
+	defer badClose()
+	goodSrv, goodClose := mock.NewTLSServer()
+	defer goodClose()
+
+	badURL, err := url.Parse(badSrv.URL())
+	require.NoError(t, err)
+	goodURL, err := url.Parse(goodSrv.URL())
+	require.NoError(t, err)
+
+	gemServer, gemClose := mock.NewTLSServer()
+	defer gemClose()
+	gemServer.SetError(&net.DNSError{})
+	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
+
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/)
+	require.NoError(t, lc.update(
+		[]accountRegion{{Name: "East US", Endpoint: badSrv.URL()}},
+		[]accountRegion{
+			{Name: "East US", Endpoint: badSrv.URL()},
+			{Name: "Central US", Endpoint: goodSrv.URL()},
+		},
+		[]string{"East US", "Central US"},
+		nil,
+	))
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      gemServer.URL(),
+		pipeline:            internalPipeline,
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	transport := &cancelOnRegionATransport{
+		byHost:  map[string]*mock.Server{badURL.Host: badSrv, goodURL.Host: goodSrv},
+		badHost: badURL.Host,
+		cancel:  cancel,
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := &clientRetryPolicyVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: transport})
+	client := &Client{endpoint: badSrv.URL(), endpointUrl: badURL, internal: internalClient, gem: gem}
+
+	// The failover region serves the 200 the detached attempt needs.
+	goodSrv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err = container.ReadItem(ctx, NewPartitionKeyString("1"), "doc1", nil)
+
+	// The caller surfaces its cancellation (the detached attempt's result is
+	// never returned to the cancelled caller).
+	require.Error(t, err)
+	assert.ErrorIs(t, err, context.Canceled)
+
+	rc := verifier.requests[0].retryContext
+	assert.True(t, rc.crossRegionFailoverDone, "the failover decision must not be preempted by caller cancellation")
+	assert.True(t, rc.detachedGraceUsed, "the failover must be carried out on a detached context")
+
+	// The bad region is marked unavailable synchronously so subsequent callers
+	// route to the healthy region.
+	assert.Contains(t, client.gem.locationCache.locationUnavailabilityInfoMap, *badURL,
+		"unhealthy region must be marked unavailable for subsequent callers")
+
+	// The detached background attempt completes against the failover region.
+	require.Eventually(t, func() bool {
+		return goodSrv.Requests() == 1
+	}, 5*time.Second, 10*time.Millisecond, "detached failover attempt must reach the next preferred region")
+}
+
 func TestClassifyNetworkError(t *testing.T) {
 	cases := []struct {
 		name string

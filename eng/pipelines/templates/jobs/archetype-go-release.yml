@@ -46,7 +46,7 @@ stages:
   # On a post-merge main CI build, resolve the merged PR and require the 'auto-release' label plus a
   # direct change to this pipeline's package before releasing. Manual/scheduled runs skip this stage
   # and keep releasing on the changelog/tag gate alone.
-  - ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+  - ${{ if and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
     - template: /eng/common/pipelines/templates/stages/archetype-auto-release-prepare.yml
       parameters:
         DependsOn: ${{ parameters.DependsOn }}
@@ -85,7 +85,7 @@ stages:
     jobs:
       - deployment: ReleaseGate
         # Auto-release is fully automated and must not wait on the package-publish approval gate.
-        ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+        ${{ if and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
           environment: none
         ${{ else }}:
           environment: package-publish

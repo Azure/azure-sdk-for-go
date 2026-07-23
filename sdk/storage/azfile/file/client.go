@@ -8,6 +8,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"net/http"
 	"os"
 	"strings"
 	"sync"
@@ -295,6 +296,37 @@ func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, sour
 func (f *Client) GetRangeList(ctx context.Context, options *GetRangeListOptions) (GetRangeListResponse, error) {
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 	return f.generated().GetRangeList(ctx, opts)
+}
+
+// NewListRangesPager returns a pager for the valid ranges of a file. Each page contains a segment of ranges
+// and a continuation token for retrieving the next page. Set MaxResults on the options to control page size.
+// When PrevShareSnapshot is set, the pager returns ranges that have changed between the previous snapshot
+// and the target (diff mode).
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/list-ranges.
+func (f *Client) NewListRangesPager(options *ListRangesOptions) *runtime.Pager[ListRangesSegmentResponse] {
+	listOptions := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+	return runtime.NewPager(runtime.PagingHandler[ListRangesSegmentResponse]{
+		More: func(page ListRangesSegmentResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ListRangesSegmentResponse) (ListRangesSegmentResponse, error) {
+			if page != nil {
+				listOptions.Marker = page.NextMarker
+			}
+			req, err := f.generated().ListAllRangesCreateRequest(ctx, &listOptions)
+			if err != nil {
+				return ListRangesSegmentResponse{}, err
+			}
+			resp, err := f.generated().InternalClient().Pipeline().Do(req)
+			if err != nil {
+				return ListRangesSegmentResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK) {
+				return ListRangesSegmentResponse{}, runtime.NewResponseError(resp)
+			}
+			return f.generated().ListAllRangesHandleResponse(resp)
+		},
+	})
 }
 
 // ForceCloseHandles operation closes a handle or handles opened on a file.

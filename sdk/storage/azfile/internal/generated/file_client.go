@@ -4,7 +4,11 @@
 package generated
 
 import (
+	"context"
+	"net/http"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
 
 func (client *FileClient) Endpoint() string {
@@ -18,6 +22,14 @@ func (client *FileClient) InternalClient() *azcore.Client {
 // NewFileClient creates a new instance of FileClient with the specified values.
 //   - endpoint - The URL of the service account, share, directory or file that is the target of the desired operation.
 //   - azClient - azcore.Client is a basic HTTP client.  It consists of a pipeline and tracing provider.
+func (client *FileClient) ListAllRangesCreateRequest(ctx context.Context, options *FileClientListAllRangesOptions) (*policy.Request, error) {
+	return client.listAllRangesCreateRequest(ctx, options)
+}
+
+func (client *FileClient) ListAllRangesHandleResponse(resp *http.Response) (FileClientListAllRangesResponse, error) {
+	return client.listAllRangesHandleResponse(resp)
+}
+
 func NewFileClient(endpoint string, azClient *azcore.Client) *FileClient {
 	client := &FileClient{
 		internal: azClient,

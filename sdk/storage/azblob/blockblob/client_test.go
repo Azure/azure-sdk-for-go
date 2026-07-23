@@ -7716,3 +7716,32 @@ func TestUploadExpectContinueDisabledByEnv(t *testing.T) {
 		require.Empty(t, v, "request #%d unexpectedly carries Expect header when env var is set", i)
 	}
 }
+
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockMD5WithCRC64Return() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	contentSize := 8 * 1024
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentMD5 := md5.Sum(content)
+
+	blockID := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	putResp, err := bbClient.StageBlock(context.Background(), blockID, rsc, &blockblob.StageBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5[:]),
+	})
+	_require.NoError(err)
+	_require.NotNil(putResp.ContentMD5)
+	_require.Equal(putResp.ContentMD5, contentMD5[:])
+	_require.NotNil(putResp.ContentCRC64)
+}

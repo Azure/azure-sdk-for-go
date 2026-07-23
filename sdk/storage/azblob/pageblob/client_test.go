@@ -5340,3 +5340,30 @@ func (s *PageBlobRecordedTestsSuite) TestUploadPagesFromURLSourceCPKFail() {
 	})
 	_require.Error(err)
 }
+
+func (s *PageBlobRecordedTestsSuite) TestUploadPagesMD5WithCRC64Return() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	pbClient := createNewPageBlob(context.Background(), _require, blobName, containerClient)
+
+	contentSize := 1024
+	content := make([]byte, contentSize)
+	contentMD5 := md5.Sum(content)
+	body := streaming.NopCloser(bytes.NewReader(content))
+
+	putResp, err := pbClient.UploadPages(context.Background(), body, blob.HTTPRange{Count: int64(contentSize)}, &pageblob.UploadPagesOptions{
+		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5[:]),
+	})
+	_require.NoError(err)
+	_require.NotNil(putResp.ContentMD5)
+	_require.Equal(putResp.ContentMD5, contentMD5[:])
+	_require.NotNil(putResp.ContentCRC64)
+}

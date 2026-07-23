@@ -9,15 +9,6 @@
 - New field `CertType` in struct `MccCacheNodeTLSCertificate`
 
 
-## 0.3.0 (2026-07-22)
-### Features Added
-
-- New value `AutoUpdateRingTypeBeta`, `AutoUpdateRingTypeStable` added to enum type `AutoUpdateRingType`
-- New field `AppVersionWsl`, `ContainerOsBuild`, `ContainerOsEdition`, `ContainerOsVersion`, `DistroOsBuildWsl`, `DistroOsEditionWsl`, `DistroOsVersionWsl`, `HostOsBuild`, `HostOsEdition`, `HostOsVersion`, `InstallVersionMsix`, `InstallVersionScript` in struct `AdditionalCacheNodeProperties`
-- New field `BgpNetworkInterface`, `OpenFirewallPort443`, `OpenFirewallPort5000`, `OpenFirewallPort5001`, `OpenFirewallPort80`, `RuntimeAccountType` in struct `CacheNodeEntity`
-- New field `CertType` in struct `MccCacheNodeTLSCertificate`
-
-
 ## 0.2.0 (2025-12-24)
 ### Breaking Changes
 

@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed a panic in `GetProperties` (and `DownloadStream`) for file and directory clients created via `directory.NewFileClient`/`directory.NewSubdirectoryClient`. These clients did not capture the raw HTTP response, so reading the datalake-specific headers dereferenced a nil response. Fixes [#25490](https://github.com/Azure/azure-sdk-for-go/issues/25490).
 
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.

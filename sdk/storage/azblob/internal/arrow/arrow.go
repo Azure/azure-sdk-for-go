@@ -406,6 +406,7 @@ type blobColumns struct {
 	accessTier                *array.String
 	accessTierInferred        *array.Boolean
 	accessTierChangeTime      tsColumn
+	smartAccessTier           *array.String
 	leaseState                *array.String
 	leaseStatus               *array.String
 	leaseDuration             *array.String
@@ -459,6 +460,7 @@ func resolveColumns(rec arrow.RecordBatch, colIdx columnIndex) blobColumns {
 		accessTier:                resolveString(rec, colIdx, "AccessTier"),
 		accessTierInferred:        resolveBool(rec, colIdx, "AccessTierInferred"),
 		accessTierChangeTime:      resolveTimestamp(rec, colIdx, "AccessTierChangeTime"),
+		smartAccessTier:           resolveString(rec, colIdx, "SmartAccessTier"),
 		leaseState:                resolveString(rec, colIdx, "LeaseState"),
 		leaseStatus:               resolveString(rec, colIdx, "LeaseStatus"),
 		leaseDuration:             resolveString(rec, colIdx, "LeaseDuration"),
@@ -522,6 +524,7 @@ func (c *blobColumns) populate(item *generated.BlobItem, row int) {
 	p.AccessTier = enumAt[generated.AccessTier](c.accessTier, row)
 	p.AccessTierInferred = boolAt(c.accessTierInferred, row)
 	p.AccessTierChangeTime = c.accessTierChangeTime.at(row)
+	p.SmartAccessTier = enumAt[generated.AccessTier](c.smartAccessTier, row)
 	p.LeaseState = enumAt[generated.LeaseStateType](c.leaseState, row)
 	p.LeaseStatus = enumAt[generated.LeaseStatusType](c.leaseStatus, row)
 	p.LeaseDuration = enumAt[generated.LeaseDurationType](c.leaseDuration, row)

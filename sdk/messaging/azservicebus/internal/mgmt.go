@@ -557,7 +557,8 @@ func addAssociatedLinkName(linkName string, msg *amqp.Message) {
 
 // GetMessageSessions lists session IDs from an entity. The behavior depends on lastUpdatedTime:
 //   - Pass time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC) to list sessions with active
-//     messages. This encodes to 253402300800000 ms on the AMQP wire, which the service's
+//     messages, as well as sessions that have session state set but no active messages.
+//     This encodes to 253402300800000 ms on the AMQP wire, which the service's
 //     .NET AMQP decoder clamps to DateTime.MaxValue, triggering active-messages mode.
 //   - Pass a real timestamp to list sessions whose session state was updated after that time.
 //

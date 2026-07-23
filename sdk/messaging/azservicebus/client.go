@@ -391,7 +391,8 @@ type ListSessionsResponse struct {
 // and [Client.NewListSessionsForSubscriptionPager].
 type ListSessionsOptions struct {
 	// SessionStateUpdatedAfter, if set, lists only sessions whose session state was updated
-	// after this time. If nil, lists sessions that have active messages in the entity.
+	// after this time. If nil, lists sessions that have active messages in the entity, as
+	// well as sessions that have session state set but no active messages.
 	SessionStateUpdatedAfter *time.Time
 }
 
@@ -403,9 +404,9 @@ const listSessionsPageSize = 100
 
 // NewListSessionsForQueuePager creates a pager that lists the IDs of sessions in a session-enabled queue.
 //
-// By default it lists sessions that have active messages in the queue. Sessions on the
-// dead-letter queue, and sessions that have only session state (but no messages), are not
-// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists sessions whose
+// By default it lists sessions that have active messages in the queue, as well as sessions that
+// have session state set but no active messages. Sessions on the dead-letter queue are not
+// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists only sessions whose
 // session state was updated after that time.
 //
 // The IDs are enumerated in pages; call [runtime.Pager.NextPage] until [runtime.Pager.More] returns false.
@@ -420,9 +421,9 @@ func (client *Client) NewListSessionsForQueuePager(queueName string, options *Li
 
 // NewListSessionsForSubscriptionPager creates a pager that lists the IDs of sessions in a session-enabled subscription.
 //
-// By default it lists sessions that have active messages in the subscription. Sessions on the
-// dead-letter queue, and sessions that have only session state (but no messages), are not
-// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists sessions whose
+// By default it lists sessions that have active messages in the subscription, as well as sessions
+// that have session state set but no active messages. Sessions on the dead-letter queue are not
+// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists only sessions whose
 // session state was updated after that time.
 //
 // The IDs are enumerated in pages; call [runtime.Pager.NextPage] until [runtime.Pager.More] returns false.

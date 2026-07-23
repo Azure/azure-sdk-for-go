@@ -1,6 +1,6 @@
 # Release History
 
-## 5.0.0-beta.2 (2026-07-22)
+## 5.0.0-beta.2 (2026-07-23)
 ### Other Changes
 
 

@@ -6,5 +6,5 @@ package armconnectedcache
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedcache/armconnectedcache"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v1.0.0"
 )

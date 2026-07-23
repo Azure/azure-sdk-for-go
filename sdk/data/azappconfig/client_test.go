@@ -42,7 +42,7 @@ func TestClient(t *testing.T) {
 
 	contentType := "content-type"
 	value := "value"
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Clean up any leftover setting from a previous test run
 	_, _ = client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
@@ -315,7 +315,7 @@ func TestSettingNilValue(t *testing.T) {
 		key         = "key-TestSettingNilValue"
 		contentType = "content-type"
 	)
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	addResp, err := client.AddSetting(context.Background(), key, nil, &azappconfig.AddSettingOptions{
 		ContentType: to.Ptr(contentType),
@@ -334,7 +334,7 @@ func TestSettingWithEscaping(t *testing.T) {
 		key         = ".appconfig.featureflag/TestSettingWithEscaping"
 		contentType = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8"
 	)
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	addResp, err := client.AddSetting(context.Background(), key, nil, &azappconfig.AddSettingOptions{
 		ContentType: to.Ptr(contentType),
@@ -355,7 +355,7 @@ func TestSettingWithEscaping(t *testing.T) {
 
 func TestSnapshotListConfigurationSettings(t *testing.T) {
 	snapshotName := "listConfigurationsSnapshotTest" + string(testId)
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	type VL struct {
 		Value string
@@ -494,7 +494,7 @@ func TestGetSnapshots(t *testing.T) {
 		ssCreateCount = 5
 	)
 
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	for i := 0; i < ssCreateCount; i++ {
 		createSSName := snapshotName + fmt.Sprintf("%d", i)
@@ -539,7 +539,7 @@ func TestGetSnapshots(t *testing.T) {
 func TestSnapshotArchive(t *testing.T) {
 	snapshotName := "archiveSnapshotsTest" + string(testId)
 
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 	require.NoError(t, err)
@@ -567,7 +567,7 @@ func TestSnapshotArchive(t *testing.T) {
 func TestSnapshotRecover(t *testing.T) {
 	snapshotName := "recoverSnapshotsTest" + string(testId)
 
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
 	require.NoError(t, err)
@@ -598,7 +598,7 @@ func TestSnapshotRecover(t *testing.T) {
 func TestSnapshotCreate(t *testing.T) {
 	snapshotName := "createSnapshotsTest" + string(testId)
 
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Create a snapshot (handles already-exists case)
 	snapshot, err := CreateSnapshot(client, snapshotName, nil)
@@ -631,7 +631,7 @@ func createMultipleKeys(t *testing.T, client *azappconfig.Client, batchKey strin
 }
 
 func TestListSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	key := createMultipleKeys(t, client, "TestListSettingsPagerWithETagUnmodifiedPage", 105)
 
@@ -668,7 +668,7 @@ func TestListSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
 }
 
 func TestListSettingsPagerWithETagModifiedPage(t *testing.T) {
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	key := createMultipleKeys(t, client, "TestListSettingsPagerWithETagModifiedPage", 105)
 
@@ -722,7 +722,7 @@ func TestListSettingsPagerWithETagModifiedPage(t *testing.T) {
 }
 
 func TestCheckSettingsPager(t *testing.T) {
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	key := createMultipleKeys(t, client, "TestCheckSettingsPager", 105)
 
@@ -744,7 +744,7 @@ func TestCheckSettingsPager(t *testing.T) {
 }
 
 func TestCheckSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	key := createMultipleKeys(t, client, "TestCheckSettingsPagerWithETagUnmodifiedPage", 105)
 
@@ -783,7 +783,7 @@ func TestCheckSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
 }
 
 func TestCheckSettingsPagerWithETagModifiedPage(t *testing.T) {
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	key := createMultipleKeys(t, client, "TestCheckSettingsPagerWithETagModifiedPage", 105)
 
@@ -919,7 +919,7 @@ func TestAddSettingWithTags(t *testing.T) {
 		"region":      to.Ptr("eastus"),
 		"component":   to.Ptr("api"),
 	}
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Test AddSetting with tags
 	addResp, err := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
@@ -962,7 +962,7 @@ func TestSetSettingWithTags(t *testing.T) {
 		"region":      to.Ptr("westus"),
 		"version":     to.Ptr("1.0"),
 	}
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Test SetSetting with tags
 	setResp, err := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
@@ -1010,7 +1010,7 @@ func TestListSettingsWithTagsFilter(t *testing.T) {
 		key3 = "key3-TestListSettingsWithTagsFilter"
 	)
 
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Create settings with different tags
 	settings := []struct {
@@ -1118,7 +1118,7 @@ func TestSettingTagsWithSpecialCharacters(t *testing.T) {
 		key = "key-TestSettingTagsWithSpecialCharacters"
 	)
 
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Test tags with special characters
 	tags := map[string]*string{
@@ -1168,7 +1168,7 @@ func TestEmptyTagsHandling(t *testing.T) {
 		key = "key-TestEmptyTagsHandling"
 	)
 
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 	value := "value"
 
 	// Test setting with nil tags
@@ -1191,7 +1191,7 @@ func TestEmptyTagsHandling(t *testing.T) {
 }
 
 func TestTagsFilteringEndToEnd(t *testing.T) {
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Create a comprehensive test scenario with multiple settings and different tag combinations
 	testData := []struct {
@@ -1383,7 +1383,7 @@ func TestTagsFilteringEndToEnd(t *testing.T) {
 }
 
 func TestTagsFilterMultipleAndNilValues(t *testing.T) {
-	client := NewClientFromConnectionString(t)
+	client := newTestClient(t)
 
 	// Test data with various tag scenarios including nil and empty values
 	testData := []struct {
@@ -1619,4 +1619,138 @@ func TestTagsFilterMultipleAndNilValues(t *testing.T) {
 		})
 		require.NoError(t, err)
 	}
+}
+
+func TestSettingDescription(t *testing.T) {
+	const (
+		key   = "key-TestSettingDescription"
+		label = "label"
+	)
+
+	value := "value"
+	description := "An example configuration setting."
+	client := newTestClient(t)
+
+	// Clean up any leftover setting from a previous test run
+	_, _ = client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+		Label: to.Ptr(label),
+	})
+
+	// AddSetting round-trips Description
+	addResp, err := client.AddSetting(context.Background(), key, &value, &azappconfig.AddSettingOptions{
+		Label:       to.Ptr(label),
+		Description: to.Ptr(description),
+	})
+	require.NoError(t, err)
+	require.NotNil(t, addResp.Description)
+	require.Equal(t, description, *addResp.Description)
+
+	// GetSetting returns the Description
+	getResp, err := client.GetSetting(context.Background(), key, &azappconfig.GetSettingOptions{
+		Label: to.Ptr(label),
+	})
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Description)
+	require.Equal(t, description, *getResp.Description)
+
+	// SetSetting can update the Description
+	updated := "An updated example configuration setting."
+	setResp, err := client.SetSetting(context.Background(), key, &value, &azappconfig.SetSettingOptions{
+		Label:       to.Ptr(label),
+		Description: to.Ptr(updated),
+	})
+	require.NoError(t, err)
+	require.NotNil(t, setResp.Description)
+	require.Equal(t, updated, *setResp.Description)
+
+	// ListSettings with the SettingFieldsDescription selector returns the Description
+	pager := client.NewListSettingsPager(azappconfig.SettingSelector{
+		KeyFilter:   to.Ptr(key),
+		LabelFilter: to.Ptr(label),
+		Fields: []azappconfig.SettingFields{
+			azappconfig.SettingFieldsKey,
+			azappconfig.SettingFieldsLabel,
+			azappconfig.SettingFieldsDescription,
+		},
+	}, nil)
+	found := false
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		for _, s := range page.Settings {
+			if s.Key != nil && *s.Key == key {
+				found = true
+				require.NotNil(t, s.Description)
+				require.Equal(t, updated, *s.Description)
+			}
+		}
+	}
+	require.True(t, found)
+
+	// Clean up
+	_, err = client.DeleteSetting(context.Background(), key, &azappconfig.DeleteSettingOptions{
+		Label: to.Ptr(label),
+	})
+	require.NoError(t, err)
+}
+
+func TestSnapshotDescription(t *testing.T) {
+	snapshotName := "descriptionSnapshotTest" + string(testId)
+	description := "An example snapshot."
+	seedKey := testId + "descKey"
+
+	client := newTestClient(t)
+
+	// Seed a setting so the snapshot has something to capture
+	_, err := client.SetSetting(context.Background(), seedKey, to.Ptr("seed-value"), nil)
+	require.NoError(t, err)
+
+	filter := []azappconfig.SettingFilter{
+		{KeyFilter: to.Ptr(seedKey)},
+	}
+
+	var snapshot azappconfig.Snapshot
+	poller, err := client.BeginCreateSnapshot(context.Background(), snapshotName, filter, &azappconfig.BeginCreateSnapshotOptions{
+		RetentionPeriod: to.Ptr[int64](3600),
+		Description:     to.Ptr(description),
+	})
+	if err != nil {
+		// If the snapshot already exists from a previous run, fall back to the existing one.
+		var respErr *azcore.ResponseError
+		require.True(t, errors.As(err, &respErr) && respErr.StatusCode == 409, "unexpected error: %v", err)
+
+		getResp, gerr := client.GetSnapshot(context.Background(), snapshotName, nil)
+		require.NoError(t, gerr)
+		snapshot = getResp.Snapshot
+	} else {
+		createResp, perr := poller.PollUntilDone(context.Background(), &runtime.PollUntilDoneOptions{
+			Frequency: 1 * time.Second,
+		})
+		require.NoError(t, perr)
+		snapshot = createResp.Snapshot
+	}
+
+	require.NotNil(t, snapshot.Description)
+	require.Equal(t, description, *snapshot.Description)
+
+	// GetSnapshot returns the Description
+	getResp, err := client.GetSnapshot(context.Background(), snapshotName, nil)
+	require.NoError(t, err)
+	require.NotNil(t, getResp.Description)
+	require.Equal(t, description, *getResp.Description)
+
+	// The SnapshotFieldsDescription selector returns the Description
+	selectResp, err := client.GetSnapshot(context.Background(), snapshotName, &azappconfig.GetSnapshotOptions{
+		Select: []azappconfig.SnapshotFields{
+			azappconfig.SnapshotFieldsName,
+			azappconfig.SnapshotFieldsDescription,
+		},
+	})
+	require.NoError(t, err)
+	require.NotNil(t, selectResp.Description)
+	require.Equal(t, description, *selectResp.Description)
+
+	// Best-effort cleanup
+	require.NoError(t, CleanupSnapshot(client, snapshotName))
+	_, _ = client.DeleteSetting(context.Background(), seedKey, nil)
 }

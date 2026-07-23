@@ -67,7 +67,8 @@ func ExampleClient_AddSetting() {
 
 	// Create configuration setting
 	resp, err := client.AddSetting(context.TODO(), "example-key", to.Ptr("example-value"), &azappconfig.AddSettingOptions{
-		Label: to.Ptr("example-label"),
+		Label:       to.Ptr("example-label"),
+		Description: to.Ptr("An example configuration setting."),
 	})
 
 	if err != nil {
@@ -123,7 +124,8 @@ func ExampleClient_SetSetting() {
 
 	// Set configuration setting
 	resp, err := client.SetSetting(context.TODO(), "example-key", to.Ptr("example-new-value"), &azappconfig.SetSettingOptions{
-		Label: to.Ptr("example-label"),
+		Label:       to.Ptr("example-label"),
+		Description: to.Ptr("An updated example configuration setting."),
 	})
 
 	if err != nil {
@@ -264,7 +266,9 @@ func ExampleClient_BeginCreateSnapshot() {
 		},
 	}
 
-	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, nil)
+	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, &azappconfig.BeginCreateSnapshotOptions{
+		Description: to.Ptr("An example snapshot."),
+	})
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic
@@ -548,4 +552,317 @@ func ExampleClient_NewListSettingsPager_usingTags() {
 			_ = setting // TODO: do something with setting
 		}
 	}
+}
+
+func ExampleNewFeatureFlagClient() {
+	credential, err := azidentity.NewDefaultAzureCredential(nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	client, err := azappconfig.NewFeatureFlagClient("https://my-app-config.azconfig.io", credential, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = client // ignore
+
+	// Output:
+}
+
+func ExampleNewFeatureFlagClientFromConnectionString() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = client // ignore
+
+	// Output:
+}
+
+func ExampleClient_NewFeatureFlagClient() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Obtain a FeatureFlagClient that shares the same pipeline and sync-token cache
+	// as the source Client.
+	ffClient := client.NewFeatureFlagClient()
+
+	_ = ffClient // TODO: do something with ffClient
+
+	// Output:
+}
+
+func ExampleFeatureFlagClient_AddFeatureFlag() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// AddFeatureFlag creates a feature flag only if one does not already exist.
+	resp, err := client.AddFeatureFlag(context.TODO(), azappconfig.FeatureFlag{
+		Name:        to.Ptr("example-flag"),
+		Label:       to.Ptr("example-label"),
+		Enabled:     to.Ptr(true),
+		Description: to.Ptr("An example feature flag."),
+	}, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = resp // TODO: do something with resp
+
+	// Output:
+}
+
+func ExampleFeatureFlagClient_SetFeatureFlag() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// SetFeatureFlag creates the flag if it doesn't exist or overwrites the existing flag.
+	resp, err := client.SetFeatureFlag(context.TODO(), azappconfig.FeatureFlag{
+		Name:        to.Ptr("example-flag"),
+		Label:       to.Ptr("example-label"),
+		Enabled:     to.Ptr(false),
+		Description: to.Ptr("An example feature flag."),
+	}, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = resp // TODO: do something with resp
+
+	// Output:
+}
+
+func ExampleFeatureFlagClient_SetFeatureFlag_withVariantsAndFilters() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// A feature flag can contain conditions, variants, allocations, and telemetry settings.
+	flag := azappconfig.FeatureFlag{
+		Name:    to.Ptr("example-flag-advanced"),
+		Enabled: to.Ptr(true),
+		Conditions: &azappconfig.FeatureFlagConditions{
+			RequirementType: to.Ptr(azappconfig.RequirementTypeAll),
+			Filters: []azappconfig.FeatureFlagFilter{
+				{
+					Name: to.Ptr("Microsoft.Percentage"),
+					Parameters: map[string]*string{
+						"Value": to.Ptr("50"),
+					},
+				},
+			},
+		},
+		Variants: []azappconfig.FeatureFlagVariantDefinition{
+			{
+				Name:           to.Ptr("On"),
+				Value:          to.Ptr("true"),
+				StatusOverride: to.Ptr(azappconfig.StatusOverrideEnabled),
+			},
+			{
+				Name:           to.Ptr("Off"),
+				Value:          to.Ptr("false"),
+				StatusOverride: to.Ptr(azappconfig.StatusOverrideDisabled),
+			},
+		},
+		Allocation: &azappconfig.FeatureFlagAllocation{
+			DefaultWhenEnabled:  to.Ptr("On"),
+			DefaultWhenDisabled: to.Ptr("Off"),
+			Percentile: []azappconfig.PercentileAllocation{
+				{Variant: to.Ptr("On"), From: to.Ptr(0.0), To: to.Ptr(50.0)},
+				{Variant: to.Ptr("Off"), From: to.Ptr(50.0), To: to.Ptr(100.0)},
+			},
+		},
+		Telemetry: &azappconfig.FeatureFlagTelemetryConfiguration{
+			Enabled: to.Ptr(true),
+		},
+	}
+
+	resp, err := client.SetFeatureFlag(context.TODO(), flag, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = resp // TODO: do something with resp
+
+	// Output:
+}
+
+func ExampleFeatureFlagClient_GetFeatureFlag() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	resp, err := client.GetFeatureFlag(context.TODO(), "example-flag", &azappconfig.GetFeatureFlagOptions{
+		Label: to.Ptr("example-label"),
+	})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = resp // TODO: do something with resp
+
+	// Output:
+}
+
+func ExampleFeatureFlagClient_DeleteFeatureFlag() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	resp, err := client.DeleteFeatureFlag(context.TODO(), "example-flag", &azappconfig.DeleteFeatureFlagOptions{
+		Label: to.Ptr("example-label"),
+	})
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	_ = resp // TODO: do something with resp
+
+	// Output:
+}
+
+func ExampleFeatureFlagClient_NewListFeatureFlagsPager() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	pager := client.NewListFeatureFlagsPager(azappconfig.FeatureFlagSelector{
+		NameFilter:  to.Ptr("*"),
+		LabelFilter: to.Ptr("*"),
+		Fields:      azappconfig.AllFeatureFlagFields(),
+	}, nil)
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, flag := range page.FeatureFlags {
+			// each page contains the feature flags that match the provided [FeatureFlagSelector]
+			_ = flag // TODO: do something with flag
+		}
+	}
+
+	// Output:
+}
+
+func ExampleFeatureFlagClient_NewListFeatureFlagRevisionsPager() {
+	connectionString := os.Getenv("APPCONFIGURATION_CONNECTION_STRING")
+	if connectionString == "" {
+		return
+	}
+
+	client, err := azappconfig.NewFeatureFlagClientFromConnectionString(connectionString, nil)
+
+	if err != nil {
+		//  TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	pager := client.NewListFeatureFlagRevisionsPager(azappconfig.FeatureFlagSelector{
+		NameFilter:  to.Ptr("example-flag"),
+		LabelFilter: to.Ptr("example-label"),
+		Fields:      azappconfig.AllFeatureFlagFields(),
+	}, nil)
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+
+		if err != nil {
+			//  TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, flag := range page.FeatureFlags {
+			// each page contains the historical revisions of feature flags that match the selector
+			_ = flag // TODO: do something with flag
+		}
+	}
+
+	// Output:
 }

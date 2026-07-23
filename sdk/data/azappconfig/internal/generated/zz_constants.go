@@ -5,7 +5,7 @@
 package generated
 
 const (
-	version20260401 string = "2026-04-01"
+	version20260501Preview string = "2026-05-01-preview"
 )
 
 // CompositionType - Composition types.
@@ -38,6 +38,81 @@ func PossibleCreateSnapshotRequestContentTypeValues() []CreateSnapshotRequestCon
 	return []CreateSnapshotRequestContentType{
 		CreateSnapshotRequestContentTypeApplicationJSON,
 		CreateSnapshotRequestContentTypeApplicationVndMicrosoftAppconfigSnapshotJSON,
+	}
+}
+
+// FeatureFlagFields - Feature Flag fields.
+type FeatureFlagFields string
+
+const (
+	// FeatureFlagFieldsAllocation - Allocation field.
+	FeatureFlagFieldsAllocation FeatureFlagFields = "allocation"
+	// FeatureFlagFieldsConditions - Conditions field.
+	FeatureFlagFieldsConditions FeatureFlagFields = "conditions"
+	// FeatureFlagFieldsDescription - Description field.
+	FeatureFlagFieldsDescription FeatureFlagFields = "description"
+	// FeatureFlagFieldsEnabled - Enabled field.
+	FeatureFlagFieldsEnabled FeatureFlagFields = "enabled"
+	// FeatureFlagFieldsEtag - Etag field.
+	FeatureFlagFieldsEtag FeatureFlagFields = "etag"
+	// FeatureFlagFieldsLabel - Label field.
+	FeatureFlagFieldsLabel FeatureFlagFields = "label"
+	// FeatureFlagFieldsLastModified - Last modified field.
+	FeatureFlagFieldsLastModified FeatureFlagFields = "last_modified"
+	// FeatureFlagFieldsName - Name field.
+	FeatureFlagFieldsName FeatureFlagFields = "name"
+	// FeatureFlagFieldsTags - Tags field.
+	FeatureFlagFieldsTags FeatureFlagFields = "tags"
+	// FeatureFlagFieldsTelemetry - Telemetry field.
+	FeatureFlagFieldsTelemetry FeatureFlagFields = "telemetry"
+	// FeatureFlagFieldsVariants - Variants field.
+	FeatureFlagFieldsVariants FeatureFlagFields = "variants"
+)
+
+// PossibleFeatureFlagFieldsValues returns the possible values for the FeatureFlagFields const type.
+func PossibleFeatureFlagFieldsValues() []FeatureFlagFields {
+	return []FeatureFlagFields{
+		FeatureFlagFieldsAllocation,
+		FeatureFlagFieldsConditions,
+		FeatureFlagFieldsDescription,
+		FeatureFlagFieldsEnabled,
+		FeatureFlagFieldsEtag,
+		FeatureFlagFieldsLabel,
+		FeatureFlagFieldsLastModified,
+		FeatureFlagFieldsName,
+		FeatureFlagFieldsTags,
+		FeatureFlagFieldsTelemetry,
+		FeatureFlagFieldsVariants,
+	}
+}
+
+type GetFeatureFlagResponseContentType string
+
+const (
+	GetFeatureFlagResponseContentTypeApplicationJSONProfileHTTPSAzconfigIoMimeProfilesFfCharsetUTF8 GetFeatureFlagResponseContentType = "application/json;profile=\"https://azconfig.io/mime-profiles/ff\";charset=utf-8"
+	GetFeatureFlagResponseContentTypeApplicationProblemJSON                                         GetFeatureFlagResponseContentType = "application/problem+json"
+)
+
+// PossibleGetFeatureFlagResponseContentTypeValues returns the possible values for the GetFeatureFlagResponseContentType const type.
+func PossibleGetFeatureFlagResponseContentTypeValues() []GetFeatureFlagResponseContentType {
+	return []GetFeatureFlagResponseContentType{
+		GetFeatureFlagResponseContentTypeApplicationJSONProfileHTTPSAzconfigIoMimeProfilesFfCharsetUTF8,
+		GetFeatureFlagResponseContentTypeApplicationProblemJSON,
+	}
+}
+
+type GetFeatureFlagsResponseContentType string
+
+const (
+	GetFeatureFlagsResponseContentTypeApplicationJSONProfileHTTPSAzconfigIoMimeProfilesFfsetCharsetUTF8 GetFeatureFlagsResponseContentType = "application/json;profile=\"https://azconfig.io/mime-profiles/ffset\";charset=utf-8"
+	GetFeatureFlagsResponseContentTypeApplicationProblemJSON                                            GetFeatureFlagsResponseContentType = "application/problem+json"
+)
+
+// PossibleGetFeatureFlagsResponseContentTypeValues returns the possible values for the GetFeatureFlagsResponseContentType const type.
+func PossibleGetFeatureFlagsResponseContentTypeValues() []GetFeatureFlagsResponseContentType {
+	return []GetFeatureFlagsResponseContentType{
+		GetFeatureFlagsResponseContentTypeApplicationJSONProfileHTTPSAzconfigIoMimeProfilesFfsetCharsetUTF8,
+		GetFeatureFlagsResponseContentTypeApplicationProblemJSON,
 	}
 }
 
@@ -196,6 +271,24 @@ func PossiblePutKeyValueRequestContentTypeValues() []PutKeyValueRequestContentTy
 	}
 }
 
+// RequirementType - Requirement Type.
+type RequirementType string
+
+const (
+	// RequirementTypeAll - All.
+	RequirementTypeAll RequirementType = "All"
+	// RequirementTypeAny - Any.
+	RequirementTypeAny RequirementType = "Any"
+)
+
+// PossibleRequirementTypeValues returns the possible values for the RequirementType const type.
+func PossibleRequirementTypeValues() []RequirementType {
+	return []RequirementType{
+		RequirementTypeAll,
+		RequirementTypeAny,
+	}
+}
+
 // SettingFields - Key-value fields.
 type SettingFields string
 
@@ -304,6 +397,27 @@ func PossibleSnapshotStatusValues() []SnapshotStatus {
 		SnapshotStatusFailed,
 		SnapshotStatusProvisioning,
 		SnapshotStatusReady,
+	}
+}
+
+// StatusOverride - Status Override.
+type StatusOverride string
+
+const (
+	// StatusOverrideDisabled - Disabled.
+	StatusOverrideDisabled StatusOverride = "Disabled"
+	// StatusOverrideEnabled - Enabled.
+	StatusOverrideEnabled StatusOverride = "Enabled"
+	// StatusOverrideNone - None.
+	StatusOverrideNone StatusOverride = "None"
+)
+
+// PossibleStatusOverrideValues returns the possible values for the StatusOverride const type.
+func PossibleStatusOverrideValues() []StatusOverride {
+	return []StatusOverride{
+		StatusOverrideDisabled,
+		StatusOverrideEnabled,
+		StatusOverrideNone,
 	}
 }
 

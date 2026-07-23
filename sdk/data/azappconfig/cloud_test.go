@@ -93,3 +93,62 @@ func TestNewClient_SovereignClouds(t *testing.T) {
 		})
 	}
 }
+
+func TestNewFeatureFlagClient_SovereignClouds(t *testing.T) {
+	azureBleu := cloud.Configuration{
+		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+			ServiceName: {
+				Audience: "https://appconfig.sovcloud-api.fr",
+			},
+		},
+	}
+
+	tests := []struct {
+		label    string
+		endpoint string
+		scope    string
+		cfg      cloud.Configuration
+	}{
+		{
+			label:    "AzureChina",
+			endpoint: "https://example.azconfig.azure.cn",
+			scope:    "https://appconfig.azure.cn/.default",
+			cfg:      cloud.AzureChina,
+		},
+		{
+			label:    "AzureGovernment",
+			endpoint: "https://example.azconfig.azure.us",
+			scope:    "https://appconfig.azure.us/.default",
+			cfg:      cloud.AzureGovernment,
+		},
+		{
+			label:    "AzurePublic",
+			endpoint: "https://example.azconfig.io",
+			scope:    "https://appconfig.azure.com/.default",
+			cfg:      cloud.AzurePublic,
+		},
+		{
+			label:    "AzureBleu",
+			endpoint: "https://example.azconfig.sovcloud-api.fr",
+			scope:    "https://appconfig.sovcloud-api.fr/.default",
+			cfg:      azureBleu,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.label, func(t *testing.T) {
+			client, err := NewFeatureFlagClient(tt.endpoint, tokenCredFunc(func(_ context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+				require.Equal(t, tt.scope, tro.Scopes[0])
+				return azcore.AccessToken{}, nil
+			}), &FeatureFlagClientOptions{
+				ClientOptions: policy.ClientOptions{
+					Cloud:     tt.cfg,
+					Transport: &fakeTransport{},
+				},
+			})
+			require.NoError(t, err)
+
+			// Call an API to trigger the pipeline which will call GetToken on our fake cred
+			_, _ = client.GetFeatureFlag(context.Background(), "fake-flag", nil)
+		})
+	}
+}

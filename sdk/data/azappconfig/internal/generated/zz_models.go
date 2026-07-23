@@ -24,6 +24,126 @@ type Error struct {
 	Target *string
 }
 
+// FeatureFlag - A feature flag.
+type FeatureFlag struct {
+	// REQUIRED; The enabled state of the feature flag.
+	Enabled *bool
+
+	// READ-ONLY; The name of the feature flag.
+	Name *string
+
+	// The allocation of the feature flag.
+	Allocation *FeatureFlagAllocation
+
+	// The conditions of the feature flag.
+	Conditions *FeatureFlagConditions
+
+	// The description of the feature flag.
+	Description *string
+
+	// The tags of the feature flag
+	Tags map[string]*string
+
+	// The telemetry settings of the feature flag.
+	Telemetry *FeatureFlagTelemetryConfiguration
+
+	// The variants of the feature flag.
+	Variants []FeatureFlagVariantDefinition
+
+	// READ-ONLY; A value representing the current state of the resource.
+	Etag *string
+
+	// READ-ONLY; The label the feature flag belongs to.
+	Label *string
+
+	// READ-ONLY; A date representing the last time the feature flag was modified.
+	LastModified *time.Time
+}
+
+// FeatureFlagAllocation - Defines how to allocate variants based on context.
+type FeatureFlagAllocation struct {
+	// The default variant to use when disabled.
+	DefaultWhenDisabled *string
+
+	// The default variant to use when enabled but not allocated.
+	DefaultWhenEnabled *string
+
+	// Allocates groups to variants.
+	Group []GroupAllocation
+
+	// Allocates percentiles to variants.
+	Percentile []PercentileAllocation
+
+	// The seed used for random allocation.
+	Seed *string
+
+	// Allocates users to variants.
+	User []UserAllocation
+}
+
+// FeatureFlagConditions - The conditions that must be met for the feature flag to be enabled.
+type FeatureFlagConditions struct {
+	// The filters that will conditionally enable or disable the flag.
+	Filters []FeatureFlagFilter
+
+	// The requirement type for the conditions.
+	RequirementType *RequirementType
+}
+
+// FeatureFlagFilter - Feature Flag Filter object.
+type FeatureFlagFilter struct {
+	// REQUIRED; The name of the filter.
+	Name *string
+
+	// The parameters used by the filter
+	Parameters map[string]*string
+}
+
+// FeatureFlagListResult - The result of a Feature Flag list request.
+type FeatureFlagListResult struct {
+	// An identifier representing the returned state of the resource.
+	Etag *string
+
+	// The collection value.
+	Items []FeatureFlag
+
+	// The URI that can be used to request the next set of paged results.
+	NextLink *string
+}
+
+// FeatureFlagTelemetryConfiguration - Feature Flag Telemetry object.
+type FeatureFlagTelemetryConfiguration struct {
+	// REQUIRED; The enabled state of the telemetry.
+	Enabled *bool
+
+	// The metadata to include on outbound telemetry
+	Metadata map[string]*string
+}
+
+// FeatureFlagVariantDefinition - Feature Flag Variants object.
+type FeatureFlagVariantDefinition struct {
+	// REQUIRED; The name of the variant.
+	Name *string
+
+	// The content type of the value stored within the key-value.
+	ContentType *string
+
+	// Determines if the variant should override the status of the flag.
+	StatusOverride *StatusOverride
+
+	// The value of the variant.
+	Value *string
+}
+
+// GroupAllocation - Feature Flag GroupAllocation object.
+type GroupAllocation struct {
+	// REQUIRED; The groups to get this variant.
+	Groups []string
+
+	// REQUIRED; The variant to allocate these percentiles to.
+	Variant *string
+}
+
 // InnerError - An object containing more specific information about the error. As per Azure REST API guidelines - https://aka.ms/AzureRestApiGuidelines#handling-errors.
 type InnerError struct {
 	// One of a server-defined set of error codes.
@@ -131,6 +251,18 @@ type OperationDetails struct {
 	Error *Error
 }
 
+// PercentileAllocation - Feature Flag PercentileAllocation object.
+type PercentileAllocation struct {
+	// REQUIRED; The lower bounds for this percentile allocation.
+	From *float64
+
+	// REQUIRED; The upper bounds for this percentile allocation.
+	To *float64
+
+	// REQUIRED; The variant to allocate these percentiles to.
+	Variant *string
+}
+
 // Snapshot - A snapshot is a named, immutable subset of an App Configuration store's key-values.
 type Snapshot struct {
 	// REQUIRED; A list of filters used to filter the key-values included in the snapshot.
@@ -189,4 +321,13 @@ type SnapshotListResult struct {
 type SnapshotUpdateParameters struct {
 	// The desired status of the snapshot.
 	Status *SnapshotStatus
+}
+
+// UserAllocation - Feature Flag UserAllocation object.
+type UserAllocation struct {
+	// REQUIRED; The users to get this variant.
+	Users []string
+
+	// REQUIRED; The variant to allocate these percentiles to.
+	Variant *string
 }

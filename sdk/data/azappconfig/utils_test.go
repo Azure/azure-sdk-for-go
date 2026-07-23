@@ -12,13 +12,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	azcred "github.com/Azure/azure-sdk-for-go/sdk/internal/test/credential"
 	"github.com/stretchr/testify/require"
 )
 
 const recordingDirectory = "sdk/data/azappconfig/testdata"
 
 var (
-	fakeConnStr  = fmt.Sprintf("Endpoint=%s;Id=fake;Secret=fake", fakeEndpoint)
+	credential   azcore.TokenCredential
+	endpoint     string
 	fakeEndpoint = fmt.Sprintf("https://%s.azconfig.io", recording.SanitizedValue)
 )
 
@@ -27,6 +29,14 @@ func TestMain(m *testing.M) {
 }
 
 func run(m *testing.M) int {
+	var err error
+	credential, err = azcred.New(nil)
+	if err != nil {
+		panic(err)
+	}
+
+	endpoint = recording.GetEnvVariable("APPCONFIGURATION_ENDPOINT_STRING", fakeEndpoint)
+
 	if recording.GetRecordMode() != recording.LiveMode {
 		proxy, err := recording.StartTestProxy(recordingDirectory, nil)
 		if err != nil {
@@ -42,15 +52,13 @@ func run(m *testing.M) int {
 
 		err = recording.RemoveRegisteredSanitizers([]string{
 			"AZSDK2030", // operation-location header
+			"AZSDK3424", // $..to (used by feature flag PercentileAllocation bounds)
+			"AZSDK3425", // $..from (used by feature flag PercentileAllocation bounds)
 			"AZSDK3447", // $.key
 			"AZSDK3490", // $..etag
 			"AZSDK3493", // $..name
 		}, nil)
 		if err != nil {
-			panic(err)
-		}
-
-		if err := recording.AddHeaderRegexSanitizer("x-ms-content-sha256", "fake-content", "", nil); err != nil {
 			panic(err)
 		}
 
@@ -62,10 +70,12 @@ func run(m *testing.M) int {
 	return m.Run()
 }
 
-func NewClientFromConnectionString(t *testing.T) *azappconfig.Client {
-	connStr := recording.GetEnvVariable("APPCONFIGURATION_CONNECTION_STRING", fakeConnStr)
-	if connStr == "" && recording.GetRecordMode() != recording.PlaybackMode {
-		t.Skip("set APPCONFIGURATION_CONNECTION_STRING to run this test")
+// newTestClient constructs an [*azappconfig.Client] authenticated with Entra ID and wired to the test
+// recording transport. In playback mode it uses a fake credential; in live/record mode it uses the
+// shared credential resolved by [azcred.New].
+func newTestClient(t *testing.T) *azappconfig.Client {
+	if recording.GetRecordMode() != recording.PlaybackMode && os.Getenv("APPCONFIGURATION_ENDPOINT_STRING") == "" {
+		t.Skip("set APPCONFIGURATION_ENDPOINT_STRING to run this test")
 	}
 
 	err := recording.Start(t, recordingDirectory, nil)
@@ -84,7 +94,7 @@ func NewClientFromConnectionString(t *testing.T) *azappconfig.Client {
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
 
-	client, err := azappconfig.NewClientFromConnectionString(connStr, &azappconfig.ClientOptions{
+	client, err := azappconfig.NewClient(endpoint, credential, &azappconfig.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: transport,
 			Logging: policy.LogOptions{

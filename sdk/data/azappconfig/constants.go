@@ -23,6 +23,9 @@ const (
 	// The content type of the configuration setting's value.
 	SettingFieldsContentType SettingFields = generated.SettingFieldsContentType
 
+	// The description of a configuration setting.
+	SettingFieldsDescription SettingFields = generated.SettingFieldsDescription
+
 	// An ETag indicating the version of a configuration setting within a configuration store.
 	SettingFieldsETag SettingFields = generated.SettingFieldsEtag
 
@@ -45,6 +48,9 @@ const (
 
 	// The time when the snapshot was created.
 	SnapshotFieldsCreated SnapshotFields = generated.SnapshotFieldsCreated
+
+	// The description of a snapshot.
+	SnapshotFieldsDescription SnapshotFields = generated.SnapshotFieldsDescription
 
 	// An ETag indicating the version of a snapshot.
 	SnapshotFieldsETag SnapshotFields = generated.SnapshotFieldsETag
@@ -100,4 +106,67 @@ const (
 
 	// Snapshot is composed with a Key and Label filter
 	CompositionTypeKeyLabel CompositionType = generated.CompositionTypeKeyLabel
+)
+
+// FeatureFlagFields are fields to retrieve from a feature flag.
+type FeatureFlagFields = generated.FeatureFlagFields
+
+const (
+	// The name of a feature flag.
+	FeatureFlagFieldsName FeatureFlagFields = generated.FeatureFlagFieldsName
+
+	// The label of a feature flag.
+	FeatureFlagFieldsLabel FeatureFlagFields = generated.FeatureFlagFieldsLabel
+
+	// The enabled state of a feature flag.
+	FeatureFlagFieldsEnabled FeatureFlagFields = generated.FeatureFlagFieldsEnabled
+
+	// The description of a feature flag.
+	FeatureFlagFieldsDescription FeatureFlagFields = generated.FeatureFlagFieldsDescription
+
+	// The conditions of a feature flag.
+	FeatureFlagFieldsConditions FeatureFlagFields = generated.FeatureFlagFieldsConditions
+
+	// The allocation of a feature flag.
+	FeatureFlagFieldsAllocation FeatureFlagFields = generated.FeatureFlagFieldsAllocation
+
+	// The variants of a feature flag.
+	FeatureFlagFieldsVariants FeatureFlagFields = generated.FeatureFlagFieldsVariants
+
+	// The telemetry configuration of a feature flag.
+	FeatureFlagFieldsTelemetry FeatureFlagFields = generated.FeatureFlagFieldsTelemetry
+
+	// The tags of a feature flag.
+	FeatureFlagFieldsTags FeatureFlagFields = generated.FeatureFlagFieldsTags
+
+	// An ETag indicating the version of a feature flag within a configuration store.
+	FeatureFlagFieldsETag FeatureFlagFields = generated.FeatureFlagFieldsEtag
+
+	// The last time a modifying operation was performed on the feature flag.
+	FeatureFlagFieldsLastModified FeatureFlagFields = generated.FeatureFlagFieldsLastModified
+)
+
+// RequirementType describes how filters on a feature flag are combined.
+type RequirementType = generated.RequirementType
+
+const (
+	// The feature flag is enabled when all filters evaluate to true.
+	RequirementTypeAll RequirementType = generated.RequirementTypeAll
+
+	// The feature flag is enabled when any filter evaluates to true.
+	RequirementTypeAny RequirementType = generated.RequirementTypeAny
+)
+
+// StatusOverride overrides the enabled state of a feature flag when a variant is chosen.
+type StatusOverride = generated.StatusOverride
+
+const (
+	// Do not override the enabled state of the feature flag.
+	StatusOverrideNone StatusOverride = generated.StatusOverrideNone
+
+	// Force the feature flag to be enabled.
+	StatusOverrideEnabled StatusOverride = generated.StatusOverrideEnabled
+
+	// Force the feature flag to be disabled.
+	StatusOverrideDisabled StatusOverride = generated.StatusOverrideDisabled
 )

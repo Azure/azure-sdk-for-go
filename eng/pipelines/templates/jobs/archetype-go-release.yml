@@ -65,7 +65,7 @@ stages:
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     # On post-merge main CI, also require the auto-release label + changed-package signal from
     # AutoReleasePrepare. Manual/scheduled runs release on the changelog/tag gate alone.
-    ${{ if eq(variables['Build.Reason'], 'IndividualCI') }}:
+    ${{ if and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
       dependsOn:
         - CheckRelease
         - AutoReleasePrepare

@@ -62,7 +62,7 @@ program. A `require` entry alone is not enough; the package must be reachable
 through an import, often a blank import.
 
 ```go
-//go:build linux && amd64
+//go:build cgo && linux && amd64
 
 package azcosmos
 
@@ -280,7 +280,7 @@ go 1.25.0
 
 ```go
 // sdk/data/azcosmos-driver-linux-amd64-gnu/link_linux_amd64.go
-//go:build linux && amd64 && !musl
+//go:build cgo && linux && amd64 && !musl
 
 package azcosmosdriverlinuxamd64gnu
 
@@ -313,7 +313,7 @@ cgo link flags participate in the final link.
 
 ```go
 // sdk/data/azcosmos/default_driver_linux_amd64.go
-//go:build linux && amd64 && !musl
+//go:build cgo && linux && amd64 && !musl
 
 package azcosmos
 
@@ -322,7 +322,7 @@ import _ "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos-driver-linux-amd64
 
 ```go
 // sdk/data/azcosmos/default_driver_darwin_arm64.go
-//go:build darwin && arm64
+//go:build cgo && darwin && arm64
 
 package azcosmos
 
@@ -415,7 +415,7 @@ The public SDK can hide the separate repository behind build-tagged blank
 imports:
 
 ```go
-//go:build linux && amd64
+//go:build cgo && linux && amd64
 
 package azcosmos
 
@@ -540,10 +540,11 @@ Optional:
   linux-amd64-musl
 ```
 
-Build-time selection then happens through build tags:
+Build-time selection then happens through build tags. Every native driver
+selector includes `cgo`, because the selected package imports `C`:
 
 ```text
-GOOS=darwin GOARCH=arm64
+CGO_ENABLED=1 GOOS=darwin GOARCH=arm64
        │
        ▼
 default_driver_darwin_arm64.go is included
@@ -554,6 +555,46 @@ azcosmos-driver-darwin-arm64 is imported
        ▼
 darwin/arm64 native library contributes link flags
 ```
+
+### cgo-disabled and cross-compilation behavior
+
+There is no functional non-cgo path for Go v2. When `CGO_ENABLED=0`, no
+native-driver selector or driver package should be included. Otherwise, a
+selector can blank-import a driver package whose only Go source imports `C`,
+leaving customers with the opaque Go error `build constraints exclude all Go
+files`.
+
+Instead, the public module needs a `!cgo` diagnostic guard that does not import
+any driver and causes client initialization to fail explicitly:
+
+```go
+//go:build !cgo
+
+package azcosmos
+
+import "errors"
+
+func nativeDriverUnavailableError() error {
+    return errors.New(
+        "azcosmos: Go v2 requires CGO_ENABLED=1, a target-compatible C " +
+            "toolchain, and a matching native Cosmos driver artifact",
+    )
+}
+```
+
+This is a diagnostic path only: it does not provide a pure-Go implementation,
+degraded mode, or alternate driver. The cgo-enabled implementation uses the
+same initialization boundary without returning this error.
+
+Cross-compilation requires the same explicit treatment. Go normally disables
+cgo when cross-compiling unless the customer enables it and configures a
+target-compatible C compiler. The supported command must therefore provide
+`CGO_ENABLED=1`, the appropriate `CC`/toolchain for the target, and a matching
+native driver artifact. A cross-build with cgo disabled reaches the `!cgo`
+guard and receives the clear unsupported-configuration error. If cgo is
+enabled but the target compiler or native artifact is missing, compilation or
+linking necessarily fails before Go code can initialize; the supported
+cross-compilation instructions must make those prerequisites explicit.
 
 For a platform outside the default set, the SDK should fail clearly:
 

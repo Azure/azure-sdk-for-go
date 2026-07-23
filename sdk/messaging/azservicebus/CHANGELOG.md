@@ -11,6 +11,7 @@
 ### Bugs Fixed
 
 - Read `com.microsoft:max-message-batch-size` vendor property from the AMQP sender link to correctly limit batch size on Premium large-message entities, where `max-message-size` can be up to 100 MB but the batch limit is 1 MB.
+- Propagate the caller's `context.Context` through to the underlying `azcore.TokenCredential.GetToken` call instead of using `context.TODO()`. Credentials that rely on the context (for cancellation, deadlines, or values used to fetch the token) now behave correctly during authentication.
 
 ### Other Changes
 

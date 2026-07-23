@@ -7,6 +7,7 @@
 package sas
 
 import (
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
@@ -86,7 +87,7 @@ func NewTokenProvider(opts ...TokenProviderOption) (*TokenProvider, error) {
 }
 
 // GetToken gets a CBS SAS token
-func (t *TokenProvider) GetToken(audience string) (*auth.Token, error) {
+func (t *TokenProvider) GetToken(ctx context.Context, audience string) (*auth.Token, error) {
 	if t.sas != "" {
 		// the expiration date doesn't matter here so we'll just set it 0.
 		return auth.NewToken(auth.CBSTokenTypeSAS, t.sas, "0"), nil

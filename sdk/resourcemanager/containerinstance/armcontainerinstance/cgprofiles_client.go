@@ -19,7 +19,7 @@ import (
 // CGProfilesClient contains the methods for the CGProfiles group.
 // Don't use this type directly, use NewCGProfilesClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-08-01-preview
 type CGProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -86,7 +86,7 @@ func (client *CGProfilesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -141,7 +141,7 @@ func (client *CGProfilesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/iothub_usages.json
+// Generated from example definition: 2026-05-01-preview/iothub_usages.json
 func ExampleResourceProviderCommonClient_GetSubscriptionQuota() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

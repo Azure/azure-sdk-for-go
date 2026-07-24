@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/iothub_deleteprivateendpointconnection.json
+// Generated from example definition: 2026-05-01-preview/iothub_deleteprivateendpointconnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/iothub_getprivateendpointconnection.json
+// Generated from example definition: 2026-05-01-preview/iothub_getprivateendpointconnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/iothub_listprivateendpointconnections.json
+// Generated from example definition: 2026-05-01-preview/iothub_listprivateendpointconnections.json
 func ExamplePrivateEndpointConnectionsClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExamplePrivateEndpointConnectionsClient_List() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/iothub_updateprivateendpointconnection.json
+// Generated from example definition: 2026-05-01-preview/iothub_updateprivateendpointconnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

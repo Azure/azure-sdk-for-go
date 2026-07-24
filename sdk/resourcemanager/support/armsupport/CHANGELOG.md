@@ -1,5 +1,38 @@
 # Release History
 
+## 2.1.0 (2026-07-06)
+### Features Added
+
+- New enum type `Channel` with values `ChannelChat`, `ChannelWeb`
+- New enum type `ChatConversationStatus` with values `ChatConversationStatusActive`, `ChatConversationStatusClosed`
+- New enum type `EscalationStatus` with values `EscalationStatusEscalationAvailable`, `EscalationStatusEscalationInitiated`, `EscalationStatusEscalationProcessed`, `EscalationStatusEscalationUnavailable`, `EscalationStatusEscalationUnsupported`
+- New function `NewClassifyProblemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClassifyProblemsClient, error)`
+- New function `*ClassifyProblemsClient.ClassifyProblems(ctx context.Context, problemServiceName string, problemClassificationsClassificationInput ProblemClassificationsClassificationInput, options *ClassifyProblemsClientClassifyProblemsOptions) (ClassifyProblemsClientClassifyProblemsResponse, error)`
+- New function `NewClassifyProblemsNoSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClassifyProblemsNoSubscriptionClient, error)`
+- New function `*ClassifyProblemsNoSubscriptionClient.ClassifyProblems(ctx context.Context, problemServiceName string, problemClassificationsClassificationInput ProblemClassificationsClassificationInput, options *ClassifyProblemsNoSubscriptionClientClassifyProblemsOptions) (ClassifyProblemsNoSubscriptionClientClassifyProblemsResponse, error)`
+- New function `NewClassifyServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClassifyServicesClient, error)`
+- New function `*ClassifyServicesClient.ClassifyServices(ctx context.Context, serviceClassificationRequest ServiceClassificationRequest, options *ClassifyServicesClientClassifyServicesOptions) (ClassifyServicesClientClassifyServicesResponse, error)`
+- New function `NewClassifyServicesNoSubscriptionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ClassifyServicesNoSubscriptionClient, error)`
+- New function `*ClassifyServicesNoSubscriptionClient.ClassifyServices(ctx context.Context, serviceClassificationRequest ServiceClassificationRequest, options *ClassifyServicesNoSubscriptionClientClassifyServicesOptions) (ClassifyServicesNoSubscriptionClientClassifyServicesResponse, error)`
+- New function `*ClientFactory.NewClassifyProblemsClient() *ClassifyProblemsClient`
+- New function `*ClientFactory.NewClassifyProblemsNoSubscriptionClient() *ClassifyProblemsNoSubscriptionClient`
+- New function `*ClientFactory.NewClassifyServicesClient() *ClassifyServicesClient`
+- New function `*ClientFactory.NewClassifyServicesNoSubscriptionClient() *ClassifyServicesNoSubscriptionClient`
+- New function `*TicketsClient.LookUpResourceID(ctx context.Context, lookUpResourceIDRequest LookUpResourceIDRequest, options *TicketsClientLookUpResourceIDOptions) (TicketsClientLookUpResourceIDResponse, error)`
+- New struct `ClassificationService`
+- New struct `DirectConnectEscalation`
+- New struct `LookUpResourceIDRequest`
+- New struct `LookUpResourceIDResponse`
+- New struct `ProblemClassificationsClassificationInput`
+- New struct `ProblemClassificationsClassificationOutput`
+- New struct `ProblemClassificationsClassificationResult`
+- New struct `ServiceClassificationAnswer`
+- New struct `ServiceClassificationOutput`
+- New struct `ServiceClassificationRequest`
+- New field `ChatConversationStatus`, `CommunityForumPost`, `DirectConnectEscalation`, `SupportChannel` in struct `TicketDetailsProperties`
+- New field `DirectConnectEscalation` in struct `UpdateSupportTicket`
+
+
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

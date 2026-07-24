@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/CheckNameAvailability.json
+// Generated from example definition: 2026-07-01/CheckNameAvailability.json
 func ExampleTicketsNoSubscriptionClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleTicketsNoSubscriptionClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateBillingSupportTicket.json
+// Generated from example definition: 2026-07-01/CreateBillingSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForBillingRelat
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSubMgmtSupportTicket.json
+// Generated from example definition: 2026-07-01/CreateSubMgmtSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForSubscriptionManagementRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForSubscription
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateTechnicalSupportTicket.json
+// Generated from example definition: 2026-07-01/CreateTechnicalSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForTechnicalIssueRelatedToASpecificResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,6 +229,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForTechnicalIss
 		Properties: &armsupport.TicketDetailsProperties{
 			Description:               to.Ptr("my description"),
 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+			CommunityForumPost:        to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -271,6 +272,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForTechnicalIss
 	// 		Properties: &armsupport.TicketDetailsProperties{
 	// 			Description: to.Ptr("my description"),
 	// 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+	// 			CommunityForumPost: to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 	// 			ContactDetails: &armsupport.ContactProfile{
 	// 				Country: to.Ptr("usa"),
 	// 				FirstName: to.Ptr("abc"),
@@ -314,7 +316,7 @@ func ExampleTicketsNoSubscriptionClient_BeginCreate_createATicketForTechnicalIss
 	// }
 }
 
-// Generated from example definition: 2024-04-01/GetSupportTicketDetails.json
+// Generated from example definition: 2026-07-01/GetSupportTicketDetails.json
 func ExampleTicketsNoSubscriptionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,6 +342,7 @@ func ExampleTicketsNoSubscriptionClient_Get() {
 	// 		Properties: &armsupport.TicketDetailsProperties{
 	// 			Description: to.Ptr("This is a test - please ignore"),
 	// 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+	// 			CommunityForumPost: to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 	// 			ContactDetails: &armsupport.ContactProfile{
 	// 				Country: to.Ptr("USA"),
 	// 				FirstName: to.Ptr("abc"),
@@ -350,6 +353,9 @@ func ExampleTicketsNoSubscriptionClient_Get() {
 	// 				PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 			},
 	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18Z"); return t}()),
+	// 			DirectConnectEscalation: &armsupport.DirectConnectEscalation{
+	// 				AzureEEStatus: to.Ptr(armsupport.EscalationStatusEscalationUnavailable),
+	// 			},
 	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23Z"); return t}()),
 	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
@@ -372,12 +378,14 @@ func ExampleTicketsNoSubscriptionClient_Get() {
 	// 			SupportPlanType: to.Ptr("Premier"),
 	// 			SupportTicketID: to.Ptr("118032014183770"),
 	// 			Title: to.Ptr("Test - please ignore"),
+	// 			SupportChannel: to.Ptr(armsupport.ChannelChat),
+	// 			ChatConversationStatus: to.Ptr(armsupport.ChatConversationStatusActive),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTickets.json
+// Generated from example definition: 2026-07-01/ListSupportTickets.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTickets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,6 +417,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTickets() {
 		// 				Properties: &armsupport.TicketDetailsProperties{
 		// 					Description: to.Ptr("my description"),
 		// 					AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 					CommunityForumPost: to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 		// 					ContactDetails: &armsupport.ContactProfile{
 		// 						Country: to.Ptr("usa"),
 		// 						FirstName: to.Ptr("abc"),
@@ -496,7 +505,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTickets() {
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInOpenState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -617,7 +626,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOn
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInUpdatingState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -745,7 +754,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsCreatedOn
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsInOpenState.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsInOpenState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInOpenState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -866,7 +875,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInOpenSta
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsInUpdatingState.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsInUpdatingState.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInUpdatingState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -987,7 +996,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsInUpdatin
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsProblemClassificationIdEquals.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsProblemClassificationIdEquals.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACertainProblemClassificationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1092,7 +1101,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACert
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsServiceIdEquals.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsServiceIdEquals.json
 func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACertainServiceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1211,7 +1220,7 @@ func ExampleTicketsNoSubscriptionClient_NewListPager_listSupportTicketsWithACert
 	}
 }
 
-// Generated from example definition: 2024-04-01/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
+// Generated from example definition: 2026-07-01/UpdateAdvancedDiagnosticConsentOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateAdvancedDiagnosticConsentOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1280,7 +1289,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateAdvancedDiagnosticConsentOf
 	// }
 }
 
-// Generated from example definition: 2024-04-01/UpdateContactDetailsOfSupportTicket.json
+// Generated from example definition: 2026-07-01/UpdateContactDetailsOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateContactDetailsOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1363,7 +1372,91 @@ func ExampleTicketsNoSubscriptionClient_Update_updateContactDetailsOfASupportTic
 	// }
 }
 
-// Generated from example definition: 2024-04-01/UpdateSeverityOfSupportTicket.json
+// Generated from example definition: 2026-07-01/UpdateEscalationStatusOfSupportTicket.json
+func ExampleTicketsNoSubscriptionClient_Update_updateEscalationStatusOfASupportTicket() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTicketsNoSubscriptionClient().Update(ctx, "testticket", armsupport.UpdateSupportTicket{
+		ContactDetails: &armsupport.UpdateContactProfile{
+			PhoneNumber: to.Ptr("123-456-7890"),
+		},
+		DirectConnectEscalation: &armsupport.DirectConnectEscalation{
+			AzureEEStatus:       to.Ptr(armsupport.EscalationStatusEscalationInitiated),
+			ReasonForEscalation: to.Ptr("Server is down and business is impacted"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsupport.TicketsNoSubscriptionClientUpdateResponse{
+	// 	TicketDetails: armsupport.TicketDetails{
+	// 		ID: to.Ptr("/providers/Microsoft.Support/supportTickets/testticket"),
+	// 		Name: to.Ptr("testticket"),
+	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
+	// 		Properties: &armsupport.TicketDetailsProperties{
+	// 			SupportTicketID: to.Ptr("118032014183770"),
+	// 			Description: to.Ptr("This is a test - please ignore"),
+	// 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
+	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
+	// 			Severity: to.Ptr(armsupport.SeverityLevelCritical),
+	// 			Require24X7Response: to.Ptr(false),
+	// 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
+	// 			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+	// 			ContactDetails: &armsupport.ContactProfile{
+	// 				FirstName: to.Ptr("abc"),
+	// 				LastName: to.Ptr("xyz"),
+	// 				PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+	// 				PrimaryEmailAddress: to.Ptr("test.name@contoso.com"),
+	// 				AdditionalEmailAddresses: []*string{
+	// 					to.Ptr("tname@contoso.com"),
+	// 					to.Ptr("teamtest@contoso.com"),
+	// 				},
+	// 				PhoneNumber: to.Ptr("123-456-7890"),
+	// 				PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+	// 				Country: to.Ptr("USA"),
+	// 				PreferredSupportLanguage: to.Ptr("en-US"),
+	// 			},
+	// 			ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18Z"); return t}()),
+	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-21T17:36:18Z"); return t}()),
+	// 				SLAMinutes: to.Ptr[int32](240),
+	// 			},
+	// 			SupportEngineer: &armsupport.Engineer{
+	// 				EmailAddress: to.Ptr("xyz@contoso.com"),
+	// 			},
+	// 			SupportPlanType: to.Ptr("Premier"),
+	// 			SupportPlanDisplayName: to.Ptr("Premier"),
+	// 			Title: to.Ptr("Test - please ignore"),
+	// 			ServiceID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid"),
+	// 			ServiceDisplayName: to.Ptr("Subscription management"),
+	// 			Status: to.Ptr("Open"),
+	// 			DirectConnectEscalation: &armsupport.DirectConnectEscalation{
+	// 				AzureEEStatus: to.Ptr(armsupport.EscalationStatusEscalationInitiated),
+	// 				AllowedSeverities: []*armsupport.SeverityLevel{
+	// 					to.Ptr(armsupport.SeverityLevelCritical),
+	// 					to.Ptr(armsupport.SeverityLevelHighestcriticalimpact),
+	// 				},
+	// 				ReasonForEscalation: to.Ptr("Server is down and business is impacted"),
+	// 			},
+	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18Z"); return t}()),
+	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/UpdateSeverityOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateSeverityOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1432,7 +1525,7 @@ func ExampleTicketsNoSubscriptionClient_Update_updateSeverityOfASupportTicket() 
 	// }
 }
 
-// Generated from example definition: 2024-04-01/UpdateStatusOfSupportTicket.json
+// Generated from example definition: 2026-07-01/UpdateStatusOfSupportTicket.json
 func ExampleTicketsNoSubscriptionClient_Update_updateStatusOfASupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/CheckNameAvailabilityWithSubscription.json
+// Generated from example definition: 2026-07-01/CheckNameAvailabilityWithSubscription.json
 func ExampleTicketsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleTicketsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
+// Generated from example definition: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActiveJobsAndJobSchedulesForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActi
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
+// Generated from example definition: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForDedicatedCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpecificVMFamilyCoresForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
+// Generated from example definition: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForLowPriorityCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowPriorityCoresForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
+// Generated from example definition: 2026-07-01/CreateBatchQuotaTicketForSpecificBatchAccountForPools.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPoolsForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForPool
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateBatchQuotaTicketForSubscription.json
+// Generated from example definition: 2026-07-01/CreateBatchQuotaTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatchAccountsForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,7 +567,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForBatc
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateBillingSupportTicketForSubscription.json
+// Generated from example definition: 2026-07-01/CreateBillingSupportTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -653,7 +653,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForBillingRelatedIssues() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateCoresQuotaTicketForSubscription.json
+// Generated from example definition: 2026-07-01/CreateCoresQuotaTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComputeVMCores() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -756,7 +756,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForComp
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateGenericQuotaTicket.json
+// Generated from example definition: 2026-07-01/CreateGenericQuotaTicket.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServicesThatDoNotRequireAdditionalDetailsInTheQuotaTicketDetailsObject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -838,7 +838,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateMachineLearningQuotaTicketForDedicatedCores.json
+// Generated from example definition: 2026-07-01/CreateMachineLearningQuotaTicketForDedicatedCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpecificVMFamilyCoresForMachineLearningService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -943,7 +943,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForSpec
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateMachineLearningQuotaTicketForLowPriorityCores.json
+// Generated from example definition: 2026-07-01/CreateMachineLearningQuotaTicketForLowPriorityCores.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowPriorityCoresForMachineLearningService() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1048,7 +1048,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForLowP
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSqlDatabaseQuotaTicketForDTUs.json
+// Generated from example definition: 2026-07-01/CreateSqlDatabaseQuotaTicketForDTUs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUsForSqlDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1153,7 +1153,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSqlDatabaseQuotaTicketForServers.json
+// Generated from example definition: 2026-07-01/CreateSqlDatabaseQuotaTicketForServers.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServersForSqlDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1258,7 +1258,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSqlDatawarehouseQuotaTicketForDTUs.json
+// Generated from example definition: 2026-07-01/CreateSqlDatawarehouseQuotaTicketForDTUs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUsForAzureSynapseAnalytics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1363,7 +1363,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForDtUs
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSqlDatawarehouseQuotaTicketForServers.json
+// Generated from example definition: 2026-07-01/CreateSqlDatawarehouseQuotaTicketForServers.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServersForAzureSynapseAnalytics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1468,7 +1468,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForServ
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSqlManagedInstanceQuotaTicket.json
+// Generated from example definition: 2026-07-01/CreateSqlManagedInstanceQuotaTicket.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzureSqlManagedInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1581,7 +1581,7 @@ func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForAzur
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSubMgmtSupportTicketForSubscription.json
+// Generated from example definition: 2026-07-01/CreateSubMgmtSupportTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRelatedIssuesForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1667,7 +1667,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForSubscriptionManagementRela
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateTechnicalSupportTicketForSubscription.json
+// Generated from example definition: 2026-07-01/CreateTechnicalSupportTicketForSubscription.json
 func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASpecificResourceForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1682,6 +1682,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 		Properties: &armsupport.TicketDetailsProperties{
 			Description:               to.Ptr("my description"),
 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+			CommunityForumPost:        to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 			ContactDetails: &armsupport.ContactProfile{
 				Country:                  to.Ptr("usa"),
 				FirstName:                to.Ptr("abc"),
@@ -1727,6 +1728,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// 		Properties: &armsupport.TicketDetailsProperties{
 	// 			Description: to.Ptr("my description"),
 	// 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+	// 			CommunityForumPost: to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 	// 			ContactDetails: &armsupport.ContactProfile{
 	// 				Country: to.Ptr("usa"),
 	// 				FirstName: to.Ptr("abc"),
@@ -1773,7 +1775,7 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// }
 }
 
-// Generated from example definition: 2024-04-01/GetSubscriptionSupportTicketDetails.json
+// Generated from example definition: 2026-07-01/GetSubscriptionSupportTicketDetails.json
 func ExampleTicketsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1799,6 +1801,7 @@ func ExampleTicketsClient_Get() {
 	// 		Properties: &armsupport.TicketDetailsProperties{
 	// 			Description: to.Ptr("This is a test - please ignore"),
 	// 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
+	// 			CommunityForumPost: to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 	// 			ContactDetails: &armsupport.ContactProfile{
 	// 				Country: to.Ptr("USA"),
 	// 				FirstName: to.Ptr("abc"),
@@ -1809,6 +1812,9 @@ func ExampleTicketsClient_Get() {
 	// 				PrimaryEmailAddress: to.Ptr("abc@contoso.com"),
 	// 			},
 	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18Z"); return t}()),
+	// 			DirectConnectEscalation: &armsupport.DirectConnectEscalation{
+	// 				AzureEEStatus: to.Ptr(armsupport.EscalationStatusEscalationUnavailable),
+	// 			},
 	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
 	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23Z"); return t}()),
 	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
@@ -1831,12 +1837,14 @@ func ExampleTicketsClient_Get() {
 	// 			SupportPlanType: to.Ptr("Premier"),
 	// 			SupportTicketID: to.Ptr("118032014183770"),
 	// 			Title: to.Ptr("Test - please ignore"),
+	// 			SupportChannel: to.Ptr(armsupport.Channel("Email")),
+	// 			ChatConversationStatus: to.Ptr(armsupport.ChatConversationStatus("None")),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsBySubscription.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1868,6 +1876,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 		// 				Properties: &armsupport.TicketDetailsProperties{
 		// 					Description: to.Ptr("my description"),
 		// 					AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentYes),
+		// 					CommunityForumPost: to.Ptr("https://learn.microsoft.com/en-us/answers/questions/2283704/unverified-app-listed-under-applications-from-pers"),
 		// 					ContactDetails: &armsupport.ContactProfile{
 		// 						Country: to.Ptr("usa"),
 		// 						FirstName: to.Ptr("abc"),
@@ -1959,7 +1968,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsForASubscription() {
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInOpenStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2083,7 +2092,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertainDateAndInUpdatingStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2207,7 +2216,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsCreatedOnOrAfterACertai
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsInOpenStateBySubscription.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsInOpenStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2331,7 +2340,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInOpenStateForASubscrip
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsInUpdatingStateBySubscription.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsInUpdatingStateBySubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsInUpdatingStateForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2455,7 +2464,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsInUpdatingStateForASubs
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainProblemClassificationIdForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2560,7 +2569,7 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainProblemClas
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListSupportTicketsServiceIdEqualsForSubscription.json
+// Generated from example definition: 2026-07-01/ListSupportTicketsServiceIdEqualsForSubscription.json
 func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainServiceIdForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2679,7 +2688,35 @@ func ExampleTicketsClient_NewListPager_listSupportTicketsWithACertainServiceIdFo
 	}
 }
 
-// Generated from example definition: 2024-04-01/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+// Generated from example definition: 2026-07-01/LookUpResourceId.json
+func ExampleTicketsClient_LookUpResourceID() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTicketsClient().LookUpResourceID(ctx, armsupport.LookUpResourceIDRequest{
+		Type:       to.Ptr("Microsoft.Support/supportTickets"),
+		Identifier: to.Ptr("1234668596"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsupport.TicketsClientLookUpResourceIDResponse{
+	// 	LookUpResourceIDResponse: armsupport.LookUpResourceIDResponse{
+	// 		ResourceID: to.Ptr("/subscriptions/subId/providers/Microsoft.Support/supportTickets/SupportTicketName"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateAdvancedDiagnosticConsentOfASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2748,7 +2785,7 @@ func ExampleTicketsClient_Update_updateAdvancedDiagnosticConsentOfASubscriptionS
 	// }
 }
 
-// Generated from example definition: 2024-04-01/UpdateContactDetailsOfSupportTicketForSubscription.json
+// Generated from example definition: 2026-07-01/UpdateContactDetailsOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateContactDetailsOfASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2831,7 +2868,91 @@ func ExampleTicketsClient_Update_updateContactDetailsOfASubscriptionSupportTicke
 	// }
 }
 
-// Generated from example definition: 2024-04-01/UpdateSeverityOfSupportTicketForSubscription.json
+// Generated from example definition: 2026-07-01/UpdateEscalationStatusOfSupportTicketForSubscription.json
+func ExampleTicketsClient_Update_updateEscalationStatusOfASubscriptionSupportTicket() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("132d901f-189d-4381-9214-fe68e27e05a1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTicketsClient().Update(ctx, "testticket", armsupport.UpdateSupportTicket{
+		ContactDetails: &armsupport.UpdateContactProfile{
+			PhoneNumber: to.Ptr("123-456-7890"),
+		},
+		DirectConnectEscalation: &armsupport.DirectConnectEscalation{
+			AzureEEStatus:       to.Ptr(armsupport.EscalationStatusEscalationInitiated),
+			ReasonForEscalation: to.Ptr("Server is down and business is impacted"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsupport.TicketsClientUpdateResponse{
+	// 	TicketDetails: armsupport.TicketDetails{
+	// 		ID: to.Ptr("/subscriptions/132d901f-189d-4381-9214-fe68e27e05a1/providers/Microsoft.Support/supportTickets/testticket"),
+	// 		Name: to.Ptr("testticket"),
+	// 		Type: to.Ptr("Microsoft.Support/supportTickets"),
+	// 		Properties: &armsupport.TicketDetailsProperties{
+	// 			SupportTicketID: to.Ptr("118032014183770"),
+	// 			Description: to.Ptr("This is a test - please ignore"),
+	// 			ProblemClassificationID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid/problemClassifications/problemClassification_guid"),
+	// 			ProblemClassificationDisplayName: to.Ptr("Add or Edit VAT, TAX ID, or PO Number"),
+	// 			Severity: to.Ptr(armsupport.SeverityLevelCritical),
+	// 			Require24X7Response: to.Ptr(false),
+	// 			AdvancedDiagnosticConsent: to.Ptr(armsupport.ConsentNo),
+	// 			SupportPlanID: to.Ptr("U291cmNlOlNDTSxDbGFyaWZ5SW5zdGFsbGF0aW9uU2l0ZUlkOjcsTGluZUl0ZW1JZDo5ODY1NzIyOSxDb250cmFjdElkOjk4NjU5MTk0LFN1YnNjcmlwdGlvbklkOjc2Y2I3N2ZhLThiMTctNGVhYi05NDkzLWI2NWRhY2U5OTgxMyw="),
+	// 			FileWorkspaceName: to.Ptr("6f16735c-1530836f-e9970f1a-2e49-47b7-96cd-9746b83aa066"),
+	// 			ContactDetails: &armsupport.ContactProfile{
+	// 				FirstName: to.Ptr("abc"),
+	// 				LastName: to.Ptr("xyz"),
+	// 				PreferredContactMethod: to.Ptr(armsupport.PreferredContactMethodEmail),
+	// 				PrimaryEmailAddress: to.Ptr("test.name@contoso.com"),
+	// 				AdditionalEmailAddresses: []*string{
+	// 					to.Ptr("tname@contoso.com"),
+	// 					to.Ptr("teamtest@contoso.com"),
+	// 				},
+	// 				PhoneNumber: to.Ptr("123-456-7890"),
+	// 				PreferredTimeZone: to.Ptr("Pacific Standard Time"),
+	// 				Country: to.Ptr("USA"),
+	// 				PreferredSupportLanguage: to.Ptr("en-US"),
+	// 			},
+	// 			ServiceLevelAgreement: &armsupport.ServiceLevelAgreement{
+	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18Z"); return t}()),
+	// 				ExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-21T17:36:18Z"); return t}()),
+	// 				SLAMinutes: to.Ptr[int32](240),
+	// 			},
+	// 			SupportEngineer: &armsupport.Engineer{
+	// 				EmailAddress: to.Ptr("xyz@contoso.com"),
+	// 			},
+	// 			SupportPlanType: to.Ptr("Premier"),
+	// 			SupportPlanDisplayName: to.Ptr("Premier"),
+	// 			Title: to.Ptr("Test - please ignore"),
+	// 			ServiceID: to.Ptr("/providers/Microsoft.Support/services/subscription_management_service_guid"),
+	// 			ServiceDisplayName: to.Ptr("Subscription management"),
+	// 			Status: to.Ptr("Open"),
+	// 			DirectConnectEscalation: &armsupport.DirectConnectEscalation{
+	// 				AzureEEStatus: to.Ptr(armsupport.EscalationStatusEscalationInitiated),
+	// 				AllowedSeverities: []*armsupport.SeverityLevel{
+	// 					to.Ptr(armsupport.SeverityLevelCritical),
+	// 					to.Ptr(armsupport.SeverityLevelHighestcriticalimpact),
+	// 				},
+	// 				ReasonForEscalation: to.Ptr("Server is down and business is impacted"),
+	// 			},
+	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:18Z"); return t}()),
+	// 			ModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-20T21:36:23Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/UpdateSeverityOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateSeverityOfASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2900,7 +3021,7 @@ func ExampleTicketsClient_Update_updateSeverityOfASubscriptionSupportTicket() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/UpdateStatusOfSupportTicketForSubscription.json
+// Generated from example definition: 2026-07-01/UpdateStatusOfSupportTicketForSubscription.json
 func ExampleTicketsClient_Update_updateStatusOfASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

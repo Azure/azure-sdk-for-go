@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/GetService.json
+// Generated from example definition: 2026-07-01/GetService.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/ListServices.json
+// Generated from example definition: 2026-07-01/ListServices.json
 func ExampleServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

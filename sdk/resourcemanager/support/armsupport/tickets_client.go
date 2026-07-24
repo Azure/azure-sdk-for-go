@@ -20,7 +20,7 @@ import (
 // TicketsClient contains the methods for the Tickets group.
 // Don't use this type directly, use NewTicketsClient() instead.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2026-07-01
 type TicketsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,7 +82,7 @@ func (client *TicketsClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -185,7 +185,7 @@ func (client *TicketsClient) createCreateRequest(ctx context.Context, supportTic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -238,7 +238,7 @@ func (client *TicketsClient) getCreateRequest(ctx context.Context, supportTicket
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +299,7 @@ func (client *TicketsClient) listCreateRequest(ctx context.Context, options *Tic
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,6 +310,60 @@ func (client *TicketsClient) listHandleResponse(resp *http.Response) (TicketsCli
 	result := TicketsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TicketsListResult); err != nil {
 		return TicketsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// LookUpResourceID - This operation fetches ARM resource id of support resource type.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - lookUpResourceIDRequest - Look up resource id request body
+//   - options - TicketsClientLookUpResourceIDOptions contains the optional parameters for the TicketsClient.LookUpResourceID
+//     method.
+func (client *TicketsClient) LookUpResourceID(ctx context.Context, lookUpResourceIDRequest LookUpResourceIDRequest, options *TicketsClientLookUpResourceIDOptions) (TicketsClientLookUpResourceIDResponse, error) {
+	var err error
+	const operationName = "TicketsClient.LookUpResourceID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.lookUpResourceIDCreateRequest(ctx, lookUpResourceIDRequest, options)
+	if err != nil {
+		return TicketsClientLookUpResourceIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return TicketsClientLookUpResourceIDResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return TicketsClientLookUpResourceIDResponse{}, err
+	}
+	resp, err := client.lookUpResourceIDHandleResponse(httpResp)
+	return resp, err
+}
+
+// lookUpResourceIDCreateRequest creates the LookUpResourceID request.
+func (client *TicketsClient) lookUpResourceIDCreateRequest(ctx context.Context, lookUpResourceIDRequest LookUpResourceIDRequest, _ *TicketsClientLookUpResourceIDOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Support/lookUpResourceId"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, lookUpResourceIDRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// lookUpResourceIDHandleResponse handles the LookUpResourceID response.
+func (client *TicketsClient) lookUpResourceIDHandleResponse(resp *http.Response) (TicketsClientLookUpResourceIDResponse, error) {
+	result := TicketsClientLookUpResourceIDResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LookUpResourceIDResponse); err != nil {
+		return TicketsClientLookUpResourceIDResponse{}, err
 	}
 	return result, nil
 }
@@ -360,7 +414,7 @@ func (client *TicketsClient) updateCreateRequest(ctx context.Context, supportTic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

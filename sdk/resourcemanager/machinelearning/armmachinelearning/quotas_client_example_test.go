@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Quota/list.json
+// Generated from example definition: 2026-05-15-preview/Quota/list.json
 func ExampleQuotasClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,7 +443,7 @@ func ExampleQuotasClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Quota/update.json
+// Generated from example definition: 2026-05-15-preview/Quota/update.json
 func ExampleQuotasClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/createOrGetStartPendingUpload.json
+// Generated from example definition: 2026-05-15-preview/Registry/ModelVersion/createOrGetStartPendingUpload.json
 func ExampleRegistryModelVersionsClient_CreateOrGetStartPendingUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleRegistryModelVersionsClient_CreateOrGetStartPendingUpload() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Registry/ModelVersion/createOrUpdate.json
 func ExampleRegistryModelVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleRegistryModelVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/delete.json
+// Generated from example definition: 2026-05-15-preview/Registry/ModelVersion/delete.json
 func ExampleRegistryModelVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleRegistryModelVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/get.json
+// Generated from example definition: 2026-05-15-preview/Registry/ModelVersion/get.json
 func ExampleRegistryModelVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleRegistryModelVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelVersion/list.json
+// Generated from example definition: 2026-05-15-preview/Registry/ModelVersion/list.json
 func ExampleRegistryModelVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

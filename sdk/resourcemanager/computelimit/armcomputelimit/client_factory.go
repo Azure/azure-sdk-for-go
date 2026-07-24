@@ -79,6 +79,14 @@ func (c *ClientFactory) NewSharedLimitsClient() *SharedLimitsClient {
 	}
 }
 
+// NewTrustedHostSubscriptionsClient creates a new instance of TrustedHostSubscriptionsClient.
+func (c *ClientFactory) NewTrustedHostSubscriptionsClient() *TrustedHostSubscriptionsClient {
+	return &TrustedHostSubscriptionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewVMFamiliesClient creates a new instance of VMFamiliesClient.
 func (c *ClientFactory) NewVMFamiliesClient() *VMFamiliesClient {
 	return &VMFamiliesClient{

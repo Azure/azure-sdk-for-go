@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1628,7 +1628,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_Delete_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1649,7 +1649,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_Get_MaximumSet_Gen.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2467,7 +2467,7 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2891,7 +2891,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3315,7 +3315,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3368,7 +3368,7 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3400,18 +3400,27 @@ func ExampleFleetsClient_NewListVirtualMachinesPager() {
 		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_0"),
 		// 				Type: to.Ptr("lmzwlqfgyp"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusLaunching),
+		// 				VMSize: to.Ptr("Standard_D2s_v3"),
+		// 				Zone: to.Ptr("1"),
+		// 				Priority: to.Ptr("Spot"),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("test-vm_aef123_1"),
 		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_1"),
 		// 				Type: to.Ptr("lmzwlqfgyp"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusCreating),
+		// 				VMSize: to.Ptr("Standard_D4s_v3"),
+		// 				Zone: to.Ptr("2"),
+		// 				Priority: to.Ptr("Regular"),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("test-vm_aef123_2"),
 		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_2"),
 		// 				Type: to.Ptr("lmzwlqfgyp"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusSucceeded),
+		// 				VMSize: to.Ptr("Standard_D2s_v3"),
+		// 				Zone: to.Ptr("3"),
+		// 				Priority: to.Ptr("Spot"),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("test-vm_aef123_3"),
@@ -3441,7 +3450,7 @@ func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_Update_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

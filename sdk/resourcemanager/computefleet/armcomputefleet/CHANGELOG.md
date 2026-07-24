@@ -1,5 +1,11 @@
 # Release History
 
+## 2.0.0-beta.3 (2026-07-22)
+### Features Added
+
+- New field `Priority`, `VMSize`, `Zone` in struct `VirtualMachine`
+
+
 ## 2.0.0-beta.2 (2026-06-01)
 ### Breaking Changes
 

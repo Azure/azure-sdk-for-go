@@ -19,7 +19,7 @@ import (
 // JobDefinitionsClient contains the methods for the JobDefinitions group.
 // Don't use this type directly, use NewJobDefinitionsClient() instead.
 //
-// Generated from API version 2025-12-01
+// Generated from API version 2026-05-01
 type JobDefinitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -100,7 +100,7 @@ func (client *JobDefinitionsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -195,7 +195,7 @@ func (client *JobDefinitionsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -257,7 +257,7 @@ func (client *JobDefinitionsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -324,7 +324,7 @@ func (client *JobDefinitionsClient) listCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -335,6 +335,79 @@ func (client *JobDefinitionsClient) listHandleResponse(resp *http.Response) (Job
 	result := JobDefinitionsClientListResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinitionList); err != nil {
 		return JobDefinitionsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// ReconcileJob - Post action to reconcile the running job.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storageMoverName - The name of the Storage Mover resource.
+//   - projectName - The name of the Project resource.
+//   - jobDefinitionName - The name of the Job Definition resource.
+//   - options - JobDefinitionsClientReconcileJobOptions contains the optional parameters for the JobDefinitionsClient.ReconcileJob
+//     method.
+func (client *JobDefinitionsClient) ReconcileJob(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *JobDefinitionsClientReconcileJobOptions) (JobDefinitionsClientReconcileJobResponse, error) {
+	var err error
+	const operationName = "JobDefinitionsClient.ReconcileJob"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileJobCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, options)
+	if err != nil {
+		return JobDefinitionsClientReconcileJobResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return JobDefinitionsClientReconcileJobResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return JobDefinitionsClientReconcileJobResponse{}, err
+	}
+	resp, err := client.reconcileJobHandleResponse(httpResp)
+	return resp, err
+}
+
+// reconcileJobCreateRequest creates the ReconcileJob request.
+func (client *JobDefinitionsClient) reconcileJobCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, _ *JobDefinitionsClientReconcileJobOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}/reconcileJob"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storageMoverName == "" {
+		return nil, errors.New("parameter storageMoverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if jobDefinitionName == "" {
+		return nil, errors.New("parameter jobDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// reconcileJobHandleResponse handles the ReconcileJob response.
+func (client *JobDefinitionsClient) reconcileJobHandleResponse(resp *http.Response) (JobDefinitionsClientReconcileJobResponse, error) {
+	result := JobDefinitionsClientReconcileJobResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobRunResourceID); err != nil {
+		return JobDefinitionsClientReconcileJobResponse{}, err
 	}
 	return result, nil
 }
@@ -396,7 +469,7 @@ func (client *JobDefinitionsClient) startJobCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -468,7 +541,7 @@ func (client *JobDefinitionsClient) stopJobCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -540,7 +613,7 @@ func (client *JobDefinitionsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

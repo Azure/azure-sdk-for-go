@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-01/Connections_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01/Connections_CreateOrUpdate.json
 func ExampleConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/Connections_Delete.json
+// Generated from example definition: 2026-05-01/Connections_Delete.json
 func ExampleConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-12-01/Connections_Get.json
+// Generated from example definition: 2026-05-01/Connections_Get.json
 func ExampleConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-12-01/Connections_List.json
+// Generated from example definition: 2026-05-01/Connections_List.json
 func ExampleConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

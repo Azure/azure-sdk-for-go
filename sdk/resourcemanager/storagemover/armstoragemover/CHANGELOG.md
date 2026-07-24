@@ -1,5 +1,25 @@
 # Release History
 
+## 2.5.0 (2026-07-23)
+### Features Added
+
+- New value `FrequencyHourly` added to enum type `Frequency`
+- New value `JobTypeOnPremToCloudAgentLess` added to enum type `JobType`
+- New value `NfsVersionNFSv41` added to enum type `NfsVersion`
+- New enum type `NfsMountSourceType` with values `NfsMountSourceTypeFSXEFS`, `NfsMountSourceTypeNfsMount`
+- New enum type `SmbMountSourceType` with values `SmbMountSourceTypeFSXSMB`, `SmbMountSourceTypeSmbMount`
+- New function `*JobDefinitionsClient.ReconcileJob(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *JobDefinitionsClientReconcileJobOptions) (JobDefinitionsClientReconcileJobResponse, error)`
+- New field `AllowedStorageAccounts`, `EnableCrossTenantTransfer` in struct `AzureStorageBlobContainerEndpointProperties`
+- New field `AllowedStorageAccounts`, `EnableCrossTenantTransfer` in struct `AzureStorageBlobContainerEndpointUpdateProperties`
+- New field `AllowedStorageAccounts`, `EnableCrossTenantTransfer` in struct `AzureStorageSmbFileShareEndpointProperties`
+- New field `AllowedStorageAccounts`, `EnableCrossTenantTransfer` in struct `AzureStorageSmbFileShareEndpointUpdateProperties`
+- New field `CrossTenantEndpointResourceID`, `CrossTenantEndpointTenantID`, `IsCrossTenantJob`, `MoverSyncedUntil`, `SyncMode` in struct `JobDefinitionProperties`
+- New field `MoverSyncedUntil`, `SyncMode` in struct `JobDefinitionUpdateProperties`
+- New field `SourceType` in struct `NfsMountEndpointProperties`
+- New field `RepeatInterval` in struct `ScheduleInfo`
+- New field `SourceType` in struct `SmbMountEndpointProperties`
+
+
 ## 2.4.0 (2026-04-07)
 ### Features Added
 

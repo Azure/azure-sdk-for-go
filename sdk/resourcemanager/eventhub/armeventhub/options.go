@@ -228,6 +228,38 @@ type EventHubsClientRegenerateKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
+// FabricShortcutsClientApproveOptions contains the optional parameters for the FabricShortcutsClient.Approve method.
+type FabricShortcutsClientApproveOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricShortcutsClientCreateOrUpdateOptions contains the optional parameters for the FabricShortcutsClient.CreateOrUpdate
+// method.
+type FabricShortcutsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricShortcutsClientDeleteOptions contains the optional parameters for the FabricShortcutsClient.Delete method.
+type FabricShortcutsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricShortcutsClientGetOptions contains the optional parameters for the FabricShortcutsClient.Get method.
+type FabricShortcutsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricShortcutsClientListByEventHubOptions contains the optional parameters for the FabricShortcutsClient.NewListByEventHubPager
+// method.
+type FabricShortcutsClientListByEventHubOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FabricShortcutsClientRejectOptions contains the optional parameters for the FabricShortcutsClient.Reject method.
+type FabricShortcutsClientRejectOptions struct {
+	// placeholder for future optional parameters
+}
+
 // NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
 // method.
 type NamespacesClientBeginCreateOrUpdateOptions struct {
@@ -404,4 +436,22 @@ type SchemaRegistryClientListByNamespaceOptions struct {
 
 	// May be used to limit the number of results to the most recent N usageDetails.
 	Top *int32
+}
+
+// UpgradePreferencesOperationsClientCreateOrUpdateOptions contains the optional parameters for the UpgradePreferencesOperationsClient.CreateOrUpdate
+// method.
+type UpgradePreferencesOperationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradePreferencesOperationsClientGetOptions contains the optional parameters for the UpgradePreferencesOperationsClient.Get
+// method.
+type UpgradePreferencesOperationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// UpgradePreferencesOperationsClientUpgradeNowOptions contains the optional parameters for the UpgradePreferencesOperationsClient.UpgradeNow
+// method.
+type UpgradePreferencesOperationsClientUpgradeNowOptions struct {
+	// placeholder for future optional parameters
 }

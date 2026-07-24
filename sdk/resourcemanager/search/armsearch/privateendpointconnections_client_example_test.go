@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/DeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-09-01-preview/DeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.PrivateEndpointConnectionsClientDeleteResponse{
-	// 	PrivateEndpointConnection: &armsearch.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armsearch.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Name: to.Ptr("testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections"),
@@ -49,7 +49,7 @@ func ExamplePrivateEndpointConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/GetPrivateEndpointConnection.json
+// Generated from example definition: 2026-09-01-preview/GetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armsearch.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armsearch.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Name: to.Ptr("testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections"),
@@ -86,7 +86,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListPrivateEndpointConnectionsByService.json
+// Generated from example definition: 2026-09-01-preview/ListPrivateEndpointConnectionsByService.json
 func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListByServicePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/UpdatePrivateEndpointConnection.json
+// Generated from example definition: 2026-09-01-preview/UpdatePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.PrivateEndpointConnectionsClientUpdateResponse{
-	// 	PrivateEndpointConnection: &armsearch.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armsearch.PrivateEndpointConnection{
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/privateEndpointConnections/testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Name: to.Ptr("testEndpoint.50bf4fbe-d7c1-4b48-a642-4f5892642546"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/privateEndpointConnections"),

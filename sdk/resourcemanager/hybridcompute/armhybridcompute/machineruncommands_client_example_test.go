@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_CreateOrUpdate.json
+// Generated from example definition: 2026-07-15/runCommand/RunCommands_CreateOrUpdate.json
 func ExampleMachineRunCommandsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleMachineRunCommandsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_Delete.json
+// Generated from example definition: 2026-07-15/runCommand/RunCommands_Delete.json
 func ExampleMachineRunCommandsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleMachineRunCommandsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_Get.json
+// Generated from example definition: 2026-07-15/runCommand/RunCommands_Get.json
 func ExampleMachineRunCommandsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleMachineRunCommandsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/runCommand/RunCommands_List.json
+// Generated from example definition: 2026-07-15/runCommand/RunCommands_List.json
 func ExampleMachineRunCommandsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

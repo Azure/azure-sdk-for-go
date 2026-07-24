@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-06-16-preview/machine/Machine_AssessPatches.json
+// Generated from example definition: 2026-07-15/machine/Machine_AssessPatches.json
 func ExampleMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleMachinesClient_BeginAssessPatches() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_CreateOrUpdate.json
+// Generated from example definition: 2026-07-15/machine/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -190,7 +190,7 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Delete.json
+// Generated from example definition: 2026-07-15/machine/Machines_Delete.json
 func ExampleMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Get.json
+// Generated from example definition: 2026-07-15/machine/Machines_Get.json
 func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -405,7 +405,7 @@ func ExampleMachinesClient_Get_getMachine() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
+// Generated from example definition: 2026-07-15/machine/Machines_Get_LicenseProfileInstanceView.json
 func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -617,7 +617,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machine_InstallPatches.json
+// Generated from example definition: 2026-07-15/machine/Machine_InstallPatches.json
 func ExampleMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -674,7 +674,7 @@ func ExampleMachinesClient_BeginInstallPatches() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_ListByResourceGroup.json
+// Generated from example definition: 2026-07-15/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -898,7 +898,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_ListBySubscription.json
+// Generated from example definition: 2026-07-15/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -922,7 +922,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armhybridcompute.MachinesClientListBySubscriptionResponse{
 		// 	MachineListResult: armhybridcompute.MachineListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-06-16-preview&$skiptoken=nextPageToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-07-15&$skiptoken=nextPageToken"),
 		// 		Value: []*armhybridcompute.Machine{
 		// 			{
 		// 				Name: to.Ptr("myMachine"),
@@ -1122,7 +1122,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/machine/Machines_Update.json
+// Generated from example definition: 2026-07-15/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

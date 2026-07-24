@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationCompleteMigration.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationCompleteMigration.json
 func ExampleMigrationConfigsClient_CompleteMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleMigrationConfigsClient_CompleteMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
 func ExampleMigrationConfigsClient_BeginCreateAndStartMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleMigrationConfigsClient_BeginCreateAndStartMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationDelete.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationDelete.json
 func ExampleMigrationConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleMigrationConfigsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationGet.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationGet.json
 func ExampleMigrationConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleMigrationConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationList.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationList.json
 func ExampleMigrationConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleMigrationConfigsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/Migrationconfigurations/SBMigrationconfigurationRevert.json
+// Generated from example definition: 2026-07-01-preview/Migrationconfigurations/SBMigrationconfigurationRevert.json
 func ExampleMigrationConfigsClient_Revert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

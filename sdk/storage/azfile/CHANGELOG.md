@@ -1,16 +1,13 @@
 # Release History
 
-## 1.7.1-beta.1 (Unreleased)
+## 1.7.1-beta.1 (2026-07-24)
 
 ### Features Added
 * Added `NewListRangesPager` method on file `Client` for paginated range listing with continuation token and `MaxResults` support.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 * Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+* Updated `azidentity` version to `1.14.0`
 
 ## 1.7.0 (2026-06-15)
 

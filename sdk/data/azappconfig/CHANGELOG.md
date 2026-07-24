@@ -3,10 +3,9 @@
 ## 2.2.1-beta.1 (Unreleased)
 
 ### Features Added
-* Exposed the `Description` property on configuration settings and snapshots.
-  * Added `Description` field to the `Setting` and `Snapshot` structs.
-  * Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
-  * Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
+* Added `Description` field to the `Setting` and `Snapshot` structs.
+* Added `Description` field to `AddSettingOptions`, `SetSettingOptions`, and `BeginCreateSnapshotOptions`.
+* Added `SettingFieldsDescription` and `SnapshotFieldsDescription` field selector constants.
 
 ### Breaking Changes
 

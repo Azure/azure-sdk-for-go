@@ -1,0 +1,3 @@
+batch:
+  - ./internal/generated
+  - ./internal/generated_blob

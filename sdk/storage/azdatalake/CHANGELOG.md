@@ -1,16 +1,11 @@
 # Release History
 
-## 1.6.1-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.6.1-beta.1 (2026-07-24)
 
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.
 * Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+* Updated `azidentity` version to `1.14.0`
 
 ## 1.6.0 (2026-06-15)
 

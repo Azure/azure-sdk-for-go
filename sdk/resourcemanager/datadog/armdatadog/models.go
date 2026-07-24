@@ -29,9 +29,9 @@ type APIKeyListResponse struct {
 	NextLink *string
 }
 
-// ActivateSaaSParameterRequest - SaaS guid for Activate and Validate SaaS Resource
+// ActivateSaaSParameterRequest - SaaS resource details for Activate and Validate SaaS Resource
 type ActivateSaaSParameterRequest struct {
-	// REQUIRED; SaaS guid of marketplace saas subscription to be activated.
+	// REQUIRED; SaaS resource id of marketplace saas subscription to be activated.
 	SaaSGUID *string
 
 	// Datadog organization properties to link the Saas resource to.

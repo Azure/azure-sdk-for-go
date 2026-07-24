@@ -13,6 +13,8 @@
 ### Bugs Fixed
 * Fixed `UploadFile`/`UploadBuffer` responses not including `ContentCRC64` when returned by the service.
 
+* Fixed WASM compilation by using heap-allocated buffers on JS targets.
+
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.
 * Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.

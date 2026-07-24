@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCustomers_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleEnterpriseMccCustomersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCustomers_Delete_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleEnterpriseMccCustomersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCustomers_Get_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleEnterpriseMccCustomersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCustomers_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleEnterpriseMccCustomersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCustomers_ListBySubscription_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,7 +508,7 @@ func ExampleEnterpriseMccCustomersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCustomers_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCustomers_Update_MaximumSet_Gen.json
 func ExampleEnterpriseMccCustomersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

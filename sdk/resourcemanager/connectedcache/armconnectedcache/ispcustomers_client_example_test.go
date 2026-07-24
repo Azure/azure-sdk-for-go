@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2024-11-30-preview/IspCustomers_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCustomers_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleIspCustomersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleIspCustomersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCustomers_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCustomers_Delete_MaximumSet_Gen.json
 func ExampleIspCustomersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleIspCustomersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCustomers_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCustomers_Get_MaximumSet_Gen.json
 func ExampleIspCustomersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +281,7 @@ func ExampleIspCustomersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCustomers_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCustomers_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleIspCustomersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleIspCustomersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCustomers_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCustomers_ListBySubscription_MaximumSet_Gen.json
 func ExampleIspCustomersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -669,7 +669,7 @@ func ExampleIspCustomersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/IspCustomers_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/IspCustomers_Update_MaximumSet_Gen.json
 func ExampleIspCustomersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate.json
 func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScenarioConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,20 +26,6 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 	poller, err := clientFactory.NewScenarioConfigurationsClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", "12345678-1234-1234-1234-123456789012", "config-5678-9012-3456-789012345678", armchaos.ScenarioConfiguration{
 		Properties: &armchaos.ScenarioConfigurationProperties{
 			ScenarioID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012"),
-			Exclusions: &armchaos.ConfigurationExclusions{
-				Resources: []*string{
-					to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
-				},
-				Tags: []*armchaos.KeyValuePair{
-					{
-						Key:   to.Ptr("environment"),
-						Value: to.Ptr("production"),
-					},
-				},
-				Types: []*string{
-					to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-				},
-			},
 			Parameters: []*armchaos.KeyValuePair{
 				{
 					Key:   to.Ptr("duration"),
@@ -50,12 +36,28 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 					Value: to.Ptr("[\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm1\",\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm2\"]"),
 				},
 			},
-			Filters: &armchaos.ConfigurationFilters{
-				Locations: []*string{
-					to.Ptr("eastus"),
+			ResourceTargeting: &armchaos.ResourceTargeting{
+				Include: &armchaos.ResourceTargetingCriteria{
+					Locations: []*string{
+						to.Ptr("eastus"),
+					},
+					Zones: []*string{
+						to.Ptr("1"),
+					},
 				},
-				Zones: []*string{
-					to.Ptr("1"),
+				Exclude: &armchaos.ResourceTargetingCriteria{
+					Resources: []*string{
+						to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
+					},
+					Tags: []*armchaos.KeyValuePair{
+						{
+							Key:   to.Ptr("environment"),
+							Value: to.Ptr("production"),
+						},
+					},
+					Types: []*string{
+						to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+					},
 				},
 			},
 		},
@@ -77,20 +79,6 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/scenarios/configurations"),
 	// 		Properties: &armchaos.ScenarioConfigurationProperties{
 	// 			ScenarioID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012"),
-	// 			Exclusions: &armchaos.ConfigurationExclusions{
-	// 				Resources: []*string{
-	// 					to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
-	// 				},
-	// 				Tags: []*armchaos.KeyValuePair{
-	// 					{
-	// 						Key: to.Ptr("environment"),
-	// 						Value: to.Ptr("production"),
-	// 					},
-	// 				},
-	// 				Types: []*string{
-	// 					to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 				},
-	// 			},
 	// 			Parameters: []*armchaos.KeyValuePair{
 	// 				{
 	// 					Key: to.Ptr("duration"),
@@ -101,15 +89,31 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 	// 					Value: to.Ptr("[\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm1\",\"/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/vm2\"]"),
 	// 				},
 	// 			},
-	// 			Filters: &armchaos.ConfigurationFilters{
-	// 				Locations: []*string{
-	// 					to.Ptr("eastus"),
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			ResourceTargeting: &armchaos.ResourceTargeting{
+	// 				Include: &armchaos.ResourceTargetingCriteria{
+	// 					Locations: []*string{
+	// 						to.Ptr("eastus"),
+	// 					},
+	// 					Zones: []*string{
+	// 						to.Ptr("1"),
+	// 					},
 	// 				},
-	// 				Zones: []*string{
-	// 					to.Ptr("1"),
+	// 				Exclude: &armchaos.ResourceTargetingCriteria{
+	// 					Resources: []*string{
+	// 						to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
+	// 					},
+	// 					Tags: []*armchaos.KeyValuePair{
+	// 						{
+	// 							Key: to.Ptr("environment"),
+	// 							Value: to.Ptr("production"),
+	// 						},
+	// 					},
+	// 					Types: []*string{
+	// 						to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 					},
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
@@ -123,7 +127,7 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_CreateOrUpdate_With_Physical_Zones.json
 func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScenarioConfigurationWithPhysicalZoneTargeting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,23 +141,22 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 	poller, err := clientFactory.NewScenarioConfigurationsClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", "12345678-1234-1234-1234-123456789012", "config-physical-zone", armchaos.ScenarioConfiguration{
 		Properties: &armchaos.ScenarioConfigurationProperties{
 			ScenarioID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012"),
-			Exclusions: &armchaos.ConfigurationExclusions{
-				Resources: []*string{
-					to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
-				},
-			},
 			Parameters: []*armchaos.KeyValuePair{
 				{
 					Key:   to.Ptr("duration"),
 					Value: to.Ptr("PT10M"),
 				},
 			},
-			Filters: &armchaos.ConfigurationFilters{
-				Locations: []*string{
-					to.Ptr("westus2"),
+			ResourceTargeting: &armchaos.ResourceTargeting{
+				Include: &armchaos.ResourceTargetingCriteria{
+					PhysicalZones: []*string{
+						to.Ptr("westus2-az1"),
+					},
 				},
-				PhysicalZones: []*string{
-					to.Ptr("westus2-az1"),
+				Exclude: &armchaos.ResourceTargetingCriteria{
+					Resources: []*string{
+						to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
+					},
 				},
 			},
 		},
@@ -175,26 +178,25 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/scenarios/configurations"),
 	// 		Properties: &armchaos.ScenarioConfigurationProperties{
 	// 			ScenarioID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012"),
-	// 			Exclusions: &armchaos.ConfigurationExclusions{
-	// 				Resources: []*string{
-	// 					to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
-	// 				},
-	// 			},
 	// 			Parameters: []*armchaos.KeyValuePair{
 	// 				{
 	// 					Key: to.Ptr("duration"),
 	// 					Value: to.Ptr("PT10M"),
 	// 				},
 	// 			},
-	// 			Filters: &armchaos.ConfigurationFilters{
-	// 				Locations: []*string{
-	// 					to.Ptr("westus2"),
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			ResourceTargeting: &armchaos.ResourceTargeting{
+	// 				Include: &armchaos.ResourceTargetingCriteria{
+	// 					PhysicalZones: []*string{
+	// 						to.Ptr("westus2-az1"),
+	// 					},
 	// 				},
-	// 				PhysicalZones: []*string{
-	// 					to.Ptr("westus2-az1"),
+	// 				Exclude: &armchaos.ResourceTargetingCriteria{
+	// 					Resources: []*string{
+	// 						to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
+	// 					},
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
@@ -208,7 +210,7 @@ func ExampleScenarioConfigurationsClient_BeginCreateOrUpdate_createOrUpdateAScen
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_Delete.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_Delete.json
 func ExampleScenarioConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +231,7 @@ func ExampleScenarioConfigurationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_Execute.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_Execute.json
 func ExampleScenarioConfigurationsClient_BeginExecute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +252,7 @@ func ExampleScenarioConfigurationsClient_BeginExecute() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_FixResourcePermissions.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_FixResourcePermissions.json
 func ExampleScenarioConfigurationsClient_BeginFixResourcePermissions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,7 +273,7 @@ func ExampleScenarioConfigurationsClient_BeginFixResourcePermissions() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_Get.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_Get.json
 func ExampleScenarioConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,20 +298,6 @@ func ExampleScenarioConfigurationsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/scenarios/configurations"),
 	// 		Properties: &armchaos.ScenarioConfigurationProperties{
 	// 			ScenarioID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012"),
-	// 			Exclusions: &armchaos.ConfigurationExclusions{
-	// 				Resources: []*string{
-	// 					to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
-	// 				},
-	// 				Tags: []*armchaos.KeyValuePair{
-	// 					{
-	// 						Key: to.Ptr("environment"),
-	// 						Value: to.Ptr("production"),
-	// 					},
-	// 				},
-	// 				Types: []*string{
-	// 					to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 				},
-	// 			},
 	// 			Parameters: []*armchaos.KeyValuePair{
 	// 				{
 	// 					Key: to.Ptr("duration"),
@@ -321,12 +309,25 @@ func ExampleScenarioConfigurationsClient_Get() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
-	// 			Filters: &armchaos.ConfigurationFilters{
-	// 				Locations: []*string{
-	// 					to.Ptr("westus2"),
+	// 			ResourceTargeting: &armchaos.ResourceTargeting{
+	// 				Include: &armchaos.ResourceTargetingCriteria{
+	// 					PhysicalZones: []*string{
+	// 						to.Ptr("westus2-az1"),
+	// 					},
 	// 				},
-	// 				PhysicalZones: []*string{
-	// 					to.Ptr("westus2-az1"),
+	// 				Exclude: &armchaos.ResourceTargetingCriteria{
+	// 					Resources: []*string{
+	// 						to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
+	// 					},
+	// 					Tags: []*armchaos.KeyValuePair{
+	// 						{
+	// 							Key: to.Ptr("environment"),
+	// 							Value: to.Ptr("production"),
+	// 						},
+	// 					},
+	// 					Types: []*string{
+	// 						to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 					},
 	// 				},
 	// 			},
 	// 		},
@@ -342,7 +343,7 @@ func ExampleScenarioConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_ListAll.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_ListAll.json
 func ExampleScenarioConfigurationsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,20 +374,6 @@ func ExampleScenarioConfigurationsClient_NewListAllPager() {
 		// 				Type: to.Ptr("Microsoft.Chaos/workspaces/scenarios/configurations"),
 		// 				Properties: &armchaos.ScenarioConfigurationProperties{
 		// 					ScenarioID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/scenarios/12345678-1234-1234-1234-123456789012"),
-		// 					Exclusions: &armchaos.ConfigurationExclusions{
-		// 						Resources: []*string{
-		// 							to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
-		// 						},
-		// 						Tags: []*armchaos.KeyValuePair{
-		// 							{
-		// 								Key: to.Ptr("environment"),
-		// 								Value: to.Ptr("production"),
-		// 							},
-		// 						},
-		// 						Types: []*string{
-		// 							to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-		// 						},
-		// 					},
 		// 					Parameters: []*armchaos.KeyValuePair{
 		// 						{
 		// 							Key: to.Ptr("duration"),
@@ -398,6 +385,22 @@ func ExampleScenarioConfigurationsClient_NewListAllPager() {
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+		// 					ResourceTargeting: &armchaos.ResourceTargeting{
+		// 						Exclude: &armchaos.ResourceTargetingCriteria{
+		// 							Resources: []*string{
+		// 								to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/protectedVM"),
+		// 							},
+		// 							Tags: []*armchaos.KeyValuePair{
+		// 								{
+		// 									Key: to.Ptr("environment"),
+		// 									Value: to.Ptr("production"),
+		// 								},
+		// 							},
+		// 							Types: []*string{
+		// 								to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+		// 							},
+		// 						},
+		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
@@ -441,7 +444,7 @@ func ExampleScenarioConfigurationsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/ScenarioConfigurations_Validate.json
+// Generated from example definition: 2026-08-01-preview/ScenarioConfigurations_Validate.json
 func ExampleScenarioConfigurationsClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

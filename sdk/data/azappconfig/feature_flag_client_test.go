@@ -6,6 +6,7 @@ package azappconfig_test
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"testing"
 
@@ -344,4 +345,72 @@ func TestFeatureFlagClient_ComplexModel(t *testing.T) {
 		Label: to.Ptr(label),
 	})
 	require.NoError(t, err)
+}
+
+// createMultipleFeatureFlags creates count feature flags that share a common name and vary by
+// label to force the list endpoint to return multiple pages. The generated flag name is stored in
+// the Description of a marker flag identified by batchName so that repeated recordings reuse the
+// same set of flags.
+func createMultipleFeatureFlags(t *testing.T, client *azappconfig.FeatureFlagClient, batchName string, count int) string {
+	getResp, err := client.GetFeatureFlag(context.Background(), batchName, nil)
+	if err == nil && getResp.Description != nil {
+		return *getResp.Description
+	}
+
+	name, err := recording.GenerateAlphaNumericID(t, "ffbatch-", 10, true)
+	require.NoError(t, err)
+
+	for i := 0; i < count; i++ {
+		_, err := client.AddFeatureFlag(context.Background(), azappconfig.FeatureFlag{
+			Name:    to.Ptr(name),
+			Label:   to.Ptr(fmt.Sprintf("%d", i)),
+			Enabled: to.Ptr(true),
+		}, nil)
+		require.NoError(t, err)
+	}
+
+	_, err = client.SetFeatureFlag(context.Background(), azappconfig.FeatureFlag{
+		Name:        to.Ptr(batchName),
+		Enabled:     to.Ptr(false),
+		Description: to.Ptr(name),
+	}, nil)
+	require.NoError(t, err)
+	return name
+}
+
+func TestFeatureFlagClient_MultiPage(t *testing.T) {
+	client := newTestFeatureFlagClient(t)
+
+	name := createMultipleFeatureFlags(t, client, "batch-TestFeatureFlagClient_MultiPage", 105)
+
+	pager := client.NewListFeatureFlagsPager(azappconfig.FeatureFlagSelector{
+		NameFilter: to.Ptr(name),
+	}, nil)
+
+	countPages := 0
+	countFlags := 0
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		countPages++
+		countFlags += len(page.FeatureFlags)
+	}
+	require.GreaterOrEqual(t, countPages, 2, "expected more than one page of feature flags")
+	require.Equal(t, 105, countFlags)
+
+	// Also verify the revisions pager handles multiple pages.
+	revPager := client.NewListFeatureFlagRevisionsPager(azappconfig.FeatureFlagSelector{
+		NameFilter: to.Ptr(name),
+	}, nil)
+
+	countPages = 0
+	countFlags = 0
+	for revPager.More() {
+		page, err := revPager.NextPage(context.Background())
+		require.NoError(t, err)
+		countPages++
+		countFlags += len(page.FeatureFlags)
+	}
+	require.GreaterOrEqual(t, countPages, 2, "expected more than one page of feature flag revisions")
+	require.GreaterOrEqual(t, countFlags, 105)
 }

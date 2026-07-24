@@ -241,7 +241,7 @@ func (c *FeatureFlagClient) NewListFeatureFlagsPager(selector FeatureFlagSelecto
 		options = &ListFeatureFlagsOptions{}
 	}
 	_ = options // reserved for future match-conditions support
-	pagerInternal := c.ffClient.NewGetFeatureFlagsPager(selector.toGeneratedGetFeatureFlags())
+	pagerInternal := c.ffClient.NewGetFeatureFlagsPagerWithLinkHeader(selector.toGeneratedGetFeatureFlags())
 	return runtime.NewPager(runtime.PagingHandler[ListFeatureFlagsPageResponse]{
 		More: func(ListFeatureFlagsPageResponse) bool {
 			return pagerInternal.More()
@@ -267,7 +267,7 @@ func (c *FeatureFlagClient) NewListFeatureFlagsPager(selector FeatureFlagSelecto
 
 // NewListFeatureFlagRevisionsPager creates a pager that retrieves revisions of feature flags that match the specified selector.
 func (c *FeatureFlagClient) NewListFeatureFlagRevisionsPager(selector FeatureFlagSelector, options *ListFeatureFlagRevisionsOptions) *runtime.Pager[ListFeatureFlagRevisionsPageResponse] {
-	pagerInternal := c.ffClient.NewGetFeatureFlagRevisionsPager(selector.toGeneratedGetFeatureFlagRevisions())
+	pagerInternal := c.ffClient.NewGetFeatureFlagRevisionsPagerWithLinkHeader(selector.toGeneratedGetFeatureFlagRevisions())
 	return runtime.NewPager(runtime.PagingHandler[ListFeatureFlagRevisionsPageResponse]{
 		More: func(ListFeatureFlagRevisionsPageResponse) bool {
 			return pagerInternal.More()

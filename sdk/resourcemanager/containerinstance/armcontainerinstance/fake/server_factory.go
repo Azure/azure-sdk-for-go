@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armcontainerinstance.ClientFactory type.
 type ServerFactory struct {
+	// AiAgentsGroupsServer contains the fakes for client AiAgentsGroupsClient
+	AiAgentsGroupsServer AiAgentsGroupsServer
+
 	// CGProfileServer contains the fakes for client CGProfileClient
 	CGProfileServer CGProfileServer
 
@@ -54,6 +57,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                  *ServerFactory
 	trMu                                 sync.Mutex
+	trAiAgentsGroupsServer               *AiAgentsGroupsServerTransport
 	trCGProfileServer                    *CGProfileServerTransport
 	trCGProfilesServer                   *CGProfilesServerTransport
 	trContainerGroupsServer              *ContainerGroupsServerTransport
@@ -77,6 +81,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AiAgentsGroupsClient":
+		initServer(&s.trMu, &s.trAiAgentsGroupsServer, func() *AiAgentsGroupsServerTransport {
+			return NewAiAgentsGroupsServerTransport(&s.srv.AiAgentsGroupsServer)
+		})
+		resp, err = s.trAiAgentsGroupsServer.Do(req)
 	case "CGProfileClient":
 		initServer(&s.trMu, &s.trCGProfileServer, func() *CGProfileServerTransport { return NewCGProfileServerTransport(&s.srv.CGProfileServer) })
 		resp, err = s.trCGProfileServer.Do(req)

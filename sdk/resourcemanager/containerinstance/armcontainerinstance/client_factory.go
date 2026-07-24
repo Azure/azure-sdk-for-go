@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAiAgentsGroupsClient creates a new instance of AiAgentsGroupsClient.
+func (c *ClientFactory) NewAiAgentsGroupsClient() *AiAgentsGroupsClient {
+	return &AiAgentsGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCGProfileClient creates a new instance of CGProfileClient.
 func (c *ClientFactory) NewCGProfileClient() *CGProfileClient {
 	return &CGProfileClient{

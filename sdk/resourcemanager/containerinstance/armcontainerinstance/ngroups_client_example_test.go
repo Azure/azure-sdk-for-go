@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/NGroupsCreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/NGroupsCreateOrUpdate.json
 func ExampleNGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleNGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NGroupsDelete.json
+// Generated from example definition: 2026-08-01-preview/NGroupsDelete.json
 func ExampleNGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleNGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NGroupsGet.json
+// Generated from example definition: 2026-08-01-preview/NGroupsGet.json
 func ExampleNGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleNGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/NGroupsList.json
+// Generated from example definition: 2026-08-01-preview/NGroupsList.json
 func ExampleNGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleNGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NGroupsListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/NGroupsListByResourceGroup.json
 func ExampleNGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleNGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NGroupsRestart.json
+// Generated from example definition: 2026-08-01-preview/NGroupsRestart.json
 func ExampleNGroupsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleNGroupsClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NGroupsStart.json
+// Generated from example definition: 2026-08-01-preview/NGroupsStart.json
 func ExampleNGroupsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleNGroupsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NGroupsStop.json
+// Generated from example definition: 2026-08-01-preview/NGroupsStop.json
 func ExampleNGroupsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleNGroupsClient_Stop() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/NGroupsUpdate.json
+// Generated from example definition: 2026-08-01-preview/NGroupsUpdate.json
 func ExampleNGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

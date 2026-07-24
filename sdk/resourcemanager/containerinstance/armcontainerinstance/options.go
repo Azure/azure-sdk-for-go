@@ -4,6 +4,47 @@
 
 package armcontainerinstance
 
+// AiAgentsGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginCreateOrUpdate
+// method.
+type AiAgentsGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AiAgentsGroupsClientBeginDeleteOptions contains the optional parameters for the AiAgentsGroupsClient.BeginDelete method.
+type AiAgentsGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AiAgentsGroupsClientBeginUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginUpdate method.
+type AiAgentsGroupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AiAgentsGroupsClientConnectOptions contains the optional parameters for the AiAgentsGroupsClient.Connect method.
+type AiAgentsGroupsClientConnectOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiAgentsGroupsClientGetOptions contains the optional parameters for the AiAgentsGroupsClient.Get method.
+type AiAgentsGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiAgentsGroupsClientListByResourceGroupOptions contains the optional parameters for the AiAgentsGroupsClient.NewListByResourceGroupPager
+// method.
+type AiAgentsGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AiAgentsGroupsClientListBySubscriptionOptions contains the optional parameters for the AiAgentsGroupsClient.NewListBySubscriptionPager
+// method.
+type AiAgentsGroupsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CGProfileClientCreateOrUpdateOptions contains the optional parameters for the CGProfileClient.CreateOrUpdate method.
 type CGProfileClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters

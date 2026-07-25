@@ -4,6 +4,10 @@
 
 package armrelay
 
+const (
+	version20260101 string = "2026-01-01"
+)
+
 type AccessRights string
 
 const (
@@ -231,6 +235,24 @@ const (
 func PossibleSKUTierValues() []SKUTier {
 	return []SKUTier{
 		SKUTierStandard,
+	}
+}
+
+// TLSVersion - TLS versions supported by Relay namespaces.
+type TLSVersion string
+
+const (
+	// TLSVersion12 - TLS version 1.2.
+	TLSVersion12 TLSVersion = "1.2"
+	// TLSVersion13 - TLS version 1.3.
+	TLSVersion13 TLSVersion = "1.3"
+)
+
+// PossibleTLSVersionValues returns the possible values for the TLSVersion const type.
+func PossibleTLSVersionValues() []TLSVersion {
+	return []TLSVersion{
+		TLSVersion12,
+		TLSVersion13,
 	}
 }
 

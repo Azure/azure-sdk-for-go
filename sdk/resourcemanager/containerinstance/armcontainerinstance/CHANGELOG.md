@@ -1,24 +1,9 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-05-20)
+## 3.0.0 (2026-07-10)
 ### Breaking Changes
 
-- Type of `ContainerGroupProfile.Properties` has been changed from `*ContainerGroupProfilePropertiesProperties` to `*ContainerGroupProfileProperties`
-- Function `*ClientFactory.NewContainerGroupProfileClient` has been removed
-- Function `*ClientFactory.NewContainerGroupProfilesClient` has been removed
-- Function `NewContainerGroupProfileClient` has been removed
-- Function `*ContainerGroupProfileClient.GetByRevisionNumber` has been removed
-- Function `*ContainerGroupProfileClient.NewListAllRevisionsPager` has been removed
-- Function `NewContainerGroupProfilesClient` has been removed
-- Function `*ContainerGroupProfilesClient.CreateOrUpdate` has been removed
-- Function `*ContainerGroupProfilesClient.Delete` has been removed
-- Function `*ContainerGroupProfilesClient.Get` has been removed
-- Function `*ContainerGroupProfilesClient.NewListByResourceGroupPager` has been removed
-- Function `*ContainerGroupProfilesClient.NewListPager` has been removed
-- Function `*ContainerGroupProfilesClient.Patch` has been removed
-- Struct `ContainerGroupProfilePropertiesProperties` has been removed
 - Struct `ContainerGroupProperties` has been removed
-- Field `Properties` of struct `ContainerGroupProfileProperties` has been removed
 
 ### Features Added
 
@@ -27,8 +12,10 @@
 - New enum type `AzureFileShareAccessType` with values `AzureFileShareAccessTypeExclusive`, `AzureFileShareAccessTypeShared`
 - New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
 - New enum type `IdentityAccessLevel` with values `IdentityAccessLevelAll`, `IdentityAccessLevelSystem`, `IdentityAccessLevelUser`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
 - New enum type `NGroupProvisioningState` with values `NGroupProvisioningStateCanceled`, `NGroupProvisioningStateCreating`, `NGroupProvisioningStateDeleting`, `NGroupProvisioningStateFailed`, `NGroupProvisioningStateMigrating`, `NGroupProvisioningStateSucceeded`, `NGroupProvisioningStateUpdating`
 - New enum type `NGroupUpdateMode` with values `NGroupUpdateModeManual`, `NGroupUpdateModeRolling`
+- New enum type `SandboxGroupProvisioningState` with values `SandboxGroupProvisioningStateAccepted`, `SandboxGroupProvisioningStateCanceled`, `SandboxGroupProvisioningStateDeleting`, `SandboxGroupProvisioningStateFailed`, `SandboxGroupProvisioningStateSucceeded`, `SandboxGroupProvisioningStateUpdating`
 - New function `NewCGProfileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CGProfileClient, error)`
 - New function `*CGProfileClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, containerGroupProfileName string, containerGroupProfile ContainerGroupProfile, options *CGProfileClientCreateOrUpdateOptions) (CGProfileClientCreateOrUpdateResponse, error)`
 - New function `*CGProfileClient.Delete(ctx context.Context, resourceGroupName string, containerGroupProfileName string, options *CGProfileClientDeleteOptions) (CGProfileClientDeleteResponse, error)`
@@ -42,6 +29,7 @@
 - New function `*ClientFactory.NewCGProfileClient() *CGProfileClient`
 - New function `*ClientFactory.NewCGProfilesClient() *CGProfilesClient`
 - New function `*ClientFactory.NewNGroupsClient() *NGroupsClient`
+- New function `*ClientFactory.NewSandboxGroupsClient() *SandboxGroupsClient`
 - New function `NewNGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NGroupsClient, error)`
 - New function `*NGroupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroup, options *NGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[NGroupsClientCreateOrUpdateResponse], error)`
 - New function `*NGroupsClient.BeginDelete(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginDeleteOptions) (*runtime.Poller[NGroupsClientDeleteResponse], error)`
@@ -52,9 +40,23 @@
 - New function `*NGroupsClient.BeginStart(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientBeginStartOptions) (*runtime.Poller[NGroupsClientStartResponse], error)`
 - New function `*NGroupsClient.Stop(ctx context.Context, resourceGroupName string, ngroupsName string, options *NGroupsClientStopOptions) (NGroupsClientStopResponse, error)`
 - New function `*NGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, ngroupsName string, nGroup NGroupPatch, options *NGroupsClientBeginUpdateOptions) (*runtime.Poller[NGroupsClientUpdateResponse], error)`
+- New function `NewSandboxGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SandboxGroupsClient, error)`
+- New function `*SandboxGroupsClient.Connect(ctx context.Context, resourceGroupName string, sandboxGroupName string, options *SandboxGroupsClientConnectOptions) (SandboxGroupsClientConnectResponse, error)`
+- New function `*SandboxGroupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, sandboxGroupName string, resource SandboxGroup, options *SandboxGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[SandboxGroupsClientCreateOrUpdateResponse], error)`
+- New function `*SandboxGroupsClient.BeginDelete(ctx context.Context, resourceGroupName string, sandboxGroupName string, options *SandboxGroupsClientBeginDeleteOptions) (*runtime.Poller[SandboxGroupsClientDeleteResponse], error)`
+- New function `*SandboxGroupsClient.Get(ctx context.Context, resourceGroupName string, sandboxGroupName string, options *SandboxGroupsClientGetOptions) (SandboxGroupsClientGetResponse, error)`
+- New function `*SandboxGroupsClient.NewListByResourceGroupPager(resourceGroupName string, options *SandboxGroupsClientListByResourceGroupOptions) *runtime.Pager[SandboxGroupsClientListByResourceGroupResponse]`
+- New function `*SandboxGroupsClient.NewListBySubscriptionPager(options *SandboxGroupsClientListBySubscriptionOptions) *runtime.Pager[SandboxGroupsClientListBySubscriptionResponse]`
+- New function `*SandboxGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, sandboxGroupName string, properties SandboxGroupTagsUpdate, options *SandboxGroupsClientBeginUpdateOptions) (*runtime.Poller[SandboxGroupsClientUpdateResponse], error)`
 - New struct `APIEntityReference`
 - New struct `ApplicationGateway`
 - New struct `ApplicationGatewayBackendAddressPool`
+- New struct `ConfigMap`
+- New struct `ContainerGroupProfile`
+- New struct `ContainerGroupProfileListResult`
+- New struct `ContainerGroupProfilePatch`
+- New struct `ContainerGroupProfileProperties`
+- New struct `ContainerGroupProfileReferenceDefinition`
 - New struct `ContainerGroupProfileStub`
 - New struct `ElasticProfile`
 - New struct `ElasticProfileContainerGroupNamingPolicy`
@@ -65,6 +67,7 @@
 - New struct `IdentityAccessControl`
 - New struct `LoadBalancer`
 - New struct `LoadBalancerBackendAddressPool`
+- New struct `ManagedServiceIdentity`
 - New struct `NGroup`
 - New struct `NGroupCGPropertyContainer`
 - New struct `NGroupCGPropertyContainerProperties`
@@ -76,16 +79,24 @@
 - New struct `NGroupsListResult`
 - New struct `NetworkProfile`
 - New struct `PlacementProfile`
+- New struct `SandboxGroup`
+- New struct `SandboxGroupAccessToken`
+- New struct `SandboxGroupListResult`
+- New struct `SandboxGroupNetworkProfile`
+- New struct `SandboxGroupProperties`
+- New struct `SandboxGroupTagsUpdate`
 - New struct `SecretReference`
+- New struct `StandbyPoolProfileDefinition`
 - New struct `StorageProfile`
+- New struct `SubnetReference`
 - New struct `SystemData`
 - New struct `UpdateProfile`
 - New struct `UpdateProfileRollingUpdateProfile`
-- New field `StorageAccountKeyReference` in struct `AzureFileVolume`
+- New struct `UserAssignedIdentity`
+- New field `StorageAccountKeyReference`, `UserAssignedIdentityClientID` in struct `AzureFileVolume`
 - New field `SystemData` in struct `ContainerGroup`
-- New field `SystemData` in struct `ContainerGroupProfile`
-- New field `ConfidentialComputeProperties`, `Containers`, `Diagnostics`, `EncryptionProperties`, `Extensions`, `IPAddress`, `ImageRegistryCredentials`, `InitContainers`, `OSType`, `Priority`, `RegisteredRevisions`, `RestartPolicy`, `Revision`, `SKU`, `SecurityContext`, `ShutdownGracePeriod`, `TimeToLive`, `UseKrypton`, `Volumes` in struct `ContainerGroupProfileProperties`
-- New field `IdentityACLs`, `SecretReferences` in struct `ContainerGroupPropertiesProperties`
+- New field `ContainerGroupProfile`, `IdentityACLs`, `IsCreatedFromStandbyPool`, `SecretReferences`, `StandbyPoolProfile` in struct `ContainerGroupPropertiesProperties`
+- New field `ConfigMap` in struct `ContainerProperties`
 - New field `SecureValueReference` in struct `EnvironmentVariable`
 - New field `PasswordReference` in struct `ImageRegistryCredential`
 - New field `NextLink` in struct `UsageListResult`

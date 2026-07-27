@@ -185,6 +185,12 @@ type NamespaceListResult struct {
 
 // NamespaceProperties - Properties of the namespace.
 type NamespaceProperties struct {
+	// The minimum TLS version for the namespace.
+	// Supported values are 1.2 and 1.3.
+	// The service defaults to 1.2 when the property is omitted.
+	// Existing namespaces configured with TLS 1.0 or 1.1 are reported as TLS 1.2.
+	MinimumTLSVersion *TLSVersion
+
 	// List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 

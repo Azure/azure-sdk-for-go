@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armrelay.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armrelay.CheckNameAvailabilityResult{
 	// 		Message: to.Ptr(""),
 	// 		NameAvailable: to.Ptr(true),
 	// 		Reason: to.Ptr(armrelay.UnavailableReasonNone),
@@ -41,7 +41,7 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,19 +62,22 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
 		},
+		Properties: &armrelay.NamespaceProperties{
+			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCreateOrUpdateResponse{
-	// 	Namespace: &armrelay.Namespace{
+	// 	Namespace: armrelay.Namespace{
 	// 		Name: to.Ptr("example-RelayNamespace-5849"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-5849"),
@@ -83,6 +86,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5849"),
 	// 			ProvisioningState: to.Ptr("Created"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5849.servicebus.windows-int.net:443/"),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 	// 		},
 	// 		SKU: &armrelay.SKU{
 	// 			Name: to.Ptr(armrelay.SKUNameStandard),
@@ -96,7 +100,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +126,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -136,7 +140,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
+// Generated from example definition: 2026-01-01/VirtualNetworkRules/RelayNetworkRuleSetCreate.json
 func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +186,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCreateOrUpdateNetworkRuleSetResponse{
-	// 	NetworkRuleSet: &armrelay.NetworkRuleSet{
+	// 	NetworkRuleSet: armrelay.NetworkRuleSet{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/NetworkRuleSet"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroupid/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9659/networkruleset/default"),
@@ -216,7 +220,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceDelete.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceDelete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +237,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -242,7 +246,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +268,7 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceGet.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +287,7 @@ func ExampleNamespacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientGetResponse{
-	// 	Namespace: &armrelay.Namespace{
+	// 	Namespace: armrelay.Namespace{
 	// 		Name: to.Ptr("example-RelayRelayNamespace-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
@@ -294,6 +298,7 @@ func ExampleNamespacesClient_Get() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
 	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:38:34.533Z"); return t}()),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 	// 		},
 	// 		SKU: &armrelay.SKU{
 	// 			Name: to.Ptr(armrelay.SKUNameStandard),
@@ -307,7 +312,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleGet.json
 func ExampleNamespacesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -326,7 +331,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientGetAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -339,7 +344,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/VirtualNetworkRules/RelayNetworkRuleSetGet.json
+// Generated from example definition: 2026-01-01/VirtualNetworkRules/RelayNetworkRuleSetGet.json
 func ExampleNamespacesClient_GetNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +363,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientGetNetworkRuleSetResponse{
-	// 	NetworkRuleSet: &armrelay.NetworkRuleSet{
+	// 	NetworkRuleSet: armrelay.NetworkRuleSet{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/NetworkRuleSet"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroupid/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9659/networkruleset/default"),
@@ -392,7 +397,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
 func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,6 +433,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
 		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:59.4131724Z"); return t}()),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -449,6 +455,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-02.servicebus.windows.net:443/"),
 		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -465,7 +472,7 @@ func ExampleNamespacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
 func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,7 +526,7 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceListByResourceGroup.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,6 +560,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3054"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3054.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -570,6 +578,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:oaisdjfoiasdjfoiajsdfoijasd"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://oaisdjfoiasdjfoiajsdfoijasd.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -587,6 +596,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:abc123"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://abc123.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -604,6 +614,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5849"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5849.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -623,6 +634,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-4984"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-4984.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -640,6 +652,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5606"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5606.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -657,6 +670,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-7703"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-7703.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -674,6 +688,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:zzzzzzzzzzzzzzzzzzzzzz-00001"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://zzzzzzzzzzzzzzzzzzzzzz-00001.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -691,6 +706,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3919"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3919.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -708,6 +724,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:aiosdjfaoidjasdoijasdfoijasdfofijsdf"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://aiosdjfaoidjasdoijasdfoijasdfofijsdf.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -725,6 +742,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3413"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3413.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -742,6 +760,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-8695"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-8695.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -759,6 +778,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-4801"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-4801.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -776,6 +796,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-2812"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-2812.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -790,7 +811,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
 func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -809,7 +830,7 @@ func ExampleNamespacesClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientListKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -819,7 +840,7 @@ func ExampleNamespacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json
 func ExampleNamespacesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -840,7 +861,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientRegenerateKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -850,7 +871,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/NameSpaces/RelayNameSpaceUpdate.json
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceUpdate.json
 func ExampleNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -868,6 +889,9 @@ func ExampleNamespacesClient_Update() {
 			"tag5": to.Ptr("value5"),
 			"tag6": to.Ptr("value6"),
 		},
+		Properties: &armrelay.NamespaceProperties{
+			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion13),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -876,7 +900,7 @@ func ExampleNamespacesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientUpdateResponse{
-	// 	Namespace: &armrelay.Namespace{
+	// 	Namespace: armrelay.Namespace{
 	// 		Name: to.Ptr("example-RelayRelayNamespace-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
@@ -884,6 +908,7 @@ func ExampleNamespacesClient_Update() {
 	// 		Properties: &armrelay.NamespaceProperties{
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relayrelaynamespace-01"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion13),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag3": to.Ptr("value3"),

@@ -4,8 +4,6 @@
 
 ### Features Added
 
-* Added `azure-deprecating` to the default set of allowed (non-redacted) response headers for logging.
-
 ### Breaking Changes
 
 ### Bugs Fixed
@@ -13,6 +11,8 @@
 * Fixed an issue where `runtime.Pager[T].More` could return `true` indefinitely after `NextPage` failed to retrieve the first page, causing `for pager.More()` loops to spin. After a page fetch returns an error the `Pager` now enters a terminal state: `More` returns `false` and subsequent `NextPage` calls return the same error without invoking the fetcher again.
 
 ### Other Changes
+
+* Added `azure-deprecating` to the default set of allowed (non-redacted) response headers for logging.
 
 ## 1.22.0 (2026-06-04)
 

@@ -1,5 +1,30 @@
 # Release History
 
+## 1.1.0-beta.1 (2026-07-23)
+### Features Added
+
+- New enum type `AvailabilityStatus` with values `AvailabilityStatusAvailable`, `AvailabilityStatusUnavailable`
+- New enum type `CertificateStoreNameOption` with values `CertificateStoreNameOptionMy`, `CertificateStoreNameOptionRoot`
+- New enum type `CheckNameAvailabilityReason` with values `CheckNameAvailabilityReasonAlreadyExists`, `CheckNameAvailabilityReasonInvalid`
+- New enum type `EphemeralType` with values `EphemeralTypeAutomatic`, `EphemeralTypeCacheDisk`, `EphemeralTypeNVMeDisk`, `EphemeralTypeResourceDisk`
+- New enum type `ResourceType` with values `ResourceTypeMicrosoftDevOpsInfrastructurePools`
+- New function `*PoolsClient.CheckNameAvailability(ctx context.Context, body CheckNameAvailability, options *PoolsClientCheckNameAvailabilityOptions) (PoolsClientCheckNameAvailabilityResponse, error)`
+- New function `*PoolsClient.DeleteResources(ctx context.Context, resourceGroupName string, poolName string, body DeleteResourcesDetails, options *PoolsClientDeleteResourcesOptions) (PoolsClientDeleteResourcesResponse, error)`
+- New struct `CheckNameAvailability`
+- New struct `CheckNameAvailabilityResult`
+- New struct `DeleteResourcesDetails`
+- New struct `RuntimeConfiguration`
+- New struct `VMSize`
+- New field `Alias`, `Description`, `UpdateDescription` in struct `AzureDevOpsOrganizationProfile`
+- New field `LinuxNvmePath`, `VMSizes`, `WindowsNvmeDrive` in struct `DevOpsAzureSKU`
+- New field `IPAddresses`, `StaticIPAddressCount` in struct `NetworkProfile`
+- New field `Alias`, `OpenAccess` in struct `Organization`
+- New field `EphemeralType`, `IsEphemeral`, `ProvisioningScriptEntryPoint`, `ProvisioningScriptManagedIdentityClientID`, `ProvisioningScriptShouldRestart`, `ProvisioningScriptStorageAccountResourceID` in struct `PoolImage`
+- New field `RuntimeConfiguration` in struct `PoolProperties`
+- New field `RuntimeConfiguration` in struct `PoolUpdateProperties`
+- New field `CertificateStoreName` in struct `SecretsManagementSettings`
+
+
 ## 1.0.0 (2024-11-20)
 ### Breaking Changes
 

@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // SubscriptionUsagesServer is a fake server for instances of the armdevopsinfrastructure.SubscriptionUsagesClient type.
@@ -53,9 +54,7 @@ func (s *SubscriptionUsagesServerTransport) Do(req *http.Request) (*http.Respons
 }
 
 func (s *SubscriptionUsagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (s *SubscriptionUsagesServerTransport) dispatchToMethodFake(req *http.Reque
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -94,7 +90,7 @@ func (s *SubscriptionUsagesServerTransport) dispatchNewUsagesPager(req *http.Req
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
@@ -112,7 +108,7 @@ func (s *SubscriptionUsagesServerTransport) dispatchNewUsagesPager(req *http.Req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newUsagesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

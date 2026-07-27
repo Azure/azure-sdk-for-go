@@ -70,26 +70,26 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "ImageVersionsClient":
-		initServer(s, &s.trImageVersionsServer, func() *ImageVersionsServerTransport {
+		initServer(&s.trMu, &s.trImageVersionsServer, func() *ImageVersionsServerTransport {
 			return NewImageVersionsServerTransport(&s.srv.ImageVersionsServer)
 		})
 		resp, err = s.trImageVersionsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PoolsClient":
-		initServer(s, &s.trPoolsServer, func() *PoolsServerTransport { return NewPoolsServerTransport(&s.srv.PoolsServer) })
+		initServer(&s.trMu, &s.trPoolsServer, func() *PoolsServerTransport { return NewPoolsServerTransport(&s.srv.PoolsServer) })
 		resp, err = s.trPoolsServer.Do(req)
 	case "ResourceDetailsClient":
-		initServer(s, &s.trResourceDetailsServer, func() *ResourceDetailsServerTransport {
+		initServer(&s.trMu, &s.trResourceDetailsServer, func() *ResourceDetailsServerTransport {
 			return NewResourceDetailsServerTransport(&s.srv.ResourceDetailsServer)
 		})
 		resp, err = s.trResourceDetailsServer.Do(req)
 	case "SKUClient":
-		initServer(s, &s.trSKUServer, func() *SKUServerTransport { return NewSKUServerTransport(&s.srv.SKUServer) })
+		initServer(&s.trMu, &s.trSKUServer, func() *SKUServerTransport { return NewSKUServerTransport(&s.srv.SKUServer) })
 		resp, err = s.trSKUServer.Do(req)
 	case "SubscriptionUsagesClient":
-		initServer(s, &s.trSubscriptionUsagesServer, func() *SubscriptionUsagesServerTransport {
+		initServer(&s.trMu, &s.trSubscriptionUsagesServer, func() *SubscriptionUsagesServerTransport {
 			return NewSubscriptionUsagesServerTransport(&s.srv.SubscriptionUsagesServer)
 		})
 		resp, err = s.trSubscriptionUsagesServer.Do(req)
@@ -102,12 +102,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

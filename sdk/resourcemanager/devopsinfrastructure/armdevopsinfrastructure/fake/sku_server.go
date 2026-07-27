@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // SKUServer is a fake server for instances of the armdevopsinfrastructure.SKUClient type.
@@ -53,9 +54,7 @@ func (s *SKUServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (s *SKUServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (s *SKUServerTransport) dispatchToMethodFake(req *http.Request, method stri
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -94,7 +90,7 @@ func (s *SKUServerTransport) dispatchNewListByLocationPager(req *http.Request) (
 		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevOpsInfrastructure/locations/(?P<locationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if matches == nil || len(matches) < 2 {
+		if len(matches) < 3 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		locationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("locationName")])
@@ -112,7 +108,7 @@ func (s *SKUServerTransport) dispatchNewListByLocationPager(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		s.newListByLocationPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

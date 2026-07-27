@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/SearchGetAdminKeys.json
+// Generated from example definition: 2026-09-01-preview/SearchGetAdminKeys.json
 func ExampleAdminKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,14 +30,14 @@ func ExampleAdminKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.AdminKeysClientGetResponse{
-	// 	AdminKeyResult: &armsearch.AdminKeyResult{
+	// 	AdminKeyResult: armsearch.AdminKeyResult{
 	// 		PrimaryKey: to.Ptr("<your primary admin API key>"),
 	// 		SecondaryKey: to.Ptr("<your secondary admin API key>"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/SearchRegenerateAdminKey.json
+// Generated from example definition: 2026-09-01-preview/SearchRegenerateAdminKey.json
 func ExampleAdminKeysClient_Regenerate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleAdminKeysClient_Regenerate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsearch.AdminKeysClientRegenerateResponse{
-	// 	AdminKeyResult: &armsearch.AdminKeyResult{
+	// 	AdminKeyResult: armsearch.AdminKeyResult{
 	// 		PrimaryKey: to.Ptr("<your primary admin API key>"),
 	// 		SecondaryKey: to.Ptr("<your secondary admin API key>"),
 	// 	},

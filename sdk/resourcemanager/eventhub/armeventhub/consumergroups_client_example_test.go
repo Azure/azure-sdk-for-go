@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/ConsumerGroup/EHConsumerGroupCreate.json
+// Generated from example definition: 2026-07-01-preview/ConsumerGroup/EHConsumerGroupCreate.json
 func ExampleConsumerGroupsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleConsumerGroupsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ConsumerGroup/EHConsumerGroupDelete.json
+// Generated from example definition: 2026-07-01-preview/ConsumerGroup/EHConsumerGroupDelete.json
 func ExampleConsumerGroupsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleConsumerGroupsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ConsumerGroup/EHConsumerGroupGet.json
+// Generated from example definition: 2026-07-01-preview/ConsumerGroup/EHConsumerGroupGet.json
 func ExampleConsumerGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleConsumerGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ConsumerGroup/EHConsumerGroupListByEventHub.json
+// Generated from example definition: 2026-07-01-preview/ConsumerGroup/EHConsumerGroupListByEventHub.json
 func ExampleConsumerGroupsClient_NewListByEventHubPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,5 +1,39 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-07-22)
+### Features Added
+
+- New enum type `ExceptionWindowAction` with values `ExceptionWindowActionAllow`, `ExceptionWindowActionBlock`
+- New enum type `FabricShortcutStatus` with values `FabricShortcutStatusApproved`, `FabricShortcutStatusPending`, `FabricShortcutStatusRejected`
+- New enum type `FabricShortcutType` with values `FabricShortcutTypeEntity`, `FabricShortcutTypeNetwork`
+- New enum type `IPAddressType` with values `IPAddressTypeDualStack`, `IPAddressTypeIPv4`
+- New enum type `UpgradePreferenceDayOfWeek` with values `UpgradePreferenceDayOfWeekFriday`, `UpgradePreferenceDayOfWeekMonday`, `UpgradePreferenceDayOfWeekSaturday`, `UpgradePreferenceDayOfWeekSunday`, `UpgradePreferenceDayOfWeekThursday`, `UpgradePreferenceDayOfWeekTuesday`, `UpgradePreferenceDayOfWeekWednesday`
+- New function `*ClientFactory.NewFabricShortcutsClient() *FabricShortcutsClient`
+- New function `*ClientFactory.NewUpgradePreferencesOperationsClient() *UpgradePreferencesOperationsClient`
+- New function `NewFabricShortcutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FabricShortcutsClient, error)`
+- New function `*FabricShortcutsClient.Approve(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, options *FabricShortcutsClientApproveOptions) (FabricShortcutsClientApproveResponse, error)`
+- New function `*FabricShortcutsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, resource FabricShortcut, options *FabricShortcutsClientCreateOrUpdateOptions) (FabricShortcutsClientCreateOrUpdateResponse, error)`
+- New function `*FabricShortcutsClient.Delete(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, options *FabricShortcutsClientDeleteOptions) (FabricShortcutsClientDeleteResponse, error)`
+- New function `*FabricShortcutsClient.Get(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, options *FabricShortcutsClientGetOptions) (FabricShortcutsClientGetResponse, error)`
+- New function `*FabricShortcutsClient.NewListByEventHubPager(resourceGroupName string, namespaceName string, eventHubName string, options *FabricShortcutsClientListByEventHubOptions) *runtime.Pager[FabricShortcutsClientListByEventHubResponse]`
+- New function `*FabricShortcutsClient.Reject(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, options *FabricShortcutsClientRejectOptions) (FabricShortcutsClientRejectResponse, error)`
+- New function `NewUpgradePreferencesOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpgradePreferencesOperationsClient, error)`
+- New function `*UpgradePreferencesOperationsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, resource UpgradePreferences, options *UpgradePreferencesOperationsClientCreateOrUpdateOptions) (UpgradePreferencesOperationsClientCreateOrUpdateResponse, error)`
+- New function `*UpgradePreferencesOperationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *UpgradePreferencesOperationsClientGetOptions) (UpgradePreferencesOperationsClientGetResponse, error)`
+- New function `*UpgradePreferencesOperationsClient.UpgradeNow(ctx context.Context, resourceGroupName string, clusterName string, options *UpgradePreferencesOperationsClientUpgradeNowOptions) (UpgradePreferencesOperationsClientUpgradeNowResponse, error)`
+- New struct `ExceptionWindow`
+- New struct `FabricShortcut`
+- New struct `FabricShortcutConfiguration`
+- New struct `FabricShortcutListResult`
+- New struct `FabricShortcutProperties`
+- New struct `MaintenanceWindow`
+- New struct `UpgradePreferences`
+- New struct `UpgradePreferencesProperties`
+- New struct `UpgradeStatus`
+- New field `ZoneRedundant` in struct `ClusterProperties`
+- New field `IPAddressType` in struct `EHNamespaceProperties`
+
+
 ## 2.0.0-beta.1 (2026-05-21)
 ### Breaking Changes
 

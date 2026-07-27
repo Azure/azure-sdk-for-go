@@ -5,7 +5,7 @@
 package armeventhub
 
 const (
-	version20250501Preview string = "2025-05-01-preview"
+	version20260701Preview string = "2026-07-01-preview"
 )
 
 type AccessRights string
@@ -198,6 +198,63 @@ func PossibleEntityStatusValues() []EntityStatus {
 	}
 }
 
+// ExceptionWindowAction - The action performed by an exception window.
+type ExceptionWindowAction string
+
+const (
+	// ExceptionWindowActionAllow - Allow upgrades during the exception window.
+	ExceptionWindowActionAllow ExceptionWindowAction = "Allow"
+	// ExceptionWindowActionBlock - Prevent upgrades during the exception window.
+	ExceptionWindowActionBlock ExceptionWindowAction = "Block"
+)
+
+// PossibleExceptionWindowActionValues returns the possible values for the ExceptionWindowAction const type.
+func PossibleExceptionWindowActionValues() []ExceptionWindowAction {
+	return []ExceptionWindowAction{
+		ExceptionWindowActionAllow,
+		ExceptionWindowActionBlock,
+	}
+}
+
+// FabricShortcutStatus - The status of a Microsoft Fabric shortcut.
+type FabricShortcutStatus string
+
+const (
+	// FabricShortcutStatusApproved - The shortcut is approved.
+	FabricShortcutStatusApproved FabricShortcutStatus = "Approved"
+	// FabricShortcutStatusPending - The shortcut is awaiting approval.
+	FabricShortcutStatusPending FabricShortcutStatus = "Pending"
+	// FabricShortcutStatusRejected - The shortcut is rejected.
+	FabricShortcutStatusRejected FabricShortcutStatus = "Rejected"
+)
+
+// PossibleFabricShortcutStatusValues returns the possible values for the FabricShortcutStatus const type.
+func PossibleFabricShortcutStatusValues() []FabricShortcutStatus {
+	return []FabricShortcutStatus{
+		FabricShortcutStatusApproved,
+		FabricShortcutStatusPending,
+		FabricShortcutStatusRejected,
+	}
+}
+
+// FabricShortcutType - The type of Microsoft Fabric shortcut.
+type FabricShortcutType string
+
+const (
+	// FabricShortcutTypeEntity - An entity shortcut.
+	FabricShortcutTypeEntity FabricShortcutType = "Entity"
+	// FabricShortcutTypeNetwork - A network shortcut.
+	FabricShortcutTypeNetwork FabricShortcutType = "Network"
+)
+
+// PossibleFabricShortcutTypeValues returns the possible values for the FabricShortcutType const type.
+func PossibleFabricShortcutTypeValues() []FabricShortcutType {
+	return []FabricShortcutType{
+		FabricShortcutTypeEntity,
+		FabricShortcutTypeNetwork,
+	}
+}
+
 // GeoDRRoleType - GeoDR Role Types
 type GeoDRRoleType string
 
@@ -211,6 +268,25 @@ func PossibleGeoDRRoleTypeValues() []GeoDRRoleType {
 	return []GeoDRRoleType{
 		GeoDRRoleTypePrimary,
 		GeoDRRoleTypeSecondary,
+	}
+}
+
+// IPAddressType - The IP address type for the namespace. Determines whether the namespace supports IPv4 only or both IPv4
+// and IPv6 (dual stack).
+type IPAddressType string
+
+const (
+	// IPAddressTypeDualStack - The namespace supports both IPv4 and IPv6 addresses (dual stack).
+	IPAddressTypeDualStack IPAddressType = "DualStack"
+	// IPAddressTypeIPv4 - The namespace supports IPv4 addresses only.
+	IPAddressTypeIPv4 IPAddressType = "IPv4"
+)
+
+// PossibleIPAddressTypeValues returns the possible values for the IPAddressType const type.
+func PossibleIPAddressTypeValues() []IPAddressType {
+	return []IPAddressType{
+		IPAddressTypeDualStack,
+		IPAddressTypeIPv4,
 	}
 }
 
@@ -628,5 +704,38 @@ func PossibleUnavailableReasonValues() []UnavailableReason {
 		UnavailableReasonNone,
 		UnavailableReasonSubscriptionIsDisabled,
 		UnavailableReasonTooManyNamespaceInCurrentSubscription,
+	}
+}
+
+// UpgradePreferenceDayOfWeek - A day of the week.
+type UpgradePreferenceDayOfWeek string
+
+const (
+	// UpgradePreferenceDayOfWeekFriday - The maintenance window occurs on Friday.
+	UpgradePreferenceDayOfWeekFriday UpgradePreferenceDayOfWeek = "Friday"
+	// UpgradePreferenceDayOfWeekMonday - The maintenance window occurs on Monday.
+	UpgradePreferenceDayOfWeekMonday UpgradePreferenceDayOfWeek = "Monday"
+	// UpgradePreferenceDayOfWeekSaturday - The maintenance window occurs on Saturday.
+	UpgradePreferenceDayOfWeekSaturday UpgradePreferenceDayOfWeek = "Saturday"
+	// UpgradePreferenceDayOfWeekSunday - The maintenance window occurs on Sunday.
+	UpgradePreferenceDayOfWeekSunday UpgradePreferenceDayOfWeek = "Sunday"
+	// UpgradePreferenceDayOfWeekThursday - The maintenance window occurs on Thursday.
+	UpgradePreferenceDayOfWeekThursday UpgradePreferenceDayOfWeek = "Thursday"
+	// UpgradePreferenceDayOfWeekTuesday - The maintenance window occurs on Tuesday.
+	UpgradePreferenceDayOfWeekTuesday UpgradePreferenceDayOfWeek = "Tuesday"
+	// UpgradePreferenceDayOfWeekWednesday - The maintenance window occurs on Wednesday.
+	UpgradePreferenceDayOfWeekWednesday UpgradePreferenceDayOfWeek = "Wednesday"
+)
+
+// PossibleUpgradePreferenceDayOfWeekValues returns the possible values for the UpgradePreferenceDayOfWeek const type.
+func PossibleUpgradePreferenceDayOfWeekValues() []UpgradePreferenceDayOfWeek {
+	return []UpgradePreferenceDayOfWeek{
+		UpgradePreferenceDayOfWeekFriday,
+		UpgradePreferenceDayOfWeekMonday,
+		UpgradePreferenceDayOfWeekSaturday,
+		UpgradePreferenceDayOfWeekSunday,
+		UpgradePreferenceDayOfWeekThursday,
+		UpgradePreferenceDayOfWeekTuesday,
+		UpgradePreferenceDayOfWeekWednesday,
 	}
 }

@@ -19,7 +19,7 @@ import (
 // ResourceProviderCommonClient contains the methods for the ResourceProviderCommon group.
 // Don't use this type directly, use NewResourceProviderCommonClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-05-01-preview
 type ResourceProviderCommonClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -81,7 +81,7 @@ func (client *ResourceProviderCommonClient) getSubscriptionQuotaCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

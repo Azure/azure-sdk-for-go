@@ -18,6 +18,8 @@ import (
 
 // IPCommunitiesClient contains the methods for the IPCommunities group.
 // Don't use this type directly, use NewIPCommunitiesClient() instead.
+//
+// Generated from API version 2025-07-15
 type IPCommunitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewIPCommunitiesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreate - Implements an IP Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *IPCommunitiesClient) BeginCreate(ctx context.Context, resourceGrou
 
 // Create - Implements an IP Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPCommunitiesClient) create(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunity, options *IPCommunitiesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPCommunitiesClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *IPCommunitiesClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *IPCommunitiesClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Implements IP Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - options - IPCommunitiesClientBeginDeleteOptions contains the optional parameters for the IPCommunitiesClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *IPCommunitiesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Implements IP Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPCommunitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, ipCommunityName string, options *IPCommunitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPCommunitiesClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *IPCommunitiesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements an IP Community GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - options - IPCommunitiesClientGetOptions contains the optional parameters for the IPCommunitiesClient.Get method.
@@ -244,8 +236,8 @@ func (client *IPCommunitiesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *IPCommunitiesClient) getHandleResponse(resp *http.Response) (IPCom
 }
 
 // NewListByResourceGroupPager - Implements IP Communities list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IPCommunitiesClientListByResourceGroupOptions contains the optional parameters for the IPCommunitiesClient.NewListByResourceGroupPager
 //     method.
@@ -304,8 +294,8 @@ func (client *IPCommunitiesClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *IPCommunitiesClient) listByResourceGroupHandleResponse(resp *http.
 }
 
 // NewListBySubscriptionPager - Implements IP Communities list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - IPCommunitiesClientListBySubscriptionOptions contains the optional parameters for the IPCommunitiesClient.NewListBySubscriptionPager
 //     method.
 func (client *IPCommunitiesClient) NewListBySubscriptionPager(options *IPCommunitiesClientListBySubscriptionOptions) *runtime.Pager[IPCommunitiesClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *IPCommunitiesClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *IPCommunitiesClient) listBySubscriptionHandleResponse(resp *http.R
 
 // BeginUpdate - API to update certain properties of the IP Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - body - IP Community properties to update.
@@ -402,8 +388,6 @@ func (client *IPCommunitiesClient) BeginUpdate(ctx context.Context, resourceGrou
 
 // Update - API to update certain properties of the IP Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPCommunitiesClient) update(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunityPatch, options *IPCommunitiesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPCommunitiesClient.BeginUpdate"
@@ -445,8 +429,8 @@ func (client *IPCommunitiesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

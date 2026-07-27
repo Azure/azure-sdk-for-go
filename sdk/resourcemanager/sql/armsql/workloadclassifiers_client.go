@@ -18,6 +18,8 @@ import (
 
 // WorkloadClassifiersClient contains the methods for the WorkloadClassifiers group.
 // Don't use this type directly, use NewWorkloadClassifiersClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type WorkloadClassifiersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWorkloadClassifiersClient(subscriptionID string, credential azcore.Token
 
 // BeginCreateOrUpdate - Creates or updates a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -70,8 +70,6 @@ func (client *WorkloadClassifiersClient) BeginCreateOrUpdate(ctx context.Context
 
 // CreateOrUpdate - Creates or updates a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *WorkloadClassifiersClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, parameters WorkloadClassifier, options *WorkloadClassifiersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadClassifiersClient.BeginCreateOrUpdate"
@@ -125,8 +123,8 @@ func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -137,8 +135,6 @@ func (client *WorkloadClassifiersClient) createOrUpdateCreateRequest(ctx context
 
 // BeginDelete - Deletes a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -165,8 +161,6 @@ func (client *WorkloadClassifiersClient) BeginDelete(ctx context.Context, resour
 
 // Delete - Deletes a workload classifier.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *WorkloadClassifiersClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, workloadGroupName string, workloadClassifierName string, options *WorkloadClassifiersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkloadClassifiersClient.BeginDelete"
@@ -220,15 +214,13 @@ func (client *WorkloadClassifiersClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a workload classifier
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -289,8 +281,8 @@ func (client *WorkloadClassifiersClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -305,8 +297,6 @@ func (client *WorkloadClassifiersClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByWorkloadGroupPager - Gets the list of workload classifiers for a workload group
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -364,8 +354,8 @@ func (client *WorkloadClassifiersClient) listByWorkloadGroupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

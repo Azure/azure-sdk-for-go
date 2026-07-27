@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v5
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning
 
 go 1.25.0
 

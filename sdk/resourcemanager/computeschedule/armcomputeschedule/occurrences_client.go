@@ -113,13 +113,11 @@ func (client *OccurrencesClient) cancelHandleResponse(resp *http.Response) (Occu
 	return result, nil
 }
 
-// BeginDelay - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - occurrenceID - The name of the Occurrence
-//   - body - The content of the action request
-//   - options - OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
+// - resourceGroupName - The name of the resource group. The name is case insensitive.
+// - scheduledActionName - The name of the ScheduledAction
+// - occurrenceID - The name of the Occurrence
+// - body - The content of the action request
+// - options - OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
 func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*runtime.Poller[OccurrencesClientDelayResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.delay(ctx, resourceGroupName, scheduledActionName, occurrenceID, body, options)
@@ -137,7 +135,7 @@ func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delay - A long-running resource action.
+// Delay -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
 	var err error

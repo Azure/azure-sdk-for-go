@@ -7,7 +7,7 @@ package armbatch_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourceClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PrivateLinkResourceClientGetResponse{
-	// 	PrivateLinkResource: &armbatch.PrivateLinkResource{
+	// 	PrivateLinkResource: armbatch.PrivateLinkResource{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/privateLinkResources/batchAccount"),

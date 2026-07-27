@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultEntityRelationsClientVersion string = "2025-07-01-preview"
-
 // EntityRelationsClient contains the methods for the EntityRelations group.
 // Don't use this type directly, use NewEntityRelationsClient() instead.
 //
@@ -101,7 +99,7 @@ func (client *EntityRelationsClient) getRelationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityRelationsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

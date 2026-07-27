@@ -8,16 +8,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
-	"reflect"
-	"regexp"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
+	"net/http"
+	"net/url"
+	"reflect"
+	"regexp"
+	"slices"
 )
 
 // PrivateStoreCollectionOfferServer is a fake server for instances of the armmarketplace.PrivateStoreCollectionOfferClient type.
@@ -86,9 +86,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) Do(req *http.Request) (*htt
 }
 
 func (p *PrivateStoreCollectionOfferServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -118,10 +116,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchToMethodFake(req *h
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -169,7 +164,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchContextsView(req *h
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Offer, req)
@@ -210,7 +205,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchCreateOrUpdate(req 
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Offer, req)
@@ -247,7 +242,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchDelete(req *http.Re
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -284,7 +279,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchGet(req *http.Reque
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Offer, req)
@@ -325,7 +320,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchNewListPager(req *h
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -376,7 +371,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchNewListByContextsPa
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListByContextsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -414,9 +409,8 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchPost(req *http.Requ
 	}
 	var options *armmarketplace.PrivateStoreCollectionOfferClientPostOptions
 	if !reflect.ValueOf(body).IsZero() {
-		op := armmarketplace.Operation(body)
 		options = &armmarketplace.PrivateStoreCollectionOfferClientPostOptions{
-			Payload: &op,
+			Payload: &body,
 		}
 	}
 	respr, errRespr := p.srv.Post(req.Context(), privateStoreIDParam, collectionIDParam, offerIDParam, options)
@@ -424,7 +418,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchPost(req *http.Requ
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -471,7 +465,7 @@ func (p *PrivateStoreCollectionOfferServerTransport) dispatchUpsertOfferWithMult
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Offer, req)

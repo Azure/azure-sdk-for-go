@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDataConnectorsCheckRequirementsClientVersion string = "2025-07-01-preview"
-
 // DataConnectorsCheckRequirementsClient contains the methods for the DataConnectorsCheckRequirements group.
 // Don't use this type directly, use NewDataConnectorsCheckRequirementsClient() instead.
 //
@@ -92,7 +90,7 @@ func (client *DataConnectorsCheckRequirementsClient) postCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDataConnectorsCheckRequirementsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

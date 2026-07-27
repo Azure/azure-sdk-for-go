@@ -18,6 +18,8 @@ import (
 
 // DatabaseAdvancedThreatProtectionSettingsClient contains the methods for the DatabaseAdvancedThreatProtectionSettings group.
 // Don't use this type directly, use NewDatabaseAdvancedThreatProtectionSettingsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseAdvancedThreatProtectionSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDatabaseAdvancedThreatProtectionSettingsClient(subscriptionID string, cr
 
 // CreateOrUpdate - Creates or updates a database's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -100,8 +100,8 @@ func (client *DatabaseAdvancedThreatProtectionSettingsClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -121,8 +121,6 @@ func (client *DatabaseAdvancedThreatProtectionSettingsClient) createOrUpdateHand
 
 // Get - Gets a database's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -179,8 +177,8 @@ func (client *DatabaseAdvancedThreatProtectionSettingsClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -195,8 +193,6 @@ func (client *DatabaseAdvancedThreatProtectionSettingsClient) getHandleResponse(
 }
 
 // NewListByDatabasePager - Gets a list of database's Advanced Threat Protection states.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -249,8 +245,8 @@ func (client *DatabaseAdvancedThreatProtectionSettingsClient) listByDatabaseCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

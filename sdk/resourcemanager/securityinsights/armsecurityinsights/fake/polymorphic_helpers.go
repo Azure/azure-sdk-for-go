@@ -6,7 +6,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights"
 )
 
 func unmarshalAlertRuleClassification(rawMsg json.RawMessage) (armsecurityinsights.AlertRuleClassification, error) {

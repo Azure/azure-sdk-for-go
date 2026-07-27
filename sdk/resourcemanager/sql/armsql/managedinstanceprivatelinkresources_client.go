@@ -18,6 +18,8 @@ import (
 
 // ManagedInstancePrivateLinkResourcesClient contains the methods for the ManagedInstancePrivateLinkResources group.
 // Don't use this type directly, use NewManagedInstancePrivateLinkResourcesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedInstancePrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedInstancePrivateLinkResourcesClient(subscriptionID string, credent
 
 // Get - Gets a private link resource for SQL server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - groupName - The name of the private link resource.
@@ -94,8 +94,8 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +110,6 @@ func (client *ManagedInstancePrivateLinkResourcesClient) getHandleResponse(resp 
 }
 
 // NewListByManagedInstancePager - Gets the private link resources for SQL server.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstancePrivateLinkResourcesClientListByManagedInstanceOptions contains the optional parameters for the
@@ -159,8 +157,8 @@ func (client *ManagedInstancePrivateLinkResourcesClient) listByManagedInstanceCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

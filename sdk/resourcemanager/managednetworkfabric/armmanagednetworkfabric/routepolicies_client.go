@@ -18,6 +18,8 @@ import (
 
 // RoutePoliciesClient contains the methods for the RoutePolicies group.
 // Don't use this type directly, use NewRoutePoliciesClient() instead.
+//
+// Generated from API version 2025-07-15
 type RoutePoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRoutePoliciesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCommitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientBeginCommitConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginCommitConfiguration
@@ -66,8 +66,6 @@ func (client *RoutePoliciesClient) BeginCommitConfiguration(ctx context.Context,
 
 // CommitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) commitConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginCommitConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginCommitConfiguration"
@@ -109,16 +107,14 @@ func (client *RoutePoliciesClient) commitConfigurationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreate - Implements Route Policy PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - body - Request payload.
@@ -143,8 +139,6 @@ func (client *RoutePoliciesClient) BeginCreate(ctx context.Context, resourceGrou
 
 // Create - Implements Route Policy PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) create(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicy, options *RoutePoliciesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginCreate"
@@ -186,8 +180,8 @@ func (client *RoutePoliciesClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -198,8 +192,6 @@ func (client *RoutePoliciesClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Implements Route Policy DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientBeginDeleteOptions contains the optional parameters for the RoutePoliciesClient.BeginDelete
@@ -223,8 +215,6 @@ func (client *RoutePoliciesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Implements Route Policy DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginDelete"
@@ -266,15 +256,13 @@ func (client *RoutePoliciesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements Route Policy GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientGetOptions contains the optional parameters for the RoutePoliciesClient.Get method.
@@ -320,8 +308,8 @@ func (client *RoutePoliciesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -336,8 +324,6 @@ func (client *RoutePoliciesClient) getHandleResponse(resp *http.Response) (Route
 }
 
 // NewListByResourceGroupPager - Implements RoutePolicies list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RoutePoliciesClientListByResourceGroupOptions contains the optional parameters for the RoutePoliciesClient.NewListByResourceGroupPager
 //     method.
@@ -380,8 +366,8 @@ func (client *RoutePoliciesClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -396,8 +382,6 @@ func (client *RoutePoliciesClient) listByResourceGroupHandleResponse(resp *http.
 }
 
 // NewListBySubscriptionPager - Implements RoutePolicies list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - RoutePoliciesClientListBySubscriptionOptions contains the optional parameters for the RoutePoliciesClient.NewListBySubscriptionPager
 //     method.
 func (client *RoutePoliciesClient) NewListBySubscriptionPager(options *RoutePoliciesClientListBySubscriptionOptions) *runtime.Pager[RoutePoliciesClientListBySubscriptionResponse] {
@@ -435,8 +419,8 @@ func (client *RoutePoliciesClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -452,8 +436,6 @@ func (client *RoutePoliciesClient) listBySubscriptionHandleResponse(resp *http.R
 
 // BeginUpdate - API to update certain properties of the Route Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - body - Route Policy properties to update.
@@ -478,8 +460,6 @@ func (client *RoutePoliciesClient) BeginUpdate(ctx context.Context, resourceGrou
 
 // Update - API to update certain properties of the Route Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) update(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, options *RoutePoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginUpdate"
@@ -521,8 +501,8 @@ func (client *RoutePoliciesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -533,8 +513,6 @@ func (client *RoutePoliciesClient) updateCreateRequest(ctx context.Context, reso
 
 // BeginUpdateAdministrativeState - Updated the admin state for this Route Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - body - Request payload.
@@ -559,8 +537,6 @@ func (client *RoutePoliciesClient) BeginUpdateAdministrativeState(ctx context.Co
 
 // UpdateAdministrativeState - Updated the admin state for this Route Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, options *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginUpdateAdministrativeState"
@@ -602,8 +578,8 @@ func (client *RoutePoliciesClient) updateAdministrativeStateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -614,8 +590,6 @@ func (client *RoutePoliciesClient) updateAdministrativeStateCreateRequest(ctx co
 
 // BeginValidateConfiguration - Validates the configuration of the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientBeginValidateConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginValidateConfiguration
@@ -639,8 +613,6 @@ func (client *RoutePoliciesClient) BeginValidateConfiguration(ctx context.Contex
 
 // ValidateConfiguration - Validates the configuration of the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) validateConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginValidateConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginValidateConfiguration"
@@ -682,8 +654,8 @@ func (client *RoutePoliciesClient) validateConfigurationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

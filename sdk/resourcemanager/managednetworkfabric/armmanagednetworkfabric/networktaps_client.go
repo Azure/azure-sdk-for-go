@@ -18,6 +18,8 @@ import (
 
 // NetworkTapsClient contains the methods for the NetworkTaps group.
 // Don't use this type directly, use NewNetworkTapsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkTapsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkTapsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreate - Creates a Network Tap.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapName - Name of the Network Tap.
 //   - body - Request payload.
@@ -66,8 +66,6 @@ func (client *NetworkTapsClient) BeginCreate(ctx context.Context, resourceGroupN
 
 // Create - Creates a Network Tap.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapsClient) create(ctx context.Context, resourceGroupName string, networkTapName string, body NetworkTap, options *NetworkTapsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapsClient.BeginCreate"
@@ -109,8 +107,8 @@ func (client *NetworkTapsClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -121,8 +119,6 @@ func (client *NetworkTapsClient) createCreateRequest(ctx context.Context, resour
 
 // BeginDelete - Deletes Network Tap.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapName - Name of the Network Tap.
 //   - options - NetworkTapsClientBeginDeleteOptions contains the optional parameters for the NetworkTapsClient.BeginDelete method.
@@ -145,8 +141,6 @@ func (client *NetworkTapsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Deletes Network Tap.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkTapName string, options *NetworkTapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapsClient.BeginDelete"
@@ -188,15 +182,13 @@ func (client *NetworkTapsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves details of this Network Tap.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapName - Name of the Network Tap.
 //   - options - NetworkTapsClientGetOptions contains the optional parameters for the NetworkTapsClient.Get method.
@@ -242,8 +234,8 @@ func (client *NetworkTapsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -258,8 +250,6 @@ func (client *NetworkTapsClient) getHandleResponse(resp *http.Response) (Network
 }
 
 // NewListByResourceGroupPager - Displays Network Taps list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkTapsClientListByResourceGroupOptions contains the optional parameters for the NetworkTapsClient.NewListByResourceGroupPager
 //     method.
@@ -302,8 +292,8 @@ func (client *NetworkTapsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -318,8 +308,6 @@ func (client *NetworkTapsClient) listByResourceGroupHandleResponse(resp *http.Re
 }
 
 // NewListBySubscriptionPager - Displays Network Taps list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkTapsClientListBySubscriptionOptions contains the optional parameters for the NetworkTapsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkTapsClient) NewListBySubscriptionPager(options *NetworkTapsClientListBySubscriptionOptions) *runtime.Pager[NetworkTapsClientListBySubscriptionResponse] {
@@ -357,8 +345,8 @@ func (client *NetworkTapsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -374,8 +362,6 @@ func (client *NetworkTapsClient) listBySubscriptionHandleResponse(resp *http.Res
 
 // BeginResync - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapName - Name of the Network Tap.
 //   - options - NetworkTapsClientBeginResyncOptions contains the optional parameters for the NetworkTapsClient.BeginResync method.
@@ -398,8 +384,6 @@ func (client *NetworkTapsClient) BeginResync(ctx context.Context, resourceGroupN
 
 // Resync - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapsClient) resync(ctx context.Context, resourceGroupName string, networkTapName string, options *NetworkTapsClientBeginResyncOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapsClient.BeginResync"
@@ -441,16 +425,14 @@ func (client *NetworkTapsClient) resyncCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - API to update certain properties of the Network Tap resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapName - Name of the Network Tap.
 //   - body - Network Tap properties to update.
@@ -474,8 +456,6 @@ func (client *NetworkTapsClient) BeginUpdate(ctx context.Context, resourceGroupN
 
 // Update - API to update certain properties of the Network Tap resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapsClient) update(ctx context.Context, resourceGroupName string, networkTapName string, body NetworkTapPatch, options *NetworkTapsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapsClient.BeginUpdate"
@@ -517,8 +497,8 @@ func (client *NetworkTapsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -529,8 +509,6 @@ func (client *NetworkTapsClient) updateCreateRequest(ctx context.Context, resour
 
 // BeginUpdateAdministrativeState - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapName - Name of the Network Tap.
 //   - body - Request payload.
@@ -555,8 +533,6 @@ func (client *NetworkTapsClient) BeginUpdateAdministrativeState(ctx context.Cont
 
 // UpdateAdministrativeState - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkTapName string, body UpdateAdministrativeState, options *NetworkTapsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapsClient.BeginUpdateAdministrativeState"
@@ -598,8 +574,8 @@ func (client *NetworkTapsClient) updateAdministrativeStateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

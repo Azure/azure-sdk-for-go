@@ -7,18 +7,19 @@ package armmarketplace
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // PrivateStoreClient contains the methods for the PrivateStore group.
 // Don't use this type directly, use NewPrivateStoreClient() instead.
+//
+// Generated from API version 2025-01-01
 type PrivateStoreClient struct {
 	internal *arm.Client
 }
@@ -39,8 +40,6 @@ func NewPrivateStoreClient(credential azcore.TokenCredential, options *arm.Clien
 
 // AcknowledgeOfferNotification - Acknowledge notification for offer
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - offerID - The offer ID to update or delete
 //   - options - PrivateStoreClientAcknowledgeOfferNotificationOptions contains the optional parameters for the PrivateStoreClient.AcknowledgeOfferNotification
@@ -82,8 +81,8 @@ func (client *PrivateStoreClient) acknowledgeOfferNotificationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Payload); err != nil {
@@ -96,8 +95,6 @@ func (client *PrivateStoreClient) acknowledgeOfferNotificationCreateRequest(ctx 
 
 // AdminRequestApprovalsList - Get list of admin request approvals
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientAdminRequestApprovalsListOptions contains the optional parameters for the PrivateStoreClient.AdminRequestApprovalsList
 //     method.
@@ -135,8 +132,8 @@ func (client *PrivateStoreClient) adminRequestApprovalsListCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -152,8 +149,6 @@ func (client *PrivateStoreClient) adminRequestApprovalsListHandleResponse(resp *
 
 // AnyExistingOffersInTheCollections - Query whether exists any offer in the collections.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientAnyExistingOffersInTheCollectionsOptions contains the optional parameters for the PrivateStoreClient.AnyExistingOffersInTheCollections
 //     method.
@@ -191,8 +186,8 @@ func (client *PrivateStoreClient) anyExistingOffersInTheCollectionsCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -208,8 +203,6 @@ func (client *PrivateStoreClient) anyExistingOffersInTheCollectionsHandleRespons
 
 // BillingAccounts - Tenant billing accounts names
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientBillingAccountsOptions contains the optional parameters for the PrivateStoreClient.BillingAccounts
 //     method.
@@ -247,8 +240,8 @@ func (client *PrivateStoreClient) billingAccountsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -264,8 +257,6 @@ func (client *PrivateStoreClient) billingAccountsHandleResponse(resp *http.Respo
 
 // BulkCollectionsAction - Perform an action on bulk collections
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientBulkCollectionsActionOptions contains the optional parameters for the PrivateStoreClient.BulkCollectionsAction
 //     method.
@@ -303,8 +294,8 @@ func (client *PrivateStoreClient) bulkCollectionsActionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -328,8 +319,6 @@ func (client *PrivateStoreClient) bulkCollectionsActionHandleResponse(resp *http
 // CollectionsToSubscriptionsMapping - For a given subscriptions list, the API will return a map of collections and the related
 // subscriptions from the supplied list.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientCollectionsToSubscriptionsMappingOptions contains the optional parameters for the PrivateStoreClient.CollectionsToSubscriptionsMapping
 //     method.
@@ -367,8 +356,8 @@ func (client *PrivateStoreClient) collectionsToSubscriptionsMappingCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -391,8 +380,6 @@ func (client *PrivateStoreClient) collectionsToSubscriptionsMappingHandleRespons
 
 // CreateApprovalRequest - Create approval request
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - requestApprovalID - The request approval ID to get create or update
 //   - options - PrivateStoreClientCreateApprovalRequestOptions contains the optional parameters for the PrivateStoreClient.CreateApprovalRequest
@@ -435,8 +422,8 @@ func (client *PrivateStoreClient) createApprovalRequestCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, payload); err != nil {
@@ -456,8 +443,6 @@ func (client *PrivateStoreClient) createApprovalRequestHandleResponse(resp *http
 
 // CreateOrUpdate - Changes private store properties
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientCreateOrUpdateOptions contains the optional parameters for the PrivateStoreClient.CreateOrUpdate
 //     method.
@@ -494,8 +479,8 @@ func (client *PrivateStoreClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, payload); err != nil {
 		return nil, err
@@ -505,8 +490,6 @@ func (client *PrivateStoreClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // Delete - Deletes the private store. All that is not saved will be lost.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientDeleteOptions contains the optional parameters for the PrivateStoreClient.Delete method.
 func (client *PrivateStoreClient) Delete(ctx context.Context, privateStoreID string, options *PrivateStoreClientDeleteOptions) (PrivateStoreClientDeleteResponse, error) {
@@ -542,15 +525,13 @@ func (client *PrivateStoreClient) deleteCreateRequest(ctx context.Context, priva
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // FetchAllSubscriptionsInTenant - Fetch all subscriptions in tenant, only for marketplace admin
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientFetchAllSubscriptionsInTenantOptions contains the optional parameters for the PrivateStoreClient.FetchAllSubscriptionsInTenant
 //     method.
@@ -588,8 +569,8 @@ func (client *PrivateStoreClient) fetchAllSubscriptionsInTenantCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.NextPageToken != nil {
 		req.Raw().Header["next-page-token"] = []string{*options.NextPageToken}
@@ -608,8 +589,6 @@ func (client *PrivateStoreClient) fetchAllSubscriptionsInTenantHandleResponse(re
 
 // Get - Get information about the private store
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientGetOptions contains the optional parameters for the PrivateStoreClient.Get method.
 func (client *PrivateStoreClient) Get(ctx context.Context, privateStoreID string, options *PrivateStoreClientGetOptions) (PrivateStoreClientGetResponse, error) {
@@ -646,8 +625,8 @@ func (client *PrivateStoreClient) getCreateRequest(ctx context.Context, privateS
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -663,8 +642,6 @@ func (client *PrivateStoreClient) getHandleResponse(resp *http.Response) (Privat
 
 // GetAdminRequestApproval - Get open approval requests
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - adminRequestApprovalID - The admin request approval ID to get create or update
 //   - publisherID - The publisher id of this offer.
@@ -708,9 +685,9 @@ func (client *PrivateStoreClient) getAdminRequestApprovalCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", version20250101)
 	reqQP.Set("publisherId", publisherID)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -726,8 +703,6 @@ func (client *PrivateStoreClient) getAdminRequestApprovalHandleResponse(resp *ht
 
 // GetApprovalRequestsList - Get all open approval requests of current user
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientGetApprovalRequestsListOptions contains the optional parameters for the PrivateStoreClient.GetApprovalRequestsList
 //     method.
@@ -765,8 +740,8 @@ func (client *PrivateStoreClient) getApprovalRequestsListCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -782,8 +757,6 @@ func (client *PrivateStoreClient) getApprovalRequestsListHandleResponse(resp *ht
 
 // GetRequestApproval - Get open request approval details
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - requestApprovalID - The request approval ID to get create or update
 //   - options - PrivateStoreClientGetRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.GetRequestApproval
@@ -826,8 +799,8 @@ func (client *PrivateStoreClient) getRequestApprovalCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -842,8 +815,6 @@ func (client *PrivateStoreClient) getRequestApprovalHandleResponse(resp *http.Re
 }
 
 // NewListPager - Gets the list of available private stores.
-//
-// Generated from API version 2025-01-01
 //   - options - PrivateStoreClientListOptions contains the optional parameters for the PrivateStoreClient.NewListPager method.
 func (client *PrivateStoreClient) NewListPager(options *PrivateStoreClientListOptions) *runtime.Pager[PrivateStoreClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateStoreClientListResponse]{
@@ -876,11 +847,11 @@ func (client *PrivateStoreClient) listCreateRequest(ctx context.Context, options
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
+	reqQP.Set("api-version", version20250101)
 	if options != nil && options.UseCache != nil {
 		reqQP.Set("use-cache", *options.UseCache)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -896,8 +867,6 @@ func (client *PrivateStoreClient) listHandleResponse(resp *http.Response) (Priva
 
 // ListNewPlansNotifications - List new plans notifications
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientListNewPlansNotificationsOptions contains the optional parameters for the PrivateStoreClient.ListNewPlansNotifications
 //     method.
@@ -935,8 +904,8 @@ func (client *PrivateStoreClient) listNewPlansNotificationsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -952,8 +921,6 @@ func (client *PrivateStoreClient) listNewPlansNotificationsHandleResponse(resp *
 
 // ListStopSellOffersPlansNotifications - List stop sell notifications for both stop sell offers and stop sell plans
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientListStopSellOffersPlansNotificationsOptions contains the optional parameters for the PrivateStoreClient.ListStopSellOffersPlansNotifications
 //     method.
@@ -991,8 +958,8 @@ func (client *PrivateStoreClient) listStopSellOffersPlansNotificationsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.StopSellSubscriptions != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1015,8 +982,6 @@ func (client *PrivateStoreClient) listStopSellOffersPlansNotificationsHandleResp
 
 // ListSubscriptionsContext - List all the subscriptions in the private store context
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientListSubscriptionsContextOptions contains the optional parameters for the PrivateStoreClient.ListSubscriptionsContext
 //     method.
@@ -1054,8 +1019,8 @@ func (client *PrivateStoreClient) listSubscriptionsContextCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1071,8 +1036,6 @@ func (client *PrivateStoreClient) listSubscriptionsContextHandleResponse(resp *h
 
 // QueryApprovedPlans - Get map of plans and related approved subscriptions.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientQueryApprovedPlansOptions contains the optional parameters for the PrivateStoreClient.QueryApprovedPlans
 //     method.
@@ -1110,8 +1073,8 @@ func (client *PrivateStoreClient) queryApprovedPlansCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1134,8 +1097,6 @@ func (client *PrivateStoreClient) queryApprovedPlansHandleResponse(resp *http.Re
 
 // QueryNotificationsState - Get private store notifications state
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientQueryNotificationsStateOptions contains the optional parameters for the PrivateStoreClient.QueryNotificationsState
 //     method.
@@ -1173,8 +1134,8 @@ func (client *PrivateStoreClient) queryNotificationsStateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1190,8 +1151,6 @@ func (client *PrivateStoreClient) queryNotificationsStateHandleResponse(resp *ht
 
 // QueryOffers - List of offers, regardless the collections
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientQueryOffersOptions contains the optional parameters for the PrivateStoreClient.QueryOffers
 //     method.
@@ -1229,8 +1188,8 @@ func (client *PrivateStoreClient) queryOffersCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1246,8 +1205,6 @@ func (client *PrivateStoreClient) queryOffersHandleResponse(resp *http.Response)
 
 // QueryRequestApproval - Get request statuses foreach plan, this api is used as a complex GET action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - requestApprovalID - The request approval ID to get create or update
 //   - options - PrivateStoreClientQueryRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.QueryRequestApproval
@@ -1290,8 +1247,8 @@ func (client *PrivateStoreClient) queryRequestApprovalCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1314,8 +1271,6 @@ func (client *PrivateStoreClient) queryRequestApprovalHandleResponse(resp *http.
 
 // QueryUserOffers - List of user's approved offers for the provided offers and subscriptions
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - options - PrivateStoreClientQueryUserOffersOptions contains the optional parameters for the PrivateStoreClient.QueryUserOffers
 //     method.
@@ -1353,8 +1308,8 @@ func (client *PrivateStoreClient) queryUserOffersCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1377,8 +1332,6 @@ func (client *PrivateStoreClient) queryUserOffersHandleResponse(resp *http.Respo
 
 // UpdateAdminRequestApproval - Update the admin action, weather the request is approved or rejected and the approved plans
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - adminRequestApprovalID - The admin request approval ID to get create or update
 //   - options - PrivateStoreClientUpdateAdminRequestApprovalOptions contains the optional parameters for the PrivateStoreClient.UpdateAdminRequestApproval
@@ -1421,8 +1374,8 @@ func (client *PrivateStoreClient) updateAdminRequestApprovalCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, payload); err != nil {
@@ -1442,8 +1395,6 @@ func (client *PrivateStoreClient) updateAdminRequestApprovalHandleResponse(resp 
 
 // WithdrawPlan - Withdraw a user request approval on specific plan
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-01
 //   - privateStoreID - The store ID - must use the tenant ID
 //   - requestApprovalID - The request approval ID to get create or update
 //   - options - PrivateStoreClientWithdrawPlanOptions contains the optional parameters for the PrivateStoreClient.WithdrawPlan
@@ -1485,8 +1436,8 @@ func (client *PrivateStoreClient) withdrawPlanCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Payload != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Payload); err != nil {

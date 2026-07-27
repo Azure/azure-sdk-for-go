@@ -6,7 +6,7 @@ package fake
 
 import (
 	"encoding/json"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databoxedge/armdataboxedge"
 )
 
 func unmarshalAddonClassification(rawMsg json.RawMessage) (armdataboxedge.AddonClassification, error) {

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultEntityQueriesClientVersion string = "2025-07-01-preview"
-
 // EntityQueriesClient contains the methods for the EntityQueries group.
 // Don't use this type directly, use NewEntityQueriesClient() instead.
 //
@@ -97,7 +95,7 @@ func (client *EntityQueriesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityQueriesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -167,7 +165,7 @@ func (client *EntityQueriesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityQueriesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -224,7 +222,7 @@ func (client *EntityQueriesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityQueriesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,7 +284,7 @@ func (client *EntityQueriesClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityQueriesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	if options != nil && options.Kind != nil {
 		reqQP.Set("kind", string(*options.Kind))
 	}

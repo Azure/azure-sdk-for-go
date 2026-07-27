@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 	"log"
 )
 
@@ -52,13 +52,13 @@ func ExampleNetworkDevicesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientCreateResponse{
-	// 	NetworkDevice: &armmanagednetworkfabric.NetworkDevice{
+	// 	NetworkDevice: armmanagednetworkfabric.NetworkDevice{
 	// 		Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			HostName: to.Ptr("NFA-Device"),
@@ -123,7 +123,7 @@ func ExampleNetworkDevicesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -146,7 +146,7 @@ func ExampleNetworkDevicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientGetResponse{
-	// 	NetworkDevice: &armmanagednetworkfabric.NetworkDevice{
+	// 	NetworkDevice: armmanagednetworkfabric.NetworkDevice{
 	// 		Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			HostName: to.Ptr("NFA-Device"),
@@ -388,13 +388,13 @@ func ExampleNetworkDevicesClient_BeginReboot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRebootResponse{
-	// 	OperationStatusResult: &armmanagednetworkfabric.OperationStatusResult{
+	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -431,13 +431,13 @@ func ExampleNetworkDevicesClient_BeginRefreshConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRefreshConfigurationResponse{
-	// 	NetworkDeviceRefreshConfigurationResponse: &armmanagednetworkfabric.NetworkDeviceRefreshConfigurationResponse{
+	// 	NetworkDeviceRefreshConfigurationResponse: armmanagednetworkfabric.NetworkDeviceRefreshConfigurationResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 		Name: to.Ptr("example-device"),
 	// 		Status: to.Ptr("Succeeded"),
@@ -532,13 +532,13 @@ func ExampleNetworkDevicesClient_BeginResyncCertificates_successfulCertificateRe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncCertificatesResponse{
-	// 	NetworkFabricResyncCertificatesResponse: &armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
+	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
@@ -565,13 +565,13 @@ func ExampleNetworkDevicesClient_BeginResyncCertificates_errorWhilePerformingCer
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncCertificatesResponse{
-	// 	NetworkFabricResyncCertificatesResponse: &armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
+	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
@@ -602,13 +602,13 @@ func ExampleNetworkDevicesClient_BeginResyncPasswords_successfulPasswordResync()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncPasswordsResponse{
-	// 	NetworkDeviceResyncPasswordsResponse: &armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
+	// 	NetworkDeviceResyncPasswordsResponse: armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
@@ -635,13 +635,13 @@ func ExampleNetworkDevicesClient_BeginResyncPasswords_errorWhilePerformingPasswo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncPasswordsResponse{
-	// 	NetworkDeviceResyncPasswordsResponse: &armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
+	// 	NetworkDeviceResyncPasswordsResponse: armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
@@ -674,13 +674,13 @@ func ExampleNetworkDevicesClient_BeginRunRoCommand() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRunRoCommandResponse{
-	// 	CommonPostActionResponseForDeviceROCommandsOperationStatusResult: &armmanagednetworkfabric.CommonPostActionResponseForDeviceROCommandsOperationStatusResult{
+	// 	CommonPostActionResponseForDeviceROCommandsOperationStatusResult: armmanagednetworkfabric.CommonPostActionResponseForDeviceROCommandsOperationStatusResult{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("zuwgsrizc"),
 	// 			Message: to.Ptr("v"),
@@ -730,13 +730,13 @@ func ExampleNetworkDevicesClient_BeginRunRwCommand() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRunRwCommandResponse{
-	// 	NetworkDeviceRunRwCommandResponse: &armmanagednetworkfabric.NetworkDeviceRunRwCommandResponse{
+	// 	NetworkDeviceRunRwCommandResponse: armmanagednetworkfabric.NetworkDeviceRunRwCommandResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("CommandExecutionPending"),
@@ -802,13 +802,13 @@ func ExampleNetworkDevicesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientUpdateResponse{
-	// 	NetworkDevice: &armmanagednetworkfabric.NetworkDevice{
+	// 	NetworkDevice: armmanagednetworkfabric.NetworkDevice{
 	// 		Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			HostName: to.Ptr("NFA-Device"),
@@ -878,13 +878,13 @@ func ExampleNetworkDevicesClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientUpdateAdministrativeStateResponse{
-	// 	NetworkDeviceUpdateAdministrativeStateResponse: &armmanagednetworkfabric.NetworkDeviceUpdateAdministrativeStateResponse{
+	// 	NetworkDeviceUpdateAdministrativeStateResponse: armmanagednetworkfabric.NetworkDeviceUpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -924,13 +924,13 @@ func ExampleNetworkDevicesClient_BeginUpgrade() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientUpgradeResponse{
-	// 	NetworkDeviceUpgradeResponse: &armmanagednetworkfabric.NetworkDeviceUpgradeResponse{
+	// 	NetworkDeviceUpgradeResponse: armmanagednetworkfabric.NetworkDeviceUpgradeResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		PercentComplete: to.Ptr[float64](30),
 	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-28T04:16:32.382Z"); return t}()),

@@ -7,7 +7,7 @@ package armadvisor_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/advisor/armadvisor"
 	"log"
 )
 

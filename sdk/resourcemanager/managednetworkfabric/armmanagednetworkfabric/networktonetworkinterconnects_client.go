@@ -18,6 +18,8 @@ import (
 
 // NetworkToNetworkInterconnectsClient contains the methods for the NetworkToNetworkInterconnects group.
 // Don't use this type directly, use NewNetworkToNetworkInterconnectsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkToNetworkInterconnectsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkToNetworkInterconnectsClient(subscriptionID string, credential az
 
 // BeginCreate - Configuration used to setup CE-PE connectivity PUT Method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
@@ -68,8 +68,6 @@ func (client *NetworkToNetworkInterconnectsClient) BeginCreate(ctx context.Conte
 
 // Create - Configuration used to setup CE-PE connectivity PUT Method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkToNetworkInterconnectsClient) create(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnect, options *NetworkToNetworkInterconnectsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkToNetworkInterconnectsClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *NetworkToNetworkInterconnectsClient) createCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,8 +125,6 @@ func (client *NetworkToNetworkInterconnectsClient) createCreateRequest(ctx conte
 
 // BeginDelete - Implements NetworkToNetworkInterconnects DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
@@ -153,8 +149,6 @@ func (client *NetworkToNetworkInterconnectsClient) BeginDelete(ctx context.Conte
 
 // Delete - Implements NetworkToNetworkInterconnects DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkToNetworkInterconnectsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, options *NetworkToNetworkInterconnectsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkToNetworkInterconnectsClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *NetworkToNetworkInterconnectsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements NetworkToNetworkInterconnects GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
@@ -260,8 +252,8 @@ func (client *NetworkToNetworkInterconnectsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *NetworkToNetworkInterconnectsClient) getHandleResponse(resp *http.
 }
 
 // NewListByNetworkFabricPager - Implements Network To Network Interconnects list by Network Fabric GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkToNetworkInterconnectsClientListByNetworkFabricOptions contains the optional parameters for the NetworkToNetworkInterconnectsClient.NewListByNetworkFabricPager
@@ -325,8 +315,8 @@ func (client *NetworkToNetworkInterconnectsClient) listByNetworkFabricCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -342,8 +332,6 @@ func (client *NetworkToNetworkInterconnectsClient) listByNetworkFabricHandleResp
 
 // BeginUpdate - Update certain properties of the Network To NetworkInterconnects resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
@@ -369,8 +357,6 @@ func (client *NetworkToNetworkInterconnectsClient) BeginUpdate(ctx context.Conte
 
 // Update - Update certain properties of the Network To NetworkInterconnects resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkToNetworkInterconnectsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NetworkToNetworkInterconnectPatch, options *NetworkToNetworkInterconnectsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdate"
@@ -416,8 +402,8 @@ func (client *NetworkToNetworkInterconnectsClient) updateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -428,8 +414,6 @@ func (client *NetworkToNetworkInterconnectsClient) updateCreateRequest(ctx conte
 
 // BeginUpdateAdministrativeState - Updates the Admin State.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
@@ -455,8 +439,6 @@ func (client *NetworkToNetworkInterconnectsClient) BeginUpdateAdministrativeStat
 
 // UpdateAdministrativeState - Updates the Admin State.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkToNetworkInterconnectsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateAdministrativeState"
@@ -502,8 +484,8 @@ func (client *NetworkToNetworkInterconnectsClient) updateAdministrativeStateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -514,8 +496,6 @@ func (client *NetworkToNetworkInterconnectsClient) updateAdministrativeStateCrea
 
 // BeginUpdateBfdAdministrativeState - Updates the Admin State.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
@@ -541,8 +521,6 @@ func (client *NetworkToNetworkInterconnectsClient) BeginUpdateBfdAdministrativeS
 
 // UpdateBfdAdministrativeState - Updates the Admin State.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkToNetworkInterconnectsClient) updateBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body NniUpdateBfdAdministrativeStateRequest, options *NetworkToNetworkInterconnectsClientBeginUpdateBfdAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateBfdAdministrativeState"
@@ -588,8 +566,8 @@ func (client *NetworkToNetworkInterconnectsClient) updateBfdAdministrativeStateC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -600,8 +578,6 @@ func (client *NetworkToNetworkInterconnectsClient) updateBfdAdministrativeStateC
 
 // BeginUpdateNpbStaticRouteBfdAdministrativeState - Updates the NPB Static Route BFD Administrative State.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - networkToNetworkInterconnectName - Name of the Network to Network Interconnect.
@@ -627,8 +603,6 @@ func (client *NetworkToNetworkInterconnectsClient) BeginUpdateNpbStaticRouteBfdA
 
 // UpdateNpbStaticRouteBfdAdministrativeState - Updates the NPB Static Route BFD Administrative State.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkToNetworkInterconnectsClient) updateNpbStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, networkFabricName string, networkToNetworkInterconnectName string, body UpdateAdministrativeState, options *NetworkToNetworkInterconnectsClientBeginUpdateNpbStaticRouteBfdAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkToNetworkInterconnectsClient.BeginUpdateNpbStaticRouteBfdAdministrativeState"
@@ -674,8 +648,8 @@ func (client *NetworkToNetworkInterconnectsClient) updateNpbStaticRouteBfdAdmini
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

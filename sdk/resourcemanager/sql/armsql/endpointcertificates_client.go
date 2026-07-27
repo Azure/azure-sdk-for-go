@@ -18,6 +18,8 @@ import (
 
 // EndpointCertificatesClient contains the methods for the EndpointCertificates group.
 // Don't use this type directly, use NewEndpointCertificatesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type EndpointCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEndpointCertificatesClient(subscriptionID string, credential azcore.Toke
 
 // Get - Gets a certificate used on the endpoint with the given id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - endpointType - Type of the endpoint whose certificate the customer is looking for.
@@ -94,8 +94,8 @@ func (client *EndpointCertificatesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +110,6 @@ func (client *EndpointCertificatesClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByInstancePager - List certificates used on endpoints on the target instance.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - EndpointCertificatesClientListByInstanceOptions contains the optional parameters for the EndpointCertificatesClient.NewListByInstancePager
@@ -159,8 +157,8 @@ func (client *EndpointCertificatesClient) listByInstanceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

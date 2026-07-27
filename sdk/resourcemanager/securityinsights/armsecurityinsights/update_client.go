@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultUpdateClientVersion string = "2025-07-01-preview"
-
 // UpdateClient contains the methods for the Update group.
 // Don't use this type directly, use NewUpdateClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *UpdateClient) recommendationCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

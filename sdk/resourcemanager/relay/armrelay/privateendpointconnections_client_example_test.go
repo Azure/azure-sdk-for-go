@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 	"log"
 )
 
@@ -41,7 +41,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.PrivateEndpointConnectionsClientCreateOrUpdateResponse{
-	// 	PrivateEndpointConnection: &armrelay.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armrelay.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnection name}"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/alitest/providers/Microsoft.Relay/namespaces/relay-private-endpoint-test/privateEndpointConnections/{privateEndpointConnection name}"),
@@ -77,7 +77,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -105,7 +105,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armrelay.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armrelay.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnection name}"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/{RGName}/providers/Microsoft.Relay/namespaces/relay-private-endpoint-test/privateEndpointConnections/{privateEndpointConnection name}"),

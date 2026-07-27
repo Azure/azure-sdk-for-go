@@ -131,6 +131,39 @@ directive:
     $.parameters.push({ "$ref": "#/parameters/GetBlockListInclude" });
 ```
 
+### Add dedupe CPU time response headers to GetBlockList
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=blocklist"].get.responses["200"].headers
+  transform: >
+    $["x-ms-test-dedupe-crc64-cpu-time-us"] = {
+      "x-ms-client-name": "CRC64CPUTimeUS",
+      "type": "integer",
+      "format": "int64",
+      "description": "The server CPU time spent calculating CRC64 hashes, in microseconds."
+    };
+    $["x-ms-test-dedupe-sha256-cpu-time-us"] = {
+      "x-ms-client-name": "SHA256CPUTimeUS",
+      "type": "integer",
+      "format": "int64",
+      "description": "The server CPU time spent calculating SHA256 hashes, in microseconds."
+    };
+```
+
+### Ignore invalid dedupe CPU time response headers
+``` yaml
+directive:
+- from: zz_blockblob_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/if val := resp\.Header\.Get\("x-ms-test-dedupe-crc64-cpu-time-us"\); val != "" \{\s+cRC64CPUTimeUS, err := strconv\.ParseInt\(val, 10, 64\)\s+if err != nil \{\s+return BlockBlobClientGetBlockListResponse\{\}, err\s+\}\s+result\.CRC64CPUTimeUS = &cRC64CPUTimeUS\s+\}/,
+      `if val := resp.Header.Get("x-ms-test-dedupe-crc64-cpu-time-us"); val != "" {\n\t\tcrc64CPUTimeUS, err := strconv.ParseInt(val, 10, 64)\n\t\tif err == nil && crc64CPUTimeUS >= 0 {\n\t\t\tresult.CRC64CPUTimeUS = &crc64CPUTimeUS\n\t\t}\n\t}`).
+      replace(/if val := resp\.Header\.Get\("x-ms-test-dedupe-sha256-cpu-time-us"\); val != "" \{\s+sHA256CPUTimeUS, err := strconv\.ParseInt\(val, 10, 64\)\s+if err != nil \{\s+return BlockBlobClientGetBlockListResponse\{\}, err\s+\}\s+result\.SHA256CPUTimeUS = &sHA256CPUTimeUS\s+\}/,
+      `if val := resp.Header.Get("x-ms-test-dedupe-sha256-cpu-time-us"); val != "" {\n\t\tsha256CPUTimeUS, err := strconv.ParseInt(val, 10, 64)\n\t\tif err == nil && sha256CPUTimeUS >= 0 {\n\t\t\tresult.SHA256CPUTimeUS = &sha256CPUTimeUS\n\t\t}\n\t}`);
+```
+
 ### Undo breaking change with BlobName 
 ``` yaml
 directive:

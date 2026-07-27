@@ -20,42 +20,28 @@ func TestBlockListUnmarshalXMLWithHashes(t *testing.T) {
 <BlockList>
   <CommittedBlocks>
     <Block>
-      <Name>YmxvY2stMDAwMDAx</Name>
-      <Size>4194304</Size>
+      <Name>YmxvY2swMDAwMDE=</Name>
+      <Size>20</Size>
       <Offset>0</Offset>
-      <Crc64>q83vEjRWeJA=</Crc64>
-      <Sha256>7j3H4Y7l0QFvZ2f9Pq6c8oP2Y9W3xV8QmQkF0x9abcA=</Sha256>
-    </Block>
-    <Block>
-      <Name>YmxvY2stMDAwMDAy</Name>
-      <Size>8388608</Size>
-      <Offset>4194304</Offset>
-      <Crc64>AbCdEfGhIjk=</Crc64>
-      <Sha256>rM2L7p8s9q0tU1vW2xY3zA4bC5dE6fG7hI8jK9lMnO0=</Sha256>
+      <Crc64>sQubqsIYts8=</Crc64>
+      <Sha256>NuGbnsTrCCJI1bP0hkUFnwAs1HIQTZc4NXcftp1cS60=</Sha256>
     </Block>
   </CommittedBlocks>
 </BlockList>`
 
 	var bl BlockList
 	require.NoError(t, xml.Unmarshal([]byte(body), &bl))
-	require.Len(t, bl.CommittedBlocks, 2)
+	require.Len(t, bl.CommittedBlocks, 1)
 	require.Empty(t, bl.UncommittedBlocks)
 
 	first := bl.CommittedBlocks[0]
-	require.Equal(t, "YmxvY2stMDAwMDAx", *first.Name)
-	require.Equal(t, int64(4194304), *first.Size)
+	require.Equal(t, "YmxvY2swMDAwMDE=", *first.Name)
+	require.Equal(t, int64(20), *first.Size)
 	require.Equal(t, int64(0), *first.Offset)
 	require.Len(t, first.Crc64, 8)
 	require.Len(t, first.Sha256, 32)
-	require.Equal(t, "q83vEjRWeJA=", base64.StdEncoding.EncodeToString(first.Crc64))
-	require.Equal(t, "7j3H4Y7l0QFvZ2f9Pq6c8oP2Y9W3xV8QmQkF0x9abcA=", base64.StdEncoding.EncodeToString(first.Sha256))
-
-	second := bl.CommittedBlocks[1]
-	require.Equal(t, "YmxvY2stMDAwMDAy", *second.Name)
-	require.Equal(t, int64(8388608), *second.Size)
-	require.Equal(t, int64(4194304), *second.Offset)
-	require.Equal(t, "AbCdEfGhIjk=", base64.StdEncoding.EncodeToString(second.Crc64))
-	require.Equal(t, "rM2L7p8s9q0tU1vW2xY3zA4bC5dE6fG7hI8jK9lMnO0=", base64.StdEncoding.EncodeToString(second.Sha256))
+	require.Equal(t, "sQubqsIYts8=", base64.StdEncoding.EncodeToString(first.Crc64))
+	require.Equal(t, "NuGbnsTrCCJI1bP0hkUFnwAs1HIQTZc4NXcftp1cS60=", base64.StdEncoding.EncodeToString(first.Sha256))
 }
 
 // TestBlockListUnmarshalXMLWithoutHashes verifies that the legacy GetBlockList

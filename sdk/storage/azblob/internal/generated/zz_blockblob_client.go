@@ -289,6 +289,12 @@ func (client *BlockBlobClient) getBlockListHandleResponse(resp *http.Response) (
 		}
 		result.BlobContentLength = &blobContentLength
 	}
+	if val := resp.Header.Get("x-ms-test-dedupe-crc64-cpu-time-us"); val != "" {
+		crc64CPUTimeUS, err := strconv.ParseInt(val, 10, 64)
+		if err == nil && crc64CPUTimeUS >= 0 {
+			result.CRC64CPUTimeUS = &crc64CPUTimeUS
+		}
+	}
 	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
 		result.ClientRequestID = &val
 	}
@@ -314,6 +320,12 @@ func (client *BlockBlobClient) getBlockListHandleResponse(resp *http.Response) (
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-test-dedupe-sha256-cpu-time-us"); val != "" {
+		sha256CPUTimeUS, err := strconv.ParseInt(val, 10, 64)
+		if err == nil && sha256CPUTimeUS >= 0 {
+			result.SHA256CPUTimeUS = &sha256CPUTimeUS
+		}
 	}
 	if val := resp.Header.Get("x-ms-version"); val != "" {
 		result.Version = &val

@@ -1080,6 +1080,9 @@ type BlockBlobClientGetBlockListResponse struct {
 	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
 	BlobContentLength *int64
 
+	// CRC64CPUTimeUS contains the information returned from the x-ms-test-dedupe-crc64-cpu-time-us header response.
+	CRC64CPUTimeUS *int64
+
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
 	ClientRequestID *string
 
@@ -1097,6 +1100,9 @@ type BlockBlobClientGetBlockListResponse struct {
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// SHA256CPUTimeUS contains the information returned from the x-ms-test-dedupe-sha256-cpu-time-us header response.
+	SHA256CPUTimeUS *int64
 
 	// Version contains the information returned from the x-ms-version header response.
 	Version *string

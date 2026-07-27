@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/CachedImagesList.json
+// Generated from example definition: 2026-08-01-preview/CachedImagesList.json
 func ExampleLocationClient_NewListCachedImagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleLocationClient_NewListCachedImagesPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/CapabilitiesList.json
+// Generated from example definition: 2026-08-01-preview/CapabilitiesList.json
 func ExampleLocationClient_NewListCapabilitiesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleLocationClient_NewListCapabilitiesPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupUsage.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupUsage.json
 func ExampleLocationClient_NewListUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

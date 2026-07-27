@@ -4,6 +4,47 @@
 
 package armcontainerinstance
 
+// AiAgentsGroupsClientConnectResponse contains the response from method AiAgentsGroupsClient.Connect.
+type AiAgentsGroupsClientConnectResponse struct {
+	// The result of getting an access token for an AiAgentsGroup.
+	AiAgentsGroupAccessToken
+}
+
+// AiAgentsGroupsClientCreateOrUpdateResponse contains the response from method AiAgentsGroupsClient.BeginCreateOrUpdate.
+type AiAgentsGroupsClientCreateOrUpdateResponse struct {
+	// An AiAgentsGroup tracked resource.
+	AiAgentsGroup
+}
+
+// AiAgentsGroupsClientDeleteResponse contains the response from method AiAgentsGroupsClient.BeginDelete.
+type AiAgentsGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AiAgentsGroupsClientGetResponse contains the response from method AiAgentsGroupsClient.Get.
+type AiAgentsGroupsClientGetResponse struct {
+	// An AiAgentsGroup tracked resource.
+	AiAgentsGroup
+}
+
+// AiAgentsGroupsClientListByResourceGroupResponse contains the response from method AiAgentsGroupsClient.NewListByResourceGroupPager.
+type AiAgentsGroupsClientListByResourceGroupResponse struct {
+	// The response of a AiAgentsGroup list operation.
+	AiAgentsGroupListResult
+}
+
+// AiAgentsGroupsClientListBySubscriptionResponse contains the response from method AiAgentsGroupsClient.NewListBySubscriptionPager.
+type AiAgentsGroupsClientListBySubscriptionResponse struct {
+	// The response of a AiAgentsGroup list operation.
+	AiAgentsGroupListResult
+}
+
+// AiAgentsGroupsClientUpdateResponse contains the response from method AiAgentsGroupsClient.BeginUpdate.
+type AiAgentsGroupsClientUpdateResponse struct {
+	// An AiAgentsGroup tracked resource.
+	AiAgentsGroup
+}
+
 // CGProfileClientCreateOrUpdateResponse contains the response from method CGProfileClient.CreateOrUpdate.
 type CGProfileClientCreateOrUpdateResponse struct {
 	// A container group profile object

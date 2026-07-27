@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ContainerGroupCreateConfidential.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupCreateConfidential.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_confidentialContainerGroup
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupCreateOrUpdateStandbyPool.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupCreateOrUpdateStandbyPool.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateOrUpdateWithStandbyPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateOrUpda
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupEncryptionProperties.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupEncryptionProperties.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncryptionProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupWithEncrypti
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupExtensions.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupExtensions.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +554,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupCreateWithEx
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsCreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreateOrUpdate.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -793,7 +793,257 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsCreateOrUpdateSecretReference.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreateOrUpdateManagedIdentityAzureFileshare.json
+func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdateManagedIdentityAzureFileshare() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerinstance.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewContainerGroupsClient().BeginCreateOrUpdate(ctx, "demo", "demo1", armcontainerinstance.ContainerGroup{
+		Identity: &armcontainerinstance.ContainerGroupIdentity{
+			Type: to.Ptr(armcontainerinstance.ResourceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerinstance.UserAssignedIdentities{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name": {},
+			},
+		},
+		Location: to.Ptr("west us"),
+		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+			Containers: []*armcontainerinstance.Container{
+				{
+					Name: to.Ptr("demo1"),
+					Properties: &armcontainerinstance.ContainerProperties{
+						Command:              []*string{},
+						EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{},
+						Image:                to.Ptr("nginx"),
+						Ports: []*armcontainerinstance.ContainerPort{
+							{
+								Port: to.Ptr[int32](80),
+							},
+						},
+						Resources: &armcontainerinstance.ResourceRequirements{
+							Requests: &armcontainerinstance.ResourceRequests{
+								CPU: to.Ptr[float64](1),
+								Gpu: &armcontainerinstance.GpuResource{
+									Count: to.Ptr[int32](1),
+									SKU:   to.Ptr(armcontainerinstance.GpuSKUK80),
+								},
+								MemoryInGB: to.Ptr[float64](1.5),
+							},
+						},
+						VolumeMounts: []*armcontainerinstance.VolumeMount{
+							{
+								Name:      to.Ptr("volume1"),
+								MountPath: to.Ptr("/mnt/volume1"),
+								ReadOnly:  to.Ptr(false),
+							},
+							{
+								Name:      to.Ptr("volume2"),
+								MountPath: to.Ptr("/mnt/volume2"),
+								ReadOnly:  to.Ptr(false),
+							},
+							{
+								Name:      to.Ptr("volume3"),
+								MountPath: to.Ptr("/mnt/volume3"),
+								ReadOnly:  to.Ptr(true),
+							},
+						},
+					},
+				},
+			},
+			Diagnostics: &armcontainerinstance.ContainerGroupDiagnostics{
+				LogAnalytics: &armcontainerinstance.LogAnalytics{
+					LogType: to.Ptr(armcontainerinstance.LogAnalyticsLogTypeContainerInsights),
+					Metadata: map[string]*string{
+						"test-key": to.Ptr("test-metadata-value"),
+					},
+					WorkspaceID:         to.Ptr("workspaceid"),
+					WorkspaceKey:        to.Ptr("workspaceKey"),
+					WorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/microsoft.operationalinsights/workspaces/workspace"),
+				},
+			},
+			DNSConfig: &armcontainerinstance.DNSConfiguration{
+				NameServers: []*string{
+					to.Ptr("1.1.1.1"),
+				},
+				Options:       to.Ptr("ndots:2"),
+				SearchDomains: to.Ptr("cluster.local svc.cluster.local"),
+			},
+			ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{},
+			IPAddress: &armcontainerinstance.IPAddress{
+				Type:                              to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
+				AutoGeneratedDomainNameLabelScope: to.Ptr(armcontainerinstance.DNSNameLabelReusePolicyUnsecure),
+				DNSNameLabel:                      to.Ptr("dnsnamelabel1"),
+				Ports: []*armcontainerinstance.Port{
+					{
+						Port:     to.Ptr[int32](80),
+						Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
+					},
+				},
+			},
+			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
+			SubnetIDs: []*armcontainerinstance.ContainerGroupSubnetID{
+				{
+					ID: to.Ptr("[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"),
+				},
+			},
+			Volumes: []*armcontainerinstance.Volume{
+				{
+					Name: to.Ptr("volume1"),
+					AzureFile: &armcontainerinstance.AzureFileVolume{
+						ShareName:                    to.Ptr("shareName"),
+						StorageAccountName:           to.Ptr("accountName"),
+						UserAssignedIdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+					},
+				},
+				{
+					Name:     to.Ptr("volume2"),
+					EmptyDir: map[string]any{},
+				},
+				{
+					Name: to.Ptr("volume3"),
+					Secret: map[string]*string{
+						"secretKey1": to.Ptr("SecretValue1InBase64"),
+						"secretKey2": to.Ptr("SecretValue2InBase64"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerinstance.ContainerGroupsClientCreateOrUpdateResponse{
+	// 	ContainerGroup: armcontainerinstance.ContainerGroup{
+	// 		Name: to.Ptr("demo1"),
+	// 		Type: to.Ptr("Microsoft.ContainerInstance/containerGroups"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroups/demo1"),
+	// 		Location: to.Ptr("WestUs"),
+	// 		Properties: &armcontainerinstance.ContainerGroupPropertiesProperties{
+	// 			Containers: []*armcontainerinstance.Container{
+	// 				{
+	// 					Name: to.Ptr("demo1"),
+	// 					Properties: &armcontainerinstance.ContainerProperties{
+	// 						Command: []*string{
+	// 						},
+	// 						EnvironmentVariables: []*armcontainerinstance.EnvironmentVariable{
+	// 						},
+	// 						Image: to.Ptr("nginx"),
+	// 						Ports: []*armcontainerinstance.ContainerPort{
+	// 							{
+	// 								Port: to.Ptr[int32](80),
+	// 							},
+	// 						},
+	// 						Resources: &armcontainerinstance.ResourceRequirements{
+	// 							Requests: &armcontainerinstance.ResourceRequests{
+	// 								CPU: to.Ptr[float64](1),
+	// 								Gpu: &armcontainerinstance.GpuResource{
+	// 									Count: to.Ptr[int32](1),
+	// 									SKU: to.Ptr(armcontainerinstance.GpuSKUK80),
+	// 								},
+	// 								MemoryInGB: to.Ptr[float64](1.5),
+	// 							},
+	// 						},
+	// 						VolumeMounts: []*armcontainerinstance.VolumeMount{
+	// 							{
+	// 								Name: to.Ptr("volume1"),
+	// 								MountPath: to.Ptr("/mnt/volume1"),
+	// 								ReadOnly: to.Ptr(false),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("volume2"),
+	// 								MountPath: to.Ptr("/mnt/volume2"),
+	// 								ReadOnly: to.Ptr(false),
+	// 							},
+	// 							{
+	// 								Name: to.Ptr("volume3"),
+	// 								MountPath: to.Ptr("/mnt/volume3"),
+	// 								ReadOnly: to.Ptr(true),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Diagnostics: &armcontainerinstance.ContainerGroupDiagnostics{
+	// 				LogAnalytics: &armcontainerinstance.LogAnalytics{
+	// 					WorkspaceID: to.Ptr("workspaceid"),
+	// 				},
+	// 			},
+	// 			DNSConfig: &armcontainerinstance.DNSConfiguration{
+	// 				NameServers: []*string{
+	// 					to.Ptr("1.1.1.1"),
+	// 				},
+	// 				Options: to.Ptr("ndots:2"),
+	// 				SearchDomains: to.Ptr("cluster.local svc.cluster.local"),
+	// 			},
+	// 			ImageRegistryCredentials: []*armcontainerinstance.ImageRegistryCredential{
+	// 			},
+	// 			IPAddress: &armcontainerinstance.IPAddress{
+	// 				Type: to.Ptr(armcontainerinstance.ContainerGroupIPAddressTypePublic),
+	// 				AutoGeneratedDomainNameLabelScope: to.Ptr(armcontainerinstance.DNSNameLabelReusePolicyUnsecure),
+	// 				DNSNameLabel: to.Ptr("dnsnamelabel1"),
+	// 				Fqdn: to.Ptr("dnsnamelabel1.azure-container.io"),
+	// 				IP: to.Ptr("10.0.0.1"),
+	// 				Ports: []*armcontainerinstance.Port{
+	// 					{
+	// 						Port: to.Ptr[int32](80),
+	// 						Protocol: to.Ptr(armcontainerinstance.ContainerGroupNetworkProtocolTCP),
+	// 					},
+	// 				},
+	// 			},
+	// 			IsCreatedFromStandbyPool: to.Ptr(false),
+	// 			OSType: to.Ptr(armcontainerinstance.OperatingSystemTypesLinux),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Volumes: []*armcontainerinstance.Volume{
+	// 				{
+	// 					Name: to.Ptr("volume1"),
+	// 					AzureFile: &armcontainerinstance.AzureFileVolume{
+	// 						ShareName: to.Ptr("shareName"),
+	// 						StorageAccountName: to.Ptr("accountName"),
+	// 						UserAssignedIdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("volume2"),
+	// 					EmptyDir: map[string]any{
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("volume3"),
+	// 					Secret: map[string]*string{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		Identity: &armcontainerinstance.ContainerGroupIdentity{
+	// 			UserAssignedIdentities: map[string]*armcontainerinstance.UserAssignedIdentities{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name": &armcontainerinstance.UserAssignedIdentities{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			Type: to.Ptr(armcontainerinstance.ResourceIdentityTypeUserAssigned),
+	// 		},
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreateOrUpdateSecretReference.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpdateSecretReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1112,7 +1362,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsCreatePriority.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsCreatePriority.json
 func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1209,7 +1459,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateWithP
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsDelete.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsDelete.json
 func ExampleContainerGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1304,7 +1554,7 @@ func ExampleContainerGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsGetPriority.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsGetPriority.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1405,7 +1655,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetWithPriority() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsGet_Failed.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsGet_Failed.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1532,7 +1782,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetFailed() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsGet_Succeeded.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsGet_Succeeded.json
 func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1623,7 +1873,7 @@ func ExampleContainerGroupsClient_Get_containerGroupsGetSucceeded() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsGetOutboundNetworkDependenciesEndpoints.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsGetOutboundNetworkDependenciesEndpoints.json
 func ExampleContainerGroupsClient_GetOutboundNetworkDependenciesEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1647,7 +1897,7 @@ func ExampleContainerGroupsClient_GetOutboundNetworkDependenciesEndpoints() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsList.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsList.json
 func ExampleContainerGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1747,7 +1997,7 @@ func ExampleContainerGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsListByResourceGroup.json
 func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1847,7 +2097,7 @@ func ExampleContainerGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsRestart.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsRestart.json
 func ExampleContainerGroupsClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1868,7 +2118,7 @@ func ExampleContainerGroupsClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsStart.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsStart.json
 func ExampleContainerGroupsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1889,7 +2139,7 @@ func ExampleContainerGroupsClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsStop.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsStop.json
 func ExampleContainerGroupsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1906,7 +2156,7 @@ func ExampleContainerGroupsClient_Stop() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupsUpdate.json
+// Generated from example definition: 2026-08-01-preview/ContainerGroupsUpdate.json
 func ExampleContainerGroupsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,6 +12,81 @@ type APIEntityReference struct {
 	ID *string
 }
 
+// AiAgentsGroup - An AiAgentsGroup tracked resource.
+type AiAgentsGroup struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// The resource-specific properties for this resource.
+	Properties *AiAgentsGroupProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AiAgentsGroupAccessToken - The result of getting an access token for an AiAgentsGroup.
+type AiAgentsGroupAccessToken struct {
+	// REQUIRED; The access token used to authenticate against the endpoint.
+	AccessToken *string
+
+	// REQUIRED; The endpoint URL to use with the access token.
+	Endpoint *string
+
+	// REQUIRED; The UTC date and time at which the access token expires.
+	NotAfter *time.Time
+}
+
+// AiAgentsGroupListResult - The response of a AiAgentsGroup list operation.
+type AiAgentsGroupListResult struct {
+	// REQUIRED; The AiAgentsGroup items on this page
+	Value []*AiAgentsGroup
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AiAgentsGroupNetworkProfile - The network profile for an AiAgentsGroup.
+type AiAgentsGroupNetworkProfile struct {
+	// The list of subnets associated with the AiAgentsGroup.
+	Subnets []*SubnetReference
+}
+
+// AiAgentsGroupProperties - Properties of an AiAgentsGroup.
+type AiAgentsGroupProperties struct {
+	// The network profile of the AiAgentsGroup.
+	NetworkProfile *AiAgentsGroupNetworkProfile
+
+	// READ-ONLY; The ARM resource ID of the management resource group associated with this AiAgentsGroup.
+	ManagementResourceGroupID *string
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *AiAgentsGroupProvisioningState
+}
+
+// AiAgentsGroupTagsUpdate - The type used for updating an AiAgentsGroup resource.
+type AiAgentsGroupTagsUpdate struct {
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
 // ApplicationGateway - Application Gateway the CG profile will use to interact with CGs in a backend pool
 type ApplicationGateway struct {
 	// List of Application Gateway Backend Address Pools.
@@ -43,6 +118,9 @@ type AzureFileVolume struct {
 
 	// The reference to the storage account access key used to access the Azure File share.
 	StorageAccountKeyReference *string
+
+	// The client id of the user-assigned managed identity that has access to the Azure File share.
+	UserAssignedIdentityClientID *string
 }
 
 // CachedImages - The cached image and OS type.
@@ -877,6 +955,22 @@ type Logs struct {
 	Content *string
 }
 
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
+}
+
 // NGroup - Describes the NGroups resource.
 type NGroup struct {
 	// The identity of the NGroup, if configured.
@@ -1183,6 +1277,13 @@ type StorageProfile struct {
 	FileShares []*FileShare
 }
 
+// SubnetReference - A reference to a subnet resource.
+type SubnetReference struct {
+	// REQUIRED; The ARM resource ID of the subnet. The caller must have `Microsoft.Network/virtualNetworks/subnets/join/action`
+	// permission on this subnet (enforced via a linked access check at create/update time).
+	ID *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1270,6 +1371,15 @@ type UserAssignedIdentities struct {
 	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
 }
 

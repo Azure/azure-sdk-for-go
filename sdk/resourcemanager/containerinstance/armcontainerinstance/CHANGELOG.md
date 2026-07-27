@@ -1,5 +1,31 @@
 # Release History
 
+## 3.0.0-beta.2 (2026-07-23)
+### Features Added
+
+- New enum type `AiAgentsGroupProvisioningState` with values `AiAgentsGroupProvisioningStateAccepted`, `AiAgentsGroupProvisioningStateCanceled`, `AiAgentsGroupProvisioningStateDeleting`, `AiAgentsGroupProvisioningStateFailed`, `AiAgentsGroupProvisioningStateSucceeded`, `AiAgentsGroupProvisioningStateUpdating`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New function `NewAiAgentsGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiAgentsGroupsClient, error)`
+- New function `*AiAgentsGroupsClient.Connect(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientConnectOptions) (AiAgentsGroupsClientConnectResponse, error)`
+- New function `*AiAgentsGroupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AiAgentsGroup, options *AiAgentsGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientCreateOrUpdateResponse], error)`
+- New function `*AiAgentsGroupsClient.BeginDelete(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientBeginDeleteOptions) (*runtime.Poller[AiAgentsGroupsClientDeleteResponse], error)`
+- New function `*AiAgentsGroupsClient.Get(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientGetOptions) (AiAgentsGroupsClientGetResponse, error)`
+- New function `*AiAgentsGroupsClient.NewListByResourceGroupPager(resourceGroupName string, options *AiAgentsGroupsClientListByResourceGroupOptions) *runtime.Pager[AiAgentsGroupsClientListByResourceGroupResponse]`
+- New function `*AiAgentsGroupsClient.NewListBySubscriptionPager(options *AiAgentsGroupsClientListBySubscriptionOptions) *runtime.Pager[AiAgentsGroupsClientListBySubscriptionResponse]`
+- New function `*AiAgentsGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AiAgentsGroupTagsUpdate, options *AiAgentsGroupsClientBeginUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewAiAgentsGroupsClient() *AiAgentsGroupsClient`
+- New struct `AiAgentsGroup`
+- New struct `AiAgentsGroupAccessToken`
+- New struct `AiAgentsGroupListResult`
+- New struct `AiAgentsGroupNetworkProfile`
+- New struct `AiAgentsGroupProperties`
+- New struct `AiAgentsGroupTagsUpdate`
+- New struct `ManagedServiceIdentity`
+- New struct `SubnetReference`
+- New struct `UserAssignedIdentity`
+- New field `UserAssignedIdentityClientID` in struct `AzureFileVolume`
+
+
 ## 3.0.0-beta.1 (2026-05-20)
 ### Breaking Changes
 

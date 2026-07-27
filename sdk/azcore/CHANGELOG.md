@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Added `azure-deprecating` to the default set of allowed (non-redacted) response headers for logging.
+
 ### Breaking Changes
 
 ### Bugs Fixed

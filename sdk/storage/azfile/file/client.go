@@ -10,6 +10,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"reflect"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -260,6 +261,19 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 		return UploadRangeResponse{}, err
 	}
 
+	if options != nil && options.TransactionalValidation != nil {
+		if _, ok := options.TransactionalValidation.(TransferValidationTypeMD5); !ok {
+			body, err = options.TransactionalValidation.Apply(body, uploadRangeOptions)
+			if err != nil {
+				return UploadRangeResponse{}, err
+			}
+			contentLength, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+			if err != nil {
+				return UploadRangeResponse{}, err
+			}
+		}
+	}
+
 	return f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, uploadRangeOptions)
 }
 
@@ -461,6 +475,13 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 	if options != nil {
 		uploadOptions = *options
 	}
+
+	if uploadOptions.TransactionalValidation != nil &&
+		reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func &&
+		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		return fileerror.UnsupportedChecksum
+	}
+
 	return f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
 }
 
@@ -474,6 +495,13 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 	if options != nil {
 		uploadOptions = *options
 	}
+
+	if uploadOptions.TransactionalValidation != nil &&
+		reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func &&
+		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		return fileerror.UnsupportedChecksum
+	}
+
 	return f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
 }
 
@@ -482,6 +510,12 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *UploadStreamOptions) error {
 	if options == nil {
 		options = &UploadStreamOptions{}
+	}
+
+	if options.TransactionalValidation != nil &&
+		reflect.TypeOf(options.TransactionalValidation).Kind() != reflect.Func &&
+		exported.GetStructuredBodyType(options.TransactionalValidation) == "" {
+		return fileerror.UnsupportedChecksum
 	}
 
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)

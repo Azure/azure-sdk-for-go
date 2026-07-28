@@ -748,9 +748,11 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser, fileRe
 		uploadRangeOptions.FileLastWrittenMode = o.LastWrittenMode
 	}
 	if o != nil && o.TransactionalValidation != nil {
-		_, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
-		if err != nil {
-			return "", 0, nil, err
+		if _, ok := o.TransactionalValidation.(TransferValidationTypeMD5); ok {
+			_, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
+			if err != nil {
+				return "", 0, nil, err
+			}
 		}
 	}
 
@@ -1100,6 +1102,10 @@ type uploadFromReaderOptions struct {
 
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+
+	// TransactionalValidation specifies the transfer validation type to use.
+	// Only TransferValidationTypeComputeStructuredMessageCRC64 is supported for multi-chunk uploads.
+	TransactionalValidation TransferValidationType
 }
 
 // UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
@@ -1110,7 +1116,8 @@ type UploadFileOptions = uploadFromReaderOptions
 
 func (o *uploadFromReaderOptions) getUploadRangeOptions() *UploadRangeOptions {
 	return &UploadRangeOptions{
-		LeaseAccessConditions: o.LeaseAccessConditions,
+		LeaseAccessConditions:   o.LeaseAccessConditions,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -1129,6 +1136,10 @@ type UploadStreamOptions struct {
 
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+
+	// TransactionalValidation specifies the transfer validation type to use.
+	// Only TransferValidationTypeComputeStructuredMessageCRC64 is supported for streaming uploads.
+	TransactionalValidation TransferValidationType
 }
 
 func (u *UploadStreamOptions) setDefaults() {
@@ -1143,7 +1154,8 @@ func (u *UploadStreamOptions) setDefaults() {
 
 func (u *UploadStreamOptions) getUploadRangeOptions() *UploadRangeOptions {
 	return &UploadRangeOptions{
-		LeaseAccessConditions: u.LeaseAccessConditions,
+		LeaseAccessConditions:   u.LeaseAccessConditions,
+		TransactionalValidation: u.TransactionalValidation,
 	}
 }
 

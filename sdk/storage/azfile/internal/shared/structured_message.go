@@ -52,6 +52,14 @@ func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 		numSegments = 1
 	}
 
+	if numSegments > math.MaxUint16 {
+		segmentSize = int(math.Ceil(float64(totalDataLen) / float64(math.MaxUint16)))
+		numSegments = totalDataLen / segmentSize
+		if totalDataLen%segmentSize != 0 {
+			numSegments++
+		}
+	}
+
 	// Calculate total message length
 	msgLen := int64(SMHeaderSize)
 	for i := 0; i < numSegments; i++ {
@@ -621,7 +629,7 @@ func (d *SMDecoder) Read(p []byte) (int, error) {
 				}
 			}
 			if err != nil && d.segRemain > 0 {
-				d.setError(err)
+				d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
 				return totalOut, d.err
 			}
 
@@ -740,6 +748,9 @@ func (d *SMDecoder) validateTrailerCRC() error {
 	actual := d.msgCRC.Sum64()
 	if expected != actual {
 		return fmt.Errorf("message trailer CRC64 mismatch (expected 0x%016x, got 0x%016x)", expected, actual)
+	}
+	if d.msgLen > 0 && d.bytesRead != int64(d.msgLen) {
+		return fmt.Errorf("structured message length mismatch: header says %d, consumed %d bytes", d.msgLen, d.bytesRead)
 	}
 	d.state = decStateDone
 	return nil

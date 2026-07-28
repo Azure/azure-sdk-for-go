@@ -16,6 +16,56 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
+// defaultServerTimeout bounds a management RPC attempt when the caller's context
+// has no deadline. Without it the service is given no bound at all, so a stalled
+// broker holds the call until the AMQP link itself fails.
+// See https://github.com/Azure/azure-sdk-for-go/issues/26421.
+const defaultServerTimeout = 60 * time.Second
+
+// serverTimeoutBuffer is taken off the caller's remaining deadline so the broker's
+// timeout fires before the context does. Sending the full remaining time makes the
+// two expire together, and the context wins by the round trip the reply still needs,
+// so the caller sees "context deadline exceeded" rather than the broker's own
+// timeout. The Java SDK subtracts the same second in
+// MessageUtils.adjustServerTimeout ("Pass little less than client timeout to the
+// server so client doesn't time out before server times out"), though it subtracts
+// from a fixed per-attempt timeout that is never itself under a second, where this
+// subtracts from whatever the caller has left. See serverTimeoutMillis for what
+// that difference means below one second.
+const serverTimeoutBuffer = time.Second
+
+// serverTimeoutMillis returns the server-timeout, in milliseconds, for a management
+// operation. With a deadline it is the remaining time less serverTimeoutBuffer,
+// clamped at zero, so the broker answers first and the caller gets a service-side
+// timeout it can act on. Without a deadline it is defaultServerTimeout.
+//
+// Under a second of remaining time there is no room to answer first, so the value
+// clamps to zero and the buffer simply stops helping. That is not a regression: the
+// caller's own context still ends the call within that same second, exactly as it
+// does today.
+//
+// This is a broker-side bound, not a client-side one. rpcLink.RPC waits only for a
+// response or ctx.Done(), so the value asks the broker to answer within the window
+// but never caps the client's own wait. A call with no deadline therefore depends on
+// the broker honoring it: MaxRetries+1 attempts of this length plus backoff when it
+// does, and no bound at all if the broker goes silent with the link still open,
+// since the loop counts retries after the initial attempt. A client-side per-attempt
+// TryTimeout is tracked in https://github.com/Azure/azure-sdk-for-go/issues/27269.
+func serverTimeoutMillis(ctx context.Context) uint {
+	timeout := defaultServerTimeout
+
+	if deadline, ok := ctx.Deadline(); ok {
+		timeout = time.Until(deadline) - serverTimeoutBuffer
+		if timeout < 0 {
+			// Less than the buffer remains, so the caller is about to give up anyway.
+			// Clamp to avoid an unsigned underflow.
+			timeout = 0
+		}
+	}
+
+	return uint(timeout / time.Millisecond)
+}
+
 type Disposition struct {
 	Status                DispositionStatus
 	LockTokens            []*uuid.UUID
@@ -127,9 +177,9 @@ func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string
 
 	addAssociatedLinkName(linkName, msg)
 
-	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
-	}
+	// server-timeout is left to rpcLink.RPC, which sets the bare key for any
+	// com.microsoft: operation that has not chosen one. Computing it there keeps
+	// the value closer to the send, so it reflects the time actually left.
 
 	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
@@ -487,9 +537,7 @@ func ScheduleMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName st
 
 	addAssociatedLinkName(linkName, msg)
 
-	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
-	}
+	msg.ApplicationProperties["com.microsoft:server-timeout"] = serverTimeoutMillis(ctx)
 
 	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {
@@ -529,9 +577,7 @@ func CancelScheduledMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, link
 
 	addAssociatedLinkName(linkName, msg)
 
-	if deadline, ok := ctx.Deadline(); ok {
-		msg.ApplicationProperties["com.microsoft:server-timeout"] = uint(time.Until(deadline) / time.Millisecond)
-	}
+	msg.ApplicationProperties["com.microsoft:server-timeout"] = serverTimeoutMillis(ctx)
 
 	resp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {

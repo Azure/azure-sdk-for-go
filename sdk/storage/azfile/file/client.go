@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -587,7 +588,11 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 				return err
 			}
 			if computeReadLength {
-				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
+					atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
+				} else {
+					atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				}
 			}
 			err = body.Close()
 			return err
@@ -613,11 +618,16 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 		return DownloadStreamResponse{}, err
 	}
 
+	if resp.StructuredBodyType != nil && *resp.StructuredBodyType != "" {
+		resp.Body = shared.NewSMDecoder(resp.Body)
+	}
+
 	return DownloadStreamResponse{
-		DownloadResponse:      resp,
-		client:                f,
-		getInfo:               httpGetterInfo{Range: options.Range},
-		leaseAccessConditions: options.LeaseAccessConditions,
+		DownloadResponse:        resp,
+		client:                  f,
+		getInfo:                 httpGetterInfo{Range: options.Range},
+		leaseAccessConditions:   options.LeaseAccessConditions,
+		transactionalValidation: options.TransactionalValidation,
 	}, err
 }
 
@@ -671,4 +681,12 @@ func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	} else { // if the file's size is 0, there is no need in downloading it
 		return 0, nil
 	}
+}
+
+func parseContentRangeLength(contentRange string) int64 {
+	var start, end int64
+	if _, err := fmt.Sscanf(contentRange, "bytes %d-%d/", &start, &end); err != nil {
+		return 0
+	}
+	return end - start + 1
 }

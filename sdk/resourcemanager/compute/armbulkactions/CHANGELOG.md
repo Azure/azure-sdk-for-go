@@ -1,5 +1,293 @@
 # Release History
 
+## 0.2.0 (2026-07-22)
+### Features Added
+
+- New value `ResourceOperationTypeGetInstanceView` added to enum type `ResourceOperationType`
+- New enum type `AcceleratorManufacturer` with values `AcceleratorManufacturerAMD`, `AcceleratorManufacturerNvidia`, `AcceleratorManufacturerXilinx`
+- New enum type `AcceleratorType` with values `AcceleratorTypeFPGA`, `AcceleratorTypeGPU`
+- New enum type `AllocationStrategy` with values `AllocationStrategyCapacityOptimized`, `AllocationStrategyLowestPrice`, `AllocationStrategyPrioritized`
+- New enum type `ArchitectureType` with values `ArchitectureTypeARM64`, `ArchitectureTypeX64`
+- New enum type `BulkCreateCustomAllocationStrategy` with values `BulkCreateCustomAllocationStrategyLowestPrice`, `BulkCreateCustomAllocationStrategyPrioritized`
+- New enum type `BulkCreateCustomDistributionStrategy` with values `BulkCreateCustomDistributionStrategyBestEffortBalanced`, `BulkCreateCustomDistributionStrategyBestEffortSingleZone`, `BulkCreateCustomDistributionStrategyPrioritized`
+- New enum type `CPUManufacturer` with values `CPUManufacturerAMD`, `CPUManufacturerAmpere`, `CPUManufacturerIntel`, `CPUManufacturerMicrosoft`
+- New enum type `CachingTypes` with values `CachingTypesNone`, `CachingTypesReadOnly`, `CachingTypesReadWrite`
+- New enum type `CapacityType` with values `CapacityTypeVCPU`, `CapacityTypeVM`
+- New enum type `CreatedByType` with values `CreatedByTypeApplication`, `CreatedByTypeKey`, `CreatedByTypeManagedIdentity`, `CreatedByTypeUser`
+- New enum type `DeleteOptions` with values `DeleteOptionsDelete`, `DeleteOptionsDetach`
+- New enum type `DiffDiskOptions` with values `DiffDiskOptionsLocal`
+- New enum type `DiffDiskPlacement` with values `DiffDiskPlacementCacheDisk`, `DiffDiskPlacementNvmeDisk`, `DiffDiskPlacementResourceDisk`
+- New enum type `DiskControllerTypes` with values `DiskControllerTypesNVMe`, `DiskControllerTypesSCSI`
+- New enum type `DiskCreateOptionTypes` with values `DiskCreateOptionTypesAttach`, `DiskCreateOptionTypesCopy`, `DiskCreateOptionTypesEmpty`, `DiskCreateOptionTypesFromImage`, `DiskCreateOptionTypesRestore`
+- New enum type `DiskDeleteOptionTypes` with values `DiskDeleteOptionTypesDelete`, `DiskDeleteOptionTypesDetach`
+- New enum type `DiskDetachOptionTypes` with values `DiskDetachOptionTypesForceDetach`
+- New enum type `DistributionStrategy` with values `DistributionStrategyBestEffortBalanced`, `DistributionStrategyBestEffortSingleZone`, `DistributionStrategyPrioritized`, `DistributionStrategyStrictBalanced`
+- New enum type `DomainNameLabelScopeTypes` with values `DomainNameLabelScopeTypesNoReuse`, `DomainNameLabelScopeTypesResourceGroupReuse`, `DomainNameLabelScopeTypesSubscriptionReuse`, `DomainNameLabelScopeTypesTenantReuse`
+- New enum type `EvictionPolicy` with values `EvictionPolicyDeallocate`, `EvictionPolicyDelete`
+- New enum type `HyperVGeneration` with values `HyperVGenerationGen1`, `HyperVGenerationGen2`
+- New enum type `IPVersions` with values `IPVersionsIPv4`, `IPVersionsIPv6`
+- New enum type `Language` with values `LanguageEnUs`
+- New enum type `LinuxPatchAssessmentMode` with values `LinuxPatchAssessmentModeAutomaticByPlatform`, `LinuxPatchAssessmentModeImageDefault`
+- New enum type `LinuxVMGuestPatchAutomaticByPlatformRebootSetting` with values `LinuxVMGuestPatchAutomaticByPlatformRebootSettingAlways`, `LinuxVMGuestPatchAutomaticByPlatformRebootSettingIfRequired`, `LinuxVMGuestPatchAutomaticByPlatformRebootSettingNever`, `LinuxVMGuestPatchAutomaticByPlatformRebootSettingUnknown`
+- New enum type `LinuxVMGuestPatchMode` with values `LinuxVMGuestPatchModeAutomaticByPlatform`, `LinuxVMGuestPatchModeImageDefault`
+- New enum type `LocalStorageDiskType` with values `LocalStorageDiskTypeHDD`, `LocalStorageDiskTypeSSD`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `Mode` with values `ModeAudit`, `ModeEnforce`
+- New enum type `Modes` with values `ModesAudit`, `ModesDisabled`, `ModesEnforce`
+- New enum type `Month` with values `MonthAll`, `MonthApril`, `MonthAugust`, `MonthDecember`, `MonthFebruary`, `MonthJanuary`, `MonthJuly`, `MonthJune`, `MonthMarch`, `MonthMay`, `MonthNovember`, `MonthOctober`, `MonthSeptember`
+- New enum type `NetworkAPIVersion` with values `NetworkAPIVersion20201101`, `NetworkAPIVersion20221101`
+- New enum type `NetworkInterfaceAuxiliaryMode` with values `NetworkInterfaceAuxiliaryModeAcceleratedConnections`, `NetworkInterfaceAuxiliaryModeFloating`, `NetworkInterfaceAuxiliaryModeNone`
+- New enum type `NetworkInterfaceAuxiliarySKU` with values `NetworkInterfaceAuxiliarySKUA1`, `NetworkInterfaceAuxiliarySKUA2`, `NetworkInterfaceAuxiliarySKUA4`, `NetworkInterfaceAuxiliarySKUA8`, `NetworkInterfaceAuxiliarySKUNone`
+- New enum type `NotificationType` with values `NotificationTypeEmail`
+- New enum type `OccurrenceState` with values `OccurrenceStateCanceled`, `OccurrenceStateCancelling`, `OccurrenceStateCreated`, `OccurrenceStateFailed`, `OccurrenceStateRescheduling`, `OccurrenceStateScheduled`, `OccurrenceStateSucceeded`
+- New enum type `OperatingSystemTypes` with values `OperatingSystemTypesLinux`, `OperatingSystemTypesWindows`
+- New enum type `OptimizationPreference` with values `OptimizationPreferenceAvailability`, `OptimizationPreferenceCost`, `OptimizationPreferenceCostAvailabilityBalanced`
+- New enum type `OsType` with values `OsTypeLinux`, `OsTypeWindows`
+- New enum type `PriorityType` with values `PriorityTypeRegular`, `PriorityTypeSpot`
+- New enum type `ProtocolTypes` with values `ProtocolTypesHTTP`, `ProtocolTypesHTTPS`
+- New enum type `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateSucceeded`
+- New enum type `PublicIPAddressSKUName` with values `PublicIPAddressSKUNameBasic`, `PublicIPAddressSKUNameStandard`
+- New enum type `PublicIPAddressSKUTier` with values `PublicIPAddressSKUTierGlobal`, `PublicIPAddressSKUTierRegional`
+- New enum type `PublicIPAllocationMethod` with values `PublicIPAllocationMethodDynamic`, `PublicIPAllocationMethodStatic`
+- New enum type `RecurringScheduledActionsDeadlineType` with values `RecurringScheduledActionsDeadlineTypeCompleteBy`, `RecurringScheduledActionsDeadlineTypeInitiateAt`, `RecurringScheduledActionsDeadlineTypeUnknown`
+- New enum type `RecurringScheduledActionsProvisioningState` with values `RecurringScheduledActionsProvisioningStateCanceled`, `RecurringScheduledActionsProvisioningStateDeleting`, `RecurringScheduledActionsProvisioningStateFailed`, `RecurringScheduledActionsProvisioningStateSucceeded`
+- New enum type `RecurringScheduledActionsResourceOperationType` with values `RecurringScheduledActionsResourceOperationTypeCreate`, `RecurringScheduledActionsResourceOperationTypeDeallocate`, `RecurringScheduledActionsResourceOperationTypeDelete`, `RecurringScheduledActionsResourceOperationTypeHibernate`, `RecurringScheduledActionsResourceOperationTypeStart`, `RecurringScheduledActionsResourceOperationTypeUnknown`
+- New enum type `ResourceIdentityType` with values `ResourceIdentityTypeNone`, `ResourceIdentityTypeSystemAssigned`, `ResourceIdentityTypeSystemAssignedUserAssigned`, `ResourceIdentityTypeUserAssigned`
+- New enum type `ResourceOperationStatus` with values `ResourceOperationStatusFailed`, `ResourceOperationStatusSucceeded`
+- New enum type `ResourceProvisioningState` with values `ResourceProvisioningStateCanceled`, `ResourceProvisioningStateFailed`, `ResourceProvisioningStateSucceeded`
+- New enum type `ResourceType` with values `ResourceTypeVirtualMachine`, `ResourceTypeVirtualMachineScaleSet`
+- New enum type `ScheduledActionType` with values `ScheduledActionTypeDeallocate`, `ScheduledActionTypeHibernate`, `ScheduledActionTypeStart`
+- New enum type `SecurityEncryptionTypes` with values `SecurityEncryptionTypesDiskWithVMGuestState`, `SecurityEncryptionTypesNonPersistedTPM`, `SecurityEncryptionTypesVMGuestStateOnly`
+- New enum type `SecurityTypes` with values `SecurityTypesConfidentialVM`, `SecurityTypesTrustedLaunch`
+- New enum type `SettingNames` with values `SettingNamesAutoLogon`, `SettingNamesFirstLogonCommands`
+- New enum type `StorageAccountTypes` with values `StorageAccountTypesPremiumLRS`, `StorageAccountTypesPremiumV2LRS`, `StorageAccountTypesPremiumZRS`, `StorageAccountTypesStandardLRS`, `StorageAccountTypesStandardSSDLRS`, `StorageAccountTypesStandardSSDZRS`, `StorageAccountTypesUltraSSDLRS`
+- New enum type `VMAttributeSupport` with values `VMAttributeSupportExcluded`, `VMAttributeSupportIncluded`, `VMAttributeSupportRequired`
+- New enum type `VMCategory` with values `VMCategoryComputeOptimized`, `VMCategoryFpgaAccelerated`, `VMCategoryGeneralPurpose`, `VMCategoryGpuAccelerated`, `VMCategoryHighPerformanceCompute`, `VMCategoryMemoryOptimized`, `VMCategoryStorageOptimized`
+- New enum type `VMOperationStatus` with values `VMOperationStatusCancelFailedStatusUnknown`, `VMOperationStatusCanceled`, `VMOperationStatusCancelling`, `VMOperationStatusCreating`, `VMOperationStatusDeleting`, `VMOperationStatusFailed`, `VMOperationStatusSucceeded`
+- New enum type `WeekDay` with values `WeekDayAll`, `WeekDayFriday`, `WeekDayMonday`, `WeekDaySaturday`, `WeekDaySunday`, `WeekDayThursday`, `WeekDayTuesday`, `WeekDayWednesday`
+- New enum type `WindowsPatchAssessmentMode` with values `WindowsPatchAssessmentModeAutomaticByPlatform`, `WindowsPatchAssessmentModeImageDefault`
+- New enum type `WindowsVMGuestPatchAutomaticByPlatformRebootSetting` with values `WindowsVMGuestPatchAutomaticByPlatformRebootSettingAlways`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingIfRequired`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingNever`, `WindowsVMGuestPatchAutomaticByPlatformRebootSettingUnknown`
+- New enum type `WindowsVMGuestPatchMode` with values `WindowsVMGuestPatchModeAutomaticByOS`, `WindowsVMGuestPatchModeAutomaticByPlatform`, `WindowsVMGuestPatchModeManual`
+- New function `NewBulkCreateCustomClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BulkCreateCustomClient, error)`
+- New function `*BulkCreateCustomClient.BeginCancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginCancelOptions) (*runtime.Poller[BulkCreateCustomClientCancelResponse], error)`
+- New function `*BulkCreateCustomClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedBulkCreateCustom, options *BulkCreateCustomClientBeginCreateOrUpdateOptions) (*runtime.Poller[BulkCreateCustomClientCreateOrUpdateResponse], error)`
+- New function `*BulkCreateCustomClient.BeginDelete(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientBeginDeleteOptions) (*runtime.Poller[BulkCreateCustomClientDeleteResponse], error)`
+- New function `*BulkCreateCustomClient.Get(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientGetOptions) (BulkCreateCustomClientGetResponse, error)`
+- New function `*BulkCreateCustomClient.GetAsyncOperationStatus(ctx context.Context, location string, asyncOperationID string, options *BulkCreateCustomClientGetAsyncOperationStatusOptions) (BulkCreateCustomClientGetAsyncOperationStatusResponse, error)`
+- New function `*BulkCreateCustomClient.NewListByResourceGroupPager(resourceGroupName string, location string, options *BulkCreateCustomClientListByResourceGroupOptions) *runtime.Pager[BulkCreateCustomClientListByResourceGroupResponse]`
+- New function `*BulkCreateCustomClient.NewListBySubscriptionPager(location string, options *BulkCreateCustomClientListBySubscriptionOptions) *runtime.Pager[BulkCreateCustomClientListBySubscriptionResponse]`
+- New function `*ClientFactory.NewBulkCreateCustomClient() *BulkCreateCustomClient`
+- New function `*ClientFactory.NewLaunchBulkInstancesOperationClient() *LaunchBulkInstancesOperationClient`
+- New function `*ClientFactory.NewOccurrenceExtensionClient() *OccurrenceExtensionClient`
+- New function `*ClientFactory.NewOccurrencesClient() *OccurrencesClient`
+- New function `*ClientFactory.NewScheduledActionExtensionClient() *ScheduledActionExtensionClient`
+- New function `*ClientFactory.NewScheduledActionOperationStatusClient() *ScheduledActionOperationStatusClient`
+- New function `*ClientFactory.NewScheduledActionsClient() *ScheduledActionsClient`
+- New function `NewLaunchBulkInstancesOperationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LaunchBulkInstancesOperationClient, error)`
+- New function `*LaunchBulkInstancesOperationClient.BeginCancel(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginCancelOptions) (*runtime.Poller[LaunchBulkInstancesOperationClientCancelResponse], error)`
+- New function `*LaunchBulkInstancesOperationClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, options *LaunchBulkInstancesOperationClientBeginCreateOrUpdateOptions) (*runtime.Poller[LaunchBulkInstancesOperationClientCreateOrUpdateResponse], error)`
+- New function `*LaunchBulkInstancesOperationClient.BeginDelete(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientBeginDeleteOptions) (*runtime.Poller[LaunchBulkInstancesOperationClientDeleteResponse], error)`
+- New function `*LaunchBulkInstancesOperationClient.Get(ctx context.Context, resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientGetOptions) (LaunchBulkInstancesOperationClientGetResponse, error)`
+- New function `*LaunchBulkInstancesOperationClient.GetOperationStatus(ctx context.Context, location string, asyncOperationID string, options *LaunchBulkInstancesOperationClientGetOperationStatusOptions) (LaunchBulkInstancesOperationClientGetOperationStatusResponse, error)`
+- New function `*LaunchBulkInstancesOperationClient.NewListByResourceGroupPager(resourceGroupName string, location string, options *LaunchBulkInstancesOperationClientListByResourceGroupOptions) *runtime.Pager[LaunchBulkInstancesOperationClientListByResourceGroupResponse]`
+- New function `*LaunchBulkInstancesOperationClient.NewListBySubscriptionPager(location string, options *LaunchBulkInstancesOperationClientListBySubscriptionOptions) *runtime.Pager[LaunchBulkInstancesOperationClientListBySubscriptionResponse]`
+- New function `*LaunchBulkInstancesOperationClient.NewListVirtualMachinesPager(resourceGroupName string, location string, name string, options *LaunchBulkInstancesOperationClientListVirtualMachinesOptions) *runtime.Pager[LaunchBulkInstancesOperationClientListVirtualMachinesResponse]`
+- New function `NewOccurrenceExtensionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OccurrenceExtensionClient, error)`
+- New function `*OccurrenceExtensionClient.NewListOccurrenceByVMsPager(resourceURI string, options *OccurrenceExtensionClientListOccurrenceByVMsOptions) *runtime.Pager[OccurrenceExtensionClientListOccurrenceByVMsResponse]`
+- New function `NewOccurrencesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OccurrencesClient, error)`
+- New function `*OccurrencesClient.BeginCancel(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body CancelOccurrenceRequest, options *OccurrencesClientBeginCancelOptions) (*runtime.Poller[OccurrencesClientCancelResponse], error)`
+- New function `*OccurrencesClient.BeginDelay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*runtime.Poller[OccurrencesClientDelayResponse], error)`
+- New function `*OccurrencesClient.Get(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientGetOptions) (OccurrencesClientGetResponse, error)`
+- New function `*OccurrencesClient.NewListByScheduledActionPager(resourceGroupName string, scheduledActionName string, options *OccurrencesClientListByScheduledActionOptions) *runtime.Pager[OccurrencesClientListByScheduledActionResponse]`
+- New function `*OccurrencesClient.NewListResourcesPager(resourceGroupName string, scheduledActionName string, occurrenceID string, options *OccurrencesClientListResourcesOptions) *runtime.Pager[OccurrencesClientListResourcesResponse]`
+- New function `PossibleModeValues() []Mode`
+- New function `NewScheduledActionExtensionClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionExtensionClient, error)`
+- New function `*ScheduledActionExtensionClient.NewListByVMsPager(resourceURI string, options *ScheduledActionExtensionClientListByVMsOptions) *runtime.Pager[ScheduledActionExtensionClientListByVMsResponse]`
+- New function `NewScheduledActionOperationStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionOperationStatusClient, error)`
+- New function `*ScheduledActionOperationStatusClient.Get(ctx context.Context, location string, operationID string, options *ScheduledActionOperationStatusClientGetOptions) (ScheduledActionOperationStatusClientGetResponse, error)`
+- New function `NewScheduledActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledActionsClient, error)`
+- New function `*ScheduledActionsClient.BeginAttachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceAttachRequest, options *ScheduledActionsClientBeginAttachResourcesOptions) (*runtime.Poller[ScheduledActionsClientAttachResourcesResponse], error)`
+- New function `*ScheduledActionsClient.BeginCancelNextOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, body CancelOccurrenceRequest, options *ScheduledActionsClientBeginCancelNextOccurrenceOptions) (*runtime.Poller[ScheduledActionsClientCancelNextOccurrenceResponse], error)`
+- New function `*ScheduledActionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, resource ScheduledAction, options *ScheduledActionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ScheduledActionsClientCreateOrUpdateResponse], error)`
+- New function `*ScheduledActionsClient.BeginDelete(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDeleteOptions) (*runtime.Poller[ScheduledActionsClientDeleteResponse], error)`
+- New function `*ScheduledActionsClient.BeginDetachResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourceDetachRequest, options *ScheduledActionsClientBeginDetachResourcesOptions) (*runtime.Poller[ScheduledActionsClientDetachResourcesResponse], error)`
+- New function `*ScheduledActionsClient.BeginDisable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginDisableOptions) (*runtime.Poller[ScheduledActionsClientDisableResponse], error)`
+- New function `*ScheduledActionsClient.BeginEnable(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginEnableOptions) (*runtime.Poller[ScheduledActionsClientEnableResponse], error)`
+- New function `*ScheduledActionsClient.Get(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientGetOptions) (ScheduledActionsClientGetResponse, error)`
+- New function `*ScheduledActionsClient.NewListByResourceGroupPager(resourceGroupName string, options *ScheduledActionsClientListByResourceGroupOptions) *runtime.Pager[ScheduledActionsClientListByResourceGroupResponse]`
+- New function `*ScheduledActionsClient.NewListBySubscriptionPager(options *ScheduledActionsClientListBySubscriptionOptions) *runtime.Pager[ScheduledActionsClientListBySubscriptionResponse]`
+- New function `*ScheduledActionsClient.NewListResourcesPager(resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientListResourcesOptions) *runtime.Pager[ScheduledActionsClientListResourcesResponse]`
+- New function `*ScheduledActionsClient.PatchResources(ctx context.Context, resourceGroupName string, scheduledActionName string, body ResourcePatchRequest, options *ScheduledActionsClientPatchResourcesOptions) (ScheduledActionsClientPatchResourcesResponse, error)`
+- New function `*ScheduledActionsClient.BeginTriggerManualOccurrence(ctx context.Context, resourceGroupName string, scheduledActionName string, options *ScheduledActionsClientBeginTriggerManualOccurrenceOptions) (*runtime.Poller[ScheduledActionsClientTriggerManualOccurrenceResponse], error)`
+- New function `*ScheduledActionsClient.BeginUpdate(ctx context.Context, resourceGroupName string, scheduledActionName string, properties ScheduledActionUpdate, options *ScheduledActionsClientBeginUpdateOptions) (*runtime.Poller[ScheduledActionsClientUpdateResponse], error)`
+- New function `*VirtualMachineBulkOperationsClient.BulkAcknowledgeOperationErrors(ctx context.Context, resourceGroupName string, location string, body AcknowledgeBulkOperationErrorsRequest, options *VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsOptions) (VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse, error)`
+- New function `*VirtualMachineBulkOperationsClient.BulkCreateOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteCreateContent, options *VirtualMachineBulkOperationsClientBulkCreateOperationOptions) (VirtualMachineBulkOperationsClientBulkCreateOperationResponse, error)`
+- New function `*VirtualMachineBulkOperationsClient.NewBulkListOperationErrorsPager(resourceGroupName string, location string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) *runtime.Pager[VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse]`
+- New function `*VirtualMachineBulkOperationsClient.BulkReimageOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteReimageRequest, options *VirtualMachineBulkOperationsClientBulkReimageOperationOptions) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error)`
+- New function `*VirtualMachineBulkOperationsClient.BulkVdiFlexCreateOperation(ctx context.Context, resourceGroupName string, location string, requestBody ExecuteVdiCreateRequest, options *VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationOptions) (VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse, error)`
+- New struct `APIEntityReference`
+- New struct `APIError`
+- New struct `APIErrorBase`
+- New struct `AcknowledgeBulkOperationErrorsRequest`
+- New struct `AcknowledgeBulkOperationErrorsResponse`
+- New struct `AdditionalCapabilities`
+- New struct `AdditionalUnattendContent`
+- New struct `AllInstancesDown`
+- New struct `ApplicationProfile`
+- New struct `BootDiagnostics`
+- New struct `BulkActionVMExtensionProperties`
+- New struct `BulkCreateCustomListResult`
+- New struct `BulkCreateCustomOverride`
+- New struct `BulkCreateCustomOverrideBase`
+- New struct `BulkCreateCustomOverridesProfile`
+- New struct `BulkCreateCustomPriorityProfile`
+- New struct `BulkCreateCustomProperties`
+- New struct `BulkCreateCustomVMSizeProfile`
+- New struct `BulkCreateCustomZoneAllocationPolicy`
+- New struct `BulkInstancesInnerError`
+- New struct `BulkactionVMExtension`
+- New struct `BulkactionVMProperties`
+- New struct `CancelOccurrenceRequest`
+- New struct `CapacityReservationProfile`
+- New struct `ComputeProfile`
+- New struct `CreateResourceOperationResponse`
+- New struct `DataDisk`
+- New struct `DelayRequest`
+- New struct `DiagnosticsProfile`
+- New struct `DiffDiskSettings`
+- New struct `DiskEncryptionSetParametersContent`
+- New struct `DiskEncryptionSettings`
+- New struct `EncryptionIdentity`
+- New struct `Error`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `EventGridAndResourceGraph`
+- New struct `ExecuteCreateContent`
+- New struct `ExecuteReimageRequest`
+- New struct `ExecuteVdiCreateRequest`
+- New struct `FlexProperties`
+- New struct `HardwareProfile`
+- New struct `HostEndpointSettings`
+- New struct `ImageReference`
+- New struct `InnerError`
+- New struct `KeyVaultKeyReference`
+- New struct `KeyVaultSecretReference`
+- New struct `LaunchBulkInstancesOperationListResult`
+- New struct `LaunchBulkInstancesOperationProperties`
+- New struct `LinuxConfiguration`
+- New struct `LinuxPatchSettings`
+- New struct `LinuxVMGuestPatchAutomaticByPlatformSettings`
+- New struct `ListBulkOperationErrorsResponse`
+- New struct `LocationBasedBulkCreateCustom`
+- New struct `LocationBasedLaunchBulkInstancesOperation`
+- New struct `ManagedDiskParametersContent`
+- New struct `ManagedServiceIdentity`
+- New struct `NetworkInterfaceReference`
+- New struct `NetworkInterfaceReferenceProperties`
+- New struct `NetworkProfile`
+- New struct `NotificationProperties`
+- New struct `OSDisk`
+- New struct `OSImageNotificationProfile`
+- New struct `OSProfile`
+- New struct `OSProfileProvisioningData`
+- New struct `Occurrence`
+- New struct `OccurrenceExtensionProperties`
+- New struct `OccurrenceExtensionResource`
+- New struct `OccurrenceExtensionResourceListResult`
+- New struct `OccurrenceListResult`
+- New struct `OccurrenceProperties`
+- New struct `OccurrenceResource`
+- New struct `OccurrenceResourceListResponse`
+- New struct `OccurrenceResultSummary`
+- New struct `OperationStatusResult`
+- New struct `PatchSettings`
+- New struct `Plan`
+- New struct `PriorityProfile`
+- New struct `ProxyAgentSettings`
+- New struct `PublicIPAddressSKU`
+- New struct `RecurringScheduledActionsExecutionParameters`
+- New struct `RecurringScheduledActionsRetryPolicy`
+- New struct `ReimagePayload`
+- New struct `ReimageResourceOperationResponse`
+- New struct `ReimageResourceOverride`
+- New struct `ResourceAttachRequest`
+- New struct `ResourceDetachRequest`
+- New struct `ResourceListResponse`
+- New struct `ResourceNotificationDetails`
+- New struct `ResourceOperationResponse`
+- New struct `ResourcePatchRequest`
+- New struct `ResourceProvisionPayload`
+- New struct `ResourceProvisionVdiPayload`
+- New struct `ResourceResultSummary`
+- New struct `ResourceStatus`
+- New struct `ResourceWithContext`
+- New struct `ResourcesWithContext`
+- New struct `SSHConfiguration`
+- New struct `SSHPublicKey`
+- New struct `ScheduledAction`
+- New struct `ScheduledActionListResult`
+- New struct `ScheduledActionProperties`
+- New struct `ScheduledActionResource`
+- New struct `ScheduledActionResourceInput`
+- New struct `ScheduledActionResources`
+- New struct `ScheduledActionResourcesListResult`
+- New struct `ScheduledActionUpdate`
+- New struct `ScheduledActionUpdateProperties`
+- New struct `ScheduledActionsExtensionProperties`
+- New struct `ScheduledActionsSchedule`
+- New struct `ScheduledActionsScheduleUpdate`
+- New struct `ScheduledEventsAdditionalPublishingTargets`
+- New struct `ScheduledEventsPolicy`
+- New struct `ScheduledEventsProfile`
+- New struct `SecurityProfile`
+- New struct `StorageProfile`
+- New struct `SubResource`
+- New struct `SystemData`
+- New struct `TerminateNotificationProfile`
+- New struct `UefiSettings`
+- New struct `UserAssignedIdentitiesValue`
+- New struct `UserAssignedIdentity`
+- New struct `UserInitiatedReboot`
+- New struct `UserInitiatedRedeploy`
+- New struct `VMAttributeMinMaxDouble`
+- New struct `VMAttributeMinMaxInteger`
+- New struct `VMAttributes`
+- New struct `VMDiskSecurityProfile`
+- New struct `VMGalleryApplication`
+- New struct `VMSizeProfile`
+- New struct `VMSizeProperties`
+- New struct `VaultCertificate`
+- New struct `VaultSecretGroup`
+- New struct `VirtualHardDisk`
+- New struct `VirtualMachine`
+- New struct `VirtualMachineIPTag`
+- New struct `VirtualMachineIdentity`
+- New struct `VirtualMachineInfo`
+- New struct `VirtualMachineListResult`
+- New struct `VirtualMachineNetworkInterfaceConfiguration`
+- New struct `VirtualMachineNetworkInterfaceConfigurationProperties`
+- New struct `VirtualMachineNetworkInterfaceDNSSettingsConfiguration`
+- New struct `VirtualMachineNetworkInterfaceIPConfiguration`
+- New struct `VirtualMachineNetworkInterfaceIPConfigurationProperties`
+- New struct `VirtualMachinePublicIPAddressConfiguration`
+- New struct `VirtualMachinePublicIPAddressConfigurationProperties`
+- New struct `VirtualMachinePublicIPAddressDNSSettingsConfiguration`
+- New struct `VirtualMachineReimageParameters`
+- New struct `WinRMConfiguration`
+- New struct `WinRMListener`
+- New struct `WindowsConfiguration`
+- New struct `WindowsVMGuestPatchAutomaticByPlatformSettings`
+- New struct `ZoneAllocationPolicy`
+- New struct `ZonePreference`
+- New field `ResourcesWithContext` in struct `ExecuteDeallocateContent`
+- New field `ResourcesWithContext` in struct `ExecuteDeleteContent`
+- New field `ResourcesWithContext` in struct `ExecuteHibernateContent`
+- New field `ResourcesWithContext` in struct `ExecuteStartContent`
+- New field `OptimizationPreference`, `VerifyVMAgentHealth` in struct `ExecutionParameters`
+- New field `VirtualMachineInfo` in struct `ResourceOperation`
+- New field `ResourceNotificationDetails` in struct `ResourceOperationDetails`
+
+
 ## 0.1.0 (2026-06-29)
 ### Other Changes
 

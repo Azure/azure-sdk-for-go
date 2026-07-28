@@ -43,11 +43,13 @@ const serverTimeoutBuffer = time.Second
 // caller's own context still ends the call within that same second, exactly as it
 // does today.
 //
-// This bounds one attempt, not the whole call. The retry loop runs on the caller's
-// context and applies no per-attempt budget of its own, so a call with no deadline
-// is bounded by RetryOptions.MaxRetries+1 attempts of this length plus backoff,
-// since the loop counts retries after the initial attempt. A per-attempt TryTimeout
-// is tracked in https://github.com/Azure/azure-sdk-for-go/issues/27269.
+// This is a broker-side bound, not a client-side one. rpcLink.RPC waits only for a
+// response or ctx.Done(), so the value asks the broker to answer within the window
+// but never caps the client's own wait. A call with no deadline therefore depends on
+// the broker honoring it: MaxRetries+1 attempts of this length plus backoff when it
+// does, and no bound at all if the broker goes silent with the link still open,
+// since the loop counts retries after the initial attempt. A client-side per-attempt
+// TryTimeout is tracked in https://github.com/Azure/azure-sdk-for-go/issues/27269.
 func serverTimeoutMillis(ctx context.Context) uint {
 	timeout := defaultServerTimeout
 

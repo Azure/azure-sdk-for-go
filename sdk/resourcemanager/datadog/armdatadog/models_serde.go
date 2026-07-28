@@ -87,7 +87,7 @@ func (a *APIKeyListResponse) UnmarshalJSON(data []byte) error {
 func (a ActivateSaaSParameterRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "datadogOrganizationProperties", a.DatadogOrganizationProperties)
-	populate(objectMap, "saaSGuid", a.SaaSGUID)
+	populate(objectMap, "saaSResourceId", a.SaaSGUID)
 	populate(objectMap, "userInfo", a.UserInfo)
 	return json.Marshal(objectMap)
 }
@@ -104,7 +104,7 @@ func (a *ActivateSaaSParameterRequest) UnmarshalJSON(data []byte) error {
 		case "datadogOrganizationProperties":
 			err = unpopulate(val, "DatadogOrganizationProperties", &a.DatadogOrganizationProperties)
 			delete(rawMsg, key)
-		case "saaSGuid":
+		case "saaSResourceId":
 			err = unpopulate(val, "SaaSGUID", &a.SaaSGUID)
 			delete(rawMsg, key)
 		case "userInfo":
@@ -2160,5 +2160,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

@@ -879,6 +879,47 @@ func (o *GetRangeListOptions) format(fileRequestIntent *generated.ShareTokenInte
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// ListRangesOptions contains the optional parameters for the Client.NewListRangesPager method.
+type ListRangesOptions struct {
+	// The previous snapshot parameter is an opaque DateTime value that, when present, specifies the previous snapshot.
+	// When set, the pager returns ranges that have changed between the previous snapshot and the target (diff mode).
+	PrevShareSnapshot *string
+	// Specifies the range of bytes over which to list ranges, inclusively.
+	Range HTTPRange
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
+	ShareSnapshot *string
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+	// SupportRename determines whether the changed ranges for a file should be listed when the file's location in the
+	// previous snapshot is different from the location in the Request URI, as a result of rename or move operations.
+	SupportRename *bool
+	// MaxResults specifies the maximum number of ranges to return per page. If not set, the service returns all ranges.
+	MaxResults *int32
+}
+
+func (o *ListRangesOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) generated.FileClientListAllRangesOptions {
+	opts := generated.FileClientListAllRangesOptions{
+		FileRequestIntent: fileRequestIntent,
+		AllowTrailingDot:  allowTrailingDot,
+	}
+	if o == nil {
+		return opts
+	}
+
+	opts.Prevsharesnapshot = o.PrevShareSnapshot
+	opts.Range = exported.FormatHTTPRange(o.Range)
+	opts.Sharesnapshot = o.ShareSnapshot
+	opts.SupportRename = o.SupportRename
+	opts.Maxresults = o.MaxResults
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+
+	return opts
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // GetSASURLOptions contains the optional parameters for the Client.GetSASURL method.
 type GetSASURLOptions struct {
 	StartTime *time.Time

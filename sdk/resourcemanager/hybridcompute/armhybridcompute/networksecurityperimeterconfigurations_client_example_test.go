@@ -7,11 +7,11 @@ package armhybridcompute_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
+// Generated from example definition: 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationGet.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_GetByPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_GetByPrivateLinkScope()
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
+// Generated from example definition: 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationList.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByPrivateLinkScopePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleNetworkSecurityPerimeterConfigurationsClient_NewListByPrivateLinkSco
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
+// Generated from example definition: 2026-06-16-preview/networkSecurityPerimeterConfiguration/NetworkSecurityPerimeterConfigurationReconcile.json
 func ExampleNetworkSecurityPerimeterConfigurationsClient_BeginReconcileForPrivateLinkScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

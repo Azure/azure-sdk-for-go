@@ -326,7 +326,7 @@ func hasAnyPKRangeGoneError(results []chunkResult) bool {
 func (c *ContainerClient) executeReadManyWithQueries(
 	ctx context.Context,
 	items []ItemIdentity,
-	readManyOptions *ReadManyOptions,
+	readManyOptions *ReadManyItemsOptions,
 	operationContext pipelineRequestOptions,
 ) (ReadManyItemsResponse, error) {
 	concurrency := determineConcurrency(nil)

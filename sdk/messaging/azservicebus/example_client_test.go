@@ -4,7 +4,9 @@
 package azservicebus_test
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -29,6 +31,26 @@ func ExampleNewClient() {
 
 	if err != nil {
 		panic(err)
+	}
+}
+
+func ExampleClient_NewListSessionsForQueuePager() {
+	// List the IDs of sessions that currently have active messages in a
+	// session-enabled queue. The IDs are returned in pages; call NextPage until
+	// More returns false.
+	pager := client.NewListSessionsForQueuePager("exampleSessionQueue", nil)
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, sessionID := range page.Sessions {
+			fmt.Printf("Session ID: %s\n", sessionID)
+		}
 	}
 }
 

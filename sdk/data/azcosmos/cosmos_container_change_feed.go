@@ -64,7 +64,7 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 			return &token, pkrResp.PartitionKeyRanges, nil
 		}
 		// options.Continuation was supplied but is not a multi-range composite
-		// token. Only composite tokens issued by this SDK's GetChangeFeed are
+		// token. Only composite tokens issued by this SDK's ReadChangeFeed are
 		// honored on resume; legacy raw-ETag continuation strings are NOT
 		// supported and are silently dropped here. The FeedRange path below
 		// will start fresh.
@@ -72,7 +72,7 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 
 	// Path B: FeedRange drives the queue.
 	if options.FeedRange == nil {
-		return nil, nil, fmt.Errorf("GetChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
+		return nil, nil, fmt.Errorf("ReadChangeFeed requires a FeedRange to be set in the options, or a continuation token that contains a composite continuation token")
 	}
 
 	children, pkrs, err := c.resolveFeedRangeToChildren(ctx, *options.FeedRange)
@@ -99,7 +99,7 @@ func (c *ContainerClient) buildChangeFeedInitialQueue(
 // refresh and retries; on still no overlap, returns ErrFeedRangeUnresolved.
 //
 // Also returns the PK-range snapshot it fetched, so the drain loop can reuse
-// it for the rest of this GetChangeFeed call.
+// it for the rest of this ReadChangeFeed call.
 func (c *ContainerClient) resolveFeedRangeToChildren(
 	ctx context.Context,
 	feedRange FeedRange,
@@ -211,7 +211,7 @@ func (c *ContainerClient) getChangeFeedForQueue(
 	partitionKeyRanges []partitionKeyRange,
 ) (ChangeFeedResponse, error) {
 	if token == nil || len(token.Continuation) == 0 {
-		return ChangeFeedResponse{}, fmt.Errorf("GetChangeFeed has nothing to drain: no FeedRange and no continuation token entries")
+		return ChangeFeedResponse{}, fmt.Errorf("ReadChangeFeed has nothing to drain: no FeedRange and no continuation token entries")
 	}
 
 	// Drain budget: how many rotations we'll perform before we give up and
@@ -305,7 +305,7 @@ func (c *ContainerClient) getChangeFeedForQueue(
 				if lastResp.RawResponse != nil {
 					return finalize(lastResp)
 				}
-				return ChangeFeedResponse{}, fmt.Errorf("GetChangeFeed: drain queue exceeded safety cap of %d entries; suspected overlap-resolution bug", maxQueueLen)
+				return ChangeFeedResponse{}, fmt.Errorf("ReadChangeFeed: drain queue exceeded safety cap of %d entries; suspected overlap-resolution bug", maxQueueLen)
 			}
 			pkRangeGoneAttempts = 0
 			continue
@@ -402,11 +402,11 @@ func (c *ContainerClient) getChangeFeedForQueue(
 		lastResp = response
 
 		// 200 with a non-empty page → return immediately so the caller can
-		// process. The Documents-length belt covers the (shouldn't-happen)
+		// process. The Items-length belt covers the (shouldn't-happen)
 		// case where the server omits _count but still ships docs.
 		if response.RawResponse != nil &&
 			response.RawResponse.StatusCode == http.StatusOK &&
-			(response.Count > 0 || len(response.Documents) > 0) {
+			(response.Count > 0 || len(response.Items) > 0) {
 			return finalize(response)
 		}
 

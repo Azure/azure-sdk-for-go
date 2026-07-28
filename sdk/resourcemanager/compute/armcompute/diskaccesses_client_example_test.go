@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccess_Create.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Create.json
 func ExampleDiskAccessesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleDiskAccessesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccess_Delete.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Delete.json
 func ExampleDiskAccessesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleDiskAccessesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Delete.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Delete.json
 func ExampleDiskAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleDiskAccessesClient_BeginDeleteAPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccess_Get.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Get.json
 func ExampleDiskAccessesClient_Get_getInformationAboutADiskAccessResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleDiskAccessesClient_Get_getInformationAboutADiskAccessResource() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccess_Get_WithPrivateEndpoints.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Get_WithPrivateEndpoints.json
 func ExampleDiskAccessesClient_Get_getInformationAboutADiskAccessResourceWithPrivateEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleDiskAccessesClient_Get_getInformationAboutADiskAccessResourceWithPri
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Get.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Get.json
 func ExampleDiskAccessesClient_GetAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleDiskAccessesClient_GetAPrivateEndpointConnection() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccessPrivateLinkResources_Get.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateLinkResources_Get.json
 func ExampleDiskAccessesClient_GetPrivateLinkResources() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ func ExampleDiskAccessesClient_GetPrivateLinkResources() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccess_ListBySubscription.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_ListBySubscription.json
 func ExampleDiskAccessesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleDiskAccessesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccess_ListByResourceGroup.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_ListByResourceGroup.json
 func ExampleDiskAccessesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,7 +426,7 @@ func ExampleDiskAccessesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
 func ExampleDiskAccessesClient_NewListPrivateEndpointConnectionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,7 +473,7 @@ func ExampleDiskAccessesClient_NewListPrivateEndpointConnectionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccess_Update.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccess_Update.json
 func ExampleDiskAccessesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +514,7 @@ func ExampleDiskAccessesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Approve.json
+// Generated from example definition: 2026-03-02/diskAccessExamples/DiskAccessPrivateEndpointConnection_Approve.json
 func ExampleDiskAccessesClient_BeginUpdateAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

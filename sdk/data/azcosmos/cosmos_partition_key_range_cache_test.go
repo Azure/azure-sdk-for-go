@@ -508,6 +508,180 @@ func (p *captureRequestsPolicy) Do(req *policy.Request) (*http.Response, error) 
 	return req.Next()
 }
 
+func Test_partitionKeyRangeCache_fullRefresh_duplicateRangeRevisionsAcrossPages(t *testing.T) {
+	// Scenario: a full change-feed drain re-delivers a range that is not gone,
+	// producing two revisions of the same range ID in the accumulated pages.
+	// The routing map must collapse them instead of rejecting the set as
+	// overlapping itself. See https://github.com/Azure/azure-sdk-for-go/issues/27246
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Page 1: both ranges
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": []},
+				{"_rid": "r1", "id": "1", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": []}
+			],
+			"_count": 2
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+		mock.WithStatusCode(200),
+	)
+	// Page 2: range "1" re-delivered with an updated status — same ID, still live
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r1", "id": "1", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": [], "status": "Online"}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+		mock.WithStatusCode(200),
+	)
+	// 304 terminates the drain
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+	)
+
+	client := createMockClientForPKRangeCache(srv)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "0", rm.orderedRanges[0].ID)
+	require.Equal(t, "1", rm.orderedRanges[1].ID)
+	// The later revision wins
+	require.Equal(t, "Online", rm.orderedRanges[1].Status)
+	require.Equal(t, "etag2", rm.changeFeedETag)
+}
+
+func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_retriesOnce(t *testing.T) {
+	// Scenario: the first full drain observes a transiently incomplete snapshot
+	// (mid-split). A single retry of the drain sees the settled state and succeeds.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	// Drain 1: only half the key space is covered
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": []}
+			],
+			"_count": 1
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag1"),
+	)
+	// Drain 2: complete covering
+	srv.AppendResponse(
+		mock.WithBody([]byte(`{
+			"_rid": "testRID",
+			"PartitionKeyRanges": [
+				{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": []},
+				{"_rid": "r1", "id": "1", "minInclusive": "05C1E18D2D7F08", "maxExclusive": "FF", "parents": []}
+			],
+			"_count": 2
+		}`)),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+		mock.WithStatusCode(200),
+	)
+	srv.AppendResponse(
+		mock.WithStatusCode(304),
+		mock.WithHeader(cosmosHeaderEtag, "etag2"),
+	)
+
+	client := createMockClientForPKRangeCache(srv)
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	rm, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.NoError(t, err)
+	require.Equal(t, 2, len(rm.orderedRanges))
+	require.Equal(t, "etag2", rm.changeFeedETag)
+
+	// The successful map must be cached
+	entry.mu.Lock()
+	require.NotNil(t, entry.routingMap)
+	entry.mu.Unlock()
+}
+
+func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_failsAfterRetryBudget(t *testing.T) {
+	// Scenario: every drain returns an incomplete snapshot. The cache retries the
+	// drain maxIncompleteRoutingMapRetries times, then surfaces the error.
+	srv, close := mock.NewTLSServer()
+	defer close()
+
+	incompletePage := []byte(`{
+		"_rid": "testRID",
+		"PartitionKeyRanges": [
+			{"_rid": "r0", "id": "0", "minInclusive": "", "maxExclusive": "05C1E18D2D7F08", "parents": []}
+		],
+		"_count": 1
+	}`)
+
+	for i := 0; i <= maxIncompleteRoutingMapRetries; i++ {
+		srv.AppendResponse(
+			mock.WithBody(incompletePage),
+			mock.WithHeader(cosmosHeaderEtag, "etag1"),
+			mock.WithStatusCode(200),
+		)
+		srv.AppendResponse(
+			mock.WithStatusCode(304),
+			mock.WithHeader(cosmosHeaderEtag, "etag1"),
+		)
+	}
+
+	capture := &captureRequestsPolicy{}
+	defaultEndpoint, _ := url.Parse(srv.URL())
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0",
+		azruntime.PipelineOptions{PerCall: []policy.Policy{capture}},
+		&policy.ClientOptions{Transport: srv})
+	client := &Client{
+		endpoint:    srv.URL(),
+		endpointUrl: defaultEndpoint,
+		internal:    internalClient,
+		gem:         &globalEndpointManager{preferredLocations: []string{}},
+		caches: &sharedCacheSet{
+			pkRangeCache:   newPartitionKeyRangeCache(),
+			containerCache: newContainerPropertiesCache(),
+		},
+	}
+
+	entry := &pkRangeCacheEntry{}
+	client.caches.pkRangeCache.mu.Lock()
+	client.caches.pkRangeCache.entries["testRID"] = entry
+	client.caches.pkRangeCache.mu.Unlock()
+
+	_, err := client.caches.pkRangeCache.getRoutingMap(context.Background(), "testRID", "dbs/db1/colls/col1", client)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "incomplete set of ranges")
+
+	// Two drains of two requests each: the initial attempt plus one retry
+	require.Equal(t, 2*(maxIncompleteRoutingMapRetries+1), len(capture.requests))
+
+	// Nothing should have been cached
+	entry.mu.Lock()
+	require.Nil(t, entry.routingMap)
+	entry.mu.Unlock()
+}
+
 func Test_partitionKeyRangeCache_fullRefresh_setsChangeFeedHeaders(t *testing.T) {
 	// Scenario: Verify that full refresh requests include A-IM and x-ms-max-item-count headers.
 	srv, close := mock.NewTLSServer()

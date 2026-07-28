@@ -329,6 +329,13 @@ func (c *partitionKeyRangeCache) invalidate(containerRID string) {
 // to prevent runaway requests during large-scale splits.
 const maxChangeFeedIterations = 1000
 
+// maxIncompleteRoutingMapRetries bounds how many times a full change-feed drain
+// is retried when the accumulated ranges are not a complete covering. A snapshot
+// taken while a partition split is in flight can be transiently inconsistent, and
+// a fresh drain usually observes the settled state. Matches the Java SDK's
+// InCompleteRoutingMapRetryPolicy (MAX_INCOMPLETE_ROUTING_MAP_RETRIES = 1).
+const maxIncompleteRoutingMapRetries = 1
+
 // Linear backoff with jitter for 429 retries: base, 2*base, ... capped at
 // changeFeedPageRetryMaxDelay. Exposed as vars so tests can shrink them.
 var (
@@ -454,6 +461,11 @@ func jitter(maxJitter time.Duration) time.Duration {
 // returned map on the entry. ctx is the detached refresh context created
 // by runRefresh — never a caller-scoped context.
 //
+// It attempts an incremental refresh when a previous routing map with an ETag
+// exists, falling back to a full change-feed refresh if the incremental merge is
+// incomplete. That full drain is retried up to maxIncompleteRoutingMapRetries
+// times if the service returns a set of ranges that is not a complete covering.
+//
 // ⚠️ The returned routing map may be a snapshot of entry.routingMap taken
 // before the network I/O (the "no changes since last refresh" branch).
 // Callers MUST subject the result to runRefresh's generation check —
@@ -505,23 +517,37 @@ func (c *partitionKeyRangeCache) refreshEntryDetached(
 	}
 
 	// Full change-feed refresh: fetch all ranges from the beginning using A-IM
-	// without an ETag, looping until 304 Not Modified.
-	result, err := fetchAllChangeFeedPages(ctx, containerLink, "", client)
-	if err != nil {
-		return nil, err
-	}
+	// without an ETag, looping until 304 Not Modified. A snapshot observed while
+	// a partition split is in flight can be transiently incomplete, so retry the
+	// drain a bounded number of times before surfacing the failure.
+	var lastErr error
+	for attempt := 0; attempt <= maxIncompleteRoutingMapRetries; attempt++ {
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
 
-	if !result.completed {
-		return nil, fmt.Errorf("partition key range cache refresh failed: change-feed pagination did not terminate after %d iterations for container %s (accumulated %d ranges)", maxChangeFeedIterations, containerLink, len(result.ranges))
-	}
+		result, err := fetchAllChangeFeedPages(ctx, containerLink, "", client)
+		if err != nil {
+			return nil, err
+		}
 
-	newMap := newCollectionRoutingMap(result.ranges, result.finalETag)
-	if !isCompleteSetOfRanges(newMap.orderedRanges) {
+		if !result.completed {
+			return nil, fmt.Errorf("partition key range cache refresh failed: change-feed pagination did not terminate after %d iterations for container %s (accumulated %d ranges)", maxChangeFeedIterations, containerLink, len(result.ranges))
+		}
+
+		newMap := newCollectionRoutingMap(result.ranges, result.finalETag)
+		if isCompleteSetOfRanges(newMap.orderedRanges) {
+			return newMap, nil
+		}
+
 		issue := describeRangeDiscontinuity(newMap.orderedRanges)
-		return nil, fmt.Errorf("partition key range cache refresh failed: service returned an incomplete set of ranges for container %s (raw ranges=%d, final ranges=%d, issue: %s). This may indicate a transient issue during a partition split", containerLink, len(result.ranges), len(newMap.orderedRanges), issue)
+		lastErr = fmt.Errorf("partition key range cache refresh failed: service returned an incomplete set of ranges for container %s (raw ranges=%d, final ranges=%d, issue: %s). This may indicate a transient issue during a partition split", containerLink, len(result.ranges), len(newMap.orderedRanges), issue)
+		if attempt < maxIncompleteRoutingMapRetries {
+			log.Writef(azlog.EventResponse, "partition key range cache refresh for container %s returned an incomplete set of ranges (%s); retrying the full change-feed drain (retry %d of %d)", containerLink, issue, attempt+1, maxIncompleteRoutingMapRetries)
+		}
 	}
 
-	return newMap, nil
+	return nil, lastErr
 }
 
 // fetchPartitionKeyRangesResult holds the result of a single change-feed fetch.

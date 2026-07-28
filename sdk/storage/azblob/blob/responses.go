@@ -114,3 +114,6 @@ type ReleaseLeaseResponse = generated.BlobClientReleaseLeaseResponse
 
 // RenewLeaseResponse contains the response from method BlobClient.RenewLease.
 type RenewLeaseResponse = generated.BlobClientRenewLeaseResponse
+
+// GetLayoutResponse contains the response from method BlobClient.GetLayout.
+type GetLayoutResponse = generated.BlobClientGetLayoutResponse

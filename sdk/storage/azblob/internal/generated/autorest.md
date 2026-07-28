@@ -297,6 +297,15 @@ directive:
     return $.
       replace(/getPageRanges(Diff)?CreateRequest/g, function(_, s) { if (s === undefined) { s = '' }; return `GetPageRanges${s}CreateRequest` }).
       replace(/getPageRanges(Diff)?HandleResponse/g, function(_, s) { if (s === undefined) { s = '' }; return `GetPageRanges${s}HandleResponse` });
+
+- from: zz_blob_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/getLayoutCreateRequest/g, function(_, s) { if (s === undefined) { s = '' }; return `GetLayoutCreateRequest` }).
+      replace(/getLayoutHandleResponse/g, function(_, s) { if (s === undefined) { s = '' }; return `GetLayoutHandleResponse` });
+      
+      
 ```
 
 ### Clean up some const type names so they don't stutter

@@ -87,7 +87,10 @@ func GetAzClient(storageURL string, cred azcore.TokenCredential, options *Client
 	audience := GetAudience(options)
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	oauthPlOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	oauthPlOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewLayoutPolicy()},
+		PerRetry: []policy.Policy{authPolicy},
+	}
 	oauthAzClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, oauthPlOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
@@ -104,7 +107,10 @@ func GetAzClient(storageURL string, cred azcore.TokenCredential, options *Client
 		return nil, err
 	}
 
-	sessionPlOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{sessionPolicy}}
+	sessionPlOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewLayoutPolicy()},
+		PerRetry: []policy.Policy{sessionPolicy},
+	}
 	sessionAzClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, sessionPlOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err

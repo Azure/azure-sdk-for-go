@@ -343,6 +343,43 @@ type BlobClientGetAccountInfoOptions struct {
 	Timeout *int32
 }
 
+// BlobClientGetLayoutOptions contains the optional parameters for the BlobClient.GetLayout method.
+type BlobClientGetLayoutOptions struct {
+	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// operation returns the NextMarker value within the response body if the listing
+	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
+	// as the value for the marker parameter in a subsequent call to request the next
+	// page of list items. The marker value is opaque to the client.
+	Marker *string
+
+	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// greater than 5000, the server will return up to 5000 items. Note that if the
+	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
+	// of the results. For this reason, it is possible that the service will
+	// return fewer results than specified by maxresults, or than the default of 5000.
+	Maxresults *int32
+
+	// Return only the bytes of the blob in the specified range.
+	Range *string
+
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
+	// The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more
+	// information on working with blob snapshots, see Creating a Snapshot of a Blob.
+	// [https://learn.microsoft.com/rest/api/storageservices/creating-a-snapshot-of-a-blob]
+	Snapshot *string
+
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
+	// [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations]
+	Timeout *int32
+
+	// The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on.
+	// It's for service version 2019-10-10 and newer.
+	VersionID *string
+}
+
 // BlobClientGetPropertiesOptions contains the optional parameters for the BlobClient.GetProperties method.
 type BlobClientGetPropertiesOptions struct {
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage

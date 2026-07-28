@@ -75,8 +75,11 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{
+		PerCall: []policy.Policy{shared.NewLayoutPolicy()},
+	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +94,10 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	plOpts := runtime.PipelineOptions{
+		PerCall:  []policy.Policy{shared.NewLayoutPolicy()},
+		PerRetry: []policy.Policy{authPolicy},
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -605,4 +611,10 @@ func (bb *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.Dow
 // The file would be truncated if the size doesn't match.
 func (bb *Client) DownloadFile(ctx context.Context, file *os.File, o *blob.DownloadFileOptions) (int64, error) {
 	return bb.BlobClient().DownloadFile(ctx, file, o)
+}
+
+// GetLayoutPager returns the blob's layout.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (bb *Client) GetLayoutPager(options *blob.GetLayoutOptions) *runtime.Pager[blob.GetLayoutResponse] {
+	return bb.BlobClient().GetLayoutPager(options)
 }

@@ -10,6 +10,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 )
 
+func GetStatusCode(err error) int {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return 0
+	}
+
+	return respErr.StatusCode
+}
+
 // HasCode returns true if the provided error is an *azcore.ResponseError
 // with its ErrorCode field equal to one of the specified Codes.
 func HasCode(err error, codes ...Code) bool {

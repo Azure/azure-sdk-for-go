@@ -45,9 +45,9 @@ const serverTimeoutBuffer = time.Second
 //
 // This bounds one attempt, not the whole call. The retry loop runs on the caller's
 // context and applies no per-attempt budget of its own, so a call with no deadline
-// is bounded by RetryOptions.MaxRetries attempts of this length plus backoff. A
-// per-attempt TryTimeout is tracked in
-// https://github.com/Azure/azure-sdk-for-go/issues/27269.
+// is bounded by RetryOptions.MaxRetries+1 attempts of this length plus backoff,
+// since the loop counts retries after the initial attempt. A per-attempt TryTimeout
+// is tracked in https://github.com/Azure/azure-sdk-for-go/issues/27269.
 func serverTimeoutMillis(ctx context.Context) uint {
 	timeout := defaultServerTimeout
 

@@ -29,6 +29,9 @@ type ClientOptions struct {
 	// Setting the environment variable AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER to a
 	// truthy value disables this behavior entirely, regardless of this setting.
 	ExpectContinueBehavior exported.ExpectContinueOptions
+
+	// Session configures session-based authentication behavior.
+	Session exported.SessionOptions
 }
 
 type Client[T any] struct {

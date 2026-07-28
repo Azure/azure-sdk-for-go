@@ -245,6 +245,46 @@ func IsIPEndpointStyle(host string) bool {
 	return net.ParseIP(host) != nil
 }
 
+// GetServiceURL returns the blob service URL from a container or blob URL.
+// For example, "https://account.blob.core.windows.net/container/blob" returns
+// "https://account.blob.core.windows.net/", and for IP-style endpoints like
+// "https://127.0.0.1:10000/account/container" returns "https://127.0.0.1:10000/account/".
+// Query parameters (e.g. SAS tokens) are preserved in the returned URL.
+func GetServiceURL(storageURL string) (string, error) {
+	u, err := url.Parse(storageURL)
+	if err != nil {
+		return "", err
+	}
+
+	if IsIPEndpointStyle(u.Host) {
+		// IP-style URLs (e.g., Azurite emulator) have the format:
+		// scheme://IP:port/accountName/container/blob...
+		// We need to keep the first path segment (account name) to form the service URL.
+		path := u.Path
+		if len(path) > 0 && path[0] == '/' {
+			path = path[1:]
+		}
+
+		accountEndIndex := strings.Index(path, "/")
+		if accountEndIndex == -1 {
+			if path == "" {
+				return "", errors.New("IP-style endpoint URL is missing the account name path segment")
+			}
+			u.Path = "/" + path + "/"
+		} else {
+			u.Path = "/" + path[:accountEndIndex] + "/"
+		}
+		u.RawPath = ""
+		return u.String(), nil
+	}
+
+	// Standard-style URLs have the format:
+	// scheme://account.blob.core.windows.net/container/blob...
+	u.Path = "/"
+	u.RawPath = ""
+	return u.String(), nil
+}
+
 // ReadAtLeast reads from r into buf until it has read at least min bytes.
 // It returns the number of bytes copied and an error.
 // The EOF error is returned if no bytes were read or

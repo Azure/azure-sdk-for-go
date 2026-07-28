@@ -53,3 +53,28 @@ const (
 // ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"
 // header to operations that include a request body.
 type ExpectContinueOptions = exported.ExpectContinueOptions
+
+// SessionMode specifies how session-based authentication is handled.
+type SessionMode = exported.SessionMode
+
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault = exported.SessionModeDefault
+	// SessionModeDisabled explicitly disables session-based authentication.
+	SessionModeDisabled = exported.SessionModeDisabled
+	// SessionModeEnabled enables session-based authentication.
+	SessionModeEnabled = exported.SessionModeEnabled
+)
+
+// SessionOptions configures session-based authentication behavior.
+type SessionOptions = exported.SessionOptions
+
+// SessionCredential contains session authentication credentials.
+type SessionCredential = exported.SessionCredential
+
+// SessionContext contains context for session operations.
+type SessionContext = exported.SessionContext
+
+// SessionProvider is the interface for session-based authentication providers.
+type SessionProvider = exported.SessionProvider
+

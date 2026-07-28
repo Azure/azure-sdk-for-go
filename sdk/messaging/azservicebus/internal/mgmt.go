@@ -15,30 +15,51 @@ import (
 	"github.com/Azure/go-amqp"
 )
 
-// defaultServerTimeout is the server-timeout sent with management RPC operations
-// when the caller's context has no deadline. This matches the default operation
-// timeout in the .NET SDK (60s) and is consistent with other SDK defaults,
-// including the Java SDK's 59s timeout. Sending an explicit default prevents a
-// management call made with a no-deadline context from blocking indefinitely
-// when the service stalls. See https://github.com/Azure/azure-sdk-for-go/issues/26421.
+// defaultServerTimeout bounds a management RPC attempt when the caller's context
+// has no deadline. Without it the service is given no bound at all, so a stalled
+// broker holds the call until the AMQP link itself fails.
+// See https://github.com/Azure/azure-sdk-for-go/issues/26421.
 const defaultServerTimeout = 60 * time.Second
 
-// serverTimeoutMillis returns the server-timeout value in milliseconds to send with
-// management operations. When ctx has a deadline, the remaining time is used so the
-// value never exceeds how long the client itself waits (the RPC returns at ctx.Done()).
-// This matches the cross-SDK contract: .NET sends the operation timeout it also waits
-// on, and Java sends slightly less than it waits. When ctx has no deadline,
-// defaultServerTimeout is used so the service still bounds the operation.
+// serverTimeoutBuffer is taken off the caller's remaining deadline so the broker's
+// timeout fires before the context does. Sending the full remaining time makes the
+// two expire together, and the context wins by the round trip the reply still needs,
+// so the caller sees "context deadline exceeded" rather than the broker's own
+// timeout. The Java SDK subtracts the same second in
+// MessageUtils.adjustServerTimeout ("Pass little less than client timeout to the
+// server so client doesn't time out before server times out"), though it subtracts
+// from a fixed per-attempt timeout that is never itself under a second, where this
+// subtracts from whatever the caller has left. See serverTimeoutMillis for what
+// that difference means below one second.
+const serverTimeoutBuffer = time.Second
+
+// serverTimeoutMillis returns the server-timeout, in milliseconds, for a management
+// operation. With a deadline it is the remaining time less serverTimeoutBuffer,
+// clamped at zero, so the broker answers first and the caller gets a service-side
+// timeout it can act on. Without a deadline it is defaultServerTimeout.
+//
+// Under a second of remaining time there is no room to answer first, so the value
+// clamps to zero and the buffer simply stops helping. That is not a regression: the
+// caller's own context still ends the call within that same second, exactly as it
+// does today.
+//
+// This bounds one attempt, not the whole call. The retry loop runs on the caller's
+// context and applies no per-attempt budget of its own, so a call with no deadline
+// is bounded by RetryOptions.MaxRetries attempts of this length plus backoff. A
+// per-attempt TryTimeout is tracked in
+// https://github.com/Azure/azure-sdk-for-go/issues/27269.
 func serverTimeoutMillis(ctx context.Context) uint {
 	timeout := defaultServerTimeout
+
 	if deadline, ok := ctx.Deadline(); ok {
-		timeout = time.Until(deadline)
+		timeout = time.Until(deadline) - serverTimeoutBuffer
 		if timeout < 0 {
-			// Context already expired; the RPC will return at ctx.Done() immediately,
-			// so the value is moot. Clamp to avoid an unsigned underflow.
+			// Less than the buffer remains, so the caller is about to give up anyway.
+			// Clamp to avoid an unsigned underflow.
 			timeout = 0
 		}
 	}
+
 	return uint(timeout / time.Millisecond)
 }
 
@@ -153,7 +174,9 @@ func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string
 
 	addAssociatedLinkName(linkName, msg)
 
-	msg.ApplicationProperties["server-timeout"] = serverTimeoutMillis(ctx)
+	// server-timeout is left to rpcLink.RPC, which sets the bare key for any
+	// com.microsoft: operation that has not chosen one. Computing it there keeps
+	// the value closer to the send, so it reflects the time actually left.
 
 	rsp, err := rpcLink.RPC(ctx, msg)
 	if err != nil {

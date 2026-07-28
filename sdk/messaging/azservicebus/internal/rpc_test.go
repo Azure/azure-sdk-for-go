@@ -60,8 +60,8 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 // for Service Bus management operations (those whose "operation" property has the
 // "com.microsoft:" prefix) and leaves CBS ($cbs put-token) requests untouched. It
 // also confirms the value equals serverTimeoutMillis(ctx): the remaining deadline
-// when one exists (never exceeding the client-side wait) or the 60s default when
-// the context has no deadline.
+// less serverTimeoutBuffer when one exists, so the broker's timeout fires before
+// the context does, or the 60s default when the context has no deadline.
 func TestRPCLinkServerTimeoutScoping(t *testing.T) {
 	newLink := func(t *testing.T) (*rpcLink, *rpcTester) {
 		tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000)}
@@ -79,7 +79,7 @@ func TestRPCLinkServerTimeoutScoping(t *testing.T) {
 		return []*rpcTestResp{{M: exampleMessageWithStatusCode(200)}}
 	}
 
-	t.Run("management op with deadline uses remaining time, not the 60s default", func(t *testing.T) {
+	t.Run("management op with deadline expires before the context does", func(t *testing.T) {
 		link, tester := newLink(t)
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
@@ -94,9 +94,11 @@ func TestRPCLinkServerTimeoutScoping(t *testing.T) {
 
 		st, ok := tester.SentMessages[0].ApplicationProperties["server-timeout"].(uint)
 		require.True(t, ok, "server-timeout must be set for a management op")
-		// ~10s remaining: never the 60s default, and never above the client-side deadline.
-		require.LessOrEqual(t, st, uint(10000))
-		require.Greater(t, st, uint(9000))
+		// ~10s remaining less the 1s buffer. The upper bound is below the deadline on
+		// purpose: sending the full remaining time would land near 10000 and fail here,
+		// and the 60s default would fail too.
+		require.LessOrEqual(t, st, uint(9000))
+		require.Greater(t, st, uint(8000))
 	})
 
 	t.Run("management op without deadline gets the 60s default", func(t *testing.T) {

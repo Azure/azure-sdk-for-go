@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
@@ -67,6 +69,24 @@ func GetAudience(clOpts *ClientOptions) string {
 	} else {
 		return strings.TrimRight(clOpts.Audience, "/") + "/.default"
 	}
+}
+
+// GetAzClient creates an *azcore.Client with the common pipeline configuration used by all blob clients.
+// Provide either cred or sharedKey for authentication, or both nil for anonymous/SAS access.
+func GetAzClient(cred azcore.TokenCredential, sharedKey *exported.SharedKeyCredential, conOptions *ClientOptions) (*azcore.Client, error) {
+	var plOpts runtime.PipelineOptions
+	if cred != nil {
+		audience := GetAudience(conOptions)
+		authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+		plOpts.PerRetry = []policy.Policy{authPolicy}
+	} else if sharedKey != nil {
+		authPolicy := exported.NewSharedKeyCredPolicy(sharedKey)
+		plOpts.PerRetry = []policy.Policy{authPolicy}
+	}
+	if p := NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
+	return azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 }
 
 func NewClient[T any](inner *T) *Client[T] {

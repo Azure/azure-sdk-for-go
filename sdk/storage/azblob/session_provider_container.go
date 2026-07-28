@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
@@ -52,11 +51,7 @@ func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string,
 	// Create a service client with sessions disabled to avoid recursive session creation.
 	svcOpts := *options
 	svcOpts.Session.Mode = exported.SessionModeDisabled
-	audience := base.GetAudience((*base.ClientOptions)(&svcOpts))
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, svcOpts.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
-
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &svcOpts.ClientOptions)
+	azClient, err := base.GetAzClient(cred, nil, (*base.ClientOptions)(&svcOpts))
 	if err != nil {
 		return nil, err
 	}
@@ -180,5 +175,3 @@ func (p *containerSessionProvider) getContainerClient(containerName string) *gen
 	containerURL := runtime.JoinPaths(p.genClient.Endpoint(), containerName)
 	return generated.NewContainerClient(containerURL, p.genClient.InternalClient())
 }
-
-

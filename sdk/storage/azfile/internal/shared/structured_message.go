@@ -208,8 +208,8 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 		msgHasher = crc64.New(CRC64Table)
 	}
 
-	for i := uint16(1); i <= numSegments; i++ {
-		segment, err := decodeSMSegment(smData, offset, i, hasCRC)
+	for i := uint32(1); i <= uint32(numSegments); i++ {
+		segment, err := decodeSMSegment(smData, offset, uint16(i), hasCRC)
 		if err != nil {
 			return SMDecodeResult{}, err
 		}

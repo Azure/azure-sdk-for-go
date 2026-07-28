@@ -143,6 +143,22 @@ type TransferValidationType = exported.TransferValidationType
 // TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
 type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5
 
+// TransferValidationTypeCRC64 is a TransferValidationType used to provide a precomputed CRC64.
+type TransferValidationTypeCRC64 = exported.TransferValidationTypeCRC64
+
+// TransferValidationTypeComputeCRC64 is a TransferValidationType that indicates
+// a CRC64 should be computed during transfer.
+func TransferValidationTypeComputeCRC64() TransferValidationType {
+	return exported.TransferValidationTypeComputeCRC64()
+}
+
+// TransferValidationTypeComputeStructuredMessageCRC64 is a TransferValidationType that computes
+// per-segment CRC64 checksums using the structured message binary format (XSM/1.0).
+// segmentSize specifies the maximum segment size in bytes. Values <= 0 use the default (4 MB).
+func TransferValidationTypeComputeStructuredMessageCRC64(segmentSize int) TransferValidationType {
+	return exported.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize)
+}
+
 // ShareTokenIntent is required if authorization header specifies an OAuth token.
 type ShareTokenIntent = generated.ShareTokenIntent
 

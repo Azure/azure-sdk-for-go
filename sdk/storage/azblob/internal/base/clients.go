@@ -4,6 +4,7 @@
 package base
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -77,7 +78,22 @@ func GetAzClient(cred azcore.TokenCredential, sharedKey *exported.SharedKeyCrede
 	var plOpts runtime.PipelineOptions
 	if cred != nil {
 		audience := GetAudience(conOptions)
-		authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+		bearerTokenPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
+		var authPolicy policy.Policy
+		if conOptions.Session.Mode == exported.SessionModeDisabled || conOptions.Session.Mode == exported.SessionModeDefault {
+			authPolicy = bearerTokenPolicy
+		} else if conOptions.Session.Mode == exported.SessionModeEnabled {
+			// Session Provider
+			var provider exported.SessionProvider
+			if conOptions.Session.Provider == nil {
+				// TODO : Build Session Provider for customer
+			} else {
+				provider = conOptions.Session.Provider
+			}
+			authPolicy = exported.NewSessionPolicy(provider, bearerTokenPolicy)
+		} else {
+			return nil, fmt.Errorf("unsupported session mode %v", conOptions.Session.Mode)
+		}
 		plOpts.PerRetry = []policy.Policy{authPolicy}
 	} else if sharedKey != nil {
 		authPolicy := exported.NewSharedKeyCredPolicy(sharedKey)

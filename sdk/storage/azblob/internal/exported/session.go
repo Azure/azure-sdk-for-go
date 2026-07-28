@@ -82,6 +82,6 @@ type SessionOptions struct {
 	// AccountName is the optional storage account name.
 	AccountName string
 
-	// SessionProvider is the optional session cache. If nil, a default client-scoped cache is used.
-	SessionProvider SessionProvider
+	// Provider is the optional session cache. If nil, a default client-scoped cache is used.
+	Provider SessionProvider
 }

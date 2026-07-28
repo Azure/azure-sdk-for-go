@@ -1,7 +1,8 @@
 # Release History
 
-## 1.0.0 (2026-07-24)
+## 0.1.0 (2026-07-28)
+### Other Changes
 
-### Features Added
+The package of `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery` is using our [next generation design principles](https://azure.github.io/azure-sdk/general_introduction.html).
 
-- Azure Resource Manager Discovery client library for Go API version 2026-06-01.
+To learn more, please refer to our documentation [Quick Start](https://aka.ms/azsdk/go/mgmt).

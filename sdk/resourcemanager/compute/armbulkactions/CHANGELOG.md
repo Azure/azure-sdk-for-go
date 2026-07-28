@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-07-22)
+## 0.2.0 (2026-07-30)
 ### Features Added
 
 - New value `ResourceOperationTypeGetInstanceView` added to enum type `ResourceOperationType`

@@ -8,7 +8,7 @@
 
 ### Bugs Fixed
 
-- Management operations (PeekMessages, ScheduleMessages, CancelScheduledMessages, and others) now send a `server-timeout` that expires one second before the caller's context, so the broker answers first and the caller gets a service-side timeout instead of `context deadline exceeded`. When the context has no deadline, each attempt is bounded at 60 seconds, so with the default of three retries the call is bounded at roughly five minutes including backoff rather than running until the link fails. Each value bounds a single attempt; a per-attempt timeout option is tracked in [#27269](https://github.com/Azure/azure-sdk-for-go/issues/27269). (#26421)
+- Management operations (PeekMessages, ScheduleMessages, CancelScheduledMessages, and others) now send a `server-timeout` that expires one second before the caller's context, so the broker answers first and the caller gets a service-side timeout instead of `context deadline exceeded`. When the context has no deadline, each attempt is bounded at 60 seconds, so with the default of three retries a call is bounded at roughly five minutes including backoff rather than running until the link fails. (#26421)
 - Read `com.microsoft:max-message-batch-size` vendor property from the AMQP sender link to correctly limit batch size on Premium large-message entities, where `max-message-size` can be up to 100 MB but the batch limit is 1 MB.
 
 ### Other Changes

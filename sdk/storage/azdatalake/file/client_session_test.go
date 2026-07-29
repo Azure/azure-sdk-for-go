@@ -1,0 +1,522 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package file_test
+
+import (
+	"bytes"
+	"context"
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"strings"
+	"sync"
+	"testing"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/service"
+	"github.com/stretchr/testify/require"
+)
+
+// sessionAuthTracker is a pipeline policy that tracks session-related and bearer token requests.
+// It is installed as a per-retry policy, so it observes traffic on both the DFS pipeline and the
+// inner blob pipeline.
+type sessionAuthTracker struct {
+	mu                 sync.Mutex
+	createSessionCount int
+	sessionAuthCount   int
+	bearerAuthCount    int
+}
+
+func (p *sessionAuthTracker) Do(req *policy.Request) (*http.Response, error) {
+	p.mu.Lock()
+
+	// a CreateSession request is a POST with comp=session
+	if req.Raw().Method == http.MethodPost && req.Raw().URL.Query().Get("comp") == "session" {
+		p.createSessionCount++
+	}
+
+	authHeader := req.Raw().Header.Get("Authorization")
+	switch {
+	case strings.HasPrefix(authHeader, "Session "):
+		p.sessionAuthCount++
+	case strings.HasPrefix(authHeader, "Bearer "):
+		p.bearerAuthCount++
+	}
+	p.mu.Unlock()
+
+	return req.Next()
+}
+
+func (p *sessionAuthTracker) counts() (createSessionCount, sessionAuthCount, bearerAuthCount int) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	return p.createSessionCount, p.sessionAuthCount, p.bearerAuthCount
+}
+
+// newSessionServiceClient builds a datalake service client backed by a token credential with
+// session-based authentication configured, optionally installing the supplied tracker.
+func newSessionServiceClient(t *testing.T, accountName string, mode azdatalake.SessionMode, tracker *sessionAuthTracker) (*service.Client, error) {
+	t.Helper()
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	require.NoError(t, err)
+
+	sessionOptions := &service.ClientOptions{
+		Session: azdatalake.SessionOptions{
+			Mode:        mode,
+			AccountName: accountName,
+		},
+	}
+	testcommon.SetClientOptions(t, &sessionOptions.ClientOptions)
+	if tracker != nil {
+		sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, tracker)
+	}
+
+	return service.NewClient(fmt.Sprintf("https://%s.dfs.core.windows.net/", accountName), cred, sessionOptions)
+}
+
+func (s *RecordedTestSuite) TestFileDownloadWithSessionOptions() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	// set up the filesystem and file with a shared key client
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	uploadData := []byte("test data for session download")
+
+	fClient := fsClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
+
+	// read it back with session-based authentication
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeEnabled, nil)
+	_require.NoError(err)
+
+	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+	resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.NoError(resp.Body.Close())
+	_require.Equal(uploadData, downloadedData)
+}
+
+func (s *RecordedTestSuite) TestFileDownloadWithSessionModeOff() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	uploadData := []byte("test data for session mode off")
+
+	fClient := fsClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
+
+	tracker := &sessionAuthTracker{}
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeDisabled, tracker)
+	_require.NoError(err)
+
+	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+	resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_ = resp.Body.Close()
+	_require.Equal(uploadData, downloadedData)
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when SessionModeDisabled")
+	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when SessionModeDisabled")
+}
+
+// The session scope is the filesystem, resolved from the request URL, so a client created for the
+// service endpoint acquires a session for whichever filesystem the request targets.
+func (s *RecordedTestSuite) TestFileDownloadWithSessionFilesystemResolvedFromURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	uploadData := []byte("test data for filesystem resolved session")
+
+	fClient := fsClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
+
+	tracker := &sessionAuthTracker{}
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeEnabled, tracker)
+	_require.NoError(err)
+
+	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+	resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_ = resp.Body.Close()
+	_require.Equal(uploadData, downloadedData)
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "Expected a session to be created for the filesystem in the request URL")
+	_require.Equal(1, sessionAuthCount, "Expected the download to use session authentication")
+}
+
+func (s *UnrecordedTestSuite) TestFileDownloadWithSessionOptionsConcurrentDownloads() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	const numFiles = 5
+	uploadData := []byte("test data for concurrent session download")
+	fileNames := make([]string, numFiles)
+
+	for i := 0; i < numFiles; i++ {
+		fileNames[i] = fmt.Sprintf("%s-file-%d", testcommon.GenerateFileName(testName), i)
+		fClient := fsClient.NewFileClient(fileNames[i])
+		_, err = fClient.Create(context.Background(), nil)
+		_require.NoError(err)
+		_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
+	}
+
+	tracker := &sessionAuthTracker{}
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeEnabled, tracker)
+	_require.NoError(err)
+
+	sessionFSClient := sessionSvcClient.NewFileSystemClient(fsName)
+
+	var wg sync.WaitGroup
+	errChan := make(chan error, numFiles)
+
+	for i := 0; i < numFiles; i++ {
+		wg.Add(1)
+		go func(fileName string) {
+			defer wg.Done()
+			sessionFileClient := sessionFSClient.NewFileClient(fileName)
+			resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			downloadedData, err := io.ReadAll(resp.Body)
+			if err != nil {
+				errChan <- err
+				return
+			}
+			_ = resp.Body.Close()
+			if !bytes.Equal(uploadData, downloadedData) {
+				errChan <- fmt.Errorf("downloaded data mismatch for file %s", fileName)
+			}
+		}(fileNames[i])
+	}
+
+	wg.Wait()
+	close(errChan)
+
+	for err := range errChan {
+		_require.NoError(err)
+	}
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "Expected exactly one CreateSession call due to caching")
+	_require.Equal(numFiles, sessionAuthCount, "Expected all downloads to use session authentication")
+}
+
+func (s *UnrecordedTestSuite) TestFileDownloadWithSessionOptionsLargeFileDownloadBuffer() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	// a 10 MB file downloads in multiple chunks
+	fileName := testcommon.GenerateFileName(testName)
+	const fileSize = 10 * 1024 * 1024
+	uploadData := make([]byte, fileSize)
+	for i := range uploadData {
+		uploadData[i] = byte(i % 256)
+	}
+
+	fClient := fsClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
+
+	tracker := &sessionAuthTracker{}
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeEnabled, tracker)
+	_require.NoError(err)
+
+	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+
+	buffer := make([]byte, fileSize)
+	downloaded, err := sessionFileClient.DownloadBuffer(context.Background(), buffer, &file.DownloadBufferOptions{
+		ChunkSize:   4 * 1024 * 1024,
+		Concurrency: 2,
+	})
+	_require.NoError(err)
+	_require.Equal(int64(fileSize), downloaded)
+	_require.Equal(uploadData, buffer)
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "Expected exactly one CreateSession call")
+	_require.Greater(sessionAuthCount, 0, "Expected at least one request with session authentication")
+}
+
+func (s *UnrecordedTestSuite) TestFileDownloadWithSessionOptionsLargeFileDownloadFile() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	const fileSize = 10 * 1024 * 1024
+	uploadData := make([]byte, fileSize)
+	for i := range uploadData {
+		uploadData[i] = byte(i % 256)
+	}
+
+	fClient := fsClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
+
+	tracker := &sessionAuthTracker{}
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeEnabled, tracker)
+	_require.NoError(err)
+
+	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+
+	tmpFile, err := os.CreateTemp("", "session-download-test-*")
+	_require.NoError(err)
+	defer func() {
+		_ = tmpFile.Close()
+		_ = os.Remove(tmpFile.Name())
+	}()
+
+	downloaded, err := sessionFileClient.DownloadFile(context.Background(), tmpFile, &file.DownloadFileOptions{
+		ChunkSize:   4 * 1024 * 1024,
+		Concurrency: 2,
+	})
+	_require.NoError(err)
+	_require.Equal(int64(fileSize), downloaded)
+
+	_, err = tmpFile.Seek(0, io.SeekStart)
+	_require.NoError(err)
+	downloadedData, err := io.ReadAll(tmpFile)
+	_require.NoError(err)
+	_require.Equal(uploadData, downloadedData)
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "Expected exactly one CreateSession call")
+	_require.Greater(sessionAuthCount, 0, "Expected at least one request with session authentication")
+}
+
+func (s *UnrecordedTestSuite) TestFileDownloadWithSessionOptionsMultipleFilesSingleSession() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileData := []byte("test data for multiple file session download")
+	fileNames := make([]string, 4)
+	for i := range fileNames {
+		fileNames[i] = fmt.Sprintf("%s-%d", testcommon.GenerateFileName(testName), i)
+		fClient := fsClient.NewFileClient(fileNames[i])
+		_, err = fClient.Create(context.Background(), nil)
+		_require.NoError(err)
+		_require.NoError(fClient.UploadBuffer(context.Background(), fileData, nil))
+	}
+
+	tracker := &sessionAuthTracker{}
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeEnabled, tracker)
+	_require.NoError(err)
+
+	sessionFSClient := sessionSvcClient.NewFileSystemClient(fsName)
+
+	for _, fileName := range fileNames {
+		sessionFileClient := sessionFSClient.NewFileClient(fileName)
+		resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+		_require.NoError(err)
+
+		downloadedData, err := io.ReadAll(resp.Body)
+		_require.NoError(err)
+		_require.NoError(resp.Body.Close())
+		_require.Equal(fileData, downloadedData)
+	}
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "expected only one session to be created")
+	_require.Equal(len(fileNames), sessionAuthCount, "expected each read to use session auth")
+}
+
+func (s *RecordedTestSuite) TestFileRandomRestCallsUseBearerExceptGetUsesSession() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient := fsClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), []byte("hello world"), nil))
+
+	tracker := &sessionAuthTracker{}
+	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeEnabled, tracker)
+	_require.NoError(err)
+
+	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+
+	// a read is eligible for session auth
+	resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+	_, err = io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.NoError(resp.Body.Close())
+
+	// everything else falls back to bearer auth
+	_, _ = sessionFileClient.SetMetadata(context.Background(), map[string]*string{"a": to.Ptr("b")}, nil)
+	_, _ = sessionFileClient.SetHTTPHeaders(context.Background(), file.HTTPHeaders{
+		ContentType: to.Ptr("text/plain"),
+	}, nil)
+	_, _ = sessionFileClient.GetProperties(context.Background(), nil)
+
+	createSessionCount, sessionAuthCount, bearerAuthCount := tracker.counts()
+
+	_require.Equal(1, createSessionCount, "expected a session to be created")
+	_require.Equal(1, sessionAuthCount, "expected the read to use session auth")
+	// the CreateSession call plus the three non-read operations all use bearer auth
+	_require.GreaterOrEqual(bearerAuthCount, 4, "expected non-read REST calls to use bearer auth")
+}
+
+// TestSessionProviderUsesBlobEndpoint asserts that sessions are minted against the blob endpoint
+// even when the caller supplies a DFS URL, since CreateSession is a blob endpoint operation.
+func TestSessionProviderUsesBlobEndpoint(t *testing.T) {
+	_require := require.New(t)
+
+	transport := &endpointRecordingTransport{}
+	opts := &azdatalake.ClientOptions{}
+	opts.Transport = transport
+	opts.Retry = policy.RetryOptions{MaxRetries: -1}
+
+	cred := &staticTokenCredential{}
+	provider, err := azdatalake.NewFilesystemSessionProvider(cred, "https://fakeaccount.dfs.core.windows.net/myfs/myfile", opts)
+	_require.NoError(err)
+	_require.NotNil(provider)
+
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet,
+		"https://fakeaccount.dfs.core.windows.net/myfs/myfile", nil)
+	_require.NoError(err)
+
+	_, _ = provider.GetSession(req)
+
+	_require.NotEmpty(transport.hosts, "the provider must attempt a CreateSession call")
+	_require.Contains(transport.hosts[0], ".blob.", "CreateSession must target the blob endpoint")
+	_require.NotContains(transport.hosts[0], ".dfs.")
+}
+
+// endpointRecordingTransport records the host of every request it sees.
+type endpointRecordingTransport struct {
+	mu    sync.Mutex
+	hosts []string
+}
+
+func (e *endpointRecordingTransport) Do(req *http.Request) (*http.Response, error) {
+	e.mu.Lock()
+	e.hosts = append(e.hosts, req.URL.Host)
+	e.mu.Unlock()
+	return &http.Response{
+		StatusCode: http.StatusServiceUnavailable,
+		Status:     http.StatusText(http.StatusServiceUnavailable),
+		Header:     http.Header{},
+		Body:       io.NopCloser(strings.NewReader("")),
+		Request:    req,
+	}, nil
+}
+
+// staticTokenCredential hands out a fixed token so no identity provider is contacted.
+type staticTokenCredential struct{}
+
+func (staticTokenCredential) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{Token: "fake-token", ExpiresOn: time.Now().Add(time.Hour)}, nil
+}

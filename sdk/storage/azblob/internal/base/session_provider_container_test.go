@@ -8,6 +8,7 @@ import (
 	"errors"
 	"net/http"
 	"net/url"
+	"sync"
 	"testing"
 	"time"
 
@@ -420,6 +421,83 @@ func TestInvalidateSession(t *testing.T) {
 	second, err := provider.GetSession(req)
 	require.NoError(t, err)
 	require.Equal(t, "token-two", second.Token())
+	require.Equal(t, 2, srv.Requests())
+}
+
+func TestGetSessionConcurrentCallsCreateOneSession(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	// only one CreateSession response is queued; a second call would panic the mock server
+	appendSessionResponse(srv, "key-one", "token-one", time.Now().Add(time.Hour))
+
+	provider := newTestSessionProvider(t, srv)
+
+	const goroutines = 8
+	var wg sync.WaitGroup
+	results := make([]exported.SessionCredential, goroutines)
+	errs := make([]error, goroutines)
+
+	for i := 0; i < goroutines; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			results[i], errs[i] = provider.GetSession(newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob"))
+		}(i)
+	}
+	wg.Wait()
+
+	for i := 0; i < goroutines; i++ {
+		require.NoError(t, errs[i])
+		require.Equal(t, "token-one", results[i].Token())
+	}
+	require.Equal(t, 1, srv.Requests(), "concurrent callers must share a single CreateSession call")
+}
+
+func TestGetSessionReacquiresExpiredSession(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	// The first session is already expired, so the next call re-acquires unconditionally. Note
+	// that a session merely *nearing* expiry is refreshed eagerly at most once every 30 seconds,
+	// so that path can't be driven deterministically from here.
+	appendSessionResponse(srv, "key-one", "token-one", time.Now().Add(-time.Minute))
+	appendSessionResponse(srv, "key-two", "token-two", time.Now().Add(time.Hour))
+
+	provider := newTestSessionProvider(t, srv)
+	req := newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob")
+
+	first, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-one", first.Token())
+
+	second, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-two", second.Token(), "an expired session must be re-acquired")
+	require.Equal(t, 2, srv.Requests())
+}
+
+func TestGetSessionErrorIsNotCached(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	// a hard failure is not a fallback decision, so it must not be cached
+	srv.AppendResponse(
+		mock.WithStatusCode(http.StatusNotFound),
+		mock.WithHeader("x-ms-error-code", "ContainerNotFound"),
+		mock.WithBody(createErrorResponseXML("ContainerNotFound", "Container not found")),
+	)
+	appendSessionResponse(srv, "key-one", "token-one", time.Now().Add(time.Hour))
+
+	provider := newTestSessionProvider(t, srv)
+	req := newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob")
+
+	_, err := provider.GetSession(req)
+	require.Error(t, err)
+
+	creds, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-one", creds.Token())
 	require.Equal(t, 2, srv.Requests())
 }
 

@@ -4,11 +4,9 @@
 package exported
 
 import (
-	"errors"
 	"net/http"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
@@ -41,12 +39,9 @@ func (p *sessionPolicy) Do(req *policy.Request) (*http.Response, error) {
 
 	if !sessionCreds.Fallback() {
 		resp, err := p.applySessionReq(req, sessionCreds)
-		if err == nil {
-			return resp, nil
-		}
-
-		var respErr *azcore.ResponseError
-		if !errors.As(err, &respErr) || respErr.StatusCode != http.StatusUnauthorized {
+		// a 401 means the service rejected the session; the pipeline surfaces the response
+		// without an error, so the status code is what's checked here
+		if err != nil || resp.StatusCode != http.StatusUnauthorized {
 			return resp, err
 		}
 

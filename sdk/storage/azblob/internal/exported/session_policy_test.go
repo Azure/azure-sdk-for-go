@@ -120,6 +120,17 @@ func (r *recordingTransport) Do(req *http.Request) (*http.Response, error) {
 	return resp, nil
 }
 
+// errorTransport always fails, simulating a network-level failure.
+type errorTransport struct {
+	err   error
+	calls int
+}
+
+func (e *errorTransport) Do(*http.Request) (*http.Response, error) {
+	e.calls++
+	return nil, e.err
+}
+
 // faultPolicy sits below the session policy and converts the response it receives into an
 // *azcore.ResponseError. The pipeline itself never turns a status code into an error; that
 // happens in the generated client code above the pipeline, so tests have to simulate it to
@@ -311,9 +322,9 @@ func TestSessionPolicyInvalidSessionKeyReturnsError(t *testing.T) {
 	require.Equal(t, 0, bearer.doCalls)
 }
 
-// A 401 status alone does not reach the session-rejected path: the pipeline surfaces the response
-// without an error, so the policy returns it as-is.
-func TestSessionPolicyUnauthorizedResponseWithoutErrorIsReturned(t *testing.T) {
+// A 401 response is the service rejecting the session, even though the pipeline surfaces it
+// without an error. The session must be discarded and the request retried with bearer auth.
+func TestSessionPolicyInvalidatesSessionOnUnauthorizedResponse(t *testing.T) {
 	provider := newEligibleProvider()
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
@@ -322,12 +333,47 @@ func TestSessionPolicyUnauthorizedResponseWithoutErrorIsReturned(t *testing.T) {
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.NoError(t, err)
-	require.Equal(t, http.StatusUnauthorized, resp.StatusCode)
+	require.Equal(t, http.StatusOK, resp.StatusCode, "the bearer token response is returned")
+
+	require.Equal(t, 1, provider.invalidateCalls, "the rejected session must be discarded")
+	require.Equal(t, testSessionToken, provider.invalidatedWith.Token())
+	require.Equal(t, 1, bearer.doCalls)
+}
+
+// A non-401 response without an error is returned unchanged.
+func TestSessionPolicyNonUnauthorizedResponseIsReturned(t *testing.T) {
+	provider := newEligibleProvider()
+	bearer := &mockBearerPolicy{}
+	transport := &recordingTransport{statusCode: http.StatusNotFound}
+
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+
+	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
+	require.NoError(t, err)
+	require.Equal(t, http.StatusNotFound, resp.StatusCode)
 	require.Equal(t, 0, provider.invalidateCalls)
 	require.Equal(t, 0, bearer.doCalls)
 }
 
-func TestSessionPolicyInvalidatesSessionAndFallsBackOnUnauthorized(t *testing.T) {
+// A transport error is not a rejected session, so it propagates untouched.
+func TestSessionPolicyTransportErrorPropagates(t *testing.T) {
+	expectedErr := errors.New("connection reset")
+	provider := newEligibleProvider()
+	bearer := &mockBearerPolicy{}
+	transport := &errorTransport{err: expectedErr}
+
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+
+	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
+	require.ErrorIs(t, err, expectedErr)
+	require.Nil(t, resp)
+	require.Equal(t, 0, provider.invalidateCalls)
+	require.Equal(t, 0, bearer.doCalls)
+}
+
+// An error takes precedence over the status code: the request already failed, so the session is
+// left alone and the error is returned to the caller.
+func TestSessionPolicyUnauthorizedWithErrorIsReturned(t *testing.T) {
 	provider := newEligibleProvider()
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
@@ -336,13 +382,11 @@ func TestSessionPolicyInvalidatesSessionAndFallsBackOnUnauthorized(t *testing.T)
 	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport, fault)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
-	require.NoError(t, err)
-	require.Equal(t, http.StatusOK, resp.StatusCode, "the bearer token response is returned")
-
-	require.Equal(t, 1, provider.getCalls)
-	require.Equal(t, 1, provider.invalidateCalls, "the rejected session must be discarded")
-	require.Equal(t, testSessionToken, provider.invalidatedWith.Token())
-	require.Equal(t, 1, bearer.doCalls)
+	require.Error(t, err)
+	require.NotNil(t, resp)
+	require.Equal(t, http.StatusUnauthorized, resp.StatusCode)
+	require.Equal(t, 0, provider.invalidateCalls)
+	require.Equal(t, 0, bearer.doCalls)
 }
 
 func TestSessionPolicyRewindsBodyBeforeBearerFallback(t *testing.T) {
@@ -351,9 +395,8 @@ func TestSessionPolicyRewindsBodyBeforeBearerFallback(t *testing.T) {
 	provider := newEligibleProvider()
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
-	fault := &faultPolicy{statusCode: http.StatusUnauthorized, errorCode: "AuthenticationFailed"}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport, fault)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
 
 	req := newTestPolicyRequest(t, http.MethodGet, testBlobURL)
 	require.NoError(t, req.SetBody(streaming.NopCloser(bytes.NewReader(body)), "application/octet-stream"))
@@ -393,9 +436,8 @@ func TestSessionPolicyInvalidateSessionErrorPropagates(t *testing.T) {
 
 	bearer := &mockBearerPolicy{}
 	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
-	fault := &faultPolicy{statusCode: http.StatusUnauthorized, errorCode: "AuthenticationFailed"}
 
-	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport, fault)
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
 
 	resp, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
 	require.ErrorIs(t, err, expectedErr)

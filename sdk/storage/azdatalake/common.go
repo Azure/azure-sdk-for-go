@@ -9,6 +9,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
 )
 
@@ -124,5 +125,7 @@ func NewFilesystemSessionProvider(cred azcore.TokenCredential, storageURL string
 		}
 		blobOpts = &converted
 	}
-	return azblob.NewContainerSessionProvider(cred, storageURL, blobOpts)
+	// sessions are created and consumed on the blob endpoint, so a DFS URL is converted first
+	blobURL, _ := shared.GetURLs(storageURL)
+	return azblob.NewContainerSessionProvider(cred, blobURL, blobOpts)
 }

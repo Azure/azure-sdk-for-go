@@ -68,6 +68,9 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 	options.PerCallPolicies = perCallPolicies
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
+		// session-based authentication is served by the blob endpoint, so it is configured on
+		// the inner blob client rather than the DFS pipeline
+		Session: options.Session,
 	}
 	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))

@@ -63,6 +63,9 @@ func NewClient(directoryURL string, cred azcore.TokenCredential, options *Client
 	options.PerCallPolicies = perCallPolicies
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
+		// session-based authentication is served by the blob endpoint, so it is configured on
+		// the inner blob client rather than the DFS pipeline
+		Session: options.Session,
 	}
 	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
 	dirClient := base.NewPathClient(directoryURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))

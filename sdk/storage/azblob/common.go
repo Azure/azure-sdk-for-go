@@ -68,6 +68,11 @@ const (
 	SessionModeEnabled = exported.SessionModeEnabled
 )
 
+// PossibleSessionModeValues returns the possible values for the SessionMode const type.
+func PossibleSessionModeValues() []SessionMode {
+	return exported.PossibleSessionModeValues()
+}
+
 // SessionOptions configures session-based authentication behavior.
 type SessionOptions = exported.SessionOptions
 

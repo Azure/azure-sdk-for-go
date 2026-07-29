@@ -19,14 +19,16 @@ const (
 	SessionModeEnabled = azblob.SessionModeEnabled
 )
 
+// PossibleSessionModeValues returns the possible values for the SessionMode const type.
+func PossibleSessionModeValues() []SessionMode {
+	return azblob.PossibleSessionModeValues()
+}
+
 // SessionOptions configures session-based authentication behavior.
 type SessionOptions = azblob.SessionOptions
 
 // SessionCredential contains session authentication credentials.
 type SessionCredential = azblob.SessionCredential
-
-// SessionContext contains context for session operations.
-type SessionContext = azblob.SessionContext
 
 // SessionProvider is the interface for session-based authentication providers.
 type SessionProvider = azblob.SessionProvider

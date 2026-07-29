@@ -1,12 +1,26 @@
 <!-- cspell:ignore amd64 arm64 azcosmos azcosmoscore checksums glibc GOARCH GOOS libc LDFLAGS libazurecosmos librdkafka metapackage musl onnxruntime SRCDIR -->
 # Go FFI native-driver distribution design
 
-> **Status:** Design discussion for Go Central SDK and architecture-board review.
+> **Status:** Decided — Option C selected. Retained for Go Central SDK and
+> architecture-board review of the rationale and considered options.
 >
 > This document captures the native-driver distribution problem for a Go SDK
 > backed by the Rust Cosmos driver through FFI. It focuses on customer
 > experience, Go module layout, native binary placement, and the trade-offs that
 > need Go Central SDK alignment.
+
+## Decision
+
+**We are going with Option C: split modules, native drivers in a separate
+Azure-owned repository ([§7](#7-option-c-split-modules-native-drivers-in-a-separate-repository)).**
+The public `azcosmos` SDK stays in `azure-sdk-for-go`; the platform-specific
+native driver binaries live in a separate Azure-owned repository and are pulled
+in as normal Go modules through build-tagged imports, so the customer flow stays
+plain `go get` / `go build`.
+
+Options A and B and the alternatives below are retained as the considered-options
+trail and rationale for this choice — readers who only want the selected model
+can jump straight to [§7](#7-option-c-split-modules-native-drivers-in-a-separate-repository).
 
 ## 1. Problem statement
 
@@ -379,8 +393,8 @@ only the current platform's native driver.
 ## 7. Option C: split modules, native drivers in a separate repository
 
 This keeps the customer-facing SDK in `azure-sdk-for-go`, but moves the binary
-payload modules to a separate Azure-owned repository. This is the preferred
-direction for further design because it keeps the large binaries out of the
+payload modules to a separate Azure-owned repository. **This is the selected
+distribution model for Go v2** because it keeps the large binaries out of the
 Azure SDK for Go repository without changing the common customer flow.
 
 ```text
@@ -699,9 +713,9 @@ These are the questions that likely need board-level alignment:
 ## 15. Current read
 
 The split-module design with native driver modules in a **separate Azure-owned
-repository** is the strongest candidate for discussion. It preserves the
-common-platform customer experience while keeping large binary artifacts out of
-the Azure SDK for Go repository.
+repository** (Option C) is the selected model. It preserves the common-platform
+customer experience while keeping large binary artifacts out of the Azure SDK
+for Go repository.
 
 ```text
 Common path:

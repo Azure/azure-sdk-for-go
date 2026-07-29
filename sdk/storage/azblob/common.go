@@ -4,6 +4,8 @@
 package azblob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
@@ -72,9 +74,14 @@ type SessionOptions = exported.SessionOptions
 // SessionCredential contains session authentication credentials.
 type SessionCredential = exported.SessionCredential
 
-// SessionContext contains context for session operations.
-type SessionContext = exported.SessionContext
-
 // SessionProvider is the interface for session-based authentication providers.
 type SessionProvider = exported.SessionProvider
 
+// NewContainerSessionProvider creates a SessionProvider that manages container-scoped sessions
+// using the provided token credential.
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - storageURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
+//   - options - client options; pass nil to accept the default values
+func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string, options *ClientOptions) (SessionProvider, error) {
+	return base.NewContainerSessionProvider(cred, storageURL, (*base.ClientOptions)(options))
+}

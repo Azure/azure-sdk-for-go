@@ -33,7 +33,7 @@ type Client base.CompositeClient[generated.BlobClient, generated.AppendBlobClien
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := base.GetAzClient(cred, nil, (*base.ClientOptions)(conOptions))
+	azClient, err := base.GetAzClient(blobURL, cred, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := base.GetAzClient(nil, nil, (*base.ClientOptions)(conOptions))
+	azClient, err := base.GetAzClient(blobURL, nil, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := base.GetAzClient(nil, cred, (*base.ClientOptions)(conOptions))
+	azClient, err := base.GetAzClient(blobURL, nil, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}

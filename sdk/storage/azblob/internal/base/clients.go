@@ -74,7 +74,7 @@ func GetAudience(clOpts *ClientOptions) string {
 
 // GetAzClient creates an *azcore.Client with the common pipeline configuration used by all blob clients.
 // Provide either cred or sharedKey for authentication, or both nil for anonymous/SAS access.
-func GetAzClient(cred azcore.TokenCredential, sharedKey *exported.SharedKeyCredential, conOptions *ClientOptions) (*azcore.Client, error) {
+func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *exported.SharedKeyCredential, conOptions *ClientOptions) (*azcore.Client, error) {
 	var plOpts runtime.PipelineOptions
 	if cred != nil {
 		audience := GetAudience(conOptions)
@@ -85,12 +85,30 @@ func GetAzClient(cred azcore.TokenCredential, sharedKey *exported.SharedKeyCrede
 		} else if conOptions.Session.Mode == exported.SessionModeEnabled {
 			// Session Provider
 			var provider exported.SessionProvider
+			var accountName string
 			if conOptions.Session.Provider == nil {
-				// TODO : Build Session Provider for customer
+				svcURL, err := shared.GetServiceURL(serviceURL)
+				if err != nil {
+					return nil, fmt.Errorf("session mode is enabled but service URL could not be determined: %w", err)
+				}
+				p, err := NewContainerSessionProvider(cred, svcURL, conOptions)
+				if err != nil {
+					return nil, fmt.Errorf("failed to create default session provider: %w", err)
+				}
+				provider = p
 			} else {
 				provider = conOptions.Session.Provider
 			}
-			authPolicy = exported.NewSessionPolicy(provider, bearerTokenPolicy)
+			if conOptions.Session.AccountName == "" {
+				name, err := shared.GetAccountName(serviceURL)
+				if err != nil {
+					return nil, fmt.Errorf("session mode is enabled but account name could not be determined from URL: %w. Please explicitly pass in options.Session.AccountName", err)
+				}
+				accountName = name
+			} else {
+				accountName = conOptions.Session.AccountName
+			}
+			authPolicy = exported.NewSessionPolicy(accountName, provider, bearerTokenPolicy)
 		} else {
 			return nil, fmt.Errorf("unsupported session mode %v", conOptions.Session.Mode)
 		}

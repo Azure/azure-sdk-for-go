@@ -285,6 +285,72 @@ func GetServiceURL(storageURL string) (string, error) {
 	return u.String(), nil
 }
 
+// GetAccountName extracts the storage account name from a service, container, or blob URL.
+// For standard-style endpoints (e.g., "https://account.blob.core.windows.net/..."), the account
+// name is the first subdomain of the host.
+// For IP-style endpoints (e.g., "https://127.0.0.1:10000/account/..."), the account name is the
+// first path segment.
+// Returns an error if the account name cannot be determined.
+func GetAccountName(storageURL string) (string, error) {
+	u, err := url.Parse(storageURL)
+	if err != nil {
+		return "", fmt.Errorf("failed to parse storage URL: %w", err)
+	}
+
+	if IsIPEndpointStyle(u.Host) {
+		// IP-style: scheme://IP:port/accountName/container/blob...
+		path := strings.TrimPrefix(u.Path, "/")
+		if path == "" {
+			return "", errors.New("IP-style endpoint URL is missing the account name path segment")
+		}
+		parts := strings.SplitN(path, "/", 2)
+		if parts[0] == "" {
+			return "", errors.New("IP-style endpoint URL is missing the account name path segment")
+		}
+		return parts[0], nil
+	}
+
+	// Standard-style: scheme://account.blob.core.windows.net/...
+	host := u.Hostname()
+	dotIndex := strings.Index(host, ".")
+	if dotIndex <= 0 {
+		return "", fmt.Errorf("could not determine account name from host %q", host)
+	}
+	return host[:dotIndex], nil
+}
+
+// GetContainerAndBlobName splits a parsed container or blob URL into its container and blob names.
+// For standard-style endpoints (e.g. "https://account.blob.core.windows.net/container/blob") the
+// container is the first path segment. For IP-style endpoints (e.g.
+// "https://127.0.0.1:10000/account/container/blob") the first path segment is the account name, so
+// the container is the second.
+// blob is empty when the URL addresses a container rather than a blob.
+// It accepts the parsed URL rather than a string so callers on the request path do not have to
+// re-serialize and re-parse a URL they already hold.
+// Returns an error if the container name cannot be determined.
+func GetContainerAndBlobName(u *url.URL) (container string, blob string, err error) {
+	if u == nil {
+		return "", "", errors.New("a URL is required to determine the container name")
+	}
+
+	path := strings.TrimPrefix(u.Path, "/")
+	if IsIPEndpointStyle(u.Host) {
+		// IP-style: scheme://IP:port/accountName/container/blob...
+		// drop the account name segment
+		_, remainder, found := strings.Cut(path, "/")
+		if !found {
+			return "", "", errors.New("IP-style endpoint URL is missing the container name path segment")
+		}
+		path = remainder
+	}
+
+	container, blob, _ = strings.Cut(path, "/")
+	if container == "" {
+		return "", "", errors.New("URL is missing the container name path segment")
+	}
+	return container, blob, nil
+}
+
 // ReadAtLeast reads from r into buf until it has read at least min bytes.
 // It returns the number of bytes copied and an error.
 // The EOF error is returned if no bytes were read or

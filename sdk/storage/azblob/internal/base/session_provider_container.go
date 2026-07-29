@@ -1,13 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package azblob
+package base
 
 import (
 	"context"
 	"errors"
 	"net/http"
-	"strings"
 	"sync"
 	"time"
 
@@ -15,13 +14,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 )
 
 const featureNotEnabled = "FeatureNotEnabled"
+
+// cooldown durations applied when the service indicates sessions are unavailable.
+const (
+	transientFailureCooldown   = time.Minute
+	featureUnavailableCooldown = 24 * time.Hour
+)
 
 // containerSessionProvider implements SessionProvider for container-scoped token credential sessions.
 type containerSessionProvider struct {
@@ -30,7 +34,7 @@ type containerSessionProvider struct {
 	options   *ClientOptions
 	genClient *generated.ServiceClient
 
-	// sessions maps container names to their temporal.Resource for session credentials.
+	// sessions maps container names to their cached session credential.
 	sessions sync.Map // map[string]*temporal.Resource[exported.SessionCredential, context.Context]
 }
 
@@ -39,7 +43,7 @@ type containerSessionProvider struct {
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - storageURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
 //   - options - client options; pass nil to accept the default values
-func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string, options *ClientOptions) (SessionProvider, error) {
+func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string, options *ClientOptions) (exported.SessionProvider, error) {
 	if options == nil {
 		options = &ClientOptions{}
 	}
@@ -51,7 +55,7 @@ func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string,
 	// Create a service client with sessions disabled to avoid recursive session creation.
 	svcOpts := *options
 	svcOpts.Session.Mode = exported.SessionModeDisabled
-	azClient, err := base.GetAzClient(cred, nil, (*base.ClientOptions)(&svcOpts))
+	azClient, err := GetAzClient(svcURL, cred, nil, &svcOpts)
 	if err != nil {
 		return nil, err
 	}
@@ -64,22 +68,29 @@ func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string,
 	}, nil
 }
 
-// GetSession returns a cached session credential for the given container, refreshing it if expired.
-func (p *containerSessionProvider) GetSession(ctx context.Context, sessionCtx SessionContext) (SessionCredential, error) {
-	resource := p.getOrCreateResource(sessionCtx.ContainerName)
-	return resource.Get(ctx)
+// GetSession returns a cached session credential for the request's container, refreshing it if expired.
+func (p *containerSessionProvider) GetSession(req *http.Request) (exported.SessionCredential, error) {
+	resource, err := p.resourceForRequest(req)
+	if err != nil {
+		return exported.SessionCredential{}, err
+	}
+	return resource.Get(req.Context())
 }
 
-// InvalidateSession marks the session for the given container as expired, forcing a refresh on the next call.
-// It only invalidates if the stored session matches current to avoid invalidating an already-refreshed session.
-func (p *containerSessionProvider) InvalidateSession(sessionCtx SessionContext, current SessionCredential) error {
-	if v, ok := p.sessions.Load(sessionCtx.ContainerName); ok {
-		resource := v.(*temporal.Resource[exported.SessionCredential, context.Context])
-		stored, err := resource.Get(context.Background())
-		if err == nil && stored.Token() == current.Token() {
-			resource.Expire()
-		}
+// InvalidateSession discards the cached session for the request's container so that a new one is
+// acquired on the next call to GetSession.
+//
+// The current credential is ignored: a request that failed with a rejected session may report it
+// after the session has already been replaced, in which case this discards a valid replacement and
+// costs an extra acquisition. That is bounded by the number of requests already in flight with the
+// old session, so it is accepted in exchange for not shadowing the cached token. Implementations
+// that can compare against the cached session may use current to skip such stale invalidations.
+func (p *containerSessionProvider) InvalidateSession(req *http.Request, _ exported.SessionCredential) error {
+	resource, err := p.resourceForRequest(req)
+	if err != nil {
+		return err
 	}
+	resource.Expire()
 	return nil
 }
 
@@ -99,18 +110,21 @@ func (p *containerSessionProvider) IsRequestEligible(req *http.Request) bool {
 		return false
 	}
 
-	// Path format: /<container>/<blob>
-	path := strings.TrimPrefix(u.Path, "/")
-	if path == "" {
-		return false
-	}
+	// A session is scoped to a container, and only blob-level requests are eligible.
+	_, blob, err := shared.GetContainerAndBlobName(u)
+	return err == nil && blob != ""
+}
 
-	parts := strings.SplitN(path, "/", 2)
-	if len(parts) < 2 || parts[0] == "" || parts[1] == "" {
-		return false
+// resourceForRequest resolves the container for the request and returns its session resource.
+func (p *containerSessionProvider) resourceForRequest(req *http.Request) (*temporal.Resource[exported.SessionCredential, context.Context], error) {
+	if req == nil {
+		return nil, errors.New("request URL is required to determine the session container")
 	}
-
-	return true
+	containerName, _, err := shared.GetContainerAndBlobName(req.URL)
+	if err != nil {
+		return nil, err
+	}
+	return p.getOrCreateResource(containerName), nil
 }
 
 // getOrCreateResource returns the temporal.Resource for the given container, creating one if needed.
@@ -128,6 +142,8 @@ func (p *containerSessionProvider) getOrCreateResource(containerName string) *te
 }
 
 // acquireSession is the function called by temporal.Resource to create a new session.
+// When the service indicates that session creation is unavailable, a fallback credential is
+// returned so the decision is cached for the duration of its expiry rather than retried per request.
 func acquireSession(client *generated.ContainerClient) func(context.Context) (exported.SessionCredential, time.Time, error) {
 	return func(ctx context.Context) (creds exported.SessionCredential, expiry time.Time, err error) {
 		resp, err := client.CreateSession(ctx, generated.CreateSessionConfiguration{AuthenticationType: to.Ptr(generated.AuthenticationTypeHMAC)}, nil)
@@ -135,15 +151,13 @@ func acquireSession(client *generated.ContainerClient) func(context.Context) (ex
 		if err != nil {
 			var respErr *azcore.ResponseError
 			if errors.As(err, &respErr) {
-				if respErr.StatusCode >= 500 {
-					errorExpiry := time.Now().Add(1 * time.Minute)
+				switch {
+				case respErr.StatusCode >= 500:
+					errorExpiry := time.Now().Add(transientFailureCooldown)
 					return exported.NewSessionCredentialFallback(errorExpiry), errorExpiry, nil
-				}
-				errorExpiry := time.Now().Add(24 * time.Hour)
-				if respErr.StatusCode == http.StatusBadRequest && respErr.ErrorCode == featureNotEnabled {
-					return exported.NewSessionCredentialFallback(errorExpiry), errorExpiry, nil
-				}
-				if respErr.StatusCode == http.StatusForbidden {
+				case respErr.StatusCode == http.StatusBadRequest && respErr.ErrorCode == featureNotEnabled,
+					respErr.StatusCode == http.StatusForbidden:
+					errorExpiry := time.Now().Add(featureUnavailableCooldown)
 					return exported.NewSessionCredentialFallback(errorExpiry), errorExpiry, nil
 				}
 			}
@@ -168,6 +182,12 @@ func acquireSession(client *generated.ContainerClient) func(context.Context) (ex
 }
 
 func shouldRefreshSession(resource exported.SessionCredential, _ context.Context) bool {
+	if resource.Fallback() {
+		// A fallback credential is a cached "sessions are unavailable" decision. Refreshing it
+		// early would contact the service before the decision was due to be reconsidered; let it
+		// expire instead.
+		return false
+	}
 	return resource.Expiry().Add(-30 * time.Second).Before(time.Now())
 }
 

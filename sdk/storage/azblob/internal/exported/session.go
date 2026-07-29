@@ -4,7 +4,6 @@
 package exported
 
 import (
-	"context"
 	"net/http"
 	"time"
 )
@@ -34,11 +33,10 @@ type SessionCredential struct {
 	token  string
 	key    string
 	expiry time.Time
-	// fallback indicates that session creation failed and the caller should use bearer token
-	// authentication instead. This is stored as a field rather than returned as an error because
-	// temporal.Resource only caches successful (non-error) results. Returning a non-error fallback
-	// value allows the decision to be cached for the duration of expiry, avoiding repeated
-	// session creation attempts when the service indicates the feature is unavailable.
+	// fallback indicates that session creation is unavailable and the caller should use bearer
+	// token authentication instead. This is represented as a successful (non-error) value so the
+	// decision can be cached for the duration of expiry, avoiding repeated session creation
+	// attempts while the service indicates the feature is unavailable.
 	fallback bool
 }
 
@@ -64,13 +62,21 @@ func (s SessionCredential) Expiry() time.Time { return s.expiry }
 // Fallback returns true if the caller should fall back to bearer token authentication.
 func (s SessionCredential) Fallback() bool { return s.fallback }
 
-type SessionContext struct {
-	ContainerName string
-}
-
+// SessionProvider supplies and caches session credentials for outgoing requests.
+// Implementations must be safe for concurrent use.
 type SessionProvider interface {
-	GetSession(ctx context.Context, sessionCtx SessionContext) (SessionCredential, error)
-	InvalidateSession(sessionCtx SessionContext, current SessionCredential) (err error)
+	// GetSession returns a session credential for the given request, acquiring or refreshing
+	// one as needed. Implementations derive the scope (e.g. the container name) from the
+	// request URL. A credential whose Fallback reports true indicates the caller should use
+	// bearer token authentication instead.
+	GetSession(req *http.Request) (SessionCredential, error)
+
+	// InvalidateSession discards the cached session for the given request's scope, but only if
+	// the cached credential is still the one described by current. If it has already been
+	// refreshed, the call is a no-op. A new session is acquired on the next call to GetSession.
+	InvalidateSession(req *http.Request, current SessionCredential) (err error)
+
+	// IsRequestEligible reports whether the request can be authenticated with a session.
 	IsRequestEligible(req *http.Request) bool
 }
 

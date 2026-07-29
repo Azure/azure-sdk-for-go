@@ -43,7 +43,7 @@ type Client base.Client[generated.ContainerClient]
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := base.GetAzClient(cred, nil, (*base.ClientOptions)(conOptions))
+	azClient, err := base.GetAzClient(containerURL, cred, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := base.GetAzClient(nil, nil, (*base.ClientOptions)(conOptions))
+	azClient, err := base.GetAzClient(containerURL, nil, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +71,7 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 
-	azClient, err := base.GetAzClient(nil, cred, (*base.ClientOptions)(conOptions))
+	azClient, err := base.GetAzClient(containerURL, nil, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_Create_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleReservationsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_Delete_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleReservationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_Get_MaximumSet_Gen.json
 func ExampleReservationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleReservationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleReservationsClient_GetBillingReport() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
 func ExampleReservationsClient_GetBillingStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleReservationsClient_GetBillingStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
 func ExampleReservationsClient_GetResourceLimits() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +358,112 @@ func ExampleReservationsClient_GetResourceLimits() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
+func ExampleReservationsClient_LatestLinkedSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().LatestLinkedSaaS(ctx, "rgpurestorage", "reservation-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientLatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armpurestorageblock.LatestLinkedSaaSResponse{
+	// 		SaaSResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.SaaS/resources/saas-resource-01"),
+	// 		IsHiddenSaaS: to.Ptr(false),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Reservations_LinkSaaS_MaximumSet_Gen.json
+func ExampleReservationsClient_BeginLinkSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReservationsClient().BeginLinkSaaS(ctx, "rgpurestorage", "reservation-01", armpurestorageblock.LinkSaaSRequest{
+		SaaSResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.SaaS/resources/saas-resource-01"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientLinkSaaSResponse{
+	// 	Reservation: armpurestorageblock.Reservation{
+	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+	// 			ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("mp-sub-123"),
+	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusSubscribed),
+	// 				OfferDetails: &armpurestorageblock.OfferDetails{
+	// 					PublisherID: to.Ptr("pure_storage"),
+	// 					OfferID: to.Ptr("purestorage-block-offer"),
+	// 					PlanID: to.Ptr("standard-plan"),
+	// 					PlanName: to.Ptr("Standard Plan"),
+	// 					TermUnit: to.Ptr("month"),
+	// 					TermID: to.Ptr("12-month-term"),
+	// 				},
+	// 			},
+	// 			User: &armpurestorageblock.UserDetails{
+	// 				FirstName: to.Ptr("John"),
+	// 				LastName: to.Ptr("Doe"),
+	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
+	// 				Upn: to.Ptr("john.doe@contoso.com"),
+	// 				PhoneNumber: to.Ptr("+1-425-555-1234"),
+	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
+	// 					CompanyName: to.Ptr("Contoso Ltd."),
+	// 					Address: &armpurestorageblock.Address{
+	// 						AddressLine1: to.Ptr("1 Microsoft Way"),
+	// 						AddressLine2: to.Ptr("Suite 100"),
+	// 						City: to.Ptr("Redmond"),
+	// 						State: to.Ptr("Washington"),
+	// 						Country: to.Ptr("United States"),
+	// 						PostalCode: to.Ptr("98052"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
+	// 		Name: to.Ptr("reservation-01"),
+	// 		Type: to.Ptr("PureStorage.Block/reservations"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T10:00:00.000Z"); return t}()),
+	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-03T14:30:00.000Z"); return t}()),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Reservations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleReservationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,7 +546,7 @@ func ExampleReservationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
 func ExampleReservationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,7 +629,7 @@ func ExampleReservationsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Reservations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Reservations_Update_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,4 +1,4 @@
-<!-- cspell:ignore amd64 arm64 azcosmos azcosmoscore checksums glibc GOARCH GOOS libc LDFLAGS libazurecosmos librdkafka metapackage musl onnxruntime SRCDIR -->
+<!-- cspell:ignore amd64 arm64 azcosmos azcosmosnative cosmoscore checksums glibc GOARCH GOOS libc LDFLAGS libazurecosmos librdkafka metapackage musl onnxruntime SRCDIR -->
 # Go FFI native-driver distribution design
 
 > **Status:** Decided — Option C selected. Retained for Go Central SDK and
@@ -13,7 +13,7 @@
 
 **We are going with Option C: split modules, native drivers in a separate
 Azure-owned repository ([§7](#7-option-c-split-modules-native-drivers-in-a-separate-repository)).**
-The public `azcosmos` SDK stays in `azure-sdk-for-go`; the platform-specific
+The public `cosmos` SDK stays in `azure-sdk-for-go`; the platform-specific
 native driver binaries live in a separate Azure-owned repository and are pulled
 in as normal Go modules through build-tagged imports, so the customer flow stays
 plain `go get` / `go build`.
@@ -64,7 +64,7 @@ consume module ZIPs through the Go module cache/proxy; they do not clone the
 whole repository just to use a package.
 
 Second, Go builds packages, not an entire repository by default. A cgo
-requirement in `azcosmos` does not automatically mean unrelated Azure SDK for Go
+requirement in `cosmos` does not automatically mean unrelated Azure SDK for Go
 modules require cgo. Customers and CI invoke `go build`, `go test`, or `go list`
 against specific modules/packages.
 
@@ -78,9 +78,9 @@ through an import, often a blank import.
 ```go
 //go:build cgo && linux && amd64
 
-package azcosmos
+package cosmos
 
-import _ "github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-linux-amd64"
+import _ "github.com/Azure/azure-cosmos-go-driver/linux/amd64"
 ```
 
 Fourth, normal builds should benefit from Go's lazy module loading. A module can
@@ -162,7 +162,7 @@ solution. Cosmos has to choose and own a distribution model.
 This is the simplest Confluent-like shape.
 
 ```text
-github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
+github.com/Azure/azure-sdk-for-go/sdk/data/cosmos
 ├── go.mod
 ├── client.go
 ├── internal/core/
@@ -183,7 +183,7 @@ Selection happens through Go build tags:
 ```go
 //go:build darwin && arm64
 
-package azcosmos
+package cosmos
 
 /*
 #cgo LDFLAGS: -L${SRCDIR}/internal/native/darwin-arm64 -lazurecosmos
@@ -194,10 +194,10 @@ import "C"
 Customer flow:
 
 ```text
-customer app imports azcosmos
+customer app imports cosmos
         │
         ▼
-Go downloads one azcosmos module ZIP containing the default native matrix
+Go downloads one cosmos module ZIP containing the default native matrix
         │
         ▼
 Go build tags select the one matching native library
@@ -207,14 +207,14 @@ application links with the Rust driver for the current platform
 ```
 
 **Size gist:** customers download/cache the whole default native matrix as part
-of one `azcosmos` module. A six-target default set is roughly ~30 MB before
+of one `cosmos` module. A six-target default set is roughly ~30 MB before
 compression; a ten-target set approaches ~50 MB. The final app links only the
 current platform's native driver.
 
 | Area | Effect |
 |---|---|
 | Customer experience | Best. One `go get`; one module; no platform package choices. |
-| Download footprint | Worst. Every `azcosmos` customer downloads the default native matrix. |
+| Download footprint | Worst. Every `cosmos` customer downloads the default native matrix. |
 | Version safety | Strong. Go wrapper and native bits are versioned together. |
 | Repository impact | High if the module lives in `azure-sdk-for-go`; binaries are committed with SDK source. |
 | Long-tail targets | Adding one target increases the default module for everyone. |
@@ -226,18 +226,18 @@ platforms, but each native binary lives in its own Go module.
 
 ```text
 github.com/Azure/azure-sdk-for-go
-└── sdk/data/azcosmos/                          # public SDK + build-tagged driver imports
-└── sdk/data/azcosmos-core/                     # shared Go wrapper + C ABI header
-└── sdk/data/azcosmos-driver-linux-amd64-gnu/   # one native lib per module
-└── sdk/data/azcosmos-driver-darwin-arm64/
+└── sdk/data/cosmos/                          # public SDK + build-tagged driver imports
+└── sdk/data/cosmos-core/                     # shared Go wrapper + C ABI header
+└── sdk/data/cosmos-driver-linux-amd64-gnu/   # one native lib per module
+└── sdk/data/cosmos-driver-darwin-arm64/
     └── ...                                      # one module per supported target
 ```
 
-The module mechanics — a shared `azcosmos-core` wrapper, one
-`azcosmos-driver-<os>-<arch>` module per native binary, and build-tagged blank
-imports in the public `azcosmos` module — are identical to Option C below. Each
+The module mechanics — a shared `cosmos-core` wrapper, one
+`cosmos-driver-<os>-<arch>` module per native binary, and build-tagged blank
+imports in the public `cosmos` module — are identical to Option C below. Each
 driver module carries a single `native/libazurecosmos.a` plus its `#cgo LDFLAGS`
-link file, and `azcosmos` pulls in the active one through a `default_driver_*.go`
+link file, and `cosmos` pulls in the active one through a `default_driver_*.go`
 blank import (with an `unsupported_driver.go` fallback for other builds).
 
 The **only** difference from Option C is placement: in Option B the native
@@ -249,11 +249,11 @@ and the `!cgo` fallback) is documented once, under Option C.
 
 | Area | Effect |
 |---|---|
-| Customer experience | Good. Common platforms still use `go get azcosmos` / `go build`. |
+| Customer experience | Good. Common platforms still use `go get cosmos` / `go build`. |
 | Download footprint | Normal builds fetch the active driver module; full-graph workflows can fetch the default driver matrix. |
 | Version safety | Manageable if all modules are released together and exact versions are pinned. |
 | Repository impact | Still high for `azure-sdk-for-go` contributors because the repo contains all native modules. |
-| Long-tail targets | Better. Optional targets can be extra modules not included in default `azcosmos`. |
+| Long-tail targets | Better. Optional targets can be extra modules not included in default `cosmos`. |
 
 ## 7. Option C: split modules, native drivers in a separate repository
 
@@ -264,47 +264,56 @@ Azure SDK for Go repository without changing the common customer flow.
 
 ```text
 github.com/Azure/azure-sdk-for-go
-└── sdk/data/azcosmos/
+└── sdk/data/cosmos/
     ├── go.mod
     ├── client.go
     ├── default_driver_linux_amd64.go
     ├── default_driver_darwin_arm64.go
     └── unsupported_driver.go
 
-└── sdk/data/azcosmos-core/
+└── sdk/data/cosmos-core/
     ├── go.mod
     ├── core.go
     └── include/azurecosmos.h
 
-github.com/Azure/azure-cosmos-go-native-drivers
-└── azcosmos-driver-linux-amd64-gnu/
+github.com/Azure/azure-cosmos-go-driver
+└── linux/amd64/
     ├── go.mod
     ├── link_linux_amd64.go
     └── native/libazurecosmos.a
 
-└── azcosmos-driver-darwin-arm64/
+└── darwin/arm64/
     ├── go.mod
     ├── link_darwin_arm64.go
     └── native/libazurecosmos.a
 ```
 
-The public `azcosmos` package and the shared `azcosmos-core` module stay in
-`azure-sdk-for-go`. Only the per-target driver modules — the modules that carry
-the native binaries — move to the separate `azure-cosmos-go-native-drivers`
-repository.
+**Naming convention.** The driver repository is
+`github.com/Azure/azure-cosmos-go-driver` and each target module lives at
+`<goos>/<goarch>` inside it, so a full module path reads
+`github.com/Azure/azure-cosmos-go-driver/linux/amd64`. Because the repository
+name and the directory are both part of every import path, both are kept
+purposeful: the repo name states plainly that this is the native Cosmos driver
+for Go, and the directories drop any redundant `driver-` prefix and just use the
+`GOOS`/`GOARCH` tokens. glibc is the unmarked default (`linux/amd64`); the musl
+variant is suffixed (`linux/amd64-musl`).
 
-`azcosmos-core` holds the shared Go wrapper and the C ABI declarations. It
+The public `cosmos` package and the shared `cosmos-core` module stay in
+`azure-sdk-for-go`. Only the per-target driver modules — the modules that carry
+the native binaries — move to the separate `azure-cosmos-go-driver` repository.
+
+`cosmos-core` holds the shared Go wrapper and the C ABI declarations. It
 carries no native binary, so it is small and changes only when the ABI changes:
 
 ```go
-// sdk/data/azcosmos-core/go.mod
-module github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos-core
+// sdk/data/cosmos-core/go.mod
+module github.com/Azure/azure-sdk-for-go/sdk/data/cosmos-core
 
 go 1.25.0
 ```
 
 ```c
-/* sdk/data/azcosmos-core/include/azurecosmos.h */
+/* sdk/data/cosmos-core/include/azurecosmos.h */
 #pragma once
 
 const char* azurecosmos_abi_version(void);
@@ -313,8 +322,8 @@ void azurecosmos_client_free(void* client);
 ```
 
 ```go
-// sdk/data/azcosmos-core/core.go
-package azcosmoscore
+// sdk/data/cosmos-core/core.go
+package cosmoscore
 
 /*
 #cgo CFLAGS: -I${SRCDIR}/include
@@ -331,17 +340,17 @@ Each driver module in the separate repository contains exactly one native
 library and the link flags for that target:
 
 ```go
-// azcosmos-driver-linux-amd64-gnu/go.mod
-module github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-linux-amd64-gnu
+// linux/amd64/go.mod
+module github.com/Azure/azure-cosmos-go-driver/linux/amd64
 
 go 1.25.0
 ```
 
 ```go
-// azcosmos-driver-linux-amd64-gnu/link_linux_amd64.go
+// linux/amd64/link_linux_amd64.go
 //go:build cgo && linux && amd64 && !musl
 
-package azcosmosdriverlinuxamd64gnu
+package driver
 
 /*
 #cgo LDFLAGS: -L${SRCDIR}/native -lazurecosmos
@@ -349,43 +358,43 @@ package azcosmosdriverlinuxamd64gnu
 import "C"
 ```
 
-The public `azcosmos` module depends on `azcosmos-core` (same repository) and on
+The public `cosmos` module depends on `cosmos-core` (same repository) and on
 the default driver modules (the separate repository):
 
 ```go
-// sdk/data/azcosmos/go.mod
-module github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
+// sdk/data/cosmos/go.mod
+module github.com/Azure/azure-sdk-for-go/sdk/data/cosmos
 
 go 1.25.0
 
 require (
-    github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos-core v1.2.3
-    github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-darwin-arm64 v1.2.3
-    github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-linux-amd64-gnu v1.2.3
-    github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-windows-amd64 v1.2.3
+    github.com/Azure/azure-sdk-for-go/sdk/data/cosmos-core v1.2.3
+    github.com/Azure/azure-cosmos-go-driver/darwin/arm64 v1.2.3
+    github.com/Azure/azure-cosmos-go-driver/linux/amd64 v1.2.3
+    github.com/Azure/azure-cosmos-go-driver/windows/amd64 v1.2.3
 )
 ```
 
-`azcosmos` pulls in the active default driver through build-tagged blank imports.
+`cosmos` pulls in the active default driver through build-tagged blank imports.
 This import is what matters: a `require` entry alone does not make the driver's
 cgo link flags participate in the final link.
 
 ```go
-// sdk/data/azcosmos/default_driver_linux_amd64.go
+// sdk/data/cosmos/default_driver_linux_amd64.go
 //go:build cgo && linux && amd64 && !musl
 
-package azcosmos
+package cosmos
 
-import _ "github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-linux-amd64-gnu"
+import _ "github.com/Azure/azure-cosmos-go-driver/linux/amd64"
 ```
 
 ```go
-// sdk/data/azcosmos/default_driver_darwin_arm64.go
+// sdk/data/cosmos/default_driver_darwin_arm64.go
 //go:build cgo && darwin && arm64
 
-package azcosmos
+package cosmos
 
-import _ "github.com/Azure/azure-cosmos-go-native-drivers/azcosmos-driver-darwin-arm64"
+import _ "github.com/Azure/azure-cosmos-go-driver/darwin/arm64"
 ```
 
 When no bundled driver applies — cgo disabled, or a platform outside the default
@@ -393,16 +402,16 @@ matrix — `unsupported_driver.go` is compiled instead of a `default_driver_*.go
 turning a confusing linker error into an explicit, documented failure:
 
 ```go
-// sdk/data/azcosmos/unsupported_driver.go
+// sdk/data/cosmos/unsupported_driver.go
 //go:build !cgo || (!linux && !darwin && !windows)
 
-package azcosmos
+package cosmos
 
 // Compiled only when no default native driver is wired in for the current build
 // (cgo disabled, or an unsupported OS/arch). It exists so the failure is clear
 // and actionable rather than a raw missing-symbol link error.
 func init() {
-    panic("azcosmos: no native Cosmos driver for this platform/build; cgo is " +
+    panic("cosmos: no native Cosmos driver for this platform/build; cgo is " +
         "required — see the distribution docs for supported targets and the " +
         "advanced customer-managed dynamic-library mode.")
 }
@@ -415,27 +424,27 @@ the separate driver repository or the driver package directly:
 // customer-app/main.go
 package main
 
-import "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
+import "github.com/Azure/azure-sdk-for-go/sdk/data/cosmos"
 
 func main() {
-    _ = azcosmos.NativeDriverVersion()
+    _ = cosmos.NativeDriverVersion()
 }
 ```
 
 For `GOOS=linux GOARCH=amd64`, Go compiles `default_driver_linux_amd64.go`, which
-blank-imports `azcosmos-driver-linux-amd64-gnu` from the native-driver
+blank-imports `azure-cosmos-go-driver/linux/amd64` from the native-driver
 repository; that module contributes `#cgo LDFLAGS` and the app links against its
 `native/libazurecosmos.a`. The module graph therefore includes the one active
-driver module even though the customer only imported `azcosmos`:
+driver module even though the customer only imported `cosmos`:
 
 ```text
 customer runs:
-  go get github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
+  go get github.com/Azure/azure-sdk-for-go/sdk/data/cosmos
 
 Go module graph includes:
-  azcosmos                          (azure-sdk-for-go)
-  azcosmos-core                     (azure-sdk-for-go)
-  azcosmos-driver-linux-amd64-gnu   (azure-cosmos-go-native-drivers)
+  cosmos                              (azure-sdk-for-go)
+  cosmos-core                         (azure-sdk-for-go)
+  azure-cosmos-go-driver/linux/amd64    (azure-cosmos-go-driver)
 
 customer does not clone the native-driver repo manually
 ```
@@ -453,7 +462,7 @@ only the current platform's native driver.
 
 | Area | Effect |
 |---|---|
-| Customer experience | Good for default platforms if `azcosmos` wires driver imports automatically. |
+| Customer experience | Good for default platforms if `cosmos` wires driver imports automatically. |
 | Download footprint | Same customer behavior as Option B, but the active driver module comes from a separate repository. |
 | Version safety | Requires stronger release discipline across repositories. |
 | Repository impact | Better for Azure SDK for Go contributors; binary churn lives elsewhere. |
@@ -476,14 +485,14 @@ This is not the default path. It is an advanced mode for customers who want or
 need to manage the native library through their own deployment system.
 
 If the Go wrapper links dynamically, a customer could choose not to use an
-`azcosmos-driver-*` package and instead use `azcosmos-core` directly. As long as
+`azure-cosmos-go-driver/*` module and instead use `cosmos-core` directly. As long as
 the matching `libazurecosmos` is available on the platform's library load path,
 the application can link/load the native driver through the customer's packaging
 system.
 
 ```text
 customer app
-  imports azcosmos-core or an advanced azcosmos configuration path
+  imports cosmos-core or an advanced cosmos configuration path
   places libazurecosmos on the library load path
   builds/runs with the customer's native package manager or image layout
 ```
@@ -525,44 +534,48 @@ checksum, install-path, and linker-path failure modes.
 
 ### Standalone native-backed Go SDK
 
-A separate public SDK identity, such as `azcosmosnative`, would avoid impacting
-existing `azcosmos` users, but it confuses the support and migration matrix. If
-Go v2 is not shipped as the normal `azcosmos` evolution, customers must
-understand which package is the supported future and how long the old package
-continues. That is a product-level split rather than a packaging solution, so it
-is not selected here.
+A permanently parallel native SDK identity — a separate `azcosmosnative`-style
+package that coexists indefinitely alongside the existing v1 `azcosmos` — would
+avoid disturbing current v1 users, but it confuses the support and migration
+matrix. Go v2 instead ships as the direct successor to `azcosmos`, published as
+the new `cosmos` / `cosmos-core` modules, so there is a single supported forward
+path rather than two coexisting native/non-native SDKs. A permanently parallel
+identity is a product-level split rather than a packaging solution, so it is not
+selected here.
 
 ## 10. Default driver set selection
 
 If a split-module model is used, there are two distinct decisions:
 
 1. **Which driver modules are published?**
-2. **Which of those are included in the default `azcosmos` experience?**
+2. **Which of those are included in the default `cosmos` experience?**
 
 For example:
 
 ```text
-Published modules:
-  windows-amd64
-  windows-arm64
-  darwin-amd64
-  darwin-arm64
-  linux-amd64-gnu
-  linux-arm64-gnu
-  windows-386
-  linux-amd64-musl
+Published modules (azure-cosmos-go-driver/<goos>/<goarch>):
+  windows/amd64
+  windows/arm64
+  darwin/arm64
+  linux/amd64          (glibc, unmarked)
+  linux/arm64          (glibc, unmarked)
+  linux/amd64-musl
+  linux/arm64-musl
+  darwin/amd64         (long-tail)
+  windows/386          (long-tail)
 
-Default azcosmos imports:
-  windows-amd64
-  windows-arm64
-  darwin-amd64
-  darwin-arm64
-  linux-amd64-gnu
-  linux-arm64-gnu
+Default cosmos imports (Big 5 + musl):
+  windows/amd64
+  windows/arm64
+  darwin/arm64
+  linux/amd64
+  linux/arm64
+  linux/amd64-musl
+  linux/arm64-musl
 
-Optional:
-  windows-386
-  linux-amd64-musl
+Optional (long-tail add-ons):
+  darwin/amd64
+  windows/386
 ```
 
 Build-time selection then happens through build tags. Every native driver
@@ -575,7 +588,7 @@ CGO_ENABLED=1 GOOS=darwin GOARCH=arm64
 default_driver_darwin_arm64.go is included
        │
        ▼
-azcosmos-driver-darwin-arm64 is imported
+azure-cosmos-go-driver/darwin/arm64 is imported
        │
        ▼
 darwin/arm64 native library contributes link flags
@@ -595,13 +608,13 @@ any driver and causes client initialization to fail explicitly:
 ```go
 //go:build !cgo
 
-package azcosmos
+package cosmos
 
 import "errors"
 
 func nativeDriverUnavailableError() error {
     return errors.New(
-        "azcosmos: Go v2 requires CGO_ENABLED=1, a target-compatible C " +
+        "cosmos: Go v2 requires CGO_ENABLED=1, a target-compatible C " +
             "toolchain, and a matching native Cosmos driver artifact",
     )
 }
@@ -624,7 +637,7 @@ cross-compilation instructions must make those prerequisites explicit.
 For a platform outside the default set, the SDK should fail clearly:
 
 ```text
-azcosmos: no native Cosmos driver package is configured for linux/amd64/musl.
+cosmos: no native Cosmos driver package is configured for linux/amd64/musl.
 Add the linux/amd64/musl driver package or use a supported default platform.
 ```
 
@@ -652,10 +665,10 @@ The rule is: the wrapper declares the native ABI it needs, and any
 MVS-selected driver is acceptable as long as it stays ABI-compatible.
 
 ```text
-azcosmos v1.2.3
+cosmos v1.2.3
   requires native ABI major 1, minimum minor 2
   accepts any driver module whose native ABI is 1.x with x >= 2
-  (MVS may select azcosmos-driver-* v1.2.3, v1.3.0, or newer —
+  (MVS may select azure-cosmos-go-driver/<os>/<arch> v1.2.3, v1.3.0, or newer —
    all valid while the ABI stays 1.x compatible)
 ```
 
@@ -673,7 +686,7 @@ The Go wrapper validates it during initialization against a compatibility
 *range*, not an exact string, and fails only on genuine incompatibility:
 
 ```text
-azcosmos: native driver ABI incompatible:
+cosmos: native driver ABI incompatible:
   Go wrapper requires ABI major 1, minor >= 2
   linked native driver reports ABI 2.0  (major mismatch)
 ```
@@ -686,9 +699,9 @@ paths, and still catches packaging mistakes on bundled paths.
 
 | Model | Common-platform customer flow | Customer-visible native setup | Download behavior |
 |---|---|---|---|
-| A. Single bundled module | `go get azcosmos`; `go build` | cgo toolchain only | Downloads whole default matrix in one module |
-| B. Split modules, same repo | `go get azcosmos`; `go build` | cgo toolchain only | Normal builds fetch active driver module; full-graph workflows can fetch default matrix |
-| C. Split modules, separate repo | `go get azcosmos`; `go build` | cgo toolchain only | Same as Option B, but the active driver module comes from a separate repo |
+| A. Single bundled module | `go get cosmos`; `go build` | cgo toolchain only | Downloads whole default matrix in one module |
+| B. Split modules, same repo | `go get cosmos`; `go build` | cgo toolchain only | Normal builds fetch active driver module; full-graph workflows can fetch default matrix |
+| C. Split modules, separate repo | `go get cosmos`; `go build` | cgo toolchain only | Same as Option B, but the active driver module comes from a separate repo |
 | Advanced dynamic library | imports/configures advanced path | customer-managed native library | Downloads only Go wrapper; customer supplies native payload |
 
 ## 13. Repository and release comparison
@@ -730,15 +743,15 @@ for Go repository.
 
 ```text
 Common path:
-  go get azcosmos
+  go get cosmos
   go build
   default driver selected through build tags
 
 Repository placement:
-  azcosmos Go code in azure-sdk-for-go
+  cosmos Go code in azure-sdk-for-go
   native driver modules in a separate Azure-owned repository
 ```
 
 For customer experience, the separate-repo option can still be nearly invisible
-if the driver packages are normal Go modules and the public `azcosmos` package
+if the driver packages are normal Go modules and the public `cosmos` package
 imports the default drivers automatically.

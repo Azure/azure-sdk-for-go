@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,8 +40,12 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 				CidrCSV: []*string{
 					to.Ptr("nlqlvrthafvvljuupcbcw"),
 				},
-				ShouldMigrate:     to.Ptr(true),
-				CidrSelectionType: to.Ptr[int32](11),
+				ShouldMigrate:        to.Ptr(true),
+				CidrSelectionType:    to.Ptr[int32](11),
+				OpenFirewallPort80:   to.Ptr(true),
+				OpenFirewallPort443:  to.Ptr(false),
+				OpenFirewallPort5000: to.Ptr(false),
+				OpenFirewallPort5001: to.Ptr(true),
 			},
 			StatusCode:    to.Ptr("1"),
 			StatusText:    to.Ptr("Success"),
@@ -201,7 +205,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_Delete_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +226,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_Get_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +359,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_GetCacheNodeAutoUpdateHistory_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +423,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeAutoUpdateHistor
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_GetCacheNodeInstallDetails_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeInstallDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -464,7 +468,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeInstallDetails()
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_GetCacheNodeMccIssueDetailsHistory_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -517,7 +521,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeMccIssueDetailsH
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_GetCacheNodeTlsCertificateHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_GetCacheNodeTlsCertificateHistory_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeTLSCertificateHistory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -571,7 +575,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_GetCacheNodeTLSCertificateHi
 	// }
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_NewListByEnterpriseMccCustomerResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +718,7 @@ func ExampleEnterpriseMccCacheNodesOperationsClient_NewListByEnterpriseMccCustom
 	}
 }
 
-// Generated from example definition: 2024-11-30-preview/EnterpriseMccCacheNodesOperations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01/EnterpriseMccCacheNodesOperations_Update_MaximumSet_Gen.json
 func ExampleEnterpriseMccCacheNodesOperationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

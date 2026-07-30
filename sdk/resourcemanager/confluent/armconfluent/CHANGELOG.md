@@ -1,5 +1,37 @@
 # Release History
 
+## 2.0.0-beta.2 (2026-07-16)
+### Features Added
+
+- New function `NewAccessPointResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessPointResourcesClient, error)`
+- New function `*AccessPointResourcesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, accessPointID string, resource AccessPointResource, options *AccessPointResourcesClientBeginCreateOrReplaceOptions) (*runtime.Poller[AccessPointResourcesClientCreateOrReplaceResponse], error)`
+- New function `*AccessPointResourcesClient.BeginDelete(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, accessPointID string, options *AccessPointResourcesClientBeginDeleteOptions) (*runtime.Poller[AccessPointResourcesClientDeleteResponse], error)`
+- New function `*AccessPointResourcesClient.Get(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, accessPointID string, options *AccessPointResourcesClientGetOptions) (AccessPointResourcesClientGetResponse, error)`
+- New function `*AccessPointResourcesClient.NewListPager(resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, options *AccessPointResourcesClientListOptions) *runtime.Pager[AccessPointResourcesClientListResponse]`
+- New function `*ClientFactory.NewAccessPointResourcesClient() *AccessPointResourcesClient`
+- New function `*ClientFactory.NewNetworkGatewayResourcesClient() *NetworkGatewayResourcesClient`
+- New function `*OrganizationClient.BeginActivateResource(ctx context.Context, body ActivateSaaSParameterRequest, options *OrganizationClientBeginActivateResourceOptions) (*runtime.Poller[OrganizationClientActivateResourceResponse], error)`
+- New function `*OrganizationClient.LatestLinkedSaaS(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientLatestLinkedSaaSOptions) (OrganizationClientLatestLinkedSaaSResponse, error)`
+- New function `*OrganizationClient.BeginLinkSaaS(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, options *OrganizationClientBeginLinkSaaSOptions) (*runtime.Poller[OrganizationClientLinkSaaSResponse], error)`
+- New function `NewNetworkGatewayResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkGatewayResourcesClient, error)`
+- New function `*NetworkGatewayResourcesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, resource NetworkGatewayResource, options *NetworkGatewayResourcesClientBeginCreateOrReplaceOptions) (*runtime.Poller[NetworkGatewayResourcesClientCreateOrReplaceResponse], error)`
+- New function `*NetworkGatewayResourcesClient.BeginDelete(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, options *NetworkGatewayResourcesClientBeginDeleteOptions) (*runtime.Poller[NetworkGatewayResourcesClientDeleteResponse], error)`
+- New function `*NetworkGatewayResourcesClient.Get(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, options *NetworkGatewayResourcesClientGetOptions) (NetworkGatewayResourcesClientGetResponse, error)`
+- New function `*NetworkGatewayResourcesClient.NewListPager(resourceGroupName string, organizationName string, environmentID string, options *NetworkGatewayResourcesClientListOptions) *runtime.Pager[NetworkGatewayResourcesClientListResponse]`
+- New struct `AccessPointProperties`
+- New struct `AccessPointResource`
+- New struct `AccessPointResourceListResult`
+- New struct `ActivateSaaSParameterRequest`
+- New struct `KeyValuePair`
+- New struct `LatestLinkedSaaSResponse`
+- New struct `NetworkGatewayProperties`
+- New struct `NetworkGatewayResource`
+- New struct `NetworkGatewayResourceListResult`
+- New struct `SaaSData`
+- New struct `SaaSResourceDetailsResponse`
+- New struct `VnetInjectionDetails`
+
+
 ## 2.0.0-beta.1 (2026-02-10)
 ### Breaking Changes
 

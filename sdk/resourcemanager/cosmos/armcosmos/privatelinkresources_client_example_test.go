@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBPrivateLinkResourceGet.json
+// Generated from example definition: 2026-03-15/CosmosDBPrivateLinkResourceGet.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,10 +30,10 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armcosmos.PrivateLinkResource{
+	// 	PrivateLinkResource: armcosmos.PrivateLinkResource{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/privateLinkResources/sql"),
 	// 		Name: to.Ptr("sql"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/privateLinkResources"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.DocumentDb/databaseAccounts/ddb1/privateLinkResources/sql"),
 	// 		Properties: &armcosmos.PrivateLinkResourceProperties{
 	// 			GroupID: to.Ptr("sql"),
 	// 			RequiredMembers: []*string{
@@ -48,7 +48,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBPrivateLinkResourceListGet.json
+// Generated from example definition: 2026-03-15/CosmosDBPrivateLinkResourceListGet.json
 func ExamplePrivateLinkResourcesClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,9 +74,9 @@ func ExamplePrivateLinkResourcesClient_NewListByDatabaseAccountPager() {
 		// 	PrivateLinkResourceListResult: armcosmos.PrivateLinkResourceListResult{
 		// 		Value: []*armcosmos.PrivateLinkResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/privateLinkResources/sql"),
 		// 				Name: to.Ptr("sql"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/privateLinkResources"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/privateLinkResources/sql"),
 		// 				Properties: &armcosmos.PrivateLinkResourceProperties{
 		// 					GroupID: to.Ptr("sql"),
 		// 					RequiredMembers: []*string{

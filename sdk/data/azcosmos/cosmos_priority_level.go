@@ -21,8 +21,3 @@ const (
 func PriorityLevelValues() []PriorityLevel {
 	return []PriorityLevel{PriorityLevelHigh, PriorityLevelLow}
 }
-
-// ToPtr returns a *PriorityLevel.
-func (p PriorityLevel) ToPtr() *PriorityLevel {
-	return &p
-}

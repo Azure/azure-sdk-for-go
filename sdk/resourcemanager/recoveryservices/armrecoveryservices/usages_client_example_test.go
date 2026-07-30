@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01/ListUsages.json
+// Generated from example definition: 2026-05-01/ListUsages.json
 func ExampleUsagesClient_NewListByVaultsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

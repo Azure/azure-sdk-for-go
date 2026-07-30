@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableMongodbCollectionList.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableMongodbCollectionList.json
 func ExampleRestorableMongodbCollectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,33 +39,33 @@ func ExampleRestorableMongodbCollectionsClient_NewListPager() {
 		// 	RestorableMongodbCollectionsListResult: armcosmos.RestorableMongodbCollectionsListResult{
 		// 		Value: []*armcosmos.RestorableMongodbCollectionGetResult{
 		// 			{
-		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableMongodbCollections/79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableMongodbCollections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableMongodbCollections/79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Properties: &armcosmos.RestorableMongodbCollectionProperties{
 		// 					Resource: &armcosmos.RestorableMongodbCollectionPropertiesResource{
 		// 						Rid: to.Ptr("zAyAPQAAAA=="),
-		// 						CanUndelete: to.Ptr("invalid"),
 		// 						EventTimestamp: to.Ptr("2020-10-13T04:56:42Z"),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
 		// 						OwnerID: to.Ptr("Collection1"),
 		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeCreate),
+		// 						CanUndelete: to.Ptr("invalid"),
 		// 					},
 		// 				},
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				ID: to.Ptr("/subscriptions/subid/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableMongodbCollections/79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorableMongodbCollections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDb/locations/westus/restorableDatabaseAccounts/98a570f2-63db-4117-91f0-366327b7b353/restorableMongodbCollections/79609a98-3394-41f8-911f-cfab0c075c86"),
+		// 				Name: to.Ptr("79609a98-3394-41f8-911f-cfab0c075c86"),
 		// 				Properties: &armcosmos.RestorableMongodbCollectionProperties{
 		// 					Resource: &armcosmos.RestorableMongodbCollectionPropertiesResource{
 		// 						Rid: to.Ptr("zAyAPQAAAA=="),
-		// 						CanUndelete: to.Ptr("notRestorable"),
-		// 						CanUndeleteReason: to.Ptr("Individual shared database collections restore is not supported. Please restore shared database to restore its collections that share the throughput."),
 		// 						EventTimestamp: to.Ptr("2020-10-13T04:56:42Z"),
-		// 						OperationType: to.Ptr(armcosmos.OperationTypeDelete),
 		// 						OwnerID: to.Ptr("Collection1"),
 		// 						OwnerResourceID: to.Ptr("V18LoLrv-qA="),
+		// 						OperationType: to.Ptr(armcosmos.OperationTypeDelete),
+		// 						CanUndelete: to.Ptr("notRestorable"),
+		// 						CanUndeleteReason: to.Ptr("Individual shared database collections restore is not supported. Please restore shared database to restore its collections that share the throughput."),
 		// 					},
 		// 				},
 		// 			},

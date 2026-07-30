@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
 	"log"
 )
 
-// Generated from example definition: 2026-04-15-preview/Volumes_AuthorizeExternalReplication.json
+// Generated from example definition: 2026-05-01/Volumes_AuthorizeExternalReplication.json
 func ExampleVolumesClient_BeginAuthorizeExternalReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleVolumesClient_BeginAuthorizeExternalReplication() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_AuthorizeReplication.json
+// Generated from example definition: 2026-05-01/Volumes_AuthorizeReplication.json
 func ExampleVolumesClient_BeginAuthorizeReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleVolumesClient_BeginAuthorizeReplication() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_BreakFileLocks.json
+// Generated from example definition: 2026-05-01/Volumes_BreakFileLocks.json
 func ExampleVolumesClient_BeginBreakFileLocks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleVolumesClient_BeginBreakFileLocks() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_BreakReplication.json
+// Generated from example definition: 2026-05-01/Volumes_BreakReplication.json
 func ExampleVolumesClient_BeginBreakReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleVolumesClient_BeginBreakReplication() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_CreateOrUpdate.json
+// Generated from example definition: 2026-05-01/Volumes_CreateOrUpdate.json
 func ExampleVolumesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 		Properties: &armnetapp.VolumeProperties{
 			CreationToken:  to.Ptr("my-unique-file-path"),
 			ServiceLevel:   to.Ptr(armnetapp.ServiceLevelPremium),
-			SubnetID:       to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+			SubnetID:       to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 			UsageThreshold: to.Ptr[int64](107374182400),
 		},
 	}, nil)
@@ -169,10 +169,10 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// 		Properties: &armnetapp.VolumeProperties{
 	// 			CreationToken: to.Ptr("my-unique-file-path"),
 	// 			EncryptionKeySource: to.Ptr(armnetapp.EncryptionKeySourceMicrosoftNetApp),
-	// 			FileSystemID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 			SubnetID: to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 			ThroughputMibps: to.Ptr[float32](128),
 	// 			UsageThreshold: to.Ptr[int64](107374182400),
 	// 		},
@@ -180,7 +180,7 @@ func ExampleVolumesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_Delete.json
+// Generated from example definition: 2026-05-01/Volumes_Delete.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_DeleteReplication.json
+// Generated from example definition: 2026-05-01/Volumes_DeleteReplication.json
 func ExampleVolumesClient_BeginDeleteReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleVolumesClient_BeginDeleteReplication() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_FinalizeExternalReplication.json
+// Generated from example definition: 2026-05-01/Volumes_FinalizeExternalReplication.json
 func ExampleVolumesClient_BeginFinalizeExternalReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,7 +248,7 @@ func ExampleVolumesClient_BeginFinalizeExternalReplication() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_FinalizeRelocation.json
+// Generated from example definition: 2026-05-01/Volumes_FinalizeRelocation.json
 func ExampleVolumesClient_BeginFinalizeRelocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,53 +274,8 @@ func ExampleVolumesClient_BeginFinalizeRelocation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ExtraLargeVolumes_Get.json
-func ExampleVolumesClient_Get_volumesExtralargeVolumeGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVolumesClient().Get(ctx, "myRG", "account1", "pool1", "volume1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.VolumesClientGetResponse{
-	// 	Volume: armnetapp.Volume{
-	// 		ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
-	// 		Name: to.Ptr("account1/pool1/volume1"),
-	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetapp.VolumeProperties{
-	// 			FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
-	// 			CoolAccess: to.Ptr(true),
-	// 			CreationToken: to.Ptr("my-unique-file-path"),
-	// 			IsLargeVolume: to.Ptr(true),
-	// 			LargeVolumeType: to.Ptr(armnetapp.LargeVolumeType("ExtraLargeVolume7Dot2PiB")),
-	// 			UsageThreshold: to.Ptr[int64](109951162777600),
-	// 			ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			ActualThroughputMibps: to.Ptr[float32](128),
-	// 			SubnetID: to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-	// 			NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesBasic),
-	// 			EffectiveNetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
-	// 			NetworkSiblingSetID: to.Ptr("0f434a03-ce0b-4935-81af-d98652ffb1c4"),
-	// 			StorageToNetworkProximity: to.Ptr(armnetapp.VolumeStorageToNetworkProximityT2),
-	// 			CoolAccessTieringPolicy: to.Ptr(armnetapp.CoolAccessTieringPolicySnapshotOnly),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-04-15-preview/Volumes_Get.json
-func ExampleVolumesClient_Get_volumesGet() {
+// Generated from example definition: 2026-05-01/Volumes_Get.json
+func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -345,7 +300,7 @@ func ExampleVolumesClient_Get_volumesGet() {
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.VolumeProperties{
 	// 			CreationToken: to.Ptr("my-unique-file-path"),
-	// 			FileSystemID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 			NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 	// 			NetworkSiblingSetID: to.Ptr("0f434a03-ce0b-4935-81af-d98652ffb1c4"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
@@ -359,62 +314,8 @@ func ExampleVolumesClient_Get_volumesGet() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ExtraLargeVolumes_List.json
-func ExampleVolumesClient_NewListPager_volumesExtralargeVolumeList() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("D633CC2E-722B-4AE1-B636-BBD9E4C60ED9", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVolumesClient().NewListPager("myRG", "account1", "pool1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.VolumesClientListResponse{
-		// 	VolumeList: armnetapp.VolumeList{
-		// 		Value: []*armnetapp.Volume{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1"),
-		// 				Name: to.Ptr("account1/pool1/volume1"),
-		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetapp.VolumeProperties{
-		// 					FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
-		// 					CoolAccess: to.Ptr(true),
-		// 					CreationToken: to.Ptr("my-unique-file-path"),
-		// 					IsLargeVolume: to.Ptr(true),
-		// 					LargeVolumeType: to.Ptr(armnetapp.LargeVolumeType("ExtraLargeVolume7Dot2PiB")),
-		// 					UsageThreshold: to.Ptr[int64](109951162777600),
-		// 					ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ActualThroughputMibps: to.Ptr[float32](128),
-		// 					SubnetID: to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-		// 					NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesBasic),
-		// 					EffectiveNetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
-		// 					NetworkSiblingSetID: to.Ptr("0f434a03-ce0b-4935-81af-d98652ffb1c4"),
-		// 					StorageToNetworkProximity: to.Ptr(armnetapp.VolumeStorageToNetworkProximityT2),
-		// 					CoolAccessTieringPolicy: to.Ptr(armnetapp.CoolAccessTieringPolicySnapshotOnly),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-04-15-preview/Volumes_List.json
-func ExampleVolumesClient_NewListPager_volumesList() {
+// Generated from example definition: 2026-05-01/Volumes_List.json
+func ExampleVolumesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -445,7 +346,7 @@ func ExampleVolumesClient_NewListPager_volumesList() {
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armnetapp.VolumeProperties{
 		// 					CreationToken: to.Ptr("my-unique-file-path"),
-		// 					FileSystemID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 		// 					NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 		// 					NetworkSiblingSetID: to.Ptr("0f434a03-ce0b-4935-81af-d98652ffb1c4"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
@@ -462,7 +363,7 @@ func ExampleVolumesClient_NewListPager_volumesList() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/GroupIdListForLDAPUser.json
+// Generated from example definition: 2026-05-01/GroupIdListForLDAPUser.json
 func ExampleVolumesClient_BeginListGetGroupIDListForLdapUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,7 +397,7 @@ func ExampleVolumesClient_BeginListGetGroupIDListForLdapUser() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ListQuotaReport.json
+// Generated from example definition: 2026-05-01/Volumes_ListQuotaReport.json
 func ExampleVolumesClient_BeginListQuotaReport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,7 +445,7 @@ func ExampleVolumesClient_BeginListQuotaReport() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ListReplications.json
+// Generated from example definition: 2026-05-01/Volumes_ListReplications.json
 func ExampleVolumesClient_NewListReplicationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,7 +487,7 @@ func ExampleVolumesClient_NewListReplicationsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_PeerExternalCluster.json
+// Generated from example definition: 2026-05-01/Volumes_PeerExternalCluster.json
 func ExampleVolumesClient_BeginPeerExternalCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -627,7 +528,7 @@ func ExampleVolumesClient_BeginPeerExternalCluster() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_PerformReplicationTransfer.json
+// Generated from example definition: 2026-05-01/Volumes_PerformReplicationTransfer.json
 func ExampleVolumesClient_BeginPerformReplicationTransfer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -648,7 +549,7 @@ func ExampleVolumesClient_BeginPerformReplicationTransfer() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_PoolChange.json
+// Generated from example definition: 2026-05-01/Volumes_PoolChange.json
 func ExampleVolumesClient_BeginPoolChange() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +577,7 @@ func ExampleVolumesClient_BeginPoolChange() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_PopulateAvailabilityZones.json
+// Generated from example definition: 2026-05-01/Volumes_PopulateAvailabilityZones.json
 func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -706,13 +607,13 @@ func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.VolumeProperties{
 	// 			CreationToken: to.Ptr("my-unique-file-path"),
-	// 			FileSystemID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 			NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 	// 			NetworkSiblingSetID: to.Ptr("0f434a03-ce0b-4935-81af-d98652ffb1c4"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
 	// 			StorageToNetworkProximity: to.Ptr(armnetapp.VolumeStorageToNetworkProximityT2),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 			SubnetID: to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 			ThroughputMibps: to.Ptr[float32](128),
 	// 			UsageThreshold: to.Ptr[int64](107374182400),
 	// 		},
@@ -720,7 +621,7 @@ func ExampleVolumesClient_BeginPopulateAvailabilityZone() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ReInitializeReplication.json
+// Generated from example definition: 2026-05-01/Volumes_ReInitializeReplication.json
 func ExampleVolumesClient_BeginReInitializeReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +647,7 @@ func ExampleVolumesClient_BeginReInitializeReplication() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ReestablishReplication.json
+// Generated from example definition: 2026-05-01/Volumes_ReestablishReplication.json
 func ExampleVolumesClient_BeginReestablishReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -769,7 +670,7 @@ func ExampleVolumesClient_BeginReestablishReplication() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_Relocate.json
+// Generated from example definition: 2026-05-01/Volumes_Relocate.json
 func ExampleVolumesClient_BeginRelocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -796,7 +697,7 @@ func ExampleVolumesClient_BeginRelocate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ReplicationStatus.json
+// Generated from example definition: 2026-05-01/Volumes_ReplicationStatus.json
 func ExampleVolumesClient_ReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -825,7 +726,7 @@ func ExampleVolumesClient_ReplicationStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ResetCifsPassword.json
+// Generated from example definition: 2026-05-01/Volumes_ResetCifsPassword.json
 func ExampleVolumesClient_BeginResetCifsPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -846,7 +747,7 @@ func ExampleVolumesClient_BeginResetCifsPassword() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_ResyncReplication.json
+// Generated from example definition: 2026-05-01/Volumes_ResyncReplication.json
 func ExampleVolumesClient_BeginResyncReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -872,7 +773,7 @@ func ExampleVolumesClient_BeginResyncReplication() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_Revert.json
+// Generated from example definition: 2026-05-01/Volumes_Revert.json
 func ExampleVolumesClient_BeginRevert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -900,7 +801,7 @@ func ExampleVolumesClient_BeginRevert() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_RevertRelocation.json
+// Generated from example definition: 2026-05-01/Volumes_RevertRelocation.json
 func ExampleVolumesClient_BeginRevertRelocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -926,7 +827,7 @@ func ExampleVolumesClient_BeginRevertRelocation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_SplitClone.json
+// Generated from example definition: 2026-05-01/Volumes_SplitClone.json
 func ExampleVolumesClient_BeginSplitCloneFromParent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -972,7 +873,7 @@ func ExampleVolumesClient_BeginSplitCloneFromParent() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Volumes_Update.json
+// Generated from example definition: 2026-05-01/Volumes_Update.json
 func ExampleVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1007,13 +908,13 @@ func ExampleVolumesClient_BeginUpdate() {
 	// 					SnapshotPolicyID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.NetApp/netAppAccounts/account1/snapshotPolicies/snapshotPolicy1"),
 	// 				},
 	// 			},
-	// 			FileSystemID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			FileSystemID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca7778"),
 	// 			NetworkFeatures: to.Ptr(armnetapp.NetworkFeaturesStandard),
 	// 			NetworkSiblingSetID: to.Ptr("0f434a03-ce0b-4935-81af-d98652ffb1c4"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceLevel: to.Ptr(armnetapp.ServiceLevelPremium),
 	// 			StorageToNetworkProximity: to.Ptr(armnetapp.VolumeStorageToNetworkProximityT2),
-	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 			SubnetID: to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
 	// 			ThroughputMibps: to.Ptr[float32](128),
 	// 			UsageThreshold: to.Ptr[int64](107374182400),
 	// 		},

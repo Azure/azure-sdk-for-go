@@ -56,14 +56,6 @@ func (c *ClientFactory) NewCassandraResourcesClient() *CassandraResourcesClient 
 	}
 }
 
-// NewChaosFaultClient creates a new instance of ChaosFaultClient.
-func (c *ClientFactory) NewChaosFaultClient() *ChaosFaultClient {
-	return &ChaosFaultClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewCollectionClient creates a new instance of CollectionClient.
 func (c *ClientFactory) NewCollectionClient() *CollectionClient {
 	return &CollectionClient{
@@ -96,22 +88,6 @@ func (c *ClientFactory) NewCollectionRegionClient() *CollectionRegionClient {
 	}
 }
 
-// NewCopyJobsClient creates a new instance of CopyJobsClient.
-func (c *ClientFactory) NewCopyJobsClient() *CopyJobsClient {
-	return &CopyJobsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDataTransferJobsClient creates a new instance of DataTransferJobsClient.
-func (c *ClientFactory) NewDataTransferJobsClient() *DataTransferJobsClient {
-	return &DataTransferJobsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewDatabaseAccountRegionClient creates a new instance of DatabaseAccountRegionClient.
 func (c *ClientFactory) NewDatabaseAccountRegionClient() *DatabaseAccountRegionClient {
 	return &DatabaseAccountRegionClient{
@@ -136,14 +112,6 @@ func (c *ClientFactory) NewDatabaseClient() *DatabaseClient {
 	}
 }
 
-// NewFleetAnalyticsClient creates a new instance of FleetAnalyticsClient.
-func (c *ClientFactory) NewFleetAnalyticsClient() *FleetAnalyticsClient {
-	return &FleetAnalyticsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewFleetClient creates a new instance of FleetClient.
 func (c *ClientFactory) NewFleetClient() *FleetClient {
 	return &FleetClient{
@@ -163,22 +131,6 @@ func (c *ClientFactory) NewFleetspaceAccountClient() *FleetspaceAccountClient {
 // NewFleetspaceClient creates a new instance of FleetspaceClient.
 func (c *ClientFactory) NewFleetspaceClient() *FleetspaceClient {
 	return &FleetspaceClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewGarnetClustersClient creates a new instance of GarnetClustersClient.
-func (c *ClientFactory) NewGarnetClustersClient() *GarnetClustersClient {
-	return &GarnetClustersClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewGraphResourcesClient creates a new instance of GraphResourcesClient.
-func (c *ClientFactory) NewGraphResourcesClient() *GraphResourcesClient {
-	return &GraphResourcesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -211,14 +163,6 @@ func (c *ClientFactory) NewMongoDBResourcesClient() *MongoDBResourcesClient {
 // NewMongoMIResourcesClient creates a new instance of MongoMIResourcesClient.
 func (c *ClientFactory) NewMongoMIResourcesClient() *MongoMIResourcesClient {
 	return &MongoMIResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewNetworkSecurityPerimeterConfigurationsClient creates a new instance of NetworkSecurityPerimeterConfigurationsClient.
-func (c *ClientFactory) NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient {
-	return &NetworkSecurityPerimeterConfigurationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -410,38 +354,6 @@ func (c *ClientFactory) NewServiceClient() *ServiceClient {
 // NewTableResourcesClient creates a new instance of TableResourcesClient.
 func (c *ClientFactory) NewTableResourcesClient() *TableResourcesClient {
 	return &TableResourcesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolAccountClient creates a new instance of ThroughputPoolAccountClient.
-func (c *ClientFactory) NewThroughputPoolAccountClient() *ThroughputPoolAccountClient {
-	return &ThroughputPoolAccountClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolAccountsClient creates a new instance of ThroughputPoolAccountsClient.
-func (c *ClientFactory) NewThroughputPoolAccountsClient() *ThroughputPoolAccountsClient {
-	return &ThroughputPoolAccountsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolClient creates a new instance of ThroughputPoolClient.
-func (c *ClientFactory) NewThroughputPoolClient() *ThroughputPoolClient {
-	return &ThroughputPoolClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewThroughputPoolsClient creates a new instance of ThroughputPoolsClient.
-func (c *ClientFactory) NewThroughputPoolsClient() *ThroughputPoolsClient {
-	return &ThroughputPoolsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

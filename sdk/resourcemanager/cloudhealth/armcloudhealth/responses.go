@@ -52,6 +52,12 @@ type DiscoveryRulesClientListByHealthModelResponse struct {
 	DiscoveryRuleListResult
 }
 
+// EntitiesClientAddDataAnnotationResponse contains the response from method EntitiesClient.AddDataAnnotation.
+type EntitiesClientAddDataAnnotationResponse struct {
+	// A single data annotation on an entity
+	DataAnnotation
+}
+
 // EntitiesClientCreateOrUpdateResponse contains the response from method EntitiesClient.BeginCreateOrUpdate.
 type EntitiesClientCreateOrUpdateResponse struct {
 	// An entity (aka node) of a health model
@@ -61,6 +67,12 @@ type EntitiesClientCreateOrUpdateResponse struct {
 // EntitiesClientDeleteResponse contains the response from method EntitiesClient.BeginDelete.
 type EntitiesClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// EntitiesClientGetDataAnnotationsResponse contains the response from method EntitiesClient.GetDataAnnotations.
+type EntitiesClientGetDataAnnotationsResponse struct {
+	// Response containing data annotations for an entity
+	GetDataAnnotationsResponse
 }
 
 // EntitiesClientGetHistoryResponse contains the response from method EntitiesClient.GetHistory.
@@ -79,6 +91,16 @@ type EntitiesClientGetResponse struct {
 type EntitiesClientGetSignalHistoryResponse struct {
 	// Response containing signal history
 	SignalHistoryResponse
+}
+
+// EntitiesClientGetSignalRecommendationsResponse contains the response from method EntitiesClient.GetSignalRecommendations.
+type EntitiesClientGetSignalRecommendationsResponse struct {
+	// Response from `getSignalRecommendations` containing two independent suggestion streams for the Azure resource type represented
+	// by the target Entity. `recommendedSignals` lists signals broadly recommended to be enabled by default; `recommendedConfigurations`
+	// lists additional metrics that are not broadly applicable but, if a caller chooses to monitor one of them, ship with suggested
+	// starting-point thresholds. The two arrays are independent — items are not paired by index, and callers should treat them
+	// as two separate suggestion streams.
+	GetSignalRecommendationsResponse
 }
 
 // EntitiesClientIngestHealthReportResponse contains the response from method EntitiesClient.IngestHealthReport.

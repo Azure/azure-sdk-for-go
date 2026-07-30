@@ -210,7 +210,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 		response, err := req.Next() // err can happen in weird scenarios (connectivity, etc)
 		if err != nil {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
-				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName)
+				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
 			// Honor the caller's context: if their deadline expired or
 			// they cancelled the request, do not consume their budget
@@ -238,7 +238,7 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			return nil, err
 		}
 		if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
-			state.clientSideStats.recordHTTPResponse(attemptStartTime, response, o.resourceType, regionName)
+			state.clientSideStats.recordHTTPResponse(attemptStartTime, response, o.resourceType, regionName.String())
 		}
 		subStatus := response.Header.Get(cosmosHeaderSubstatus)
 		if p.shouldRetryStatus(response.StatusCode, subStatus) {

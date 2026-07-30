@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Create.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Create.json
 func ExampleGalleryInVMAccessControlProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Delete.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Delete.json
 func ExampleGalleryInVMAccessControlProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Get.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Get.json
 func ExampleGalleryInVMAccessControlProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_ListByGallery.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_ListByGallery.json
 func ExampleGalleryInVMAccessControlProfilesClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_NewListByGalleryPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Update.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Update.json
 func ExampleGalleryInVMAccessControlProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

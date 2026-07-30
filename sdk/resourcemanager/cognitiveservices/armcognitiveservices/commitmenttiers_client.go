@@ -19,7 +19,7 @@ import (
 // CommitmentTiersClient contains the methods for the CommitmentTiers group.
 // Don't use this type directly, use NewCommitmentTiersClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-05-15-preview
 type CommitmentTiersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,7 +84,7 @@ func (client *CommitmentTiersClient) listCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

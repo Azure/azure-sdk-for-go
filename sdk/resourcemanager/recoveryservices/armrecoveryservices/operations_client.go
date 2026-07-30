@@ -19,7 +19,7 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2025-02-01
+// Generated from API version 2026-05-01
 type OperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *OperationsClient) getOperationResultCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -142,7 +142,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *Operat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -209,7 +209,7 @@ func (client *OperationsClient) operationStatusGetCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -976,6 +976,23 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
+	if val := resp.Header.Get("x-ms-access-tier"); val != "" {
+		result.AccessTier = &val
+	}
+	if val := resp.Header.Get("x-ms-access-tier-change-time"); val != "" {
+		accessTierChangeTime, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.AccessTierChangeTime = &accessTierChangeTime
+	}
+	if val := resp.Header.Get("x-ms-access-tier-inferred"); val != "" {
+		accessTierInferred, err := strconv.ParseBool(val)
+		if err != nil {
+			return BlobClientDownloadResponse{}, err
+		}
+		result.AccessTierInferred = &accessTierInferred
+	}
 	if val := resp.Header.Get("x-ms-blob-committed-block-count"); val != "" {
 		blobCommittedBlockCount32, err := strconv.ParseInt(val, 10, 32)
 		blobCommittedBlockCount := int32(blobCommittedBlockCount32)
@@ -1173,6 +1190,9 @@ func (client *BlobClient) downloadHandleResponse(resp *http.Response) (BlobClien
 	}
 	if val := resp.Header.Get("x-ms-request-id"); val != "" {
 		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-smart-access-tier"); val != "" {
+		result.SmartAccessTier = &val
 	}
 	if val := resp.Header.Get("x-ms-structured-body"); val != "" {
 		result.StructuredBodyType = &val

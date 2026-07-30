@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutDefenderForAISetting.json
+// Generated from example definition: 2026-05-15-preview/PutDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleDefenderForAISettingsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetDefenderForAISetting.json
+// Generated from example definition: 2026-05-15-preview/GetDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleDefenderForAISettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListDefenderForAISetting.json
+// Generated from example definition: 2026-05-15-preview/ListDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleDefenderForAISettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateDefenderForAISetting.json
+// Generated from example definition: 2026-05-15-preview/UpdateDefenderForAISetting.json
 func ExampleDefenderForAISettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

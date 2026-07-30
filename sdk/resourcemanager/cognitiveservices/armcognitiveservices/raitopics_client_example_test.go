@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutRaiTopic.json
+// Generated from example definition: 2026-05-15-preview/PutRaiTopic.json
 func ExampleRaiTopicsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleRaiTopicsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteRaiTopic.json
+// Generated from example definition: 2026-05-15-preview/DeleteRaiTopic.json
 func ExampleRaiTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleRaiTopicsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetRaiTopic.json
+// Generated from example definition: 2026-05-15-preview/GetRaiTopic.json
 func ExampleRaiTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleRaiTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListRaiTopics.json
+// Generated from example definition: 2026-05-15-preview/ListRaiTopics.json
 func ExampleRaiTopicsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

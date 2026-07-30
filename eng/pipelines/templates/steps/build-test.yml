@@ -152,11 +152,19 @@ steps:
       displayName: 'Dump Test Proxy logs'
       condition: succeededOrFailed()
 
-  # todo: combine test results into a test results file, this will be broken for now.
+  # Each tested package writes its own report.xml into its package directory (see eng/scripts/test.ps1),
+  # so search recursively under sdk and merge rather than expecting a single service-level file.
   - task: PublishTestResults@2
     condition: succeededOrFailed()
     inputs:
       testRunner: JUnit
-      testResultsFiles: '$(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}/report.xml'
+      testResultsFiles: '**/report.xml'
+      searchFolder: '$(Build.SourcesDirectory)/sdk'
+      mergeTestResults: true
       testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
       failTaskOnFailedTests: true
+
+  - template: /eng/common/pipelines/templates/steps/upload-llm-artifacts.yml
+    parameters:
+      TestResultsGlob: 'report.xml'
+      SearchFolder: '$(Build.SourcesDirectory)/sdk'

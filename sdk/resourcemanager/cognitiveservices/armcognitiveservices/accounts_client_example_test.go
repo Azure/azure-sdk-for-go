@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CreateAccount.json
+// Generated from example definition: 2026-05-15-preview/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CreateAccountMin.json
+// Generated from example definition: 2026-05-15-preview/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteAccount.json
+// Generated from example definition: 2026-05-15-preview/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleAccountsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/EvaluateDeploymentPolicies.json
+// Generated from example definition: 2026-05-15-preview/EvaluateDeploymentPolicies.json
 func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetAccount.json
+// Generated from example definition: 2026-05-15-preview/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +295,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListAccountsBySubscription.json
+// Generated from example definition: 2026-05-15-preview/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListAccountsByResourceGroup.json
+// Generated from example definition: 2026-05-15-preview/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -456,7 +456,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListKeys.json
+// Generated from example definition: 2026-05-15-preview/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +482,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListAccountModels.json
+// Generated from example definition: 2026-05-15-preview/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -683,7 +683,7 @@ func ExampleAccountsClient_NewListModelsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListSkus.json
+// Generated from example definition: 2026-05-15-preview/ListSkus.json
 func ExampleAccountsClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -723,7 +723,7 @@ func ExampleAccountsClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetUsages.json
+// Generated from example definition: 2026-05-15-preview/GetUsages.json
 func ExampleAccountsClient_ListUsages_getUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +763,7 @@ func ExampleAccountsClient_ListUsages_getUsages() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetUsagesClassicScope.json
+// Generated from example definition: 2026-05-15-preview/GetUsagesClassicScope.json
 func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +802,7 @@ func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetUsagesDataZoneScope.json
+// Generated from example definition: 2026-05-15-preview/GetUsagesDataZoneScope.json
 func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -842,7 +842,7 @@ func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetUsagesGlobalScope.json
+// Generated from example definition: 2026-05-15-preview/GetUsagesGlobalScope.json
 func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -882,7 +882,7 @@ func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/RegenerateKey.json
+// Generated from example definition: 2026-05-15-preview/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -910,7 +910,7 @@ func ExampleAccountsClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateAccount.json
+// Generated from example definition: 2026-05-15-preview/UpdateAccount.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

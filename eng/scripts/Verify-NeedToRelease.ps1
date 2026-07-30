@@ -5,6 +5,8 @@ param (
 )
 
 . (Join-Path $PSScriptRoot .. common scripts common.ps1)
+. (Join-Path $PSScriptRoot .. common scripts Helpers PSModule-Helpers.ps1)
+InstallAndImport-ModuleIfNotInstalled "powershell-yaml" "0.4.7"
 
 $apiUrl = "https://api.github.com/repos/$repoId"
 Write-Host "Using API URL $apiUrl"

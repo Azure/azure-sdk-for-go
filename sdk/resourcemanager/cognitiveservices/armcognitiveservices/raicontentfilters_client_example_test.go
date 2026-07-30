@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/GetRaiContentFilter.json
+// Generated from example definition: 2026-05-15-preview/GetRaiContentFilter.json
 func ExampleRaiContentFiltersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleRaiContentFiltersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListRaiContentFilters.json
+// Generated from example definition: 2026-05-15-preview/ListRaiContentFilters.json
 func ExampleRaiContentFiltersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

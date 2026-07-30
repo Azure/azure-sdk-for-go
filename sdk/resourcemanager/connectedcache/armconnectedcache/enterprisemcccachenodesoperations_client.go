@@ -19,7 +19,7 @@ import (
 // EnterpriseMccCacheNodesOperationsClient contains the methods for the EnterpriseMccCacheNodesOperations group.
 // Don't use this type directly, use NewEnterpriseMccCacheNodesOperationsClient() instead.
 //
-// Generated from API version 2024-11-30-preview
+// Generated from API version 2026-06-01
 type EnterpriseMccCacheNodesOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -113,7 +113,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -194,7 +194,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) deleteCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -252,7 +252,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +320,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeAutoUpdateHis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -388,7 +388,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeInstallDetail
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -456,7 +456,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeMccIssueDetai
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -524,7 +524,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeTLSCertificat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -588,7 +588,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustom
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -657,7 +657,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) updateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

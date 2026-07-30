@@ -174,6 +174,8 @@ func (s *RecordedTestSuite) TestFileDownloadWithSessionAccountNameDerivedFromURL
 	_require.Equal(1, sessionAuthCount, "expected the read to use session auth with the derived account name")
 }
 
+// Sessions are only used when explicitly enabled, so neither the disabled mode nor the zero-value
+// default mode may create or use one.
 func (s *RecordedTestSuite) TestFileDownloadWithSessionModeOff() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -197,21 +199,25 @@ func (s *RecordedTestSuite) TestFileDownloadWithSessionModeOff() {
 	_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
 
 	tracker := &sessionAuthTracker{}
-	sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, azdatalake.SessionModeDisabled, tracker)
-	_require.NoError(err)
 
-	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
-	resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
-	_require.NoError(err)
+	// SessionModeDefault is the zero value, so it covers clients that never mention sessions
+	for _, mode := range []azdatalake.SessionMode{azdatalake.SessionModeDisabled, azdatalake.SessionModeDefault} {
+		sessionSvcClient, err := newSessionServiceClient(s.T(), accountName, mode, tracker)
+		_require.NoError(err)
 
-	downloadedData, err := io.ReadAll(resp.Body)
-	_require.NoError(err)
-	_ = resp.Body.Close()
-	_require.Equal(uploadData, downloadedData)
+		sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+		resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+		_require.NoError(err)
+
+		downloadedData, err := io.ReadAll(resp.Body)
+		_require.NoError(err)
+		_ = resp.Body.Close()
+		_require.Equal(uploadData, downloadedData)
+	}
 
 	createSessionCount, sessionAuthCount, _ := tracker.counts()
-	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when SessionModeDisabled")
-	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when SessionModeDisabled")
+	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when sessions are not enabled")
+	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when sessions are not enabled")
 }
 
 // The session scope is the filesystem, resolved from the request URL, so a client created for the

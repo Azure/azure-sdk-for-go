@@ -399,31 +399,6 @@ func TestGetSessionCachesPerContainer(t *testing.T) {
 	require.Equal(t, 2, srv.Requests())
 }
 
-func TestInvalidateSession(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-
-	expiration := time.Now().Add(time.Hour)
-	appendSessionResponse(srv, "key-one", "token-one", expiration)
-	appendSessionResponse(srv, "key-two", "token-two", expiration)
-
-	provider := newTestSessionProvider(t, srv)
-
-	req := newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob")
-	first, err := provider.GetSession(req)
-	require.NoError(t, err)
-	require.Equal(t, "token-one", first.Token())
-	require.Equal(t, 1, srv.Requests())
-
-	require.NoError(t, provider.InvalidateSession(req, first))
-
-	// the cached session was discarded, so a new one is acquired
-	second, err := provider.GetSession(req)
-	require.NoError(t, err)
-	require.Equal(t, "token-two", second.Token())
-	require.Equal(t, 2, srv.Requests())
-}
-
 func TestGetSessionConcurrentCallsCreateOneSession(t *testing.T) {
 	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer closeFn()
@@ -549,6 +524,95 @@ func TestResourceForRequestNilRequest(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestInvalidateSession(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	expiration := time.Now().Add(time.Hour)
+	appendSessionResponse(srv, "key-one", "token-one", expiration)
+	appendSessionResponse(srv, "key-two", "token-two", expiration)
+
+	provider := newTestSessionProvider(t, srv)
+
+	req := newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob")
+	first, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-one", first.Token())
+	require.Equal(t, 1, srv.Requests())
+
+	require.NoError(t, provider.InvalidateSession(req, first))
+
+	// the cached session was discarded, so a new one is acquired
+	second, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-two", second.Token())
+	require.Equal(t, 2, srv.Requests())
+}
+
+// A request that reports a rejected session after it has already been replaced must not discard
+// the replacement.
+func TestInvalidateSessionIgnoresStaleCredential(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	// only one CreateSession response is queued; a second acquisition would panic the mock server
+	appendSessionResponse(srv, "key-one", "token-one", time.Now().Add(time.Hour))
+
+	provider := newTestSessionProvider(t, srv)
+
+	req := newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob")
+	current, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-one", current.Token())
+	require.Equal(t, 1, srv.Requests())
+
+	// report a session that is no longer the cached one
+	stale := exported.NewSessionCredential("stale-token", "key-zero", time.Now().Add(time.Hour))
+	require.NoError(t, provider.InvalidateSession(req, stale))
+
+	// the cached session survives, so no new one is acquired
+	after, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-one", after.Token())
+	require.Equal(t, 1, srv.Requests())
+}
+
+// Many requests can fail with the same rejected session at once, but they must replace it once.
+func TestInvalidateSessionConcurrentCallsReplaceSessionOnce(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	// only two sessions are queued; a second replacement would panic the mock server
+	expiration := time.Now().Add(time.Hour)
+	appendSessionResponse(srv, "key-one", "token-one", expiration)
+	appendSessionResponse(srv, "key-two", "token-two", expiration)
+
+	provider := newTestSessionProvider(t, srv)
+	req := newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob")
+
+	rejected, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-one", rejected.Token())
+
+	// every goroutine reports the same rejected session
+	var wg sync.WaitGroup
+	for i := 0; i < 16; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			if err := provider.InvalidateSession(newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob"), rejected); err != nil {
+				t.Error(err)
+			}
+		}()
+	}
+	wg.Wait()
+
+	replacement, err := provider.GetSession(req)
+	require.NoError(t, err)
+	require.Equal(t, "token-two", replacement.Token())
+	require.Equal(t, 2, srv.Requests(), "concurrent invalidations must cause a single replacement")
+}
+
 func TestNewContainerSessionProviderInvalidURL(t *testing.T) {
 	_, err := NewContainerSessionProvider(fakeTokenCredential{}, "://not a url", nil)
 	require.Error(t, err)
@@ -562,7 +626,7 @@ func TestNewContainerSessionProviderTrimsPath(t *testing.T) {
 	require.NoError(t, err)
 	provider, ok := p.(*containerSessionProvider)
 	require.True(t, ok)
-	require.Equal(t, fakeServiceURL, provider.svcURL)
+	require.Equal(t, fakeServiceURL, provider.genClient.Endpoint())
 
 	// the session scope is still resolved from the request URL, not from the URL the provider
 	// was constructed with

@@ -4,6 +4,7 @@
 package base
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -76,13 +77,21 @@ func GetAudience(clOpts *ClientOptions) string {
 // Provide either cred or sharedKey for authentication, or both nil for anonymous/SAS access.
 func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *exported.SharedKeyCredential, conOptions *ClientOptions) (*azcore.Client, error) {
 	var plOpts runtime.PipelineOptions
+
+	// A session is signed with a session key obtained via a token credential, so asking for one
+	// without a token credential is a configuration error rather than something to silently ignore.
+	if conOptions.Session.Mode == exported.SessionModeEnabled && cred == nil {
+		return nil, errors.New("session mode is enabled but no token credential was provided; session-based authentication requires a TokenCredential")
+	}
+
 	if cred != nil {
 		audience := GetAudience(conOptions)
 		bearerTokenPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 		var authPolicy policy.Policy
-		if conOptions.Session.Mode == exported.SessionModeDisabled || conOptions.Session.Mode == exported.SessionModeDefault {
+		switch conOptions.Session.Mode {
+		case exported.SessionModeDefault, exported.SessionModeDisabled:
 			authPolicy = bearerTokenPolicy
-		} else if conOptions.Session.Mode == exported.SessionModeEnabled {
+		case exported.SessionModeEnabled:
 			// Session Provider
 			var provider exported.SessionProvider
 			var accountName string
@@ -109,7 +118,7 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 				accountName = conOptions.Session.AccountName
 			}
 			authPolicy = exported.NewSessionPolicy(accountName, provider, bearerTokenPolicy)
-		} else {
+		default:
 			return nil, fmt.Errorf("unsupported session mode %v", conOptions.Session.Mode)
 		}
 		plOpts.PerRetry = []policy.Policy{authPolicy}

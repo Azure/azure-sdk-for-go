@@ -5,40 +5,16 @@ package base
 
 import (
 	"context"
-	"errors"
 	"net/http"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/stretchr/testify/require"
 )
-
-// stubSessionProvider is a SessionProvider that records calls, letting tests assert that a
-// caller-supplied provider is wired into the pipeline instead of the default one.
-type stubSessionProvider struct {
-	eligible bool
-	cred     exported.SessionCredential
-	getCalls int
-}
-
-func (s *stubSessionProvider) GetSession(*http.Request) (exported.SessionCredential, error) {
-	s.getCalls++
-	return s.cred, nil
-}
-
-func (s *stubSessionProvider) InvalidateSession(*http.Request, exported.SessionCredential) error {
-	return nil
-}
-
-func (s *stubSessionProvider) IsRequestEligible(*http.Request) bool {
-	return s.eligible
-}
 
 // doTestRequest sends a GET for a blob through the client's pipeline and returns the authorization
 // scheme (the first token of the Authorization header) that reached the transport.
@@ -54,193 +30,17 @@ func doTestRequest(t *testing.T, azClient *azcore.Client, rawURL string) string 
 	return scheme
 }
 
-func TestGetAzClientSessionModeBearerOnly(t *testing.T) {
-	modes := []struct {
-		name string
-		mode exported.SessionMode
-	}{
-		{"Default", exported.SessionModeDefault},
-		{"Disabled", exported.SessionModeDisabled},
-	}
-
-	for _, tt := range modes {
-		t.Run(tt.name, func(t *testing.T) {
-			srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer closeFn()
-			srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-
-			opts := testClientOptions(srv)
-			opts.Session = exported.SessionOptions{Mode: tt.mode}
-
-			azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
-			require.NoError(t, err)
-
-			scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
-			require.Equal(t, "Bearer", scheme)
-			require.Equal(t, 1, srv.Requests(), "no session should be created")
-		})
-	}
-}
-
-func TestGetAzClientSessionModeEnabledUsesDefaultProvider(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-
-	// first the CreateSession call, then the blob GET
-	appendSessionResponse(srv, "dGVzdC1rZXk=", "test-token", time.Now().Add(time.Hour))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{Mode: exported.SessionModeEnabled}
-
-	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
-	require.NoError(t, err)
-
-	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
-	require.Equal(t, "Session", scheme)
-	require.Equal(t, 2, srv.Requests(), "one CreateSession plus the blob GET")
-}
-
-func TestGetAzClientSessionModeEnabledUsesSuppliedProvider(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-
-	provider := &stubSessionProvider{
-		eligible: true,
-		cred:     exported.NewSessionCredential("supplied-token", "dGVzdC1rZXk=", time.Now().Add(time.Hour)),
-	}
-
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode:        exported.SessionModeEnabled,
-		AccountName: "fakeaccount",
-		Provider:    provider,
-	}
-
-	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
-	require.NoError(t, err)
-
-	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
-	require.Equal(t, "Session", scheme)
-	require.Equal(t, 1, provider.getCalls, "the supplied provider must be used")
-	require.Equal(t, 1, srv.Requests(), "the supplied provider does not call CreateSession")
-}
-
-func TestGetAzClientSessionModeEnabledFallsBackWhenProviderIneligible(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-
-	provider := &stubSessionProvider{eligible: false}
-
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode:        exported.SessionModeEnabled,
-		AccountName: "fakeaccount",
-		Provider:    provider,
-	}
-
-	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
-	require.NoError(t, err)
-
-	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
-	require.Equal(t, "Bearer", scheme)
-	require.Equal(t, 0, provider.getCalls)
-}
-
-func TestGetAzClientSessionModeEnabledDerivesAccountName(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-
-	provider := &stubSessionProvider{
-		eligible: true,
-		cred:     exported.NewSessionCredential("token", "dGVzdC1rZXk=", time.Now().Add(time.Hour)),
-	}
-
-	// AccountName is omitted, so it must be derived from the service URL
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode:     exported.SessionModeEnabled,
-		Provider: provider,
-	}
-
-	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
-	require.NoError(t, err)
-
-	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
-	require.Equal(t, "Session", scheme)
-}
-
 func TestGetAzClientSessionModeEnabledAccountNameError(t *testing.T) {
 	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer closeFn()
 
 	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode:     exported.SessionModeEnabled,
-		Provider: &stubSessionProvider{},
-	}
+	opts.Session = exported.SessionOptions{Mode: exported.SessionModeEnabled}
 
 	// a host without a subdomain has no account name to derive
 	_, err := GetAzClient("https://localhost/", fakeTokenCredential{}, nil, opts)
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "account name could not be determined")
-}
-
-// An explicitly configured account name is used verbatim, even when it does not match the account
-// in the URL. The service rejects the resulting signature with a 401, at which point the session is
-// discarded and the request is retried with bearer authentication.
-func TestGetAzClientSessionModeEnabledWrongAccountNameFallsBackToBearer(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-
-	// the CreateSession call, the rejected session-authenticated GET, then the bearer retry
-	appendSessionResponse(srv, "dGVzdC1rZXk=", "test-token", time.Now().Add(time.Hour))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
-	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
-
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode: exported.SessionModeEnabled,
-		// the URL is for fakeaccount, so this account name produces an invalid signature
-		AccountName: "someotheraccount",
-	}
-
-	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
-	require.NoError(t, err)
-
-	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
-	require.Equal(t, "Bearer", scheme, "a rejected session falls back to bearer authentication")
-	require.Equal(t, 3, srv.Requests(), "CreateSession, the rejected session GET, and the bearer retry")
-}
-
-// The account name recorded on the mismatched request is the configured one, not the one in the URL.
-func TestGetAzClientSessionModeEnabledSignsWithConfiguredAccountName(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-
-	provider := &stubSessionProvider{
-		eligible: true,
-		cred:     exported.NewSessionCredential("token", "dGVzdC1rZXk=", time.Now().Add(time.Hour)),
-	}
-
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode:        exported.SessionModeEnabled,
-		AccountName: "someotheraccount",
-		Provider:    provider,
-	}
-
-	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
-	require.NoError(t, err)
-
-	// signing succeeds regardless of the mismatch; only the service can reject the signature
-	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
-	require.Equal(t, "Session", scheme)
-	require.Equal(t, 1, provider.getCalls)
 }
 
 func TestGetAzClientUnsupportedSessionMode(t *testing.T) {
@@ -255,7 +55,39 @@ func TestGetAzClientUnsupportedSessionMode(t *testing.T) {
 	require.Contains(t, err.Error(), "unsupported session mode")
 }
 
-func TestGetAzClientSessionIgnoredWithoutTokenCredential(t *testing.T) {
+// Session-based authentication signs with a session key obtained via a token credential, so
+// enabling it without one is a configuration error rather than something to silently ignore.
+func TestGetAzClientSessionRequiresTokenCredential(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	sharedKey, err := exported.NewSharedKeyCredential("fakeaccount", "dGVzdC1rZXk=")
+	require.NoError(t, err)
+
+	creds := []struct {
+		name      string
+		sharedKey *exported.SharedKeyCredential
+	}{
+		{"SharedKey", sharedKey},
+		{"NoCredential", nil},
+	}
+
+	for _, tt := range creds {
+		t.Run(tt.name, func(t *testing.T) {
+			opts := testClientOptions(srv)
+			opts.Session = exported.SessionOptions{
+				Mode:        exported.SessionModeEnabled,
+				AccountName: "fakeaccount",
+			}
+
+			_, err := GetAzClient(fakeServiceURL, nil, tt.sharedKey, opts)
+			require.Error(t, err)
+			require.Contains(t, err.Error(), "requires a TokenCredential")
+		})
+	}
+}
+
+func TestGetAzClientSharedKeyUnaffectedBySessionDefaults(t *testing.T) {
 	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer closeFn()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
@@ -263,21 +95,11 @@ func TestGetAzClientSessionIgnoredWithoutTokenCredential(t *testing.T) {
 	sharedKey, err := exported.NewSharedKeyCredential("fakeaccount", "dGVzdC1rZXk=")
 	require.NoError(t, err)
 
-	provider := &stubSessionProvider{eligible: true}
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode:        exported.SessionModeEnabled,
-		AccountName: "fakeaccount",
-		Provider:    provider,
-	}
-
-	// session auth requires a token credential; shared key auth is unaffected by session options
-	azClient, err := GetAzClient(fakeServiceURL, nil, sharedKey, opts)
+	azClient, err := GetAzClient(fakeServiceURL, nil, sharedKey, testClientOptions(srv))
 	require.NoError(t, err)
 
 	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
 	require.Equal(t, "SharedKey", scheme)
-	require.Equal(t, 0, provider.getCalls)
 }
 
 func TestGetAzClientNoCredentialHasNoAuthPolicy(t *testing.T) {
@@ -285,52 +107,10 @@ func TestGetAzClientNoCredentialHasNoAuthPolicy(t *testing.T) {
 	defer closeFn()
 	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
 
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{Mode: exported.SessionModeEnabled, AccountName: "fakeaccount"}
-
-	azClient, err := GetAzClient(fakeServiceURL, nil, nil, opts)
+	azClient, err := GetAzClient(fakeServiceURL, nil, nil, testClientOptions(srv))
 	require.NoError(t, err)
 
 	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
 	require.Empty(t, scheme, "anonymous/SAS access must not be authenticated")
 }
-
-// errTokenCredential always fails to produce a token.
-type errTokenCredential struct{ err error }
-
-func (e errTokenCredential) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{}, e.err
-}
-
-func TestGetAzClientSessionFallsBackToBearerAndSurfacesTokenError(t *testing.T) {
-	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-	defer closeFn()
-	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
-
-	tokenErr := errors.New("no token for you")
-	provider := &stubSessionProvider{
-		eligible: true,
-		cred:     exported.NewSessionCredentialFallback(time.Now().Add(time.Hour)),
-	}
-
-	opts := testClientOptions(srv)
-	opts.Session = exported.SessionOptions{
-		Mode:        exported.SessionModeEnabled,
-		AccountName: "fakeaccount",
-		Provider:    provider,
-	}
-
-	azClient, err := GetAzClient(fakeServiceURL, errTokenCredential{err: tokenErr}, nil, opts)
-	require.NoError(t, err)
-
-	req, err := runtime.NewRequest(context.Background(), http.MethodGet, fakeContainerURL+"/myblob")
-	require.NoError(t, err)
-
-	// a fallback credential routes to the bearer token policy, whose failure must surface
-	_, err = azClient.Pipeline().Do(req)
-	require.ErrorIs(t, err, tokenErr)
-	require.Equal(t, 1, provider.getCalls)
-}
-
-
 

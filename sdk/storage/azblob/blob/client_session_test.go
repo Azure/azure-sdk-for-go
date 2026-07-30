@@ -176,6 +176,8 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionAccountNameDerivedFr
 	_require.Equal(1, sessionAuthCount, "expected the download to use session auth with the derived account name")
 }
 
+// Sessions are only used when explicitly enabled, so neither the disabled mode nor the zero-value
+// default mode may create or use one.
 func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -207,29 +209,33 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 
 	sessionTracker := &authRequestTracker{}
 
-	sessionOptions := &service.ClientOptions{
-		Session: azblob.SessionOptions{
-			Mode: azblob.SessionModeDisabled,
-		},
+	// SessionModeDefault is the zero value, so it covers clients that never mention sessions
+	for _, mode := range []azblob.SessionMode{azblob.SessionModeDisabled, azblob.SessionModeDefault} {
+		sessionOptions := &service.ClientOptions{
+			Session: azblob.SessionOptions{
+				Mode: mode,
+			},
+		}
+		testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+		sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+		sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
+		_require.NoError(err)
+
+		sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
+		resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+		_require.NoError(err)
+
+		downloadedData, err := io.ReadAll(resp.Body)
+		_require.NoError(err)
+		_ = resp.Body.Close()
+		_require.Equal(uploadData, downloadedData)
 	}
-	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
-	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
-	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
-	_require.NoError(err)
 
-	sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
-	resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
-	_require.NoError(err)
+	createSessionCount, sessionAuthCount, bearerAuthCount := sessionTracker.counts()
 
-	downloadedData, err := io.ReadAll(resp.Body)
-	_require.NoError(err)
-	_ = resp.Body.Close()
-	_require.Equal(uploadData, downloadedData)
-
-	createSessionCount, sessionAuthCount, _ := sessionTracker.counts()
-
-	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when SessionModeDisabled")
-	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when SessionModeDisabled")
+	_require.Equal(0, createSessionCount, "Expected no CreateSession calls when sessions are not enabled")
+	_require.Equal(0, sessionAuthCount, "Expected no session-authenticated requests when sessions are not enabled")
+	_require.Equal(2, bearerAuthCount, "Expected both downloads to use bearer authentication")
 }
 
 // The container scope of a session is resolved from the request URL, so a client created for the

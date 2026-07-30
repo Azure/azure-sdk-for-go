@@ -29,13 +29,17 @@ const (
 
 // containerSessionProvider implements SessionProvider for container-scoped token credential sessions.
 type containerSessionProvider struct {
-	cred      azcore.TokenCredential
-	svcURL    string
-	options   *ClientOptions
 	genClient *generated.ServiceClient
 
 	// sessions maps container names to their cached session credential.
 	sessions sync.Map // map[string]*temporal.Resource[exported.SessionCredential, context.Context]
+
+	// invalidateMu serializes invalidation so that the "is this still the cached session" check
+	// and the expiry that follows it can't interleave with another invalidation. Without it,
+	// every request that was in flight with a rejected session could discard the replacement
+	// acquired by the previous one. Invalidation is a rare, off the happy path operation, so a
+	// single lock for all containers is cheap.
+	invalidateMu sync.Mutex
 }
 
 // NewContainerSessionProvider creates a SessionProvider that manages container-scoped sessions
@@ -61,9 +65,6 @@ func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string,
 	}
 
 	return &containerSessionProvider{
-		cred:      cred,
-		svcURL:    svcURL,
-		options:   options,
 		genClient: generated.NewServiceClient(svcURL, azClient),
 	}, nil
 }
@@ -80,17 +81,25 @@ func (p *containerSessionProvider) GetSession(req *http.Request) (exported.Sessi
 // InvalidateSession discards the cached session for the request's container so that a new one is
 // acquired on the next call to GetSession.
 //
-// The current credential is ignored: a request that failed with a rejected session may report it
-// after the session has already been replaced, in which case this discards a valid replacement and
-// costs an extra acquisition. That is bounded by the number of requests already in flight with the
-// old session, so it is accepted in exchange for not shadowing the cached token. Implementations
-// that can compare against the cached session may use current to skip such stale invalidations.
-func (p *containerSessionProvider) InvalidateSession(req *http.Request, _ exported.SessionCredential) error {
+// The cached session is only discarded when it is still the one the caller was rejected with, so
+// that the many requests that were in flight with a rejected session cause a single replacement
+// rather than one each.
+func (p *containerSessionProvider) InvalidateSession(req *http.Request, reqCred exported.SessionCredential) error {
 	resource, err := p.resourceForRequest(req)
 	if err != nil {
 		return err
 	}
-	resource.Expire()
+
+	// the check and the expiry that follows it must be atomic with respect to other invalidations
+	p.invalidateMu.Lock()
+	defer p.invalidateMu.Unlock()
+
+	// A caller reporting a session that is no longer cached has nothing to discard: the session
+	// was already replaced, either by an eager refresh or by an earlier invalidation.
+	currCred, _ := resource.Get(req.Context())
+	if currCred.Token() == reqCred.Token() {
+		resource.Expire()
+	}
 	return nil
 }
 
@@ -141,6 +150,11 @@ func (p *containerSessionProvider) getOrCreateResource(containerName string) *te
 	return actual.(*temporal.Resource[exported.SessionCredential, context.Context])
 }
 
+func (p *containerSessionProvider) getContainerClient(containerName string) *generated.ContainerClient {
+	containerURL := runtime.JoinPaths(p.genClient.Endpoint(), containerName)
+	return generated.NewContainerClient(containerURL, p.genClient.InternalClient())
+}
+
 // acquireSession is the function called by temporal.Resource to create a new session.
 // When the service indicates that session creation is unavailable, a fallback credential is
 // returned so the decision is cached for the duration of its expiry rather than retried per request.
@@ -189,9 +203,4 @@ func shouldRefreshSession(resource exported.SessionCredential, _ context.Context
 		return false
 	}
 	return resource.Expiry().Add(-30 * time.Second).Before(time.Now())
-}
-
-func (p *containerSessionProvider) getContainerClient(containerName string) *generated.ContainerClient {
-	containerURL := runtime.JoinPaths(p.genClient.Endpoint(), containerName)
-	return generated.NewContainerClient(containerURL, p.genClient.InternalClient())
 }

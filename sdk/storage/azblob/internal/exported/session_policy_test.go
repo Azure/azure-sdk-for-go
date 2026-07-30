@@ -289,6 +289,42 @@ func TestSessionPolicySignatureMatchesSharedKeySignature(t *testing.T) {
 	require.Equal(t, "Session "+testSessionToken+":"+expectedSignature, transport.lastRequest.Header.Get(shared.HeaderAuthorization))
 }
 
+// The configured account name is used verbatim when signing; it is never re-derived from the
+// request URL. Configuring the wrong account therefore produces a signature the service rejects.
+func TestSessionPolicyUsesConfiguredAccountNameForSignature(t *testing.T) {
+	const wrongAccountName = "wrongaccount"
+
+	provider := newEligibleProvider()
+	transport := &recordingTransport{}
+
+	// the request targets testaccount, but the policy is configured with a different account
+	pl := newTestPipeline(NewSessionPolicy(wrongAccountName, provider, &mockBearerPolicy{}), transport)
+
+	_, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
+	require.NoError(t, err)
+
+	authHeader := transport.lastRequest.Header.Get(shared.HeaderAuthorization)
+
+	// the signature matches the configured account name...
+	wrongCred, err := NewSharedKeyCredential(wrongAccountName, testSessionKey)
+	require.NoError(t, err)
+	stringToSign, err := wrongCred.buildStringToSign(transport.lastRequest)
+	require.NoError(t, err)
+	require.Contains(t, stringToSign, "/"+wrongAccountName+"/", "the canonicalized resource uses the configured account name")
+	wrongSignature, err := wrongCred.computeHMACSHA256(stringToSign)
+	require.NoError(t, err)
+	require.Equal(t, "Session "+testSessionToken+":"+wrongSignature, authHeader)
+
+	// ...and therefore does not match the account the request is actually addressed to
+	rightCred, err := NewSharedKeyCredential(testAccountName, testSessionKey)
+	require.NoError(t, err)
+	rightStringToSign, err := rightCred.buildStringToSign(transport.lastRequest)
+	require.NoError(t, err)
+	rightSignature, err := rightCred.computeHMACSHA256(rightStringToSign)
+	require.NoError(t, err)
+	require.NotEqual(t, rightSignature, wrongSignature, "a mismatched account name yields a different signature")
+}
+
 func TestSessionPolicyRefreshesDateHeader(t *testing.T) {
 	provider := newEligibleProvider()
 	transport := &recordingTransport{}

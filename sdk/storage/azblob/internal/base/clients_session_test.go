@@ -189,6 +189,60 @@ func TestGetAzClientSessionModeEnabledAccountNameError(t *testing.T) {
 	require.Contains(t, err.Error(), "account name could not be determined")
 }
 
+// An explicitly configured account name is used verbatim, even when it does not match the account
+// in the URL. The service rejects the resulting signature with a 401, at which point the session is
+// discarded and the request is retried with bearer authentication.
+func TestGetAzClientSessionModeEnabledWrongAccountNameFallsBackToBearer(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+
+	// the CreateSession call, the rejected session-authenticated GET, then the bearer retry
+	appendSessionResponse(srv, "dGVzdC1rZXk=", "test-token", time.Now().Add(time.Hour))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusUnauthorized))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+
+	opts := testClientOptions(srv)
+	opts.Session = exported.SessionOptions{
+		Mode: exported.SessionModeEnabled,
+		// the URL is for fakeaccount, so this account name produces an invalid signature
+		AccountName: "someotheraccount",
+	}
+
+	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
+	require.NoError(t, err)
+
+	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
+	require.Equal(t, "Bearer", scheme, "a rejected session falls back to bearer authentication")
+	require.Equal(t, 3, srv.Requests(), "CreateSession, the rejected session GET, and the bearer retry")
+}
+
+// The account name recorded on the mismatched request is the configured one, not the one in the URL.
+func TestGetAzClientSessionModeEnabledSignsWithConfiguredAccountName(t *testing.T) {
+	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer closeFn()
+	srv.SetResponse(mock.WithStatusCode(http.StatusOK))
+
+	provider := &stubSessionProvider{
+		eligible: true,
+		cred:     exported.NewSessionCredential("token", "dGVzdC1rZXk=", time.Now().Add(time.Hour)),
+	}
+
+	opts := testClientOptions(srv)
+	opts.Session = exported.SessionOptions{
+		Mode:        exported.SessionModeEnabled,
+		AccountName: "someotheraccount",
+		Provider:    provider,
+	}
+
+	azClient, err := GetAzClient(fakeServiceURL, fakeTokenCredential{}, nil, opts)
+	require.NoError(t, err)
+
+	// signing succeeds regardless of the mismatch; only the service can reject the signature
+	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
+	require.Equal(t, "Session", scheme)
+	require.Equal(t, 1, provider.getCalls)
+}
+
 func TestGetAzClientUnsupportedSessionMode(t *testing.T) {
 	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer closeFn()

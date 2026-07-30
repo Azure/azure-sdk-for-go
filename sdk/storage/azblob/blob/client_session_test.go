@@ -118,6 +118,64 @@ func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionOptions() {
 	_require.Equal(uploadData, downloadedData)
 }
 
+// AccountName is optional; when it is omitted it is derived from the client's URL.
+func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionAccountNameDerivedFromURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	uploadData := []byte("test data for a derived account name")
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(uploadData)), nil)
+	_require.NoError(err)
+
+	sessionTracker := &authRequestTracker{}
+
+	// AccountName is intentionally not set here
+	sessionOptions := &service.ClientOptions{
+		Session: azblob.SessionOptions{
+			Mode: azblob.SessionModeEnabled,
+		},
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, sessionTracker)
+	sessionSvcClient, err := service.NewClient(serviceURL, cred, sessionOptions)
+	_require.NoError(err)
+
+	sessionBlobClient := sessionSvcClient.NewContainerClient(containerName).NewBlobClient(blobName)
+	resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.NoError(resp.Body.Close())
+	_require.Equal(uploadData, downloadedData)
+
+	createSessionCount, sessionAuthCount, _ := sessionTracker.counts()
+
+	_require.Equal(1, createSessionCount, "expected a session to be created")
+	_require.Equal(1, sessionAuthCount, "expected the download to use session auth with the derived account name")
+}
+
 func (s *BlobRecordedTestsSuite) TestBlobDownloadWithSessionModeOff() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -638,6 +696,103 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 
 	_require.Equal(1, createSessionCount, "expected only one session to be created")
 	_require.Equal(len(blobNames), sessionAuthCount, "expected each GET to use session auth")
+}
+
+// A SessionProvider supplied through SessionOptions is shared by every client it is injected into.
+// Sessions are container scoped, so independently created clients that target the same container
+// reuse a single session, while a client targeting a different container mints a new one.
+func (s *BlobRecordedTestsSuite) TestBlobSharedSessionProviderReusedAcrossClients() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	options := &service.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &options.ClientOptions)
+
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/", accountName)
+	sharedKeyCred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, sharedKeyCred, options)
+	_require.NoError(err)
+
+	// two blobs in the first container and one in the second
+	blobData := []byte("test data for a shared session provider")
+	firstContainerName := testcommon.GenerateContainerName(testName) + "1"
+	secondContainerName := testcommon.GenerateContainerName(testName) + "2"
+	blobNames := []string{
+		testcommon.GenerateBlobName(testName) + "-1",
+		testcommon.GenerateBlobName(testName) + "-2",
+	}
+
+	firstContainerClient := testcommon.CreateNewContainer(context.Background(), _require, firstContainerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, firstContainerClient)
+	for _, blobName := range blobNames {
+		bbClient := firstContainerClient.NewBlockBlobClient(blobName)
+		_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(blobData)), nil)
+		_require.NoError(err)
+	}
+
+	secondContainerClient := testcommon.CreateNewContainer(context.Background(), _require, secondContainerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, secondContainerClient)
+	bbClient := secondContainerClient.NewBlockBlobClient(blobNames[0])
+	_, err = bbClient.Upload(context.Background(), streaming.NopCloser(bytes.NewReader(blobData)), nil)
+	_require.NoError(err)
+
+	tracker := &authRequestTracker{}
+
+	// the tracker is installed on the provider's pipeline too so CreateSession calls are counted
+	providerOptions := &azblob.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &providerOptions.ClientOptions)
+	providerOptions.PerRetryPolicies = append(providerOptions.PerRetryPolicies, tracker)
+
+	provider, err := azblob.NewContainerSessionProvider(cred, serviceURL, providerOptions)
+	_require.NoError(err)
+
+	// every blob gets its own client, but they all share the injected provider
+	downloadWithSharedProvider := func(containerName, blobName string) {
+		blobOptions := &blob.ClientOptions{
+			Session: azblob.SessionOptions{
+				Mode:        azblob.SessionModeEnabled,
+				AccountName: accountName,
+				Provider:    provider,
+			},
+		}
+		testcommon.SetClientOptions(s.T(), &blobOptions.ClientOptions)
+		blobOptions.PerRetryPolicies = append(blobOptions.PerRetryPolicies, tracker)
+
+		blobURL := fmt.Sprintf("%s%s/%s", serviceURL, containerName, blobName)
+		sessionBlobClient, err := blob.NewClient(blobURL, cred, blobOptions)
+		_require.NoError(err)
+
+		resp, err := sessionBlobClient.DownloadStream(context.Background(), nil)
+		_require.NoError(err)
+
+		downloadedData, err := io.ReadAll(resp.Body)
+		_require.NoError(err)
+		_require.NoError(resp.Body.Close())
+		_require.Equal(blobData, downloadedData)
+	}
+
+	// the two clients in the first container share a session
+	for _, blobName := range blobNames {
+		downloadWithSharedProvider(firstContainerName, blobName)
+	}
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "expected clients in the same container to share one session")
+	_require.Equal(len(blobNames), sessionAuthCount, "expected every client to use session auth")
+
+	// a client in a different container needs a session of its own
+	downloadWithSharedProvider(secondContainerName, blobNames[0])
+
+	createSessionCount, sessionAuthCount, _ = tracker.counts()
+	_require.Equal(2, createSessionCount, "expected a second session for the second container")
+	_require.Equal(len(blobNames)+1, sessionAuthCount, "expected every client to use session auth")
 }
 
 func (s *BlobRecordedTestsSuite) TestBlobRandomRestCallsUseBearerExceptGetUsesSession() {

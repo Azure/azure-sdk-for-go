@@ -120,6 +120,60 @@ func (s *RecordedTestSuite) TestFileDownloadWithSessionOptions() {
 	_require.Equal(uploadData, downloadedData)
 }
 
+// AccountName is optional; when it is omitted it is derived from the client's URL.
+func (s *RecordedTestSuite) TestFileDownloadWithSessionAccountNameDerivedFromURL() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	fsName := testcommon.GenerateFileSystemName(testName)
+	fsClient := testcommon.CreateNewFileSystem(context.Background(), _require, fsName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	fileName := testcommon.GenerateFileName(testName)
+	uploadData := []byte("test data for a derived account name")
+
+	fClient := fsClient.NewFileClient(fileName)
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), uploadData, nil))
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	tracker := &sessionAuthTracker{}
+
+	// AccountName is intentionally not set here
+	sessionOptions := &service.ClientOptions{
+		Session: azdatalake.SessionOptions{
+			Mode: azdatalake.SessionModeEnabled,
+		},
+	}
+	testcommon.SetClientOptions(s.T(), &sessionOptions.ClientOptions)
+	sessionOptions.PerRetryPolicies = append(sessionOptions.PerRetryPolicies, tracker)
+
+	sessionSvcClient, err := service.NewClient(fmt.Sprintf("https://%s.dfs.core.windows.net/", accountName), cred, sessionOptions)
+	_require.NoError(err)
+
+	sessionFileClient := sessionSvcClient.NewFileSystemClient(fsName).NewFileClient(fileName)
+	resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.NoError(resp.Body.Close())
+	_require.Equal(uploadData, downloadedData)
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "expected a session to be created")
+	_require.Equal(1, sessionAuthCount, "expected the read to use session auth with the derived account name")
+}
+
 func (s *RecordedTestSuite) TestFileDownloadWithSessionModeOff() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
@@ -419,6 +473,100 @@ func (s *UnrecordedTestSuite) TestFileDownloadWithSessionOptionsMultipleFilesSin
 	createSessionCount, sessionAuthCount, _ := tracker.counts()
 	_require.Equal(1, createSessionCount, "expected only one session to be created")
 	_require.Equal(len(fileNames), sessionAuthCount, "expected each read to use session auth")
+}
+
+// A SessionProvider supplied through SessionOptions is shared by every client it is injected into.
+// Sessions are filesystem scoped, so independently created clients that target the same filesystem
+// reuse a single session, while a client targeting a different filesystem mints a new one.
+func (s *RecordedTestSuite) TestFileSharedSessionProviderReusedAcrossClients() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDatalake)
+	_require.Greater(len(accountName), 0)
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	// two files in the first filesystem and one in the second
+	fileData := []byte("test data for a shared session provider")
+	firstFSName := testcommon.GenerateFileSystemName(testName) + "1"
+	secondFSName := testcommon.GenerateFileSystemName(testName) + "2"
+	fileNames := []string{
+		testcommon.GenerateFileName(testName) + "-1",
+		testcommon.GenerateFileName(testName) + "-2",
+	}
+
+	firstFSClient := testcommon.CreateNewFileSystem(context.Background(), _require, firstFSName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, firstFSClient)
+	for _, fileName := range fileNames {
+		fClient := firstFSClient.NewFileClient(fileName)
+		_, err = fClient.Create(context.Background(), nil)
+		_require.NoError(err)
+		_require.NoError(fClient.UploadBuffer(context.Background(), fileData, nil))
+	}
+
+	secondFSClient := testcommon.CreateNewFileSystem(context.Background(), _require, secondFSName, svcClient)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, secondFSClient)
+	fClient := secondFSClient.NewFileClient(fileNames[0])
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NoError(fClient.UploadBuffer(context.Background(), fileData, nil))
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	tracker := &sessionAuthTracker{}
+
+	// the tracker is installed on the provider's pipeline too so CreateSession calls are counted
+	providerOptions := &azdatalake.ClientOptions{}
+	testcommon.SetClientOptions(s.T(), &providerOptions.ClientOptions)
+	providerOptions.PerRetryPolicies = append(providerOptions.PerRetryPolicies, tracker)
+
+	serviceURL := fmt.Sprintf("https://%s.dfs.core.windows.net/", accountName)
+	provider, err := azdatalake.NewFilesystemSessionProvider(cred, serviceURL, providerOptions)
+	_require.NoError(err)
+
+	// every file gets its own client, but they all share the injected provider
+	downloadWithSharedProvider := func(fsName, fileName string) {
+		fileOptions := &file.ClientOptions{
+			Session: azdatalake.SessionOptions{
+				Mode:        azdatalake.SessionModeEnabled,
+				AccountName: accountName,
+				Provider:    provider,
+			},
+		}
+		testcommon.SetClientOptions(s.T(), &fileOptions.ClientOptions)
+		fileOptions.PerRetryPolicies = append(fileOptions.PerRetryPolicies, tracker)
+
+		fileURL := fmt.Sprintf("%s%s/%s", serviceURL, fsName, fileName)
+		sessionFileClient, err := file.NewClient(fileURL, cred, fileOptions)
+		_require.NoError(err)
+
+		resp, err := sessionFileClient.DownloadStream(context.Background(), nil)
+		_require.NoError(err)
+
+		downloadedData, err := io.ReadAll(resp.Body)
+		_require.NoError(err)
+		_require.NoError(resp.Body.Close())
+		_require.Equal(fileData, downloadedData)
+	}
+
+	// the two clients in the first filesystem share a session
+	for _, fileName := range fileNames {
+		downloadWithSharedProvider(firstFSName, fileName)
+	}
+
+	createSessionCount, sessionAuthCount, _ := tracker.counts()
+	_require.Equal(1, createSessionCount, "expected clients in the same filesystem to share one session")
+	_require.Equal(len(fileNames), sessionAuthCount, "expected every client to use session auth")
+
+	// a client in a different filesystem needs a session of its own
+	downloadWithSharedProvider(secondFSName, fileNames[0])
+
+	createSessionCount, sessionAuthCount, _ = tracker.counts()
+	_require.Equal(2, createSessionCount, "expected a second session for the second filesystem")
+	_require.Equal(len(fileNames)+1, sessionAuthCount, "expected every client to use session auth")
 }
 
 func (s *RecordedTestSuite) TestFileRandomRestCallsUseBearerExceptGetUsesSession() {

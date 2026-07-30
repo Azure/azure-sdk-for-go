@@ -564,9 +564,56 @@ func Test_partitionKeyRangeCache_fullRefresh_duplicateRangeRevisionsAcrossPages(
 	require.Equal(t, "etag2", rm.changeFeedETag)
 }
 
-func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_retriesOnce(t *testing.T) {
+func disableIncompleteRoutingMapRetryDelay(t *testing.T) {
+	t.Helper()
+	initialDelay := incompleteRoutingMapRetryInitialDelay
+	minDelay := incompleteRoutingMapRetryMinDelay
+	maxDelay := incompleteRoutingMapRetryMaxDelay
+	t.Cleanup(func() {
+		incompleteRoutingMapRetryInitialDelay = initialDelay
+		incompleteRoutingMapRetryMinDelay = minDelay
+		incompleteRoutingMapRetryMaxDelay = maxDelay
+	})
+	incompleteRoutingMapRetryInitialDelay = 0
+	incompleteRoutingMapRetryMinDelay = 0
+	incompleteRoutingMapRetryMaxDelay = 0
+}
+
+func Test_incompleteRoutingMapRetryBounds(t *testing.T) {
+	tests := []struct {
+		attempt int
+		floor   time.Duration
+		upper   time.Duration
+	}{
+		{attempt: 1, floor: 50 * time.Millisecond, upper: 200 * time.Millisecond},
+		{attempt: 2, floor: 50 * time.Millisecond, upper: 400 * time.Millisecond},
+		{attempt: 3, floor: 50 * time.Millisecond, upper: 800 * time.Millisecond},
+		{attempt: 4, floor: 50 * time.Millisecond, upper: 1600 * time.Millisecond},
+		{attempt: 5, floor: 50 * time.Millisecond, upper: 2 * time.Second},
+	}
+
+	for _, test := range tests {
+		floor, upper := incompleteRoutingMapRetryBounds(test.attempt)
+		require.Equal(t, test.floor, floor)
+		require.Equal(t, test.upper, upper)
+		for range 100 {
+			delay := incompleteRoutingMapRetryDelay(test.attempt)
+			require.GreaterOrEqual(t, delay, floor)
+			require.Less(t, delay, upper)
+		}
+	}
+}
+
+func Test_waitForRetry_contextCanceled(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	require.ErrorIs(t, waitForRetry(ctx, time.Hour), context.Canceled)
+}
+
+func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_retriesWithBackoff(t *testing.T) {
 	// Scenario: the first full drain observes a transiently incomplete snapshot
-	// (mid-split). A single retry of the drain sees the settled state and succeeds.
+	// (mid-split). A retry of the drain sees the settled state and succeeds.
+	disableIncompleteRoutingMapRetryDelay(t)
 	srv, close := mock.NewTLSServer()
 	defer close()
 
@@ -624,7 +671,8 @@ func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_retriesOnce(t *tes
 
 func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_failsAfterRetryBudget(t *testing.T) {
 	// Scenario: every drain returns an incomplete snapshot. The cache retries the
-	// drain maxIncompleteRoutingMapRetries times, then surfaces the error.
+	// drain until maxIncompleteRoutingMapAttempts is reached, then surfaces the error.
+	disableIncompleteRoutingMapRetryDelay(t)
 	srv, close := mock.NewTLSServer()
 	defer close()
 
@@ -636,7 +684,7 @@ func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_failsAfterRetryBud
 		"_count": 1
 	}`)
 
-	for i := 0; i <= maxIncompleteRoutingMapRetries; i++ {
+	for i := 0; i < maxIncompleteRoutingMapAttempts; i++ {
 		srv.AppendResponse(
 			mock.WithBody(incompletePage),
 			mock.WithHeader(cosmosHeaderEtag, "etag1"),
@@ -673,8 +721,8 @@ func Test_partitionKeyRangeCache_fullRefresh_incompleteRanges_failsAfterRetryBud
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "incomplete set of ranges")
 
-	// Two drains of two requests each: the initial attempt plus one retry
-	require.Equal(t, 2*(maxIncompleteRoutingMapRetries+1), len(capture.requests))
+	// Each attempt drains one data page and one 304 terminator.
+	require.Equal(t, 2*maxIncompleteRoutingMapAttempts, len(capture.requests))
 
 	// Nothing should have been cached
 	entry.mu.Lock()

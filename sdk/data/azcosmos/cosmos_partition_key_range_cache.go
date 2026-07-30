@@ -329,16 +329,21 @@ func (c *partitionKeyRangeCache) invalidate(containerRID string) {
 // to prevent runaway requests during large-scale splits.
 const maxChangeFeedIterations = 1000
 
-// maxIncompleteRoutingMapRetries bounds how many times a full change-feed drain
-// is retried when the accumulated ranges are not a complete covering. A snapshot
-// taken while a partition split is in flight can be transiently inconsistent, and
-// a fresh drain usually observes the settled state. Matches the Java SDK's
-// InCompleteRoutingMapRetryPolicy (MAX_INCOMPLETE_ROUTING_MAP_RETRIES = 1).
-const maxIncompleteRoutingMapRetries = 1
+// maxIncompleteRoutingMapAttempts bounds how many full change-feed drains are
+// attempted when the accumulated ranges are not a complete covering. Matches the
+// Python SDK's transient snapshot retry budget.
+const maxIncompleteRoutingMapAttempts = 4
 
-// Linear backoff with jitter for 429 retries: base, 2*base, ... capped at
-// changeFeedPageRetryMaxDelay. Exposed as vars so tests can shrink them.
 var (
+	// Floored full-jitter backoff for transient routing-map snapshots. The
+	// deterministic upper bound doubles from 200ms and is capped at 2s; the
+	// random delay is selected from [min(50ms, upper/4), upper).
+	incompleteRoutingMapRetryInitialDelay = 200 * time.Millisecond
+	incompleteRoutingMapRetryMinDelay     = 50 * time.Millisecond
+	incompleteRoutingMapRetryMaxDelay     = 2 * time.Second
+
+	// Linear backoff with jitter for 429 retries: base, 2*base, ... capped at
+	// changeFeedPageRetryMaxDelay. Exposed as vars so tests can shrink them.
 	changeFeedPageRetryBaseDelay = 100 * time.Millisecond
 	changeFeedPageRetryJitter    = 50 * time.Millisecond
 	changeFeedPageRetryMaxDelay  = 5 * time.Second
@@ -432,13 +437,20 @@ func fetchOneChangeFeedPageWithRetry(
 		}
 		delay += jitter(changeFeedPageRetryJitter)
 		log.Writef(azlog.EventResponse, "partition key range change-feed page throttled for container %s (attempt %d, retrying in %s): %v", containerLink, attempt+1, delay, err)
-		timer := time.NewTimer(delay)
-		select {
-		case <-timer.C:
-		case <-ctx.Done():
-			timer.Stop()
-			return fetchPartitionKeyRangesResult{}, ctx.Err()
+		if err := waitForRetry(ctx, delay); err != nil {
+			return fetchPartitionKeyRangesResult{}, err
 		}
+	}
+}
+
+func waitForRetry(ctx context.Context, delay time.Duration) error {
+	timer := time.NewTimer(delay)
+	defer timer.Stop()
+	select {
+	case <-timer.C:
+		return nil
+	case <-ctx.Done():
+		return ctx.Err()
 	}
 }
 
@@ -456,6 +468,34 @@ func jitter(maxJitter time.Duration) time.Duration {
 	return time.Duration(rand.Int63n(int64(maxJitter)))
 }
 
+func incompleteRoutingMapRetryBounds(retryAttempt int) (time.Duration, time.Duration) {
+	upper := incompleteRoutingMapRetryInitialDelay
+	if upper > incompleteRoutingMapRetryMaxDelay {
+		upper = incompleteRoutingMapRetryMaxDelay
+	}
+	for attempt := 1; attempt < retryAttempt && upper < incompleteRoutingMapRetryMaxDelay; attempt++ {
+		if upper > incompleteRoutingMapRetryMaxDelay/2 {
+			upper = incompleteRoutingMapRetryMaxDelay
+			break
+		}
+		upper *= 2
+	}
+	if upper <= 0 {
+		return 0, 0
+	}
+
+	floor := incompleteRoutingMapRetryMinDelay
+	if quarter := upper / 4; floor > quarter {
+		floor = quarter
+	}
+	return floor, upper
+}
+
+func incompleteRoutingMapRetryDelay(retryAttempt int) time.Duration {
+	floor, upper := incompleteRoutingMapRetryBounds(retryAttempt)
+	return floor + jitter(upper-floor)
+}
+
 // refreshEntryDetached fetches PK ranges and returns a fresh routing map.
 // All network I/O runs without holding any lock; the caller installs the
 // returned map on the entry. ctx is the detached refresh context created
@@ -463,8 +503,8 @@ func jitter(maxJitter time.Duration) time.Duration {
 //
 // It attempts an incremental refresh when a previous routing map with an ETag
 // exists, falling back to a full change-feed refresh if the incremental merge is
-// incomplete. That full drain is retried up to maxIncompleteRoutingMapRetries
-// times if the service returns a set of ranges that is not a complete covering.
+// incomplete. A transiently incomplete full snapshot is retried with bounded
+// jittered backoff before the error is surfaced.
 //
 // ⚠️ The returned routing map may be a snapshot of entry.routingMap taken
 // before the network I/O (the "no changes since last refresh" branch).
@@ -521,7 +561,7 @@ func (c *partitionKeyRangeCache) refreshEntryDetached(
 	// a partition split is in flight can be transiently incomplete, so retry the
 	// drain a bounded number of times before surfacing the failure.
 	var lastErr error
-	for attempt := 0; attempt <= maxIncompleteRoutingMapRetries; attempt++ {
+	for attempt := 1; attempt <= maxIncompleteRoutingMapAttempts; attempt++ {
 		if err := ctx.Err(); err != nil {
 			return nil, err
 		}
@@ -542,8 +582,12 @@ func (c *partitionKeyRangeCache) refreshEntryDetached(
 
 		issue := describeRangeDiscontinuity(newMap.orderedRanges)
 		lastErr = fmt.Errorf("partition key range cache refresh failed: service returned an incomplete set of ranges for container %s (raw ranges=%d, final ranges=%d, issue: %s). This may indicate a transient issue during a partition split", containerLink, len(result.ranges), len(newMap.orderedRanges), issue)
-		if attempt < maxIncompleteRoutingMapRetries {
-			log.Writef(azlog.EventResponse, "partition key range cache refresh for container %s returned an incomplete set of ranges (%s); retrying the full change-feed drain (retry %d of %d)", containerLink, issue, attempt+1, maxIncompleteRoutingMapRetries)
+		if attempt < maxIncompleteRoutingMapAttempts {
+			delay := incompleteRoutingMapRetryDelay(attempt)
+			log.Writef(azlog.EventResponse, "partition key range cache refresh for container %s returned an incomplete set of ranges (%s) on attempt %d of %d; retrying the full change-feed drain in %s", containerLink, issue, attempt, maxIncompleteRoutingMapAttempts, delay)
+			if err := waitForRetry(ctx, delay); err != nil {
+				return nil, err
+			}
 		}
 	}
 

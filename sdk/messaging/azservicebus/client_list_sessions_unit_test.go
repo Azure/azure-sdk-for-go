@@ -289,6 +289,39 @@ func TestClient_ListSessionsForQueue_RecoversFromConnectionError(t *testing.T) {
 	require.Equal(t, []uint64{100}, ns.RecoverCalls())
 }
 
+func TestClient_ListSessionsForQueue_ContinuesAfterRecovery(t *testing.T) {
+	// A recovery whose recovered page is FULL must not end enumeration: the pager resumes
+	// and fetches the next page. The other recovery tests recover into a short page that
+	// terminates, so this is the only test that proves recovery and continuation compose -
+	// skip advances past the recovered full page before the short page stops enumeration.
+	page1 := makeIDs("p1", 100)
+	page2 := makeIDs("p2", 42)
+
+	link := &scriptedRPCLink{
+		t:    t,
+		errs: []error{io.EOF, nil, nil},
+		responses: []*amqpwrap.RPCResponse{
+			nil,                 // unused: call #0 returns io.EOF
+			okPage(t, page1...), // recovered page is FULL (100) => enumeration continues
+			okPage(t, page2...), // short page (42 < 100) terminates
+		},
+	}
+	client, ns := newClientForListSessionsUnitTest(t, link)
+
+	got := drainPager(t, client.NewListSessionsForQueuePager("myqueue", nil))
+	require.Equal(t, append(append([]string{}, page1...), page2...), got)
+	require.Len(t, link.calls, 3, "failed RPC + recovered full page + continuing short page")
+
+	// Skip must advance past the recovered full page: 0 (fail), 0 (retry at same offset),
+	// then 100 for the page fetched after the recovery.
+	require.Equal(t, int32(0), link.calls[0].Value.(map[string]any)["skip"])
+	require.Equal(t, int32(0), link.calls[1].Value.(map[string]any)["skip"])
+	require.Equal(t, int32(100), link.calls[2].Value.(map[string]any)["skip"])
+
+	// Recover was called once, with the revision captured on the failed first attempt.
+	require.Equal(t, []uint64{100}, ns.RecoverCalls())
+}
+
 func TestClient_ListSessionsForQueue_EmptyNameReturnsError(t *testing.T) {
 	// An empty queue name is reported from the first NextPage, before any RPC call,
 	// so callers get a clear error instead of a malformed management address like

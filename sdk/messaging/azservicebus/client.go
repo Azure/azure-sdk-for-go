@@ -548,9 +548,10 @@ func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, er
 	}
 
 	p.skip += int32(len(page))
-	// A page shorter than the requested size means the service has no more sessions to
-	// return, so enumeration ends here. This matches the .NET SDK, which breaks on
-	// page.Count < SessionBrowsePageSize.
+	// A page shorter than the requested size is treated as the final page, so
+	// enumeration ends here. This assumes the service under-fills only the last page
+	// (see the listSessionsPageSize doc comment). Matches the .NET SDK, which breaks
+	// on page.Count < SessionBrowsePageSize.
 	if len(page) < listSessionsPageSize {
 		p.done = true
 	}

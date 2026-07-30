@@ -1,9 +1,7 @@
 # Release History
 
-## 1.0.0 (2026-07-29)
+## 1.0.0 (2026-07-30)
 ### Other Changes
-
-- First GA release of the `github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/edgezones/armedgezones` package.
 
 
 ## 0.1.0 (2024-07-08)

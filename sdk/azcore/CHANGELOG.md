@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* `runtime.FetcherForNextLinkOptions` has a new field `Endpoint`, the service endpoint used to resolve a relative next link.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -525,9 +525,9 @@ func TestResolveNextLink(t *testing.T) {
 		{"https://contoso.com/", "/page/2", "https://contoso.com/page/2"},
 		{"https://contoso.com/api/v1", "/page/2", "https://contoso.com/api/v1/page/2"},
 		{"https://contoso.com/api/v1", "page/2", "https://contoso.com/api/v1/page/2"},
-		{"https://contoso.com", "/page/2?skip=1&url=https://fabrikam.com", "https://contoso.com/page/2?skip=1&url=https://fabrikam.com"},
+		{"https://contoso.com", "/page/2?skip=1&url=https%3A%2F%2Ffabrikam.com", "https://contoso.com/page/2?skip=1&url=https%3A%2F%2Ffabrikam.com"},
 		{"https://contoso.com", "?skip=1", "https://contoso.com?skip=1"},
-		{"https://contoso.com?api-version=1.0", "/page/2?skip=1", "https://contoso.com/page/2?api-version=1.0&skip=1"},
+		{"https://contoso.com?api-version=1.0", "/page/2?skip=1", "https://contoso.com/page/2?skip=1&api-version=1.0"},
 		{"https://contoso.com", "/page/it%2Fem", "https://contoso.com/page/it%2Fem"},
 		// a malformed next link is passed through so the failure surfaces when creating the request
 		{"https://contoso.com", "/page/\x7f", "/page/\x7f"},

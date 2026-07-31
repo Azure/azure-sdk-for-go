@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
-	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
@@ -184,18 +183,5 @@ func resolveNextLink(endpoint, nextLink string) string {
 		// a malformed next link is passed through so the failure surfaces when creating the request
 		return nextLink
 	}
-	// join the raw strings so that any percent-encoding in nextLink is preserved
-	rawPath, rawQuery, hasQuery := strings.Cut(nextLink, "?")
-	resolved := endpoint
-	if rawPath != "" {
-		resolved = JoinPaths(endpoint, rawPath)
-	}
-	if hasQuery {
-		sep := "?"
-		if strings.Contains(resolved, "?") {
-			sep = "&"
-		}
-		resolved += sep + rawQuery
-	}
-	return resolved
+	return JoinPaths(endpoint, nextLink)
 }

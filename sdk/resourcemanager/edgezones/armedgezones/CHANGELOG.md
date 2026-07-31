@@ -1,8 +1,9 @@
 # Release History
 
-## 1.0.0 (2026-07-30)
+## 1.0.0 (2026-07-31)
 ### Other Changes
 
+- Upgrade to service stable version `2026-10-01`.
 
 ## 0.1.0 (2024-07-08)
 ### Other Changes

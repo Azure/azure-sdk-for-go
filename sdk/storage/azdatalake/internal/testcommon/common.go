@@ -83,6 +83,11 @@ func BeforeTest(t *testing.T, suite string, test string) {
 	// testframework.AddHeaderRegexSanitizer("X-Ms-Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
 	require.NoError(t, recording.AddHeaderRegexSanitizer("x-ms-request-id", "00000000-0000-0000-0000-000000000000", "", nil))
 	// testframework.AddHeaderRegexSanitizer("Date", "Wed, 10 Aug 2022 23:34:14 GMT", "", nil)
+	// Sanitizing the token results in failure to run the tests in playback.
+	// It is safe to not sanitize the token since it is only valid for 5 minutes and the test container resources
+	// (that the token is scoped to) are immediately deleted after the test is run.
+	// require.NoError(t, recording.AddBodyRegexSanitizer(`<SessionToken>faketoken==</SessionToken>`, `(?i)<SessionToken>.*?</SessionToken>`, nil))
+	// require.NoError(t, recording.AddBodyRegexSanitizer(`<SessionKey>fakekey==</SessionKey>`, `(?i)<SessionKey>.*?</SessionKey>`, nil))
 	// TODO: more freezing
 	// testframework.AddBodyRegexSanitizer("RequestId:00000000-0000-0000-0000-000000000000", `RequestId:\w{8}-\w{4}-\w{4}-\w{4}-\w{12}`, nil)
 	// testframework.AddBodyRegexSanitizer("Time:2022-08-11T00:21:56.4562741Z", `Time:\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d*)?Z`, nil)

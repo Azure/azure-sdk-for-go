@@ -549,7 +549,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsLargeFileDo
 }
 
 func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsSessionExpiration() {
-	//s.T().Skip("Skipping: this test sleeps for ~6 minutes to validate session expiration, which is too slow for standard test runs")
+	s.T().Skip("Skipping: this test sleeps for ~6 minutes to validate session expiration, which is too slow for standard test runs")
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

@@ -484,7 +484,7 @@ func (s *UnrecordedTestSuite) TestFileDownloadWithSessionOptionsMultipleFilesSin
 // A SessionProvider supplied through SessionOptions is shared by every client it is injected into.
 // Sessions are filesystem scoped, so independently created clients that target the same filesystem
 // reuse a single session, while a client targeting a different filesystem mints a new one.
-func (s *RecordedTestSuite) TestFileSharedSessionProviderReusedAcrossClients() {
+func (s *UnrecordedTestSuite) TestFileSharedSessionProviderReusedAcrossClients() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

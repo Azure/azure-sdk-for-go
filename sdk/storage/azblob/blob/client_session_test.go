@@ -707,7 +707,7 @@ func (s *BlobUnrecordedTestsSuite) TestBlobDownloadWithSessionOptionsMultipleBlo
 // A SessionProvider supplied through SessionOptions is shared by every client it is injected into.
 // Sessions are container scoped, so independently created clients that target the same container
 // reuse a single session, while a client targeting a different container mints a new one.
-func (s *BlobRecordedTestsSuite) TestBlobSharedSessionProviderReusedAcrossClients() {
+func (s *BlobUnrecordedTestsSuite) TestBlobSharedSessionProviderReusedAcrossClients() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 

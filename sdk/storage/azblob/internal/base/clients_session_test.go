@@ -113,4 +113,3 @@ func TestGetAzClientNoCredentialHasNoAuthPolicy(t *testing.T) {
 	scheme := doTestRequest(t, azClient, fakeContainerURL+"/myblob")
 	require.Empty(t, scheme, "anonymous/SAS access must not be authenticated")
 }
-

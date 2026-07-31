@@ -497,4 +497,3 @@ func TestSessionPolicyAcquiresSessionPerRequest(t *testing.T) {
 	require.Equal(t, 3, provider.getCalls)
 	require.Equal(t, 3, transport.calls)
 }
-

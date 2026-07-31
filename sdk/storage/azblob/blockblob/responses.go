@@ -28,6 +28,36 @@ type StageBlockFromURLResponse = generated.BlockBlobClientStageBlockFromURLRespo
 // GetBlockListResponse contains the response from method Client.GetBlockList.
 type GetBlockListResponse = generated.BlockBlobClientGetBlockListResponse
 
+// GetBlobHashResponse contains the response from method Client.GetBlobHash.
+type GetBlobHashResponse struct {
+	// RangeHashes contains one result for every requested range.
+	RangeHashes []BlobHashResult
+
+	// ETag contains the blob ETag used to calculate the hashes.
+	ETag *azcore.ETag
+
+	// LastModified contains the blob's last-modified time.
+	LastModified *time.Time
+
+	// BlobContentLength contains the blob's length in bytes.
+	BlobContentLength *int64
+
+	// HashAlgorithm contains the algorithm reported by the service.
+	HashAlgorithm *string
+
+	// RequestID contains the service-generated request ID.
+	RequestID *string
+
+	// SHA256CPUTimeUS contains the server CPU time spent calculating SHA256 hashes, in microseconds.
+	SHA256CPUTimeUS *int64
+
+	// ClientRequestID contains the client-generated request ID.
+	ClientRequestID *string
+
+	// Version contains the service version used for the response.
+	Version *string
+}
+
 // uploadFromReaderResponse contains the response from method Client.UploadBuffer/Client.UploadFile.
 type uploadFromReaderResponse struct {
 	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.

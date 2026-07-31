@@ -1073,6 +1073,38 @@ type BlockBlobClientCommitBlockListResponse struct {
 	VersionID *string
 }
 
+// BlockBlobClientGetBlobHashResponse contains the response from method BlockBlobClient.GetBlobHash.
+type BlockBlobClientGetBlobHashResponse struct {
+	RangeHashList
+
+	// BlobContentLength contains the information returned from the x-ms-blob-content-length header response.
+	BlobContentLength *int64
+
+	// ClientRequestID contains the information returned from the x-ms-client-request-id header response.
+	ClientRequestID *string
+
+	// Date contains the information returned from the Date header response.
+	Date *time.Time
+
+	// ETag contains the information returned from the ETag header response.
+	ETag *azcore.ETag
+
+	// HashAlgorithm contains the information returned from the x-ms-hash-algorithm header response.
+	HashAlgorithm *string
+
+	// LastModified contains the information returned from the Last-Modified header response.
+	LastModified *time.Time
+
+	// RequestID contains the information returned from the x-ms-request-id header response.
+	RequestID *string
+
+	// SHA256CPUTimeUS contains the information returned from the x-ms-test-dedupe-sha256-cpu-time-us header response.
+	SHA256CPUTimeUS *int64
+
+	// Version contains the information returned from the x-ms-version header response.
+	Version *string
+}
+
 // BlockBlobClientGetBlockListResponse contains the response from method BlockBlobClient.GetBlockList.
 type BlockBlobClientGetBlockListResponse struct {
 	BlockList

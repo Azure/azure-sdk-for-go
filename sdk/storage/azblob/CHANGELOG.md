@@ -5,6 +5,7 @@
 ### Features Added
 
 * Added `Offset`, `Crc64`, and `Sha256` fields to `Block`, and a new `Include` option (`BlockListIncludeItemCrc64`/`BlockListIncludeItemSha256`) on `GetBlockListOptions` that emits `include=crc64,sha256`, exposing the per-block offset and content hashes returned by `BlockBlobClient.GetBlockList` when the service supports it (committed block lists only).
+* Added `BlockBlobClient.GetBlobHash` for retrieving SHA256 hashes and optional SHA256 CPU time for selected blob byte ranges from the feature-gated XStore `comp=hash` operation.
 
 ### Breaking Changes
 

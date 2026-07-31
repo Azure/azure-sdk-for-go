@@ -6,12 +6,16 @@ package blockblob
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"io"
 	"math"
 	"os"
 	"reflect"
+	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -310,6 +314,160 @@ func (bb *Client) GetBlockList(ctx context.Context, listType BlockListType, opti
 	resp, err := bb.generated().GetBlockList(ctx, listType, o, lac, mac)
 
 	return resp, err
+}
+
+const (
+	maxGetBlobHashRanges      = 256
+	maxGetBlobHashHeaderBytes = 8192
+	maxGetBlobHashBytes       = int64(4000 * 1024 * 1024)
+)
+
+// GetBlobHash returns SHA256 hashes for selected byte ranges in a block blob.
+// Ranges must be sorted, non-overlapping, and contain between 1 and 256 entries.
+// Each range and their aggregate data size cannot exceed 4000 MiB.
+// The service must support the feature-gated GetBlobHash operation.
+func (bb *Client) GetBlobHash(ctx context.Context, ranges []BlobHashRange, options *GetBlobHashOptions) (GetBlobHashResponse, error) {
+	multiRange, err := formatBlobHashRanges(ranges)
+	if err != nil {
+		return GetBlobHashResponse{}, err
+	}
+	if err := validateGetBlobHashConditions(options); err != nil {
+		return GetBlobHashResponse{}, err
+	}
+
+	o, lac, cpk, mac := options.format()
+	resp, err := bb.generated().GetBlobHash(ctx, multiRange, o, lac, cpk, mac)
+	if err != nil {
+		return GetBlobHashResponse{}, err
+	}
+
+	return formatGetBlobHashResponse(resp, ranges)
+}
+
+func formatBlobHashRanges(ranges []BlobHashRange) (string, error) {
+	if len(ranges) == 0 {
+		return "", errors.New("blockblob: GetBlobHash requires at least one range")
+	}
+	if len(ranges) > maxGetBlobHashRanges {
+		return "", fmt.Errorf("blockblob: GetBlobHash accepts at most %d ranges", maxGetBlobHashRanges)
+	}
+
+	var header strings.Builder
+	header.Grow(maxGetBlobHashHeaderBytes)
+	header.WriteString("bytes=")
+
+	var totalBytes int64
+	var previousEnd int64
+	for i, rnge := range ranges {
+		if rnge.Offset < 0 {
+			return "", fmt.Errorf("blockblob: GetBlobHash range %d offset must not be negative", i)
+		}
+		if rnge.Count <= 0 {
+			return "", fmt.Errorf("blockblob: GetBlobHash range %d count must be positive", i)
+		}
+		if rnge.Count > maxGetBlobHashBytes {
+			return "", fmt.Errorf("blockblob: GetBlobHash range %d exceeds the %d-byte limit", i, maxGetBlobHashBytes)
+		}
+		if rnge.Offset > math.MaxInt64-(rnge.Count-1) {
+			return "", fmt.Errorf("blockblob: GetBlobHash range %d end exceeds int64", i)
+		}
+
+		end := rnge.Offset + rnge.Count - 1
+		if i > 0 {
+			if rnge.Offset <= ranges[i-1].Offset {
+				return "", fmt.Errorf("blockblob: GetBlobHash range %d is not sorted by offset", i)
+			}
+			if rnge.Offset <= previousEnd {
+				return "", fmt.Errorf("blockblob: GetBlobHash range %d overlaps the preceding range", i)
+			}
+			header.WriteByte(',')
+		}
+
+		if totalBytes > maxGetBlobHashBytes-rnge.Count {
+			return "", fmt.Errorf("blockblob: GetBlobHash ranges exceed the %d-byte aggregate limit", maxGetBlobHashBytes)
+		}
+		totalBytes += rnge.Count
+
+		header.WriteString(strconv.FormatInt(rnge.Offset, 10))
+		header.WriteByte('-')
+		header.WriteString(strconv.FormatInt(end, 10))
+		if header.Len() > maxGetBlobHashHeaderBytes {
+			return "", fmt.Errorf("blockblob: GetBlobHash x-ms-multi-range value exceeds %d bytes", maxGetBlobHashHeaderBytes)
+		}
+		previousEnd = end
+	}
+
+	return header.String(), nil
+}
+
+func validateGetBlobHashConditions(options *GetBlobHashOptions) error {
+	if options == nil ||
+		options.AccessConditions == nil ||
+		options.AccessConditions.ModifiedAccessConditions == nil ||
+		options.AccessConditions.ModifiedAccessConditions.IfMatch == nil {
+		return errors.New("blockblob: GetBlobHash requires AccessConditions.ModifiedAccessConditions.IfMatch")
+	}
+	ifMatch := *options.AccessConditions.ModifiedAccessConditions.IfMatch
+	if !isStrongETag(ifMatch) {
+		return errors.New("blockblob: GetBlobHash requires an exact strong IfMatch ETag")
+	}
+	return nil
+}
+
+func isStrongETag(etag azcore.ETag) bool {
+	value := string(etag)
+	if len(value) < 2 || value[0] != '"' || value[len(value)-1] != '"' {
+		return false
+	}
+	for i := 1; i < len(value)-1; i++ {
+		if value[i] == '"' || value[i] < 0x21 || value[i] == 0x7f {
+			return false
+		}
+	}
+	return true
+}
+
+func formatGetBlobHashResponse(resp generated.BlockBlobClientGetBlobHashResponse, ranges []BlobHashRange) (GetBlobHashResponse, error) {
+	if len(resp.RangeHashes) != len(ranges) {
+		return GetBlobHashResponse{}, fmt.Errorf("blockblob: GetBlobHash returned %d range hashes for %d requested ranges", len(resp.RangeHashes), len(ranges))
+	}
+
+	expected := make(map[BlobHashRange]struct{}, len(ranges))
+	for _, rnge := range ranges {
+		expected[rnge] = struct{}{}
+	}
+
+	results := make([]BlobHashResult, 0, len(resp.RangeHashes))
+	for i, result := range resp.RangeHashes {
+		if result == nil || result.Offset == nil || result.Length == nil {
+			return GetBlobHashResponse{}, fmt.Errorf("blockblob: GetBlobHash response range %d is missing Offset or Length", i)
+		}
+		rnge := BlobHashRange{Offset: *result.Offset, Count: *result.Length}
+		if _, ok := expected[rnge]; !ok {
+			return GetBlobHashResponse{}, fmt.Errorf("blockblob: GetBlobHash response range %d does not match a requested range", i)
+		}
+		delete(expected, rnge)
+		if len(result.Sha256) != sha256.Size {
+			return GetBlobHashResponse{}, fmt.Errorf("blockblob: GetBlobHash response range %d contains a %d-byte SHA256 hash; expected %d bytes", i, len(result.Sha256), sha256.Size)
+		}
+		results = append(results, BlobHashResult{
+			Offset: rnge.Offset,
+			Count:  rnge.Count,
+			SHA256: result.Sha256,
+		})
+	}
+
+	return GetBlobHashResponse{
+		RangeHashes:       results,
+		ETag:              resp.ETag,
+		LastModified:      resp.LastModified,
+		BlobContentLength: resp.BlobContentLength,
+		HashAlgorithm:     resp.HashAlgorithm,
+		RequestID:         resp.RequestID,
+		SHA256CPUTimeUS:   resp.SHA256CPUTimeUS,
+		ClientRequestID:   resp.ClientRequestID,
+		Version:           resp.Version,
+	}, nil
 }
 
 // Redeclared APIs ----- Copy over to Append blob and Page blob as well.

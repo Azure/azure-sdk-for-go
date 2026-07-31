@@ -248,6 +248,45 @@ func (o *GetBlockListOptions) format() (*generated.BlockBlobClientGetBlockListOp
 	return &generated.BlockBlobClientGetBlockListOptions{Snapshot: o.Snapshot, Include: o.Include}, leaseAccessConditions, modifiedAccessConditions
 }
 
+// BlobHashRange identifies a byte range to hash.
+type BlobHashRange struct {
+	// Offset is the zero-based start offset in the blob.
+	Offset int64
+
+	// Count is the positive number of bytes to hash.
+	Count int64
+}
+
+// BlobHashResult contains the SHA256 hash returned for a byte range.
+type BlobHashResult struct {
+	// Offset is the zero-based start offset in the blob.
+	Offset int64
+
+	// Count is the number of bytes hashed.
+	Count int64
+
+	// SHA256 is the 32-byte SHA256 hash of the range.
+	SHA256 []byte
+}
+
+// GetBlobHashOptions contains the parameters for the Client.GetBlobHash method.
+type GetBlobHashOptions struct {
+	// AccessConditions must contain an exact IfMatch ETag from the preceding GetBlockList call.
+	AccessConditions *blob.AccessConditions
+
+	// CPKInfo contains the optional customer-provided encryption key.
+	CPKInfo *blob.CPKInfo
+}
+
+func (o *GetBlobHashOptions) format() (*generated.BlockBlobClientGetBlobHashOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil, nil
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return nil, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
+}
+
 // ------------------------------------------------------------
 
 // uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.

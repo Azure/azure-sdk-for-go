@@ -222,6 +222,134 @@ func (client *BlockBlobClient) commitBlockListHandleResponse(resp *http.Response
 	return result, nil
 }
 
+// GetBlobHash - Calculates SHA256 hashes for selected byte ranges in a block blob.
+// If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2025-11-05
+//   - multiRange - Specifies sorted, non-overlapping inclusive byte ranges to hash.
+//   - options - BlockBlobClientGetBlobHashOptions contains the optional parameters for the BlockBlobClient.GetBlobHash method.
+//   - LeaseAccessConditions - LeaseAccessConditions contains a group of parameters for the ContainerClient.GetProperties method.
+//   - CPKInfo - CPKInfo contains a group of parameters for the BlobClient.Download method.
+//   - ModifiedAccessConditions - ModifiedAccessConditions contains a group of parameters for the ContainerClient.Delete method.
+func (client *BlockBlobClient) GetBlobHash(ctx context.Context, multiRange string, options *BlockBlobClientGetBlobHashOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (BlockBlobClientGetBlobHashResponse, error) {
+	var err error
+	req, err := client.getBlobHashCreateRequest(ctx, multiRange, options, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
+	if err != nil {
+		return BlockBlobClientGetBlobHashResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BlockBlobClientGetBlobHashResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return BlockBlobClientGetBlobHashResponse{}, err
+	}
+	resp, err := client.getBlobHashHandleResponse(httpResp)
+	return resp, err
+}
+
+// getBlobHashCreateRequest creates the GetBlobHash request.
+func (client *BlockBlobClient) getBlobHashCreateRequest(ctx context.Context, multiRange string, options *BlockBlobClientGetBlobHashOptions, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CPKInfo, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("comp", "hash")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{string(*modifiedAccessConditions.IfMatch)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfModifiedSince != nil {
+		req.Raw().Header["If-Modified-Since"] = []string{(*modifiedAccessConditions.IfModifiedSince).In(gmt).Format(time.RFC1123)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{string(*modifiedAccessConditions.IfNoneMatch)}
+	}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfUnmodifiedSince != nil {
+		req.Raw().Header["If-Unmodified-Since"] = []string{(*modifiedAccessConditions.IfUnmodifiedSince).In(gmt).Format(time.RFC1123)}
+	}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	if cpkInfo != nil && cpkInfo.EncryptionAlgorithm != nil {
+		req.Raw().Header["x-ms-encryption-algorithm"] = []string{string(*cpkInfo.EncryptionAlgorithm)}
+	}
+	if cpkInfo != nil && cpkInfo.EncryptionKey != nil {
+		req.Raw().Header["x-ms-encryption-key"] = []string{*cpkInfo.EncryptionKey}
+	}
+	if cpkInfo != nil && cpkInfo.EncryptionKeySHA256 != nil {
+		req.Raw().Header["x-ms-encryption-key-sha256"] = []string{*cpkInfo.EncryptionKeySHA256}
+	}
+	req.Raw().Header["x-ms-hash-algorithm"] = []string{"Sha256"}
+	if modifiedAccessConditions != nil && modifiedAccessConditions.IfTags != nil {
+		req.Raw().Header["x-ms-if-tags"] = []string{*modifiedAccessConditions.IfTags}
+	}
+	if leaseAccessConditions != nil && leaseAccessConditions.LeaseID != nil {
+		req.Raw().Header["x-ms-lease-id"] = []string{*leaseAccessConditions.LeaseID}
+	}
+	req.Raw().Header["x-ms-multi-range"] = []string{multiRange}
+	req.Raw().Header["x-ms-version"] = []string{"2025-11-05"}
+	return req, nil
+}
+
+// getBlobHashHandleResponse handles the GetBlobHash response.
+func (client *BlockBlobClient) getBlobHashHandleResponse(resp *http.Response) (BlockBlobClientGetBlobHashResponse, error) {
+	defer runtime.Drain(resp)
+	result := BlockBlobClientGetBlobHashResponse{}
+	if val := resp.Header.Get("x-ms-blob-content-length"); val != "" {
+		blobContentLength, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return BlockBlobClientGetBlobHashResponse{}, err
+		}
+		result.BlobContentLength = &blobContentLength
+	}
+	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlockBlobClientGetBlobHashResponse{}, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("ETag"); val != "" {
+		result.ETag = (*azcore.ETag)(&val)
+	}
+	if val := resp.Header.Get("x-ms-hash-algorithm"); val != "" {
+		result.HashAlgorithm = &val
+	}
+	if val := resp.Header.Get("Last-Modified"); val != "" {
+		lastModified, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return BlockBlobClientGetBlobHashResponse{}, err
+		}
+		result.LastModified = &lastModified
+	}
+	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("x-ms-test-dedupe-sha256-cpu-time-us"); val != "" {
+		sha256CPUTimeUS, err := strconv.ParseInt(val, 10, 64)
+		if err == nil && sha256CPUTimeUS >= 0 {
+			result.SHA256CPUTimeUS = &sha256CPUTimeUS
+		}
+	}
+	if val := resp.Header.Get("x-ms-version"); val != "" {
+		result.Version = &val
+	}
+	if err := runtime.UnmarshalAsXML(resp, &result.RangeHashList); err != nil {
+		return BlockBlobClientGetBlobHashResponse{}, err
+	}
+	return result, nil
+}
+
 // GetBlockList - The Get Block List operation retrieves the list of blocks that have been uploaded as part of a block blob
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - listType - Specifies whether to return the list of committed blocks, the list of uncommitted blocks, or both lists together.

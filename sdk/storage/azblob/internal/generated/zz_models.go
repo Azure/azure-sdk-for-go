@@ -465,6 +465,22 @@ type QuerySerialization struct {
 	Format *QueryFormat `xml:"Format"`
 }
 
+type RangeHash struct {
+	// REQUIRED; The range's length, in bytes.
+	Length *int64 `xml:"Length"`
+
+	// REQUIRED; The range's start offset in the blob, in bytes.
+	Offset *int64 `xml:"Offset"`
+
+	// REQUIRED; The SHA256 hash of the range.
+	Sha256 []byte `xml:"Sha256"`
+}
+
+type RangeHashList struct {
+	// REQUIRED
+	RangeHashes []*RangeHash `xml:"RangeHash"`
+}
+
 // RetentionPolicy - the retention policy which determines how long the associated data should persist
 type RetentionPolicy struct {
 	// REQUIRED; Indicates whether a retention policy is enabled for the storage service

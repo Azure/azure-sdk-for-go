@@ -367,3 +367,77 @@ func TestHandleFlatListResponse_VersionAndSnapshot(t *testing.T) {
 	require.Equal(t, "snap-123", *item.Snapshot)
 	require.True(t, *item.IsCurrentVersion)
 }
+
+// trackingReadCloser wraps a reader and records whether Close was called,
+// so tests can assert the Arrow handlers close the response body.
+type trackingReadCloser struct {
+	io.Reader
+	closed bool
+}
+
+func (t *trackingReadCloser) Close() error {
+	t.closed = true
+	return nil
+}
+
+func TestHandleFlatListResponse_ClosesBodyOnSuccess(t *testing.T) {
+	md := arrow.NewMetadata([]string{"NextMarker"}, []string{""})
+	fields := []arrow.Field{
+		{Name: "Name", Type: arrow.BinaryTypes.String, Nullable: false},
+	}
+	schema := arrow.NewSchema(fields, &md)
+
+	data := buildArrowStream(t, schema, func(b *arrowArray.RecordBuilder) {
+		b.Field(0).(*arrowArray.StringBuilder).Append("blob.txt")
+	})
+
+	resp := makeHTTPResponse(data, nil)
+	tracker := &trackingReadCloser{Reader: resp.Body}
+	resp.Body = tracker
+
+	_, err := HandleFlatListResponse(resp)
+	require.NoError(t, err)
+	require.True(t, tracker.closed, "response body should be closed after a successful parse")
+}
+
+func TestHandleFlatListResponse_ClosesBodyOnParseError(t *testing.T) {
+	resp := makeHTTPResponse([]byte("not a valid arrow stream"), nil)
+	tracker := &trackingReadCloser{Reader: resp.Body}
+	resp.Body = tracker
+
+	_, err := HandleFlatListResponse(resp)
+	require.Error(t, err)
+	require.True(t, tracker.closed, "response body should be closed even when parsing fails")
+}
+
+func TestHandleHierarchyListResponse_ClosesBodyOnSuccess(t *testing.T) {
+	md := arrow.NewMetadata([]string{"NextMarker"}, []string{""})
+	fields := []arrow.Field{
+		{Name: "Name", Type: arrow.BinaryTypes.String, Nullable: false},
+		{Name: "ResourceType", Type: arrow.BinaryTypes.String, Nullable: true},
+	}
+	schema := arrow.NewSchema(fields, &md)
+
+	data := buildArrowStream(t, schema, func(b *arrowArray.RecordBuilder) {
+		b.Field(0).(*arrowArray.StringBuilder).Append("folder/file.txt")
+		b.Field(1).(*arrowArray.StringBuilder).AppendNull()
+	})
+
+	resp := makeHTTPResponse(data, nil)
+	tracker := &trackingReadCloser{Reader: resp.Body}
+	resp.Body = tracker
+
+	_, err := HandleHierarchyListResponse(resp)
+	require.NoError(t, err)
+	require.True(t, tracker.closed, "response body should be closed after a successful parse")
+}
+
+func TestHandleHierarchyListResponse_ClosesBodyOnParseError(t *testing.T) {
+	resp := makeHTTPResponse([]byte("not a valid arrow stream"), nil)
+	tracker := &trackingReadCloser{Reader: resp.Body}
+	resp.Body = tracker
+
+	_, err := HandleHierarchyListResponse(resp)
+	require.Error(t, err)
+	require.True(t, tracker.closed, "response body should be closed even when parsing fails")
+}

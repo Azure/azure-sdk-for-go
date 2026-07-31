@@ -6,7 +6,7 @@
 	"image": "mcr.microsoft.com/devcontainers/universal:2-linux",
 	"features": {
 		"ghcr.io/devcontainers/features/go:1": {},
-		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/devcontainers/features/node:2": {},
 		"ghcr.io/devcontainers/features/powershell:1": {}
 	},
 	"overrideCommand": false,

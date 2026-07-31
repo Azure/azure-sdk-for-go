@@ -45,6 +45,24 @@ func getTestProxyDownloadFile() (string, error) {
 	}
 }
 
+// resolveExtractPath joins an archive entry name onto dir and verifies that the
+// result stays inside dir. It rejects entries that traverse upwards as well as
+// entries whose resolved path merely shares a textual prefix with dir, such as
+// a "dir-backup" sibling of "dir".
+func resolveExtractPath(dir string, name string) (string, error) {
+	target := filepath.Join(dir, name)
+
+	rel, err := filepath.Rel(dir, target)
+	if err != nil {
+		return "", fmt.Errorf("illegal file path: %q", name)
+	}
+	if rel == ".." || strings.HasPrefix(rel, ".."+string(os.PathSeparator)) {
+		return "", fmt.Errorf("illegal file path: %q", name)
+	}
+
+	return target, nil
+}
+
 // Modified from https://stackoverflow.com/a/24792688
 func extractTestProxyZip(src string, dest string) error {
 	r, err := zip.OpenReader(src)
@@ -73,13 +91,13 @@ func extractTestProxyZip(src string, dest string) error {
 			}
 		}()
 
-		path := filepath.Join(dest, f.Name)
-		log.Println("Extracting", path)
-
 		// Check for ZipSlip (Directory traversal)
-		if !strings.HasPrefix(path, filepath.Clean(dest)+string(os.PathSeparator)) {
-			return fmt.Errorf("illegal file path: %s", path)
+		path, err := resolveExtractPath(dest, f.Name)
+		if err != nil {
+			return err
 		}
+
+		log.Println("Extracting", path)
 
 		if f.FileInfo().IsDir() {
 			if err := os.MkdirAll(path, f.Mode()); err != nil {
@@ -146,9 +164,9 @@ func extractTestProxyArchive(archivePath string, outputDir string) error {
 			return err
 		}
 
-		targetPath := filepath.Join(outputDir, header.Name)
-		if !strings.HasPrefix(targetPath, filepath.Clean(outputDir)) {
-			return fmt.Errorf("illegal file path: %q", header.Name)
+		targetPath, err := resolveExtractPath(outputDir, header.Name)
+		if err != nil {
+			return err
 		}
 
 		log.Println("Extracting", targetPath)

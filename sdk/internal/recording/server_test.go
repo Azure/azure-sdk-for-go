@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -113,4 +114,95 @@ func (s *serverTests) TestExtractInsecurePath() {
 		err = installTestProxy(p, td, td)
 		require.ErrorContains(t, err, "illegal file path")
 	})
+}
+
+// TestExtractSiblingPrefixPath covers entries that do not traverse upwards out
+// of the destination's parent, but do land in a sibling directory whose name
+// begins with the destination's name. "out-evil" shares the textual prefix
+// "out", so a containment check written as a plain string prefix accepts it.
+func (s *serverTests) TestExtractSiblingPrefixPath() {
+	// filepath.Join cleans the "..", so the resolved path is <td>/out-evil/file
+	// rather than anything containing "..".
+	const entryName = "../out-evil/file"
+
+	s.T().Run("tar", func(t *testing.T) {
+		td := t.TempDir()
+		dest := filepath.Join(td, "out")
+		require.NoError(t, os.MkdirAll(dest, 0755))
+
+		p := filepath.Join(td, "test.tar.gz")
+		f, err := os.Create(p)
+		require.NoError(t, err)
+		zw := gzip.NewWriter(f)
+		tw := tar.NewWriter(zw)
+		b := []byte("_")
+		err = tw.WriteHeader(&tar.Header{
+			Name: entryName,
+			Size: int64(len(b)),
+		})
+		require.NoError(t, err)
+		_, err = tw.Write(b)
+		require.NoError(t, err)
+		require.NoError(t, tw.Close())
+		require.NoError(t, zw.Close())
+		require.NoError(t, f.Close())
+
+		err = extractTestProxyArchive(p, dest)
+		require.ErrorContains(t, err, "illegal file path")
+		require.NoFileExists(t, filepath.Join(td, "out-evil", "file"))
+	})
+
+	s.T().Run("zip", func(t *testing.T) {
+		td := t.TempDir()
+		dest := filepath.Join(td, "out")
+		require.NoError(t, os.MkdirAll(dest, 0755))
+
+		p := filepath.Join(td, "test.zip")
+		f, err := os.Create(p)
+		require.NoError(t, err)
+		zw := zip.NewWriter(f)
+		w, err := zw.Create(entryName)
+		require.NoError(t, err)
+		_, err = w.Write([]byte("_"))
+		require.NoError(t, err)
+		require.NoError(t, zw.Close())
+		require.NoError(t, f.Close())
+
+		err = extractTestProxyZip(p, dest)
+		require.ErrorContains(t, err, "illegal file path")
+		require.NoFileExists(t, filepath.Join(td, "out-evil", "file"))
+	})
+}
+
+func TestResolveExtractPath(t *testing.T) {
+	dir := filepath.Join("tmp", "out")
+
+	for _, tt := range []struct {
+		name    string
+		entry   string
+		wantErr bool
+	}{
+		{name: "plain file", entry: "file"},
+		{name: "nested file", entry: filepath.Join("a", "b", "file")},
+		{name: "archive root", entry: "."},
+		{name: "interior dot dot resolving inside", entry: filepath.Join("a", "..", "file")},
+		{name: "parent", entry: "..", wantErr: true},
+		{name: "traversal", entry: filepath.Join("..", "file"), wantErr: true},
+		{name: "deep traversal", entry: filepath.Join("..", "..", "file"), wantErr: true},
+		{name: "sibling sharing a prefix", entry: filepath.Join("..", "out-evil", "file"), wantErr: true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := resolveExtractPath(dir, tt.entry)
+			if tt.wantErr {
+				require.ErrorContains(t, err, "illegal file path")
+				require.Empty(t, got)
+				return
+			}
+			require.NoError(t, err)
+			// Everything permitted must resolve to dir itself or below it.
+			rel, err := filepath.Rel(dir, got)
+			require.NoError(t, err)
+			require.False(t, rel == ".." || strings.HasPrefix(rel, ".."+string(os.PathSeparator)))
+		})
+	}
 }

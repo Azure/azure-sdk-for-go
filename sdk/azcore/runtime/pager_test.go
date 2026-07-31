@@ -471,3 +471,67 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 	require.NotNil(t, resp)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
 }
+
+func TestFetcherForNextLinkRelative(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	pl := exported.NewPipeline(srv)
+
+	var gotURL string
+	capture := mock.WithPredicate(func(req *http.Request) bool {
+		gotURL = "http://" + req.Host + req.URL.RequestURI()
+		return true
+	})
+
+	// a relative next link is resolved against the endpoint
+	srv.AppendResponse(capture, mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // predicate failure response
+	resp, err := FetcherForNextLink(context.Background(), pl, "/page/2?api-version=1.0", func(ctx context.Context) (*policy.Request, error) {
+		t.Fatal("first page shouldn't be requested")
+		return nil, nil
+	}, &FetcherForNextLinkOptions{Endpoint: srv.URL()})
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, srv.URL()+"/page/2?api-version=1.0", gotURL)
+
+	// an absolute next link ignores the endpoint
+	srv.AppendResponse(capture, mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // predicate failure response
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL()+"/page/3", func(ctx context.Context) (*policy.Request, error) {
+		t.Fatal("first page shouldn't be requested")
+		return nil, nil
+	}, &FetcherForNextLinkOptions{Endpoint: "https://microsoft.com"})
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, srv.URL()+"/page/3", gotURL)
+
+	// a relative next link without an endpoint fails as before
+	_, err = FetcherForNextLink(context.Background(), pl, "/page/2", func(ctx context.Context) (*policy.Request, error) {
+		t.Fatal("first page shouldn't be requested")
+		return nil, nil
+	}, nil)
+	require.Error(t, err)
+}
+
+func TestResolveNextLink(t *testing.T) {
+	for _, test := range []struct {
+		endpoint string
+		nextLink string
+		want     string
+	}{
+		{"https://contoso.com", "https://fabrikam.com/page/2", "https://fabrikam.com/page/2"},
+		{"", "/page/2", "/page/2"},
+		{"https://contoso.com", "/page/2", "https://contoso.com/page/2"},
+		{"https://contoso.com/", "/page/2", "https://contoso.com/page/2"},
+		{"https://contoso.com/api/v1", "/page/2", "https://contoso.com/api/v1/page/2"},
+		{"https://contoso.com/api/v1", "page/2", "https://contoso.com/api/v1/page/2"},
+		{"https://contoso.com", "/page/2?skip=1&url=https%3A%2F%2Ffabrikam.com", "https://contoso.com/page/2?skip=1&url=https%3A%2F%2Ffabrikam.com"},
+		{"https://contoso.com", "?skip=1", "https://contoso.com?skip=1"},
+		{"https://contoso.com?api-version=1.0", "/page/2?skip=1", "https://contoso.com/page/2?skip=1&api-version=1.0"},
+		{"https://contoso.com", "/page/it%2Fem", "https://contoso.com/page/it%2Fem"},
+		// a malformed next link is passed through so the failure surfaces when creating the request
+		{"https://contoso.com", "/page/\x7f", "/page/\x7f"},
+	} {
+		require.EqualValues(t, test.want, resolveNextLink(test.endpoint, test.nextLink), "%s + %s", test.endpoint, test.nextLink)
+	}
+}

@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -124,12 +125,17 @@ type FetcherForNextLinkOptions struct {
 	// The default value is http.MethodGet.
 	// This field is only used when NextReq is not specified.
 	HTTPVerb string
+
+	// Endpoint is the service endpoint used to resolve a relative next link,
+	// e.g. "https://contoso.com". It's ignored when the next link is absolute.
+	Endpoint string
 }
 
 // FetcherForNextLink is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher from a next link URL.
 //   - ctx is the [context.Context] controlling the lifetime of the HTTP operation
 //   - pl is the [Pipeline] used to dispatch the HTTP request
-//   - nextLink is the URL used to fetch the next page. the empty string indicates the first page is to be requested
+//   - nextLink is the URL used to fetch the next page. the empty string indicates the first page is to be requested.
+//     a relative next link is resolved against FetcherForNextLinkOptions.Endpoint
 //   - firstReq is the func to be called when creating the request for the first page
 //   - options contains any optional parameters, pass nil to accept the default values
 func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, firstReq func(context.Context) (*policy.Request, error), options *FetcherForNextLinkOptions) (*http.Response, error) {
@@ -140,7 +146,7 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 	}
 	if nextLink == "" {
 		req, err = firstReq(ctx)
-	} else if nextLink, err = EncodeQueryParams(nextLink); err == nil {
+	} else if nextLink, err = EncodeQueryParams(resolveNextLink(options.Endpoint, nextLink)); err == nil {
 		if options.NextReq != nil {
 			req, err = options.NextReq(ctx, nextLink)
 		} else {
@@ -164,4 +170,18 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 		return nil, NewResponseError(resp)
 	}
 	return resp, nil
+}
+
+// resolveNextLink joins a relative nextLink to endpoint, preserving nextLink's query params.
+// nextLink is returned unmodified when it's absolute or when endpoint is empty.
+func resolveNextLink(endpoint, nextLink string) string {
+	if endpoint == "" {
+		return nextLink
+	}
+	u, err := url.Parse(nextLink)
+	if err != nil || u.IsAbs() {
+		// a malformed next link is passed through so the failure surfaces when creating the request
+		return nextLink
+	}
+	return JoinPaths(endpoint, nextLink)
 }

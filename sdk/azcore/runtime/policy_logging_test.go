@@ -208,6 +208,32 @@ func TestWithAllowedHeadersQueryParams(t *testing.T) {
 	require.Regexp(t, `Client-Allowed: received2\s+Content-Length: 0\s+Date: (?:[a-zA-Z0-9:,\s]+)\s+Pipeline-Allowed: received1\s+Redacted-Header: REDACTED`, rawlog[log.EventResponse])
 }
 
+func TestDefaultAllowedHeaders(t *testing.T) {
+	rawlog := map[log.Event]string{}
+	log.SetListener(func(cls log.Event, s string) {
+		rawlog[cls] = s
+	})
+
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithHeader("Azure-Deprecating", "sunset=2025-01-01; id=foo; scope=all; link=https://example.com/deprecation"))
+
+	pl := NewPipeline("", "", PipelineOptions{}, &policy.ClientOptions{
+		Transport: srv,
+	})
+
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+
+	_, err = pl.Do(req)
+	require.NoError(t, err)
+
+	logResp, ok := rawlog[log.EventResponse]
+	require.True(t, ok, "missing LogResponse")
+	require.Contains(t, logResp, "sunset=2025-01-01")
+	require.NotContains(t, logResp, "REDACTED")
+}
+
 func TestSkipWriteReqBody(t *testing.T) {
 	req, err := exported.NewRequest(context.Background(), http.MethodGet, "https://contoso.com")
 	require.NoError(t, err)

@@ -5179,6 +5179,76 @@ func TestDownloadSmallChunkSize(t *testing.T) {
 	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
 }
 
+// captureBodyTransport records the request body and headers of the last request it handled.
+type captureBodyTransport struct {
+	capturedBody    []byte
+	capturedHeaders http.Header
+}
+
+func (c *captureBodyTransport) Do(req *http.Request) (*http.Response, error) {
+	if req.Body != nil {
+		b, err := io.ReadAll(req.Body)
+		if err != nil {
+			return nil, err
+		}
+		c.capturedBody = b
+	}
+	c.capturedHeaders = req.Header.Clone()
+	return &http.Response{
+		Request:    req,
+		Status:     "201 Created",
+		StatusCode: http.StatusCreated,
+		Header:     http.Header{},
+		Body:       http.NoBody,
+	}, nil
+}
+
+// TestFileUploadRangeStructuredMessageBody is a regression test for PR #27263: when a structured
+// message CRC64 TransferValidationType is used, UploadRange must send the SM-encoded (framed) body
+// produced by Apply, not the original unframed reader. Previously the transformed reader was
+// discarded because it was never assigned back onto uploadRangeOptions.Optionalbody.
+func TestFileUploadRangeStructuredMessageBody(t *testing.T) {
+	_require := require.New(t)
+
+	log.SetListener(nil) // no logging
+
+	const contentSize = 2048
+	const segmentSize = 512
+	content := make([]byte, contentSize)
+	_, err := rand.Read(content)
+	_require.NoError(err)
+
+	// Independently compute what the framed structured-message body should look like.
+	encoder := shared.NewSMEncoder(streaming.NopCloser(bytes.NewReader(content)), int64(contentSize), segmentSize)
+	expectedBody, err := io.ReadAll(encoder)
+	_require.NoError(err)
+	_require.Greater(len(expectedBody), contentSize) // framing adds headers and CRC64 values
+
+	transport := &captureBodyTransport{}
+	fileClient, err := file.NewClientWithNoCredential("https://fake/share/file", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: transport,
+		},
+	})
+	_require.NoError(err)
+
+	_, err = fileClient.UploadRange(context.Background(), 0, streaming.NopCloser(bytes.NewReader(content)), &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize),
+	})
+	_require.NoError(err)
+
+	// The bytes actually sent must be the framed SM body, not the raw content.
+	_require.Equal(expectedBody, transport.capturedBody)
+
+	// The structured-message framing metadata must accompany the request.
+	sbHeader := transport.capturedHeaders["x-ms-structured-body"]
+	_require.Len(sbHeader, 1)
+	_require.Equal(shared.SMHeaderValue, sbHeader[0])
+	sclHeader := transport.capturedHeaders["x-ms-structured-content-length"]
+	_require.Len(sclHeader, 1)
+	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])
+}
+
 // TODO: Add tests for retry header options
 
 func (f *FileRecordedTestsSuite) TestCreateHardLinkNFS() {

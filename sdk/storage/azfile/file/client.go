@@ -267,6 +267,12 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 			if err != nil {
 				return UploadRangeResponse{}, err
 			}
+			// Apply may return a replacement reader (the structured message encoder or a
+			// rewound buffer for computed CRC64). The generated client reads the request body
+			// from uploadRangeOptions.Optionalbody, so the transformed reader must be assigned
+			// back onto it; otherwise the original, unframed (and possibly already-consumed)
+			// reader is sent instead.
+			uploadRangeOptions.Optionalbody = body
 			contentLength, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
 			if err != nil {
 				return UploadRangeResponse{}, err

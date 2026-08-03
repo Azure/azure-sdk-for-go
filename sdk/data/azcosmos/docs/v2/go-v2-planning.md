@@ -11,10 +11,6 @@
 > [azure-sdk-for-go#27238](https://github.com/Azure/azure-sdk-for-go/pull/27238)
 > and ADR `docs/adr/0001-go-v2-uses-ffi.md`).
 
-Sizing throughout is planning-range guidance for a Copilot-assisted team, not a
-commitment. Engineer-week ranges size the work; the calendar targets in the
-delivery-estimate companion doc assume agentic tooling for the mechanical parts.
-
 ---
 
 ## 1. Overview & goals
@@ -80,7 +76,7 @@ close the gap in one deliberate step.
   (below) ships later as add-on driver modules, not in the first GA.
 - **New driver behavior invented in Go.** If a capability is missing from the
   Rust driver or cannot be represented safely across the C ABI, that is Rust
-  driver work and is out of scope for this plan (it expands the estimate).
+  driver work and is out of scope for this plan.
 - **Reimplementing the differential harness from scratch.** It exists; v2
   productizes it as a release gate.
 
@@ -100,8 +96,6 @@ close the gap in one deliberate step.
   Go module-version pinning, because Go MVS selects minimum versions.
 - The **Rust driver is the source of truth**; the differential/validation
   harness is a release gate, not an experiment.
-- Estimates assume a **Copilot-assisted team**; human time concentrates on
-  API/ABI decisions, validation, and approvals.
 - **cgo is transitive/infectious**: any Go library that imports `azcosmos/v2`
   forces its own consumers to require cgo. This is a product constraint, called
   out in the FFI decision record.
@@ -169,7 +163,7 @@ be confirmed against the cited Rust source during M1.
 
 ## 6. Milestones
 
-Sizing is Copilot-assisted engineer-weeks. "Critical path" means it blocks the
+"Critical path" means it blocks the
 release train; "parallel" means it can proceed once its inputs are stable.
 
 > **Testing and FFI robustness are continuous, not end-of-line milestones.**
@@ -218,7 +212,7 @@ not implementations.
   reopening them.
 - **Risks:** Deciding auth/telemetry marshalling late would change the ABI after
   features are built on it.
-- **Sizing:** 1–2 ew. **Critical path — precedes M1.**
+- **Path:** Critical path — precedes M1.
 
 ### M1 — Go v2 API surface review & design  *(gating milestone)*
 **Intent:** Define the Go v2 public API before any building starts.
@@ -235,7 +229,7 @@ not implementations.
   reviewer; every §5 row marked new/changed/kept with a cited source; migration
   sketch reviewed.
 - **Risks:** Over-scoping the break; under-representing a capability's API impact.
-- **Sizing:** 2–4 ew. **Critical path.**
+- **Path:** Critical path.
 
 ### M2 — Native-driver repository & engineering system
 **Intent:** Stand up the Option C native-binary home and its release machinery.
@@ -250,7 +244,7 @@ not implementations.
 - **Exit criteria:** A signed native artifact for at least one target published
   and consumable from a scratch module; pipeline reproducible in CI.
 - **Risks:** Dependency-policy exception delayed; toolchain matrix churn.
-- **Sizing:** 3–5 ew. **Parallel with M1/M3** once matrix is fixed.
+- **Path:** Parallel with M1/M3 once matrix is fixed.
 
 ### M3 — FFI / C ABI boundary & cgo layer
 **Intent:** Turn the wrapper crate + POCs into a productized, versioned ABI.
@@ -277,7 +271,7 @@ not implementations.
   robustness checkpoint.
 - **Risks:** ABI cannot cleanly express a needed capability (→ driver work);
   async/cancellation lifetime bugs across the boundary.
-- **Sizing:** 3–5 ew. **Critical path.**
+- **Path:** Critical path.
 
 ### M4 — Core data plane over FFI
 **Intent:** First usable slice of real operations.
@@ -292,7 +286,7 @@ not implementations.
 - **Exit criteria:** Point ops pass differential + live-account tests on ≥1
   target.
 - **Risks:** Byte/memory ownership at the cgo boundary; HPK edge cases.
-- **Sizing:** 3–5 ew. **Critical path.**
+- **Path:** Critical path.
 
 ### M5 — Reliability & routing substrate
 **Intent:** The behavior that makes v2 "real GA" for Go.
@@ -308,7 +302,7 @@ not implementations.
 - **Exit criteria:** Differential parity on retry/session/routing scenarios;
   Gateway 2.0 exercised against a thin-client-capable account.
 - **Risks:** Session-token and routing corner cases; transport-selection config.
-- **Sizing:** 3–6 ew. **Critical path.**
+- **Path:** Critical path.
 
 ### M6 — Advanced availability features
 **Intent:** Surface and validate the marquee availability features end-to-end.
@@ -324,7 +318,7 @@ not implementations.
   injection tests; default-on PPCB matches driver behavior.
 - **Risks:** Representing failover/hedging options faithfully; multi-region test
   setup.
-- **Sizing:** 3–5 ew. **Critical path.**
+- **Path:** Critical path.
 
 ### M7 — Query, feed, change feed, bulk/batch, patch
 **Intent:** Depth features with pagination/continuations.
@@ -338,7 +332,7 @@ not implementations.
 - **Exit criteria:** Query/change-feed/batch/patch pass differential tests incl.
   HPK prefix queries and continuation resumption.
 - **Risks:** Continuation-token fidelity; change-feed envelope mapping.
-- **Sizing:** 4–7 ew. **Parallel after M4.**
+- **Path:** Parallel after M4.
 
 ### M8 — AAD/token auth & configuration completeness  *(implementation)*
 **Intent:** Implement the auth model decided in M0/M3 and close the options gap.
@@ -356,7 +350,7 @@ not implementations.
   verified; token-refresh callback passes the M10 re-entrancy/cancellation
   robustness checks.
 - **Risks:** Token-refresh lifetime/cancellation across the boundary.
-- **Sizing:** 2–4 ew. **After M7.**
+- **Path:** After M7.
 
 ### M9 — Test strategy, validation & differential gate  *(release gate)*
 **Intent:** Make correctness a gate, not an experiment — and be explicit about
@@ -395,7 +389,7 @@ healthy; it is not a late "now we test" phase.
   evidence; smoke passes on all Big-5+musl targets.
 - **Risks:** harness coverage gaps; flaky multi-region/live tests; Option 2
   scope creep if chosen.
-- **Sizing:** 3–5 ew, then ongoing. **Runs alongside M3–M8.**
+- **Path:** Runs alongside M3–M8; ongoing.
 
 ### M10 — FFI robustness & fault testing  *(continuous, starts at the vertical slice)*
 **Intent:** Prove the C ABI boundary is safe under everything that isn't a happy
@@ -430,7 +424,6 @@ relevant conditions against the surface it adds.
   cleared its boundary-conditions checklist.** **Runs alongside M3–M8; gates GA.**
 - **Risks:** platform-specific cgo/thread behavior; sanitizer availability per
   target.
-- **Sizing:** 3–5 ew.
 
 ### M11 — Performance & FFI-boundary SLA validation
 **Intent:** The FFI boundary is new latency/throughput surface; validate it
@@ -455,7 +448,6 @@ against Cosmos SLA expectations before GA rather than discovering overhead late.
   SLA target on the reference matrix; perf gate wired into CI. **Gates GA.**
 - **Risks:** cgo call overhead above budget on some ops (may force batching or a
   marshalling redesign); thread-pinning under high concurrency.
-- **Sizing:** 3–5 ew.
 
 ### M12 — Preview → GA hardening
 **Intent:** Ship a supportable GA.
@@ -474,7 +466,7 @@ against Cosmos SLA expectations before GA rather than discovering overhead late.
   migration guide validated; preview feedback resolved.
 - **Risks:** musl/Alpine linking surprises; cgo adoption friction; missing build
   tags for a target (the azblob lesson).
-- **Sizing:** 3–5 ew, then ongoing. **Critical path to GA.**
+- **Path:** Critical path to GA; ongoing.
 
 ---
 
@@ -567,25 +559,20 @@ onward) + perf-budget sign-off (M11) · GA gate (end M12).
 
 ## 10. Milestone summary
 
-| M | Intent | Sizing (ew) | Depends on | Path | Exit criterion (short) |
-|---|---|---:|---|---|---|
-| M0 | Pre-build decisions (test scope + auth/telemetry FFI models) | 1–2 | — | Critical (pre-M1) | 3 decisions signed off; feed M3 ABI |
-| M1 | Go v2 API surface review & design | 2–4 | M0 | Critical | API signed off; §5 verified; migration sketch |
-| M2 | Native-driver repo & eng system | 3–5 | M1 (matrix) | Parallel | Signed artifact consumed from scratch module |
-| M3 | FFI/C ABI boundary & cgo layer | 3–5 | M0, M1 | Critical | Vertical slice builds via `go get` on 1 target; auth/telemetry carriers in ABI; first M10 checkpoint |
-| M4 | Core data plane over FFI | 3–5 | M2, M3 | Critical | Point ops pass differential + live |
-| M5 | Reliability & routing substrate | 3–6 | M4 | Critical | Retry/session/routing + Gateway 2.0 parity |
-| M6 | Advanced availability (PPAF/PPCB/hedging) | 3–5 | M5 | Critical | Availability scenarios pass fault-injection |
-| M7 | Query/feed/change feed/batch/patch | 4–7 | M4 | Parallel | Depth features pass differential incl. HPK |
-| M8 | AAD/token auth & config (implementation) | 2–4 | M0/M3 model, M7 | After M7 | Token auth live; option parity |
-| M9 | Test strategy, validation & differential gate | 3–5+ | M0, M4+ | Alongside M3–M8 | Per-milestone binding + differential + smoke green on all targets |
-| M10 | FFI robustness & fault testing | 3–5 | M3 | Alongside M3–M8 | No leaks/aborts/hangs under sanitizers; per-milestone checklist cleared |
-| M11 | Performance & FFI-boundary SLA validation | 3–5 | M4 | Gates GA | FFI overhead within budget; P99 meets SLA |
-| M12 | Preview → GA hardening | 3–5+ | M5–M11 | Critical | Full Big-5+musl matrix + migration validated |
+| M | Intent | Depends on | Path | Exit criterion (short) |
+|---|---|---|---|---|
+| M0 | Pre-build decisions (test scope + auth/telemetry FFI models) | — | Critical (pre-M1) | 3 decisions signed off; feed M3 ABI |
+| M1 | Go v2 API surface review & design | M0 | Critical | API signed off; §5 verified; migration sketch |
+| M2 | Native-driver repo & eng system | M1 (matrix) | Parallel | Signed artifact consumed from scratch module |
+| M3 | FFI/C ABI boundary & cgo layer | M0, M1 | Critical | Vertical slice builds via `go get` on 1 target; auth/telemetry carriers in ABI; first M10 checkpoint |
+| M4 | Core data plane over FFI | M2, M3 | Critical | Point ops pass differential + live |
+| M5 | Reliability & routing substrate | M4 | Critical | Retry/session/routing + Gateway 2.0 parity |
+| M6 | Advanced availability (PPAF/PPCB/hedging) | M5 | Critical | Availability scenarios pass fault-injection |
+| M7 | Query/feed/change feed/batch/patch | M4 | Parallel | Depth features pass differential incl. HPK |
+| M8 | AAD/token auth & config (implementation) | M0/M3 model, M7 | After M7 | Token auth live; option parity |
+| M9 | Test strategy, validation & differential gate | M0, M4+ | Alongside M3–M8 | Per-milestone binding + differential + smoke green on all targets |
+| M10 | FFI robustness & fault testing | M3 | Alongside M3–M8 | No leaks/aborts/hangs under sanitizers; per-milestone checklist cleared |
+| M11 | Performance & FFI-boundary SLA validation | M4 | Gates GA | FFI overhead within budget; P99 meets SLA |
+| M12 | Preview → GA hardening | M5–M11 | Critical | Full Big-5+musl matrix + migration validated |
 
-**Indicative total:** ~35–58 engineer-weeks across the milestones, dominated by
-the feature-breadth milestones (M5/M6/M7), the API/ABI decisions (M0/M1/M3), and
-the new FFI robustness/performance validation (M10/M11), with testing (M9) and
-FFI robustness (M10) running **alongside** the phases rather than at the end.
-Calendar targets and team-shape guidance are in the companion delivery-estimate
-document.
+The feature-breadth milestones (M5/M6/M7), the API/ABI decisions (M0/M1/M3), and the new FFI robustness/performance validation (M10/M11) carry the most work, with testing (M9) and FFI robustness (M10) running **alongside** the phases rather than at the end.

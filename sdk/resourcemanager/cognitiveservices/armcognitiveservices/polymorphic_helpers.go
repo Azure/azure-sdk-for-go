@@ -54,29 +54,6 @@ func unmarshalApplicationAuthorizationPolicyClassification(rawMsg json.RawMessag
 	return b, nil
 }
 
-func unmarshalComputePropertiesClassification(rawMsg json.RawMessage) (ComputePropertiesClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ComputePropertiesClassification
-	switch m["computeType"] {
-	case string(ComputeTypeCluster):
-		b = &ClusterComputeProperties{}
-	case string(ComputeTypeContainerInstance):
-		b = &ContainerInstanceComputeProperties{}
-	default:
-		b = &ComputeProperties{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
 func unmarshalConnectionPropertiesV2Classification(rawMsg json.RawMessage) (ConnectionPropertiesV2Classification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

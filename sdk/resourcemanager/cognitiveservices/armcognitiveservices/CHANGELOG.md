@@ -1,122 +1,6 @@
 # Release History
 
-## 4.0.0-beta.3 (2026-06-26)
-### Breaking Changes
-
-- Field `Location` of struct `ManagedComputeCapacityProperties` has been removed
-
-### Features Added
-
-- New enum type `RaiEgressDefaultAction` with values `RaiEgressDefaultActionAllow`, `RaiEgressDefaultActionDeny`
-- New enum type `RaiEgressHeaderOperation` with values `RaiEgressHeaderOperationInsert`, `RaiEgressHeaderOperationRemove`, `RaiEgressHeaderOperationSet`
-- New enum type `RaiEgressMode` with values `RaiEgressModeAudit`, `RaiEgressModeEnforced`
-- New enum type `RaiEgressRuleActionType` with values `RaiEgressRuleActionTypeAllow`, `RaiEgressRuleActionTypeDeny`, `RaiEgressRuleActionTypeRewrite`, `RaiEgressRuleActionTypeTransform`
-- New enum type `RaiEgressRuleType` with values `RaiEgressRuleTypeFqdn`
-- New enum type `RaiEgressScheme` with values `RaiEgressSchemeHTTP`, `RaiEgressSchemeHTTPS`
-- New struct `DeploymentSpeculativeDecoding`
-- New struct `RaiEgressHeaderTransform`
-- New struct `RaiEgressHeaderValueRef`
-- New struct `RaiEgressManagedIdentityRef`
-- New struct `RaiEgressPolicyConfig`
-- New struct `RaiEgressRewriteTarget`
-- New struct `RaiEgressRule`
-- New struct `RaiEgressRuleAction`
-- New struct `RaiEgressRuleMatch`
-- New struct `RaiEgressSecretRef`
-- New field `SpeculativeDecoding` in struct `DeploymentProperties`
-- New field `Capabilities` in struct `ManagedComputeDeploymentProperties`
-- New field `EgressPolicy` in struct `RaiPolicyProperties`
-
-
-## 4.0.0-beta.2 (2026-05-26)
-### Breaking Changes
-
-- Function `*OutboundRulesClient.BeginPost` return value(s) have been changed from `(*runtime.Poller[OutboundRulesClientPostResponse], error)` to `(*runtime.Poller[*runtime.Pager[OutboundRulesClientPostResponse]], error)`
-- `RoutingModeAccuracy` from enum `RoutingMode` has been removed
-- Struct `CustomTopicConfig` has been removed
-- Struct `RaiExternalSafetyProvider` has been removed
-- Struct `RaiExternalSafetyProviderProperties` has been removed
-- Field `Value` of struct `RaiExternalSafetyProviderClientCreateOrUpdateResponse` has been removed
-- Field `CustomTopics` of struct `RaiPolicyProperties` has been removed
-
-### Features Added
-
-- New value `RoutingModeQuality` added to enum type `RoutingMode`
-- New enum type `ComputeProvisioningState` with values `ComputeProvisioningStateAccepted`, `ComputeProvisioningStateCanceled`, `ComputeProvisioningStateDeleting`, `ComputeProvisioningStateDisabled`, `ComputeProvisioningStateFailed`, `ComputeProvisioningStateRestarting`, `ComputeProvisioningStateScaling`, `ComputeProvisioningStateStarting`, `ComputeProvisioningStateStopped`, `ComputeProvisioningStateStopping`, `ComputeProvisioningStateSucceeded`
-- New enum type `ComputeType` with values `ComputeTypeCluster`, `ComputeTypeContainerInstance`
-- New enum type `PolicyEvaluationOutcome` with values `PolicyEvaluationOutcomeCompliant`, `PolicyEvaluationOutcomeError`, `PolicyEvaluationOutcomeNonCompliant`
-- New enum type `VMPriority` with values `VMPriorityLowPriority`, `VMPriorityRegular`
-- New function `*AccountsClient.EvaluateDeploymentPolicies(ctx context.Context, resourceGroupName string, accountName string, body EvaluateDeploymentPoliciesRequest, options *AccountsClientEvaluateDeploymentPoliciesOptions) (AccountsClientEvaluateDeploymentPoliciesResponse, error)`
-- New function `*ClientFactory.NewComputesClient() *ComputesClient`
-- New function `*ClientFactory.NewManagedComputeCapacitiesClient() *ManagedComputeCapacitiesClient`
-- New function `*ClientFactory.NewManagedComputeDeploymentsClient() *ManagedComputeDeploymentsClient`
-- New function `*ClientFactory.NewManagedComputeUsagesOperationGroupClient() *ManagedComputeUsagesOperationGroupClient`
-- New function `*ClientFactory.NewWorkbenchesClient() *WorkbenchesClient`
-- New function `*ClusterComputeProperties.GetComputeProperties() *ComputeProperties`
-- New function `*ComputeProperties.GetComputeProperties() *ComputeProperties`
-- New function `NewComputesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputesClient, error)`
-- New function `*ComputesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource Compute, options *ComputesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ComputesClientCreateOrUpdateResponse], error)`
-- New function `*ComputesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*runtime.Poller[ComputesClientDeleteResponse], error)`
-- New function `*ComputesClient.Get(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientGetOptions) (ComputesClientGetResponse, error)`
-- New function `*ComputesClient.NewListPager(resourceGroupName string, accountName string, options *ComputesClientListOptions) *runtime.Pager[ComputesClientListResponse]`
-- New function `*ComputesClient.BeginRestart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginRestartOptions) (*runtime.Poller[ComputesClientRestartResponse], error)`
-- New function `*ComputesClient.BeginStart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStartOptions) (*runtime.Poller[ComputesClientStartResponse], error)`
-- New function `*ComputesClient.BeginStop(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStopOptions) (*runtime.Poller[ComputesClientStopResponse], error)`
-- New function `*ComputesClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, computeName string, properties Compute, options *ComputesClientBeginUpdateOptions) (*runtime.Poller[ComputesClientUpdateResponse], error)`
-- New function `*ContainerInstanceComputeProperties.GetComputeProperties() *ComputeProperties`
-- New function `NewManagedComputeCapacitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeCapacitiesClient, error)`
-- New function `*ManagedComputeCapacitiesClient.NewListPager(offer string, options *ManagedComputeCapacitiesClientListOptions) *runtime.Pager[ManagedComputeCapacitiesClientListResponse]`
-- New function `NewManagedComputeDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeDeploymentsClient, error)`
-- New function `*ManagedComputeDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ManagedComputeDeployment, options *ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedComputeDeploymentsClientCreateOrUpdateResponse], error)`
-- New function `*ManagedComputeDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ManagedComputeDeploymentsClientDeleteResponse], error)`
-- New function `*ManagedComputeDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientGetOptions) (ManagedComputeDeploymentsClientGetResponse, error)`
-- New function `*ManagedComputeDeploymentsClient.NewListPager(resourceGroupName string, accountName string, options *ManagedComputeDeploymentsClientListOptions) *runtime.Pager[ManagedComputeDeploymentsClientListResponse]`
-- New function `*ManagedComputeDeploymentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties PatchResourceSKU, options *ManagedComputeDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ManagedComputeDeploymentsClientUpdateResponse], error)`
-- New function `NewManagedComputeUsagesOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeUsagesOperationGroupClient, error)`
-- New function `*ManagedComputeUsagesOperationGroupClient.NewListPager(location string, options *ManagedComputeUsagesOperationGroupClientListOptions) *runtime.Pager[ManagedComputeUsagesOperationGroupClientListResponse]`
-- New function `NewWorkbenchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkbenchesClient, error)`
-- New function `*WorkbenchesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, resource Workbench, options *WorkbenchesClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkbenchesClientCreateOrUpdateResponse], error)`
-- New function `*WorkbenchesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginDeleteOptions) (*runtime.Poller[WorkbenchesClientDeleteResponse], error)`
-- New function `*WorkbenchesClient.Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientGetOptions) (WorkbenchesClientGetResponse, error)`
-- New function `*WorkbenchesClient.NewListPager(resourceGroupName string, accountName string, projectName string, options *WorkbenchesClientListOptions) *runtime.Pager[WorkbenchesClientListResponse]`
-- New function `*WorkbenchesClient.BeginRestart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginRestartOptions) (*runtime.Poller[WorkbenchesClientRestartResponse], error)`
-- New function `*WorkbenchesClient.BeginStart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStartOptions) (*runtime.Poller[WorkbenchesClientStartResponse], error)`
-- New function `*WorkbenchesClient.BeginStop(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStopOptions) (*runtime.Poller[WorkbenchesClientStopResponse], error)`
-- New function `*WorkbenchesClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties Workbench, options *WorkbenchesClientBeginUpdateOptions) (*runtime.Poller[WorkbenchesClientUpdateResponse], error)`
-- New struct `ClusterComputeProperties`
-- New struct `Compute`
-- New struct `ComputeListResult`
-- New struct `ConnectivityEndpoints`
-- New struct `ContainerInstanceComputeProperties`
-- New struct `DeploymentPolicyEvaluationResult`
-- New struct `DeploymentSizeCapacity`
-- New struct `EvaluateDeploymentPoliciesDeployment`
-- New struct `EvaluateDeploymentPoliciesDeploymentProperties`
-- New struct `EvaluateDeploymentPoliciesRequest`
-- New struct `EvaluateDeploymentPoliciesResponse`
-- New struct `ManagedComputeCapacity`
-- New struct `ManagedComputeCapacityListResult`
-- New struct `ManagedComputeCapacityProperties`
-- New struct `ManagedComputeDeployment`
-- New struct `ManagedComputeDeploymentInfo`
-- New struct `ManagedComputeDeploymentListResult`
-- New struct `ManagedComputeDeploymentProperties`
-- New struct `ManagedComputeDeploymentProvisioningDetails`
-- New struct `ManagedComputeDeploymentRoutes`
-- New struct `ManagedComputeUsage`
-- New struct `ManagedComputeUsageListResult`
-- New struct `PatchResourceSKU`
-- New struct `PolicyAssignmentEvaluationDetails`
-- New struct `PolicyExpressionEvaluationDetails`
-- New struct `Pool`
-- New struct `SSHSettings`
-- New struct `Workbench`
-- New struct `WorkbenchListResult`
-- New struct `WorkbenchProperties`
-- New anonymous field `RaiExternalSafetyProviderSchema` in struct `RaiExternalSafetyProviderClientCreateOrUpdateResponse`
-
-
-## 4.0.0-beta.1 (2026-03-26)
+## 4.0.0 (2026-08-03)
 ### Breaking Changes
 
 - Function `*AccountConnectionsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, connection ConnectionPropertiesV2BasicResource, options *AccountConnectionsClientCreateOptions)`
@@ -125,6 +9,9 @@
 - Function `*ProjectConnectionsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, options *ProjectConnectionsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, projectName string, connectionName string, connection ConnectionUpdateContent, options *ProjectConnectionsClientUpdateOptions)`
 - Function `*RaiBlocklistItemsClient.BatchDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemsNames any, options *RaiBlocklistItemsClientBatchDeleteOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemsNames []*string, options *RaiBlocklistItemsClientBatchDeleteOptions)`
 - Struct `AzureEntityResource` has been removed
+- Struct `CustomTopicConfig` has been removed
+- Struct `ErrorAdditionalInfo` has been removed
+- Struct `ErrorDetail` has been removed
 - Struct `ErrorResponse` has been removed
 - Struct `PatchResourceTags` has been removed
 - Struct `ProxyResource` has been removed
@@ -136,6 +23,7 @@
 - Field `Connection` of struct `AccountConnectionsClientUpdateOptions` has been removed
 - Field `Connection` of struct `ProjectConnectionsClientCreateOptions` has been removed
 - Field `Connection` of struct `ProjectConnectionsClientUpdateOptions` has been removed
+- Field `CustomTopics` of struct `RaiPolicyProperties` has been removed
 
 ### Features Added
 
@@ -148,10 +36,8 @@
 - New enum type `AgentProtocol` with values `AgentProtocolA2A`, `AgentProtocolAgent`, `AgentProtocolResponses`
 - New enum type `AgenticApplicationProvisioningState` with values `AgenticApplicationProvisioningStateCanceled`, `AgenticApplicationProvisioningStateCreating`, `AgenticApplicationProvisioningStateDeleting`, `AgenticApplicationProvisioningStateFailed`, `AgenticApplicationProvisioningStateSucceeded`, `AgenticApplicationProvisioningStateUpdating`
 - New enum type `BuiltInAuthorizationScheme` with values `BuiltInAuthorizationSchemeChannels`, `BuiltInAuthorizationSchemeCustom`, `BuiltInAuthorizationSchemeDefault`, `BuiltInAuthorizationSchemeOrganizationScope`
-- New enum type `ComputeOperationStatusType` with values `ComputeOperationStatusTypeCanceled`, `ComputeOperationStatusTypeFailed`, `ComputeOperationStatusTypeInProgress`, `ComputeOperationStatusTypeSucceeded`
 - New enum type `DeploymentState` with values `DeploymentStatePaused`, `DeploymentStateRunning`
 - New enum type `FirewallSKU` with values `FirewallSKUBasic`, `FirewallSKUStandard`
-- New enum type `FoundryAutoUpgradeMode` with values `FoundryAutoUpgradeModeDisabled`, `FoundryAutoUpgradeModeEnabled`
 - New enum type `IdentityKind` with values `IdentityKindAgentBlueprint`, `IdentityKindAgentInstance`, `IdentityKindAgenticUser`, `IdentityKindManaged`, `IdentityKindNone`
 - New enum type `IdentityManagementType` with values `IdentityManagementTypeNone`, `IdentityManagementTypeSystem`, `IdentityManagementTypeUser`
 - New enum type `IdentityProvisioningState` with values `IdentityProvisioningStateCanceled`, `IdentityProvisioningStateCreating`, `IdentityProvisioningStateDeleting`, `IdentityProvisioningStateFailed`, `IdentityProvisioningStateSucceeded`, `IdentityProvisioningStateUpdating`
@@ -161,7 +47,7 @@
 - New enum type `ManagedNetworkStatus` with values `ManagedNetworkStatusActive`, `ManagedNetworkStatusInactive`
 - New enum type `QuotaScopeType` with values `QuotaScopeTypeClassic`, `QuotaScopeTypeDataZone`, `QuotaScopeTypeGlobal`, `QuotaScopeTypeRegional`
 - New enum type `RaiActionType` with values `RaiActionTypeANNOTATING`, `RaiActionTypeBLOCKING`, `RaiActionTypeHITL`, `RaiActionTypeNone`, `RaiActionTypeRETRY`
-- New enum type `RoutingMode` with values `RoutingModeAccuracy`, `RoutingModeBalanced`, `RoutingModeCost`
+- New enum type `RoutingMode` with values `RoutingModeBalanced`, `RoutingModeCost`, `RoutingModeQuality`
 - New enum type `RuleAction` with values `RuleActionAllow`, `RuleActionDeny`
 - New enum type `RuleCategory` with values `RuleCategoryDependency`, `RuleCategoryRecommended`, `RuleCategoryRequired`, `RuleCategoryUserDefined`
 - New enum type `RuleStatus` with values `RuleStatusActive`, `RuleStatusDeleting`, `RuleStatusFailed`, `RuleStatusInactive`, `RuleStatusProvisioning`
@@ -188,7 +74,6 @@
 - New function `*ChannelsBuiltInAuthorizationPolicy.GetApplicationAuthorizationPolicy() *ApplicationAuthorizationPolicy`
 - New function `*ClientFactory.NewAgentApplicationsClient() *AgentApplicationsClient`
 - New function `*ClientFactory.NewAgentDeploymentsClient() *AgentDeploymentsClient`
-- New function `*ClientFactory.NewComputeOperationsClient() *ComputeOperationsClient`
 - New function `*ClientFactory.NewManagedNetworkProvisionsClient() *ManagedNetworkProvisionsClient`
 - New function `*ClientFactory.NewManagedNetworkSettingsClient() *ManagedNetworkSettingsClient`
 - New function `*ClientFactory.NewOutboundRuleClient() *OutboundRuleClient`
@@ -198,8 +83,6 @@
 - New function `*ClientFactory.NewRaiToolLabelsClient() *RaiToolLabelsClient`
 - New function `*ClientFactory.NewSubscriptionRaiPolicyClient() *SubscriptionRaiPolicyClient`
 - New function `*ClientFactory.NewTestRaiExternalSafetyProviderClient() *TestRaiExternalSafetyProviderClient`
-- New function `NewComputeOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputeOperationsClient, error)`
-- New function `*ComputeOperationsClient.Get(ctx context.Context, location string, operationID string, options *ComputeOperationsClientGetOptions) (ComputeOperationsClientGetResponse, error)`
 - New function `*DeploymentsClient.Pause(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientPauseOptions) (DeploymentsClientPauseResponse, error)`
 - New function `*DeploymentsClient.Resume(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientResumeOptions) (DeploymentsClientResumeResponse, error)`
 - New function `*FqdnOutboundRule.GetOutboundRule() *OutboundRule`
@@ -221,7 +104,7 @@
 - New function `*OutboundRuleClient.Get(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, ruleName string, options *OutboundRuleClientGetOptions) (OutboundRuleClientGetResponse, error)`
 - New function `*OutboundRuleClient.NewListPager(resourceGroupName string, accountName string, managedNetworkName string, options *OutboundRuleClientListOptions) *runtime.Pager[OutboundRuleClientListResponse]`
 - New function `NewOutboundRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OutboundRulesClient, error)`
-- New function `*OutboundRulesClient.BeginPost(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, options *OutboundRulesClientBeginPostOptions) (*runtime.Poller[OutboundRulesClientPostResponse], error)`
+- New function `*OutboundRulesClient.BeginPost(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, options *OutboundRulesClientBeginPostOptions) (*runtime.Poller[*runtime.Pager[OutboundRulesClientPostResponse]], error)`
 - New function `*PrivateEndpointOutboundRule.GetOutboundRule() *OutboundRule`
 - New function `NewRaiExternalSafetyProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiExternalSafetyProviderClient, error)`
 - New function `*RaiExternalSafetyProviderClient.CreateOrUpdate(ctx context.Context, safetyProviderName string, safetyProvider RaiExternalSafetyProviderSchema, options *RaiExternalSafetyProviderClientCreateOrUpdateOptions) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error)`
@@ -254,10 +137,7 @@
 - New struct `ApplicationTrafficRoutingPolicy`
 - New struct `AssignedIdentity`
 - New struct `ChannelsBuiltInAuthorizationPolicy`
-- New struct `ComputeOperationStatus`
-- New struct `ComputeOperationStatusProperties`
 - New struct `DeploymentRouting`
-- New struct `FoundryAutoUpgrade`
 - New struct `FqdnOutboundRule`
 - New struct `HostedAgentDeployment`
 - New struct `ManagedAgentDeployment`
@@ -272,10 +152,9 @@
 - New struct `OrganizationSharedBuiltInAuthorizationPolicy`
 - New struct `OutboundRuleBasicResource`
 - New struct `OutboundRuleListResult`
+- New struct `OutboundRulesClientPostResponse`
 - New struct `PrivateEndpointOutboundRule`
 - New struct `PrivateEndpointOutboundRuleDestination`
-- New struct `RaiExternalSafetyProvider`
-- New struct `RaiExternalSafetyProviderProperties`
 - New struct `RaiExternalSafetyProviderResult`
 - New struct `RaiExternalSafetyProviderSchema`
 - New struct `RaiExternalSafetyProviderSchemaProperties`
@@ -290,7 +169,6 @@
 - New struct `ServiceTagOutboundRuleDestination`
 - New struct `TrafficRoutingRule`
 - New struct `VersionedAgentReference`
-- New field `FoundryAutoUpgrade` in struct `AccountProperties`
 - New field `EnablePublicHostingEnvironment` in struct `CapabilityHostProperties`
 - New field `DeploymentState`, `Routing`, `ServiceTier` in struct `DeploymentProperties`
 - New field `ScopeID`, `ScopeType` in struct `ModelSKUCapacityProperties`

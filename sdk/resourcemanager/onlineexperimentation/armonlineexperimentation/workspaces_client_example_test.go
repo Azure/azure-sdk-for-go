@@ -49,13 +49,13 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armonlineexperimentation.WorkspacesClientCreateOrUpdateResponse{
-	// 	Workspace: &armonlineexperimentation.Workspace{
+	// 	Workspace: armonlineexperimentation.Workspace{
 	// 		ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace7"),
 	// 		Name: to.Ptr("expworkspace7"),
 	// 		Type: to.Ptr("Microsoft.OnlineExperimentation/workspaces"),
@@ -138,13 +138,13 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAnOnlineExperimen
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armonlineexperimentation.WorkspacesClientCreateOrUpdateResponse{
-	// 	Workspace: &armonlineexperimentation.Workspace{
+	// 	Workspace: armonlineexperimentation.Workspace{
 	// 		ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace7"),
 	// 		Name: to.Ptr("expworkspace7"),
 	// 		Type: to.Ptr("Microsoft.OnlineExperimentation/workspaces"),
@@ -207,7 +207,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -230,7 +230,7 @@ func ExampleWorkspacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armonlineexperimentation.WorkspacesClientGetResponse{
-	// 	Workspace: &armonlineexperimentation.Workspace{
+	// 	Workspace: armonlineexperimentation.Workspace{
 	// 		ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace3"),
 	// 		Name: to.Ptr("expworkspace3"),
 	// 		Type: to.Ptr("Microsoft.OnlineExperimentation/workspaces"),
@@ -540,13 +540,13 @@ func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspace(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armonlineexperimentation.WorkspacesClientUpdateResponse{
-	// 	Workspace: &armonlineexperimentation.Workspace{
+	// 	Workspace: armonlineexperimentation.Workspace{
 	// 		ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace3"),
 	// 		Name: to.Ptr("expworkspace3"),
 	// 		Type: to.Ptr("Microsoft.OnlineExperimentation/workspaces"),
@@ -625,13 +625,13 @@ func ExampleWorkspacesClient_BeginUpdate_updateAnOnlineExperimentationWorkspaceW
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armonlineexperimentation.WorkspacesClientUpdateResponse{
-	// 	Workspace: &armonlineexperimentation.Workspace{
+	// 	Workspace: armonlineexperimentation.Workspace{
 	// 		ID: to.Ptr("/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OnlineExperimentation/workspaces/expworkspace3"),
 	// 		Name: to.Ptr("expworkspace3"),
 	// 		Type: to.Ptr("Microsoft.OnlineExperimentation/workspaces"),

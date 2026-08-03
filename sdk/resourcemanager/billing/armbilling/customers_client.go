@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultCustomersClientVersion string = "2024-04-01"
-
 // CustomersClient contains the methods for the Customers group.
 // Don't use this type directly, use NewCustomersClient() instead.
 //
@@ -90,7 +88,7 @@ func (client *CustomersClient) getCreateRequest(ctx context.Context, billingAcco
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomersClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -150,7 +148,7 @@ func (client *CustomersClient) getByBillingAccountCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomersClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +203,7 @@ func (client *CustomersClient) listByBillingAccountCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomersClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}
@@ -286,7 +284,7 @@ func (client *CustomersClient) listByBillingProfileCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultCustomersClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}

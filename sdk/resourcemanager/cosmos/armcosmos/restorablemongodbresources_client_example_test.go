@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBRestorableMongodbResourceList.json
+// Generated from example definition: 2026-03-15/CosmosDBRestorableMongodbResourceList.json
 func ExampleRestorableMongodbResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,31 +40,31 @@ func ExampleRestorableMongodbResourcesClient_NewListPager() {
 		// 	RestorableMongodbResourcesListResult: armcosmos.RestorableMongodbResourcesListResult{
 		// 		Value: []*armcosmos.RestorableMongodbResourcesGetResult{
 		// 			{
-		// 				Name: to.Ptr("Database1"),
+		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorablemongodbresources/Database1"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorablemongodbresources"),
+		// 				Name: to.Ptr("Database1"),
+		// 				DatabaseName: to.Ptr("Database1"),
 		// 				CollectionNames: []*string{
 		// 					to.Ptr("Collection1"),
 		// 				},
-		// 				DatabaseName: to.Ptr("Database1"),
-		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorablemongodbresources/Database1"),
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("Database2"),
+		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorablemongodbresources/Database2"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorablemongodbresources"),
+		// 				Name: to.Ptr("Database2"),
+		// 				DatabaseName: to.Ptr("Database2"),
 		// 				CollectionNames: []*string{
 		// 					to.Ptr("Collection1"),
 		// 					to.Ptr("Collection2"),
 		// 				},
-		// 				DatabaseName: to.Ptr("Database2"),
-		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorablemongodbresources/Database2"),
 		// 			},
 		// 			{
-		// 				Name: to.Ptr("Database3"),
+		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorablemongodbresources/Database3"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts/restorablemongodbresources"),
+		// 				Name: to.Ptr("Database3"),
+		// 				DatabaseName: to.Ptr("Database3"),
 		// 				CollectionNames: []*string{
 		// 				},
-		// 				DatabaseName: to.Ptr("Database3"),
-		// 				ID: to.Ptr("/subscriptions/2296c272-5d55-40d9-bc05-4d56dc2d7588/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d/restorablemongodbresources/Database3"),
 		// 			},
 		// 		},
 		// 	},

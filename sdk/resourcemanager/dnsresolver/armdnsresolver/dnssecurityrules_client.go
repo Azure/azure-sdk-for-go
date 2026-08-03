@@ -19,6 +19,8 @@ import (
 
 // DNSSecurityRulesClient contains the methods for the DNSSecurityRules group.
 // Don't use this type directly, use NewDNSSecurityRulesClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type DNSSecurityRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDNSSecurityRulesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Creates or updates a DNS security rule for a DNS resolver policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsSecurityRuleName - The name of the DNS security rule.
@@ -69,8 +69,6 @@ func (client *DNSSecurityRulesClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Creates or updates a DNS security rule for a DNS resolver policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DNSSecurityRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRule, options *DNSSecurityRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DNSSecurityRulesClient.BeginCreateOrUpdate"
@@ -116,8 +114,8 @@ func (client *DNSSecurityRulesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -134,8 +132,6 @@ func (client *DNSSecurityRulesClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsSecurityRuleName - The name of the DNS security rule.
@@ -160,8 +156,6 @@ func (client *DNSSecurityRulesClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Deletes a DNS security rule for a DNS resolver policy. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DNSSecurityRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, options *DNSSecurityRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DNSSecurityRulesClient.BeginDelete"
@@ -207,8 +201,8 @@ func (client *DNSSecurityRulesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
 	}
@@ -217,8 +211,6 @@ func (client *DNSSecurityRulesClient) deleteCreateRequest(ctx context.Context, r
 
 // Get - Gets properties of a DNS security rule for a DNS resolver policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsSecurityRuleName - The name of the DNS security rule.
@@ -269,8 +261,8 @@ func (client *DNSSecurityRulesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -285,8 +277,6 @@ func (client *DNSSecurityRulesClient) getHandleResponse(resp *http.Response) (DN
 }
 
 // NewListPager - Lists DNS security rules for a DNS resolver policy.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - options - DNSSecurityRulesClientListOptions contains the optional parameters for the DNSSecurityRulesClient.NewListPager
@@ -337,8 +327,8 @@ func (client *DNSSecurityRulesClient) listCreateRequest(ctx context.Context, res
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -354,8 +344,6 @@ func (client *DNSSecurityRulesClient) listHandleResponse(resp *http.Response) (D
 
 // BeginUpdate - Updates a DNS security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverPolicyName - The name of the DNS resolver policy.
 //   - dnsSecurityRuleName - The name of the DNS security rule.
@@ -381,8 +369,6 @@ func (client *DNSSecurityRulesClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - Updates a DNS security rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DNSSecurityRulesClient) update(ctx context.Context, resourceGroupName string, dnsResolverPolicyName string, dnsSecurityRuleName string, parameters DNSSecurityRulePatch, options *DNSSecurityRulesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DNSSecurityRulesClient.BeginUpdate"
@@ -428,8 +414,8 @@ func (client *DNSSecurityRulesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}

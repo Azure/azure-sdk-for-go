@@ -18,6 +18,8 @@ import (
 
 // BackupsAutomaticAndOnDemandClient contains the methods for the BackupsAutomaticAndOnDemand group.
 // Don't use this type directly, use NewBackupsAutomaticAndOnDemandClient() instead.
+//
+// Generated from API version 2026-04-01-preview
 type BackupsAutomaticAndOnDemandClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupsAutomaticAndOnDemandClient(subscriptionID string, credential azco
 
 // BeginCreate - Creates an on demand backup of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - Name of the backup.
@@ -68,8 +68,6 @@ func (client *BackupsAutomaticAndOnDemandClient) BeginCreate(ctx context.Context
 
 // Create - Creates an on demand backup of a server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *BackupsAutomaticAndOnDemandClient) create(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsAutomaticAndOnDemandClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsAutomaticAndOnDemandClient.BeginCreate"
@@ -115,15 +113,13 @@ func (client *BackupsAutomaticAndOnDemandClient) createCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDelete - Deletes a specific backup, given its name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - Name of the backup.
@@ -148,8 +144,6 @@ func (client *BackupsAutomaticAndOnDemandClient) BeginDelete(ctx context.Context
 
 // Delete - Deletes a specific backup, given its name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 func (client *BackupsAutomaticAndOnDemandClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, backupName string, options *BackupsAutomaticAndOnDemandClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BackupsAutomaticAndOnDemandClient.BeginDelete"
@@ -195,15 +189,13 @@ func (client *BackupsAutomaticAndOnDemandClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information of an on demand backup, given its name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - backupName - Name of the backup.
@@ -255,8 +247,8 @@ func (client *BackupsAutomaticAndOnDemandClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -271,8 +263,6 @@ func (client *BackupsAutomaticAndOnDemandClient) getHandleResponse(resp *http.Re
 }
 
 // NewListByServerPager - Lists all available backups of a server.
-//
-// Generated from API version 2026-01-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - BackupsAutomaticAndOnDemandClientListByServerOptions contains the optional parameters for the BackupsAutomaticAndOnDemandClient.NewListByServerPager
@@ -320,8 +310,8 @@ func (client *BackupsAutomaticAndOnDemandClient) listByServerCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

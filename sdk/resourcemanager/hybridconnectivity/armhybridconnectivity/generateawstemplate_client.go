@@ -18,6 +18,8 @@ import (
 
 // GenerateAwsTemplateClient contains the methods for the GenerateAwsTemplate group.
 // Don't use this type directly, use NewGenerateAwsTemplateClient() instead.
+//
+// Generated from API version 2024-12-01
 type GenerateAwsTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewGenerateAwsTemplateClient(subscriptionID string, credential azcore.Token
 
 // Post - Retrieve AWS Cloud Formation template
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - generateAwsTemplateRequest - ConnectorId and SolutionTypes and their properties to Generate AWS CFT Template.
 //   - options - GenerateAwsTemplateClientPostOptions contains the optional parameters for the GenerateAwsTemplateClient.Post
 //     method.
@@ -80,8 +80,8 @@ func (client *GenerateAwsTemplateClient) postCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, generateAwsTemplateRequest); err != nil {

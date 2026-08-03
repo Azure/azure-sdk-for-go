@@ -1,0 +1,57 @@
+Service: storage-blob
+
+Project: sdk/storage/azblob/testdata/perf
+
+PrimaryPackage: github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
+
+# Each entry below is a column in the comparison table. Pin every Azure
+# SDK module that matters for the comparison so the columns differ only
+# by what you intend to vary.
+PackageVersions:
+  # Published baseline. azblob v1.6.4 transitively requires azcore >= v1.21.0,
+  # so pin azcore to v1.21.0 (Go's MVS will not allow a lower version).
+  - github.com/Azure/azure-sdk-for-go/sdk/storage/azblob: v1.6.4
+    github.com/Azure/azure-sdk-for-go/sdk/azcore: v1.21.0
+  # Current source under test (uses `replace` directives to local checkouts).
+  - github.com/Azure/azure-sdk-for-go/sdk/storage/azblob: source
+    github.com/Azure/azure-sdk-for-go/sdk/azcore: source
+
+Tests:
+  # `Test` is the display name shown in result reports.
+  # `Class` is what perf-automation passes to the runner as the test
+  # name argument — for Go this MUST match a key registered in main.go's
+  # perf.Run(map[string]perf.PerfMethods{ "DownloadBlobTest": {...}, ... }).
+  - Test: Download
+    Class: DownloadBlobTest
+    Arguments:
+      # Small blob, single GET, high goroutine fan-out.
+      - --size 10240 --parallel 64 --latency
+      # Medium blob, single GET.
+      - --size 10485760 --parallel 32 --latency
+      # 1 GiB single-stream baseline.
+      - --size 1073741824 --parallel 1 --warmup 60 --duration 60 --latency
+      - --size 1073741824 --parallel 8 --warmup 60 --duration 60 --latency
+      # 1 GiB parallel-ranged GETs (DownloadBuffer): 8 MiB blocks, 8 concurrent ranges.
+      - --size 1073741824 --parallel 1 --warmup 60 --duration 60 --latency --download-method buffer --block-size 8388608 --concurrency 8
+
+  - Test: Upload
+    Class: UploadBlobTest
+    Arguments:
+      # Small blob, single PUT, high goroutine fan-out.
+      - --size 10240 --parallel 64 --latency
+      # Medium blob, single PUT.
+      - --size 10485760 --parallel 32 --latency
+      # 1 GiB single PUT baseline.
+      - --size 1073741824 --parallel 1 --warmup 60 --duration 60 --latency
+      - --size 1073741824 --parallel 8 --warmup 60 --duration 60 --latency
+      # 1 GiB parallel staged blocks (UploadBuffer): 8 MiB blocks, 8 concurrent stage-blocks.
+      - --size 1073741824 --parallel 1 --warmup 60 --duration 60 --latency --upload-method buffer --block-size 8388608 --concurrency 8
+      # 1 GiB chunked from an io.Reader (UploadStream): 8 MiB blocks, 8 concurrent stage-blocks.
+      - --size 1073741824 --parallel 1 --warmup 60 --duration 60 --latency --upload-method stream --block-size 8388608 --concurrency 8
+
+  - Test: List
+    Class: ListBlobTest
+    Arguments:
+      - --num-blobs 5 --parallel 64 --latency
+      - --num-blobs 500 --parallel 32 --latency --page-size 500
+      - --num-blobs 50000 --parallel 32 --warmup 60 --duration 60 --latency --page-size 5000

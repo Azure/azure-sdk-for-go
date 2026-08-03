@@ -18,6 +18,8 @@ import (
 
 // SolutionTypesClient contains the methods for the SolutionTypes group.
 // Don't use this type directly, use NewSolutionTypesClient() instead.
+//
+// Generated from API version 2024-12-01
 type SolutionTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSolutionTypesClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Get a SolutionTypeResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - solutionType - Solution Type resource
 //   - options - SolutionTypesClientGetOptions contains the optional parameters for the SolutionTypesClient.Get method.
@@ -88,8 +88,8 @@ func (client *SolutionTypesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *SolutionTypesClient) getHandleResponse(resp *http.Response) (Solut
 }
 
 // NewListByResourceGroupPager - List SolutionTypeResource resources by resource group
-//
-// Generated from API version 2024-12-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SolutionTypesClientListByResourceGroupOptions contains the optional parameters for the SolutionTypesClient.NewListByResourceGroupPager
 //     method.
@@ -148,8 +146,8 @@ func (client *SolutionTypesClient) listByResourceGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -164,8 +162,6 @@ func (client *SolutionTypesClient) listByResourceGroupHandleResponse(resp *http.
 }
 
 // NewListBySubscriptionPager - List SolutionTypeResource resources by subscription ID
-//
-// Generated from API version 2024-12-01
 //   - options - SolutionTypesClientListBySubscriptionOptions contains the optional parameters for the SolutionTypesClient.NewListBySubscriptionPager
 //     method.
 func (client *SolutionTypesClient) NewListBySubscriptionPager(options *SolutionTypesClientListBySubscriptionOptions) *runtime.Pager[SolutionTypesClientListBySubscriptionResponse] {
@@ -203,8 +199,8 @@ func (client *SolutionTypesClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

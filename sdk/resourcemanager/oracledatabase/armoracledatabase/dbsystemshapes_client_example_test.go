@@ -31,7 +31,7 @@ func ExampleDbSystemShapesClient_Get_getADbSystemShapeByNameGeneratedByMaximumSe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbSystemShapesClientGetResponse{
-	// 	DbSystemShape: &armoracledatabase.DbSystemShape{
+	// 	DbSystemShape: armoracledatabase.DbSystemShape{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemShapes/EXADATA.X9M"),
 	// 		Type: to.Ptr("Oracle.Database/locations/dbSystemShapes"),
 	// 		Properties: &armoracledatabase.DbSystemShapeProperties{
@@ -92,7 +92,7 @@ func ExampleDbSystemShapesClient_Get_getADbSystemShapeByNameGeneratedByMinimumSe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbSystemShapesClientGetResponse{
-	// 	DbSystemShape: &armoracledatabase.DbSystemShape{
+	// 	DbSystemShape: armoracledatabase.DbSystemShape{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemShapes/EXADATA.X9M"),
 	// 	},
 	// }
@@ -117,7 +117,7 @@ func ExampleDbSystemShapesClient_Get_dbSystemShapesGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.DbSystemShapesClientGetResponse{
-	// 	DbSystemShape: &armoracledatabase.DbSystemShape{
+	// 	DbSystemShape: armoracledatabase.DbSystemShape{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Oracle.Database/locations/eastus/dbSystemShapes/EXADATA.X9M"),
 	// 		Type: to.Ptr("Oracle.Database/locations/dbSystemShapes"),
 	// 		Properties: &armoracledatabase.DbSystemShapeProperties{

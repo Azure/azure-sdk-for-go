@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_CreateOrUpdate_AvailabilityPolicy.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_CreateOrUpdate_AvailabilityPolicy.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithAvailabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,13 +40,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithAvailabilityPo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -64,7 +64,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithAvailabilityPo
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_ByCopyingASnapshot.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_ByCopyingASnapshot.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByCopyingASnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,13 +89,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByCopyingASnapshot
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -110,7 +110,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByCopyingASnapshot
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_ByImportingBlobFromADifferentSubscription.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_ByImportingBlobFromADifferentSubscription.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnmanagedBlobFromADifferentSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,13 +136,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnman
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -158,7 +158,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnman
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_ByImportingBlobFromTheSameSubscription.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_ByImportingBlobFromTheSameSubscription.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnmanagedBlobFromTheSameSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,13 +183,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnman
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -204,7 +204,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskByImportingAnUnman
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_ConfidentialVMSupportedDiskEncryptedWithCMK.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_ConfidentialVMSupportedDiskEncryptedWithCMK.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAConfidentialVMSupportedDiskEncryptedWithCustomerManagedKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,13 +236,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAConfidentialVMSupportedDiskEn
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -264,7 +264,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAConfidentialVMSupportedDiskEn
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_Empty.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_Empty.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,13 +289,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDisk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -310,7 +310,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDisk() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromAPlatformImage.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromAPlatformImage.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAPlatformImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,13 +338,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAPlatformImage
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -371,7 +371,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAPlatformImage
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromAnAzureComputeGalleryCommunityImage.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromAnAzureComputeGalleryCommunityImage.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureComputeGalleryCommunityImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -399,13 +399,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -427,7 +427,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromAnAzureComputeGalleryDirectSharedImage.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromAnAzureComputeGalleryDirectSharedImage.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureComputeGalleryDirectSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,13 +455,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -483,7 +483,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromAnAzureComputeGalleryImage.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromAnAzureComputeGalleryImage.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureComputeGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,13 +511,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -540,7 +540,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnAzureCompute
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromAnElasticSanVolumeSnapshot.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromAnElasticSanVolumeSnapshot.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromElasticSanVolumeSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,13 +565,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromElasticSanVolu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -586,7 +586,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromElasticSanVolu
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromAnExistingManagedDisk.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromAnExistingManagedDisk.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnExistingManagedDiskInTheSameOrDifferentSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -611,13 +611,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnExistingMana
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -632,7 +632,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromAnExistingMana
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromImportSecure.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromImportSecure.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCreateOption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -663,13 +663,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -690,7 +690,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCr
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromImportSecure_WithVMMetadata.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromImportSecure_WithVMMetadata.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCreateOptionWithMetadataUriForConfidentialVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -722,13 +722,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("West US"),
@@ -750,7 +750,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromImportSecureCr
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_FromUploadPreparedSecure.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_FromUploadPreparedSecure.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromUploadPreparedSecureCreateOption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -779,13 +779,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromUploadPrepared
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
@@ -804,7 +804,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskFromUploadPrepared
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_InExtendedLocation.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_InExtendedLocation.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDiskInExtendedLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -833,13 +833,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDiskInExtendedLo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -858,7 +858,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnEmptyManagedDiskInExtendedLo
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_PerformancePlus.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_PerformancePlus.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPerformancePlus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -883,13 +883,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPerformancePlu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -904,7 +904,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPerformancePlu
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_UploadDisk.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_UploadDisk.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedUploadDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -929,13 +929,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedUploadDisk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -950,7 +950,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedUploadDisk() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithDataAccessAuthMode.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithDataAccessAuthMode.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithDataAccessAuthMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -976,13 +976,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithDataAccessAuth
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -998,7 +998,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithDataAccessAuth
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithDiskAccess.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithDiskAccess.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDiskAccessResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1025,13 +1025,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1049,7 +1049,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDi
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithDiskEncryptionSet.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithDiskEncryptionSet.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDiskEncryptionSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1077,13 +1077,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1101,7 +1101,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskAndAssociateWithDi
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithLogicalSectorSize.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithLogicalSectorSize.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAnUltraManagedDiskWithLogicalSectorSize512E() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1130,13 +1130,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnUltraManagedDiskWithLogicalS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1156,7 +1156,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAnUltraManagedDiskWithLogicalS
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithOptimizedForFrequentAttach.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithOptimizedForFrequentAttach.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithOptimizedForFrequentAttach() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1182,13 +1182,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithOptimizedForFr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1204,7 +1204,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithOptimizedForFr
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithPremiumV2_LRSAccountType.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithPremiumV2_LRSAccountType.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPremiumV2AccountType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1234,13 +1234,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPremiumV2Accou
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1259,7 +1259,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithPremiumV2Accou
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithSSDZRSAccountType.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithSSDZRSAccountType.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSsdZrsAccountType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1287,13 +1287,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSsdZrsAccountT
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1312,7 +1312,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSsdZrsAccountT
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithSecurityProfile.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithSecurityProfile.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSecurityProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1343,13 +1343,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSecurityProfil
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("North Central US"),
@@ -1370,7 +1370,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithSecurityProfil
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Create_WithUltraSSD_ReadOnly.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Create_WithUltraSSD_ReadOnly.json
 func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithUltraAccountTypeWithReadOnlyPropertySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1404,13 +1404,13 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithUltraAccountTy
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientCreateOrUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1432,7 +1432,7 @@ func ExampleDisksClient_BeginCreateOrUpdate_createAManagedDiskWithUltraAccountTy
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Delete.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Delete.json
 func ExampleDisksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1449,7 +1449,7 @@ func ExampleDisksClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1458,8 +1458,8 @@ func ExampleDisksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Get.json
-func ExampleDisksClient_Get() {
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Get.json
+func ExampleDisksClient_Get_getInformationAboutAManagedDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1477,7 +1477,7 @@ func ExampleDisksClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGetResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ManagedBy: to.Ptr("/subscriptions/123caaa-123v-v211-a49f-f88ccac5bf88/resourceGroups/ResourceGroupName/providers/Microsoft.Compute/virtualMachines/TestVM414689371c88843d65ec"),
 	// 		SKU: &armcompute.DiskSKU{
 	// 			Name: to.Ptr(armcompute.DiskStorageAccountTypesStandardLRS),
@@ -1542,7 +1542,73 @@ func ExampleDisksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_BeginGetAccess.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Get_WithConfidentialVMVersion.json
+func ExampleDisksClient_Get_getInformationAboutAConfidentialVMDiskWithConfidentialVMVersion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDisksClient().Get(ctx, "myResourceGroup", "myConfidentialDisk", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.DisksClientGetResponse{
+	// 	Disk: armcompute.Disk{
+	// 		ManagedBy: to.Ptr("/subscriptions/123caaa-123v-v211-a49f-f88ccac5bf88/resourceGroups/ResourceGroupName/providers/Microsoft.Compute/virtualMachines/TestVM414689371c88843d65ec"),
+	// 		SKU: &armcompute.DiskSKU{
+	// 			Name: to.Ptr(armcompute.DiskStorageAccountTypesStandardLRS),
+	// 		},
+	// 		Properties: &armcompute.DiskProperties{
+	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV2),
+	// 			PurchasePlan: &armcompute.DiskPurchasePlan{
+	// 				Name: to.Ptr("test_sku"),
+	// 				Publisher: to.Ptr("test_test_pmc2pc1"),
+	// 				Product: to.Ptr("marketplace_vm_test"),
+	// 			},
+	// 			SupportedCapabilities: &armcompute.SupportedCapabilities{
+	// 				AcceleratedNetwork: to.Ptr(true),
+	// 			},
+	// 			SupportsHibernation: to.Ptr(true),
+	// 			SecurityProfile: &armcompute.DiskSecurityProfile{
+	// 				SecurityType: to.Ptr(armcompute.DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey),
+	// 				ConfidentialVMVersion: to.Ptr(armcompute.ConfidentialVMVersionV2),
+	// 			},
+	// 			CreationData: &armcompute.CreationData{
+	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionFromImage),
+	// 				ImageReference: &armcompute.ImageDiskReference{
+	// 					ID: to.Ptr("/Subscriptions/{subscription-id}/Providers/Microsoft.Compute/Locations/westus/Publishers/test_test_pmc2pc1/ArtifactTypes/VMImage/Offers/marketplace_vm_test/Skus/test_sku/Versions/1.0.0"),
+	// 				},
+	// 			},
+	// 			DiskSizeGB: to.Ptr[int32](10),
+	// 			Encryption: &armcompute.Encryption{
+	// 				Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			},
+	// 			LastOwnershipUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-21T04:41:35.079872+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-20T04:41:35.079872+00:00"); return t}()),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Compute/disks"),
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"department": to.Ptr("Development"),
+	// 			"project": to.Ptr("ManagedDisks"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myConfidentialDisk"),
+	// 		Name: to.Ptr("myConfidentialDisk"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-02/diskExamples/Disk_BeginGetAccess.json
 func ExampleDisksClient_BeginGrantAccess_getASasOnAManagedDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1563,19 +1629,19 @@ func ExampleDisksClient_BeginGrantAccess_getASasOnAManagedDisk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGrantAccessResponse{
-	// 	AccessURI: &armcompute.AccessURI{
+	// 	AccessURI: armcompute.AccessURI{
 	// 		AccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/abcd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2021-05-24T18:02:34Z&se=2021-05-24T18:19:14Z&sp=r"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_BeginGetAccess_WithVMGuestState.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_BeginGetAccess_WithVMGuestState.json
 func ExampleDisksClient_BeginGrantAccess_getSasOnManagedDiskAndVMGuestState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1596,20 +1662,20 @@ func ExampleDisksClient_BeginGrantAccess_getSasOnManagedDiskAndVMGuestState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGrantAccessResponse{
-	// 	AccessURI: &armcompute.AccessURI{
+	// 	AccessURI: armcompute.AccessURI{
 	// 		AccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/abcd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2021-05-24T18:02:34Z&se=2021-05-24T18:19:14Z&sp=r"),
 	// 		SecurityDataAccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/b9bf5824-6122-49e0-ba22-042f76ccd8a1_vmgs?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2021-05-24T18:02:34Z&se=2021-05-24T18:19:14Z&sp=r"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_BeginGetAccess_WithVMGuestStateAndVMMetadata.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_BeginGetAccess_WithVMGuestStateAndVMMetadata.json
 func ExampleDisksClient_BeginGrantAccess_getSasOnManagedDiskVMGuestStateAndVMMetadataForConfidentialVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1630,13 +1696,13 @@ func ExampleDisksClient_BeginGrantAccess_getSasOnManagedDiskVMGuestStateAndVMMet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientGrantAccessResponse{
-	// 	AccessURI: &armcompute.AccessURI{
+	// 	AccessURI: armcompute.AccessURI{
 	// 		AccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/abcd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2025-05-29T18:02:34Z&se=2025-05-29T18:19:14Z&sp=r"),
 	// 		SecurityDataAccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/xx3cqcx53f0v/b9bf5824-6122-49e0-ba22-042f76ccd8a1_vmgs?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2025-05-29T18:02:34Z&se=2025-05-29T18:19:14Z&sp=r"),
 	// 		SecurityMetadataAccessSAS: to.Ptr("https://md-gpvmcxzlzxgd.partition.blob.storage.azure.net/ghm3kwd5jzbn/2be55b76-f471-4f6b-bff0-4dcea6cbca7f_vmmd?sv=2014-02-14&sr=b&sk=key1&sig=XXX&st=2025-05-29T18:02:34Z&se=2025-05-29T18:19:14Z&sp=r"),
@@ -1644,7 +1710,7 @@ func ExampleDisksClient_BeginGrantAccess_getSasOnManagedDiskVMGuestStateAndVMMet
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_ListBySubscription.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_ListBySubscription.json
 func ExampleDisksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1780,7 +1846,7 @@ func ExampleDisksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_ListByResourceGroup.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_ListByResourceGroup.json
 func ExampleDisksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1916,7 +1982,7 @@ func ExampleDisksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_EndGetAccess.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_EndGetAccess.json
 func ExampleDisksClient_BeginRevokeAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1933,7 +1999,7 @@ func ExampleDisksClient_BeginRevokeAccess() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1942,7 +2008,7 @@ func ExampleDisksClient_BeginRevokeAccess() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_CreateOrUpdate_BurstingEnabled.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_CreateOrUpdate_BurstingEnabled.json
 func ExampleDisksClient_BeginUpdate_createOrUpdateABurstingEnabledManagedDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1964,13 +2030,13 @@ func ExampleDisksClient_BeginUpdate_createOrUpdateABurstingEnabledManagedDisk() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myDisk"),
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
@@ -1986,7 +2052,7 @@ func ExampleDisksClient_BeginUpdate_createOrUpdateABurstingEnabledManagedDisk() 
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_AddAcceleratedNetworking.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_AddAcceleratedNetworking.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2009,13 +2075,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddAcceleratedNetworking
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2041,7 +2107,7 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddAcceleratedNetworking
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_AddDiskControllerTypes.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_AddDiskControllerTypes.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskWithDiskControllerTypes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2064,13 +2130,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskWithDiskControllerTypes() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2096,7 +2162,7 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskWithDiskControllerTypes() 
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_AddPurchasePlan.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_AddPurchasePlan.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddPurchasePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2122,13 +2188,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddPurchasePlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2157,7 +2223,7 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddPurchasePlan() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_AddSupportsHibernation.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_AddSupportsHibernation.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddSupportsHibernation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2178,13 +2244,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddSupportsHibernation()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{
@@ -2206,7 +2272,7 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddSupportsHibernation()
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_ChangeTier.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_ChangeTier.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskToChangeTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2227,13 +2293,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToChangeTier() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2247,7 +2313,7 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToChangeTier() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_DisableBursting.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_DisableBursting.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableBursting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2268,13 +2334,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableBursting() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2287,7 +2353,7 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableBursting() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_DisableOptimizedForFrequentAttach.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_DisableOptimizedForFrequentAttach.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableOptimizedForFrequentAttach() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2308,13 +2374,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableOptimizedForFrequ
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2329,7 +2395,7 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToDisableOptimizedForFrequ
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_RemoveDiskAccess.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_RemoveDiskAccess.json
 func ExampleDisksClient_BeginUpdate_updateManagedDiskToRemoveDiskAccessResourceAssociation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2350,13 +2416,13 @@ func ExampleDisksClient_BeginUpdate_updateManagedDiskToRemoveDiskAccessResourceA
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Properties: &armcompute.DiskProperties{
 	// 			CreationData: &armcompute.CreationData{
 	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionEmpty),
@@ -2371,7 +2437,7 @@ func ExampleDisksClient_BeginUpdate_updateManagedDiskToRemoveDiskAccessResourceA
 	// }
 }
 
-// Generated from example definition: 2025-01-02/diskExamples/Disk_Update_ToAddArchitecture.json
+// Generated from example definition: 2026-03-02/diskExamples/Disk_Update_ToAddArchitecture.json
 func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddArchitecture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2394,13 +2460,13 @@ func ExampleDisksClient_BeginUpdate_updateAManagedDiskToAddArchitecture() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.DisksClientUpdateResponse{
-	// 	Disk: &armcompute.Disk{
+	// 	Disk: armcompute.Disk{
 	// 		Name: to.Ptr("myDisk"),
 	// 		Location: to.Ptr("westus"),
 	// 		SKU: &armcompute.DiskSKU{

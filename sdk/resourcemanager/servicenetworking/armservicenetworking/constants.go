@@ -4,6 +4,10 @@
 
 package armservicenetworking
 
+const (
+	version20250301Preview string = "2025-03-01-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

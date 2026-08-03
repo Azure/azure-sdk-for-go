@@ -4,6 +4,10 @@
 
 package armhardwaresecuritymodules
 
+const (
+	version20250331 string = "2025-03-31"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -99,7 +103,9 @@ func PossibleCloudHsmClusterSKUFamilyValues() []CloudHsmClusterSKUFamily {
 type CloudHsmClusterSKUName string
 
 const (
-	CloudHsmClusterSKUNameStandardB1  CloudHsmClusterSKUName = "Standard_B1"
+	// CloudHsmClusterSKUNameStandardB1 - Standard_B1 SKU
+	CloudHsmClusterSKUNameStandardB1 CloudHsmClusterSKUName = "Standard_B1"
+	// CloudHsmClusterSKUNameStandardB10 - Standard B10 SKU
 	CloudHsmClusterSKUNameStandardB10 CloudHsmClusterSKUName = "Standard B10"
 )
 

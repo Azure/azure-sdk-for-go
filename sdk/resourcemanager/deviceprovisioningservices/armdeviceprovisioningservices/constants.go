@@ -4,6 +4,10 @@
 
 package armdeviceprovisioningservices
 
+const (
+	version20250201Preview string = "2025-02-01-preview"
+)
+
 // AccessRightsDescription - Rights that this key has.
 type AccessRightsDescription string
 

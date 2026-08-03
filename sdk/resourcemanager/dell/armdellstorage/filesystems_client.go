@@ -18,6 +18,8 @@ import (
 
 // FileSystemsClient contains the methods for the FileSystems group.
 // Don't use this type directly, use NewFileSystemsClient() instead.
+//
+// Generated from API version 2025-03-21
 type FileSystemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFileSystemsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Create a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-21
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - filesystemName - Name of the filesystem resource
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *FileSystemsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Create a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-21
 func (client *FileSystemsClient) createOrUpdate(ctx context.Context, resourceGroupName string, filesystemName string, resource FileSystemResource, options *FileSystemsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FileSystemsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *FileSystemsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-21")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250321)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *FileSystemsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Delete a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-21
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - filesystemName - Name of the filesystem resource
 //   - options - FileSystemsClientBeginDeleteOptions contains the optional parameters for the FileSystemsClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *FileSystemsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Delete a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-21
 func (client *FileSystemsClient) deleteOperation(ctx context.Context, resourceGroupName string, filesystemName string, options *FileSystemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FileSystemsClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *FileSystemsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-21")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250321)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-21
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - filesystemName - Name of the filesystem resource
 //   - options - FileSystemsClientGetOptions contains the optional parameters for the FileSystemsClient.Get method.
@@ -243,8 +235,8 @@ func (client *FileSystemsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-21")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250321)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *FileSystemsClient) getHandleResponse(resp *http.Response) (FileSys
 }
 
 // NewListByResourceGroupPager - List FileSystemResource resources by resource group
-//
-// Generated from API version 2025-03-21
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - FileSystemsClientListByResourceGroupOptions contains the optional parameters for the FileSystemsClient.NewListByResourceGroupPager
 //     method.
@@ -303,8 +293,8 @@ func (client *FileSystemsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-21")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250321)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -319,8 +309,6 @@ func (client *FileSystemsClient) listByResourceGroupHandleResponse(resp *http.Re
 }
 
 // NewListBySubscriptionPager - List FileSystemResource resources by subscription ID
-//
-// Generated from API version 2025-03-21
 //   - options - FileSystemsClientListBySubscriptionOptions contains the optional parameters for the FileSystemsClient.NewListBySubscriptionPager
 //     method.
 func (client *FileSystemsClient) NewListBySubscriptionPager(options *FileSystemsClientListBySubscriptionOptions) *runtime.Pager[FileSystemsClientListBySubscriptionResponse] {
@@ -358,8 +346,8 @@ func (client *FileSystemsClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-21")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250321)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,8 +363,6 @@ func (client *FileSystemsClient) listBySubscriptionHandleResponse(resp *http.Res
 
 // Update - Update a FileSystemResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-03-21
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - filesystemName - Name of the filesystem resource
 //   - properties - The resource properties to be updated.
@@ -423,8 +409,8 @@ func (client *FileSystemsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-03-21")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250321)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

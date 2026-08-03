@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineCreate.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineCreate.json
 func ExampleImportPipelinesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleImportPipelinesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineDelete.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineDelete.json
 func ExampleImportPipelinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleImportPipelinesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineGet.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineGet.json
 func ExampleImportPipelinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleImportPipelinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ImportPipelineList.json
+// Generated from example definition: 2026-03-01-preview/ImportPipelineList.json
 func ExampleImportPipelinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

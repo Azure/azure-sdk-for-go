@@ -4,6 +4,10 @@
 
 package armextensions
 
+const (
+	version20250301 string = "2025-03-01"
+)
+
 // AKSIdentityType - The identity type.
 type AKSIdentityType string
 

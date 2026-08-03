@@ -18,6 +18,8 @@ import (
 
 // UpdateSummariesOperationGroupClient contains the methods for the UpdateSummariesOperationGroup group.
 // Don't use this type directly, use NewUpdateSummariesOperationGroupClient() instead.
+//
+// Generated from API version 2026-04-30
 type UpdateSummariesOperationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewUpdateSummariesOperationGroupClient(subscriptionID string, credential az
 
 // BeginCheckHealth - Check health of UpdateSummaries
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - options - UpdateSummariesOperationGroupClientBeginCheckHealthOptions contains the optional parameters for the UpdateSummariesOperationGroupClient.BeginCheckHealth
@@ -66,8 +66,6 @@ func (client *UpdateSummariesOperationGroupClient) BeginCheckHealth(ctx context.
 
 // CheckHealth - Check health of UpdateSummaries
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 func (client *UpdateSummariesOperationGroupClient) checkHealth(ctx context.Context, resourceGroupName string, clusterName string, options *UpdateSummariesOperationGroupClientBeginCheckHealthOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdateSummariesOperationGroupClient.BeginCheckHealth"
@@ -109,15 +107,13 @@ func (client *UpdateSummariesOperationGroupClient) checkHealthCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginCheckUpdates - Check for updates
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster.
 //   - body - The content of the action request
@@ -142,8 +138,6 @@ func (client *UpdateSummariesOperationGroupClient) BeginCheckUpdates(ctx context
 
 // CheckUpdates - Check for updates
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-04-01-preview
 func (client *UpdateSummariesOperationGroupClient) checkUpdates(ctx context.Context, resourceGroupName string, clusterName string, body CheckUpdatesRequest, options *UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdateSummariesOperationGroupClient.BeginCheckUpdates"
@@ -185,8 +179,8 @@ func (client *UpdateSummariesOperationGroupClient) checkUpdatesCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260430)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err

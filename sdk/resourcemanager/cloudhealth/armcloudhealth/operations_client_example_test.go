@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Operations_List.json
+// Generated from example definition: 2026-05-01-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,19 +37,50 @@ func ExampleOperationsClient_NewListPager() {
 		// 	OperationListResult: armcloudhealth.OperationListResult{
 		// 		Value: []*armcloudhealth.Operation{
 		// 			{
-		// 				Name: to.Ptr("xnmopnrytj"),
-		// 				IsDataAction: to.Ptr(true),
+		// 				Name: to.Ptr("Microsoft.CloudHealth/healthmodels/read"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armcloudhealth.OperationDisplay{
-		// 					Provider: to.Ptr("hzfhjoyiwiwree"),
-		// 					Resource: to.Ptr("oldzgb"),
-		// 					Operation: to.Ptr("lykzqcnt"),
-		// 					Description: to.Ptr("gec"),
+		// 					Provider: to.Ptr("Microsoft CloudHealth"),
+		// 					Resource: to.Ptr("Health models"),
+		// 					Operation: to.Ptr("Get Health Model"),
+		// 					Description: to.Ptr("Gets a health model."),
 		// 				},
-		// 				Origin: to.Ptr(armcloudhealth.OriginUser),
-		// 				ActionType: to.Ptr(armcloudhealth.ActionTypeInternal),
+		// 				Origin: to.Ptr(armcloudhealth.OriginUserSystem),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.CloudHealth/healthmodels/write"),
+		// 				IsDataAction: to.Ptr(false),
+		// 				Display: &armcloudhealth.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft CloudHealth"),
+		// 					Resource: to.Ptr("Health models"),
+		// 					Operation: to.Ptr("Create or Update Health Model"),
+		// 					Description: to.Ptr("Creates or updates a health model."),
+		// 				},
+		// 				Origin: to.Ptr(armcloudhealth.OriginUserSystem),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.CloudHealth/healthmodels/delete"),
+		// 				IsDataAction: to.Ptr(false),
+		// 				Display: &armcloudhealth.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft CloudHealth"),
+		// 					Resource: to.Ptr("Health models"),
+		// 					Operation: to.Ptr("Delete Health Model"),
+		// 					Description: to.Ptr("Deletes a health model."),
+		// 				},
+		// 				Origin: to.Ptr(armcloudhealth.OriginUserSystem),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.CloudHealth/operations/read"),
+		// 				IsDataAction: to.Ptr(false),
+		// 				Display: &armcloudhealth.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft CloudHealth"),
+		// 					Resource: to.Ptr("Operations"),
+		// 					Operation: to.Ptr("List Operations"),
+		// 					Description: to.Ptr("Lists the available operations."),
+		// 				},
+		// 				Origin: to.Ptr(armcloudhealth.OriginUserSystem),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://foo.bar/pagednextlink"),
 		// 	},
 		// }
 	}

@@ -18,6 +18,8 @@ import (
 
 // BrokerAuthenticationClient contains the methods for the BrokerAuthentication group.
 // Don't use this type directly, use NewBrokerAuthenticationClient() instead.
+//
+// Generated from API version 2026-03-01
 type BrokerAuthenticationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBrokerAuthenticationClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreateOrUpdate - Create a BrokerAuthenticationResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -69,8 +69,6 @@ func (client *BrokerAuthenticationClient) BeginCreateOrUpdate(ctx context.Contex
 
 // CreateOrUpdate - Create a BrokerAuthenticationResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 func (client *BrokerAuthenticationClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, resource BrokerAuthenticationResource, options *BrokerAuthenticationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BrokerAuthenticationClient.BeginCreateOrUpdate"
@@ -120,8 +118,8 @@ func (client *BrokerAuthenticationClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -132,8 +130,6 @@ func (client *BrokerAuthenticationClient) createOrUpdateCreateRequest(ctx contex
 
 // BeginDelete - Delete a BrokerAuthenticationResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -159,8 +155,6 @@ func (client *BrokerAuthenticationClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Delete a BrokerAuthenticationResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 func (client *BrokerAuthenticationClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authenticationName string, options *BrokerAuthenticationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BrokerAuthenticationClient.BeginDelete"
@@ -210,15 +204,13 @@ func (client *BrokerAuthenticationClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a BrokerAuthenticationResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -275,8 +267,8 @@ func (client *BrokerAuthenticationClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -291,8 +283,6 @@ func (client *BrokerAuthenticationClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByResourceGroupPager - List BrokerAuthenticationResource resources by BrokerResource
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - brokerName - Name of broker.
@@ -345,8 +335,8 @@ func (client *BrokerAuthenticationClient) listByResourceGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

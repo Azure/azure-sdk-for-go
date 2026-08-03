@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CreateOrUpdateManagedComputeDeployment.json
+// Generated from example definition: 2026-05-15-preview/CreateOrUpdateManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,6 +58,9 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateMa
 	// 			AcceleratorsPerInstance: to.Ptr[int32](4),
 	// 			TotalAccelerators: to.Ptr[int32](4),
 	// 			VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+	// 			Capabilities: map[string]*string{
+	// 				"assetsV2": to.Ptr("true"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment provisioned successfully."),
@@ -77,7 +80,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateMa
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
+// Generated from example definition: 2026-05-15-preview/CreateOrUpdateVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,6 +125,9 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVM
 	// 			ComputeID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/computes/my-h100-pool"),
 	// 			Priority: to.Ptr("High"),
 	// 			VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+	// 			Capabilities: map[string]*string{
+	// 				"assetsV2": to.Ptr("true"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment is healthy and serving traffic."),
@@ -139,7 +145,7 @@ func ExampleManagedComputeDeploymentsClient_BeginCreateOrUpdate_createOrUpdateVM
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteManagedComputeDeployment.json
+// Generated from example definition: 2026-05-15-preview/DeleteManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +171,7 @@ func ExampleManagedComputeDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetManagedComputeDeployment.json
+// Generated from example definition: 2026-05-15-preview/GetManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,6 +202,9 @@ func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	// 			AcceleratorsPerInstance: to.Ptr[int32](4),
 	// 			TotalAccelerators: to.Ptr[int32](4),
 	// 			VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+	// 			Capabilities: map[string]*string{
+	// 				"assetsV2": to.Ptr("true"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment is healthy and serving traffic."),
@@ -215,7 +224,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getManagedComputeDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetVmManagedComputeDeployment.json
+// Generated from example definition: 2026-05-15-preview/GetVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,6 +254,9 @@ func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() 
 	// 			ComputeID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/computes/my-h100-pool"),
 	// 			Priority: to.Ptr("High"),
 	// 			VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+	// 			Capabilities: map[string]*string{
+	// 				"assetsV2": to.Ptr("true"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Deployment is healthy and serving traffic."),
@@ -262,7 +274,7 @@ func ExampleManagedComputeDeploymentsClient_Get_getVMManagedComputeDeployment() 
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListManagedComputeDeployments.json
+// Generated from example definition: 2026-05-15-preview/ListManagedComputeDeployments.json
 func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,6 +310,9 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeplo
 		// 					AcceleratorsPerInstance: to.Ptr[int32](4),
 		// 					TotalAccelerators: to.Ptr[int32](4),
 		// 					VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+		// 					Capabilities: map[string]*string{
+		// 						"assetsV2": to.Ptr("true"),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 		// 					Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 		// 						ChatCompletionsScoringPath: to.Ptr("/managedComputeDeployments/gpt-oss-120b-gpu/chat/completions"),
@@ -321,6 +336,9 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeplo
 		// 					AcceleratorsPerInstance: to.Ptr[int32](8),
 		// 					TotalAccelerators: to.Ptr[int32](16),
 		// 					VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+		// 					Capabilities: map[string]*string{
+		// 						"assetsV2": to.Ptr("true"),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 		// 					Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 		// 						ChatCompletionsScoringPath: to.Ptr("/managedComputeDeployments/llama-3-gpu/chat/completions"),
@@ -342,6 +360,9 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeplo
 		// 					ComputeID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/computes/my-h100-pool"),
 		// 					Priority: to.Ptr("High"),
 		// 					VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+		// 					Capabilities: map[string]*string{
+		// 						"assetsV2": to.Ptr("true"),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 		// 					Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 		// 						ChatCompletionsScoringPath: to.Ptr("/managed-deployments/gpt-oss-120b-byoc/v1/chat/completions"),
@@ -358,7 +379,7 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listManagedComputeDeplo
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ListVmManagedComputeDeployments.json
+// Generated from example definition: 2026-05-15-preview/ListVmManagedComputeDeployments.json
 func ExampleManagedComputeDeploymentsClient_NewListPager_listVMManagedComputeDeployments() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -393,6 +414,9 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listVMManagedComputeDep
 		// 					ComputeID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/computes/my-h100-pool"),
 		// 					Priority: to.Ptr("High"),
 		// 					VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+		// 					Capabilities: map[string]*string{
+		// 						"assetsV2": to.Ptr("true"),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 		// 					Routes: &armcognitiveservices.ManagedComputeDeploymentRoutes{
 		// 						ChatCompletionsScoringPath: to.Ptr("/managed-deployments/gpt-oss-120b-byoc/v1/chat/completions"),
@@ -409,7 +433,7 @@ func ExampleManagedComputeDeploymentsClient_NewListPager_listVMManagedComputeDep
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateManagedComputeDeployment.json
+// Generated from example definition: 2026-05-15-preview/UpdateManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,6 +473,9 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDepl
 	// 			AcceleratorsPerInstance: to.Ptr[int32](4),
 	// 			TotalAccelerators: to.Ptr[int32](8),
 	// 			VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+	// 			Capabilities: map[string]*string{
+	// 				"assetsV2": to.Ptr("true"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Scale operation completed successfully."),
@@ -468,7 +495,7 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateManagedComputeDepl
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateVmManagedComputeDeployment.json
+// Generated from example definition: 2026-05-15-preview/UpdateVmManagedComputeDeployment.json
 func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateVMManagedComputeDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -507,6 +534,9 @@ func ExampleManagedComputeDeploymentsClient_BeginUpdate_updateVMManagedComputeDe
 	// 			ComputeID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/computes/my-h100-pool"),
 	// 			Priority: to.Ptr("High"),
 	// 			VersionUpgradeOption: to.Ptr(armcognitiveservices.DeploymentModelVersionUpgradeOptionOnceNewDefaultVersionAvailable),
+	// 			Capabilities: map[string]*string{
+	// 				"assetsV2": to.Ptr("true"),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 			ProvisioningDetails: &armcognitiveservices.ManagedComputeDeploymentProvisioningDetails{
 	// 				Message: to.Ptr("Scale operation completed successfully."),

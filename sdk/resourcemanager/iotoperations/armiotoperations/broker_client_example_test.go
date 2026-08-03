@@ -54,13 +54,13 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateComplex() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.BrokerClientCreateOrUpdateResponse{
-	// 	BrokerResource: &armiotoperations.BrokerResource{
+	// 	BrokerResource: armiotoperations.BrokerResource{
 	// 		Properties: &armiotoperations.BrokerProperties{
 	// 			Cardinality: &armiotoperations.Cardinality{
 	// 				BackendChain: &armiotoperations.BackendChain{
@@ -269,13 +269,13 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.BrokerClientCreateOrUpdateResponse{
-	// 	BrokerResource: &armiotoperations.BrokerResource{
+	// 	BrokerResource: armiotoperations.BrokerResource{
 	// 		Properties: &armiotoperations.BrokerProperties{
 	// 			Advanced: &armiotoperations.AdvancedSettings{
 	// 				Clients: &armiotoperations.ClientConfig{
@@ -467,13 +467,13 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateMinimal() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.BrokerClientCreateOrUpdateResponse{
-	// 	BrokerResource: &armiotoperations.BrokerResource{
+	// 	BrokerResource: armiotoperations.BrokerResource{
 	// 		Properties: &armiotoperations.BrokerProperties{
 	// 			Advanced: &armiotoperations.AdvancedSettings{
 	// 				Clients: &armiotoperations.ClientConfig{
@@ -679,13 +679,13 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateSimple() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.BrokerClientCreateOrUpdateResponse{
-	// 	BrokerResource: &armiotoperations.BrokerResource{
+	// 	BrokerResource: armiotoperations.BrokerResource{
 	// 		Properties: &armiotoperations.BrokerProperties{
 	// 			Advanced: &armiotoperations.AdvancedSettings{
 	// 				Clients: &armiotoperations.ClientConfig{
@@ -869,7 +869,7 @@ func ExampleBrokerClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -892,7 +892,7 @@ func ExampleBrokerClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotoperations.BrokerClientGetResponse{
-	// 	BrokerResource: &armiotoperations.BrokerResource{
+	// 	BrokerResource: armiotoperations.BrokerResource{
 	// 		Properties: &armiotoperations.BrokerProperties{
 	// 			Advanced: &armiotoperations.AdvancedSettings{
 	// 				Clients: &armiotoperations.ClientConfig{

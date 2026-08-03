@@ -160,37 +160,6 @@ type PolicyClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionProxiesClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginDelete
-// method.
-type PrivateEndpointConnectionProxiesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PrivateEndpointConnectionProxiesClientCreateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.Create
-// method.
-type PrivateEndpointConnectionProxiesClientCreateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionProxiesClientGetOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.Get
-// method.
-type PrivateEndpointConnectionProxiesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionProxiesClientListOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.NewListPager
-// method.
-type PrivateEndpointConnectionProxiesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateEndpointConnectionProxiesClientValidateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.Validate
-// method.
-type PrivateEndpointConnectionProxiesClientValidateOptions struct {
-	// placeholder for future optional parameters
-}
-
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {

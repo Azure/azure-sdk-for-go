@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/TableServicesGet.json
+// Generated from example definition: 2026-04-01/TableServicesGet.json
 func ExampleTableServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleTableServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableServicesList.json
+// Generated from example definition: 2026-04-01/TableServicesList.json
 func ExampleTableServicesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleTableServicesClient_List() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/TableServicesPut.json
+// Generated from example definition: 2026-04-01/TableServicesPut.json
 func ExampleTableServicesClient_SetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

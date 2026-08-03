@@ -18,6 +18,8 @@ import (
 
 // BillingContainersClient contains the methods for the BillingContainers group.
 // Don't use this type directly, use NewBillingContainersClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type BillingContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBillingContainersClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get a BillingContainer
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - billingContainerName - Name of the billing container.
 //   - options - BillingContainersClientGetOptions contains the optional parameters for the BillingContainersClient.Get method.
 func (client *BillingContainersClient) Get(ctx context.Context, billingContainerName string, options *BillingContainersClientGetOptions) (BillingContainersClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *BillingContainersClient) getCreateRequest(ctx context.Context, bil
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *BillingContainersClient) getHandleResponse(resp *http.Response) (B
 }
 
 // NewListBySubscriptionPager - List BillingContainer resources by subscription ID
-//
-// Generated from API version 2026-03-01-preview
 //   - options - BillingContainersClientListBySubscriptionOptions contains the optional parameters for the BillingContainersClient.NewListBySubscriptionPager
 //     method.
 func (client *BillingContainersClient) NewListBySubscriptionPager(options *BillingContainersClientListBySubscriptionOptions) *runtime.Pager[BillingContainersClientListBySubscriptionResponse] {
@@ -138,8 +136,8 @@ func (client *BillingContainersClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

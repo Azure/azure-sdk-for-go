@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-05-18)
+## 3.0.0 (2026-06-24)
 ### Breaking Changes
 
 - Type of `CacheExpirationActionParameters.TypeName` has been changed from `*CacheExpirationActionParametersTypeName` to `*DeliveryRuleActionParametersType`

@@ -4,6 +4,10 @@
 
 package armprogrammableconnectivity
 
+const (
+	version20240115Preview string = "2024-01-15-preview"
+)
+
 // AccountType - The Account Type of the Operator API Connections.
 type AccountType string
 

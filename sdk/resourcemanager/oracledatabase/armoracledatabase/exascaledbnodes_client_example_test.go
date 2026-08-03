@@ -31,13 +31,13 @@ func ExampleExascaleDbNodesClient_BeginAction_exascaleDbNodesActionMaximumSet() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbNodesClientActionResponse{
-	// 	DbActionResponse: &armoracledatabase.DbActionResponse{
+	// 	DbActionResponse: armoracledatabase.DbActionResponse{
 	// 		ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
 	// 	},
 	// }
@@ -62,13 +62,13 @@ func ExampleExascaleDbNodesClient_BeginAction_exascaleDbNodesActionMinimumSet() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbNodesClientActionResponse{
-	// 	DbActionResponse: &armoracledatabase.DbActionResponse{
+	// 	DbActionResponse: armoracledatabase.DbActionResponse{
 	// 	},
 	// }
 }
@@ -92,7 +92,7 @@ func ExampleExascaleDbNodesClient_Get_exascaleDbNodesGetMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbNodesClientGetResponse{
-	// 	ExascaleDbNode: &armoracledatabase.ExascaleDbNode{
+	// 	ExascaleDbNode: armoracledatabase.ExascaleDbNode{
 	// 		Properties: &armoracledatabase.ExascaleDbNodeProperties{
 	// 			Ocid: to.Ptr("ocid1.autonomousdatabase.oc1..aaaaa3klq"),
 	// 			AdditionalDetails: to.Ptr("oupnryozdltusyfmuwxeypba"),
@@ -142,7 +142,7 @@ func ExampleExascaleDbNodesClient_Get_exascaleDbNodesGetMaximumSetGeneratedByMin
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.ExascaleDbNodesClientGetResponse{
-	// 	ExascaleDbNode: &armoracledatabase.ExascaleDbNode{
+	// 	ExascaleDbNode: armoracledatabase.ExascaleDbNode{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Oracle.Database/exadbVmClusters/vmCluster/dbNodes/exscaledbnode1"),
 	// 	},
 	// }

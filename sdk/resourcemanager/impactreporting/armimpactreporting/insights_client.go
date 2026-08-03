@@ -18,6 +18,8 @@ import (
 
 // InsightsClient contains the methods for the Insights group.
 // Don't use this type directly, use NewInsightsClient() instead.
+//
+// Generated from API version 2024-05-01-preview
 type InsightsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewInsightsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // Create - Create Insight resource, This is Admin only operation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-05-01-preview
 //   - workloadImpactName - workloadImpact resource
 //   - insightName - Name of the insight
 //   - resource - Resource create parameters.
@@ -89,8 +89,8 @@ func (client *InsightsClient) createCreateRequest(ctx context.Context, workloadI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -110,8 +110,6 @@ func (client *InsightsClient) createHandleResponse(resp *http.Response) (Insight
 
 // Delete - Delete Insight resource, This is Admin only operation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-05-01-preview
 //   - workloadImpactName - workloadImpact resource
 //   - insightName - Name of the insight
 //   - options - InsightsClientDeleteOptions contains the optional parameters for the InsightsClient.Delete method.
@@ -156,15 +154,13 @@ func (client *InsightsClient) deleteCreateRequest(ctx context.Context, workloadI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Insight resources by workloadImpactName and insightName
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-05-01-preview
 //   - workloadImpactName - workloadImpact resource
 //   - insightName - Name of the insight
 //   - options - InsightsClientGetOptions contains the optional parameters for the InsightsClient.Get method.
@@ -210,8 +206,8 @@ func (client *InsightsClient) getCreateRequest(ctx context.Context, workloadImpa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -226,8 +222,6 @@ func (client *InsightsClient) getHandleResponse(resp *http.Response) (InsightsCl
 }
 
 // NewListBySubscriptionPager - List Insight resources by workloadImpactName
-//
-// Generated from API version 2024-05-01-preview
 //   - workloadImpactName - workloadImpact resource
 //   - options - InsightsClientListBySubscriptionOptions contains the optional parameters for the InsightsClient.NewListBySubscriptionPager
 //     method.
@@ -270,8 +264,8 @@ func (client *InsightsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

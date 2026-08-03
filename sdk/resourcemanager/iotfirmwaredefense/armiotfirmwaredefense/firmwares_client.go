@@ -18,6 +18,8 @@ import (
 
 // FirmwaresClient contains the methods for the Firmwares group.
 // Don't use this type directly, use NewFirmwaresClient() instead.
+//
+// Generated from API version 2025-08-02
 type FirmwaresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFirmwaresClient(subscriptionID string, credential azcore.TokenCredential
 
 // Create - The operation to create a firmware.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
@@ -94,8 +94,8 @@ func (client *FirmwaresClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -115,8 +115,6 @@ func (client *FirmwaresClient) createHandleResponse(resp *http.Response) (Firmwa
 
 // Delete - The operation to delete a firmware.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
@@ -166,15 +164,13 @@ func (client *FirmwaresClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get firmware.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
@@ -225,8 +221,8 @@ func (client *FirmwaresClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -241,8 +237,6 @@ func (client *FirmwaresClient) getHandleResponse(resp *http.Response) (Firmwares
 }
 
 // NewListByWorkspacePager - Lists all of firmwares inside a workspace.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - options - FirmwaresClientListByWorkspaceOptions contains the optional parameters for the FirmwaresClient.NewListByWorkspacePager
@@ -290,8 +284,8 @@ func (client *FirmwaresClient) listByWorkspaceCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -307,8 +301,6 @@ func (client *FirmwaresClient) listByWorkspaceHandleResponse(resp *http.Response
 
 // Update - The operation to update firmware.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
@@ -360,8 +352,8 @@ func (client *FirmwaresClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -31,7 +31,7 @@ func ExampleChargesClient_List_changesForBillingPeriodByDepartmentLegacy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -39,7 +39,10 @@ func ExampleChargesClient_List_changesForBillingPeriodByDepartmentLegacy() {
 	// 				ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/departments/42425/providers/Microsoft.Consumption/charges/chargeSummaryId1"),
 	// 				Kind: to.Ptr(armconsumption.ChargeSummaryKindLegacy),
 	// 				Properties: &armconsumption.LegacyChargeSummaryProperties{
+	// 					AzureCharges: to.Ptr[float64](5000),
+	// 					MarketplaceCharges: to.Ptr[float64](100),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/providers/Microsoft.Billing/billingPeriods/201804"),
+	// 					ChargesBilledSeparately: to.Ptr[float64](60.9),
 	// 					Currency: to.Ptr("USD"),
 	// 					UsageEnd: to.Ptr("2018-04-30"),
 	// 					UsageStart: to.Ptr("2018-04-01"),
@@ -69,7 +72,7 @@ func ExampleChargesClient_List_changesForBillingPeriodByEnrollmentAccountLegacy(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -77,7 +80,10 @@ func ExampleChargesClient_List_changesForBillingPeriodByEnrollmentAccountLegacy(
 	// 				ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/enrollmentAccounts/42425/providers/Microsoft.Consumption/charges/chargeSummaryId1"),
 	// 				Kind: to.Ptr(armconsumption.ChargeSummaryKindLegacy),
 	// 				Properties: &armconsumption.LegacyChargeSummaryProperties{
+	// 					AzureCharges: to.Ptr[float64](5000),
+	// 					MarketplaceCharges: to.Ptr[float64](100),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/providers/Microsoft.Billing/billingPeriods/201804"),
+	// 					ChargesBilledSeparately: to.Ptr[float64](60.9),
 	// 					Currency: to.Ptr("USD"),
 	// 					UsageEnd: to.Ptr("2018-04-30"),
 	// 					UsageStart: to.Ptr("2018-04-01"),
@@ -109,7 +115,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -119,15 +125,18 @@ func ExampleChargesClient_List_chargesListByBillingAccountModern() {
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201910"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](265.09),
 	// 					},
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-10-31"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -160,7 +169,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByBillingProfileI
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -170,16 +179,19 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByBillingProfileI
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/123456/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/123456"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -193,15 +205,18 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByBillingProfileI
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -234,7 +249,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByCustomerIdModer
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -244,18 +259,21 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByCustomerIdModer
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/customers/67890"),
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/invoiceSections/67890"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -269,18 +287,21 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByCustomerIdModer
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					CustomerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/customers/123456"),
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/invoiceSections/67890"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -313,7 +334,7 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByInvoiceSectionI
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -323,17 +344,20 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByInvoiceSectionI
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/invoiceSections/4567"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -347,17 +371,20 @@ func ExampleChargesClient_List_chargesListByBillingAccountGroupByInvoiceSectionI
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/invoiceSections/67890"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -387,7 +414,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -397,16 +424,19 @@ func ExampleChargesClient_List_chargesListByBillingProfileModern() {
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201910"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/2460"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](265.09),
 	// 					},
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					UsageEnd: to.Ptr("2023-05-31"),
 	// 					UsageStart: to.Ptr("2023-03-01"),
@@ -439,7 +469,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileGroupByInvoiceSectionI
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -449,17 +479,20 @@ func ExampleChargesClient_List_chargesListByBillingProfileGroupByInvoiceSectionI
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/invoiceSections/4567"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -473,17 +506,20 @@ func ExampleChargesClient_List_chargesListByBillingProfileGroupByInvoiceSectionI
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/invoiceSections/67890"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -515,7 +551,7 @@ func ExampleChargesClient_List_chargesListByBillingProfileInvoiceSectionModern()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -525,17 +561,20 @@ func ExampleChargesClient_List_chargesListByBillingProfileInvoiceSectionModern()
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201909"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425/invoiceSections/4567"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-09-30"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -549,17 +588,20 @@ func ExampleChargesClient_List_chargesListByBillingProfileInvoiceSectionModern()
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](5000),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201910"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](60.9),
 	// 					},
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/42425/invoiceSections/4567"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](100),
 	// 					},
 	// 					UsageEnd: to.Ptr("2019-10-31"),
 	// 					UsageStart: to.Ptr("2019-09-01"),
@@ -589,7 +631,7 @@ func ExampleChargesClient_List_chargesListByCustomerModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -599,15 +641,18 @@ func ExampleChargesClient_List_chargesListByCustomerModern() {
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201910"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](265.09),
 	// 					},
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					UsageEnd: to.Ptr("2023-05-31"),
 	// 					UsageStart: to.Ptr("2023-03-01"),
@@ -637,7 +682,7 @@ func ExampleChargesClient_List_chargesListByInvoiceSectionIdModern() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.ModernChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -647,17 +692,20 @@ func ExampleChargesClient_List_chargesListByInvoiceSectionIdModern() {
 	// 				Properties: &armconsumption.ModernChargeSummaryProperties{
 	// 					AzureCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](12),
 	// 					},
 	// 					BillingAccountID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789"),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/providers/Microsoft.Billing/billingPeriods/201910"),
 	// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/2460"),
 	// 					ChargesBilledSeparately: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:56789/billingProfiles/2460/invoiceSections/97531"),
 	// 					IsInvoiced: to.Ptr(false),
 	// 					MarketplaceCharges: &armconsumption.Amount{
 	// 						Currency: to.Ptr("USD"),
+	// 						Value: to.Ptr[float64](0),
 	// 					},
 	// 					UsageEnd: to.Ptr("2023-05-31"),
 	// 					UsageStart: to.Ptr("2023-03-01"),
@@ -688,7 +736,7 @@ func ExampleChargesClient_List_chargesListByDepartmentLegacy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -696,7 +744,10 @@ func ExampleChargesClient_List_chargesListByDepartmentLegacy() {
 	// 				ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/departments/42425/providers/Microsoft.Consumption/charges/chargeSummaryId1"),
 	// 				Kind: to.Ptr(armconsumption.ChargeSummaryKindLegacy),
 	// 				Properties: &armconsumption.LegacyChargeSummaryProperties{
+	// 					AzureCharges: to.Ptr[float64](5000),
+	// 					MarketplaceCharges: to.Ptr[float64](100),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/providers/Microsoft.Billing/billingPeriods/201804"),
+	// 					ChargesBilledSeparately: to.Ptr[float64](60.9),
 	// 					Currency: to.Ptr("USD"),
 	// 					UsageEnd: to.Ptr("2018-04-30"),
 	// 					UsageStart: to.Ptr("2018-04-01"),
@@ -726,7 +777,7 @@ func ExampleChargesClient_List_chargesListForEnrollmentAccountLegacy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.ChargesClientListResponse{
-	// 	ChargesListResult: &armconsumption.ChargesListResult{
+	// 	ChargesListResult: armconsumption.ChargesListResult{
 	// 		Value: []armconsumption.ChargeSummaryClassification{
 	// 			&armconsumption.LegacyChargeSummary{
 	// 				Name: to.Ptr("chargeSummaryId1"),
@@ -734,7 +785,10 @@ func ExampleChargesClient_List_chargesListForEnrollmentAccountLegacy() {
 	// 				ID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/enrollmentAccounts/42425/providers/Microsoft.Consumption/charges/chargeSummaryId1"),
 	// 				Kind: to.Ptr(armconsumption.ChargeSummaryKindLegacy),
 	// 				Properties: &armconsumption.LegacyChargeSummaryProperties{
+	// 					AzureCharges: to.Ptr[float64](5000),
+	// 					MarketplaceCharges: to.Ptr[float64](100),
 	// 					BillingPeriodID: to.Ptr("/providers/Microsoft.Billing/BillingAccounts/1234/providers/Microsoft.Billing/billingPeriods/201804"),
+	// 					ChargesBilledSeparately: to.Ptr[float64](60.9),
 	// 					Currency: to.Ptr("USD"),
 	// 					UsageEnd: to.Ptr("2018-04-30"),
 	// 					UsageStart: to.Ptr("2018-04-01"),

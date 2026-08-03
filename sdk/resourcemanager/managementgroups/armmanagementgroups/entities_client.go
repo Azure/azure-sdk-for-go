@@ -12,10 +12,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 // EntitiesClient contains the methods for the Entities group.
 // Don't use this type directly, use NewEntitiesClient() instead.
+//
+// Generated from API version 2023-04-01
 type EntitiesClient struct {
 	internal *arm.Client
 }
@@ -35,8 +38,6 @@ func NewEntitiesClient(credential azcore.TokenCredential, options *arm.ClientOpt
 }
 
 // NewListPager - List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-//
-// Generated from API version 2023-04-01
 //   - options - EntitiesClientListOptions contains the optional parameters for the EntitiesClient.NewListPager method.
 func (client *EntitiesClient) NewListPager(options *EntitiesClientListOptions) *runtime.Pager[EntitiesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EntitiesClientListResponse]{
@@ -90,11 +91,11 @@ func (client *EntitiesClient) listCreateRequest(ctx context.Context, options *En
 	if options != nil && options.View != nil {
 		reqQP.Set("$view", string(*options.View))
 	}
-	reqQP.Set("api-version", "2023-04-01")
+	reqQP.Set("api-version", version20230401)
 	if options != nil && options.GroupName != nil {
 		reqQP.Set("groupName", *options.GroupName)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.CacheControl != nil {
 		req.Raw().Header["Cache-Control"] = []string{*options.CacheControl}

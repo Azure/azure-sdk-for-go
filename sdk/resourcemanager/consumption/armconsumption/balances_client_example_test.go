@@ -30,7 +30,7 @@ func ExampleBalancesClient_GetByBillingAccount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.BalancesClientGetByBillingAccountResponse{
-	// 	Balance: &armconsumption.Balance{
+	// 	Balance: armconsumption.Balance{
 	// 		Name: to.Ptr("balanceId1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/balances"),
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/123456/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/balances/balanceId1"),
@@ -38,19 +38,33 @@ func ExampleBalancesClient_GetByBillingAccount() {
 	// 			AdjustmentDetails: []*armconsumption.BalancePropertiesAdjustmentDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Credit"),
+	// 					Value: to.Ptr[float64](1.1),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("SIE Credit"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			Adjustments: to.Ptr[float64](0),
+	// 			AzureMarketplaceServiceCharges: to.Ptr[float64](609.82),
+	// 			BeginningBalance: to.Ptr[float64](3396469.19),
 	// 			BillingFrequency: to.Ptr(armconsumption.BillingFrequencyMonth),
+	// 			ChargesBilledSeparately: to.Ptr[float64](0),
 	// 			Currency: to.Ptr("USD  "),
+	// 			EndingBalance: to.Ptr[float64](2922371.02),
+	// 			NewPurchases: to.Ptr[float64](0),
 	// 			NewPurchasesDetails: []*armconsumption.BalancePropertiesNewPurchasesDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Purchase"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			OverageRefund: to.Ptr[float64](2012.61),
 	// 			PriceHidden: to.Ptr(false),
+	// 			ServiceOverage: to.Ptr[float64](0),
+	// 			TotalOverage: to.Ptr[float64](0),
+	// 			TotalUsage: to.Ptr[float64](474098.17),
+	// 			Utilized: to.Ptr[float64](474098.17),
 	// 		},
 	// 	},
 	// }
@@ -75,7 +89,7 @@ func ExampleBalancesClient_GetForBillingPeriodByBillingAccount() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconsumption.BalancesClientGetForBillingPeriodByBillingAccountResponse{
-	// 	Balance: &armconsumption.Balance{
+	// 	Balance: armconsumption.Balance{
 	// 		Name: to.Ptr("balanceId1"),
 	// 		Type: to.Ptr("Microsoft.Consumption/balances"),
 	// 		ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/123456/providers/Microsoft.Billing/billingPeriods/201702/providers/Microsoft.Consumption/balances/balanceId1"),
@@ -83,19 +97,33 @@ func ExampleBalancesClient_GetForBillingPeriodByBillingAccount() {
 	// 			AdjustmentDetails: []*armconsumption.BalancePropertiesAdjustmentDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Credit"),
+	// 					Value: to.Ptr[float64](1.1),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("SIE Credit"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			Adjustments: to.Ptr[float64](0),
+	// 			AzureMarketplaceServiceCharges: to.Ptr[float64](609.82),
+	// 			BeginningBalance: to.Ptr[float64](3396469.19),
 	// 			BillingFrequency: to.Ptr(armconsumption.BillingFrequencyMonth),
+	// 			ChargesBilledSeparately: to.Ptr[float64](0),
 	// 			Currency: to.Ptr("USD  "),
+	// 			EndingBalance: to.Ptr[float64](2922371.02),
+	// 			NewPurchases: to.Ptr[float64](0),
 	// 			NewPurchasesDetails: []*armconsumption.BalancePropertiesNewPurchasesDetailsItem{
 	// 				{
 	// 					Name: to.Ptr("Promo Purchase"),
+	// 					Value: to.Ptr[float64](1),
 	// 				},
 	// 			},
+	// 			OverageRefund: to.Ptr[float64](2012.61),
 	// 			PriceHidden: to.Ptr(false),
+	// 			ServiceOverage: to.Ptr[float64](0),
+	// 			TotalOverage: to.Ptr[float64](0),
+	// 			TotalUsage: to.Ptr[float64](474098.17),
+	// 			Utilized: to.Ptr[float64](474098.17),
 	// 		},
 	// 	},
 	// }

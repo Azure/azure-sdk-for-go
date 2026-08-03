@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCancel.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCancel.json
 func ExampleMigrationsClient_Cancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleMigrationsClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCancelResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -77,7 +77,7 @@ func ExampleMigrationsClient_Cancel() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCheckNameAvailability.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCheckNameAvailability.json
 func ExampleMigrationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleMigrationsClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCheckNameAvailabilityResponse{
-	// 	MigrationNameAvailability: &armpostgresqlflexibleservers.MigrationNameAvailability{
+	// 	MigrationNameAvailability: armpostgresqlflexibleservers.MigrationNameAvailability{
 	// 		Name: to.Ptr("naexamplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	// 		NameAvailable: to.Ptr(true),
@@ -107,7 +107,7 @@ func ExampleMigrationsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCreate.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCreate.json
 func ExampleMigrationsClient_Create_createAMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -145,7 +145,7 @@ func ExampleMigrationsClient_Create_createAMigration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -181,7 +181,7 @@ func ExampleMigrationsClient_Create_createAMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCreateOtherSourceTypesValidateMigrate.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCreateOtherSourceTypesValidateMigrate.json
 func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValidatingAndMigrating() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValida
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -261,7 +261,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithOtherSourceTypeForValida
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCreateValidateOnly.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCreateValidateOnly.json
 func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -337,7 +337,7 @@ func ExampleMigrationsClient_Create_createAMigrationForValidatingOnly() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCreateWithFullyQualifiedDomainName.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithFullyQualifiedDomainName.json
 func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainNamesForSourceAndTargetServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -377,7 +377,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainName
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -415,7 +415,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithFullyQualifiedDomainName
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCreateWithOtherUsers.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithOtherUsers.json
 func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +454,7 @@ func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -491,7 +491,7 @@ func ExampleMigrationsClient_Create_createAMigrationSpecifyingUserNames() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCreateWithPrivateEndpointServers.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithPrivateEndpointServers.json
 func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -530,7 +530,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -567,7 +567,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithPrivateEndpoint() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsCreateWithRoles.json
+// Generated from example definition: 2026-04-01-preview/MigrationsCreateWithRoles.json
 func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +606,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientCreateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -642,7 +642,7 @@ func ExampleMigrationsClient_Create_createAMigrationWithRoles() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsGet.json
+// Generated from example definition: 2026-04-01-preview/MigrationsGet.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +661,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -712,7 +712,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigration() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
+// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationAndMigration.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationAndSuccessfulMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -731,7 +731,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -820,7 +820,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
+// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationButMigrationFailure.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationButFailedMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -839,7 +839,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -927,7 +927,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsGetMigrationWithSuccessfulValidationOnly.json
+// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithSuccessfulValidationOnly.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulValidationOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -946,7 +946,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -1019,7 +1019,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithSuccessfulVali
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsGetMigrationWithValidationFailures.json
+// Generated from example definition: 2026-04-01-preview/MigrationsGetMigrationWithValidationFailures.json
 func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFailures() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1038,7 +1038,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientGetResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampletarget/migrations/examplemigration"),
@@ -1227,7 +1227,7 @@ func ExampleMigrationsClient_Get_getInformationAboutAMigrationWithValidationFail
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsListByTargetServer.json
+// Generated from example definition: 2026-04-01-preview/MigrationsListByTargetServer.json
 func ExampleMigrationsClient_NewListByTargetServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1307,7 +1307,7 @@ func ExampleMigrationsClient_NewListByTargetServerPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/MigrationsUpdate.json
+// Generated from example definition: 2026-04-01-preview/MigrationsUpdate.json
 func ExampleMigrationsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1330,7 +1330,7 @@ func ExampleMigrationsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.MigrationsClientUpdateResponse{
-	// 	Migration: &armpostgresqlflexibleservers.Migration{
+	// 	Migration: armpostgresqlflexibleservers.Migration{
 	// 		Name: to.Ptr("examplemigration"),
 	// 		Type: to.Ptr("Microsoft.DBForPostgreSql/flexibleServers/migrations"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBForPostgreSql/flexibleServers/exampletarget/migrations/examplemigration"),

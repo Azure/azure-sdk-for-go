@@ -18,6 +18,8 @@ import (
 
 // EmailConfigurationClient contains the methods for the EmailConfiguration group.
 // Don't use this type directly, use NewEmailConfigurationClient() instead.
+//
+// Generated from API version 2024-09-01
 type EmailConfigurationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEmailConfigurationClient(subscriptionID string, credential azcore.TokenC
 
 // Create - Creates an alert configuration setting for the given vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - emailConfigurationName - The email configuration name.
@@ -95,8 +95,8 @@ func (client *EmailConfigurationClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -116,8 +116,6 @@ func (client *EmailConfigurationClient) createHandleResponse(resp *http.Response
 
 // Get - Gets the details of the alert configuration setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - emailConfigurationName - The email configuration name.
@@ -168,8 +166,8 @@ func (client *EmailConfigurationClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -184,8 +182,6 @@ func (client *EmailConfigurationClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets the list of alert configuration settings for the given vault.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - options - EmailConfigurationClientListOptions contains the optional parameters for the EmailConfigurationClient.NewListPager
@@ -233,8 +229,8 @@ func (client *EmailConfigurationClient) listCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

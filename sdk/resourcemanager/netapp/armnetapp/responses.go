@@ -250,12 +250,14 @@ type CachesClientListResponse struct {
 
 // CachesClientPoolChangeResponse contains the response from method CachesClient.BeginPoolChange.
 type CachesClientPoolChangeResponse struct {
-	// placeholder for future response values
+	// Cache resource
+	Cache
 }
 
 // CachesClientResetSmbPasswordResponse contains the response from method CachesClient.BeginResetSmbPassword.
 type CachesClientResetSmbPasswordResponse struct {
-	// placeholder for future response values
+	// Cache resource
+	Cache
 }
 
 // CachesClientUpdateResponse contains the response from method CachesClient.BeginUpdate.
@@ -477,6 +479,7 @@ type SnapshotsClientUpdateResponse struct {
 // SubvolumesClientCreateResponse contains the response from method SubvolumesClient.BeginCreate.
 type SubvolumesClientCreateResponse struct {
 	// Subvolume Information properties
+	// Deprecated. This resource type will be removed in a future API version.
 	SubvolumeInfo
 }
 
@@ -494,6 +497,7 @@ type SubvolumesClientGetMetadataResponse struct {
 // SubvolumesClientGetResponse contains the response from method SubvolumesClient.Get.
 type SubvolumesClientGetResponse struct {
 	// Subvolume Information properties
+	// Deprecated. This resource type will be removed in a future API version.
 	SubvolumeInfo
 }
 
@@ -506,6 +510,7 @@ type SubvolumesClientListByVolumeResponse struct {
 // SubvolumesClientUpdateResponse contains the response from method SubvolumesClient.BeginUpdate.
 type SubvolumesClientUpdateResponse struct {
 	// Subvolume Information properties
+	// Deprecated. This resource type will be removed in a future API version.
 	SubvolumeInfo
 }
 

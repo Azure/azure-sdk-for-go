@@ -216,6 +216,14 @@ func (c *ClientFactory) NewImagesClient() *ImagesClient {
 	}
 }
 
+// NewInterconnectBlocksClient creates a new instance of InterconnectBlocksClient.
+func (c *ClientFactory) NewInterconnectBlocksClient() *InterconnectBlocksClient {
+	return &InterconnectBlocksClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewLogAnalyticsClient creates a new instance of LogAnalyticsClient.
 func (c *ClientFactory) NewLogAnalyticsClient() *LogAnalyticsClient {
 	return &LogAnalyticsClient{
@@ -295,6 +303,14 @@ func (c *ClientFactory) NewSharedGalleryImagesClient() *SharedGalleryImagesClien
 	}
 }
 
+// NewSharedGalleryInvitesClient creates a new instance of SharedGalleryInvitesClient.
+func (c *ClientFactory) NewSharedGalleryInvitesClient() *SharedGalleryInvitesClient {
+	return &SharedGalleryInvitesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSnapshotsClient creates a new instance of SnapshotsClient.
 func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	return &SnapshotsClient{
@@ -308,6 +324,13 @@ func (c *ClientFactory) NewSoftDeletedResourceClient() *SoftDeletedResourceClien
 	return &SoftDeletedResourceClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
+	}
+}
+
+// NewTenantLevelSharedGalleryInvitesClient creates a new instance of TenantLevelSharedGalleryInvitesClient.
+func (c *ClientFactory) NewTenantLevelSharedGalleryInvitesClient() *TenantLevelSharedGalleryInvitesClient {
+	return &TenantLevelSharedGalleryInvitesClient{
+		internal: c.internal,
 	}
 }
 

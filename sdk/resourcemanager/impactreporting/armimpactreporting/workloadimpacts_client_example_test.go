@@ -48,13 +48,13 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingArmOperationFailure() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.WorkloadImpactsClientCreateResponse{
-	// 	WorkloadImpact: &armimpactreporting.WorkloadImpact{
+	// 	WorkloadImpact: armimpactreporting.WorkloadImpact{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadImpacts/impact-001"),
 	// 		Name: to.Ptr("impact-001"),
 	// 		Type: to.Ptr("Microsoft.Impact/workloadImpacts"),
@@ -113,13 +113,13 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingAvailabilityRelatedImpact
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.WorkloadImpactsClientCreateResponse{
-	// 	WorkloadImpact: &armimpactreporting.WorkloadImpact{
+	// 	WorkloadImpact: armimpactreporting.WorkloadImpact{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadImpacts/impact-001"),
 	// 		Name: to.Ptr("impact-001"),
 	// 		Type: to.Ptr("Microsoft.Impact/workloadImpacts"),
@@ -185,13 +185,13 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingAConnectivityImpact() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.WorkloadImpactsClientCreateResponse{
-	// 	WorkloadImpact: &armimpactreporting.WorkloadImpact{
+	// 	WorkloadImpact: armimpactreporting.WorkloadImpact{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Impacts-rg/providers/Microsoft.Impact/workloadImpacts/impact-001"),
 	// 		Name: to.Ptr("impact-001"),
 	// 		Type: to.Ptr("Microsoft.Impact/workloadImpacts"),
@@ -265,13 +265,13 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingPerformanceRelatedImpact(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.WorkloadImpactsClientCreateResponse{
-	// 	WorkloadImpact: &armimpactreporting.WorkloadImpact{
+	// 	WorkloadImpact: armimpactreporting.WorkloadImpact{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/PerformanceImpacts/impact-001"),
 	// 		Name: to.Ptr("impact-001"),
 	// 		Type: to.Ptr("Microsoft.Impact/PerformanceImpacts"),
@@ -344,7 +344,7 @@ func ExampleWorkloadImpactsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.WorkloadImpactsClientGetResponse{
-	// 	WorkloadImpact: &armimpactreporting.WorkloadImpact{
+	// 	WorkloadImpact: armimpactreporting.WorkloadImpact{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadImpacts/impact-001"),
 	// 		Name: to.Ptr("impact-001"),
 	// 		Type: to.Ptr("Microsoft.Impact/workloadImpacts"),

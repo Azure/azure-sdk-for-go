@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/sharedGalleryExamples/SharedGalleryImageVersion_Get.json
+// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImageVersion_Get.json
 func ExampleSharedGalleryImageVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleSharedGalleryImageVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SharedGalleryImageVersionsClientGetResponse{
-	// 	SharedGalleryImageVersion: &armcompute.SharedGalleryImageVersion{
+	// 	SharedGalleryImageVersion: armcompute.SharedGalleryImageVersion{
 	// 		Properties: &armcompute.SharedGalleryImageVersionProperties{
 	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28Z"); return t}()),
 	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28Z"); return t}()),
@@ -54,7 +54,7 @@ func ExampleSharedGalleryImageVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/sharedGalleryExamples/SharedGalleryImageVersions_List.json
+// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImageVersions_List.json
 func ExampleSharedGalleryImageVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

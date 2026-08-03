@@ -19,6 +19,8 @@ import (
 
 // DomainListsClient contains the methods for the DomainLists group.
 // Don't use this type directly, use NewDomainListsClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type DomainListsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDomainListsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginBulk - Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverDomainListName - The name of the DNS resolver domain list.
 //   - parameters - Parameters supplied to the bulk domain list operation.
@@ -67,8 +67,6 @@ func (client *DomainListsClient) BeginBulk(ctx context.Context, resourceGroupNam
 
 // Bulk - Uploads or downloads the list of domains for a DNS Resolver Domain List from a storage link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DomainListsClient) bulk(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListBulk, options *DomainListsClientBeginBulkOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainListsClient.BeginBulk"
@@ -110,8 +108,8 @@ func (client *DomainListsClient) bulkCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -128,8 +126,6 @@ func (client *DomainListsClient) bulkCreateRequest(ctx context.Context, resource
 
 // BeginCreateOrUpdate - Creates or updates a DNS resolver domain list.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverDomainListName - The name of the DNS resolver domain list.
 //   - parameters - Parameters supplied to the CreateOrUpdate operation.
@@ -154,8 +150,6 @@ func (client *DomainListsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Creates or updates a DNS resolver domain list.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DomainListsClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainList, options *DomainListsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainListsClient.BeginCreateOrUpdate"
@@ -197,8 +191,8 @@ func (client *DomainListsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -215,8 +209,6 @@ func (client *DomainListsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverDomainListName - The name of the DNS resolver domain list.
 //   - options - DomainListsClientBeginDeleteOptions contains the optional parameters for the DomainListsClient.BeginDelete method.
@@ -239,8 +231,6 @@ func (client *DomainListsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Deletes a DNS resolver domain list. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DomainListsClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, options *DomainListsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainListsClient.BeginDelete"
@@ -282,8 +272,8 @@ func (client *DomainListsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
 	}
@@ -292,8 +282,6 @@ func (client *DomainListsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets properties of a DNS resolver domain list.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverDomainListName - The name of the DNS resolver domain list.
 //   - options - DomainListsClientGetOptions contains the optional parameters for the DomainListsClient.Get method.
@@ -339,8 +327,8 @@ func (client *DomainListsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -355,8 +343,6 @@ func (client *DomainListsClient) getHandleResponse(resp *http.Response) (DomainL
 }
 
 // NewListPager - Lists DNS resolver domain lists in all resource groups of a subscription.
-//
-// Generated from API version 2025-10-01-preview
 //   - options - DomainListsClientListOptions contains the optional parameters for the DomainListsClient.NewListPager method.
 func (client *DomainListsClient) NewListPager(options *DomainListsClientListOptions) *runtime.Pager[DomainListsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DomainListsClientListResponse]{
@@ -396,8 +382,8 @@ func (client *DomainListsClient) listCreateRequest(ctx context.Context, options 
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -412,8 +398,6 @@ func (client *DomainListsClient) listHandleResponse(resp *http.Response) (Domain
 }
 
 // NewListByResourceGroupPager - Lists DNS resolver domain lists within a resource group.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DomainListsClientListByResourceGroupOptions contains the optional parameters for the DomainListsClient.NewListByResourceGroupPager
 //     method.
@@ -459,8 +443,8 @@ func (client *DomainListsClient) listByResourceGroupCreateRequest(ctx context.Co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -476,8 +460,6 @@ func (client *DomainListsClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // BeginUpdate - Updates a DNS resolver domain list.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverDomainListName - The name of the DNS resolver domain list.
 //   - parameters - Parameters supplied to the Update operation.
@@ -501,8 +483,6 @@ func (client *DomainListsClient) BeginUpdate(ctx context.Context, resourceGroupN
 
 // Update - Updates a DNS resolver domain list.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DomainListsClient) update(ctx context.Context, resourceGroupName string, dnsResolverDomainListName string, parameters DomainListPatch, options *DomainListsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainListsClient.BeginUpdate"
@@ -544,8 +524,8 @@ func (client *DomainListsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}

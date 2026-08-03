@@ -1,16 +1,46 @@
 # Release History
 
-## 1.8.0-beta.2 (Unreleased)
+## 1.8.1-beta.2 (Unreleased)
 
 ### Features Added
-* Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
-* Fixed `ListBlobsHierarchyOptions` and `NewListBlobsFlatPager` to correctly pass `StartFrom` to the generated client.
+
+* Fixed WASM compilation by using heap-allocated buffers on JS targets.
 
 ### Other Changes
+
+## 1.8.1-beta.1 (2026-07-24)
+
+### Features Added
+* Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
+* Added `StorageResponseFormat` enum (`Auto`, `XML`, `Arrow`) for list blobs operations. Set `ResponseFormat` on `ListBlobsFlatOptions`/`ListBlobsHierarchyOptions` to opt into Apache Arrow format for improved performance. `Auto` defaults to XML for this release.
+* Added `AccessTier`, `AccessTierInferred`, `AccessTierChangeTime`, and `SmartAccessTier` fields to blob download response.
+* Blob put operations now return both `ContentMD5` and `ContentCRC64` in the response when a Content-MD5 header is provided (service version 2026-10-06+).
+
+### Bugs Fixed
+* Fixed `UploadFile`/`UploadBuffer` responses not including `ContentCRC64` when returned by the service.
+
+### Other Changes
+* Updated code generator to `@autorest/go@4.0.0-preview.80`.
+* Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+* Updated `azidentity` version to `1.14.0`
+
+## 1.8.0 (2026-06-15)
+
+### Features Added
+* Includes all features from `1.8.0-beta.1` and `1.8.0-beta.2`
+
+## 1.8.0-beta.2 (2026-06-03)
+
+### Features Added
+* Added support for the `Expect: 100-continue` HTTP header on requests with a body. The new `ExpectContinueBehavior` field on `ClientOptions` configures the
+  behavior via `ExpectContinueOptions`. By default (`ExpectContinueModeApplyOnThrottle`) the header is sent for one minute after a 429, 500, or 503 response
+  is received; the interval can be overridden via `ExpectContinueOptions.ThrottleInterval`. Other modes are `ExpectContinueModeOn` (always send) and
+  `ExpectContinueModeOff` (never send). Set the environment variable `AZURE_STORAGE_DISABLE_EXPECT_CONTINUE_HEADER=true` to disable the feature regardless of
+  `ClientOptions`.
 
 ## 1.7.0 (2026-05-14)
 

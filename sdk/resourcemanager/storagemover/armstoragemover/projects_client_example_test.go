@@ -35,7 +35,7 @@ func ExampleProjectsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ProjectsClientCreateOrUpdateResponse{
-	// 	Project: &armstoragemover.Project{
+	// 	Project: armstoragemover.Project{
 	// 		Name: to.Ptr("examples-projectName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName"),
@@ -63,7 +63,7 @@ func ExampleProjectsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -91,7 +91,7 @@ func ExampleProjectsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ProjectsClientGetResponse{
-	// 	Project: &armstoragemover.Project{
+	// 	Project: armstoragemover.Project{
 	// 		Name: to.Ptr("examples-projectName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projects"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName"),
@@ -181,7 +181,7 @@ func ExampleProjectsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.ProjectsClientUpdateResponse{
-	// 	Project: &armstoragemover.Project{
+	// 	Project: armstoragemover.Project{
 	// 		Name: to.Ptr("examples-projectName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projectName"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/agents/examples-projectName"),

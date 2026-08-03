@@ -19,6 +19,8 @@ import (
 
 // ProtectedItemClient contains the methods for the ProtectedItem group.
 // Don't use this type directly, use NewProtectedItemClient() instead.
+//
+// Generated from API version 2024-09-01
 type ProtectedItemClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewProtectedItemClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreate - Creates the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - protectedItemName - The protected item name.
@@ -69,8 +69,6 @@ func (client *ProtectedItemClient) BeginCreate(ctx context.Context, resourceGrou
 
 // Create - Creates the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ProtectedItemClient) create(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, resource ProtectedItemModel, options *ProtectedItemClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectedItemClient.BeginCreate"
@@ -116,8 +114,8 @@ func (client *ProtectedItemClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -128,8 +126,6 @@ func (client *ProtectedItemClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Removes the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - protectedItemName - The protected item name.
@@ -154,8 +150,6 @@ func (client *ProtectedItemClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Removes the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ProtectedItemClient) deleteOperation(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, options *ProtectedItemClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectedItemClient.BeginDelete"
@@ -201,18 +195,16 @@ func (client *ProtectedItemClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", version20240901)
 	if options != nil && options.ForceDelete != nil {
 		reqQP.Set("forceDelete", strconv.FormatBool(*options.ForceDelete))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the details of the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - protectedItemName - The protected item name.
@@ -263,8 +255,8 @@ func (client *ProtectedItemClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -279,8 +271,6 @@ func (client *ProtectedItemClient) getHandleResponse(resp *http.Response) (Prote
 }
 
 // NewListPager - Gets the list of protected items in the given vault.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - options - ProtectedItemClientListOptions contains the optional parameters for the ProtectedItemClient.NewListPager method.
@@ -327,7 +317,7 @@ func (client *ProtectedItemClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
+	reqQP.Set("api-version", version20240901)
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
@@ -337,7 +327,7 @@ func (client *ProtectedItemClient) listCreateRequest(ctx context.Context, resour
 	if options != nil && options.PageSize != nil {
 		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -353,8 +343,6 @@ func (client *ProtectedItemClient) listHandleResponse(resp *http.Response) (Prot
 
 // BeginPlannedFailover - Performs the planned failover on the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - protectedItemName - The protected item name.
@@ -380,8 +368,6 @@ func (client *ProtectedItemClient) BeginPlannedFailover(ctx context.Context, res
 
 // PlannedFailover - Performs the planned failover on the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ProtectedItemClient) plannedFailover(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, body PlannedFailoverModel, options *ProtectedItemClientBeginPlannedFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectedItemClient.BeginPlannedFailover"
@@ -427,8 +413,8 @@ func (client *ProtectedItemClient) plannedFailoverCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -439,8 +425,6 @@ func (client *ProtectedItemClient) plannedFailoverCreateRequest(ctx context.Cont
 
 // BeginUpdate - Performs update on the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The vault name.
 //   - protectedItemName - The protected item name.
@@ -466,8 +450,6 @@ func (client *ProtectedItemClient) BeginUpdate(ctx context.Context, resourceGrou
 
 // Update - Performs update on the protected item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ProtectedItemClient) update(ctx context.Context, resourceGroupName string, vaultName string, protectedItemName string, properties ProtectedItemModelUpdate, options *ProtectedItemClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectedItemClient.BeginUpdate"
@@ -513,8 +495,8 @@ func (client *ProtectedItemClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

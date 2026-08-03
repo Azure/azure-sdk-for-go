@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2023-07-01-preview
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // BeginExportTerraform - Exports the Terraform configuration of the specified resource(s).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - body - The request body
 //   - options - ClientBeginExportTerraformOptions contains the optional parameters for the Client.BeginExportTerraform method.
 func (client *Client) BeginExportTerraform(ctx context.Context, body BaseExportModelClassification, options *ClientBeginExportTerraformOptions) (*runtime.Poller[ClientExportTerraformResponse], error) {
@@ -65,8 +65,6 @@ func (client *Client) BeginExportTerraform(ctx context.Context, body BaseExportM
 
 // ExportTerraform - Exports the Terraform configuration of the specified resource(s).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 func (client *Client) exportTerraform(ctx context.Context, body BaseExportModelClassification, options *ClientBeginExportTerraformOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginExportTerraform"
@@ -100,8 +98,8 @@ func (client *Client) exportTerraformCreateRequest(ctx context.Context, body Bas
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err

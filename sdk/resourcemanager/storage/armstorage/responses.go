@@ -107,6 +107,29 @@ type AccountsClientUpdateResponse struct {
 	Account
 }
 
+// AdvancedPlatformMetricsClientCreateOrUpdateResponse contains the response from method AdvancedPlatformMetricsClient.CreateOrUpdate.
+type AdvancedPlatformMetricsClientCreateOrUpdateResponse struct {
+	// The advanced platform metrics rule for the storage account.
+	AdvancedPlatformMetricsRule
+}
+
+// AdvancedPlatformMetricsClientDeleteResponse contains the response from method AdvancedPlatformMetricsClient.Delete.
+type AdvancedPlatformMetricsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AdvancedPlatformMetricsClientGetResponse contains the response from method AdvancedPlatformMetricsClient.Get.
+type AdvancedPlatformMetricsClientGetResponse struct {
+	// The advanced platform metrics rule for the storage account.
+	AdvancedPlatformMetricsRule
+}
+
+// AdvancedPlatformMetricsClientListResponse contains the response from method AdvancedPlatformMetricsClient.NewListPager.
+type AdvancedPlatformMetricsClientListResponse struct {
+	// The response of a AdvancedPlatformMetricsRule list operation.
+	AdvancedPlatformMetricsRuleListResult
+}
+
 // BlobContainersClientClearLegalHoldResponse contains the response from method BlobContainersClient.ClearLegalHold.
 type BlobContainersClientClearLegalHoldResponse struct {
 	// The LegalHold property of a blob container.

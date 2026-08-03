@@ -29,13 +29,13 @@ func ExampleMHSMPrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.MHSMPrivateEndpointConnectionsClientDeleteResponse{
-	// 	MHSMPrivateEndpointConnection: &armkeyvault.MHSMPrivateEndpointConnection{
+	// 	MHSMPrivateEndpointConnection: armkeyvault.MHSMPrivateEndpointConnection{
 	// 		Name: to.Ptr("sample-pec"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedhsms/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedhsms/sample-vault/privateEndpointConnections/sample-pec"),
@@ -65,7 +65,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.MHSMPrivateEndpointConnectionsClientGetResponse{
-	// 	MHSMPrivateEndpointConnection: &armkeyvault.MHSMPrivateEndpointConnection{
+	// 	MHSMPrivateEndpointConnection: armkeyvault.MHSMPrivateEndpointConnection{
 	// 		Name: to.Ptr("sample-pec"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedhsms/privateEndpointConnections"),
 	// 		Etag: to.Ptr(azcore.ETag("")),
@@ -176,7 +176,7 @@ func ExampleMHSMPrivateEndpointConnectionsClient_Put() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.MHSMPrivateEndpointConnectionsClientPutResponse{
-	// 	MHSMPrivateEndpointConnection: &armkeyvault.MHSMPrivateEndpointConnection{
+	// 	MHSMPrivateEndpointConnection: armkeyvault.MHSMPrivateEndpointConnection{
 	// 		Name: to.Ptr("sample-pec"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/managedhsms/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/managedhsms/sample-mhsm/privateEndpointConnections/sample-pec"),

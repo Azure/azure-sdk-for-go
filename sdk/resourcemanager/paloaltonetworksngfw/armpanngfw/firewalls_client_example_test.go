@@ -155,13 +155,13 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMaximumSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientCreateOrUpdateResponse{
-	// 	FirewallResource: &armpanngfw.FirewallResource{
+	// 	FirewallResource: armpanngfw.FirewallResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("firewalls"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/firewalls/armid1"),
@@ -353,13 +353,13 @@ func ExampleFirewallsClient_BeginCreateOrUpdate_firewallsCreateOrUpdateMinimumSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientCreateOrUpdateResponse{
-	// 	FirewallResource: &armpanngfw.FirewallResource{
+	// 	FirewallResource: armpanngfw.FirewallResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.FirewallDeploymentProperties{
@@ -405,7 +405,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -431,7 +431,7 @@ func ExampleFirewallsClient_BeginDelete_firewallsDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -459,7 +459,7 @@ func ExampleFirewallsClient_Get_firewallsGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetResponse{
-	// 	FirewallResource: &armpanngfw.FirewallResource{
+	// 	FirewallResource: armpanngfw.FirewallResource{
 	// 		Name: to.Ptr("aaaaaaaaaaaaa"),
 	// 		Type: to.Ptr("aaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -630,7 +630,7 @@ func ExampleFirewallsClient_Get_firewallsGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetResponse{
-	// 	FirewallResource: &armpanngfw.FirewallResource{
+	// 	FirewallResource: armpanngfw.FirewallResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.FirewallDeploymentProperties{
@@ -678,7 +678,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMaximu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetGlobalRulestackResponse{
-	// 	GlobalRulestackInfo: &armpanngfw.GlobalRulestackInfo{
+	// 	GlobalRulestackInfo: armpanngfw.GlobalRulestackInfo{
 	// 		AzureID: to.Ptr("aaaaaaaaaa"),
 	// 	},
 	// }
@@ -703,7 +703,7 @@ func ExampleFirewallsClient_GetGlobalRulestack_firewallsGetGlobalRulestackMinimu
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetGlobalRulestackResponse{
-	// 	GlobalRulestackInfo: &armpanngfw.GlobalRulestackInfo{
+	// 	GlobalRulestackInfo: armpanngfw.GlobalRulestackInfo{
 	// 		AzureID: to.Ptr("aaaaaaaaaa"),
 	// 	},
 	// }
@@ -728,7 +728,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMaximumSetGen() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetLogProfileResponse{
-	// 	LogSettings: &armpanngfw.LogSettings{
+	// 	LogSettings: armpanngfw.LogSettings{
 	// 		ApplicationInsights: &armpanngfw.ApplicationInsights{
 	// 			ID: to.Ptr("aaaaaaaaaaaaaaaa"),
 	// 			Key: to.Ptr("aaaaaaaaaaaaa"),
@@ -842,7 +842,7 @@ func ExampleFirewallsClient_GetLogProfile_firewallsGetLogProfileMinimumSetGen() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetLogProfileResponse{
-	// 	LogSettings: &armpanngfw.LogSettings{
+	// 	LogSettings: armpanngfw.LogSettings{
 	// 	},
 	// }
 }
@@ -867,7 +867,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMaximumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetSupportInfoResponse{
-	// 	SupportInfo: &armpanngfw.SupportInfo{
+	// 	SupportInfo: armpanngfw.SupportInfo{
 	// 		AccountID: to.Ptr("3cg5b439-294d-4c25-b0b2-ef649e0g6d38"),
 	// 		AccountRegistered: to.Ptr(armpanngfw.BooleanEnumTRUE),
 	// 		FreeTrial: to.Ptr(armpanngfw.BooleanEnumTRUE),
@@ -903,7 +903,7 @@ func ExampleFirewallsClient_GetSupportInfo_firewallsGetSupportInfoMinimumSetGen(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientGetSupportInfoResponse{
-	// 	SupportInfo: &armpanngfw.SupportInfo{
+	// 	SupportInfo: armpanngfw.SupportInfo{
 	// 	},
 	// }
 }
@@ -1653,7 +1653,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientUpdateResponse{
-	// 	FirewallResource: &armpanngfw.FirewallResource{
+	// 	FirewallResource: armpanngfw.FirewallResource{
 	// 		Name: to.Ptr("aaaaaaaaaaaaa"),
 	// 		Type: to.Ptr("aaaaaa"),
 	// 		ID: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -1824,7 +1824,7 @@ func ExampleFirewallsClient_Update_firewallsUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallsClientUpdateResponse{
-	// 	FirewallResource: &armpanngfw.FirewallResource{
+	// 	FirewallResource: armpanngfw.FirewallResource{
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armpanngfw.FirewallDeploymentProperties{
 	// 			DNSSettings: &armpanngfw.DNSSettings{

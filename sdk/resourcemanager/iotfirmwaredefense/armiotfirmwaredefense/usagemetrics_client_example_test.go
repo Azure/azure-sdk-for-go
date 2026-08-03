@@ -30,7 +30,7 @@ func ExampleUsageMetricsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armiotfirmwaredefense.UsageMetricsClientGetResponse{
-	// 	UsageMetric: &armiotfirmwaredefense.UsageMetric{
+	// 	UsageMetric: armiotfirmwaredefense.UsageMetric{
 	// 		Properties: &armiotfirmwaredefense.UsageMetricProperties{
 	// 			MonthlyFirmwareUploadCount: to.Ptr[int64](25),
 	// 			TotalFirmwareCount: to.Ptr[int64](29),

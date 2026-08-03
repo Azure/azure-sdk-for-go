@@ -18,6 +18,8 @@ import (
 
 // DbSystemShapesClient contains the methods for the DbSystemShapes group.
 // Don't use this type directly, use NewDbSystemShapesClient() instead.
+//
+// Generated from API version 2025-09-01
 type DbSystemShapesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDbSystemShapesClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Get a DbSystemShape
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - dbsystemshapename - DbSystemShape name
 //   - options - DbSystemShapesClientGetOptions contains the optional parameters for the DbSystemShapesClient.Get method.
@@ -88,8 +88,8 @@ func (client *DbSystemShapesClient) getCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *DbSystemShapesClient) getHandleResponse(resp *http.Response) (DbSy
 }
 
 // NewListByLocationPager - List DbSystemShape resources by SubscriptionLocationResource
-//
-// Generated from API version 2025-09-01
 //   - location - The name of the Azure region.
 //   - options - DbSystemShapesClientListByLocationOptions contains the optional parameters for the DbSystemShapesClient.NewListByLocationPager
 //     method.
@@ -148,14 +146,14 @@ func (client *DbSystemShapesClient) listByLocationCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
+	reqQP.Set("api-version", version20250901)
 	if options != nil && options.ShapeAttribute != nil {
 		reqQP.Set("shapeAttribute", *options.ShapeAttribute)
 	}
 	if options != nil && options.Zone != nil {
 		reqQP.Set("zone", *options.Zone)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

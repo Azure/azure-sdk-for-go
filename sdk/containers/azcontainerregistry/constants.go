@@ -5,6 +5,10 @@
 
 package azcontainerregistry
 
+const (
+	version20210701 string = "2021-07-01"
+)
+
 // ArtifactArchitecture - The artifact platform's architecture.
 type ArtifactArchitecture string
 

@@ -110,72 +110,72 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "CertificateObjectGlobalRulestackClient":
-		initServer(s, &s.trCertificateObjectGlobalRulestackServer, func() *CertificateObjectGlobalRulestackServerTransport {
+		initServer(&s.trMu, &s.trCertificateObjectGlobalRulestackServer, func() *CertificateObjectGlobalRulestackServerTransport {
 			return NewCertificateObjectGlobalRulestackServerTransport(&s.srv.CertificateObjectGlobalRulestackServer)
 		})
 		resp, err = s.trCertificateObjectGlobalRulestackServer.Do(req)
 	case "CertificateObjectLocalRulestackClient":
-		initServer(s, &s.trCertificateObjectLocalRulestackServer, func() *CertificateObjectLocalRulestackServerTransport {
+		initServer(&s.trMu, &s.trCertificateObjectLocalRulestackServer, func() *CertificateObjectLocalRulestackServerTransport {
 			return NewCertificateObjectLocalRulestackServerTransport(&s.srv.CertificateObjectLocalRulestackServer)
 		})
 		resp, err = s.trCertificateObjectLocalRulestackServer.Do(req)
 	case "FirewallStatusClient":
-		initServer(s, &s.trFirewallStatusServer, func() *FirewallStatusServerTransport {
+		initServer(&s.trMu, &s.trFirewallStatusServer, func() *FirewallStatusServerTransport {
 			return NewFirewallStatusServerTransport(&s.srv.FirewallStatusServer)
 		})
 		resp, err = s.trFirewallStatusServer.Do(req)
 	case "FirewallsClient":
-		initServer(s, &s.trFirewallsServer, func() *FirewallsServerTransport { return NewFirewallsServerTransport(&s.srv.FirewallsServer) })
+		initServer(&s.trMu, &s.trFirewallsServer, func() *FirewallsServerTransport { return NewFirewallsServerTransport(&s.srv.FirewallsServer) })
 		resp, err = s.trFirewallsServer.Do(req)
 	case "FqdnListGlobalRulestackClient":
-		initServer(s, &s.trFqdnListGlobalRulestackServer, func() *FqdnListGlobalRulestackServerTransport {
+		initServer(&s.trMu, &s.trFqdnListGlobalRulestackServer, func() *FqdnListGlobalRulestackServerTransport {
 			return NewFqdnListGlobalRulestackServerTransport(&s.srv.FqdnListGlobalRulestackServer)
 		})
 		resp, err = s.trFqdnListGlobalRulestackServer.Do(req)
 	case "FqdnListLocalRulestackClient":
-		initServer(s, &s.trFqdnListLocalRulestackServer, func() *FqdnListLocalRulestackServerTransport {
+		initServer(&s.trMu, &s.trFqdnListLocalRulestackServer, func() *FqdnListLocalRulestackServerTransport {
 			return NewFqdnListLocalRulestackServerTransport(&s.srv.FqdnListLocalRulestackServer)
 		})
 		resp, err = s.trFqdnListLocalRulestackServer.Do(req)
 	case "GlobalRulestackClient":
-		initServer(s, &s.trGlobalRulestackServer, func() *GlobalRulestackServerTransport {
+		initServer(&s.trMu, &s.trGlobalRulestackServer, func() *GlobalRulestackServerTransport {
 			return NewGlobalRulestackServerTransport(&s.srv.GlobalRulestackServer)
 		})
 		resp, err = s.trGlobalRulestackServer.Do(req)
 	case "LocalRulesClient":
-		initServer(s, &s.trLocalRulesServer, func() *LocalRulesServerTransport { return NewLocalRulesServerTransport(&s.srv.LocalRulesServer) })
+		initServer(&s.trMu, &s.trLocalRulesServer, func() *LocalRulesServerTransport { return NewLocalRulesServerTransport(&s.srv.LocalRulesServer) })
 		resp, err = s.trLocalRulesServer.Do(req)
 	case "LocalRulestacksClient":
-		initServer(s, &s.trLocalRulestacksServer, func() *LocalRulestacksServerTransport {
+		initServer(&s.trMu, &s.trLocalRulestacksServer, func() *LocalRulestacksServerTransport {
 			return NewLocalRulestacksServerTransport(&s.srv.LocalRulestacksServer)
 		})
 		resp, err = s.trLocalRulestacksServer.Do(req)
 	case "MetricsObjectFirewallClient":
-		initServer(s, &s.trMetricsObjectFirewallServer, func() *MetricsObjectFirewallServerTransport {
+		initServer(&s.trMu, &s.trMetricsObjectFirewallServer, func() *MetricsObjectFirewallServerTransport {
 			return NewMetricsObjectFirewallServerTransport(&s.srv.MetricsObjectFirewallServer)
 		})
 		resp, err = s.trMetricsObjectFirewallServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PaloAltoNetworksCloudngfwOperationsClient":
-		initServer(s, &s.trPaloAltoNetworksCloudngfwOperationsServer, func() *PaloAltoNetworksCloudngfwOperationsServerTransport {
+		initServer(&s.trMu, &s.trPaloAltoNetworksCloudngfwOperationsServer, func() *PaloAltoNetworksCloudngfwOperationsServerTransport {
 			return NewPaloAltoNetworksCloudngfwOperationsServerTransport(&s.srv.PaloAltoNetworksCloudngfwOperationsServer)
 		})
 		resp, err = s.trPaloAltoNetworksCloudngfwOperationsServer.Do(req)
 	case "PostRulesClient":
-		initServer(s, &s.trPostRulesServer, func() *PostRulesServerTransport { return NewPostRulesServerTransport(&s.srv.PostRulesServer) })
+		initServer(&s.trMu, &s.trPostRulesServer, func() *PostRulesServerTransport { return NewPostRulesServerTransport(&s.srv.PostRulesServer) })
 		resp, err = s.trPostRulesServer.Do(req)
 	case "PreRulesClient":
-		initServer(s, &s.trPreRulesServer, func() *PreRulesServerTransport { return NewPreRulesServerTransport(&s.srv.PreRulesServer) })
+		initServer(&s.trMu, &s.trPreRulesServer, func() *PreRulesServerTransport { return NewPreRulesServerTransport(&s.srv.PreRulesServer) })
 		resp, err = s.trPreRulesServer.Do(req)
 	case "PrefixListGlobalRulestackClient":
-		initServer(s, &s.trPrefixListGlobalRulestackServer, func() *PrefixListGlobalRulestackServerTransport {
+		initServer(&s.trMu, &s.trPrefixListGlobalRulestackServer, func() *PrefixListGlobalRulestackServerTransport {
 			return NewPrefixListGlobalRulestackServerTransport(&s.srv.PrefixListGlobalRulestackServer)
 		})
 		resp, err = s.trPrefixListGlobalRulestackServer.Do(req)
 	case "PrefixListLocalRulestackClient":
-		initServer(s, &s.trPrefixListLocalRulestackServer, func() *PrefixListLocalRulestackServerTransport {
+		initServer(&s.trMu, &s.trPrefixListLocalRulestackServer, func() *PrefixListLocalRulestackServerTransport {
 			return NewPrefixListLocalRulestackServerTransport(&s.srv.PrefixListLocalRulestackServer)
 		})
 		resp, err = s.trPrefixListLocalRulestackServer.Do(req)
@@ -188,12 +188,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

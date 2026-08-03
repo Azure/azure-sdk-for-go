@@ -7,11 +7,11 @@ package armcomputeschedule_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/computeschedule/armcomputeschedule/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-04-15-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-15-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,25 +37,25 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSet() {
 		// 	OperationListResult: armcomputeschedule.OperationListResult{
 		// 		Value: []*armcomputeschedule.Operation{
 		// 			{
-		// 				Name: to.Ptr("tew"),
+		// 				Name: to.Ptr("Microsoft.ComputeSchedule/scheduledActions/read"),
 		// 				IsDataAction: to.Ptr(true),
 		// 				Display: &armcomputeschedule.OperationDisplay{
-		// 					Provider: to.Ptr("kphlo"),
-		// 					Resource: to.Ptr("vjhxmakxdtbnqhyjhclbargzt"),
-		// 					Operation: to.Ptr("mmfsfkofhhfvgeryxbpdu"),
-		// 					Description: to.Ptr("trdrldwroctmfwumqodfdxiuts"),
+		// 					Provider: to.Ptr("Microsoft.ComputeSchedule"),
+		// 					Resource: to.Ptr("scheduledActions"),
+		// 					Operation: to.Ptr("Read scheduled actions"),
+		// 					Description: to.Ptr("Gets a scheduled action resource"),
 		// 				},
 		// 				Origin: to.Ptr(armcomputeschedule.OriginUser),
 		// 				ActionType: to.Ptr(armcomputeschedule.ActionTypeInternal),
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/732116BD-AF31-4E74-9283-B387C44B4A44/providers/Microsoft.ComputeSchedule/scheduledActions?api-version=2026-04-15-preview&$skiptoken=abc123"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-04-15-preview/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-15-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

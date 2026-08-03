@@ -707,3 +707,83 @@ retract v2.0.0 // bad release
 		require.Contains(t, string(updatedContent), "retract v2.0.0")
 	})
 }
+
+func TestUpdateAutorestMdVersion(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-autorest")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	autorestMdPath := filepath.Join(tempDir, "autorest.md")
+	content := "```yaml\nmodule-version: 1.0.0\n```\n"
+	err = os.WriteFile(autorestMdPath, []byte(content), 0644)
+	require.NoError(t, err)
+
+	err = UpdateAutorestMdVersion(autorestMdPath, "1.2.3")
+	require.NoError(t, err)
+
+	updatedContent, err := os.ReadFile(autorestMdPath)
+	require.NoError(t, err)
+
+	require.Contains(t, string(updatedContent), "module-version: 1.2.3")
+}
+
+func TestUpdateReadmeModule(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-readme")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "foo", "armfoo")
+	err = os.MkdirAll(modulePath, 0755)
+	require.NoError(t, err)
+
+	mockRepo := &mockSDKRepo{root: tempDir}
+
+	readmeContent := "# armfoo\n\ngithub.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo\n"
+	err = os.WriteFile(filepath.Join(modulePath, "README.md"), []byte(readmeContent), 0644)
+	require.NoError(t, err)
+
+	version, err := semver.NewVersion("2.0.0")
+	require.NoError(t, err)
+
+	err = UpdateReadmeModule(modulePath, version, mockRepo)
+	require.NoError(t, err)
+
+	updatedContent, err := os.ReadFile(filepath.Join(modulePath, "README.md"))
+	require.NoError(t, err)
+
+	require.Contains(t, string(updatedContent), "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/foo/armfoo/v2")
+}
+
+// TestUpdateAllVersionFilesIgnoresMissingFiles verifies that UpdateAllVersionFiles
+// skips target files that don't exist instead of returning an error.
+func TestUpdateAllVersionFilesIgnoresMissingFiles(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "test-update-all-version-files")
+	require.NoError(t, err)
+	defer os.RemoveAll(tempDir)
+
+	mockRepo := &mockSDKRepo{root: tempDir}
+
+	t.Run("No files present for v1 module", func(t *testing.T) {
+		modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "foo", "armfoo")
+		err := os.MkdirAll(modulePath, 0755)
+		require.NoError(t, err)
+
+		version, err := semver.NewVersion("1.2.3")
+		require.NoError(t, err)
+
+		err = UpdateAllVersionFiles(modulePath, version, mockRepo)
+		require.NoError(t, err)
+	})
+
+	t.Run("No files present for v2+ module", func(t *testing.T) {
+		modulePath := filepath.Join(tempDir, "sdk", "resourcemanager", "bar", "armbar")
+		err := os.MkdirAll(modulePath, 0755)
+		require.NoError(t, err)
+
+		version, err := semver.NewVersion("2.0.0")
+		require.NoError(t, err)
+
+		err = UpdateAllVersionFiles(modulePath, version, mockRepo)
+		require.NoError(t, err)
+	})
+}

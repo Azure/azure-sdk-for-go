@@ -30,7 +30,7 @@ func ExampleFirewallStatusClient_Get_firewallStatusGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallStatusClientGetResponse{
-	// 	FirewallStatusResource: &armpanngfw.FirewallStatusResource{
+	// 	FirewallStatusResource: armpanngfw.FirewallStatusResource{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("aaaa"),
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1/statuses/default"),
@@ -75,7 +75,7 @@ func ExampleFirewallStatusClient_Get_firewallStatusGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.FirewallStatusClientGetResponse{
-	// 	FirewallStatusResource: &armpanngfw.FirewallStatusResource{
+	// 	FirewallStatusResource: armpanngfw.FirewallStatusResource{
 	// 		ID: to.Ptr("/subscriptions/2bf4a339-294d-4c25-b0b2-ef649e9f5c27/resourcegroups/firewall-rg/providers/PaloAltoNetworks.Cloudngfw/firewalls/firewall1/statuses/default"),
 	// 		Properties: &armpanngfw.FirewallStatusProperty{
 	// 		},

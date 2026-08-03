@@ -31,7 +31,7 @@ func ExampleRoleAssignmentSchedulesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentSchedulesClientGetResponse{
-	// 	RoleAssignmentSchedule: &armauthorization.RoleAssignmentSchedule{
+	// 	RoleAssignmentSchedule: armauthorization.RoleAssignmentSchedule{
 	// 		Name: to.Ptr("c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),
 	// 		Type: to.Ptr("Microsoft.Authorization/RoleAssignmentSchedules"),
 	// 		ID: to.Ptr("/subscriptions/dfa2a084-766f-4003-8ae1-c4aeb893a99f/providers/Microsoft.Authorization/RoleAssignmentSchedules/c9e264ff-3133-4776-a81a-ebc7c33c8ec6"),

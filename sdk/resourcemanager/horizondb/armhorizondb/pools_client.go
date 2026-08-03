@@ -18,6 +18,8 @@ import (
 
 // PoolsClient contains the methods for the Pools group.
 // Don't use this type directly, use NewPoolsClient() instead.
+//
+// Generated from API version 2026-01-20-preview
 type PoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // Get - Gets information about a HorizonDb pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - poolName - The name of the HorizonDb pool.
@@ -93,8 +93,8 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGe
 }
 
 // NewListPager - Lists all HorizonDb pools in a cluster.
-//
-// Generated from API version 2026-01-20-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDb cluster.
 //   - options - PoolsClientListOptions contains the optional parameters for the PoolsClient.NewListPager method.
@@ -157,8 +155,8 @@ func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-20-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260120Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

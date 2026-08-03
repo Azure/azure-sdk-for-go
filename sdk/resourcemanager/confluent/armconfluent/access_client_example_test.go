@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_CreateRoleBinding_MaximumSet_Gen.json
 func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientCreateRoleBindingResponse{
-	// 	RoleBindingRecord: &armconfluent.RoleBindingRecord{
+	// 	RoleBindingRecord: armconfluent.RoleBindingRecord{
 	// 		Kind: to.Ptr("rdgdgwc"),
 	// 		ID: to.Ptr("vyt"),
 	// 		Metadata: &armconfluent.MetadataEntity{
@@ -52,7 +52,7 @@ func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_CreateRoleBinding_MinimumSet_Gen.json
 func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,12 +71,12 @@ func ExampleAccessClient_CreateRoleBinding_accessCreateRoleBindingMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientCreateRoleBindingResponse{
-	// 	RoleBindingRecord: &armconfluent.RoleBindingRecord{
+	// 	RoleBindingRecord: armconfluent.RoleBindingRecord{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_DeleteRoleBinding_MaximumSet_Gen.json
 func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_DeleteRoleBinding_MinimumSet_Gen.json
 func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleAccessClient_DeleteRoleBinding_accessDeleteRoleBindingMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_InviteUser_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_InviteUser_MaximumSet_Gen.json
 func ExampleAccessClient_InviteUser_accessInviteUserMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleAccessClient_InviteUser_accessInviteUserMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientInviteUserResponse{
-	// 	InvitationRecord: &armconfluent.InvitationRecord{
+	// 	InvitationRecord: armconfluent.InvitationRecord{
 	// 		Kind: to.Ptr("uizkhsgicpwxpdoazoiwb"),
 	// 		ID: to.Ptr("ebcxw"),
 	// 		Metadata: &armconfluent.MetadataEntity{
@@ -166,7 +166,7 @@ func ExampleAccessClient_InviteUser_accessInviteUserMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_InviteUser_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_InviteUser_MinimumSet_Gen.json
 func ExampleAccessClient_InviteUser_accessInviteUserMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,12 +185,12 @@ func ExampleAccessClient_InviteUser_accessInviteUserMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientInviteUserResponse{
-	// 	InvitationRecord: &armconfluent.InvitationRecord{
+	// 	InvitationRecord: armconfluent.InvitationRecord{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListClusters_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListClusters_MaximumSet_Gen.json
 func ExampleAccessClient_ListClusters_accessListClustersMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleAccessClient_ListClusters_accessListClustersMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListClustersResponse{
-	// 	AccessListClusterSuccessResponse: &armconfluent.AccessListClusterSuccessResponse{
+	// 	AccessListClusterSuccessResponse: armconfluent.AccessListClusterSuccessResponse{
 	// 		Kind: to.Ptr("ajiagwlynkxffeqevka"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -274,7 +274,7 @@ func ExampleAccessClient_ListClusters_accessListClustersMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListClusters_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListClusters_MinimumSet_Gen.json
 func ExampleAccessClient_ListClusters_accessListClustersMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,12 +293,12 @@ func ExampleAccessClient_ListClusters_accessListClustersMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListClustersResponse{
-	// 	AccessListClusterSuccessResponse: &armconfluent.AccessListClusterSuccessResponse{
+	// 	AccessListClusterSuccessResponse: armconfluent.AccessListClusterSuccessResponse{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListEnvironments_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListEnvironments_MaximumSet_Gen.json
 func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListEnvironmentsResponse{
-	// 	AccessListEnvironmentsSuccessResponse: &armconfluent.AccessListEnvironmentsSuccessResponse{
+	// 	AccessListEnvironmentsSuccessResponse: armconfluent.AccessListEnvironmentsSuccessResponse{
 	// 		Kind: to.Ptr("otgvdvmkalxvfhntcupkzeumnmysh"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -348,7 +348,7 @@ func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListEnvironments_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListEnvironments_MinimumSet_Gen.json
 func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,12 +367,12 @@ func ExampleAccessClient_ListEnvironments_accessListEnvironmentsMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListEnvironmentsResponse{
-	// 	AccessListEnvironmentsSuccessResponse: &armconfluent.AccessListEnvironmentsSuccessResponse{
+	// 	AccessListEnvironmentsSuccessResponse: armconfluent.AccessListEnvironmentsSuccessResponse{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListInvitations_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListInvitations_MaximumSet_Gen.json
 func ExampleAccessClient_ListInvitations_accessListInvitationsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleAccessClient_ListInvitations_accessListInvitationsMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListInvitationsResponse{
-	// 	AccessListInvitationsSuccessResponse: &armconfluent.AccessListInvitationsSuccessResponse{
+	// 	AccessListInvitationsSuccessResponse: armconfluent.AccessListInvitationsSuccessResponse{
 	// 		Kind: to.Ptr("bsiuyjkrslbybixusbaecuqj"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -426,7 +426,7 @@ func ExampleAccessClient_ListInvitations_accessListInvitationsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListInvitations_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListInvitations_MinimumSet_Gen.json
 func ExampleAccessClient_ListInvitations_accessListInvitationsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,12 +445,12 @@ func ExampleAccessClient_ListInvitations_accessListInvitationsMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListInvitationsResponse{
-	// 	AccessListInvitationsSuccessResponse: &armconfluent.AccessListInvitationsSuccessResponse{
+	// 	AccessListInvitationsSuccessResponse: armconfluent.AccessListInvitationsSuccessResponse{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindingNameList_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindingNameList_MaximumSet_Gen.json
 func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -473,7 +473,7 @@ func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingNameListResponse{
-	// 	AccessRoleBindingNameListSuccessResponse: &armconfluent.AccessRoleBindingNameListSuccessResponse{
+	// 	AccessRoleBindingNameListSuccessResponse: armconfluent.AccessRoleBindingNameListSuccessResponse{
 	// 		Kind: to.Ptr("pictmuncchderpgmyxqmmc"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -489,7 +489,7 @@ func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMa
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindingNameList_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindingNameList_MinimumSet_Gen.json
 func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,12 +508,12 @@ func ExampleAccessClient_ListRoleBindingNameList_accessListRoleBindingNameListMi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingNameListResponse{
-	// 	AccessRoleBindingNameListSuccessResponse: &armconfluent.AccessRoleBindingNameListSuccessResponse{
+	// 	AccessRoleBindingNameListSuccessResponse: armconfluent.AccessRoleBindingNameListSuccessResponse{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindings_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindings_MaximumSet_Gen.json
 func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,7 +536,7 @@ func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingsResponse{
-	// 	AccessListRoleBindingsSuccessResponse: &armconfluent.AccessListRoleBindingsSuccessResponse{
+	// 	AccessListRoleBindingsSuccessResponse: armconfluent.AccessListRoleBindingsSuccessResponse{
 	// 		Kind: to.Ptr("zpwiczs"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -565,7 +565,7 @@ func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListRoleBindings_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListRoleBindings_MinimumSet_Gen.json
 func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -584,12 +584,12 @@ func ExampleAccessClient_ListRoleBindings_accessListRoleBindingsMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListRoleBindingsResponse{
-	// 	AccessListRoleBindingsSuccessResponse: &armconfluent.AccessListRoleBindingsSuccessResponse{
+	// 	AccessListRoleBindingsSuccessResponse: armconfluent.AccessListRoleBindingsSuccessResponse{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListServiceAccounts_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListServiceAccounts_MaximumSet_Gen.json
 func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -612,7 +612,7 @@ func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMaximumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListServiceAccountsResponse{
-	// 	AccessListServiceAccountsSuccessResponse: &armconfluent.AccessListServiceAccountsSuccessResponse{
+	// 	AccessListServiceAccountsSuccessResponse: armconfluent.AccessListServiceAccountsSuccessResponse{
 	// 		Kind: to.Ptr("puztaopmygsvwfwufjvycnok"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -640,7 +640,7 @@ func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMaximumSet
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListServiceAccounts_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListServiceAccounts_MinimumSet_Gen.json
 func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -659,12 +659,12 @@ func ExampleAccessClient_ListServiceAccounts_accessListServiceAccountsMinimumSet
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListServiceAccountsResponse{
-	// 	AccessListServiceAccountsSuccessResponse: &armconfluent.AccessListServiceAccountsSuccessResponse{
+	// 	AccessListServiceAccountsSuccessResponse: armconfluent.AccessListServiceAccountsSuccessResponse{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListUsers_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListUsers_MaximumSet_Gen.json
 func ExampleAccessClient_ListUsers_accessListUsersMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -687,7 +687,7 @@ func ExampleAccessClient_ListUsers_accessListUsersMaximumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListUsersResponse{
-	// 	AccessListUsersSuccessResponse: &armconfluent.AccessListUsersSuccessResponse{
+	// 	AccessListUsersSuccessResponse: armconfluent.AccessListUsersSuccessResponse{
 	// 		Kind: to.Ptr("autatdvryzmgwnblxadobfvo"),
 	// 		Metadata: &armconfluent.ListMetadata{
 	// 			First: to.Ptr("gxyzsfkulrbudspwhbmhot"),
@@ -716,7 +716,7 @@ func ExampleAccessClient_ListUsers_accessListUsersMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Access_ListUsers_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Access_ListUsers_MinimumSet_Gen.json
 func ExampleAccessClient_ListUsers_accessListUsersMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -735,7 +735,7 @@ func ExampleAccessClient_ListUsers_accessListUsersMinimumSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.AccessClientListUsersResponse{
-	// 	AccessListUsersSuccessResponse: &armconfluent.AccessListUsersSuccessResponse{
+	// 	AccessListUsersSuccessResponse: armconfluent.AccessListUsersSuccessResponse{
 	// 	},
 	// }
 }

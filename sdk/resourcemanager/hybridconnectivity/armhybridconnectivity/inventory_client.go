@@ -18,6 +18,8 @@ import (
 
 // InventoryClient contains the methods for the Inventory group.
 // Don't use this type directly, use NewInventoryClient() instead.
+//
+// Generated from API version 2024-12-01
 type InventoryClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewInventoryClient(credential azcore.TokenCredential, options *arm.ClientOp
 
 // Get - Get a InventoryResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - solutionConfiguration - Represent Solution Configuration Resource.
 //   - inventoryID - Inventory resource
@@ -86,8 +86,8 @@ func (client *InventoryClient) getCreateRequest(ctx context.Context, resourceURI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -102,8 +102,6 @@ func (client *InventoryClient) getHandleResponse(resp *http.Response) (Inventory
 }
 
 // NewListBySolutionConfigurationPager - List InventoryResource resources by SolutionConfiguration
-//
-// Generated from API version 2024-12-01
 //   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - solutionConfiguration - Represent Solution Configuration Resource.
 //   - options - InventoryClientListBySolutionConfigurationOptions contains the optional parameters for the InventoryClient.NewListBySolutionConfigurationPager
@@ -147,8 +145,8 @@ func (client *InventoryClient) listBySolutionConfigurationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

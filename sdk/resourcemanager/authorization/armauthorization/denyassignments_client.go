@@ -18,6 +18,8 @@ import (
 
 // DenyAssignmentsClient contains the methods for the DenyAssignments group.
 // Don't use this type directly, use NewDenyAssignmentsClient() instead.
+//
+// Generated from API version 2024-07-01-preview
 type DenyAssignmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDenyAssignmentsClient(subscriptionID string, credential azcore.TokenCred
 
 // CreateOrUpdate - Create or update a deny assignment by scope and name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - denyAssignmentID - The ID of the deny assignment to get.
 //   - parameters - Parameters for the deny assignment.
@@ -86,8 +86,8 @@ func (client *DenyAssignmentsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -107,8 +107,6 @@ func (client *DenyAssignmentsClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete a deny assignment by scope and name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - denyAssignmentID - The ID of the deny assignment to get.
 //   - options - DenyAssignmentsClientDeleteOptions contains the optional parameters for the DenyAssignmentsClient.Delete method.
@@ -149,15 +147,13 @@ func (client *DenyAssignmentsClient) deleteCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the specified deny assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - denyAssignmentID - The ID of the deny assignment to get.
 //   - options - DenyAssignmentsClientGetOptions contains the optional parameters for the DenyAssignmentsClient.Get method.
@@ -199,8 +195,8 @@ func (client *DenyAssignmentsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -216,8 +212,6 @@ func (client *DenyAssignmentsClient) getHandleResponse(resp *http.Response) (Den
 
 // GetByID - Gets a deny assignment by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-07-01-preview
 //   - denyAssignmentID - The fully qualified ID of the role assignment including scope, resource name, and resource type. Format:
 //     /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example: /subscriptions/<SUB_ID>/resourcegroups/<RESOURCE_GROUP>/providers/Microsoft.Authorization/roleAssignments/<ROLE_ASSIGNMENT_NAME>
 //   - options - DenyAssignmentsClientGetByIDOptions contains the optional parameters for the DenyAssignmentsClient.GetByID method.
@@ -255,8 +249,8 @@ func (client *DenyAssignmentsClient) getByIDCreateRequest(ctx context.Context, d
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -271,8 +265,6 @@ func (client *DenyAssignmentsClient) getByIDHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Gets all deny assignments for the subscription.
-//
-// Generated from API version 2024-07-01-preview
 //   - options - DenyAssignmentsClientListOptions contains the optional parameters for the DenyAssignmentsClient.NewListPager
 //     method.
 func (client *DenyAssignmentsClient) NewListPager(options *DenyAssignmentsClientListOptions) *runtime.Pager[DenyAssignmentsClientListResponse] {
@@ -313,8 +305,8 @@ func (client *DenyAssignmentsClient) listCreateRequest(ctx context.Context, opti
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -329,8 +321,6 @@ func (client *DenyAssignmentsClient) listHandleResponse(resp *http.Response) (De
 }
 
 // NewListForResourcePager - Gets deny assignments for a resource.
-//
-// Generated from API version 2024-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceProviderNamespace - The namespace of the resource provider.
 //   - parentResourcePath - The parent resource identity.
@@ -396,8 +386,8 @@ func (client *DenyAssignmentsClient) listForResourceCreateRequest(ctx context.Co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -412,8 +402,6 @@ func (client *DenyAssignmentsClient) listForResourceHandleResponse(resp *http.Re
 }
 
 // NewListForResourceGroupPager - Gets deny assignments for a resource group.
-//
-// Generated from API version 2024-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DenyAssignmentsClientListForResourceGroupOptions contains the optional parameters for the DenyAssignmentsClient.NewListForResourceGroupPager
 //     method.
@@ -459,8 +447,8 @@ func (client *DenyAssignmentsClient) listForResourceGroupCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -475,8 +463,6 @@ func (client *DenyAssignmentsClient) listForResourceGroupHandleResponse(resp *ht
 }
 
 // NewListForScopePager - Gets deny assignments for a scope.
-//
-// Generated from API version 2024-07-01-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - DenyAssignmentsClientListForScopeOptions contains the optional parameters for the DenyAssignmentsClient.NewListForScopePager
 //     method.
@@ -518,8 +504,8 @@ func (client *DenyAssignmentsClient) listForScopeCreateRequest(ctx context.Conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2024-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

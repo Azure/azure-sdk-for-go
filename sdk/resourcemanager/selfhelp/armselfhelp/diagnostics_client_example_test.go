@@ -28,13 +28,13 @@ func ExampleDiagnosticsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.DiagnosticsClientCreateResponse{
-	// 	DiagnosticResource: &armselfhelp.DiagnosticResource{
+	// 	DiagnosticResource: armselfhelp.DiagnosticResource{
 	// 		Name: to.Ptr("Microsoft.Help/diagnostics"),
 	// 		Type: to.Ptr("VMNotWorkingInsight"),
 	// 		ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/diagnostics/VMNotWorkingInsight"),
@@ -83,7 +83,7 @@ func ExampleDiagnosticsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.DiagnosticsClientGetResponse{
-	// 	DiagnosticResource: &armselfhelp.DiagnosticResource{
+	// 	DiagnosticResource: armselfhelp.DiagnosticResource{
 	// 		Name: to.Ptr("Microsoft.Help/diagnostics"),
 	// 		Type: to.Ptr("VMNotWorkingInsight"),
 	// 		ID: to.Ptr("/subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/diagnostics/VMNotWorkingInsight"),

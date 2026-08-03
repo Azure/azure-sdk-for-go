@@ -7,18 +7,19 @@ package armmaps
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // CreatorsClient contains the methods for the Creators group.
 // Don't use this type directly, use NewCreatorsClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type CreatorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +44,6 @@ func NewCreatorsClient(subscriptionID string, credential azcore.TokenCredential,
 // CreateOrUpdate - Create or update a Maps Creator resource. Creator resource will manage Azure resources required to populate
 // a custom set of mapping data. It requires an account to exist before it can be created.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the Maps Account.
 //   - creatorName - The name of the Maps Creator instance.
@@ -96,8 +95,8 @@ func (client *CreatorsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, creatorResource); err != nil {
@@ -117,8 +116,6 @@ func (client *CreatorsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Delete a Maps Creator resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the Maps Account.
 //   - creatorName - The name of the Maps Creator instance.
@@ -168,15 +165,13 @@ func (client *CreatorsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Maps Creator resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the Maps Account.
 //   - creatorName - The name of the Maps Creator instance.
@@ -227,8 +222,8 @@ func (client *CreatorsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -243,8 +238,6 @@ func (client *CreatorsClient) getHandleResponse(resp *http.Response) (CreatorsCl
 }
 
 // NewListByAccountPager - Get all Creator instances for an Azure Maps Account
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the Maps Account.
 //   - options - CreatorsClientListByAccountOptions contains the optional parameters for the CreatorsClient.NewListByAccountPager
@@ -292,8 +285,8 @@ func (client *CreatorsClient) listByAccountCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -309,8 +302,6 @@ func (client *CreatorsClient) listByAccountHandleResponse(resp *http.Response) (
 
 // Update - Updates the Maps Creator resource. Only a subset of the parameters may be updated after creation, such as Tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the Maps Account.
 //   - creatorName - The name of the Maps Creator instance.
@@ -362,8 +353,8 @@ func (client *CreatorsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, creatorUpdateParameters); err != nil {

@@ -2183,13 +2183,13 @@ func (p *PartnerClientAuthentication) GetPartnerClientAuthentication() *PartnerC
 
 // PartnerConfiguration - Partner configuration information
 type PartnerConfiguration struct {
-	// The geo-location where the resource lives
+	// Location of the resource.
 	Location *string
 
 	// Properties of the partner configuration.
 	Properties *PartnerConfigurationProperties
 
-	// Resource tags.
+	// Tags of the resource.
 	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}

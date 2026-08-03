@@ -18,6 +18,8 @@ import (
 
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
+//
+// Generated from API version 2025-09-01
 type SKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,9 +43,7 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // NewListPager - List all the available Skus in the region and information related to them
 //
-// # List all the available Skus in the region and information related to them
-//
-// Generated from API version 2025-09-01
+// List all the available Skus in the region and information related to them
 //   - options - SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 func (client *SKUsClient) NewListPager(options *SKUsClientListOptions) *runtime.Pager[SKUsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SKUsClientListResponse]{
@@ -83,8 +83,8 @@ func (client *SKUsClient) listCreateRequest(ctx context.Context, options *SKUsCl
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

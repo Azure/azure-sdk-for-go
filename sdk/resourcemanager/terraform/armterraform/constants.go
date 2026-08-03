@@ -4,6 +4,10 @@
 
 package armterraform
 
+const (
+	version20230701Preview string = "2023-07-01-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

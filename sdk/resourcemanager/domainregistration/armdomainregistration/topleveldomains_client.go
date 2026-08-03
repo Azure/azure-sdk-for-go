@@ -18,6 +18,8 @@ import (
 
 // TopLevelDomainsClient contains the methods for the TopLevelDomains group.
 // Don't use this type directly, use NewTopLevelDomainsClient() instead.
+//
+// Generated from API version 2024-11-01
 type TopLevelDomainsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewTopLevelDomainsClient(subscriptionID string, credential azcore.TokenCred
 //
 // Description for Get details of a top-level domain.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - name - Name of the top-level domain.
 //   - options - TopLevelDomainsClientGetOptions contains the optional parameters for the TopLevelDomainsClient.Get method.
 func (client *TopLevelDomainsClient) Get(ctx context.Context, name string, options *TopLevelDomainsClientGetOptions) (TopLevelDomainsClientGetResponse, error) {
@@ -85,8 +85,8 @@ func (client *TopLevelDomainsClient) getCreateRequest(ctx context.Context, name 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -103,8 +103,6 @@ func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (Top
 // NewListPager - Get all top-level domains supported for registration.
 //
 // Description for Get all top-level domains supported for registration.
-//
-// Generated from API version 2024-11-01
 //   - options - TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.NewListPager
 //     method.
 func (client *TopLevelDomainsClient) NewListPager(options *TopLevelDomainsClientListOptions) *runtime.Pager[TopLevelDomainsClientListResponse] {
@@ -142,8 +140,8 @@ func (client *TopLevelDomainsClient) listCreateRequest(ctx context.Context, _ *T
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -160,8 +158,6 @@ func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (To
 // NewListAgreementsPager - Gets all legal agreements that user needs to accept before purchasing a domain.
 //
 // Description for Gets all legal agreements that user needs to accept before purchasing a domain.
-//
-// Generated from API version 2024-11-01
 //   - name - Name of the top-level domain.
 //   - agreementOption - Domain agreement options.
 //   - options - TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.NewListAgreementsPager
@@ -205,8 +201,8 @@ func (client *TopLevelDomainsClient) listAgreementsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, agreementOption); err != nil {

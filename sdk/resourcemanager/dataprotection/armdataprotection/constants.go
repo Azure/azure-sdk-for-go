@@ -4,6 +4,10 @@
 
 package armdataprotection
 
+const (
+	version20260301 string = "2026-03-01"
+)
+
 type AKSVolumeTypes string
 
 const (

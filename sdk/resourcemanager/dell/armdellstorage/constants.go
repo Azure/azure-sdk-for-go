@@ -4,6 +4,10 @@
 
 package armdellstorage
 
+const (
+	version20250321 string = "2025-03-21"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

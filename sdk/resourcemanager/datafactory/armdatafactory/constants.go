@@ -4,6 +4,10 @@
 
 package armdatafactory
 
+const (
+	version20180601 string = "2018-06-01"
+)
+
 // ActivityOnInactiveMarkAs - Status result of the activity when the state is set to Inactive. This is an optional property
 // and if not provided when the activity is inactive, the status will be Succeeded by default.
 type ActivityOnInactiveMarkAs string

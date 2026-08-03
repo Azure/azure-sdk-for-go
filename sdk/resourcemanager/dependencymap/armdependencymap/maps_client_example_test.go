@@ -34,13 +34,13 @@ func ExampleMapsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdependencymap.MapsClientCreateOrUpdateResponse{
-	// 	MapsResource: &armdependencymap.MapsResource{
+	// 	MapsResource: armdependencymap.MapsResource{
 	// 		Properties: &armdependencymap.MapsResourceProperties{
 	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
 	// 		},
@@ -79,7 +79,7 @@ func ExampleMapsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -114,13 +114,13 @@ func ExampleMapsClient_BeginExportDependencies() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdependencymap.MapsClientExportDependenciesResponse{
-	// 	ExportDependenciesOperationResult: &armdependencymap.ExportDependenciesOperationResult{
+	// 	ExportDependenciesOperationResult: armdependencymap.ExportDependenciesOperationResult{
 	// 		ID: to.Ptr("/subscriptions/D6E58BDB-45F1-41EC-A884-1FC945058848/resourceGroups/rgdependencyMap/providers/Microsoft.DependencyMap/locations/EASTUS2EUAP/operationStatuses/icttwtbaztlrahdfosqwnepbvgrk"),
 	// 		Name: to.Ptr("icttwtbaztlrahdfosqwnepbvgrk"),
 	// 		Status: to.Ptr("Succeeded"),
@@ -156,7 +156,7 @@ func ExampleMapsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdependencymap.MapsClientGetResponse{
-	// 	MapsResource: &armdependencymap.MapsResource{
+	// 	MapsResource: armdependencymap.MapsResource{
 	// 		Properties: &armdependencymap.MapsResourceProperties{
 	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
 	// 		},
@@ -210,7 +210,7 @@ func ExampleMapsClient_BeginGetConnectionsForProcessOnFocusedMachine() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -246,7 +246,7 @@ func ExampleMapsClient_BeginGetConnectionsWithConnectedMachineForFocusedMachine(
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -281,7 +281,7 @@ func ExampleMapsClient_BeginGetDependencyViewForFocusedMachine() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -406,13 +406,13 @@ func ExampleMapsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdependencymap.MapsClientUpdateResponse{
-	// 	MapsResource: &armdependencymap.MapsResource{
+	// 	MapsResource: armdependencymap.MapsResource{
 	// 		Properties: &armdependencymap.MapsResourceProperties{
 	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
 	// 		},

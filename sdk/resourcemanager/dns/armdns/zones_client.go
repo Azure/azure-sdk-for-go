@@ -19,6 +19,8 @@ import (
 
 // ZonesClient contains the methods for the Zones group.
 // Don't use this type directly, use NewZonesClient() instead.
+//
+// Generated from API version 2023-07-01-preview
 type ZonesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewZonesClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // CreateOrUpdate - Creates or updates a DNS zone. Does not modify DNS records within the zone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - parameters - Parameters supplied to the CreateOrUpdate operation.
@@ -90,8 +90,8 @@ func (client *ZonesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -117,8 +117,6 @@ func (client *ZonesClient) createOrUpdateHandleResponse(resp *http.Response) (Zo
 
 // BeginDelete - Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - options - ZonesClientBeginDeleteOptions contains the optional parameters for the ZonesClient.BeginDelete method.
@@ -141,8 +139,6 @@ func (client *ZonesClient) BeginDelete(ctx context.Context, resourceGroupName st
 
 // Delete - Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 func (client *ZonesClient) deleteOperation(ctx context.Context, resourceGroupName string, zoneName string, options *ZonesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ZonesClient.BeginDelete"
@@ -184,8 +180,8 @@ func (client *ZonesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
 	}
@@ -194,8 +190,6 @@ func (client *ZonesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 
 // Get - Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - options - ZonesClientGetOptions contains the optional parameters for the ZonesClient.Get method.
@@ -241,8 +235,8 @@ func (client *ZonesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -257,8 +251,6 @@ func (client *ZonesClient) getHandleResponse(resp *http.Response) (ZonesClientGe
 }
 
 // NewListPager - Lists the DNS zones in all resource groups in a subscription.
-//
-// Generated from API version 2023-07-01-preview
 //   - options - ZonesClientListOptions contains the optional parameters for the ZonesClient.NewListPager method.
 func (client *ZonesClient) NewListPager(options *ZonesClientListOptions) *runtime.Pager[ZonesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ZonesClientListResponse]{
@@ -298,8 +290,8 @@ func (client *ZonesClient) listCreateRequest(ctx context.Context, options *Zones
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -314,8 +306,6 @@ func (client *ZonesClient) listHandleResponse(resp *http.Response) (ZonesClientL
 }
 
 // NewListByResourceGroupPager - Lists the DNS zones within a resource group.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ZonesClientListByResourceGroupOptions contains the optional parameters for the ZonesClient.NewListByResourceGroupPager
 //     method.
@@ -361,8 +351,8 @@ func (client *ZonesClient) listByResourceGroupCreateRequest(ctx context.Context,
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -378,8 +368,6 @@ func (client *ZonesClient) listByResourceGroupHandleResponse(resp *http.Response
 
 // Update - Updates a DNS zone. Does not modify DNS records within the zone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-07-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - zoneName - The name of the DNS zone (without a terminating dot).
 //   - parameters - Parameters supplied to the Update operation.
@@ -426,8 +414,8 @@ func (client *ZonesClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-07-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

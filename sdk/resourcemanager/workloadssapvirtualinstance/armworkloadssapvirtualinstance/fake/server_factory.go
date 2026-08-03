@@ -66,25 +66,25 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "SAPApplicationServerInstancesClient":
-		initServer(s, &s.trSAPApplicationServerInstancesServer, func() *SAPApplicationServerInstancesServerTransport {
+		initServer(&s.trMu, &s.trSAPApplicationServerInstancesServer, func() *SAPApplicationServerInstancesServerTransport {
 			return NewSAPApplicationServerInstancesServerTransport(&s.srv.SAPApplicationServerInstancesServer)
 		})
 		resp, err = s.trSAPApplicationServerInstancesServer.Do(req)
 	case "SAPCentralServerInstancesClient":
-		initServer(s, &s.trSAPCentralServerInstancesServer, func() *SAPCentralServerInstancesServerTransport {
+		initServer(&s.trMu, &s.trSAPCentralServerInstancesServer, func() *SAPCentralServerInstancesServerTransport {
 			return NewSAPCentralServerInstancesServerTransport(&s.srv.SAPCentralServerInstancesServer)
 		})
 		resp, err = s.trSAPCentralServerInstancesServer.Do(req)
 	case "SAPDatabaseInstancesClient":
-		initServer(s, &s.trSAPDatabaseInstancesServer, func() *SAPDatabaseInstancesServerTransport {
+		initServer(&s.trMu, &s.trSAPDatabaseInstancesServer, func() *SAPDatabaseInstancesServerTransport {
 			return NewSAPDatabaseInstancesServerTransport(&s.srv.SAPDatabaseInstancesServer)
 		})
 		resp, err = s.trSAPDatabaseInstancesServer.Do(req)
 	case "SAPVirtualInstancesClient":
-		initServer(s, &s.trSAPVirtualInstancesServer, func() *SAPVirtualInstancesServerTransport {
+		initServer(&s.trMu, &s.trSAPVirtualInstancesServer, func() *SAPVirtualInstancesServerTransport {
 			return NewSAPVirtualInstancesServerTransport(&s.srv.SAPVirtualInstancesServer)
 		})
 		resp, err = s.trSAPVirtualInstancesServer.Do(req)
@@ -97,12 +97,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

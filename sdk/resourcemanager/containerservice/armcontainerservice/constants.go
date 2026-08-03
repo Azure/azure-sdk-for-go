@@ -5,7 +5,7 @@
 package armcontainerservice
 
 const (
-	version20260302Preview string = "2026-03-02-preview"
+	version20260502Preview string = "2026-05-02-preview"
 )
 
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
@@ -176,6 +176,8 @@ type AgentPoolType string
 const (
 	// AgentPoolTypeAvailabilitySet - Use of this is strongly discouraged.
 	AgentPoolTypeAvailabilitySet AgentPoolType = "AvailabilitySet"
+	// AgentPoolTypeFlexNodes - Create an Agent Pool for BYO machines running the FlexNode agent.
+	AgentPoolTypeFlexNodes AgentPoolType = "FlexNodes"
 	// AgentPoolTypeVirtualMachineScaleSets - Create an Agent Pool backed by a Virtual Machine Scale Set.
 	AgentPoolTypeVirtualMachineScaleSets AgentPoolType = "VirtualMachineScaleSets"
 	// AgentPoolTypeVirtualMachines - Create an Agent Pool backed by a Single Instance VM orchestration mode.
@@ -186,8 +188,58 @@ const (
 func PossibleAgentPoolTypeValues() []AgentPoolType {
 	return []AgentPoolType{
 		AgentPoolTypeAvailabilitySet,
+		AgentPoolTypeFlexNodes,
 		AgentPoolTypeVirtualMachineScaleSets,
 		AgentPoolTypeVirtualMachines,
+	}
+}
+
+// AlertConfigurationMode - The mode of the alert configuration.
+type AlertConfigurationMode string
+
+const (
+	// AlertConfigurationModeDisabled - Alerts are disabled.
+	AlertConfigurationModeDisabled AlertConfigurationMode = "Disabled"
+	// AlertConfigurationModeManaged - AKS manages the alerts lifecycle including creation, updates, and deletion.
+	// Users receive alerts through the configured notification channel.
+	AlertConfigurationModeManaged AlertConfigurationMode = "Managed"
+)
+
+// PossibleAlertConfigurationModeValues returns the possible values for the AlertConfigurationMode const type.
+func PossibleAlertConfigurationModeValues() []AlertConfigurationMode {
+	return []AlertConfigurationMode{
+		AlertConfigurationModeDisabled,
+		AlertConfigurationModeManaged,
+	}
+}
+
+// AlertConfigurationProvisioningState - The current provisioning state of the alert configuration.
+type AlertConfigurationProvisioningState string
+
+const (
+	// AlertConfigurationProvisioningStateCanceled - Resource creation was canceled.
+	AlertConfigurationProvisioningStateCanceled AlertConfigurationProvisioningState = "Canceled"
+	// AlertConfigurationProvisioningStateCreating - The alert configuration is being created.
+	AlertConfigurationProvisioningStateCreating AlertConfigurationProvisioningState = "Creating"
+	// AlertConfigurationProvisioningStateDeleting - The alert configuration is being deleted.
+	AlertConfigurationProvisioningStateDeleting AlertConfigurationProvisioningState = "Deleting"
+	// AlertConfigurationProvisioningStateFailed - Resource creation failed.
+	AlertConfigurationProvisioningStateFailed AlertConfigurationProvisioningState = "Failed"
+	// AlertConfigurationProvisioningStateSucceeded - Resource has been created.
+	AlertConfigurationProvisioningStateSucceeded AlertConfigurationProvisioningState = "Succeeded"
+	// AlertConfigurationProvisioningStateUpdating - The alert configuration is being updated.
+	AlertConfigurationProvisioningStateUpdating AlertConfigurationProvisioningState = "Updating"
+)
+
+// PossibleAlertConfigurationProvisioningStateValues returns the possible values for the AlertConfigurationProvisioningState const type.
+func PossibleAlertConfigurationProvisioningStateValues() []AlertConfigurationProvisioningState {
+	return []AlertConfigurationProvisioningState{
+		AlertConfigurationProvisioningStateCanceled,
+		AlertConfigurationProvisioningStateCreating,
+		AlertConfigurationProvisioningStateDeleting,
+		AlertConfigurationProvisioningStateFailed,
+		AlertConfigurationProvisioningStateSucceeded,
+		AlertConfigurationProvisioningStateUpdating,
 	}
 }
 
@@ -217,6 +269,9 @@ const (
 	BackendPoolTypeNodeIP BackendPoolType = "NodeIP"
 	// BackendPoolTypeNodeIPConfiguration - The type of the managed inbound Load Balancer BackendPool. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
 	BackendPoolTypeNodeIPConfiguration BackendPoolType = "NodeIPConfiguration"
+	// BackendPoolTypePodIP - The type of the managed inbound Load Balancer BackendPool. Used only when loadBalancerSku is specified
+	// as 'service'. https://cloud-provider-azure.sigs.k8s.io/topics/loadbalancer/#configure-load-balancer-backend.
+	BackendPoolTypePodIP BackendPoolType = "PodIP"
 )
 
 // PossibleBackendPoolTypeValues returns the possible values for the BackendPoolType const type.
@@ -224,6 +279,26 @@ func PossibleBackendPoolTypeValues() []BackendPoolType {
 	return []BackendPoolType{
 		BackendPoolTypeNodeIP,
 		BackendPoolTypeNodeIPConfiguration,
+		BackendPoolTypePodIP,
+	}
+}
+
+// BastionSKU - The SKU of the managed Azure Bastion. The default is 'Standard'. See https://aka.ms/aks/BastionSKUs for more
+// information about the differences between Azure Bastion SKUs.
+type BastionSKU string
+
+const (
+	// BastionSKUPremium - Use the premium SKU of Azure Bastion.
+	BastionSKUPremium BastionSKU = "Premium"
+	// BastionSKUStandard - Use the standard SKU of Azure Bastion.
+	BastionSKUStandard BastionSKU = "Standard"
+)
+
+// PossibleBastionSKUValues returns the possible values for the BastionSKU const type.
+func PossibleBastionSKUValues() []BastionSKU {
+	return []BastionSKU{
+		BastionSKUPremium,
+		BastionSKUStandard,
 	}
 }
 
@@ -781,6 +856,10 @@ type LoadBalancerSKU string
 const (
 	// LoadBalancerSKUBasic - Use a basic Load Balancer with limited functionality.
 	LoadBalancerSKUBasic LoadBalancerSKU = "basic"
+	// LoadBalancerSKUService - Use a service Load Balancer, with native pod-level load balancing. This SKU is specifically built
+	// to scale for container-based workloads, with a single instance utilized for each application. For more information, see
+	// https://aka.ms/aks/container-native-slb
+	LoadBalancerSKUService LoadBalancerSKU = "service"
 	// LoadBalancerSKUStandard - Use a a standard Load Balancer. This is the recommended Load Balancer SKU. For more information
 	// about on working with the load balancer in the managed cluster, see the [standard Load Balancer](https://docs.microsoft.com/azure/aks/load-balancer-standard)
 	// article.
@@ -791,6 +870,7 @@ const (
 func PossibleLoadBalancerSKUValues() []LoadBalancerSKU {
 	return []LoadBalancerSKU{
 		LoadBalancerSKUBasic,
+		LoadBalancerSKUService,
 		LoadBalancerSKUStandard,
 	}
 }
@@ -1736,6 +1816,27 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 		ResourceIdentityTypeNone,
 		ResourceIdentityTypeSystemAssigned,
 		ResourceIdentityTypeUserAssigned,
+	}
+}
+
+// ResourceProvisioningState - The provisioning state of a resource type.
+type ResourceProvisioningState string
+
+const (
+	// ResourceProvisioningStateCanceled - Resource creation was canceled.
+	ResourceProvisioningStateCanceled ResourceProvisioningState = "Canceled"
+	// ResourceProvisioningStateFailed - Resource creation failed.
+	ResourceProvisioningStateFailed ResourceProvisioningState = "Failed"
+	// ResourceProvisioningStateSucceeded - Resource has been created.
+	ResourceProvisioningStateSucceeded ResourceProvisioningState = "Succeeded"
+)
+
+// PossibleResourceProvisioningStateValues returns the possible values for the ResourceProvisioningState const type.
+func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
+	return []ResourceProvisioningState{
+		ResourceProvisioningStateCanceled,
+		ResourceProvisioningStateFailed,
+		ResourceProvisioningStateSucceeded,
 	}
 }
 

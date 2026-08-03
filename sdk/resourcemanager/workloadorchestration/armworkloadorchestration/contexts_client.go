@@ -18,6 +18,8 @@ import (
 
 // ContextsClient contains the methods for the Contexts group.
 // Don't use this type directly, use NewContextsClient() instead.
+//
+// Generated from API version 2025-06-01
 type ContextsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewContextsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // BeginCreateOrUpdate - Create or update Context Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *ContextsClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 
 // CreateOrUpdate - Create or update Context Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *ContextsClient) createOrUpdate(ctx context.Context, resourceGroupName string, contextName string, resource Context, options *ContextsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContextsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *ContextsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *ContextsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Delete Context Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - options - ContextsClientBeginDeleteOptions contains the optional parameters for the ContextsClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *ContextsClient) BeginDelete(ctx context.Context, resourceGroupName
 
 // Delete - Delete Context Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *ContextsClient) deleteOperation(ctx context.Context, resourceGroupName string, contextName string, options *ContextsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContextsClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *ContextsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Context Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - options - ContextsClientGetOptions contains the optional parameters for the ContextsClient.Get method.
@@ -243,8 +235,8 @@ func (client *ContextsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *ContextsClient) getHandleResponse(resp *http.Response) (ContextsCl
 }
 
 // NewListByResourceGroupPager - List by specified resource group
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ContextsClientListByResourceGroupOptions contains the optional parameters for the ContextsClient.NewListByResourceGroupPager
 //     method.
@@ -303,8 +293,8 @@ func (client *ContextsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -319,8 +309,6 @@ func (client *ContextsClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionPager - List by subscription
-//
-// Generated from API version 2025-06-01
 //   - options - ContextsClientListBySubscriptionOptions contains the optional parameters for the ContextsClient.NewListBySubscriptionPager
 //     method.
 func (client *ContextsClient) NewListBySubscriptionPager(options *ContextsClientListBySubscriptionOptions) *runtime.Pager[ContextsClientListBySubscriptionResponse] {
@@ -358,8 +346,8 @@ func (client *ContextsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,8 +363,6 @@ func (client *ContextsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // BeginUpdate - update an Context Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - properties - The resource properties to be updated.
@@ -400,8 +386,6 @@ func (client *ContextsClient) BeginUpdate(ctx context.Context, resourceGroupName
 
 // Update - update an Context Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *ContextsClient) update(ctx context.Context, resourceGroupName string, contextName string, properties ContextUpdate, options *ContextsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ContextsClient.BeginUpdate"
@@ -443,8 +427,8 @@ func (client *ContextsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

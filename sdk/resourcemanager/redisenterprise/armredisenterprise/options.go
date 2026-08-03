@@ -169,6 +169,11 @@ type MigrationClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MigrationsClientValidateOptions contains the optional parameters for the MigrationsClient.Validate method.
+type MigrationsClientValidateOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters

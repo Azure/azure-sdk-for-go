@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Create.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Create.json
 func ExampleGalleryInVMAccessControlProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,13 +35,13 @@ func ExampleGalleryInVMAccessControlProfilesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryInVMAccessControlProfilesClientCreateOrUpdateResponse{
-	// 	GalleryInVMAccessControlProfile: &armcompute.GalleryInVMAccessControlProfile{
+	// 	GalleryInVMAccessControlProfile: armcompute.GalleryInVMAccessControlProfile{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/inVMAccessControlProfiles/myInVMAccessControlProfileName"),
 	// 		Properties: &armcompute.GalleryInVMAccessControlProfileProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesLinux),
@@ -54,7 +54,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Delete.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Delete.json
 func ExampleGalleryInVMAccessControlProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,11 +71,11 @@ func ExampleGalleryInVMAccessControlProfilesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Get.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Get.json
 func ExampleGalleryInVMAccessControlProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryInVMAccessControlProfilesClientGetResponse{
-	// 	GalleryInVMAccessControlProfile: &armcompute.GalleryInVMAccessControlProfile{
+	// 	GalleryInVMAccessControlProfile: armcompute.GalleryInVMAccessControlProfile{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/inVMAccessControlProfiles/myInVMAccessControlProfileName"),
 	// 		Properties: &armcompute.GalleryInVMAccessControlProfileProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesLinux),
@@ -107,7 +107,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_ListByGallery.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_ListByGallery.json
 func ExampleGalleryInVMAccessControlProfilesClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleGalleryInVMAccessControlProfilesClient_NewListByGalleryPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Update.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfile_Update.json
 func ExampleGalleryInVMAccessControlProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,13 +171,13 @@ func ExampleGalleryInVMAccessControlProfilesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryInVMAccessControlProfilesClientUpdateResponse{
-	// 	GalleryInVMAccessControlProfile: &armcompute.GalleryInVMAccessControlProfile{
+	// 	GalleryInVMAccessControlProfile: armcompute.GalleryInVMAccessControlProfile{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/inVMAccessControlProfiles/myInVMAccessControlProfileName"),
 	// 		Properties: &armcompute.GalleryInVMAccessControlProfileProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesLinux),

@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// AgentPoolsServer contains the fakes for client AgentPoolsClient
 	AgentPoolsServer AgentPoolsServer
 
+	// AlertConfigurationsServer contains the fakes for client AlertConfigurationsClient
+	AlertConfigurationsServer AlertConfigurationsServer
+
 	// Server contains the fakes for client Client
 	Server Server
 
@@ -35,6 +38,9 @@ type ServerFactory struct {
 
 	// MaintenanceConfigurationsServer contains the fakes for client MaintenanceConfigurationsClient
 	MaintenanceConfigurationsServer MaintenanceConfigurationsServer
+
+	// MaintenanceWindowsServer contains the fakes for client MaintenanceWindowsClient
+	MaintenanceWindowsServer MaintenanceWindowsServer
 
 	// ManagedClusterSnapshotsServer contains the fakes for client ManagedClusterSnapshotsClient
 	ManagedClusterSnapshotsServer ManagedClusterSnapshotsServer
@@ -91,12 +97,14 @@ type ServerFactoryTransport struct {
 	srv                                 *ServerFactory
 	trMu                                sync.Mutex
 	trAgentPoolsServer                  *AgentPoolsServerTransport
+	trAlertConfigurationsServer         *AlertConfigurationsServerTransport
 	trServer                            *ServerTransport
 	trIdentityBindingsServer            *IdentityBindingsServerTransport
 	trJWTAuthenticatorsServer           *JWTAuthenticatorsServerTransport
 	trLoadBalancersServer               *LoadBalancersServerTransport
 	trMachinesServer                    *MachinesServerTransport
 	trMaintenanceConfigurationsServer   *MaintenanceConfigurationsServerTransport
+	trMaintenanceWindowsServer          *MaintenanceWindowsServerTransport
 	trManagedClusterSnapshotsServer     *ManagedClusterSnapshotsServerTransport
 	trManagedClustersServer             *ManagedClustersServerTransport
 	trManagedNamespacesServer           *ManagedNamespacesServerTransport
@@ -128,6 +136,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AgentPoolsClient":
 		initServer(&s.trMu, &s.trAgentPoolsServer, func() *AgentPoolsServerTransport { return NewAgentPoolsServerTransport(&s.srv.AgentPoolsServer) })
 		resp, err = s.trAgentPoolsServer.Do(req)
+	case "AlertConfigurationsClient":
+		initServer(&s.trMu, &s.trAlertConfigurationsServer, func() *AlertConfigurationsServerTransport {
+			return NewAlertConfigurationsServerTransport(&s.srv.AlertConfigurationsServer)
+		})
+		resp, err = s.trAlertConfigurationsServer.Do(req)
 	case "Client":
 		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
@@ -154,6 +167,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMaintenanceConfigurationsServerTransport(&s.srv.MaintenanceConfigurationsServer)
 		})
 		resp, err = s.trMaintenanceConfigurationsServer.Do(req)
+	case "MaintenanceWindowsClient":
+		initServer(&s.trMu, &s.trMaintenanceWindowsServer, func() *MaintenanceWindowsServerTransport {
+			return NewMaintenanceWindowsServerTransport(&s.srv.MaintenanceWindowsServer)
+		})
+		resp, err = s.trMaintenanceWindowsServer.Do(req)
 	case "ManagedClusterSnapshotsClient":
 		initServer(&s.trMu, &s.trManagedClusterSnapshotsServer, func() *ManagedClusterSnapshotsServerTransport {
 			return NewManagedClusterSnapshotsServerTransport(&s.srv.ManagedClusterSnapshotsServer)

@@ -18,6 +18,8 @@ import (
 
 // WorkflowsClient contains the methods for the Workflows group.
 // Don't use this type directly, use NewWorkflowsClient() instead.
+//
+// Generated from API version 2025-06-01
 type WorkflowsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWorkflowsClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Create or update a Workflow resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - workflowName - Name of the workflow
@@ -68,8 +68,6 @@ func (client *WorkflowsClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // CreateOrUpdate - Create or update a Workflow resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *WorkflowsClient) createOrUpdate(ctx context.Context, resourceGroupName string, contextName string, workflowName string, resource Workflow, options *WorkflowsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkflowsClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *WorkflowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *WorkflowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // BeginDelete - Delete a Workflow resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - workflowName - Name of the workflow
@@ -152,8 +148,6 @@ func (client *WorkflowsClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Delete a Workflow resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *WorkflowsClient) deleteOperation(ctx context.Context, resourceGroupName string, contextName string, workflowName string, options *WorkflowsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkflowsClient.BeginDelete"
@@ -199,15 +193,13 @@ func (client *WorkflowsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Workflow resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - workflowName - Name of the workflow
@@ -258,8 +250,8 @@ func (client *WorkflowsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -274,8 +266,6 @@ func (client *WorkflowsClient) getHandleResponse(resp *http.Response) (Workflows
 }
 
 // NewListByContextPager - List Workflow resources
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - options - WorkflowsClientListByContextOptions contains the optional parameters for the WorkflowsClient.NewListByContextPager
@@ -323,8 +313,8 @@ func (client *WorkflowsClient) listByContextCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -340,8 +330,6 @@ func (client *WorkflowsClient) listByContextHandleResponse(resp *http.Response) 
 
 // BeginUpdate - update a Workflow resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - contextName - The name of the Context.
 //   - workflowName - Name of the workflow
@@ -366,8 +354,6 @@ func (client *WorkflowsClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // Update - update a Workflow resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *WorkflowsClient) update(ctx context.Context, resourceGroupName string, contextName string, workflowName string, properties Workflow, options *WorkflowsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkflowsClient.BeginUpdate"
@@ -413,8 +399,8 @@ func (client *WorkflowsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

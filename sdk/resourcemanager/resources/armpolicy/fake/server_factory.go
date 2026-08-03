@@ -18,11 +18,20 @@ type ServerFactory struct {
 	// AssignmentsServer contains the fakes for client AssignmentsClient
 	AssignmentsServer AssignmentsServer
 
+	// DataPolicyManifestsServer contains the fakes for client DataPolicyManifestsClient
+	DataPolicyManifestsServer DataPolicyManifestsServer
+
 	// DefinitionVersionsServer contains the fakes for client DefinitionVersionsClient
 	DefinitionVersionsServer DefinitionVersionsServer
 
 	// DefinitionsServer contains the fakes for client DefinitionsClient
 	DefinitionsServer DefinitionsServer
+
+	// EnrollmentsServer contains the fakes for client EnrollmentsClient
+	EnrollmentsServer EnrollmentsServer
+
+	// ExemptionsServer contains the fakes for client ExemptionsClient
+	ExemptionsServer ExemptionsServer
 
 	// SetDefinitionVersionsServer contains the fakes for client SetDefinitionVersionsClient
 	SetDefinitionVersionsServer SetDefinitionVersionsServer
@@ -32,6 +41,12 @@ type ServerFactory struct {
 
 	// TokensServer contains the fakes for client TokensClient
 	TokensServer TokensServer
+
+	// VariableValuesServer contains the fakes for client VariableValuesClient
+	VariableValuesServer VariableValuesServer
+
+	// VariablesServer contains the fakes for client VariablesClient
+	VariablesServer VariablesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -49,11 +64,16 @@ type ServerFactoryTransport struct {
 	srv                           *ServerFactory
 	trMu                          sync.Mutex
 	trAssignmentsServer           *AssignmentsServerTransport
+	trDataPolicyManifestsServer   *DataPolicyManifestsServerTransport
 	trDefinitionVersionsServer    *DefinitionVersionsServerTransport
 	trDefinitionsServer           *DefinitionsServerTransport
+	trEnrollmentsServer           *EnrollmentsServerTransport
+	trExemptionsServer            *ExemptionsServerTransport
 	trSetDefinitionVersionsServer *SetDefinitionVersionsServerTransport
 	trSetDefinitionsServer        *SetDefinitionsServerTransport
 	trTokensServer                *TokensServerTransport
+	trVariableValuesServer        *VariableValuesServerTransport
+	trVariablesServer             *VariablesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -70,29 +90,48 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AssignmentsClient":
-		initServer(s, &s.trAssignmentsServer, func() *AssignmentsServerTransport { return NewAssignmentsServerTransport(&s.srv.AssignmentsServer) })
+		initServer(&s.trMu, &s.trAssignmentsServer, func() *AssignmentsServerTransport { return NewAssignmentsServerTransport(&s.srv.AssignmentsServer) })
 		resp, err = s.trAssignmentsServer.Do(req)
+	case "DataPolicyManifestsClient":
+		initServer(&s.trMu, &s.trDataPolicyManifestsServer, func() *DataPolicyManifestsServerTransport {
+			return NewDataPolicyManifestsServerTransport(&s.srv.DataPolicyManifestsServer)
+		})
+		resp, err = s.trDataPolicyManifestsServer.Do(req)
 	case "DefinitionVersionsClient":
-		initServer(s, &s.trDefinitionVersionsServer, func() *DefinitionVersionsServerTransport {
+		initServer(&s.trMu, &s.trDefinitionVersionsServer, func() *DefinitionVersionsServerTransport {
 			return NewDefinitionVersionsServerTransport(&s.srv.DefinitionVersionsServer)
 		})
 		resp, err = s.trDefinitionVersionsServer.Do(req)
 	case "DefinitionsClient":
-		initServer(s, &s.trDefinitionsServer, func() *DefinitionsServerTransport { return NewDefinitionsServerTransport(&s.srv.DefinitionsServer) })
+		initServer(&s.trMu, &s.trDefinitionsServer, func() *DefinitionsServerTransport { return NewDefinitionsServerTransport(&s.srv.DefinitionsServer) })
 		resp, err = s.trDefinitionsServer.Do(req)
+	case "EnrollmentsClient":
+		initServer(&s.trMu, &s.trEnrollmentsServer, func() *EnrollmentsServerTransport { return NewEnrollmentsServerTransport(&s.srv.EnrollmentsServer) })
+		resp, err = s.trEnrollmentsServer.Do(req)
+	case "ExemptionsClient":
+		initServer(&s.trMu, &s.trExemptionsServer, func() *ExemptionsServerTransport { return NewExemptionsServerTransport(&s.srv.ExemptionsServer) })
+		resp, err = s.trExemptionsServer.Do(req)
 	case "SetDefinitionVersionsClient":
-		initServer(s, &s.trSetDefinitionVersionsServer, func() *SetDefinitionVersionsServerTransport {
+		initServer(&s.trMu, &s.trSetDefinitionVersionsServer, func() *SetDefinitionVersionsServerTransport {
 			return NewSetDefinitionVersionsServerTransport(&s.srv.SetDefinitionVersionsServer)
 		})
 		resp, err = s.trSetDefinitionVersionsServer.Do(req)
 	case "SetDefinitionsClient":
-		initServer(s, &s.trSetDefinitionsServer, func() *SetDefinitionsServerTransport {
+		initServer(&s.trMu, &s.trSetDefinitionsServer, func() *SetDefinitionsServerTransport {
 			return NewSetDefinitionsServerTransport(&s.srv.SetDefinitionsServer)
 		})
 		resp, err = s.trSetDefinitionsServer.Do(req)
 	case "TokensClient":
-		initServer(s, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
+		initServer(&s.trMu, &s.trTokensServer, func() *TokensServerTransport { return NewTokensServerTransport(&s.srv.TokensServer) })
 		resp, err = s.trTokensServer.Do(req)
+	case "VariableValuesClient":
+		initServer(&s.trMu, &s.trVariableValuesServer, func() *VariableValuesServerTransport {
+			return NewVariableValuesServerTransport(&s.srv.VariableValuesServer)
+		})
+		resp, err = s.trVariableValuesServer.Do(req)
+	case "VariablesClient":
+		initServer(&s.trMu, &s.trVariablesServer, func() *VariablesServerTransport { return NewVariablesServerTransport(&s.srv.VariablesServer) })
+		resp, err = s.trVariablesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}
@@ -102,12 +141,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

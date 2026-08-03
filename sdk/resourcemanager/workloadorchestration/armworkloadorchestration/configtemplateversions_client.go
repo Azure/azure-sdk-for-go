@@ -18,6 +18,8 @@ import (
 
 // ConfigTemplateVersionsClient contains the methods for the ConfigTemplateVersions group.
 // Don't use this type directly, use NewConfigTemplateVersionsClient() instead.
+//
+// Generated from API version 2025-06-01
 type ConfigTemplateVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewConfigTemplateVersionsClient(subscriptionID string, credential azcore.To
 
 // Get - Get a Config Template Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - configTemplateVersionName - The name of the ConfigTemplateVersion
@@ -94,8 +94,8 @@ func (client *ConfigTemplateVersionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -110,8 +110,6 @@ func (client *ConfigTemplateVersionsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByConfigTemplatePager - List Config Template Version Resources
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - options - ConfigTemplateVersionsClientListByConfigTemplateOptions contains the optional parameters for the ConfigTemplateVersionsClient.NewListByConfigTemplatePager
@@ -159,8 +157,8 @@ func (client *ConfigTemplateVersionsClient) listByConfigTemplateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

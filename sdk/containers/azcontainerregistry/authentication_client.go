@@ -18,6 +18,8 @@ import (
 
 // AuthenticationClient contains the methods for the Authentication group.
 // Don't use this type directly, use a constructor function instead.
+//
+// Generated from API version 2021-07-01
 type AuthenticationClient struct {
 	internal *azcore.Client
 	endpoint string
@@ -25,8 +27,6 @@ type AuthenticationClient struct {
 
 // ExchangeAADAccessTokenForACRRefreshToken - Exchange AAD tokens for an ACR refresh Token
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - grantType - Can take a value of accesstokenrefreshtoken, or accesstoken, or refresh_token
 //   - service - Indicates the name of your Azure container registry.
 //   - options - AuthenticationClientExchangeAADAccessTokenForACRRefreshTokenOptions contains the optional parameters for the
@@ -59,8 +59,8 @@ func (client *AuthenticationClient) exchangeAADAccessTokenForACRRefreshTokenCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	formData := url.Values{}
 	formData.Set("grant_type", string(grantType))
@@ -92,8 +92,6 @@ func (client *AuthenticationClient) exchangeAADAccessTokenForACRRefreshTokenHand
 
 // ExchangeACRRefreshTokenForACRAccessToken - Exchange ACR Refresh token for an ACR Access Token
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-07-01
 //   - service - Indicates the name of your Azure container registry.
 //   - scope - Which is expected to be a valid scope, and can be specified more than once for multiple scope requests. You obtained
 //     this from the Www-Authenticate response header from the challenge.
@@ -128,8 +126,8 @@ func (client *AuthenticationClient) exchangeACRRefreshTokenForACRAccessTokenCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-07-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	formData := url.Values{}
 	formData.Set("service", service)

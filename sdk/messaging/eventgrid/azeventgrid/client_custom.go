@@ -12,7 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/messaging"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azeventgrid/internal"
 )
 
 // ClientOptions contains optional settings for [Client]
@@ -28,7 +27,7 @@ func NewClient(endpoint string, tokenCredential azcore.TokenCredential, options 
 		options = &ClientOptions{}
 	}
 
-	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
+	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
 			runtime.NewBearerTokenPolicy(tokenCredential, tokenScopes, nil),
 		},
@@ -52,7 +51,7 @@ func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCreden
 		options = &ClientOptions{}
 	}
 
-	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
+	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
 			runtime.NewKeyCredentialPolicy(keyCred, sasKeyHeader, nil),
 		},
@@ -76,7 +75,7 @@ func NewClientWithSAS(endpoint string, sasCred *azcore.SASCredential, options *C
 		options = &ClientOptions{}
 	}
 
-	azc, err := azcore.NewClient(internal.ModuleName+".Client", internal.ModuleVersion, runtime.PipelineOptions{
+	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
 			runtime.NewSASCredentialPolicy(sasCred, sasTokenHeader, nil),
 		},

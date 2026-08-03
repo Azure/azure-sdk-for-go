@@ -15,7 +15,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -44,6 +46,10 @@ type ClusterManagersServer struct {
 	// Update is the fake for method ClusterManagersClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, clusterManagerName string, clusterManagerUpdateParameters armnetworkcloud.ClusterManagerPatchParameters, options *armnetworkcloud.ClusterManagersClientUpdateOptions) (resp azfake.Responder[armnetworkcloud.ClusterManagersClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdateRelayPrivateEndpointConnection is the fake for method ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateRelayPrivateEndpointConnection func(ctx context.Context, resourceGroupName string, clusterManagerName string, options *armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions) (resp azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewClusterManagersServerTransport creates a new instance of ClusterManagersServerTransport with the provided implementation.
@@ -56,17 +62,19 @@ func NewClusterManagersServerTransport(srv *ClusterManagersServer) *ClusterManag
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListBySubscriptionResponse]](),
+		beginUpdateRelayPrivateEndpointConnection: newTracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse]](),
 	}
 }
 
 // ClusterManagersServerTransport connects instances of armnetworkcloud.ClusterManagersClient to instances of ClusterManagersServer.
 // Don't use this type directly, use NewClusterManagersServerTransport instead.
 type ClusterManagersServerTransport struct {
-	srv                         *ClusterManagersServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListBySubscriptionResponse]]
+	srv                                       *ClusterManagersServer
+	beginCreateOrUpdate                       *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientCreateOrUpdateResponse]]
+	beginDelete                               *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientDeleteResponse]]
+	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListByResourceGroupResponse]]
+	newListBySubscriptionPager                *tracker[azfake.PagerResponder[armnetworkcloud.ClusterManagersClientListBySubscriptionResponse]]
+	beginUpdateRelayPrivateEndpointConnection *tracker[azfake.PollerResponder[armnetworkcloud.ClusterManagersClientUpdateRelayPrivateEndpointConnectionResponse]]
 }
 
 // Do implements the policy.Transporter interface for ClusterManagersServerTransport.
@@ -81,9 +89,7 @@ func (c *ClusterManagersServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (c *ClusterManagersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -104,15 +110,14 @@ func (c *ClusterManagersServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "ClusterManagersClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
+			case "ClusterManagersClient.BeginUpdateRelayPrivateEndpointConnection":
+				res.resp, res.err = c.dispatchBeginUpdateRelayPrivateEndpointConnection(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -169,7 +174,7 @@ func (c *ClusterManagersServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		c.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -222,7 +227,7 @@ func (c *ClusterManagersServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		c.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -256,7 +261,7 @@ func (c *ClusterManagersServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterManager, req)
@@ -283,11 +288,7 @@ func (c *ClusterManagersServerTransport) dispatchNewListByResourceGroupPager(req
 		if err != nil {
 			return nil, err
 		}
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -297,11 +298,7 @@ func (c *ClusterManagersServerTransport) dispatchNewListByResourceGroupPager(req
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armnetworkcloud.ClusterManagersClientListByResourceGroupOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.ClusterManagersClientListByResourceGroupOptions{
@@ -320,7 +317,7 @@ func (c *ClusterManagersServerTransport) dispatchNewListByResourceGroupPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -343,11 +340,7 @@ func (c *ClusterManagersServerTransport) dispatchNewListBySubscriptionPager(req 
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		topUnescaped, err := url.QueryUnescape(qp.Get("$top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -357,11 +350,7 @@ func (c *ClusterManagersServerTransport) dispatchNewListBySubscriptionPager(req 
 		if err != nil {
 			return nil, err
 		}
-		skipTokenUnescaped, err := url.QueryUnescape(qp.Get("$skipToken"))
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(skipTokenUnescaped)
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
 		var options *armnetworkcloud.ClusterManagersClientListBySubscriptionOptions
 		if topParam != nil || skipTokenParam != nil {
 			options = &armnetworkcloud.ClusterManagersClientListBySubscriptionOptions{
@@ -380,7 +369,7 @@ func (c *ClusterManagersServerTransport) dispatchNewListBySubscriptionPager(req 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		c.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -426,13 +415,67 @@ func (c *ClusterManagersServerTransport) dispatchUpdate(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterManager, req)
 	if err != nil {
 		return nil, err
 	}
+	return resp, nil
+}
+
+func (c *ClusterManagersServerTransport) dispatchBeginUpdateRelayPrivateEndpointConnection(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdateRelayPrivateEndpointConnection == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateRelayPrivateEndpointConnection not implemented")}
+	}
+	beginUpdateRelayPrivateEndpointConnection := c.beginUpdateRelayPrivateEndpointConnection.get(req)
+	if beginUpdateRelayPrivateEndpointConnection == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetworkCloud/clusterManagers/(?P<clusterManagerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateRelayPrivateEndpointConnection`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetworkcloud.ClusterManagerUpdateRelayPrivateEndpointConnectionParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterManagerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterManagerName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armnetworkcloud.ClusterManagersClientBeginUpdateRelayPrivateEndpointConnectionOptions{
+				ClusterManagerUpdateRelayPrivateEndpointConnectionParameters: &body,
+			}
+		}
+		respr, errRespr := c.srv.BeginUpdateRelayPrivateEndpointConnection(req.Context(), resourceGroupNameParam, clusterManagerNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdateRelayPrivateEndpointConnection = &respr
+		c.beginUpdateRelayPrivateEndpointConnection.add(req, beginUpdateRelayPrivateEndpointConnection)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdateRelayPrivateEndpointConnection, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdateRelayPrivateEndpointConnection.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdateRelayPrivateEndpointConnection) {
+		c.beginUpdateRelayPrivateEndpointConnection.remove(req)
+	}
+
 	return resp, nil
 }
 

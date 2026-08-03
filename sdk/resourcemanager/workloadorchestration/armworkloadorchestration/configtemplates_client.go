@@ -18,6 +18,8 @@ import (
 
 // ConfigTemplatesClient contains the methods for the ConfigTemplates group.
 // Don't use this type directly, use NewConfigTemplatesClient() instead.
+//
+// Generated from API version 2025-06-01
 type ConfigTemplatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewConfigTemplatesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Create or update a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *ConfigTemplatesClient) BeginCreateOrUpdate(ctx context.Context, re
 
 // CreateOrUpdate - Create or update a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *ConfigTemplatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, configTemplateName string, resource ConfigTemplate, options *ConfigTemplatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigTemplatesClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *ConfigTemplatesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *ConfigTemplatesClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginCreateVersion - Create or update a Config Template Version Resource with the specified UpdateType
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - body - The content of the action request
@@ -148,8 +144,6 @@ func (client *ConfigTemplatesClient) BeginCreateVersion(ctx context.Context, res
 
 // CreateVersion - Create or update a Config Template Version Resource with the specified UpdateType
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *ConfigTemplatesClient) createVersion(ctx context.Context, resourceGroupName string, configTemplateName string, body ConfigTemplateVersionWithUpdateType, options *ConfigTemplatesClientBeginCreateVersionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigTemplatesClient.BeginCreateVersion"
@@ -191,8 +185,8 @@ func (client *ConfigTemplatesClient) createVersionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -203,8 +197,6 @@ func (client *ConfigTemplatesClient) createVersionCreateRequest(ctx context.Cont
 
 // BeginDelete - Delete a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - options - ConfigTemplatesClientBeginDeleteOptions contains the optional parameters for the ConfigTemplatesClient.BeginDelete
@@ -228,8 +220,6 @@ func (client *ConfigTemplatesClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Delete a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *ConfigTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, configTemplateName string, options *ConfigTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConfigTemplatesClient.BeginDelete"
@@ -271,15 +261,13 @@ func (client *ConfigTemplatesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - options - ConfigTemplatesClientGetOptions contains the optional parameters for the ConfigTemplatesClient.Get method.
@@ -325,8 +313,8 @@ func (client *ConfigTemplatesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +329,6 @@ func (client *ConfigTemplatesClient) getHandleResponse(resp *http.Response) (Con
 }
 
 // NewListByResourceGroupPager - List by specified resource group
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ConfigTemplatesClientListByResourceGroupOptions contains the optional parameters for the ConfigTemplatesClient.NewListByResourceGroupPager
 //     method.
@@ -385,8 +371,8 @@ func (client *ConfigTemplatesClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -401,8 +387,6 @@ func (client *ConfigTemplatesClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - List by subscription
-//
-// Generated from API version 2025-06-01
 //   - options - ConfigTemplatesClientListBySubscriptionOptions contains the optional parameters for the ConfigTemplatesClient.NewListBySubscriptionPager
 //     method.
 func (client *ConfigTemplatesClient) NewListBySubscriptionPager(options *ConfigTemplatesClientListBySubscriptionOptions) *runtime.Pager[ConfigTemplatesClientListBySubscriptionResponse] {
@@ -440,8 +424,8 @@ func (client *ConfigTemplatesClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -457,8 +441,6 @@ func (client *ConfigTemplatesClient) listBySubscriptionHandleResponse(resp *http
 
 // RemoveVersion - Remove Config Template Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - body - The content of the action request
@@ -506,8 +488,8 @@ func (client *ConfigTemplatesClient) removeVersionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -527,8 +509,6 @@ func (client *ConfigTemplatesClient) removeVersionHandleResponse(resp *http.Resp
 
 // Update - update a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - configTemplateName - The name of the ConfigTemplate
 //   - properties - The resource properties to be updated.
@@ -575,8 +555,8 @@ func (client *ConfigTemplatesClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

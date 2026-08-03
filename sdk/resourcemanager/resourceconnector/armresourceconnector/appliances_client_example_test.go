@@ -37,13 +37,13 @@ func ExampleAppliancesClient_BeginCreateOrUpdate_createUpdateAppliance() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientCreateOrUpdateResponse{
-	// 	Appliance: &armresourceconnector.Appliance{
+	// 	Appliance: armresourceconnector.Appliance{
 	// 		ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testrg/providers/Microsoft.ResourceConnector/appliances/appliance01"),
 	// 		Name: to.Ptr("appliance01"),
 	// 		Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
@@ -117,13 +117,13 @@ func ExampleAppliancesClient_BeginCreateOrUpdate_updateApplianceProxyConfigurati
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientCreateOrUpdateResponse{
-	// 	Appliance: &armresourceconnector.Appliance{
+	// 	Appliance: armresourceconnector.Appliance{
 	// 		ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testrg/providers/Microsoft.ResourceConnector/appliances/appliance01"),
 	// 		Name: to.Ptr("appliance01"),
 	// 		Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
@@ -183,7 +183,7 @@ func ExampleAppliancesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -206,7 +206,7 @@ func ExampleAppliancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientGetResponse{
-	// 	Appliance: &armresourceconnector.Appliance{
+	// 	Appliance: armresourceconnector.Appliance{
 	// 		ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance01"),
 	// 		Name: to.Ptr("appliance01"),
 	// 		Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
@@ -286,7 +286,7 @@ func ExampleAppliancesClient_GetTelemetryConfig() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientGetTelemetryConfigResponse{
-	// 	ApplianceGetTelemetryConfigResult: &armresourceconnector.ApplianceGetTelemetryConfigResult{
+	// 	ApplianceGetTelemetryConfigResult: armresourceconnector.ApplianceGetTelemetryConfigResult{
 	// 		TelemetryInstrumentationKey: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxx"),
 	// 	},
 	// }
@@ -311,7 +311,7 @@ func ExampleAppliancesClient_GetUpgradeGraph() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientGetUpgradeGraphResponse{
-	// 	UpgradeGraph: &armresourceconnector.UpgradeGraph{
+	// 	UpgradeGraph: armresourceconnector.UpgradeGraph{
 	// 		ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance01"),
 	// 		Name: to.Ptr("stable"),
 	// 		Properties: &armresourceconnector.UpgradeGraphProperties{
@@ -559,7 +559,7 @@ func ExampleAppliancesClient_ListClusterUserCredential() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientListClusterUserCredentialResponse{
-	// 	ApplianceListCredentialResults: &armresourceconnector.ApplianceListCredentialResults{
+	// 	ApplianceListCredentialResults: armresourceconnector.ApplianceListCredentialResults{
 	// 		HybridConnectionConfig: &armresourceconnector.HybridConnectionConfig{
 	// 			ExpirationTime: to.Ptr[int64](123456789),
 	// 			HybridConnectionName: to.Ptr("provider/type/bc36ffcf318d5bedfc05ba8b0628dba"),
@@ -595,7 +595,7 @@ func ExampleAppliancesClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientListKeysResponse{
-	// 	ApplianceListKeysResults: &armresourceconnector.ApplianceListKeysResults{
+	// 	ApplianceListKeysResults: armresourceconnector.ApplianceListKeysResults{
 	// 		ArtifactProfiles: map[string]*armresourceconnector.ArtifactProfile{
 	// 			"LogsArtifactType": &armresourceconnector.ArtifactProfile{
 	// 				Endpoint: to.Ptr("https://<storage-account-name>.blob.core.windows.net/<container-name>?<SAS-token>"),
@@ -780,7 +780,7 @@ func ExampleAppliancesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresourceconnector.AppliancesClientUpdateResponse{
-	// 	Appliance: &armresourceconnector.Appliance{
+	// 	Appliance: armresourceconnector.Appliance{
 	// 		ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance01"),
 	// 		Name: to.Ptr("appliance01"),
 	// 		Type: to.Ptr("Microsoft.ResourceConnector/appliances"),

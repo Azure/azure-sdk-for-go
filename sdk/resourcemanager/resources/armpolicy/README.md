@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Resource Policy module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy/v2
 ```
 
 ## Authorization

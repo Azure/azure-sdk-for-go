@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// AccountsServer contains the fakes for client AccountsClient
 	AccountsServer AccountsServer
 
+	// AdvancedPlatformMetricsServer contains the fakes for client AdvancedPlatformMetricsClient
+	AdvancedPlatformMetricsServer AdvancedPlatformMetricsServer
+
 	// BlobContainersServer contains the fakes for client BlobContainersClient
 	BlobContainersServer BlobContainersServer
 
@@ -109,6 +112,7 @@ type ServerFactoryTransport struct {
 	srv                                            *ServerFactory
 	trMu                                           sync.Mutex
 	trAccountsServer                               *AccountsServerTransport
+	trAdvancedPlatformMetricsServer                *AdvancedPlatformMetricsServerTransport
 	trBlobContainersServer                         *BlobContainersServerTransport
 	trBlobInventoryPoliciesServer                  *BlobInventoryPoliciesServerTransport
 	trBlobServicesServer                           *BlobServicesServerTransport
@@ -152,6 +156,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "AccountsClient":
 		initServer(&s.trMu, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
+	case "AdvancedPlatformMetricsClient":
+		initServer(&s.trMu, &s.trAdvancedPlatformMetricsServer, func() *AdvancedPlatformMetricsServerTransport {
+			return NewAdvancedPlatformMetricsServerTransport(&s.srv.AdvancedPlatformMetricsServer)
+		})
+		resp, err = s.trAdvancedPlatformMetricsServer.Do(req)
 	case "BlobContainersClient":
 		initServer(&s.trMu, &s.trBlobContainersServer, func() *BlobContainersServerTransport {
 			return NewBlobContainersServerTransport(&s.srv.BlobContainersServer)

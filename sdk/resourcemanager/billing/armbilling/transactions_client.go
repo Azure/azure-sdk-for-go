@@ -19,8 +19,6 @@ import (
 	"time"
 )
 
-const defaultTransactionsClientVersion string = "2024-04-01"
-
 // TransactionsClient contains the methods for the Transactions group.
 // Don't use this type directly, use NewTransactionsClient() instead.
 //
@@ -88,7 +86,7 @@ func (client *TransactionsClient) getTransactionSummaryByInvoiceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTransactionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
@@ -158,7 +156,7 @@ func (client *TransactionsClient) listByBillingProfileCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTransactionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}
@@ -248,7 +246,7 @@ func (client *TransactionsClient) listByCustomerCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTransactionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}
@@ -329,7 +327,7 @@ func (client *TransactionsClient) listByInvoiceCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTransactionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}
@@ -416,7 +414,7 @@ func (client *TransactionsClient) listByInvoiceSectionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTransactionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}
@@ -516,7 +514,7 @@ func (client *TransactionsClient) transactionsDownloadByInvoiceCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTransactionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

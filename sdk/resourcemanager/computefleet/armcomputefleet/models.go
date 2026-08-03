@@ -321,6 +321,9 @@ type FleetProperties struct {
 	// Attribute based Fleet.
 	VMAttributes *VMAttributes
 
+	// VirtualMachine prefix to be used for the virtual machines launched by Fleet. Can be used only with Launch mode.
+	VMNamePrefix *string
+
 	// Zone Allocation Policy for Fleet.
 	ZoneAllocationPolicy *ZoneAllocationPolicy
 
@@ -1061,7 +1064,7 @@ type VirtualHardDisk struct {
 	URI *string
 }
 
-// VirtualMachine - An instant Fleet's virtual machine.
+// VirtualMachine - A Launch mode Fleet's virtual machine.
 type VirtualMachine struct {
 	// READ-ONLY; The compute RP resource id of the virtual machine. subscriptions/{subId}/resourceGroups/{rgName}/providers/Microsoft.Compute/virtualMachines/{vmName}
 	ID *string
@@ -1076,8 +1079,17 @@ type VirtualMachine struct {
 	// READ-ONLY; Error information when `operationStatus` is `Failed`.
 	Error *APIError
 
-	// READ-ONLY; Type of the virtual machine
+	// READ-ONLY; The priority of the virtual machine.
+	Priority *string
+
+	// READ-ONLY; ARM resource type - virtual machine
 	Type *string
+
+	// READ-ONLY; The VM size of the virtual machine.
+	VMSize *string
+
+	// READ-ONLY; The availability zone of the virtual machine.
+	Zone *string
 }
 
 // VirtualMachineListResult - The response of a virtual machine list operation.

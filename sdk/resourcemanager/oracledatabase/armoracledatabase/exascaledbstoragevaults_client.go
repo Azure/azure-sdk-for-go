@@ -18,6 +18,8 @@ import (
 
 // ExascaleDbStorageVaultsClient contains the methods for the ExascaleDbStorageVaults group.
 // Don't use this type directly, use NewExascaleDbStorageVaultsClient() instead.
+//
+// Generated from API version 2025-09-01
 type ExascaleDbStorageVaultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewExascaleDbStorageVaultsClient(subscriptionID string, credential azcore.T
 
 // BeginCreate - Create a ExascaleDbStorageVault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - exascaleDbStorageVaultName - The name of the ExascaleDbStorageVault
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *ExascaleDbStorageVaultsClient) BeginCreate(ctx context.Context, re
 
 // Create - Create a ExascaleDbStorageVault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *ExascaleDbStorageVaultsClient) create(ctx context.Context, resourceGroupName string, exascaleDbStorageVaultName string, resource ExascaleDbStorageVault, options *ExascaleDbStorageVaultsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExascaleDbStorageVaultsClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *ExascaleDbStorageVaultsClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *ExascaleDbStorageVaultsClient) createCreateRequest(ctx context.Con
 
 // BeginDelete - Delete a ExascaleDbStorageVault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - exascaleDbStorageVaultName - The name of the ExascaleDbStorageVault
 //   - options - ExascaleDbStorageVaultsClientBeginDeleteOptions contains the optional parameters for the ExascaleDbStorageVaultsClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *ExascaleDbStorageVaultsClient) BeginDelete(ctx context.Context, re
 
 // Delete - Delete a ExascaleDbStorageVault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *ExascaleDbStorageVaultsClient) deleteOperation(ctx context.Context, resourceGroupName string, exascaleDbStorageVaultName string, options *ExascaleDbStorageVaultsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExascaleDbStorageVaultsClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *ExascaleDbStorageVaultsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a ExascaleDbStorageVault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - exascaleDbStorageVaultName - The name of the ExascaleDbStorageVault
 //   - options - ExascaleDbStorageVaultsClientGetOptions contains the optional parameters for the ExascaleDbStorageVaultsClient.Get
@@ -245,8 +237,8 @@ func (client *ExascaleDbStorageVaultsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -261,8 +253,6 @@ func (client *ExascaleDbStorageVaultsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByResourceGroupPager - List ExascaleDbStorageVault resources by resource group
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ExascaleDbStorageVaultsClientListByResourceGroupOptions contains the optional parameters for the ExascaleDbStorageVaultsClient.NewListByResourceGroupPager
 //     method.
@@ -305,8 +295,8 @@ func (client *ExascaleDbStorageVaultsClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *ExascaleDbStorageVaultsClient) listByResourceGroupHandleResponse(r
 }
 
 // NewListBySubscriptionPager - List ExascaleDbStorageVault resources by subscription ID
-//
-// Generated from API version 2025-09-01
 //   - options - ExascaleDbStorageVaultsClientListBySubscriptionOptions contains the optional parameters for the ExascaleDbStorageVaultsClient.NewListBySubscriptionPager
 //     method.
 func (client *ExascaleDbStorageVaultsClient) NewListBySubscriptionPager(options *ExascaleDbStorageVaultsClientListBySubscriptionOptions) *runtime.Pager[ExascaleDbStorageVaultsClientListBySubscriptionResponse] {
@@ -360,8 +348,8 @@ func (client *ExascaleDbStorageVaultsClient) listBySubscriptionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -377,8 +365,6 @@ func (client *ExascaleDbStorageVaultsClient) listBySubscriptionHandleResponse(re
 
 // BeginUpdate - Update a ExascaleDbStorageVault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - exascaleDbStorageVaultName - The name of the ExascaleDbStorageVault
 //   - properties - The resource properties to be updated.
@@ -403,8 +389,6 @@ func (client *ExascaleDbStorageVaultsClient) BeginUpdate(ctx context.Context, re
 
 // Update - Update a ExascaleDbStorageVault
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *ExascaleDbStorageVaultsClient) update(ctx context.Context, resourceGroupName string, exascaleDbStorageVaultName string, properties ExascaleDbStorageVaultTagsUpdate, options *ExascaleDbStorageVaultsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExascaleDbStorageVaultsClient.BeginUpdate"
@@ -446,8 +430,8 @@ func (client *ExascaleDbStorageVaultsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -4,6 +4,10 @@
 
 package armresourceconnector
 
+const (
+	version20250301Preview string = "2025-03-01-preview"
+)
+
 // AccessProfileType - Name which contains the role of the kubeconfig.
 type AccessProfileType string
 

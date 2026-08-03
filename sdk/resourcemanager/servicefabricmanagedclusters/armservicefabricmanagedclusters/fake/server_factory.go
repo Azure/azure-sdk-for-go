@@ -106,69 +106,69 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "ApplicationTypeVersionsClient":
-		initServer(s, &s.trApplicationTypeVersionsServer, func() *ApplicationTypeVersionsServerTransport {
+		initServer(&s.trMu, &s.trApplicationTypeVersionsServer, func() *ApplicationTypeVersionsServerTransport {
 			return NewApplicationTypeVersionsServerTransport(&s.srv.ApplicationTypeVersionsServer)
 		})
 		resp, err = s.trApplicationTypeVersionsServer.Do(req)
 	case "ApplicationTypesClient":
-		initServer(s, &s.trApplicationTypesServer, func() *ApplicationTypesServerTransport {
+		initServer(&s.trMu, &s.trApplicationTypesServer, func() *ApplicationTypesServerTransport {
 			return NewApplicationTypesServerTransport(&s.srv.ApplicationTypesServer)
 		})
 		resp, err = s.trApplicationTypesServer.Do(req)
 	case "ApplicationsClient":
-		initServer(s, &s.trApplicationsServer, func() *ApplicationsServerTransport { return NewApplicationsServerTransport(&s.srv.ApplicationsServer) })
+		initServer(&s.trMu, &s.trApplicationsServer, func() *ApplicationsServerTransport { return NewApplicationsServerTransport(&s.srv.ApplicationsServer) })
 		resp, err = s.trApplicationsServer.Do(req)
 	case "ManagedApplyMaintenanceWindowClient":
-		initServer(s, &s.trManagedApplyMaintenanceWindowServer, func() *ManagedApplyMaintenanceWindowServerTransport {
+		initServer(&s.trMu, &s.trManagedApplyMaintenanceWindowServer, func() *ManagedApplyMaintenanceWindowServerTransport {
 			return NewManagedApplyMaintenanceWindowServerTransport(&s.srv.ManagedApplyMaintenanceWindowServer)
 		})
 		resp, err = s.trManagedApplyMaintenanceWindowServer.Do(req)
 	case "ManagedAzResiliencyStatusClient":
-		initServer(s, &s.trManagedAzResiliencyStatusServer, func() *ManagedAzResiliencyStatusServerTransport {
+		initServer(&s.trMu, &s.trManagedAzResiliencyStatusServer, func() *ManagedAzResiliencyStatusServerTransport {
 			return NewManagedAzResiliencyStatusServerTransport(&s.srv.ManagedAzResiliencyStatusServer)
 		})
 		resp, err = s.trManagedAzResiliencyStatusServer.Do(req)
 	case "ManagedClusterVersionClient":
-		initServer(s, &s.trManagedClusterVersionServer, func() *ManagedClusterVersionServerTransport {
+		initServer(&s.trMu, &s.trManagedClusterVersionServer, func() *ManagedClusterVersionServerTransport {
 			return NewManagedClusterVersionServerTransport(&s.srv.ManagedClusterVersionServer)
 		})
 		resp, err = s.trManagedClusterVersionServer.Do(req)
 	case "ManagedClustersClient":
-		initServer(s, &s.trManagedClustersServer, func() *ManagedClustersServerTransport {
+		initServer(&s.trMu, &s.trManagedClustersServer, func() *ManagedClustersServerTransport {
 			return NewManagedClustersServerTransport(&s.srv.ManagedClustersServer)
 		})
 		resp, err = s.trManagedClustersServer.Do(req)
 	case "ManagedMaintenanceWindowStatusClient":
-		initServer(s, &s.trManagedMaintenanceWindowStatusServer, func() *ManagedMaintenanceWindowStatusServerTransport {
+		initServer(&s.trMu, &s.trManagedMaintenanceWindowStatusServer, func() *ManagedMaintenanceWindowStatusServerTransport {
 			return NewManagedMaintenanceWindowStatusServerTransport(&s.srv.ManagedMaintenanceWindowStatusServer)
 		})
 		resp, err = s.trManagedMaintenanceWindowStatusServer.Do(req)
 	case "ManagedUnsupportedVMSizesClient":
-		initServer(s, &s.trManagedUnsupportedVMSizesServer, func() *ManagedUnsupportedVMSizesServerTransport {
+		initServer(&s.trMu, &s.trManagedUnsupportedVMSizesServer, func() *ManagedUnsupportedVMSizesServerTransport {
 			return NewManagedUnsupportedVMSizesServerTransport(&s.srv.ManagedUnsupportedVMSizesServer)
 		})
 		resp, err = s.trManagedUnsupportedVMSizesServer.Do(req)
 	case "NodeTypeSKUsClient":
-		initServer(s, &s.trNodeTypeSKUsServer, func() *NodeTypeSKUsServerTransport { return NewNodeTypeSKUsServerTransport(&s.srv.NodeTypeSKUsServer) })
+		initServer(&s.trMu, &s.trNodeTypeSKUsServer, func() *NodeTypeSKUsServerTransport { return NewNodeTypeSKUsServerTransport(&s.srv.NodeTypeSKUsServer) })
 		resp, err = s.trNodeTypeSKUsServer.Do(req)
 	case "NodeTypesClient":
-		initServer(s, &s.trNodeTypesServer, func() *NodeTypesServerTransport { return NewNodeTypesServerTransport(&s.srv.NodeTypesServer) })
+		initServer(&s.trMu, &s.trNodeTypesServer, func() *NodeTypesServerTransport { return NewNodeTypesServerTransport(&s.srv.NodeTypesServer) })
 		resp, err = s.trNodeTypesServer.Do(req)
 	case "OperationResultsClient":
-		initServer(s, &s.trOperationResultsServer, func() *OperationResultsServerTransport {
+		initServer(&s.trMu, &s.trOperationResultsServer, func() *OperationResultsServerTransport {
 			return NewOperationResultsServerTransport(&s.srv.OperationResultsServer)
 		})
 		resp, err = s.trOperationResultsServer.Do(req)
 	case "OperationStatusClient":
-		initServer(s, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
+		initServer(&s.trMu, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
 			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)
 		})
 		resp, err = s.trOperationStatusServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "ServicesClient":
-		initServer(s, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
+		initServer(&s.trMu, &s.trServicesServer, func() *ServicesServerTransport { return NewServicesServerTransport(&s.srv.ServicesServer) })
 		resp, err = s.trServicesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -179,12 +179,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

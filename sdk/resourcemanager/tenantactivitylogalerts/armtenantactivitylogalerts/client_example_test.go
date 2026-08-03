@@ -60,7 +60,7 @@ func ExampleClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtenantactivitylogalerts.ClientCreateOrUpdateResponse{
-	// 	TenantActivityLogAlertResource: &armtenantactivitylogalerts.TenantActivityLogAlertResource{
+	// 	TenantActivityLogAlertResource: armtenantactivitylogalerts.TenantActivityLogAlertResource{
 	// 		Name: to.Ptr("SampleActivityLogAlertSHRuleOnTenantLevel"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/TenantActivityLogAlerts"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/ManagementGroups/72f988bf-86f1-41af-91ab-2d7cd011db47/providers/Microsoft.AlertsManagement/TenantActivityLogAlerts/SampleActivityLogAlertSHRuleOnTenantLevel"),
@@ -138,7 +138,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtenantactivitylogalerts.ClientGetResponse{
-	// 	TenantActivityLogAlertResource: &armtenantactivitylogalerts.TenantActivityLogAlertResource{
+	// 	TenantActivityLogAlertResource: armtenantactivitylogalerts.TenantActivityLogAlertResource{
 	// 		Name: to.Ptr("SampleActivityLogAlertSHRuleOnTenantLevel"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/TenantActivityLogAlerts"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/ManagementGroups/72f988bf-86f1-41af-91ab-2d7cd011db47/providers/Microsoft.AlertsManagement/TenantActivityLogAlerts/SampleActivityLogAlertSHRuleOnTenantLevel"),
@@ -366,7 +366,7 @@ func ExampleClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armtenantactivitylogalerts.ClientUpdateResponse{
-	// 	TenantActivityLogAlertResource: &armtenantactivitylogalerts.TenantActivityLogAlertResource{
+	// 	TenantActivityLogAlertResource: armtenantactivitylogalerts.TenantActivityLogAlertResource{
 	// 		Name: to.Ptr("SampleActivityLogAlertSHRuleOnTenantLevel"),
 	// 		Type: to.Ptr("Microsoft.AlertsManagement/TenantActivityLogAlerts"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/ManagementGroups/72f988bf-86f1-41af-91ab-2d7cd011db47/providers/Microsoft.AlertsManagement/TenantActivityLogAlerts/SampleActivityLogAlertSHRuleOnTenantLevel"),

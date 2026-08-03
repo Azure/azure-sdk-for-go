@@ -222,3 +222,73 @@ type StoragePoolsClientUpdateResponse struct {
 	// Storage pool resource
 	StoragePool
 }
+
+// VolumeGroupsClientCreateResponse contains the response from method VolumeGroupsClient.BeginCreate.
+type VolumeGroupsClientCreateResponse struct {
+	// Volume Group resource
+	VolumeGroup
+}
+
+// VolumeGroupsClientDeleteResponse contains the response from method VolumeGroupsClient.BeginDelete.
+type VolumeGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VolumeGroupsClientGetResponse contains the response from method VolumeGroupsClient.Get.
+type VolumeGroupsClientGetResponse struct {
+	// Volume Group resource
+	VolumeGroup
+}
+
+// VolumeGroupsClientGetStatusResponse contains the response from method VolumeGroupsClient.GetStatus.
+type VolumeGroupsClientGetStatusResponse struct {
+	// Volume group status information
+	VolumeGroupStatus
+}
+
+// VolumeGroupsClientListByStoragePoolResponse contains the response from method VolumeGroupsClient.NewListByStoragePoolPager.
+type VolumeGroupsClientListByStoragePoolResponse struct {
+	// The response of a VolumeGroup list operation.
+	VolumeGroupListResult
+}
+
+// VolumeGroupsClientListConnectionParametersResponse contains the response from method VolumeGroupsClient.ListConnectionParameters.
+type VolumeGroupsClientListConnectionParametersResponse struct {
+	// Connection parameters response
+	ConnectionParametersResponse
+}
+
+// VolumeGroupsClientUpdateResponse contains the response from method VolumeGroupsClient.BeginUpdate.
+type VolumeGroupsClientUpdateResponse struct {
+	// Volume Group resource
+	VolumeGroup
+}
+
+// VolumesClientCreateResponse contains the response from method VolumesClient.BeginCreate.
+type VolumesClientCreateResponse struct {
+	// Azure Volume resource
+	Volume
+}
+
+// VolumesClientDeleteResponse contains the response from method VolumesClient.BeginDelete.
+type VolumesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VolumesClientGetResponse contains the response from method VolumesClient.Get.
+type VolumesClientGetResponse struct {
+	// Azure Volume resource
+	Volume
+}
+
+// VolumesClientListByVolumeGroupResponse contains the response from method VolumesClient.NewListByVolumeGroupPager.
+type VolumesClientListByVolumeGroupResponse struct {
+	// The response of a Volume list operation.
+	VolumeListResult
+}
+
+// VolumesClientUpdateResponse contains the response from method VolumesClient.BeginUpdate.
+type VolumesClientUpdateResponse struct {
+	// Azure Volume resource
+	Volume
+}

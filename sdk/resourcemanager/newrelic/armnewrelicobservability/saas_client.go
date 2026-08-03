@@ -18,6 +18,8 @@ import (
 
 // SaaSClient contains the methods for the SaaS group.
 // Don't use this type directly, use NewSaaSClient() instead.
+//
+// Generated from API version 2025-05-01-preview
 type SaaSClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSaaSClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // ActivateResource - Resolve the token to get the SaaS resource ID and activate the SaaS resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01-preview
 //   - request - The request body
 //   - options - SaaSClientActivateResourceOptions contains the optional parameters for the SaaSClient.ActivateResource method.
 func (client *SaaSClient) ActivateResource(ctx context.Context, request ActivateSaaSParameterRequest, options *SaaSClientActivateResourceOptions) (SaaSClientActivateResourceResponse, error) {
@@ -79,8 +79,8 @@ func (client *SaaSClient) activateResourceCreateRequest(ctx context.Context, req
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, request); err != nil {

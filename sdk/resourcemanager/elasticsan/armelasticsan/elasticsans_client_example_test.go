@@ -54,13 +54,13 @@ func ExampleElasticSansClient_BeginCreate_elasticSansCreateMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.ElasticSansClientCreateResponse{
-	// 	ElasticSan: &armelasticsan.ElasticSan{
+	// 	ElasticSan: armelasticsan.ElasticSan{
 	// 		Name: to.Ptr("vfoatmakv"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
@@ -132,13 +132,13 @@ func ExampleElasticSansClient_BeginCreate_elasticSansCreateMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.ElasticSansClientCreateResponse{
-	// 	ElasticSan: &armelasticsan.ElasticSan{
+	// 	ElasticSan: armelasticsan.ElasticSan{
 	// 		Name: to.Ptr("vfoatmakv"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
@@ -193,7 +193,7 @@ func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -219,7 +219,7 @@ func ExampleElasticSansClient_BeginDelete_elasticSansDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -247,7 +247,7 @@ func ExampleElasticSansClient_Get_elasticSansGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.ElasticSansClientGetResponse{
-	// 	ElasticSan: &armelasticsan.ElasticSan{
+	// 	ElasticSan: armelasticsan.ElasticSan{
 	// 		Name: to.Ptr("vfoatmakv"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
@@ -341,7 +341,7 @@ func ExampleElasticSansClient_Get_elasticSansGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.ElasticSansClientGetResponse{
-	// 	ElasticSan: &armelasticsan.ElasticSan{
+	// 	ElasticSan: armelasticsan.ElasticSan{
 	// 		Name: to.Ptr("vfoatmakv"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
@@ -720,13 +720,13 @@ func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.ElasticSansClientUpdateResponse{
-	// 	ElasticSan: &armelasticsan.ElasticSan{
+	// 	ElasticSan: armelasticsan.ElasticSan{
 	// 		Name: to.Ptr("vfoatmakv"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),
@@ -818,13 +818,13 @@ func ExampleElasticSansClient_BeginUpdate_elasticSansUpdateMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.ElasticSansClientUpdateResponse{
-	// 	ElasticSan: &armelasticsan.ElasticSan{
+	// 	ElasticSan: armelasticsan.ElasticSan{
 	// 		Name: to.Ptr("vfoatmakv"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/ElasticSans"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}"),

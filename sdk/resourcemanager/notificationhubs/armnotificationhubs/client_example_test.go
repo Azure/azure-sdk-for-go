@@ -34,7 +34,7 @@ func ExampleClient_CheckNotificationHubAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientCheckNotificationHubAvailabilityResponse{
-	// 	CheckAvailabilityResult: &armnotificationhubs.CheckAvailabilityResult{
+	// 	CheckAvailabilityResult: armnotificationhubs.CheckAvailabilityResult{
 	// 		Name: to.Ptr("sdktest"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/checkNamespaceAvailability"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/sdktest"),
@@ -65,7 +65,7 @@ func ExampleClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientCreateOrUpdateResponse{
-	// 	NotificationHubResource: &armnotificationhubs.NotificationHubResource{
+	// 	NotificationHubResource: armnotificationhubs.NotificationHubResource{
 	// 		Name: to.Ptr("test"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
@@ -109,7 +109,7 @@ func ExampleClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	SharedAccessAuthorizationRuleResource: &armnotificationhubs.SharedAccessAuthorizationRuleResource{
+	// 	SharedAccessAuthorizationRuleResource: armnotificationhubs.SharedAccessAuthorizationRuleResource{
 	// 		Name: to.Ptr("MyManageSharedAccessKey"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/MyManageSharedAccessKey"),
@@ -144,7 +144,7 @@ func ExampleClient_DebugSend() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientDebugSendResponse{
-	// 	DebugSendResponse: &armnotificationhubs.DebugSendResponse{
+	// 	DebugSendResponse: armnotificationhubs.DebugSendResponse{
 	// 		Name: to.Ptr("test"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/debugSend"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
@@ -221,7 +221,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientGetResponse{
-	// 	NotificationHubResource: &armnotificationhubs.NotificationHubResource{
+	// 	NotificationHubResource: armnotificationhubs.NotificationHubResource{
 	// 		Name: to.Ptr("test"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
@@ -258,7 +258,7 @@ func ExampleClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientGetAuthorizationRuleResponse{
-	// 	SharedAccessAuthorizationRuleResource: &armnotificationhubs.SharedAccessAuthorizationRuleResource{
+	// 	SharedAccessAuthorizationRuleResource: armnotificationhubs.SharedAccessAuthorizationRuleResource{
 	// 		Name: to.Ptr("DefaultListenSharedAccessSignature"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/authorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test/authorizationRules/DefaultListenSharedAccessSignature"),
@@ -293,7 +293,7 @@ func ExampleClient_GetPnsCredentials() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientGetPnsCredentialsResponse{
-	// 	PnsCredentialsResource: &armnotificationhubs.PnsCredentialsResource{
+	// 	PnsCredentialsResource: armnotificationhubs.PnsCredentialsResource{
 	// 		Name: to.Ptr("test"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs/pnsCredentials"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
@@ -431,7 +431,7 @@ func ExampleClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientListKeysResponse{
-	// 	ResourceListKeys: &armnotificationhubs.ResourceListKeys{
+	// 	ResourceListKeys: armnotificationhubs.ResourceListKeys{
 	// 		KeyName: to.Ptr("sdk-AuthRules-5800"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -462,7 +462,7 @@ func ExampleClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientRegenerateKeysResponse{
-	// 	ResourceListKeys: &armnotificationhubs.ResourceListKeys{
+	// 	ResourceListKeys: armnotificationhubs.ResourceListKeys{
 	// 		KeyName: to.Ptr("DefaultListenSharedAccessSignature"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -501,7 +501,7 @@ func ExampleClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnotificationhubs.ClientUpdateResponse{
-	// 	NotificationHubResource: &armnotificationhubs.NotificationHubResource{
+	// 	NotificationHubResource: armnotificationhubs.NotificationHubResource{
 	// 		Name: to.Ptr("test"),
 	// 		Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
 	// 		ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),

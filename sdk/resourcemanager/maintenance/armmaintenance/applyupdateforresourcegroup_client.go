@@ -18,6 +18,8 @@ import (
 
 // ApplyUpdateForResourceGroupClient contains the methods for the ApplyUpdateForResourceGroup group.
 // Don't use this type directly, use NewApplyUpdateForResourceGroupClient() instead.
+//
+// Generated from API version 2023-10-01-preview
 type ApplyUpdateForResourceGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,9 +43,7 @@ func NewApplyUpdateForResourceGroupClient(subscriptionID string, credential azco
 
 // NewListPager - Get Configuration records within a subscription and resource group
 //
-// # Get Configuration records within a subscription and resource group
-//
-// Generated from API version 2023-10-01-preview
+// Get Configuration records within a subscription and resource group
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.NewListPager
 //     method.
@@ -86,8 +86,8 @@ func (client *ApplyUpdateForResourceGroupClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

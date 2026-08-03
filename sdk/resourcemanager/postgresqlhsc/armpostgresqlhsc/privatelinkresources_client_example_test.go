@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armpostgresqlhsc.PrivateLinkResource{
+	// 	PrivateLinkResource: armpostgresqlhsc.PrivateLinkResource{
 	// 		Name: to.Ptr("plr"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster/privateLinkResources/plr"),

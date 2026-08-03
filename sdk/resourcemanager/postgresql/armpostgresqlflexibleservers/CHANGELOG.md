@@ -1,5 +1,41 @@
 # Release History
 
+## 6.0.0-beta.3 (2026-06-03)
+### Features Added
+
+- New value `HighAvailabilityStateComputeUpdatingByFailover`, `HighAvailabilityStateRecreatingStandby` added to enum type `HighAvailabilityState`
+- New enum type `MaintenanceEventStatus` with values `MaintenanceEventStatusCanceled`, `MaintenanceEventStatusComplete`, `MaintenanceEventStatusInProgress`, `MaintenanceEventStatusPlanned`, `MaintenanceEventStatusRescheduled`
+- New enum type `MaintenanceEventStatusFilter` with values `MaintenanceEventStatusFilterPast`, `MaintenanceEventStatusFilterUpcoming`
+- New enum type `MaintenanceType` with values `MaintenanceTypePlannedMaintenance`
+- New enum type `MajorVersionUpgradePrecheckStatus` with values `MajorVersionUpgradePrecheckStatusCanceled`, `MajorVersionUpgradePrecheckStatusFailed`, `MajorVersionUpgradePrecheckStatusSucceeded`, `MajorVersionUpgradePrecheckStatusValidating`
+- New function `*ClientFactory.NewMaintenanceEventsClient() *MaintenanceEventsClient`
+- New function `*ClientFactory.NewMajorVersionUpgradePrecheckClient() *MajorVersionUpgradePrecheckClient`
+- New function `NewMaintenanceEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceEventsClient, error)`
+- New function `*MaintenanceEventsClient.BeginApplyNow(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, options *MaintenanceEventsClientBeginApplyNowOptions) (*runtime.Poller[MaintenanceEventsClientApplyNowResponse], error)`
+- New function `*MaintenanceEventsClient.Get(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, options *MaintenanceEventsClientGetOptions) (MaintenanceEventsClientGetResponse, error)`
+- New function `*MaintenanceEventsClient.NewListPager(resourceGroupName string, serverName string, options *MaintenanceEventsClientListOptions) *runtime.Pager[MaintenanceEventsClientListResponse]`
+- New function `*MaintenanceEventsClient.BeginReschedule(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, options *MaintenanceEventsClientBeginRescheduleOptions) (*runtime.Poller[MaintenanceEventsClientRescheduleResponse], error)`
+- New function `NewMajorVersionUpgradePrecheckClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MajorVersionUpgradePrecheckClient, error)`
+- New function `*MajorVersionUpgradePrecheckClient.Get(ctx context.Context, resourceGroupName string, serverName string, precheckValidationID string, options *MajorVersionUpgradePrecheckClientGetOptions) (MajorVersionUpgradePrecheckClientGetResponse, error)`
+- New function `*MajorVersionUpgradePrecheckClient.NewListPager(resourceGroupName string, serverName string, options *MajorVersionUpgradePrecheckClientListOptions) *runtime.Pager[MajorVersionUpgradePrecheckClientListResponse]`
+- New function `*ServersClient.BeginStartMajorVersionUpgradePrecheck(ctx context.Context, resourceGroupName string, serverName string, body StartMajorVersionUpgradePrecheckRequest, options *ServersClientBeginStartMajorVersionUpgradePrecheckOptions) (*runtime.Poller[ServersClientStartMajorVersionUpgradePrecheckResponse], error)`
+- New struct `MaintenanceEventActionResponse`
+- New struct `MaintenanceEventRescheduleRequest`
+- New struct `MaintenanceEventResource`
+- New struct `MaintenanceEventResourceListResult`
+- New struct `MaintenanceEventResourceProperties`
+- New struct `MajorVersionUpgradePrecheckResource`
+- New struct `MajorVersionUpgradePrecheckResourceListResult`
+- New struct `MajorVersionUpgradePrecheckResourceProperties`
+- New struct `PolicyDetail`
+- New struct `PrecheckErrorInfo`
+- New struct `PrecheckResult`
+- New struct `StartMajorVersionUpgradePrecheckRequest`
+- New struct `StartMajorVersionUpgradePrecheckResponse`
+- New struct `UpgradeSequence`
+- New field `GeoBackupFederatedIdentityClientID`, `PrimaryFederatedIdentityClientID` in struct `DataEncryption`
+
+
 ## 6.0.0-beta.2 (2026-03-11)
 ### Breaking Changes
 

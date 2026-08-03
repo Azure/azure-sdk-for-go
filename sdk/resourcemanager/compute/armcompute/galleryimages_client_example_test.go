@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Create.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Create.json
 func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,13 +41,13 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImagesClientCreateOrUpdateResponse{
-	// 	GalleryImage: &armcompute.GalleryImage{
+	// 	GalleryImage: armcompute.GalleryImage{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery/Images/myGalleryImageName"),
 	// 		Properties: &armcompute.GalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
@@ -66,7 +66,7 @@ func ExampleGalleryImagesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Delete.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Delete.json
 func ExampleGalleryImagesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -92,7 +92,7 @@ func ExampleGalleryImagesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Get.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Get.json
 func ExampleGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleGalleryImagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImagesClientGetResponse{
-	// 	GalleryImage: &armcompute.GalleryImage{
+	// 	GalleryImage: armcompute.GalleryImage{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/galleries/myGallery/Images/myGalleryImageName"),
 	// 		Properties: &armcompute.GalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
@@ -130,7 +130,7 @@ func ExampleGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_ListByGallery.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_ListByGallery.json
 func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleGalleryImagesClient_NewListByGalleryPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_Update.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_Update.json
 func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,13 +206,13 @@ func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImagesClientUpdateResponse{
-	// 	GalleryImage: &armcompute.GalleryImage{
+	// 	GalleryImage: armcompute.GalleryImage{
 	// 		Properties: &armcompute.GalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
@@ -230,7 +230,7 @@ func ExampleGalleryImagesClient_BeginUpdate_updateASimpleGalleryImage() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImage_UpdateFeatures.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImage_UpdateFeatures.json
 func ExampleGalleryImagesClient_BeginUpdate_updateAGalleryImageFeature() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,13 +266,13 @@ func ExampleGalleryImagesClient_BeginUpdate_updateAGalleryImageFeature() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImagesClientUpdateResponse{
-	// 	GalleryImage: &armcompute.GalleryImage{
+	// 	GalleryImage: armcompute.GalleryImage{
 	// 		Properties: &armcompute.GalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),

@@ -6,5 +6,5 @@ package armsubscriptions
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armsubscriptions"
-	moduleVersion = "v2.0.0-beta.1"
+	moduleVersion = "v2.0.0"
 )

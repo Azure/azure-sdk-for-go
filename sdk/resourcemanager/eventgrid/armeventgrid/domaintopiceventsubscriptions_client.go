@@ -7,19 +7,20 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strconv"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 )
 
 // DomainTopicEventSubscriptionsClient contains the methods for the DomainTopicEventSubscriptions group.
 // Don't use this type directly, use NewDomainTopicEventSubscriptionsClient() instead.
+//
+// Generated from API version 2025-07-15-preview
 type DomainTopicEventSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,8 +46,6 @@ func NewDomainTopicEventSubscriptionsClient(subscriptionID string, credential az
 //
 // Asynchronously creates a new event subscription or updates an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -75,8 +74,6 @@ func (client *DomainTopicEventSubscriptionsClient) BeginCreateOrUpdate(ctx conte
 //
 // Asynchronously creates a new event subscription or updates an existing event subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *DomainTopicEventSubscriptionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string, eventSubscriptionInfo EventSubscription, options *DomainTopicEventSubscriptionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainTopicEventSubscriptionsClient.BeginCreateOrUpdate"
@@ -126,8 +123,8 @@ func (client *DomainTopicEventSubscriptionsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionInfo); err != nil {
@@ -140,8 +137,6 @@ func (client *DomainTopicEventSubscriptionsClient) createOrUpdateCreateRequest(c
 //
 // Delete a nested existing event subscription for a domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -169,8 +164,6 @@ func (client *DomainTopicEventSubscriptionsClient) BeginDelete(ctx context.Conte
 //
 // Delete a nested existing event subscription for a domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *DomainTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string, options *DomainTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainTopicEventSubscriptionsClient.BeginDelete"
@@ -220,8 +213,8 @@ func (client *DomainTopicEventSubscriptionsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -229,8 +222,6 @@ func (client *DomainTopicEventSubscriptionsClient) deleteCreateRequest(ctx conte
 //
 // Get properties of a nested event subscription for a domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -287,8 +278,8 @@ func (client *DomainTopicEventSubscriptionsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -306,8 +297,6 @@ func (client *DomainTopicEventSubscriptionsClient) getHandleResponse(resp *http.
 //
 // Get all delivery attributes for an event subscription for domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -364,8 +353,8 @@ func (client *DomainTopicEventSubscriptionsClient) getDeliveryAttributesCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -383,8 +372,6 @@ func (client *DomainTopicEventSubscriptionsClient) getDeliveryAttributesHandleRe
 //
 // Get the full endpoint URL for a nested event subscription for domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -441,8 +428,8 @@ func (client *DomainTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -459,8 +446,6 @@ func (client *DomainTopicEventSubscriptionsClient) getFullURLHandleResponse(resp
 // NewListPager - List all nested event subscriptions for a specific domain topic.
 //
 // List all event subscriptions that have been created for a specific domain topic.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -519,8 +504,8 @@ func (client *DomainTopicEventSubscriptionsClient) listCreateRequest(ctx context
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -538,8 +523,6 @@ func (client *DomainTopicEventSubscriptionsClient) listHandleResponse(resp *http
 //
 // Update an existing event subscription for a domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - domainName - Name of the top level domain.
 //   - topicName - Name of the domain topic.
@@ -568,8 +551,6 @@ func (client *DomainTopicEventSubscriptionsClient) BeginUpdate(ctx context.Conte
 //
 // Update an existing event subscription for a domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 func (client *DomainTopicEventSubscriptionsClient) update(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string, eventSubscriptionUpdateParameters EventSubscriptionUpdateParameters, options *DomainTopicEventSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainTopicEventSubscriptionsClient.BeginUpdate"
@@ -619,8 +600,8 @@ func (client *DomainTopicEventSubscriptionsClient) updateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, eventSubscriptionUpdateParameters); err != nil {

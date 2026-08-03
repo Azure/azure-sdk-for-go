@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/PrivateLinkResourcesGet.json
+// Generated from example definition: 2026-04-01-preview/PrivateLinkResourcesGet.json
 func ExamplePrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlflexibleservers.PrivateLinkResourcesClientGetResponse{
-	// 	PrivateLinkResource: &armpostgresqlflexibleservers.PrivateLinkResource{
+	// 	PrivateLinkResource: armpostgresqlflexibleservers.PrivateLinkResource{
 	// 		Name: to.Ptr("exampleprivatelink"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/privateLinkResources"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver/privateLinkResources/exampleprivatelink"),
@@ -47,7 +47,7 @@ func ExamplePrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/PrivateLinkResourcesList.json
+// Generated from example definition: 2026-04-01-preview/PrivateLinkResourcesList.json
 func ExamplePrivateLinkResourcesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -21,11 +21,20 @@ type ServerFactory struct {
 	// GuestSubscriptionsServer contains the fakes for client GuestSubscriptionsClient
 	GuestSubscriptionsServer GuestSubscriptionsServer
 
+	// MemberCapOverridesServer contains the fakes for client MemberCapOverridesClient
+	MemberCapOverridesServer MemberCapOverridesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// SharedLimitCapsServer contains the fakes for client SharedLimitCapsClient
+	SharedLimitCapsServer SharedLimitCapsServer
+
 	// SharedLimitsServer contains the fakes for client SharedLimitsClient
 	SharedLimitsServer SharedLimitsServer
+
+	// TrustedHostSubscriptionsServer contains the fakes for client TrustedHostSubscriptionsClient
+	TrustedHostSubscriptionsServer TrustedHostSubscriptionsServer
 
 	// VMFamiliesServer contains the fakes for client VMFamiliesClient
 	VMFamiliesServer VMFamiliesServer
@@ -43,13 +52,16 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armcomputelimit.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                        *ServerFactory
-	trMu                       sync.Mutex
-	trFeaturesServer           *FeaturesServerTransport
-	trGuestSubscriptionsServer *GuestSubscriptionsServerTransport
-	trOperationsServer         *OperationsServerTransport
-	trSharedLimitsServer       *SharedLimitsServerTransport
-	trVMFamiliesServer         *VMFamiliesServerTransport
+	srv                              *ServerFactory
+	trMu                             sync.Mutex
+	trFeaturesServer                 *FeaturesServerTransport
+	trGuestSubscriptionsServer       *GuestSubscriptionsServerTransport
+	trMemberCapOverridesServer       *MemberCapOverridesServerTransport
+	trOperationsServer               *OperationsServerTransport
+	trSharedLimitCapsServer          *SharedLimitCapsServerTransport
+	trSharedLimitsServer             *SharedLimitsServerTransport
+	trTrustedHostSubscriptionsServer *TrustedHostSubscriptionsServerTransport
+	trVMFamiliesServer               *VMFamiliesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -73,12 +85,27 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGuestSubscriptionsServerTransport(&s.srv.GuestSubscriptionsServer)
 		})
 		resp, err = s.trGuestSubscriptionsServer.Do(req)
+	case "MemberCapOverridesClient":
+		initServer(&s.trMu, &s.trMemberCapOverridesServer, func() *MemberCapOverridesServerTransport {
+			return NewMemberCapOverridesServerTransport(&s.srv.MemberCapOverridesServer)
+		})
+		resp, err = s.trMemberCapOverridesServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "SharedLimitCapsClient":
+		initServer(&s.trMu, &s.trSharedLimitCapsServer, func() *SharedLimitCapsServerTransport {
+			return NewSharedLimitCapsServerTransport(&s.srv.SharedLimitCapsServer)
+		})
+		resp, err = s.trSharedLimitCapsServer.Do(req)
 	case "SharedLimitsClient":
 		initServer(&s.trMu, &s.trSharedLimitsServer, func() *SharedLimitsServerTransport { return NewSharedLimitsServerTransport(&s.srv.SharedLimitsServer) })
 		resp, err = s.trSharedLimitsServer.Do(req)
+	case "TrustedHostSubscriptionsClient":
+		initServer(&s.trMu, &s.trTrustedHostSubscriptionsServer, func() *TrustedHostSubscriptionsServerTransport {
+			return NewTrustedHostSubscriptionsServerTransport(&s.srv.TrustedHostSubscriptionsServer)
+		})
+		resp, err = s.trTrustedHostSubscriptionsServer.Do(req)
 	case "VMFamiliesClient":
 		initServer(&s.trMu, &s.trVMFamiliesServer, func() *VMFamiliesServerTransport { return NewVMFamiliesServerTransport(&s.srv.VMFamiliesServer) })
 		resp, err = s.trVMFamiliesServer.Do(req)

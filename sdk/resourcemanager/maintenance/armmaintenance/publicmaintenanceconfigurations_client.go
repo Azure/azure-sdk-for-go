@@ -18,6 +18,8 @@ import (
 
 // PublicMaintenanceConfigurationsClient contains the methods for the PublicMaintenanceConfigurations group.
 // Don't use this type directly, use NewPublicMaintenanceConfigurationsClient() instead.
+//
+// Generated from API version 2023-10-01-preview
 type PublicMaintenanceConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPublicMaintenanceConfigurationsClient(subscriptionID string, credential 
 
 // Get - Get Public Maintenance Configuration record
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceName - The name of the MaintenanceConfiguration
 //   - options - PublicMaintenanceConfigurationsClientGetOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.Get
 //     method.
@@ -84,8 +84,8 @@ func (client *PublicMaintenanceConfigurationsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -100,8 +100,6 @@ func (client *PublicMaintenanceConfigurationsClient) getHandleResponse(resp *htt
 }
 
 // NewListPager - Get Public Maintenance Configuration records
-//
-// Generated from API version 2023-10-01-preview
 //   - options - PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.NewListPager
 //     method.
 func (client *PublicMaintenanceConfigurationsClient) NewListPager(options *PublicMaintenanceConfigurationsClientListOptions) *runtime.Pager[PublicMaintenanceConfigurationsClientListResponse] {
@@ -139,8 +137,8 @@ func (client *PublicMaintenanceConfigurationsClient) listCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

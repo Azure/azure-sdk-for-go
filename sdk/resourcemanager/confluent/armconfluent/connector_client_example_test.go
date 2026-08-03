@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Connector_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleConnectorClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleConnectorClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.ConnectorClientCreateOrUpdateResponse{
-	// 	ConnectorResource: &armconfluent.ConnectorResource{
+	// 	ConnectorResource: armconfluent.ConnectorResource{
 	// 		Properties: &armconfluent.ConnectorResourceProperties{
 	// 			ConnectorBasicInfo: &armconfluent.ConnectorInfoBase{
 	// 				ConnectorType: to.Ptr(armconfluent.ConnectorTypeSINK),
@@ -78,7 +78,7 @@ func ExampleConnectorClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Connector_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Connector_Delete_MaximumSet_Gen.json
 func ExampleConnectorClient_BeginDelete_connectorDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,11 +95,11 @@ func ExampleConnectorClient_BeginDelete_connectorDeleteMaximumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Connector_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Connector_Delete_MinimumSet_Gen.json
 func ExampleConnectorClient_BeginDelete_connectorDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,11 +116,11 @@ func ExampleConnectorClient_BeginDelete_connectorDeleteMinimumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Connector_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Connector_Get_MaximumSet_Gen.json
 func ExampleConnectorClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleConnectorClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.ConnectorClientGetResponse{
-	// 	ConnectorResource: &armconfluent.ConnectorResource{
+	// 	ConnectorResource: armconfluent.ConnectorResource{
 	// 		Properties: &armconfluent.ConnectorResourceProperties{
 	// 			ConnectorBasicInfo: &armconfluent.ConnectorInfoBase{
 	// 				ConnectorType: to.Ptr(armconfluent.ConnectorTypeSINK),
@@ -170,7 +170,7 @@ func ExampleConnectorClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Connector_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Connector_List_MaximumSet_Gen.json
 func ExampleConnectorClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

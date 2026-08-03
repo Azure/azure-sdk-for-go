@@ -73,8 +73,38 @@ type AgentPoolsClientGetUpgradeProfileOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AgentPoolsClientListBootstrapDataOptions contains the optional parameters for the AgentPoolsClient.ListBootstrapData method.
+type AgentPoolsClientListBootstrapDataOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AgentPoolsClientListOptions contains the optional parameters for the AgentPoolsClient.NewListPager method.
 type AgentPoolsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AlertConfigurationsClient.BeginCreateOrUpdate
+// method.
+type AlertConfigurationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AlertConfigurationsClientBeginDeleteOptions contains the optional parameters for the AlertConfigurationsClient.BeginDelete
+// method.
+type AlertConfigurationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AlertConfigurationsClientGetOptions contains the optional parameters for the AlertConfigurationsClient.Get method.
+type AlertConfigurationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AlertConfigurationsClientListByManagedClusterOptions contains the optional parameters for the AlertConfigurationsClient.NewListByManagedClusterPager
+// method.
+type AlertConfigurationsClientListByManagedClusterOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -197,6 +227,42 @@ type MaintenanceConfigurationsClientGetOptions struct {
 // MaintenanceConfigurationsClientListByManagedClusterOptions contains the optional parameters for the MaintenanceConfigurationsClient.NewListByManagedClusterPager
 // method.
 type MaintenanceConfigurationsClientListByManagedClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindowsClientBeginCreateOrUpdateOptions contains the optional parameters for the MaintenanceWindowsClient.BeginCreateOrUpdate
+// method.
+type MaintenanceWindowsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceWindowsClientBeginDeleteOptions contains the optional parameters for the MaintenanceWindowsClient.BeginDelete
+// method.
+type MaintenanceWindowsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceWindowsClientGetOptions contains the optional parameters for the MaintenanceWindowsClient.Get method.
+type MaintenanceWindowsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindowsClientListBySubscriptionOptions contains the optional parameters for the MaintenanceWindowsClient.NewListBySubscriptionPager
+// method.
+type MaintenanceWindowsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindowsClientListOptions contains the optional parameters for the MaintenanceWindowsClient.NewListPager method.
+type MaintenanceWindowsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceWindowsClientUpdateTagsOptions contains the optional parameters for the MaintenanceWindowsClient.UpdateTags
+// method.
+type MaintenanceWindowsClientUpdateTagsOptions struct {
 	// placeholder for future optional parameters
 }
 

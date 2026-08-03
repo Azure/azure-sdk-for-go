@@ -29,9 +29,9 @@ type CertificateProfilesClientListByCodeSigningAccountOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateProfilesClientRevokeCertificateOptions contains the optional parameters for the CertificateProfilesClient.RevokeCertificate
+// CertificateProfilesClientRevokeCertificatesOptions contains the optional parameters for the CertificateProfilesClient.RevokeCertificates
 // method.
-type CertificateProfilesClientRevokeCertificateOptions struct {
+type CertificateProfilesClientRevokeCertificatesOptions struct {
 	// placeholder for future optional parameters
 }
 

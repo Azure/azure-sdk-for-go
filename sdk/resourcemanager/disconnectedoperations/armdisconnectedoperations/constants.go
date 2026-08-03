@@ -4,6 +4,10 @@
 
 package armdisconnectedoperations
 
+const (
+	version20260315 string = "2026-03-15"
+)
+
 // AutoRenew - Auto renew status
 type AutoRenew string
 

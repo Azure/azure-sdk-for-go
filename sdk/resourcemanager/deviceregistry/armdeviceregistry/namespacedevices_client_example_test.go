@@ -49,13 +49,13 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createOrReplaceNamespace
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
-	// 	NamespaceDevice: &armdeviceregistry.NamespaceDevice{
+	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
@@ -138,13 +138,13 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
-	// 	NamespaceDevice: &armdeviceregistry.NamespaceDevice{
+	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("namespace-device-on-edge"),
 	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
@@ -234,13 +234,13 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
-	// 	NamespaceDevice: &armdeviceregistry.NamespaceDevice{
+	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("namespace-device-on-edge"),
 	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
@@ -347,13 +347,13 @@ func ExampleNamespaceDevicesClient_BeginCreateOrReplace_createEdgeEnabledDeviceW
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientCreateOrReplaceResponse{
-	// 	NamespaceDevice: &armdeviceregistry.NamespaceDevice{
+	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/microsoft.deviceregistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("namespace-device-on-edge"),
 	// 		Type: to.Ptr("microsoft.deviceregistry/namespaces/devices"),
@@ -429,7 +429,7 @@ func ExampleNamespaceDevicesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -452,7 +452,7 @@ func ExampleNamespaceDevicesClient_Get_getNamespaceDevice() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientGetResponse{
-	// 	NamespaceDevice: &armdeviceregistry.NamespaceDevice{
+	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/devices/adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
 	// 		Name: to.Ptr("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/devices"),
@@ -502,7 +502,7 @@ func ExampleNamespaceDevicesClient_Get_getNamespaceDeviceWithEndpointErrorStatus
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientGetResponse{
-	// 	NamespaceDevice: &armdeviceregistry.NamespaceDevice{
+	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/devices/adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
 	// 		Name: to.Ptr("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/devices"),
@@ -684,7 +684,7 @@ func ExampleNamespaceDevicesClient_BeginRevoke_namespaceDevicesRevoke() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -712,7 +712,7 @@ func ExampleNamespaceDevicesClient_BeginRevoke_namespaceDevicesRevokeFailure() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -757,13 +757,13 @@ func ExampleNamespaceDevicesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespaceDevicesClientUpdateResponse{
-	// 	NamespaceDevice: &armdeviceregistry.NamespaceDevice{
+	// 	NamespaceDevice: armdeviceregistry.NamespaceDevice{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/devices/adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Name: to.Ptr("adr-smart-device3-7a848b15-af47-40a7-8c06-a3f43314d44f"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/devices"),

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-01/StorageAccountAbortHierarchicalNamespaceMigration.json
+// Generated from example definition: 2026-04-01/StorageAccountAbortHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleAccountsClient_BeginAbortHierarchicalNamespaceMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCheckNameAvailability.json
+// Generated from example definition: 2026-04-01/StorageAccountCheckNameAvailability.json
 func ExampleAccountsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleAccountsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/NfsV3AccountCreate.json
+// Generated from example definition: 2026-04-01/NfsV3AccountCreate.json
 func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleAccountsClient_BeginCreate_nfsV3AccountCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreate.json
+// Generated from example definition: 2026-04-01/StorageAccountCreate.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,7 +338,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateAllowedCopyScopeToAAD.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -494,7 +494,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToAad
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateAllowedCopyScopeToPrivateLink.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPrivateLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -650,7 +650,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateAllowedCopyScopeToPri
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateDisallowPublicNetworkAccess.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateDisallowPublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -810,7 +810,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDisallowPublicNetwork
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzureDnsZone() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -973,7 +973,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToAzur
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateDnsEndpointTypeToStandard.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateDnsEndpointTypeToStandard.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStandard() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1136,7 +1136,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateDnsEndpointTypeToStan
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateEnablePublicNetworkAccess.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateEnablePublicNetworkAccess.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1296,7 +1296,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateEnablePublicNetworkAc
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreatePremiumBlockBlobStorage.json
+// Generated from example definition: 2026-04-01/StorageAccountCreatePremiumBlockBlobStorage.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1397,7 +1397,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePremiumBlockBlobStora
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1531,7 +1531,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedEncryptio
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1667,7 +1667,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateUserAssignedIdentityW
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateWithDataCollaborationPolicy.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateWithDataCollaborationPolicy.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithDataCollaborationPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1735,7 +1735,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithDataCollaboration
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateWithImmutabilityPolicy.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateWithImmutabilityPolicy.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1817,7 +1817,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithImmutabilityPolic
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreateWithSmartAccessTier.json
+// Generated from example definition: 2026-04-01/StorageAccountCreateWithSmartAccessTier.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateWithSmartAccessTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1985,7 +1985,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateWithSmartAccessTier()
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreate_placement.json
+// Generated from example definition: 2026-04-01/StorageAccountCreate_placement.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2155,7 +2155,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreatePlacement() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountCreate_zones.json
+// Generated from example definition: 2026-04-01/StorageAccountCreate_zones.json
 func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2322,7 +2322,7 @@ func ExampleAccountsClient_BeginCreate_storageAccountCreateZones() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountPostMigration.json
+// Generated from example definition: 2026-04-01/StorageAccountPostMigration.json
 func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2352,7 +2352,7 @@ func ExampleAccountsClient_BeginCustomerInitiatedMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountDelete.json
+// Generated from example definition: 2026-04-01/StorageAccountDelete.json
 func ExampleAccountsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2374,7 +2374,7 @@ func ExampleAccountsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountFailover.json
+// Generated from example definition: 2026-04-01/StorageAccountFailover.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2400,7 +2400,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountFailoverPlanned.json
+// Generated from example definition: 2026-04-01/StorageAccountFailoverPlanned.json
 func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2411,8 +2411,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAccountsClient().BeginFailover(ctx, "res4228", "sto2434", &armstorage.AccountsClientBeginFailoverOptions{
-		FailoverType: to.Ptr("Planned")})
+	poller, err := clientFactory.NewAccountsClient().BeginFailover(ctx, "res4228", "sto2434", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -2427,7 +2426,7 @@ func ExampleAccountsClient_BeginFailover_storageAccountFailoverPlanned() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetMigrationFailed.json
+// Generated from example definition: 2026-04-01/StorageAccountGetMigrationFailed.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2460,7 +2459,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetMigrationInProgress.json
+// Generated from example definition: 2026-04-01/StorageAccountGetMigrationInProgress.json
 func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrationInProgress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2491,7 +2490,7 @@ func ExampleAccountsClient_GetCustomerInitiatedMigration_storageAccountGetMigrat
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetAsyncSkuConversionStatus.json
+// Generated from example definition: 2026-04-01/StorageAccountGetAsyncSkuConversionStatus.json
 func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2534,7 +2533,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetAsyncSkuConversionStat
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetProperties.json
+// Generated from example definition: 2026-04-01/StorageAccountGetProperties.json
 func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2651,7 +2650,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesCMKEnabled.json
+// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesCMKEnabled.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2767,7 +2766,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkEnabled()
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
+// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesCMKVersionExpirationTime.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionExpirationTime() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2884,7 +2883,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesCmkVersionEx
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
+// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverFalse.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverFalse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3002,7 +3001,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
+// Generated from example definition: 2026-04-01/StorageAccountGetPropertiesGeoReplicationStatscanFailoverTrue.json
 func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicationStatscanFailoverTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3120,7 +3119,7 @@ func ExampleAccountsClient_GetProperties_storageAccountGetPropertiesGeoReplicati
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountHierarchicalNamespaceMigration.json
+// Generated from example definition: 2026-04-01/StorageAccountHierarchicalNamespaceMigration.json
 func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3146,7 +3145,7 @@ func ExampleAccountsClient_BeginHierarchicalNamespaceMigration() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountList.json
+// Generated from example definition: 2026-04-01/StorageAccountList.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3477,7 +3476,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListAccountSAS.json
+// Generated from example definition: 2026-04-01/StorageAccountListAccountSAS.json
 func ExampleAccountsClient_ListAccountSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3510,7 +3509,7 @@ func ExampleAccountsClient_ListAccountSAS() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListByResourceGroup.json
+// Generated from example definition: 2026-04-01/StorageAccountListByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3604,7 +3603,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListKeys.json
+// Generated from example definition: 2026-04-01/StorageAccountListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3640,7 +3639,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountListServiceSAS.json
+// Generated from example definition: 2026-04-01/StorageAccountListServiceSAS.json
 func ExampleAccountsClient_ListServiceSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3670,7 +3669,7 @@ func ExampleAccountsClient_ListServiceSAS() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountRegenerateKerbKey.json
+// Generated from example definition: 2026-04-01/StorageAccountRegenerateKerbKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3713,7 +3712,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKerbKey() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountRegenerateKey.json
+// Generated from example definition: 2026-04-01/StorageAccountRegenerateKey.json
 func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3751,7 +3750,7 @@ func ExampleAccountsClient_RegenerateKey_storageAccountRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/BlobRangesRestore.json
+// Generated from example definition: 2026-04-01/BlobRangesRestore.json
 func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3806,7 +3805,7 @@ func ExampleAccountsClient_BeginRestoreBlobRanges() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountRevokeUserDelegationKeys.json
+// Generated from example definition: 2026-04-01/StorageAccountRevokeUserDelegationKeys.json
 func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3828,7 +3827,7 @@ func ExampleAccountsClient_RevokeUserDelegationKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEnableAD.json
+// Generated from example definition: 2026-04-01/StorageAccountEnableAD.json
 func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3911,7 +3910,7 @@ func ExampleAccountsClient_Update_storageAccountEnableAd() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEnableCMK.json
+// Generated from example definition: 2026-04-01/StorageAccountEnableCMK.json
 func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4013,7 +4012,7 @@ func ExampleAccountsClient_Update_storageAccountEnableCmk() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountEnableSmbOAuth.json
+// Generated from example definition: 2026-04-01/StorageAccountEnableSmbOAuth.json
 func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4082,7 +4081,7 @@ func ExampleAccountsClient_Update_storageAccountEnableSmbOAuth() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountLeverageIPv6Ability.json
+// Generated from example definition: 2026-04-01/StorageAccountLeverageIPv6Ability.json
 func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4177,7 +4176,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateEnableIpv6Features() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdate.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdate.json
 func ExampleAccountsClient_Update_storageAccountUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4375,7 +4374,7 @@ func ExampleAccountsClient_Update_storageAccountUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateAccessTierToSmart.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateAccessTierToSmart.json
 func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4546,7 +4545,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAccessTierToSmart() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateAllowedCopyScopeToAAD.json
 func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4705,7 +4704,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateAllowedCopyScopeToAad() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateDisablePublicNetworkAccess.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateDisablePublicNetworkAccess.json
 func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4864,7 +4863,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateDisablePublicNetworkAccess
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIdentityWithCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4993,7 +4992,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedEncryptionIden
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
 func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5124,7 +5123,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateUserAssignedIdentityWithFe
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateWithDataCollaborationPolicy.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateWithDataCollaborationPolicy.json
 func ExampleAccountsClient_Update_storageAccountUpdateWithDataCollaborationPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5176,7 +5175,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateWithDataCollaborationPolic
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdateWithImmutabilityPolicy.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdateWithImmutabilityPolicy.json
 func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5234,7 +5233,7 @@ func ExampleAccountsClient_Update_storageAccountUpdateWithImmutabilityPolicy() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdate_placement.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdate_placement.json
 func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5407,7 +5406,7 @@ func ExampleAccountsClient_Update_storageAccountUpdatePlacement() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/StorageAccountUpdate_zones.json
+// Generated from example definition: 2026-04-01/StorageAccountUpdate_zones.json
 func ExampleAccountsClient_Update_storageAccountUpdateZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

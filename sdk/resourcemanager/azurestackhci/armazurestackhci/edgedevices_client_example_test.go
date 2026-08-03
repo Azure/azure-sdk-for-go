@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CreateHciEdgeDevice.json
+// Generated from example definition: 2026-04-30/CreateHciEdgeDevice.json
 func ExampleEdgeDevicesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,13 +51,13 @@ func ExampleEdgeDevicesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDevicesClientCreateOrUpdateResponse{
-	// 	HciEdgeDevice: &armazurestackhci.HciEdgeDevice{
+	// 	EdgeDeviceClassification: &armazurestackhci.HciEdgeDevice{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default"),
@@ -165,7 +165,7 @@ func ExampleEdgeDevicesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/DeleteEdgeDevices.json
+// Generated from example definition: 2026-04-30/DeleteEdgeDevices.json
 func ExampleEdgeDevicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,11 +182,11 @@ func ExampleEdgeDevicesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/GetEdgeDevices.json
+// Generated from example definition: 2026-04-30/GetEdgeDevices.json
 func ExampleEdgeDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleEdgeDevicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDevicesClientGetResponse{
-	// 	HciEdgeDevice: &armazurestackhci.HciEdgeDevice{
+	// 	EdgeDeviceClassification: &armazurestackhci.HciEdgeDevice{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/edgeDevices"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/ArcInstance-rg/providers/Microsoft.HybridCompute/machines/Node-1/providers/Microsoft.AzureStackHCI/edgeDevices/default"),
@@ -243,7 +243,7 @@ func ExampleEdgeDevicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ListEdgeDevices.json
+// Generated from example definition: 2026-04-30/ListEdgeDevices.json
 func ExampleEdgeDevicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -310,11 +310,6 @@ func ExampleEdgeDevicesClient_NewListPager() {
 		// 									SwitchType: to.Ptr("External"),
 		// 								},
 		// 							},
-		// 							SdnProperties: &armazurestackhci.SdnProperties{
-		// 								SdnStatus: to.Ptr(armazurestackhci.SdnStatusEnabled),
-		// 								SdnDomainName: to.Ptr("cl-nc.fqdn"),
-		// 								SdnAPIAddress: to.Ptr("192.0.2.10"),
-		// 							},
 		// 						},
 		// 						OSProfile: &armazurestackhci.HciOsProfile{
 		// 							BootType: to.Ptr("UEFI"),
@@ -329,28 +324,20 @@ func ExampleEdgeDevicesClient_NewListPager() {
 		// 							PoolableDisksCount: to.Ptr[int64](4),
 		// 							Disks: []*armazurestackhci.EdgeDeviceDisks{
 		// 								{
-		// 									ID: to.Ptr("disk-1"),
+		// 									ID: to.Ptr("60003FF44DC75ADCB30E59CD25922BCC"),
 		// 									SizeInBytes: to.Ptr("1099511627776"),
-		// 									Type: to.Ptr("SSD"),
+		// 									Type: to.Ptr("SAN"),
+		// 									Model: to.Ptr("PURE FlashArray LUN"),
+		// 									Manufacturer: to.Ptr("PURE"),
+		// 									IsSupported: to.Ptr(true),
 		// 								},
 		// 								{
-		// 									ID: to.Ptr("disk-2"),
+		// 									ID: to.Ptr("eui.0025385b71b048a1"),
 		// 									SizeInBytes: to.Ptr("2199023255552"),
-		// 									Type: to.Ptr("HDD"),
-		// 								},
-		// 							},
-		// 						},
-		// 						LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-01T17:18:19.1234567Z"); return t}()),
-		// 						ConfidentialVMProfile: &armazurestackhci.ConfidentialVMProfile{
-		// 							IgvmStatus: to.Ptr(armazurestackhci.IgvmStatusEnabled),
-		// 							StatusDetails: []*armazurestackhci.IgvmStatusDetail{
-		// 								{
-		// 									Code: to.Ptr("IgvmAgentDeployed"),
-		// 									Message: to.Ptr("IgvmAgent is deployed"),
-		// 								},
-		// 								{
-		// 									Code: to.Ptr("ConfidentialVmHardwareCapabilityFound"),
-		// 									Message: to.Ptr("Confidential VM supported hardware detected"),
+		// 									Type: to.Ptr("S2D"),
+		// 									Model: to.Ptr("ThinkSystem 2.5 PM1655 3.2TB Mixed Use SAS 24Gb"),
+		// 									Manufacturer: to.Ptr("Lenovo"),
+		// 									IsSupported: to.Ptr(true),
 		// 								},
 		// 							},
 		// 						},
@@ -364,7 +351,7 @@ func ExampleEdgeDevicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ValidateEdgeDevices.json
+// Generated from example definition: 2026-04-30/ValidateEdgeDevices.json
 func ExampleEdgeDevicesClient_BeginValidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,13 +374,13 @@ func ExampleEdgeDevicesClient_BeginValidate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.EdgeDevicesClientValidateResponse{
-	// 	ValidateResponse: &armazurestackhci.ValidateResponse{
+	// 	ValidateResponse: armazurestackhci.ValidateResponse{
 	// 		Status: to.Ptr("success"),
 	// 	},
 	// }

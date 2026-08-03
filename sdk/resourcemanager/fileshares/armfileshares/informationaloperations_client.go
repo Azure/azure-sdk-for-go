@@ -18,6 +18,8 @@ import (
 
 // InformationalOperationsClient contains the methods for the InformationalOperations group.
 // Don't use this type directly, use NewInformationalOperationsClient() instead.
+//
+// Generated from API version 2026-06-01
 type InformationalOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewInformationalOperationsClient(subscriptionID string, credential azcore.T
 
 // GetLimits - Get file shares limits.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - location - The name of the Azure region.
 //   - options - InformationalOperationsClientGetLimitsOptions contains the optional parameters for the InformationalOperationsClient.GetLimits
 //     method.
@@ -84,8 +84,8 @@ func (client *InformationalOperationsClient) getLimitsCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -101,8 +101,6 @@ func (client *InformationalOperationsClient) getLimitsHandleResponse(resp *http.
 
 // GetProvisioningRecommendation - Get file shares provisioning parameters recommendation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - location - The name of the Azure region.
 //   - body - The request body
 //   - options - InformationalOperationsClientGetProvisioningRecommendationOptions contains the optional parameters for the InformationalOperationsClient.GetProvisioningRecommendation
@@ -145,8 +143,8 @@ func (client *InformationalOperationsClient) getProvisioningRecommendationCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -166,8 +164,6 @@ func (client *InformationalOperationsClient) getProvisioningRecommendationHandle
 
 // GetUsageData - Get file shares usage data.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-06-01
 //   - location - The name of the Azure region.
 //   - options - InformationalOperationsClientGetUsageDataOptions contains the optional parameters for the InformationalOperationsClient.GetUsageData
 //     method.
@@ -209,8 +205,8 @@ func (client *InformationalOperationsClient) getUsageDataCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -228,7 +228,7 @@ type EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse struct {
 
 // EnvironmentsClientDeletePrivateEndpointConnectionResponse contains the response from method EnvironmentsClient.BeginDeletePrivateEndpointConnection.
 type EnvironmentsClientDeletePrivateEndpointConnectionResponse struct {
-	// placeholder for future response values
+	Interface any
 }
 
 // EnvironmentsClientDeleteResponse contains the response from method EnvironmentsClient.BeginDelete.
@@ -1004,7 +1004,7 @@ type StaticSitesClientDeleteDatabaseConnectionResponse struct {
 
 // StaticSitesClientDeletePrivateEndpointConnectionResponse contains the response from method StaticSitesClient.BeginDeletePrivateEndpointConnection.
 type StaticSitesClientDeletePrivateEndpointConnectionResponse struct {
-	// placeholder for future response values
+	Interface any
 }
 
 // StaticSitesClientDeleteStaticSiteBuildResponse contains the response from method StaticSitesClient.BeginDeleteStaticSiteBuild.
@@ -1749,12 +1749,12 @@ type WebAppsClientDeletePremierAddOnSlotResponse struct {
 
 // WebAppsClientDeletePrivateEndpointConnectionResponse contains the response from method WebAppsClient.BeginDeletePrivateEndpointConnection.
 type WebAppsClientDeletePrivateEndpointConnectionResponse struct {
-	// placeholder for future response values
+	Interface any
 }
 
 // WebAppsClientDeletePrivateEndpointConnectionSlotResponse contains the response from method WebAppsClient.BeginDeletePrivateEndpointConnectionSlot.
 type WebAppsClientDeletePrivateEndpointConnectionSlotResponse struct {
-	// placeholder for future response values
+	Interface any
 }
 
 // WebAppsClientDeleteProcessResponse contains the response from method WebAppsClient.DeleteProcess.
@@ -3362,12 +3362,12 @@ type WebAppsClientStartContinuousWebJobSlotResponse struct {
 
 // WebAppsClientStartNetworkTraceResponse contains the response from method WebAppsClient.BeginStartNetworkTrace.
 type WebAppsClientStartNetworkTraceResponse struct {
-	// placeholder for future response values
+	NetworkTraceArray []*NetworkTrace
 }
 
 // WebAppsClientStartNetworkTraceSlotResponse contains the response from method WebAppsClient.BeginStartNetworkTraceSlot.
 type WebAppsClientStartNetworkTraceSlotResponse struct {
-	// placeholder for future response values
+	NetworkTraceArray []*NetworkTrace
 }
 
 // WebAppsClientStartResponse contains the response from method WebAppsClient.Start.
@@ -3382,12 +3382,12 @@ type WebAppsClientStartSlotResponse struct {
 
 // WebAppsClientStartWebSiteNetworkTraceOperationResponse contains the response from method WebAppsClient.BeginStartWebSiteNetworkTraceOperation.
 type WebAppsClientStartWebSiteNetworkTraceOperationResponse struct {
-	// placeholder for future response values
+	NetworkTraceArray []*NetworkTrace
 }
 
 // WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse contains the response from method WebAppsClient.BeginStartWebSiteNetworkTraceOperationSlot.
 type WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse struct {
-	// placeholder for future response values
+	NetworkTraceArray []*NetworkTrace
 }
 
 // WebAppsClientStartWebSiteNetworkTraceResponse contains the response from method WebAppsClient.StartWebSiteNetworkTrace.

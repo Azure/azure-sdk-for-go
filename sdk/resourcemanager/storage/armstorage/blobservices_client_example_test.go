@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/BlobServicesGet.json
+// Generated from example definition: 2026-04-01/BlobServicesGet.json
 func ExampleBlobServicesClient_GetServiceProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleBlobServicesClient_GetServiceProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/BlobServicesList.json
+// Generated from example definition: 2026-04-01/BlobServicesList.json
 func ExampleBlobServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleBlobServicesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01/BlobServicesPut.json
+// Generated from example definition: 2026-04-01/BlobServicesPut.json
 func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleBlobServicesClient_SetServiceProperties_putBlobServices() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/BlobServicesPutAllowPermanentDelete.json
+// Generated from example definition: 2026-04-01/BlobServicesPutAllowPermanentDelete.json
 func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutAllowPermanentDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -471,7 +471,7 @@ func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutAllowPermanen
 	// }
 }
 
-// Generated from example definition: 2025-08-01/BlobServicesPutLastAccessTimeBasedTracking.json
+// Generated from example definition: 2026-04-01/BlobServicesPutLastAccessTimeBasedTracking.json
 func ExampleBlobServicesClient_SetServiceProperties_blobServicesPutLastAccessTimeBasedTracking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

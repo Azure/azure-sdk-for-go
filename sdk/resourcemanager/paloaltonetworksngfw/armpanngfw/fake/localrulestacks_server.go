@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -129,9 +130,7 @@ func (l *LocalRulestacksServerTransport) Do(req *http.Request) (*http.Response, 
 }
 
 func (l *LocalRulestacksServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -177,10 +176,7 @@ func (l *LocalRulestacksServerTransport) dispatchToMethodFake(req *http.Request,
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -224,7 +220,7 @@ func (l *LocalRulestacksServerTransport) dispatchBeginCommit(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		l.beginCommit.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -272,7 +268,7 @@ func (l *LocalRulestacksServerTransport) dispatchBeginCreateOrUpdate(req *http.R
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		l.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -316,7 +312,7 @@ func (l *LocalRulestacksServerTransport) dispatchBeginDelete(req *http.Request) 
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		l.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -350,7 +346,7 @@ func (l *LocalRulestacksServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LocalRulestackResource, req)
@@ -383,7 +379,7 @@ func (l *LocalRulestacksServerTransport) dispatchGetChangeLog(req *http.Request)
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Changelog, req)
@@ -412,11 +408,7 @@ func (l *LocalRulestacksServerTransport) dispatchGetSupportInfo(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	emailUnescaped, err := url.QueryUnescape(qp.Get("email"))
-	if err != nil {
-		return nil, err
-	}
-	emailParam := getOptional(emailUnescaped)
+	emailParam := getOptional(qp.Get("email"))
 	var options *armpanngfw.LocalRulestacksClientGetSupportInfoOptions
 	if emailParam != nil {
 		options = &armpanngfw.LocalRulestacksClientGetSupportInfoOptions{
@@ -428,7 +420,7 @@ func (l *LocalRulestacksServerTransport) dispatchGetSupportInfo(req *http.Reques
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SupportInfo, req)
@@ -457,31 +449,13 @@ func (l *LocalRulestacksServerTransport) dispatchListAdvancedSecurityObjects(req
 	if err != nil {
 		return nil, err
 	}
-	skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
-	if err != nil {
-		return nil, err
-	}
-	skipParam := getOptional(skipUnescaped)
-	topUnescaped, err := url.QueryUnescape(qp.Get("top"))
-	if err != nil {
-		return nil, err
-	}
-	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+	skipParam := getOptional(qp.Get("skip"))
+	topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
 		}
 		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	typeParamParam, err := parseWithCast(qp.Get("type"), func(v string) (armpanngfw.AdvSecurityObjectTypeEnum, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armpanngfw.AdvSecurityObjectTypeEnum(p), nil
 	})
 	if err != nil {
 		return nil, err
@@ -493,12 +467,12 @@ func (l *LocalRulestacksServerTransport) dispatchListAdvancedSecurityObjects(req
 			Top:  topParam,
 		}
 	}
-	respr, errRespr := l.srv.ListAdvancedSecurityObjects(req.Context(), resourceGroupNameParam, localRulestackNameParam, typeParamParam, options)
+	respr, errRespr := l.srv.ListAdvancedSecurityObjects(req.Context(), resourceGroupNameParam, localRulestackNameParam, armpanngfw.AdvSecurityObjectTypeEnum(qp.Get("type")), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AdvSecurityObjectListResponse, req)
@@ -529,26 +503,10 @@ func (l *LocalRulestacksServerTransport) dispatchNewListAppIDsPager(req *http.Re
 		if err != nil {
 			return nil, err
 		}
-		appIDVersionUnescaped, err := url.QueryUnescape(qp.Get("appIdVersion"))
-		if err != nil {
-			return nil, err
-		}
-		appIDVersionParam := getOptional(appIDVersionUnescaped)
-		appPrefixUnescaped, err := url.QueryUnescape(qp.Get("appPrefix"))
-		if err != nil {
-			return nil, err
-		}
-		appPrefixParam := getOptional(appPrefixUnescaped)
-		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
-		if err != nil {
-			return nil, err
-		}
-		skipParam := getOptional(skipUnescaped)
-		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		appIDVersionParam := getOptional(qp.Get("appIdVersion"))
+		appPrefixParam := getOptional(qp.Get("appPrefix"))
+		skipParam := getOptional(qp.Get("skip"))
+		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -578,7 +536,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListAppIDsPager(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListAppIDsPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -615,7 +573,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListByResourceGroupPager(req
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListByResourceGroupPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -648,7 +606,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListBySubscriptionPager(req 
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListBySubscriptionPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -679,16 +637,8 @@ func (l *LocalRulestacksServerTransport) dispatchNewListCountriesPager(req *http
 		if err != nil {
 			return nil, err
 		}
-		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
-		if err != nil {
-			return nil, err
-		}
-		skipParam := getOptional(skipUnescaped)
-		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		skipParam := getOptional(qp.Get("skip"))
+		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -716,7 +666,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListCountriesPager(req *http
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListCountriesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -749,7 +699,7 @@ func (l *LocalRulestacksServerTransport) dispatchListFirewalls(req *http.Request
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListFirewallsResponse, req)
@@ -780,16 +730,8 @@ func (l *LocalRulestacksServerTransport) dispatchNewListPredefinedURLCategoriesP
 		if err != nil {
 			return nil, err
 		}
-		skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
-		if err != nil {
-			return nil, err
-		}
-		skipParam := getOptional(skipUnescaped)
-		topUnescaped, err := url.QueryUnescape(qp.Get("top"))
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+		skipParam := getOptional(qp.Get("skip"))
+		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
 			p, parseErr := strconv.ParseInt(v, 10, 32)
 			if parseErr != nil {
 				return 0, parseErr
@@ -817,7 +759,7 @@ func (l *LocalRulestacksServerTransport) dispatchNewListPredefinedURLCategoriesP
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		l.newListPredefinedURLCategoriesPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -846,31 +788,13 @@ func (l *LocalRulestacksServerTransport) dispatchListSecurityServices(req *http.
 	if err != nil {
 		return nil, err
 	}
-	skipUnescaped, err := url.QueryUnescape(qp.Get("skip"))
-	if err != nil {
-		return nil, err
-	}
-	skipParam := getOptional(skipUnescaped)
-	topUnescaped, err := url.QueryUnescape(qp.Get("top"))
-	if err != nil {
-		return nil, err
-	}
-	topParam, err := parseOptional(topUnescaped, func(v string) (int32, error) {
+	skipParam := getOptional(qp.Get("skip"))
+	topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
 		p, parseErr := strconv.ParseInt(v, 10, 32)
 		if parseErr != nil {
 			return 0, parseErr
 		}
 		return int32(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	typeParamParam, err := parseWithCast(qp.Get("type"), func(v string) (armpanngfw.SecurityServicesTypeEnum, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armpanngfw.SecurityServicesTypeEnum(p), nil
 	})
 	if err != nil {
 		return nil, err
@@ -882,12 +806,12 @@ func (l *LocalRulestacksServerTransport) dispatchListSecurityServices(req *http.
 			Top:  topParam,
 		}
 	}
-	respr, errRespr := l.srv.ListSecurityServices(req.Context(), resourceGroupNameParam, localRulestackNameParam, typeParamParam, options)
+	respr, errRespr := l.srv.ListSecurityServices(req.Context(), resourceGroupNameParam, localRulestackNameParam, armpanngfw.SecurityServicesTypeEnum(qp.Get("type")), options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SecurityServicesResponse, req)
@@ -920,7 +844,7 @@ func (l *LocalRulestacksServerTransport) dispatchRevert(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -957,7 +881,7 @@ func (l *LocalRulestacksServerTransport) dispatchUpdate(req *http.Request) (*htt
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LocalRulestackResource, req)

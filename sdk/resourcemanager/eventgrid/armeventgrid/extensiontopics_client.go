@@ -7,17 +7,18 @@ package armeventgrid
 import (
 	"context"
 	"errors"
-	"net/http"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"strings"
 )
 
 // ExtensionTopicsClient contains the methods for the ExtensionTopics group.
 // Don't use this type directly, use NewExtensionTopicsClient() instead.
+//
+// Generated from API version 2025-07-15-preview
 type ExtensionTopicsClient struct {
 	internal *arm.Client
 }
@@ -40,8 +41,6 @@ func NewExtensionTopicsClient(credential azcore.TokenCredential, options *arm.Cl
 //
 // Get the properties of an extension topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15-preview
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - ExtensionTopicsClientGetOptions contains the optional parameters for the ExtensionTopicsClient.Get method.
 func (client *ExtensionTopicsClient) Get(ctx context.Context, scope string, options *ExtensionTopicsClientGetOptions) (ExtensionTopicsClientGetResponse, error) {
@@ -78,8 +77,8 @@ func (client *ExtensionTopicsClient) getCreateRequest(ctx context.Context, scope
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

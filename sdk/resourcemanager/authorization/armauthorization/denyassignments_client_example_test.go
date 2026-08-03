@@ -60,7 +60,7 @@ func ExampleDenyAssignmentsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.DenyAssignmentsClientCreateOrUpdateResponse{
-	// 	DenyAssignment: &armauthorization.DenyAssignment{
+	// 	DenyAssignment: armauthorization.DenyAssignment{
 	// 		Name: to.Ptr("64b75d79-7a26-4341-944e-4f1a19f0e6ca"),
 	// 		Type: to.Ptr("Microsoft.Authorization/denyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/denyAssignments/64b75d79-7a26-4341-944e-4f1a19f0e6ca"),
@@ -154,7 +154,7 @@ func ExampleDenyAssignmentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.DenyAssignmentsClientGetResponse{
-	// 	DenyAssignment: &armauthorization.DenyAssignment{
+	// 	DenyAssignment: armauthorization.DenyAssignment{
 	// 		Name: to.Ptr("denyAssignmentId"),
 	// 		Type: to.Ptr("Microsoft.Authorization/denyAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/rgname/providers/Microsoft.Authorization/denyAssignments/denyAssignmentId"),
@@ -222,7 +222,7 @@ func ExampleDenyAssignmentsClient_GetByID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.DenyAssignmentsClientGetByIDResponse{
-	// 	DenyAssignment: &armauthorization.DenyAssignment{
+	// 	DenyAssignment: armauthorization.DenyAssignment{
 	// 		Properties: &armauthorization.DenyAssignmentProperties{
 	// 			DenyAssignmentName: to.Ptr("Deny assignment name"),
 	// 			Description: to.Ptr("Deny assignment description"),

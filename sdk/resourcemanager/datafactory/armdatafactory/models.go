@@ -12004,13 +12004,13 @@ type Factory struct {
 	// Managed service identity of the factory.
 	Identity *FactoryIdentity
 
-	// The geo-location where the resource lives
+	// The resource location.
 	Location *string
 
 	// Properties of the factory.
 	Properties *FactoryProperties
 
-	// Resource tags.
+	// The resource tags.
 	Tags map[string]*string
 
 	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.

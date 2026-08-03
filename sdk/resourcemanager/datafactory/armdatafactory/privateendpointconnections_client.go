@@ -18,6 +18,8 @@ import (
 
 // PrivateEndPointConnectionsClient contains the methods for the PrivateEndPointConnections group.
 // Don't use this type directly, use NewPrivateEndPointConnectionsClient() instead.
+//
+// Generated from API version 2018-06-01
 type PrivateEndPointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewPrivateEndPointConnectionsClient(subscriptionID string, credential azcor
 }
 
 // NewListByFactoryPager - Lists Private endpoint connections
-//
-// Generated from API version 2018-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - factoryName - The factory name.
 //   - options - PrivateEndPointConnectionsClientListByFactoryOptions contains the optional parameters for the PrivateEndPointConnectionsClient.NewListByFactoryPager
@@ -71,7 +71,7 @@ func (client *PrivateEndPointConnectionsClient) NewListByFactoryPager(resourceGr
 
 // listByFactoryCreateRequest creates the ListByFactory request.
 func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *PrivateEndPointConnectionsClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndPointConnections"
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -89,8 +89,8 @@ func (client *PrivateEndPointConnectionsClient) listByFactoryCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2018-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20180601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

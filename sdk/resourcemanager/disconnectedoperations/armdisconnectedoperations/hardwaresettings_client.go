@@ -18,6 +18,8 @@ import (
 
 // HardwareSettingsClient contains the methods for the HardwareSettings group.
 // Don't use this type directly, use NewHardwareSettingsClient() instead.
+//
+// Generated from API version 2026-03-15
 type HardwareSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewHardwareSettingsClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Create or update hardware settings
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - hardwareSettingName - The name of the HardwareSetting
@@ -68,8 +68,6 @@ func (client *HardwareSettingsClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create or update hardware settings
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 func (client *HardwareSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, name string, hardwareSettingName string, resource HardwareSetting, options *HardwareSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HardwareSettingsClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *HardwareSettingsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *HardwareSettingsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete hardware settings
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - hardwareSettingName - The name of the HardwareSetting
@@ -153,8 +149,6 @@ func (client *HardwareSettingsClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete hardware settings
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 func (client *HardwareSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, name string, hardwareSettingName string, options *HardwareSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HardwareSettingsClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *HardwareSettingsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the hardware settings resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - hardwareSettingName - The name of the HardwareSetting
@@ -259,8 +251,8 @@ func (client *HardwareSettingsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *HardwareSettingsClient) getHandleResponse(resp *http.Response) (Ha
 }
 
 // NewListByParentPager - List by parent
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - options - HardwareSettingsClientListByParentOptions contains the optional parameters for the HardwareSettingsClient.NewListByParentPager
@@ -324,8 +314,8 @@ func (client *HardwareSettingsClient) listByParentCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

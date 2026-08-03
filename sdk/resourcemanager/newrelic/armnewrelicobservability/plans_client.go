@@ -18,6 +18,8 @@ import (
 
 // PlansClient contains the methods for the Plans group.
 // Don't use this type directly, use NewPlansClient() instead.
+//
+// Generated from API version 2025-05-01-preview
 type PlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, op
 }
 
 // NewListPager - Lists the plans data linked to your organization, providing an overview of the available plans
-//
-// Generated from API version 2025-05-01-preview
 //   - options - PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
 func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PlansClientListResponse]{
@@ -81,11 +81,11 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, options *Plans
 	if options != nil && options.AccountID != nil {
 		reqQP.Set("accountId", *options.AccountID)
 	}
-	reqQP.Set("api-version", "2025-05-01-preview")
+	reqQP.Set("api-version", version20250501Preview)
 	if options != nil && options.OrganizationID != nil {
 		reqQP.Set("organizationId", *options.OrganizationID)
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

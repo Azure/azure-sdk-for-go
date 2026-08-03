@@ -18,6 +18,8 @@ import (
 
 // FabricAgentClient contains the methods for the FabricAgent group.
 // Don't use this type directly, use NewFabricAgentClient() instead.
+//
+// Generated from API version 2024-09-01
 type FabricAgentClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFabricAgentClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreate - Creates the fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - fabricAgentName - The fabric agent name.
@@ -67,8 +67,6 @@ func (client *FabricAgentClient) BeginCreate(ctx context.Context, resourceGroupN
 
 // Create - Creates the fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *FabricAgentClient) create(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, resource FabricAgentModel, options *FabricAgentClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FabricAgentClient.BeginCreate"
@@ -114,8 +112,8 @@ func (client *FabricAgentClient) createCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -126,8 +124,6 @@ func (client *FabricAgentClient) createCreateRequest(ctx context.Context, resour
 
 // BeginDelete - Deletes fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - fabricAgentName - The fabric agent name.
@@ -151,8 +147,6 @@ func (client *FabricAgentClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Deletes fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *FabricAgentClient) deleteOperation(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, options *FabricAgentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FabricAgentClient.BeginDelete"
@@ -198,15 +192,13 @@ func (client *FabricAgentClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the details of the fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - fabricAgentName - The fabric agent name.
@@ -257,8 +249,8 @@ func (client *FabricAgentClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -273,8 +265,6 @@ func (client *FabricAgentClient) getHandleResponse(resp *http.Response) (FabricA
 }
 
 // NewListPager - Gets the list of fabric agents in the given fabric.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - The fabric name.
 //   - options - FabricAgentClientListOptions contains the optional parameters for the FabricAgentClient.NewListPager method.
@@ -321,8 +311,8 @@ func (client *FabricAgentClient) listCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

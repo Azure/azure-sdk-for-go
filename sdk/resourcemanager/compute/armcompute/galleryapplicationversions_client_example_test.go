@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Create.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Create.json
 func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,13 +73,13 @@ func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryApplicationVersionsClientCreateOrUpdateResponse{
-	// 	GalleryApplicationVersion: &armcompute.GalleryApplicationVersion{
+	// 	GalleryApplicationVersion: armcompute.GalleryApplicationVersion{
 	// 		Location: to.Ptr("West US"),
 	// 		Name: to.Ptr("1.0.0"),
 	// 		Type: to.Ptr("Microsoft.Compute/galleries/applications/versions"),
@@ -141,7 +141,7 @@ func ExampleGalleryApplicationVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Delete.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Delete.json
 func ExampleGalleryApplicationVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleGalleryApplicationVersionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -167,7 +167,7 @@ func ExampleGalleryApplicationVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Get.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Get.json
 func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryApplicationVersionsClientGetResponse{
-	// 	GalleryApplicationVersion: &armcompute.GalleryApplicationVersion{
+	// 	GalleryApplicationVersion: armcompute.GalleryApplicationVersion{
 	// 		Location: to.Ptr("West US"),
 	// 		Name: to.Ptr("1.0.0"),
 	// 		Type: to.Ptr("Microsoft.Compute/galleries/applications/versions"),
@@ -240,7 +240,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersion()
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Get_WithReplicationStatus.json
 func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWithReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryApplicationVersionsClientGetResponse{
-	// 	GalleryApplicationVersion: &armcompute.GalleryApplicationVersion{
+	// 	GalleryApplicationVersion: armcompute.GalleryApplicationVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/applications/myGalleryApplicationName/versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryApplicationVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryApplicationVersionPublishingProfile{
@@ -332,7 +332,7 @@ func ExampleGalleryApplicationVersionsClient_Get_getAGalleryApplicationVersionWi
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_ListByGalleryApplication.json
 func ExampleGalleryApplicationVersionsClient_NewListByGalleryApplicationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +415,7 @@ func ExampleGalleryApplicationVersionsClient_NewListByGalleryApplicationPager() 
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryApplicationVersion_Update.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryApplicationVersion_Update.json
 func ExampleGalleryApplicationVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,13 +458,13 @@ func ExampleGalleryApplicationVersionsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryApplicationVersionsClientUpdateResponse{
-	// 	GalleryApplicationVersion: &armcompute.GalleryApplicationVersion{
+	// 	GalleryApplicationVersion: armcompute.GalleryApplicationVersion{
 	// 		Location: to.Ptr("West US"),
 	// 		Name: to.Ptr("1.0.0"),
 	// 		Type: to.Ptr("Microsoft.Compute/galleries/applications/versions"),

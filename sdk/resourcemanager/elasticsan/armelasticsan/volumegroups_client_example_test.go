@@ -59,13 +59,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumeGroupsClientCreateResponse{
-	// 	VolumeGroup: &armelasticsan.VolumeGroup{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
 	// 		Name: to.Ptr("dov"),
 	// 		Type: to.Ptr("kg"),
 	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
@@ -165,13 +165,13 @@ func ExampleVolumeGroupsClient_BeginCreate_volumeGroupsCreateMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumeGroupsClientCreateResponse{
-	// 	VolumeGroup: &armelasticsan.VolumeGroup{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
 	// 		Name: to.Ptr("cr"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/volumeGroups"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}"),
@@ -271,7 +271,7 @@ func ExampleVolumeGroupsClient_BeginDelete_volumeGroupsDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -297,7 +297,7 @@ func ExampleVolumeGroupsClient_BeginDelete_volumeGroupsDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -325,7 +325,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumeGroupsClientGetResponse{
-	// 	VolumeGroup: &armelasticsan.VolumeGroup{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
 	// 		Name: to.Ptr("dov"),
 	// 		Type: to.Ptr("kg"),
 	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
@@ -427,7 +427,7 @@ func ExampleVolumeGroupsClient_Get_volumeGroupsGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumeGroupsClientGetResponse{
-	// 	VolumeGroup: &armelasticsan.VolumeGroup{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
 	// 	},
 	// }
 }
@@ -622,13 +622,13 @@ func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumeGroupsClientUpdateResponse{
-	// 	VolumeGroup: &armelasticsan.VolumeGroup{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
 	// 		Name: to.Ptr("dov"),
 	// 		Type: to.Ptr("kg"),
 	// 		ID: to.Ptr("hoazltxzojzwgzohjnh"),
@@ -728,13 +728,13 @@ func ExampleVolumeGroupsClient_BeginUpdate_volumeGroupsUpdateMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.VolumeGroupsClientUpdateResponse{
-	// 	VolumeGroup: &armelasticsan.VolumeGroup{
+	// 	VolumeGroup: armelasticsan.VolumeGroup{
 	// 	},
 	// }
 }

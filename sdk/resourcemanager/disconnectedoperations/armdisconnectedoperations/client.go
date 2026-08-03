@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2026-03-15
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // BeginCreateOrUpdate - Create a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - resource - Resource create parameters.
@@ -66,8 +66,6 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceGroupName
 
 // CreateOrUpdate - Create a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName string, name string, resource DisconnectedOperation, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
@@ -109,8 +107,8 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -121,8 +119,6 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Delete a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
@@ -145,8 +141,6 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 
 // Delete - Delete a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
@@ -188,15 +182,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -242,8 +234,8 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -258,8 +250,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 }
 
 // NewListByResourceGroupPager - List DisconnectedOperation resources by resource group
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
 //     method.
@@ -302,8 +292,8 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -318,8 +308,6 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 }
 
 // NewListBySubscriptionPager - List DisconnectedOperation resources by subscription ID
-//
-// Generated from API version 2026-03-15
 //   - options - ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListBySubscriptionResponse]{
@@ -356,8 +344,8 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, _ *Cl
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -373,8 +361,6 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 
 // ListDeploymentManifest - get deployment manifest.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - options - ClientListDeploymentManifestOptions contains the optional parameters for the Client.ListDeploymentManifest method.
@@ -420,8 +406,8 @@ func (client *Client) listDeploymentManifestCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -437,8 +423,6 @@ func (client *Client) listDeploymentManifestHandleResponse(resp *http.Response) 
 
 // Update - Update a DisconnectedOperation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - properties - The resource properties to be updated.
@@ -485,8 +469,8 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

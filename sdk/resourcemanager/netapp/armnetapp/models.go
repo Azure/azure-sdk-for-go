@@ -773,6 +773,10 @@ type CacheProperties struct {
 	// READ-ONLY; Specifies if the cache is encryption or not.
 	Encryption *EncryptionState
 
+	// READ-ONLY; Flag indicating whether file access logs are enabled for the Cache, based on active diagnostic settings present
+	// on the Cache.
+	FileAccessLogs *CacheFileAccessLogs
+
 	// READ-ONLY; Language supported for volume.
 	Language *VolumeLanguage
 
@@ -2064,6 +2068,7 @@ type SubscriptionQuotaItemProperties struct {
 }
 
 // SubvolumeInfo - Subvolume Information properties
+// Deprecated. This resource type will be removed in a future API version.
 type SubvolumeInfo struct {
 	// Subvolume Properties
 	Properties *SubvolumeProperties
@@ -2585,6 +2590,9 @@ type VolumeProperties struct {
 	// Resource identifier used to identify the Backup.
 	BackupID *string
 
+	// Specifies whether the volume operates in Breakthrough Mode.
+	BreakthroughMode *BreakthroughMode
+
 	// Pool Resource Id used in case of creating a volume through volume group
 	CapacityPoolResourceID *string
 
@@ -2621,6 +2629,7 @@ type VolumeProperties struct {
 	DeleteBaseSnapshot *bool
 
 	// Flag indicating whether subvolume operations are enabled on the volume
+	// Deprecated. Subvolume operations and this flag will be removed in a future API version.
 	EnableSubvolumes *EnableSubvolumes
 
 	// Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/AddRaiBlocklistItems.json
+// Generated from example definition: 2026-05-15-preview/AddRaiBlocklistItems.json
 func ExampleRaiBlocklistItemsClient_BatchAdd() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleRaiBlocklistItemsClient_BatchAdd() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteRaiBlocklistItems.json
+// Generated from example definition: 2026-05-15-preview/DeleteRaiBlocklistItems.json
 func ExampleRaiBlocklistItemsClient_BatchDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleRaiBlocklistItemsClient_BatchDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/PutRaiBlocklistItem.json
+// Generated from example definition: 2026-05-15-preview/PutRaiBlocklistItem.json
 func ExampleRaiBlocklistItemsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleRaiBlocklistItemsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteRaiBlocklistItem.json
+// Generated from example definition: 2026-05-15-preview/DeleteRaiBlocklistItem.json
 func ExampleRaiBlocklistItemsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleRaiBlocklistItemsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetRaiBlocklistItem.json
+// Generated from example definition: 2026-05-15-preview/GetRaiBlocklistItem.json
 func ExampleRaiBlocklistItemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleRaiBlocklistItemsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListBlocklistItems.json
+// Generated from example definition: 2026-05-15-preview/ListBlocklistItems.json
 func ExampleRaiBlocklistItemsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

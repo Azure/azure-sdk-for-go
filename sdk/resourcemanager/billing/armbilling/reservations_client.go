@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultReservationsClientVersion string = "2024-04-01"
-
 // ReservationsClient contains the methods for the Reservations group.
 // Don't use this type directly, use NewReservationsClient() instead.
 //
@@ -92,7 +90,7 @@ func (client *ReservationsClient) getByReservationOrderCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReservationsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Expand != nil {
 		reqQP.Set("expand", *options.Expand)
 	}
@@ -150,7 +148,7 @@ func (client *ReservationsClient) listByBillingAccountCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReservationsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
@@ -228,7 +226,7 @@ func (client *ReservationsClient) listByBillingProfileCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReservationsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
@@ -307,7 +305,7 @@ func (client *ReservationsClient) listByReservationOrderCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReservationsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -390,7 +388,7 @@ func (client *ReservationsClient) updateByBillingAccountCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReservationsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

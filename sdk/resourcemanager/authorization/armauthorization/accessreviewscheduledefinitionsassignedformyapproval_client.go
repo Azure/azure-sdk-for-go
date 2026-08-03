@@ -11,11 +11,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // AccessReviewScheduleDefinitionsAssignedForMyApprovalClient contains the methods for the AccessReviewScheduleDefinitionsAssignedForMyApproval
 // group.
 // Don't use this type directly, use NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type AccessReviewScheduleDefinitionsAssignedForMyApprovalClient struct {
 	internal *arm.Client
 }
@@ -35,8 +38,6 @@ func NewAccessReviewScheduleDefinitionsAssignedForMyApprovalClient(credential az
 }
 
 // NewListPager - Get access review instances assigned for my approval.
-//
-// Generated from API version 2021-12-01-preview
 //   - options - AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions contains the optional parameters for the
 //     AccessReviewScheduleDefinitionsAssignedForMyApprovalClient.NewListPager method.
 func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) NewListPager(options *AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListOptions) *runtime.Pager[AccessReviewScheduleDefinitionsAssignedForMyApprovalClientListResponse] {
@@ -73,8 +74,8 @@ func (client *AccessReviewScheduleDefinitionsAssignedForMyApprovalClient) listCr
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

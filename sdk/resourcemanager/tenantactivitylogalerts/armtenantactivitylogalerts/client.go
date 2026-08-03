@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2023-04-01-preview
 type Client struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // CreateOrUpdate - Create a new Tenant Activity Log Alert rule or update an existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-04-01-preview
 //   - managementGroupName - The management group ID.
 //   - alertRuleName - The name of the Tenant Activity Log Alert rule.
 //   - tenantActivityLogAlertRule - The Tenant Activity Log Alert rule to create or use for the update.
@@ -82,8 +82,8 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, managemen
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tenantActivityLogAlertRule); err != nil {
@@ -103,8 +103,6 @@ func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientC
 
 // Delete - Delete a Tenant Activity Log Alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-04-01-preview
 //   - managementGroupName - The management group ID.
 //   - alertRuleName - The name of the Tenant Activity Log Alert rule.
 //   - options - ClientDeleteOptions contains the optional parameters for the Client.Delete method.
@@ -145,15 +143,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, managementGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Tenant Activity Log Alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-04-01-preview
 //   - managementGroupName - The management group ID.
 //   - alertRuleName - The name of the Tenant Activity Log Alert rule.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -195,8 +191,8 @@ func (client *Client) getCreateRequest(ctx context.Context, managementGroupName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -211,8 +207,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 }
 
 // NewListByManagementGroupPager - Get a list of all Tenant Activity Log Alert rules in a management group.
-//
-// Generated from API version 2023-04-01-preview
 //   - managementGroupName - The management group ID.
 //   - options - ClientListByManagementGroupOptions contains the optional parameters for the Client.NewListByManagementGroupPager
 //     method.
@@ -251,8 +245,8 @@ func (client *Client) listByManagementGroupCreateRequest(ctx context.Context, ma
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -267,8 +261,6 @@ func (client *Client) listByManagementGroupHandleResponse(resp *http.Response) (
 }
 
 // NewListByTenantPager - Get a list of all Tenant Activity Log Alert rules in the tenant.
-//
-// Generated from API version 2023-04-01-preview
 //   - options - ClientListByTenantOptions contains the optional parameters for the Client.NewListByTenantPager method.
 func (client *Client) NewListByTenantPager(options *ClientListByTenantOptions) *runtime.Pager[ClientListByTenantResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListByTenantResponse]{
@@ -301,8 +293,8 @@ func (client *Client) listByTenantCreateRequest(ctx context.Context, _ *ClientLi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -319,8 +311,6 @@ func (client *Client) listByTenantHandleResponse(resp *http.Response) (ClientLis
 // Update - Updates 'tags' and 'enabled' fields in an existing Tenant Alert rule. This method is used to update the Alert
 // rule tags, and to enable or disable the Alert rule. To update other fields use CreateOrUpdate operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-04-01-preview
 //   - managementGroupName - The management group ID.
 //   - alertRuleName - The name of the Tenant Activity Log Alert rule.
 //   - tenantActivityLogAlertRulePatch - Parameters supplied to the operation.
@@ -363,8 +353,8 @@ func (client *Client) updateCreateRequest(ctx context.Context, managementGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-04-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, tenantActivityLogAlertRulePatch); err != nil {

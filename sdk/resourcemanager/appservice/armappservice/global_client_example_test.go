@@ -30,7 +30,7 @@ func ExampleGlobalClient_GetDeletedWebApp() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.GlobalClientGetDeletedWebAppResponse{
-	// 	DeletedSite: &armappservice.DeletedSite{
+	// 	DeletedSite: armappservice.DeletedSite{
 	// 		Name: to.Ptr("wussite6"),
 	// 		Type: to.Ptr("Microsoft.Web/deletedSites"),
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg1/providers/Microsoft.Web/locations/West US 2/deletedwebapps/wussite6"),
@@ -67,7 +67,7 @@ func ExampleGlobalClient_GetDeletedWebAppSnapshots() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.GlobalClientGetDeletedWebAppSnapshotsResponse{
-	// 	undefined: &[]*armappservice.Snapshot{
+	// 	SnapshotArray: []*armappservice.Snapshot{
 	// 		{
 	// 			Name: to.Ptr("wussite6"),
 	// 			Type: to.Ptr("Microsoft.Web/locations/deletedSites"),

@@ -18,6 +18,8 @@ import (
 
 // CheckVirtualNetworkSubnetUsageClient contains the methods for the CheckVirtualNetworkSubnetUsage group.
 // Don't use this type directly, use NewCheckVirtualNetworkSubnetUsageClient() instead.
+//
+// Generated from API version 2024-12-30
 type CheckVirtualNetworkSubnetUsageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCheckVirtualNetworkSubnetUsageClient(subscriptionID string, credential a
 
 // Execute - Get virtual network subnet usage for a given vNet resource id.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - locationName - The name of the location.
 //   - parameters - The request body
 //   - options - CheckVirtualNetworkSubnetUsageClientExecuteOptions contains the optional parameters for the CheckVirtualNetworkSubnetUsageClient.Execute
@@ -85,8 +85,8 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

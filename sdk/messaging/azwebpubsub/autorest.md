@@ -12,7 +12,7 @@ license-header: MICROSOFT_MIT_NO_VERSION
 module: github.com/Azure/azure-sdk-for-go/sdk/messaging/azwebpubsub
 openapi-type: "data-plane"
 output-folder: ../azwebpubsub
-use: "@autorest/go@4.0.0-preview.60"
+use: "@autorest/go@4.0.0-preview.80"
 directive:
     # Remove HealthAPI
     - from: swagger-document
@@ -69,7 +69,7 @@ directive:
         - models.go
         - models_serde.go
         - options.go
-        - response_types.go
+        - responses.go
       where: $
       transform: return $.replace(/Client(\w+)((?:Options|Response))/g, "$1$2");
 ```

@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Regenerated code with the latest emitter.
+* Updated dependencies.
 
 ## 0.9.0 (2025-11-10)
 

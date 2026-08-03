@@ -16,12 +16,12 @@ func unmarshalFileShareConfigurationClassification(rawMsg json.RawMessage) (File
 	}
 	var b FileShareConfigurationClassification
 	switch m["configurationType"] {
-	case string(FileShareConfigurationTypeSkip):
-		b = &SkipFileShareConfiguration{}
 	case string(FileShareConfigurationTypeCreateAndMount):
 		b = &CreateAndMountFileShareConfiguration{}
 	case string(FileShareConfigurationTypeMount):
 		b = &MountFileShareConfiguration{}
+	case string(FileShareConfigurationTypeSkip):
+		b = &SkipFileShareConfiguration{}
 	default:
 		b = &FileShareConfiguration{}
 	}
@@ -64,10 +64,10 @@ func unmarshalOSConfigurationClassification(rawMsg json.RawMessage) (OSConfigura
 	}
 	var b OSConfigurationClassification
 	switch m["osType"] {
-	case string(OSTypeWindows):
-		b = &WindowsConfiguration{}
 	case string(OSTypeLinux):
 		b = &LinuxConfiguration{}
+	case string(OSTypeWindows):
+		b = &WindowsConfiguration{}
 	default:
 		b = &OSConfiguration{}
 	}
@@ -87,12 +87,12 @@ func unmarshalSAPConfigurationClassification(rawMsg json.RawMessage) (SAPConfigu
 	}
 	var b SAPConfigurationClassification
 	switch m["configurationType"] {
-	case string(SAPConfigurationTypeDiscovery):
-		b = &DiscoveryConfiguration{}
 	case string(SAPConfigurationTypeDeployment):
 		b = &DeploymentConfiguration{}
 	case string(SAPConfigurationTypeDeploymentWithOSConfig):
 		b = &DeploymentWithOSConfiguration{}
+	case string(SAPConfigurationTypeDiscovery):
+		b = &DiscoveryConfiguration{}
 	default:
 		b = &SAPConfiguration{}
 	}
@@ -156,12 +156,12 @@ func unmarshalSoftwareConfigurationClassification(rawMsg json.RawMessage) (Softw
 	}
 	var b SoftwareConfigurationClassification
 	switch m["softwareInstallationType"] {
-	case string(SAPSoftwareInstallationTypeServiceInitiated):
-		b = &ServiceInitiatedSoftwareConfiguration{}
-	case string(SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig):
-		b = &SAPInstallWithoutOSConfigSoftwareConfiguration{}
 	case string(SAPSoftwareInstallationTypeExternal):
 		b = &ExternalInstallationSoftwareConfiguration{}
+	case string(SAPSoftwareInstallationTypeSAPInstallWithoutOSConfig):
+		b = &SAPInstallWithoutOSConfigSoftwareConfiguration{}
+	case string(SAPSoftwareInstallationTypeServiceInitiated):
+		b = &ServiceInitiatedSoftwareConfiguration{}
 	default:
 		b = &SoftwareConfiguration{}
 	}

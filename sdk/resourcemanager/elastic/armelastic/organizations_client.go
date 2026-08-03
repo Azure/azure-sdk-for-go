@@ -18,6 +18,8 @@ import (
 
 // OrganizationsClient contains the methods for the Organizations group.
 // Don't use this type directly, use NewOrganizationsClient() instead.
+//
+// Generated from API version 2025-06-01
 type OrganizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -45,8 +47,6 @@ func NewOrganizationsClient(subscriptionID string, credential azcore.TokenCreden
 // Fetch the User API Key from the internal database, if it was generated and stored during the creation of the Elasticsearch
 // Organization.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - options - OrganizationsClientGetAPIKeyOptions contains the optional parameters for the OrganizationsClient.GetAPIKey method.
 func (client *OrganizationsClient) GetAPIKey(ctx context.Context, options *OrganizationsClientGetAPIKeyOptions) (OrganizationsClientGetAPIKeyResponse, error) {
 	var err error
@@ -82,8 +82,8 @@ func (client *OrganizationsClient) getAPIKeyCreateRequest(ctx context.Context, o
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -111,8 +111,6 @@ func (client *OrganizationsClient) getAPIKeyHandleResponse(resp *http.Response) 
 // /**
 // Retrieve mapping details between the Elastic Organization and Azure Subscription for the logged-in user.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - options - OrganizationsClientGetElasticToAzureSubscriptionMappingOptions contains the optional parameters for the OrganizationsClient.GetElasticToAzureSubscriptionMapping
 //     method.
 func (client *OrganizationsClient) GetElasticToAzureSubscriptionMapping(ctx context.Context, options *OrganizationsClientGetElasticToAzureSubscriptionMappingOptions) (OrganizationsClientGetElasticToAzureSubscriptionMappingResponse, error) {
@@ -149,8 +147,8 @@ func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -166,8 +164,6 @@ func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingHandleRes
 
 // BeginResubscribe - Resubscribe the Elasticsearch Organization.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - OrganizationsClientBeginResubscribeOptions contains the optional parameters for the OrganizationsClient.BeginResubscribe
@@ -191,8 +187,6 @@ func (client *OrganizationsClient) BeginResubscribe(ctx context.Context, resourc
 
 // Resubscribe - Resubscribe the Elasticsearch Organization.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *OrganizationsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *OrganizationsClientBeginResubscribeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrganizationsClient.BeginResubscribe"
@@ -234,8 +228,8 @@ func (client *OrganizationsClient) resubscribeCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -58,17 +58,17 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "CertificateProfilesClient":
-		initServer(s, &s.trCertificateProfilesServer, func() *CertificateProfilesServerTransport {
+		initServer(&s.trMu, &s.trCertificateProfilesServer, func() *CertificateProfilesServerTransport {
 			return NewCertificateProfilesServerTransport(&s.srv.CertificateProfilesServer)
 		})
 		resp, err = s.trCertificateProfilesServer.Do(req)
 	case "CodeSigningAccountsClient":
-		initServer(s, &s.trCodeSigningAccountsServer, func() *CodeSigningAccountsServerTransport {
+		initServer(&s.trMu, &s.trCodeSigningAccountsServer, func() *CodeSigningAccountsServerTransport {
 			return NewCodeSigningAccountsServerTransport(&s.srv.CodeSigningAccountsServer)
 		})
 		resp, err = s.trCodeSigningAccountsServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -79,12 +79,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// AccessServer contains the fakes for client AccessClient
 	AccessServer AccessServer
 
+	// AccessPointResourcesServer contains the fakes for client AccessPointResourcesClient
+	AccessPointResourcesServer AccessPointResourcesServer
+
 	// ClusterServer contains the fakes for client ClusterClient
 	ClusterServer ClusterServer
 
@@ -29,6 +32,9 @@ type ServerFactory struct {
 
 	// MarketplaceAgreementsServer contains the fakes for client MarketplaceAgreementsClient
 	MarketplaceAgreementsServer MarketplaceAgreementsServer
+
+	// NetworkGatewayResourcesServer contains the fakes for client NetworkGatewayResourcesClient
+	NetworkGatewayResourcesServer NetworkGatewayResourcesServer
 
 	// OrganizationServer contains the fakes for client OrganizationClient
 	OrganizationServer OrganizationServer
@@ -55,17 +61,19 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armconfluent.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                            *ServerFactory
-	trMu                           sync.Mutex
-	trAccessServer                 *AccessServerTransport
-	trClusterServer                *ClusterServerTransport
-	trConnectorServer              *ConnectorServerTransport
-	trEnvironmentServer            *EnvironmentServerTransport
-	trMarketplaceAgreementsServer  *MarketplaceAgreementsServerTransport
-	trOrganizationServer           *OrganizationServerTransport
-	trOrganizationOperationsServer *OrganizationOperationsServerTransport
-	trTopicsServer                 *TopicsServerTransport
-	trValidationsServer            *ValidationsServerTransport
+	srv                             *ServerFactory
+	trMu                            sync.Mutex
+	trAccessServer                  *AccessServerTransport
+	trAccessPointResourcesServer    *AccessPointResourcesServerTransport
+	trClusterServer                 *ClusterServerTransport
+	trConnectorServer               *ConnectorServerTransport
+	trEnvironmentServer             *EnvironmentServerTransport
+	trMarketplaceAgreementsServer   *MarketplaceAgreementsServerTransport
+	trNetworkGatewayResourcesServer *NetworkGatewayResourcesServerTransport
+	trOrganizationServer            *OrganizationServerTransport
+	trOrganizationOperationsServer  *OrganizationOperationsServerTransport
+	trTopicsServer                  *TopicsServerTransport
+	trValidationsServer             *ValidationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -82,35 +90,45 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "AccessClient":
-		initServer(s, &s.trAccessServer, func() *AccessServerTransport { return NewAccessServerTransport(&s.srv.AccessServer) })
+		initServer(&s.trMu, &s.trAccessServer, func() *AccessServerTransport { return NewAccessServerTransport(&s.srv.AccessServer) })
 		resp, err = s.trAccessServer.Do(req)
+	case "AccessPointResourcesClient":
+		initServer(&s.trMu, &s.trAccessPointResourcesServer, func() *AccessPointResourcesServerTransport {
+			return NewAccessPointResourcesServerTransport(&s.srv.AccessPointResourcesServer)
+		})
+		resp, err = s.trAccessPointResourcesServer.Do(req)
 	case "ClusterClient":
-		initServer(s, &s.trClusterServer, func() *ClusterServerTransport { return NewClusterServerTransport(&s.srv.ClusterServer) })
+		initServer(&s.trMu, &s.trClusterServer, func() *ClusterServerTransport { return NewClusterServerTransport(&s.srv.ClusterServer) })
 		resp, err = s.trClusterServer.Do(req)
 	case "ConnectorClient":
-		initServer(s, &s.trConnectorServer, func() *ConnectorServerTransport { return NewConnectorServerTransport(&s.srv.ConnectorServer) })
+		initServer(&s.trMu, &s.trConnectorServer, func() *ConnectorServerTransport { return NewConnectorServerTransport(&s.srv.ConnectorServer) })
 		resp, err = s.trConnectorServer.Do(req)
 	case "EnvironmentClient":
-		initServer(s, &s.trEnvironmentServer, func() *EnvironmentServerTransport { return NewEnvironmentServerTransport(&s.srv.EnvironmentServer) })
+		initServer(&s.trMu, &s.trEnvironmentServer, func() *EnvironmentServerTransport { return NewEnvironmentServerTransport(&s.srv.EnvironmentServer) })
 		resp, err = s.trEnvironmentServer.Do(req)
 	case "MarketplaceAgreementsClient":
-		initServer(s, &s.trMarketplaceAgreementsServer, func() *MarketplaceAgreementsServerTransport {
+		initServer(&s.trMu, &s.trMarketplaceAgreementsServer, func() *MarketplaceAgreementsServerTransport {
 			return NewMarketplaceAgreementsServerTransport(&s.srv.MarketplaceAgreementsServer)
 		})
 		resp, err = s.trMarketplaceAgreementsServer.Do(req)
+	case "NetworkGatewayResourcesClient":
+		initServer(&s.trMu, &s.trNetworkGatewayResourcesServer, func() *NetworkGatewayResourcesServerTransport {
+			return NewNetworkGatewayResourcesServerTransport(&s.srv.NetworkGatewayResourcesServer)
+		})
+		resp, err = s.trNetworkGatewayResourcesServer.Do(req)
 	case "OrganizationClient":
-		initServer(s, &s.trOrganizationServer, func() *OrganizationServerTransport { return NewOrganizationServerTransport(&s.srv.OrganizationServer) })
+		initServer(&s.trMu, &s.trOrganizationServer, func() *OrganizationServerTransport { return NewOrganizationServerTransport(&s.srv.OrganizationServer) })
 		resp, err = s.trOrganizationServer.Do(req)
 	case "OrganizationOperationsClient":
-		initServer(s, &s.trOrganizationOperationsServer, func() *OrganizationOperationsServerTransport {
+		initServer(&s.trMu, &s.trOrganizationOperationsServer, func() *OrganizationOperationsServerTransport {
 			return NewOrganizationOperationsServerTransport(&s.srv.OrganizationOperationsServer)
 		})
 		resp, err = s.trOrganizationOperationsServer.Do(req)
 	case "TopicsClient":
-		initServer(s, &s.trTopicsServer, func() *TopicsServerTransport { return NewTopicsServerTransport(&s.srv.TopicsServer) })
+		initServer(&s.trMu, &s.trTopicsServer, func() *TopicsServerTransport { return NewTopicsServerTransport(&s.srv.TopicsServer) })
 		resp, err = s.trTopicsServer.Do(req)
 	case "ValidationsClient":
-		initServer(s, &s.trValidationsServer, func() *ValidationsServerTransport { return NewValidationsServerTransport(&s.srv.ValidationsServer) })
+		initServer(&s.trMu, &s.trValidationsServer, func() *ValidationsServerTransport { return NewValidationsServerTransport(&s.srv.ValidationsServer) })
 		resp, err = s.trValidationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -121,12 +139,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

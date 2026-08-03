@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2023-11-01-preview/ClusterPutOperation_example_max.json
+// Generated from example definition: 2026-03-01-preview/ClusterPutOperation_example_max.json
 func ExampleClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -432,7 +432,7 @@ func ExampleClustersClient_BeginCreateOrUpdate_putAClusterWithMaximumParameters(
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterPutOperation_example_min.json
+// Generated from example definition: 2026-03-01-preview/ClusterPutOperation_example_min.json
 func ExampleClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,7 +586,7 @@ func ExampleClustersClient_BeginCreateOrUpdate_putAClusterWithMinimumParameters(
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterDeleteOperation_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterDeleteOperation_example.json
 func ExampleClustersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +608,7 @@ func ExampleClustersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterGetOperation_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterGetOperation_example.json
 func ExampleClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +777,7 @@ func ExampleClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterListOperation_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterListOperation_example.json
 func ExampleClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1044,7 +1044,7 @@ func ExampleClustersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterListByResourceGroupOperation_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterListByResourceGroupOperation_example.json
 func ExampleClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1311,7 +1311,7 @@ func ExampleClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2023-11-01-preview/ListUpgradableVersionsMinMax_example.json
+// Generated from example definition: 2026-03-01-preview/ListUpgradableVersionsMinMax_example.json
 func ExampleClustersClient_ListUpgradableVersions_getMinimumAndMaximumCodeVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1339,7 +1339,7 @@ func ExampleClustersClient_ListUpgradableVersions_getMinimumAndMaximumCodeVersio
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ListUpgradableVersionsPath_example.json
+// Generated from example definition: 2026-03-01-preview/ListUpgradableVersionsPath_example.json
 func ExampleClustersClient_ListUpgradableVersions_getUpgradePath() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1372,7 +1372,7 @@ func ExampleClustersClient_ListUpgradableVersions_getUpgradePath() {
 	// }
 }
 
-// Generated from example definition: 2023-11-01-preview/ClusterPatchOperation_example.json
+// Generated from example definition: 2026-03-01-preview/ClusterPatchOperation_example.json
 func ExampleClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

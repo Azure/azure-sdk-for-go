@@ -18,6 +18,8 @@ import (
 
 // FirewallStatusClient contains the methods for the FirewallStatus group.
 // Don't use this type directly, use NewFirewallStatusClient() instead.
+//
+// Generated from API version 2025-10-08
 type FirewallStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFirewallStatusClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Get a FirewallStatusResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallStatusClientGetOptions contains the optional parameters for the FirewallStatusClient.Get method.
@@ -88,8 +88,8 @@ func (client *FirewallStatusClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *FirewallStatusClient) getHandleResponse(resp *http.Response) (Fire
 }
 
 // NewListByFirewallsPager - List FirewallStatusResource resources by Firewalls
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - firewallName - Firewall resource name
 //   - options - FirewallStatusClientListByFirewallsOptions contains the optional parameters for the FirewallStatusClient.NewListByFirewallsPager
@@ -153,8 +151,8 @@ func (client *FirewallStatusClient) listByFirewallsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

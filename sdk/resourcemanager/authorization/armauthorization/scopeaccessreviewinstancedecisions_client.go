@@ -18,6 +18,8 @@ import (
 
 // ScopeAccessReviewInstanceDecisionsClient contains the methods for the ScopeAccessReviewInstanceDecisions group.
 // Don't use this type directly, use NewScopeAccessReviewInstanceDecisionsClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type ScopeAccessReviewInstanceDecisionsClient struct {
 	internal *arm.Client
 }
@@ -37,8 +39,6 @@ func NewScopeAccessReviewInstanceDecisionsClient(credential azcore.TokenCredenti
 }
 
 // NewListPager - Get access review instance decisions
-//
-// Generated from API version 2021-12-01-preview
 //   - scope - The scope of the resource.
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
@@ -90,8 +90,8 @@ func (client *ScopeAccessReviewInstanceDecisionsClient) listCreateRequest(ctx co
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

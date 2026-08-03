@@ -4,6 +4,10 @@
 
 package armplaywright
 
+const (
+	version20260201Preview string = "2026-02-01-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 

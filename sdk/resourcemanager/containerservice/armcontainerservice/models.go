@@ -353,6 +353,73 @@ type AgentPoolWindowsProfile struct {
 	DisableOutboundNat *bool
 }
 
+// AlertConfiguration - Alert configuration for a managed cluster. Allows configuring AKS-managed alerts
+// that notify users of important cluster events and conditions.
+type AlertConfiguration struct {
+	// The resource-specific properties for this resource.
+	Properties *AlertConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AlertConfigurationListResult - The response of a AlertConfiguration list operation.
+type AlertConfigurationListResult struct {
+	// REQUIRED; The AlertConfiguration items on this page
+	Value []*AlertConfiguration
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AlertConfigurationProperties - Properties of the alert configuration.
+type AlertConfigurationProperties struct {
+	// REQUIRED; The mode of the alert configuration. Specifies how AKS manages the alerts.
+	Mode *AlertConfigurationMode
+
+	// REQUIRED; Notification settings for the alert configuration.
+	Notification *AlertNotification
+
+	// READ-ONLY; The current provisioning state of the alert configuration.
+	ProvisioningState *AlertConfigurationProvisioningState
+}
+
+// AlertNotification - Notification settings for the alert configuration.
+type AlertNotification struct {
+	// REQUIRED; The resource ID of the Azure Monitor action group to send notifications to.
+	ActionGroupID *string
+}
+
+// AllowedSubject - A subject authorized to use the identity binding for token exchange.
+// The namespace selector is required and must be non-empty. The service
+// account selector is optional; when omitted, all service accounts in
+// matching namespaces are authorized. Selectors within a single
+// AllowedSubject are AND'd; multiple AllowedSubjects on an
+// IdentityBinding are OR'd.
+type AllowedSubject struct {
+	// REQUIRED; Label selector matching the namespaces in which this identity may be
+	// used. Must be non-empty: an empty selector would match every namespace
+	// and is rejected to prevent overly permissive bindings. Use the built-in
+	// `kubernetes.io/metadata.name` label to target specific namespaces by
+	// name.
+	NamespaceSelector *LabelSelector
+
+	// Optional label selector matching the service accounts (within the
+	// namespaces matched by `namespaceSelector`) that may use this identity.
+	// When omitted, all service accounts in matching namespaces are
+	// authorized. When provided, it must be non-empty.
+	ServiceAccountSelector *LabelSelector
+}
+
 // AutoScaleProfile - Specifications on auto-scaling.
 type AutoScaleProfile struct {
 	// The maximum number of nodes of the specified sizes.
@@ -383,6 +450,106 @@ type AzureKeyVaultKms struct {
 	// Resource ID of key vault. When keyVaultNetworkAccess is `Private`, this field is required and must be a valid resource
 	// ID. When keyVaultNetworkAccess is `Public`, leave the field empty.
 	KeyVaultResourceID *string
+}
+
+// BastionProfile - Profile to enable managed Azure Bastion or reference to an existing Bastion for the managed cluster.
+// See https://aka.ms/aks/BastionConnect for more details.
+type BastionProfile struct {
+	// Indicates whether managed bastion is enabled.
+	Enabled *bool
+
+	// The resource ID of the public IP address associated with the managed bastion.
+	// When provided during creation, the managed bastion will reference this existing public IP address instead of creating a
+	// new one.
+	// The referenced public IP address must be in the same subscription and region as the managed cluster.
+	// When not provided during creation, AKS will automatically create a new public IP address.
+	// This field cannot be updated. To change IP address after creation, please disable and re-enable the managed bastion with
+	// the new public IP address.
+	PublicIPAddressID *string
+
+	// The SKU of the managed bastion.
+	// Only Standard and Premium SKUs are supported.
+	// SKU downgrading is not allowed. To downgrade SKU, please disable then re-enable the managed bastion with new SKU.
+	// See https://aka.ms/aks/BastionSKUs for more details.
+	SKU *BastionSKU
+
+	// The scale units of the managed bastion. Default value is 2.
+	ScaleUnits *int32
+
+	// READ-ONLY; The resource ID of the managed bastion associated with the managed cluster.
+	BastionID *string
+}
+
+// BootstrapAzureConfig - Azure configuration returned as part of FlexNode bootstrap data.
+type BootstrapAzureConfig struct {
+	// READ-ONLY; Bootstrap token for node enrollment. Do not cache or log.
+	BootstrapToken *BootstrapTokenInfo
+
+	// READ-ONLY; Azure Resource Manager endpoint for the cloud environment.
+	ResourceManagerEndpoint *string
+
+	// READ-ONLY; Target agent pool name.
+	TargetAgentPoolName *string
+
+	// READ-ONLY; Target cluster identity.
+	TargetCluster *BootstrapTargetCluster
+}
+
+// BootstrapComponentVersions - Component versions returned as part of FlexNode bootstrap data.
+type BootstrapComponentVersions struct {
+	// READ-ONLY; Containerd version.
+	Containerd *string
+
+	// READ-ONLY; Kubernetes version.
+	Kubernetes *string
+
+	// READ-ONLY; Runc version.
+	Runc *string
+}
+
+// BootstrapKubeletConfig - Kubelet configuration returned as part of FlexNode bootstrap data.
+type BootstrapKubeletConfig struct {
+	// READ-ONLY; Base64-encoded PEM certificate of the cluster CA. Do not cache or log.
+	CaCertData *string
+
+	// READ-ONLY; FQDN of the Kubernetes API server.
+	ClusterFQDN *string
+}
+
+// BootstrapNetworkingConfig - Network configuration returned as part of FlexNode bootstrap data.
+type BootstrapNetworkingConfig struct {
+	// READ-ONLY; CNI plugin version.
+	CniVersion *string
+
+	// READ-ONLY; IP address of the cluster DNS service.
+	DNSServiceIP *string
+}
+
+// BootstrapNodeConfig - Node configuration returned as part of FlexNode bootstrap data.
+type BootstrapNodeConfig struct {
+	// READ-ONLY; Kubelet configuration.
+	Kubelet *BootstrapKubeletConfig
+
+	// READ-ONLY; Node labels to apply during registration.
+	Labels map[string]*string
+
+	// READ-ONLY; Maximum pods per node.
+	MaxPods *int32
+
+	// READ-ONLY; Node taints in the format 'key=value:effect'.
+	Taints []*string
+}
+
+// BootstrapTargetCluster - Target AKS cluster for FlexNode bootstrap.
+type BootstrapTargetCluster struct {
+	// READ-ONLY; Azure resource ID of the target AKS cluster.
+	ResourceID *string
+}
+
+// BootstrapTokenInfo - Bootstrap token information.
+type BootstrapTokenInfo struct {
+	// READ-ONLY; Short-lived bootstrap token for kubelet. Do not cache or log.
+	Token *string
 }
 
 // ClusterUpgradeSettings - Settings for upgrading a cluster.
@@ -690,6 +857,14 @@ type IdentityBindingOidcIssuerProfile struct {
 type IdentityBindingProperties struct {
 	// REQUIRED; Managed identity profile for the identity binding.
 	ManagedIdentity *IdentityBindingManagedIdentityProfile
+
+	// Optional list of subjects authorized to use this identity binding for
+	// token exchange. Each entry pairs a required namespace label selector
+	// with an optional service account label selector; selectors within an
+	// entry are AND'd, and multiple entries are OR'd. When omitted or empty,
+	// authorization falls back exclusively to ClusterRole/ClusterRoleBinding
+	// evaluation. Maximum 100 entries.
+	AllowedSubjects []*AllowedSubject
 
 	// READ-ONLY; The OIDC issuer URL of the IdentityBinding.
 	OidcIssuer *IdentityBindingOidcIssuerProfile
@@ -1040,6 +1215,10 @@ type LinuxProfile struct {
 
 	// REQUIRED; The SSH configuration for Linux-based VMs running on Azure.
 	SSH *SSHConfiguration
+}
+
+// ListBootstrapDataRequest - Empty request body for listing FlexNode bootstrap data.
+type ListBootstrapDataRequest struct {
 }
 
 // LoadBalancer - The configurations regarding multiple standard load balancers. If not supplied, single load balancer mode
@@ -1438,6 +1617,12 @@ type MaintenanceConfigurationProperties struct {
 	// Maintenance window for the maintenance configuration.
 	MaintenanceWindow *MaintenanceWindow
 
+	// The fully qualified resource ID of the maintenance window that this maintenance configuration is linked to. When set, the
+	// schedule is derived read-only from the linked maintenance window — maintenanceWindow becomes a computed field. When absent
+	// (the default), the schedule is defined inline via the maintenanceWindow property. The caller must have read access to the
+	// target maintenance window.
+	MaintenanceWindowID *string
+
 	// Time slots on which upgrade is not allowed.
 	NotAllowedTime []*TimeSpan
 
@@ -1470,6 +1655,78 @@ type MaintenanceWindow struct {
 	// The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00' for PST. If not specified, the default is
 	// '+00:00'.
 	UTCOffset *string
+}
+
+// MaintenanceWindowResource - A maintenance window is a resource-group-scoped resource that defines a reusable maintenance
+// schedule which can be linked to maintenance configurations on one or more managed clusters. For more information, see https://aka.ms/aks/maintenance-windows.
+type MaintenanceWindowResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Properties of a maintenance window.
+	Properties *MaintenanceWindowResourceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// MaintenanceWindowResourceListResult - The response of a MaintenanceWindowResource list operation.
+type MaintenanceWindowResourceListResult struct {
+	// REQUIRED; The MaintenanceWindowResource items on this page
+	Value []*MaintenanceWindowResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// MaintenanceWindowResourceProperties - Properties of a maintenance window.
+// For more information, see https://aka.ms/aks/maintenance-windows.
+type MaintenanceWindowResourceProperties struct {
+	// REQUIRED; Length of the maintenance window in hours.
+	DurationHours *int32
+
+	// REQUIRED; Recurrence schedule for the maintenance window. One and only one of the schedule
+	// types should be specified: 'daily', 'weekly', 'absoluteMonthly', or 'relativeMonthly'.
+	Schedule *Schedule
+
+	// REQUIRED; The start time of the maintenance window. Accepted values are from '00:00' to
+	// '23:59'. 'utcOffset' applies to this field. For example: '02:00' with
+	// 'utcOffset: +02:00' means UTC time '00:00'.
+	StartTime *string
+
+	// Date ranges during which maintenance is not allowed. 'utcOffset' applies to
+	// these dates. For example, with 'utcOffset: +02:00' and a date span of
+	// '2026-12-23' to '2027-01-03', maintenance will be blocked from
+	// '2026-12-22 22:00' to '2027-01-03 22:00' in UTC time.
+	NotAllowedDates []*DateSpan
+
+	// The date the maintenance window activates. If the current date is before this
+	// date, the maintenance window is inactive and will not be used. If not specified,
+	// the maintenance window will be active right away.
+	StartDate *time.Time
+
+	// The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00'
+	// for PST. If not specified, the default is '+00:00'.
+	// Note: this is a static offset and does not adjust for Daylight Saving Time.
+	// Customers in DST-observing regions should pick the offset that matches their
+	// preferred wall-clock time year-round; the maintenance window will shift by one
+	// hour relative to local time when DST starts or ends.
+	UTCOffset *string
+
+	// READ-ONLY; The provisioning state of the maintenance window.
+	ProvisioningState *ResourceProvisioningState
 }
 
 // ManagedCluster - Managed cluster.
@@ -1719,7 +1976,8 @@ type ManagedClusterAgentPoolProfile struct {
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
 
-	// The version of node image
+	// The version of the node image. Setting this value triggers an agentPool rollback.
+	// Only values from `recentlyUsedVersions` are allowed.
 	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
@@ -1947,7 +2205,8 @@ type ManagedClusterAgentPoolProfileProperties struct {
 	// Network-related settings of an agent pool.
 	NetworkProfile *AgentPoolNetworkProfile
 
-	// The version of node image
+	// The version of the node image. Setting this value triggers an agentPool rollback.
+	// Only values from `recentlyUsedVersions` are allowed.
 	NodeImageVersion *string
 
 	// Taints added on the nodes during creation that will not be reconciled by AKS. These taints will not be reconciled by AKS
@@ -2779,7 +3038,7 @@ type ManagedClusterProperties struct {
 	// PublicNetworkAccess of the managedCluster. Allow or deny public network access for AKS
 	PublicNetworkAccess *PublicNetworkAccess
 
-	// Profile of the pod scheduler configuration.
+	// Profile with scheduler-related settings, like the configuration mode for each scheduler managed by AKS. See https://aka.ms/aks/scheduler-profile.
 	SchedulerProfile *SchedulerProfile
 
 	// Security profile for the managed cluster.
@@ -2993,37 +3252,37 @@ type ManagedClusterSecurityProfileDefender struct {
 	// empty.
 	LogAnalyticsWorkspaceResourceID *string
 
-	// Microsoft Defender settings for security gating, validates container images eligibility for deployment based on Defender
-	// for Containers security findings. Using Admission Controller, it either audits or prevents the deployment of images that
-	// do not meet security standards.
+	// Microsoft Defender settings for security gating. This validates container images eligibility for deployment based on Defender
+	// for Containers security findings. Using Admission Controller, it either audits or prevents deployment of images that do
+	// not meet security standards. For more information, see https://aka.ms/KubernetesDefenderAuditRule.
 	SecurityGating *ManagedClusterSecurityProfileDefenderSecurityGating
 
 	// Microsoft Defender threat detection for Cloud settings for the security profile.
 	SecurityMonitoring *ManagedClusterSecurityProfileDefenderSecurityMonitoring
 }
 
-// ManagedClusterSecurityProfileDefenderSecurityGating - Microsoft Defender settings for security gating, validates container
-// images eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it either
-// audits or prevents the deployment of images that do not meet security standards.
+// ManagedClusterSecurityProfileDefenderSecurityGating - Microsoft Defender settings for security gating. This validates container
+// image eligibility for deployment based on Defender for Containers security findings. Using Admission Controller, it either
+// audits or prevents deployment of images that do not meet security standards.
 type ManagedClusterSecurityProfileDefenderSecurityGating struct {
-	// In use only while registry access granted by secret rather than managed identity. Set whether to grant the Defender gating
-	// agent access to the cluster's secrets for pulling images from registries. If secret access is denied and the registry requires
-	// pull secrets, the add-on will not perform any image validation. Default value is false.
+	// In use only while registry access is granted by secret rather than managed identity. Sets whether to grant the Defender
+	// gating agent access to cluster secrets for pulling images from registries. If secret access is denied and the registry
+	// requires pull secrets, the add-on will not perform image validation. Default value is false.
 	AllowSecretAccess *bool
 
-	// Whether to enable Defender security gating. When enabled, the gating feature will scan container images and audit or block
-	// the deployment of images that do not meet security standards according to the configured security rules.
+	// Whether to enable Defender security gating. When enabled, the gating feature scans container images and audits or blocks
+	// deployment of images that do not meet security standards according to configured security rules. For more information,
+	// see https://aka.ms/KubernetesDefenderAuditRule.
 	Enabled *bool
 
-	// List of identities that the admission controller will make use of in order to pull security artifacts from the registry.
-	// These are the same identities used by the cluster to pull container images. Each identity provided should have federated
-	// identity credential attached to it.
-	Identities []*ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem
+	// List of identities that the admission controller uses to pull security artifacts from registries. These are the same identities
+	// used by the cluster to pull container images. For more information on configuring this identity, see https://learn.microsoft.com/en-us/azure/defender-for-cloud/gated-deployment-infrastructure-as-code.
+	Identities []*ManagedClusterSecurityProfileDefenderSecurityGatingIdentity
 }
 
-// ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem - Identity information used by Defender security gating
-// to access container registries.
-type ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem struct {
+// ManagedClusterSecurityProfileDefenderSecurityGatingIdentity - Identity mapping used by Defender security gating for registry
+// access.
+type ManagedClusterSecurityProfileDefenderSecurityGatingIdentity struct {
 	// The container registry for which the identity will be used; the identity specified here should have a federated identity
 	// credential attached to it.
 	AzureContainerRegistry *string
@@ -3513,6 +3772,10 @@ type NetworkProfile struct {
 	// aka.ms/aksadvancednetworking.
 	AdvancedNetworking *AdvancedNetworking
 
+	// Profile of the Bastion Host associated with the managed cluster.
+	// See https://aka.ms/aks/BastionConnect for more details.
+	BastionProfile *BastionProfile
+
 	// An IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified
 	// in serviceCidr.
 	DNSServiceIP *string
@@ -3532,6 +3795,11 @@ type NetworkProfile struct {
 	// The load balancer sku for the managed cluster. The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus)
 	// for more information about the differences between load balancer SKUs.
 	LoadBalancerSKU *LoadBalancerSKU
+
+	// The Azure resource ID of the NAT gateway to use for egress at cluster startup when outboundType is 'userAssignedNATGateway'
+	// using StandardV2 Public IP, backend pool type is podIP, and load balancer type is service SKU. This is of the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/natGateways/{natGatewayName}'.
+	// When using managed NATGateway this field is auto populated. For more information, see https://aka.ms/aks/container-native-slb
+	NatGatewayID *string
 
 	// Profile of the cluster NAT gateway.
 	NatGatewayProfile *ManagedClusterNATGatewayProfile
@@ -3762,6 +4030,21 @@ type OutboundEnvironmentEndpointCollection struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// PoolBootstrapData - Bootstrap configuration for a FlexNode pool.
+type PoolBootstrapData struct {
+	// READ-ONLY; Azure environment and cluster identity information.
+	Azure *BootstrapAzureConfig
+
+	// READ-ONLY; Component versions for the node runtime.
+	Components *BootstrapComponentVersions
+
+	// READ-ONLY; Network configuration for the node.
+	Networking *BootstrapNetworkingConfig
+
+	// READ-ONLY; Node-level configuration for kubelet, labels, and taints.
+	Node *BootstrapNodeConfig
 }
 
 // PortRange - The port range.
@@ -4142,21 +4425,16 @@ type Schedule struct {
 	Weekly *WeeklySchedule
 }
 
-// SchedulerInstanceProfile - The scheduler profile for a single scheduler instance.
+// SchedulerInstanceProfile - Profile with settings related to a specific instance of an AKS-managed scheduler.
 type SchedulerInstanceProfile struct {
-	// The config customization mode for this scheduler instance.
+	// The configuration mode to be used by the AKS-managed scheduler.
 	SchedulerConfigMode *SchedulerConfigMode
 }
 
-// SchedulerProfile - The pod scheduler profile for the cluster.
+// SchedulerProfile - Profile with scheduler-related settings, like the configuration mode for each scheduler managed by AKS.
+// See https://aka.ms/aks/scheduler-profile.
 type SchedulerProfile struct {
-	// Mapping of each scheduler instance to its profile.
-	SchedulerInstanceProfiles *SchedulerProfileSchedulerInstanceProfiles
-}
-
-// SchedulerProfileSchedulerInstanceProfiles - Mapping of each scheduler instance to its profile.
-type SchedulerProfileSchedulerInstanceProfiles struct {
-	// The scheduler profile for the upstream scheduler instance.
+	// Profile with settings related to upstream variant of kube-scheduler (https://github.com/kubernetes/kubernetes/tree/master/pkg/scheduler).
 	Upstream *SchedulerInstanceProfile
 }
 

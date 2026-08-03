@@ -18,6 +18,8 @@ import (
 
 // CreationSupportedClient contains the methods for the CreationSupported group.
 // Don't use this type directly, use NewCreationSupportedClient() instead.
+//
+// Generated from API version 2024-04-24
 type CreationSupportedClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewCreationSupportedClient(subscriptionID string, credential azcore.TokenCr
 //
 // Informs if the current subscription is being already monitored for selected Dynatrace environment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 //   - dynatraceEnvironmentID - Dynatrace Environment Id
 //   - options - CreationSupportedClientGetOptions contains the optional parameters for the CreationSupportedClient.Get method.
 func (client *CreationSupportedClient) Get(ctx context.Context, dynatraceEnvironmentID string, options *CreationSupportedClientGetOptions) (CreationSupportedClientGetResponse, error) {
@@ -85,8 +85,8 @@ func (client *CreationSupportedClient) getCreateRequest(ctx context.Context, dyn
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -104,8 +104,6 @@ func (client *CreationSupportedClient) getHandleResponse(resp *http.Response) (C
 //
 // Informs if the current subscription is being already monitored for selected Dynatrace environment.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 //   - dynatraceEnvironmentID - Dynatrace Environment Id
 //   - options - CreationSupportedClientListOptions contains the optional parameters for the CreationSupportedClient.List method.
 func (client *CreationSupportedClient) List(ctx context.Context, dynatraceEnvironmentID string, options *CreationSupportedClientListOptions) (CreationSupportedClientListResponse, error) {
@@ -146,8 +144,8 @@ func (client *CreationSupportedClient) listCreateRequest(ctx context.Context, dy
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

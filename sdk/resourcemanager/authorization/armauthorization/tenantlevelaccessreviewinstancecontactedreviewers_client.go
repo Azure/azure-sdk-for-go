@@ -19,6 +19,8 @@ import (
 // TenantLevelAccessReviewInstanceContactedReviewersClient contains the methods for the TenantLevelAccessReviewInstanceContactedReviewers
 // group.
 // Don't use this type directly, use NewTenantLevelAccessReviewInstanceContactedReviewersClient() instead.
+//
+// Generated from API version 2021-12-01-preview
 type TenantLevelAccessReviewInstanceContactedReviewersClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewTenantLevelAccessReviewInstanceContactedReviewersClient(credential azcor
 }
 
 // NewListPager - Get access review instance contacted reviewers
-//
-// Generated from API version 2021-12-01-preview
 //   - scheduleDefinitionID - The id of the access review schedule definition.
 //   - id - The id of the access review instance.
 //   - options - TenantLevelAccessReviewInstanceContactedReviewersClientListOptions contains the optional parameters for the TenantLevelAccessReviewInstanceContactedReviewersClient.NewListPager
@@ -83,8 +83,8 @@ func (client *TenantLevelAccessReviewInstanceContactedReviewersClient) listCreat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20211201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

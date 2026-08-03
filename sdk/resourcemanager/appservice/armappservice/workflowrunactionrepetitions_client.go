@@ -18,6 +18,8 @@ import (
 
 // WorkflowRunActionRepetitionsClient contains the methods for the WorkflowRunActionRepetitions group.
 // Don't use this type directly, use NewWorkflowRunActionRepetitionsClient() instead.
+//
+// Generated from API version 2025-05-01
 type WorkflowRunActionRepetitionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewWorkflowRunActionRepetitionsClient(subscriptionID string, credential azc
 
 // Get - Get a workflow run action repetition.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -109,8 +109,8 @@ func (client *WorkflowRunActionRepetitionsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -125,8 +125,6 @@ func (client *WorkflowRunActionRepetitionsClient) getHandleResponse(resp *http.R
 }
 
 // NewListPager - Get all of a workflow run action repetitions.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -189,8 +187,8 @@ func (client *WorkflowRunActionRepetitionsClient) listCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -205,8 +203,6 @@ func (client *WorkflowRunActionRepetitionsClient) listHandleResponse(resp *http.
 }
 
 // NewListExpressionTracesPager - Lists a workflow run expression trace.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Site name.
 //   - workflowName - The workflow name.
@@ -274,8 +270,8 @@ func (client *WorkflowRunActionRepetitionsClient) listExpressionTracesCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

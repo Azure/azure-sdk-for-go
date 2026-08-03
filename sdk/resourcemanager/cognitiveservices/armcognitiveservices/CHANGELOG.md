@@ -1,5 +1,33 @@
 # Release History
 
+## 4.0.0-beta.3 (2026-06-26)
+### Breaking Changes
+
+- Field `Location` of struct `ManagedComputeCapacityProperties` has been removed
+
+### Features Added
+
+- New enum type `RaiEgressDefaultAction` with values `RaiEgressDefaultActionAllow`, `RaiEgressDefaultActionDeny`
+- New enum type `RaiEgressHeaderOperation` with values `RaiEgressHeaderOperationInsert`, `RaiEgressHeaderOperationRemove`, `RaiEgressHeaderOperationSet`
+- New enum type `RaiEgressMode` with values `RaiEgressModeAudit`, `RaiEgressModeEnforced`
+- New enum type `RaiEgressRuleActionType` with values `RaiEgressRuleActionTypeAllow`, `RaiEgressRuleActionTypeDeny`, `RaiEgressRuleActionTypeRewrite`, `RaiEgressRuleActionTypeTransform`
+- New enum type `RaiEgressRuleType` with values `RaiEgressRuleTypeFqdn`
+- New enum type `RaiEgressScheme` with values `RaiEgressSchemeHTTP`, `RaiEgressSchemeHTTPS`
+- New struct `DeploymentSpeculativeDecoding`
+- New struct `RaiEgressHeaderTransform`
+- New struct `RaiEgressHeaderValueRef`
+- New struct `RaiEgressManagedIdentityRef`
+- New struct `RaiEgressPolicyConfig`
+- New struct `RaiEgressRewriteTarget`
+- New struct `RaiEgressRule`
+- New struct `RaiEgressRuleAction`
+- New struct `RaiEgressRuleMatch`
+- New struct `RaiEgressSecretRef`
+- New field `SpeculativeDecoding` in struct `DeploymentProperties`
+- New field `Capabilities` in struct `ManagedComputeDeploymentProperties`
+- New field `EgressPolicy` in struct `RaiPolicyProperties`
+
+
 ## 4.0.0-beta.2 (2026-05-26)
 ### Breaking Changes
 

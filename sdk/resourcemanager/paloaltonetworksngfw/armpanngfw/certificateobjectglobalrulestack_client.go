@@ -18,6 +18,8 @@ import (
 
 // CertificateObjectGlobalRulestackClient contains the methods for the CertificateObjectGlobalRulestack group.
 // Don't use this type directly, use NewCertificateObjectGlobalRulestackClient() instead.
+//
+// Generated from API version 2025-10-08
 type CertificateObjectGlobalRulestackClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewCertificateObjectGlobalRulestackClient(credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Create a CertificateObjectGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - certificate name
 //   - resource - Resource create parameters.
@@ -64,8 +64,6 @@ func (client *CertificateObjectGlobalRulestackClient) BeginCreateOrUpdate(ctx co
 
 // CreateOrUpdate - Create a CertificateObjectGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *CertificateObjectGlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, name string, resource CertificateObjectGlobalRulestackResource, options *CertificateObjectGlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificateObjectGlobalRulestackClient.BeginCreateOrUpdate"
@@ -103,8 +101,8 @@ func (client *CertificateObjectGlobalRulestackClient) createOrUpdateCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -115,8 +113,6 @@ func (client *CertificateObjectGlobalRulestackClient) createOrUpdateCreateReques
 
 // BeginDelete - Delete a CertificateObjectGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - certificate name
 //   - options - CertificateObjectGlobalRulestackClientBeginDeleteOptions contains the optional parameters for the CertificateObjectGlobalRulestackClient.BeginDelete
@@ -140,8 +136,6 @@ func (client *CertificateObjectGlobalRulestackClient) BeginDelete(ctx context.Co
 
 // Delete - Delete a CertificateObjectGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *CertificateObjectGlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, name string, options *CertificateObjectGlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CertificateObjectGlobalRulestackClient.BeginDelete"
@@ -179,15 +173,13 @@ func (client *CertificateObjectGlobalRulestackClient) deleteCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a CertificateObjectGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - globalRulestackName - GlobalRulestack resource name
 //   - name - certificate name
 //   - options - CertificateObjectGlobalRulestackClientGetOptions contains the optional parameters for the CertificateObjectGlobalRulestackClient.Get
@@ -230,8 +222,8 @@ func (client *CertificateObjectGlobalRulestackClient) getCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -246,8 +238,6 @@ func (client *CertificateObjectGlobalRulestackClient) getHandleResponse(resp *ht
 }
 
 // NewListPager - List CertificateObjectGlobalRulestackResource resources by Tenant
-//
-// Generated from API version 2025-10-08
 //   - globalRulestackName - GlobalRulestack resource name
 //   - options - CertificateObjectGlobalRulestackClientListOptions contains the optional parameters for the CertificateObjectGlobalRulestackClient.NewListPager
 //     method.
@@ -286,8 +276,8 @@ func (client *CertificateObjectGlobalRulestackClient) listCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

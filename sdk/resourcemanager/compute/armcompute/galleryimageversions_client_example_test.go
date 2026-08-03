@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingManagedImageAsSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,13 +87,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -180,7 +180,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithAdditionalReplicaSets.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithAdditionalReplicaSets.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionWithDirectDriveReplicas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 						RegionalReplicaCount: to.Ptr[int32](1),
 						AdditionalReplicaSets: []*armcompute.AdditionalReplicaSet{
 							{
-								StorageAccountType:   to.Ptr(armcompute.StorageAccountType("PreviumV2_LRS")),
+								StorageAccountType:   to.Ptr(armcompute.StorageAccountTypePremiumV2LRS),
 								RegionalReplicaCount: to.Ptr[int32](1),
 							},
 						},
@@ -260,13 +260,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -277,7 +277,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 						AdditionalReplicaSets: []*armcompute.AdditionalReplicaSet{
 	// 							{
-	// 								StorageAccountType: to.Ptr(armcompute.StorageAccountType("PreviumV2_LRS")),
+	// 								StorageAccountType: to.Ptr(armcompute.StorageAccountTypePremiumV2LRS),
 	// 								RegionalReplicaCount: to.Ptr[int32](1),
 	// 							},
 	// 						},
@@ -358,7 +358,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithCommunityImageVersionAsSource.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithCommunityImageVersionAsSource.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingCommunityGalleryImageAsSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,13 +433,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -526,7 +526,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithImageVersionAsSource.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithImageVersionAsSource.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingSharedImageAsSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,13 +601,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -694,7 +694,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithShallowReplicationMode.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithShallowReplicationMode.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingShallowReplicationMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -734,13 +734,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -792,7 +792,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithSnapshotsAsSource.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithSnapshotsAsSource.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingSnapshotsAsASource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,13 +871,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -959,7 +959,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithStorageAccountStrategy.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithStorageAccountStrategy.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionWithStorageAccountStrategyAndRegionalStorageAccountTypeOverride() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1000,13 +1000,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1049,7 +1049,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithTargetExtendedLocations.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithTargetExtendedLocations.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionWithTargetExtendedLocationsSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1124,13 +1124,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1259,7 +1259,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithVHD.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithVHD.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingVhdAsASource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1329,13 +1329,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1406,7 +1406,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithVHD_UefiSettings.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithVHD_UefiSettings.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingVhdAsASourceWithCustomUefiKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1509,13 +1509,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1619,7 +1619,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Create_WithVmAsSource.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Create_WithVmAsSource.json
 func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryImageVersionUsingVMAsSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1694,13 +1694,13 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientCreateOrUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1787,7 +1787,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Delete.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Delete.json
 func ExampleGalleryImageVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1804,7 +1804,7 @@ func ExampleGalleryImageVersionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1813,7 +1813,7 @@ func ExampleGalleryImageVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Get.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Get.json
 func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1832,7 +1832,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -1904,7 +1904,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithReplicationStatus.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithReplicationStatus.json
 func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1924,7 +1924,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithReplicatio
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2013,7 +2013,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithReplicatio
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithSnapshotsAsSource.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithSnapshotsAsSource.json
 func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithSnapshotsAsASource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2032,7 +2032,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithSnapshotsA
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2103,7 +2103,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithSnapshotsA
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfile.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfile.json
 func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidationProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2123,7 +2123,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2229,7 +2229,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfileAndReplicationStatus.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithValidationProfileAndReplicationStatus.json
 func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidationProfileAndReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2249,7 +2249,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2372,7 +2372,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Get_WithVhdAsSource.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Get_WithVhdAsSource.json
 func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithVhdAsASource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2391,7 +2391,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithVhdAsASour
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientGetResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/locations/westus/Galleries/myGalleryName/Images/myGalleryImageName/Versions/1.0.0"),
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
@@ -2462,7 +2462,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithVhdAsASour
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_ListByGalleryImage.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_ListByGalleryImage.json
 func ExampleGalleryImageVersionsClient_NewListByGalleryImagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2563,7 +2563,7 @@ func ExampleGalleryImageVersionsClient_NewListByGalleryImagePager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Update.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Update.json
 func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVersionManagedImageAsSource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2601,13 +2601,13 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVers
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 	// 				TargetRegions: []*armcompute.TargetRegion{
@@ -2663,7 +2663,7 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVers
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Update_RestoreSoftDeleted.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Update_RestoreSoftDeleted.json
 func ExampleGalleryImageVersionsClient_BeginUpdate_restoreASoftDeletedGalleryImageVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2685,13 +2685,13 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_restoreASoftDeletedGalleryIma
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 	// 				TargetRegions: []*armcompute.TargetRegion{
@@ -2736,7 +2736,7 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_restoreASoftDeletedGalleryIma
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/GalleryImageVersion_Update_WithoutSourceId.json
+// Generated from example definition: 2025-12-03/galleryExamples/GalleryImageVersion_Update_WithoutSourceId.json
 func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVersionWithoutSourceId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2770,13 +2770,13 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVers
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryImageVersionsClientUpdateResponse{
-	// 	GalleryImageVersion: &armcompute.GalleryImageVersion{
+	// 	GalleryImageVersion: armcompute.GalleryImageVersion{
 	// 		Properties: &armcompute.GalleryImageVersionProperties{
 	// 			PublishingProfile: &armcompute.GalleryImageVersionPublishingProfile{
 	// 				TargetRegions: []*armcompute.TargetRegion{

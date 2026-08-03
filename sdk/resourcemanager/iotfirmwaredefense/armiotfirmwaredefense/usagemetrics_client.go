@@ -18,6 +18,8 @@ import (
 
 // UsageMetricsClient contains the methods for the UsageMetrics group.
 // Don't use this type directly, use NewUsageMetricsClient() instead.
+//
+// Generated from API version 2025-08-02
 type UsageMetricsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewUsageMetricsClient(subscriptionID string, credential azcore.TokenCredent
 
 // Get - Gets monthly usage information for a workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - name - The Firmware analysis summary name describing the type of summary.
@@ -93,8 +93,8 @@ func (client *UsageMetricsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -109,8 +109,6 @@ func (client *UsageMetricsClient) getHandleResponse(resp *http.Response) (UsageM
 }
 
 // NewListByWorkspacePager - Lists monthly usage information for a workspace.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - options - UsageMetricsClientListByWorkspaceOptions contains the optional parameters for the UsageMetricsClient.NewListByWorkspacePager
@@ -158,8 +156,8 @@ func (client *UsageMetricsClient) listByWorkspaceCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

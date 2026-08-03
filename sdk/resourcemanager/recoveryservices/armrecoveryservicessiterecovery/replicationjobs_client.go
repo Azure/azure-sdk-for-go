@@ -7,18 +7,19 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ReplicationJobsClient contains the methods for the ReplicationJobs group.
 // Don't use this type directly, use NewReplicationJobsClient() instead.
+//
+// Generated from API version 2025-08-01
 type ReplicationJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +45,6 @@ func NewReplicationJobsClient(subscriptionID string, credential azcore.TokenCred
 //
 // The operation to cancel an Azure Site Recovery job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - jobName - Job identifier.
@@ -72,8 +71,6 @@ func (client *ReplicationJobsClient) BeginCancel(ctx context.Context, resourceGr
 //
 // The operation to cancel an Azure Site Recovery job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ReplicationJobsClient) cancel(ctx context.Context, resourceGroupName string, resourceName string, jobName string, options *ReplicationJobsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationJobsClient.BeginCancel"
@@ -119,8 +116,8 @@ func (client *ReplicationJobsClient) cancelCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -129,8 +126,6 @@ func (client *ReplicationJobsClient) cancelCreateRequest(ctx context.Context, re
 //
 // The operation to export the details of the Azure Site Recovery jobs of the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - jobQueryParameter - The request body
@@ -157,8 +152,6 @@ func (client *ReplicationJobsClient) BeginExport(ctx context.Context, resourceGr
 //
 // The operation to export the details of the Azure Site Recovery jobs of the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ReplicationJobsClient) export(ctx context.Context, resourceGroupName string, resourceName string, jobQueryParameter JobQueryParameter, options *ReplicationJobsClientBeginExportOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationJobsClient.BeginExport"
@@ -200,8 +193,8 @@ func (client *ReplicationJobsClient) exportCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, jobQueryParameter); err != nil {
@@ -214,8 +207,6 @@ func (client *ReplicationJobsClient) exportCreateRequest(ctx context.Context, re
 //
 // Get the details of an Azure Site Recovery job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - jobName - Job identifier.
@@ -266,8 +257,8 @@ func (client *ReplicationJobsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -284,8 +275,6 @@ func (client *ReplicationJobsClient) getHandleResponse(resp *http.Response) (Rep
 // NewListPager - Gets the list of jobs.
 //
 // Gets the list of Azure Site Recovery Jobs for the vault.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - options - ReplicationJobsClientListOptions contains the optional parameters for the ReplicationJobsClient.NewListPager
@@ -336,8 +325,8 @@ func (client *ReplicationJobsClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -355,8 +344,6 @@ func (client *ReplicationJobsClient) listHandleResponse(resp *http.Response) (Re
 //
 // The operation to restart an Azure Site Recovery job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - jobName - Job identifier.
@@ -383,8 +370,6 @@ func (client *ReplicationJobsClient) BeginRestart(ctx context.Context, resourceG
 //
 // The operation to restart an Azure Site Recovery job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ReplicationJobsClient) restart(ctx context.Context, resourceGroupName string, resourceName string, jobName string, options *ReplicationJobsClientBeginRestartOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationJobsClient.BeginRestart"
@@ -430,8 +415,8 @@ func (client *ReplicationJobsClient) restartCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -440,8 +425,6 @@ func (client *ReplicationJobsClient) restartCreateRequest(ctx context.Context, r
 //
 // The operation to resume an Azure Site Recovery job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - jobName - Job identifier.
@@ -469,8 +452,6 @@ func (client *ReplicationJobsClient) BeginResume(ctx context.Context, resourceGr
 //
 // The operation to resume an Azure Site Recovery job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ReplicationJobsClient) resume(ctx context.Context, resourceGroupName string, resourceName string, jobName string, resumeJobParams ResumeJobParams, options *ReplicationJobsClientBeginResumeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationJobsClient.BeginResume"
@@ -516,8 +497,8 @@ func (client *ReplicationJobsClient) resumeCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resumeJobParams); err != nil {

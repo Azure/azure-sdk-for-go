@@ -688,7 +688,7 @@ type FixResourcePermissionsRequest struct {
 	WhatIf *bool
 }
 
-// KeyValuePair - A map used to describe parameters for actions or configurations.
+// KeyValuePair - A key-value pair used to describe parameters for actions or configurations.
 type KeyValuePair struct {
 	// REQUIRED; The name of the setting for the action.
 	Key *string

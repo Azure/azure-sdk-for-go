@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2026-05-20)
+## 2.0.0 (2026-06-24)
 ### Breaking Changes
 
 - Function `*ServerEndpointsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, options *ServerEndpointsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, serverEndpointName string, parameters ServerEndpointUpdateParameters, options *ServerEndpointsClientBeginUpdateOptions)`

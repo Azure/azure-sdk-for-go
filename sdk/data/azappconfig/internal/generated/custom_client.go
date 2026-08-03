@@ -185,3 +185,19 @@ func (a *AzureAppConfigurationClient) checkKeyValuesHandleResponseWithLinkHeader
 	}
 	return result, nil
 }
+
+// CreateSnapshot exports internal createSnapshot
+func (a *AzureAppConfigurationClient) CreateSnapshot(ctx context.Context, contentType CreateSnapshotRequestContentType, name string, entity Snapshot, options *AzureAppConfigurationClientBeginCreateSnapshotOptions) (*http.Response, error) {
+	return a.createSnapshot(ctx, contentType, name, entity, options)
+}
+
+// getNextPageCreateRequest creates the getNextPageCreateRequest request.
+func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
+	urlPath := nextLink
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}

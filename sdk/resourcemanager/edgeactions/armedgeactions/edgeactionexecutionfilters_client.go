@@ -18,6 +18,8 @@ import (
 
 // EdgeActionExecutionFiltersClient contains the methods for the EdgeActionExecutionFilters group.
 // Don't use this type directly, use NewEdgeActionExecutionFiltersClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type EdgeActionExecutionFiltersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEdgeActionExecutionFiltersClient(subscriptionID string, credential azcor
 
 // BeginCreate - Create a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - executionFilter - The name of the execution filter
@@ -68,8 +68,6 @@ func (client *EdgeActionExecutionFiltersClient) BeginCreate(ctx context.Context,
 
 // Create - Create a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionExecutionFiltersClient) create(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, resource EdgeActionExecutionFilter, options *EdgeActionExecutionFiltersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionExecutionFiltersClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *EdgeActionExecutionFiltersClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *EdgeActionExecutionFiltersClient) createCreateRequest(ctx context.
 
 // BeginDelete - Delete a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - executionFilter - The name of the execution filter
@@ -153,8 +149,6 @@ func (client *EdgeActionExecutionFiltersClient) BeginDelete(ctx context.Context,
 
 // Delete - Delete a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionExecutionFiltersClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionExecutionFiltersClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *EdgeActionExecutionFiltersClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - executionFilter - The name of the execution filter
@@ -260,8 +252,8 @@ func (client *EdgeActionExecutionFiltersClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *EdgeActionExecutionFiltersClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByEdgeActionPager - List EdgeActionExecutionFilter resources by EdgeAction
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - options - EdgeActionExecutionFiltersClientListByEdgeActionOptions contains the optional parameters for the EdgeActionExecutionFiltersClient.NewListByEdgeActionPager
@@ -325,8 +315,8 @@ func (client *EdgeActionExecutionFiltersClient) listByEdgeActionCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -342,8 +332,6 @@ func (client *EdgeActionExecutionFiltersClient) listByEdgeActionHandleResponse(r
 
 // BeginUpdate - Update a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - edgeActionName - The name of the Edge Action
 //   - executionFilter - The name of the execution filter
@@ -369,8 +357,6 @@ func (client *EdgeActionExecutionFiltersClient) BeginUpdate(ctx context.Context,
 
 // Update - Update a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 func (client *EdgeActionExecutionFiltersClient) update(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, properties EdgeActionExecutionFilterUpdate, options *EdgeActionExecutionFiltersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionExecutionFiltersClient.BeginUpdate"
@@ -416,8 +402,8 @@ func (client *EdgeActionExecutionFiltersClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

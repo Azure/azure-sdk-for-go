@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ClusterMetricsConfigurations_Create.json
+// Generated from example definition: 2026-05-01-preview/ClusterMetricsConfigurations_Create.json
 func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,13 +46,13 @@ func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.MetricsConfigurationsClientCreateOrUpdateResponse{
-	// 	ClusterMetricsConfiguration: &armnetworkcloud.ClusterMetricsConfiguration{
+	// 	ClusterMetricsConfiguration: armnetworkcloud.ClusterMetricsConfiguration{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -91,7 +91,7 @@ func ExampleMetricsConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ClusterMetricsConfigurations_Delete.json
+// Generated from example definition: 2026-05-01-preview/ClusterMetricsConfigurations_Delete.json
 func ExampleMetricsConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,11 +108,11 @@ func ExampleMetricsConfigurationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/ClusterMetricsConfigurations_Get.json
+// Generated from example definition: 2026-05-01-preview/ClusterMetricsConfigurations_Get.json
 func ExampleMetricsConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleMetricsConfigurationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.MetricsConfigurationsClientGetResponse{
-	// 	ClusterMetricsConfiguration: &armnetworkcloud.ClusterMetricsConfiguration{
+	// 	ClusterMetricsConfiguration: armnetworkcloud.ClusterMetricsConfiguration{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -170,7 +170,7 @@ func ExampleMetricsConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ClusterMetricsConfigurations_ListByCluster.json
+// Generated from example definition: 2026-05-01-preview/ClusterMetricsConfigurations_ListByCluster.json
 func ExampleMetricsConfigurationsClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleMetricsConfigurationsClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ClusterMetricsConfigurations_Patch.json
+// Generated from example definition: 2026-05-01-preview/ClusterMetricsConfigurations_Patch.json
 func ExampleMetricsConfigurationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,13 +267,13 @@ func ExampleMetricsConfigurationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.MetricsConfigurationsClientUpdateResponse{
-	// 	ClusterMetricsConfiguration: &armnetworkcloud.ClusterMetricsConfiguration{
+	// 	ClusterMetricsConfiguration: armnetworkcloud.ClusterMetricsConfiguration{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),

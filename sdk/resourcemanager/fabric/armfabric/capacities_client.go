@@ -18,6 +18,8 @@ import (
 
 // CapacitiesClient contains the methods for the Capacities group.
 // Don't use this type directly, use NewCapacitiesClient() instead.
+//
+// Generated from API version 2023-11-01
 type CapacitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCapacitiesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CheckNameAvailability - Implements local CheckNameAvailability operations
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - location - The name of the Azure region.
 //   - body - The CheckAvailability request
 //   - options - CapacitiesClientCheckNameAvailabilityOptions contains the optional parameters for the CapacitiesClient.CheckNameAvailability
@@ -85,8 +85,8 @@ func (client *CapacitiesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -106,8 +106,6 @@ func (client *CapacitiesClient) checkNameAvailabilityHandleResponse(resp *http.R
 
 // BeginCreateOrUpdate - Create a FabricCapacity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - resource - Resource create parameters.
@@ -132,8 +130,6 @@ func (client *CapacitiesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Create a FabricCapacity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 func (client *CapacitiesClient) createOrUpdate(ctx context.Context, resourceGroupName string, capacityName string, resource Capacity, options *CapacitiesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CapacitiesClient.BeginCreateOrUpdate"
@@ -175,8 +171,8 @@ func (client *CapacitiesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -187,8 +183,6 @@ func (client *CapacitiesClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Delete a FabricCapacity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - CapacitiesClientBeginDeleteOptions contains the optional parameters for the CapacitiesClient.BeginDelete method.
@@ -211,8 +205,6 @@ func (client *CapacitiesClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete a FabricCapacity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 func (client *CapacitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, capacityName string, options *CapacitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CapacitiesClient.BeginDelete"
@@ -254,15 +246,13 @@ func (client *CapacitiesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a FabricCapacity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - CapacitiesClientGetOptions contains the optional parameters for the CapacitiesClient.Get method.
@@ -308,8 +298,8 @@ func (client *CapacitiesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -324,8 +314,6 @@ func (client *CapacitiesClient) getHandleResponse(resp *http.Response) (Capaciti
 }
 
 // NewListByResourceGroupPager - List FabricCapacity resources by resource group
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CapacitiesClientListByResourceGroupOptions contains the optional parameters for the CapacitiesClient.NewListByResourceGroupPager
 //     method.
@@ -368,8 +356,8 @@ func (client *CapacitiesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -384,8 +372,6 @@ func (client *CapacitiesClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - List FabricCapacity resources by subscription ID
-//
-// Generated from API version 2023-11-01
 //   - options - CapacitiesClientListBySubscriptionOptions contains the optional parameters for the CapacitiesClient.NewListBySubscriptionPager
 //     method.
 func (client *CapacitiesClient) NewListBySubscriptionPager(options *CapacitiesClientListBySubscriptionOptions) *runtime.Pager[CapacitiesClientListBySubscriptionResponse] {
@@ -423,8 +409,8 @@ func (client *CapacitiesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -439,8 +425,6 @@ func (client *CapacitiesClient) listBySubscriptionHandleResponse(resp *http.Resp
 }
 
 // NewListSKUsPager - List eligible SKUs for Microsoft Fabric resource provider
-//
-// Generated from API version 2023-11-01
 //   - options - CapacitiesClientListSKUsOptions contains the optional parameters for the CapacitiesClient.NewListSKUsPager method.
 func (client *CapacitiesClient) NewListSKUsPager(options *CapacitiesClientListSKUsOptions) *runtime.Pager[CapacitiesClientListSKUsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CapacitiesClientListSKUsResponse]{
@@ -477,8 +461,8 @@ func (client *CapacitiesClient) listSKUsCreateRequest(ctx context.Context, _ *Ca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -493,8 +477,6 @@ func (client *CapacitiesClient) listSKUsHandleResponse(resp *http.Response) (Cap
 }
 
 // NewListSKUsForCapacityPager - List eligible SKUs for a Microsoft Fabric resource
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - CapacitiesClientListSKUsForCapacityOptions contains the optional parameters for the CapacitiesClient.NewListSKUsForCapacityPager
@@ -542,8 +524,8 @@ func (client *CapacitiesClient) listSKUsForCapacityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -559,8 +541,6 @@ func (client *CapacitiesClient) listSKUsForCapacityHandleResponse(resp *http.Res
 
 // BeginResume - Resume operation of the specified Fabric capacity instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - CapacitiesClientBeginResumeOptions contains the optional parameters for the CapacitiesClient.BeginResume method.
@@ -583,8 +563,6 @@ func (client *CapacitiesClient) BeginResume(ctx context.Context, resourceGroupNa
 
 // Resume - Resume operation of the specified Fabric capacity instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 func (client *CapacitiesClient) resume(ctx context.Context, resourceGroupName string, capacityName string, options *CapacitiesClientBeginResumeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CapacitiesClient.BeginResume"
@@ -626,15 +604,13 @@ func (client *CapacitiesClient) resumeCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginSuspend - Suspend operation of the specified Fabric capacity instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - options - CapacitiesClientBeginSuspendOptions contains the optional parameters for the CapacitiesClient.BeginSuspend method.
@@ -657,8 +633,6 @@ func (client *CapacitiesClient) BeginSuspend(ctx context.Context, resourceGroupN
 
 // Suspend - Suspend operation of the specified Fabric capacity instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 func (client *CapacitiesClient) suspend(ctx context.Context, resourceGroupName string, capacityName string, options *CapacitiesClientBeginSuspendOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CapacitiesClient.BeginSuspend"
@@ -700,15 +674,13 @@ func (client *CapacitiesClient) suspendCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Update a FabricCapacity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - capacityName - The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a maximum of 63.
 //   - properties - The resource properties to be updated.
@@ -732,8 +704,6 @@ func (client *CapacitiesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Update a FabricCapacity
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-11-01
 func (client *CapacitiesClient) update(ctx context.Context, resourceGroupName string, capacityName string, properties CapacityUpdate, options *CapacitiesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CapacitiesClient.BeginUpdate"
@@ -775,8 +745,8 @@ func (client *CapacitiesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

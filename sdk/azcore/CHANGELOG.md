@@ -1,14 +1,28 @@
 # Release History
 
-## 1.21.2-beta.1 (Unreleased)
+## 1.22.1 (Unreleased)
 
 ### Features Added
+
+* `runtime.FetcherForNextLinkOptions` has a new field `Endpoint`, the service endpoint used to resolve a relative next link.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
+* Fixed an issue where `runtime.Pager[T].More` could return `true` indefinitely after `NextPage` failed to retrieve the first page, causing `for pager.More()` loops to spin. After a page fetch returns an error the `Pager` now enters a terminal state: `More` returns `false` and subsequent `NextPage` calls return the same error without invoking the fetcher again.
+
 ### Other Changes
+
+## 1.22.0 (2026-06-04)
+
+### Features Added
+
+* Added type `datetime.RFC7231` for date/time values in RFC 1123 format with a fixed GMT timezone.
+
+### Other Changes
+
+* Upgraded dependencies.
 
 ## 1.21.1 (2026-04-16)
 

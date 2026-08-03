@@ -42,37 +42,57 @@ func NewScenarioRunsClient(subscriptionID string, credential azcore.TokenCredent
 	return client, nil
 }
 
-// Cancel - Cancel the currently running scenario execution.
+// BeginCancel - Cancel the currently running scenario execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
 //   - scenarioName - Name of the scenario.
 //   - runID - The name of the ScenarioRun
-//   - options - ScenarioRunsClientCancelOptions contains the optional parameters for the ScenarioRunsClient.Cancel method.
-func (client *ScenarioRunsClient) Cancel(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, options *ScenarioRunsClientCancelOptions) (ScenarioRunsClientCancelResponse, error) {
+//   - options - ScenarioRunsClientBeginCancelOptions contains the optional parameters for the ScenarioRunsClient.BeginCancel
+//     method.
+func (client *ScenarioRunsClient) BeginCancel(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, options *ScenarioRunsClientBeginCancelOptions) (*runtime.Poller[ScenarioRunsClientCancelResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.cancel(ctx, resourceGroupName, workspaceName, scenarioName, runID, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScenarioRunsClientCancelResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScenarioRunsClientCancelResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Cancel - Cancel the currently running scenario execution.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScenarioRunsClient) cancel(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, options *ScenarioRunsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ScenarioRunsClient.Cancel"
+	const operationName = "ScenarioRunsClient.BeginCancel"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, runID, options)
 	if err != nil {
-		return ScenarioRunsClientCancelResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScenarioRunsClientCancelResponse{}, err
+		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
-		return ScenarioRunsClientCancelResponse{}, err
+		return nil, err
 	}
-	resp, err := client.cancelHandleResponse(httpResp)
-	return resp, err
+	return httpResp, nil
 }
 
 // cancelCreateRequest creates the Cancel request.
-func (client *ScenarioRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, _ *ScenarioRunsClientCancelOptions) (*policy.Request, error) {
+func (client *ScenarioRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, _ *ScenarioRunsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}/cancel"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -104,26 +124,12 @@ func (client *ScenarioRunsClient) cancelCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
-// cancelHandleResponse handles the Cancel response.
-func (client *ScenarioRunsClient) cancelHandleResponse(resp *http.Response) (ScenarioRunsClientCancelResponse, error) {
-	result := ScenarioRunsClientCancelResponse{}
-	if val := resp.Header.Get("Location"); val != "" {
-		result.Location = &val
-	}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return ScenarioRunsClientCancelResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	return result, nil
-}
-
 // Get - Get a scenario run.
-//
-// Get a scenario run.
+// This endpoint is also the polling target for ScenarioConfigurations.execute
+// and ScenarioRuns.cancel (final-state-via: location). While the run is in
+// progress the service returns 202 with a Location header pointing back to
+// this URL; clients must keep polling until they receive 200, which carries
+// the final ScenarioRun body.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.

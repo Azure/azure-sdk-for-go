@@ -51,8 +51,58 @@ type GuestSubscriptionsClientListBySubscriptionLocationResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MemberCapOverridesClientCreateOrUpdateOptions contains the optional parameters for the MemberCapOverridesClient.CreateOrUpdate
+// method.
+type MemberCapOverridesClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MemberCapOverridesClientDeleteOptions contains the optional parameters for the MemberCapOverridesClient.Delete method.
+type MemberCapOverridesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MemberCapOverridesClientGetOptions contains the optional parameters for the MemberCapOverridesClient.Get method.
+type MemberCapOverridesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MemberCapOverridesClientListByParentOptions contains the optional parameters for the MemberCapOverridesClient.NewListByParentPager
+// method.
+type MemberCapOverridesClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SharedLimitCapsClientCreateOrUpdateOptions contains the optional parameters for the SharedLimitCapsClient.CreateOrUpdate
+// method.
+type SharedLimitCapsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SharedLimitCapsClientDeleteOptions contains the optional parameters for the SharedLimitCapsClient.Delete method.
+type SharedLimitCapsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SharedLimitCapsClientGetOptions contains the optional parameters for the SharedLimitCapsClient.Get method.
+type SharedLimitCapsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SharedLimitCapsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the SharedLimitCapsClient.NewListBySubscriptionLocationResourcePager
+// method.
+type SharedLimitCapsClientListBySubscriptionLocationResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SharedLimitCapsClientSetMemberCapOverridesOptions contains the optional parameters for the SharedLimitCapsClient.SetMemberCapOverrides
+// method.
+type SharedLimitCapsClientSetMemberCapOverridesOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -74,6 +124,29 @@ type SharedLimitsClientGetOptions struct {
 // SharedLimitsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the SharedLimitsClient.NewListBySubscriptionLocationResourcePager
 // method.
 type SharedLimitsClientListBySubscriptionLocationResourceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TrustedHostSubscriptionsClientCreateOptions contains the optional parameters for the TrustedHostSubscriptionsClient.Create
+// method.
+type TrustedHostSubscriptionsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TrustedHostSubscriptionsClientDeleteOptions contains the optional parameters for the TrustedHostSubscriptionsClient.Delete
+// method.
+type TrustedHostSubscriptionsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TrustedHostSubscriptionsClientGetOptions contains the optional parameters for the TrustedHostSubscriptionsClient.Get method.
+type TrustedHostSubscriptionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TrustedHostSubscriptionsClientListBySubscriptionLocationResourceOptions contains the optional parameters for the TrustedHostSubscriptionsClient.NewListBySubscriptionLocationResourcePager
+// method.
+type TrustedHostSubscriptionsClientListBySubscriptionLocationResourceOptions struct {
 	// placeholder for future optional parameters
 }
 

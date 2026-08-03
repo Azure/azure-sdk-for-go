@@ -41,13 +41,13 @@ func ExampleClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagedops.ClientCreateOrUpdateResponse{
-	// 	ManagedOp: &armmanagedops.ManagedOp{
+	// 	ManagedOp: armmanagedops.ManagedOp{
 	// 		ID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/Microsoft.ManagedOps/managedOps/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.ManagedOps/managedOps"),
@@ -72,8 +72,8 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersDisable),
-	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersDisable),
+	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateDisable),
+	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateDisable),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -82,23 +82,23 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				DefenderForServers: &armmanagedops.DefenderForServersInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				DefenderCspm: &armmanagedops.DefenderCspmInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 			},
 	// 		},
@@ -123,7 +123,7 @@ func ExampleClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -146,7 +146,7 @@ func ExampleClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagedops.ClientGetResponse{
-	// 	ManagedOp: &armmanagedops.ManagedOp{
+	// 	ManagedOp: armmanagedops.ManagedOp{
 	// 		ID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/Microsoft.ManagedOps/managedOps/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.ManagedOps/managedOps"),
@@ -171,8 +171,8 @@ func ExampleClient_Get() {
 	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
-	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
+	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
+	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -181,23 +181,23 @@ func ExampleClient_Get() {
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				DefenderForServers: &armmanagedops.DefenderForServersInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				DefenderCspm: &armmanagedops.DefenderCspmInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 			},
 	// 		},
@@ -255,8 +255,8 @@ func ExampleClient_NewListPager() {
 		// 							AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 		// 						},
 		// 						UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-		// 						DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
-		// 						DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
+		// 						DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
+		// 						DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
 		// 					},
 		// 					ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 		// 					PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -265,23 +265,23 @@ func ExampleClient_NewListPager() {
 		// 					Services: &armmanagedops.ServiceInformation{
 		// 						ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 						AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 		// 							DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 						AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 						AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 						DefenderForServers: &armmanagedops.DefenderForServersInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 						DefenderCspm: &armmanagedops.DefenderCspmInformation{
-		// 							EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+		// 							EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 		// 						},
 		// 					},
 		// 				},
@@ -309,13 +309,13 @@ func ExampleClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagedops.ClientUpdateResponse{
-	// 	ManagedOp: &armmanagedops.ManagedOp{
+	// 	ManagedOp: armmanagedops.ManagedOp{
 	// 		ID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/providers/Microsoft.ManagedOps/managedOps/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.ManagedOps/managedOps"),
@@ -340,8 +340,8 @@ func ExampleClient_BeginUpdate() {
 	// 					AzureMonitorWorkspaceID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.Monitor/accounts/example"),
 	// 				},
 	// 				UserAssignedManagedIdentityID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myManagedIdentity"),
-	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
-	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredConfigurationDefenderForServersEnable),
+	// 				DefenderForServers: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
+	// 				DefenderCspm: to.Ptr(armmanagedops.DesiredEnablementStateEnable),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armmanagedops.ProvisioningStateProvisioning),
 	// 			PolicyAssignmentProperties: &armmanagedops.PolicyAssignmentProperties{
@@ -350,23 +350,23 @@ func ExampleClient_BeginUpdate() {
 	// 			Services: &armmanagedops.ServiceInformation{
 	// 				ChangeTrackingAndInventory: &armmanagedops.ChangeTrackingInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ct-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureMonitorInsights: &armmanagedops.AzureMonitorInformation{
 	// 					DcrID: to.Ptr("/subscriptions/11809CA1-E126-4017-945E-AA795CD5C5A9/resourceGroups/xingftestrg/providers/Microsoft.Insights/dataCollectionRules/ami-dcr131878407"),
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzureUpdateManager: &armmanagedops.UpdateManagerInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				AzurePolicyAndMachineConfiguration: &armmanagedops.GuestConfigurationInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				DefenderForServers: &armmanagedops.DefenderForServersInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 				DefenderCspm: &armmanagedops.DefenderCspmInformation{
-	// 					EnablementStatus: to.Ptr(armmanagedops.ChangeTrackingInformationEnablementStatusEnabled),
+	// 					EnablementStatus: to.Ptr(armmanagedops.EnablementStateEnabled),
 	// 				},
 	// 			},
 	// 		},

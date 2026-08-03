@@ -18,6 +18,8 @@ import (
 
 // SchemasClient contains the methods for the Schemas group.
 // Don't use this type directly, use NewSchemasClient() instead.
+//
+// Generated from API version 2025-06-01
 type SchemasClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSchemasClient(subscriptionID string, credential azcore.TokenCredential, 
 
 // BeginCreateOrUpdate - Create or update a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *SchemasClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 
 // CreateOrUpdate - Create or update a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SchemasClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, resource Schema, options *SchemasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemasClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *SchemasClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *SchemasClient) createOrUpdateCreateRequest(ctx context.Context, re
 
 // BeginCreateVersion - Create a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - body - The content of the action request
@@ -148,8 +144,6 @@ func (client *SchemasClient) BeginCreateVersion(ctx context.Context, resourceGro
 
 // CreateVersion - Create a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SchemasClient) createVersion(ctx context.Context, resourceGroupName string, schemaName string, body SchemaVersionWithUpdateType, options *SchemasClientBeginCreateVersionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemasClient.BeginCreateVersion"
@@ -191,8 +185,8 @@ func (client *SchemasClient) createVersionCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -203,8 +197,6 @@ func (client *SchemasClient) createVersionCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - options - SchemasClientBeginDeleteOptions contains the optional parameters for the SchemasClient.BeginDelete method.
@@ -227,8 +219,6 @@ func (client *SchemasClient) BeginDelete(ctx context.Context, resourceGroupName 
 
 // Delete - Delete a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, options *SchemasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchemasClient.BeginDelete"
@@ -270,15 +260,13 @@ func (client *SchemasClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - options - SchemasClientGetOptions contains the optional parameters for the SchemasClient.Get method.
@@ -324,8 +312,8 @@ func (client *SchemasClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -340,8 +328,6 @@ func (client *SchemasClient) getHandleResponse(resp *http.Response) (SchemasClie
 }
 
 // NewListByResourceGroupPager - List by specified resource group
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - SchemasClientListByResourceGroupOptions contains the optional parameters for the SchemasClient.NewListByResourceGroupPager
 //     method.
@@ -384,8 +370,8 @@ func (client *SchemasClient) listByResourceGroupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -400,8 +386,6 @@ func (client *SchemasClient) listByResourceGroupHandleResponse(resp *http.Respon
 }
 
 // NewListBySubscriptionPager - List by subscription
-//
-// Generated from API version 2025-06-01
 //   - options - SchemasClientListBySubscriptionOptions contains the optional parameters for the SchemasClient.NewListBySubscriptionPager
 //     method.
 func (client *SchemasClient) NewListBySubscriptionPager(options *SchemasClientListBySubscriptionOptions) *runtime.Pager[SchemasClientListBySubscriptionResponse] {
@@ -439,8 +423,8 @@ func (client *SchemasClient) listBySubscriptionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -456,8 +440,6 @@ func (client *SchemasClient) listBySubscriptionHandleResponse(resp *http.Respons
 
 // RemoveVersion - Remove Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - body - The content of the action request
@@ -504,8 +486,8 @@ func (client *SchemasClient) removeVersionCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -525,8 +507,6 @@ func (client *SchemasClient) removeVersionHandleResponse(resp *http.Response) (S
 
 // Update - update a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - schemaName - The name of the Schema
 //   - properties - The resource properties to be updated.
@@ -573,8 +553,8 @@ func (client *SchemasClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

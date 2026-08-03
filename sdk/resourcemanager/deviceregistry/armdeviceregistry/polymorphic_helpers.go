@@ -16,10 +16,10 @@ func unmarshalDatasetDestinationClassification(rawMsg json.RawMessage) (DatasetD
 	}
 	var b DatasetDestinationClassification
 	switch m["target"] {
-	case string(DatasetDestinationTargetMqtt):
-		b = &DatasetMqttDestination{}
 	case string(DatasetDestinationTargetBrokerStateStore):
 		b = &DatasetBrokerStateStoreDestination{}
+	case string(DatasetDestinationTargetMqtt):
+		b = &DatasetMqttDestination{}
 	case string(DatasetDestinationTargetStorage):
 		b = &DatasetStorageDestination{}
 	default:

@@ -84,6 +84,9 @@ type ServerFactory struct {
 	// ImagesServer contains the fakes for client ImagesClient
 	ImagesServer ImagesServer
 
+	// InterconnectBlocksServer contains the fakes for client InterconnectBlocksClient
+	InterconnectBlocksServer InterconnectBlocksServer
+
 	// LogAnalyticsServer contains the fakes for client LogAnalyticsClient
 	LogAnalyticsServer LogAnalyticsServer
 
@@ -114,11 +117,17 @@ type ServerFactory struct {
 	// SharedGalleryImagesServer contains the fakes for client SharedGalleryImagesClient
 	SharedGalleryImagesServer SharedGalleryImagesServer
 
+	// SharedGalleryInvitesServer contains the fakes for client SharedGalleryInvitesClient
+	SharedGalleryInvitesServer SharedGalleryInvitesServer
+
 	// SnapshotsServer contains the fakes for client SnapshotsClient
 	SnapshotsServer SnapshotsServer
 
 	// SoftDeletedResourceServer contains the fakes for client SoftDeletedResourceClient
 	SoftDeletedResourceServer SoftDeletedResourceServer
+
+	// TenantLevelSharedGalleryInvitesServer contains the fakes for client TenantLevelSharedGalleryInvitesClient
+	TenantLevelSharedGalleryInvitesServer TenantLevelSharedGalleryInvitesServer
 
 	// UsageServer contains the fakes for client UsageClient
 	UsageServer UsageServer
@@ -203,6 +212,7 @@ type ServerFactoryTransport struct {
 	trGalleryScriptsServer                            *GalleryScriptsServerTransport
 	trGallerySharingProfileServer                     *GallerySharingProfileServerTransport
 	trImagesServer                                    *ImagesServerTransport
+	trInterconnectBlocksServer                        *InterconnectBlocksServerTransport
 	trLogAnalyticsServer                              *LogAnalyticsServerTransport
 	trOperationsServer                                *OperationsServerTransport
 	trProximityPlacementGroupsServer                  *ProximityPlacementGroupsServerTransport
@@ -213,8 +223,10 @@ type ServerFactoryTransport struct {
 	trSharedGalleriesServer                           *SharedGalleriesServerTransport
 	trSharedGalleryImageVersionsServer                *SharedGalleryImageVersionsServerTransport
 	trSharedGalleryImagesServer                       *SharedGalleryImagesServerTransport
+	trSharedGalleryInvitesServer                      *SharedGalleryInvitesServerTransport
 	trSnapshotsServer                                 *SnapshotsServerTransport
 	trSoftDeletedResourceServer                       *SoftDeletedResourceServerTransport
+	trTenantLevelSharedGalleryInvitesServer           *TenantLevelSharedGalleryInvitesServerTransport
 	trUsageServer                                     *UsageServerTransport
 	trVirtualMachineExtensionImagesServer             *VirtualMachineExtensionImagesServerTransport
 	trVirtualMachineExtensionsServer                  *VirtualMachineExtensionsServerTransport
@@ -352,6 +364,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ImagesClient":
 		initServer(&s.trMu, &s.trImagesServer, func() *ImagesServerTransport { return NewImagesServerTransport(&s.srv.ImagesServer) })
 		resp, err = s.trImagesServer.Do(req)
+	case "InterconnectBlocksClient":
+		initServer(&s.trMu, &s.trInterconnectBlocksServer, func() *InterconnectBlocksServerTransport {
+			return NewInterconnectBlocksServerTransport(&s.srv.InterconnectBlocksServer)
+		})
+		resp, err = s.trInterconnectBlocksServer.Do(req)
 	case "LogAnalyticsClient":
 		initServer(&s.trMu, &s.trLogAnalyticsServer, func() *LogAnalyticsServerTransport { return NewLogAnalyticsServerTransport(&s.srv.LogAnalyticsServer) })
 		resp, err = s.trLogAnalyticsServer.Do(req)
@@ -396,6 +413,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSharedGalleryImagesServerTransport(&s.srv.SharedGalleryImagesServer)
 		})
 		resp, err = s.trSharedGalleryImagesServer.Do(req)
+	case "SharedGalleryInvitesClient":
+		initServer(&s.trMu, &s.trSharedGalleryInvitesServer, func() *SharedGalleryInvitesServerTransport {
+			return NewSharedGalleryInvitesServerTransport(&s.srv.SharedGalleryInvitesServer)
+		})
+		resp, err = s.trSharedGalleryInvitesServer.Do(req)
 	case "SnapshotsClient":
 		initServer(&s.trMu, &s.trSnapshotsServer, func() *SnapshotsServerTransport { return NewSnapshotsServerTransport(&s.srv.SnapshotsServer) })
 		resp, err = s.trSnapshotsServer.Do(req)
@@ -404,6 +426,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSoftDeletedResourceServerTransport(&s.srv.SoftDeletedResourceServer)
 		})
 		resp, err = s.trSoftDeletedResourceServer.Do(req)
+	case "TenantLevelSharedGalleryInvitesClient":
+		initServer(&s.trMu, &s.trTenantLevelSharedGalleryInvitesServer, func() *TenantLevelSharedGalleryInvitesServerTransport {
+			return NewTenantLevelSharedGalleryInvitesServerTransport(&s.srv.TenantLevelSharedGalleryInvitesServer)
+		})
+		resp, err = s.trTenantLevelSharedGalleryInvitesServer.Do(req)
 	case "UsageClient":
 		initServer(&s.trMu, &s.trUsageServer, func() *UsageServerTransport { return NewUsageServerTransport(&s.srv.UsageServer) })
 		resp, err = s.trUsageServer.Do(req)

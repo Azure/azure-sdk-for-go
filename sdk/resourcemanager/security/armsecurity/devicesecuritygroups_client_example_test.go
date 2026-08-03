@@ -30,6 +30,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 					IsEnabled:      to.Ptr(true),
 					MaxThreshold:   to.Ptr[int32](30),
 					MinThreshold:   to.Ptr[int32](0),
+					RuleType:       to.Ptr("ActiveConnectionsNotInAllowedRange"),
 					TimeWindowSize: to.Ptr("PT05M"),
 				},
 			},
@@ -54,6 +55,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					},
 	// 					DisplayName: to.Ptr("Outbound connection to an ip that isn't allowed"),
 	// 					IsEnabled: to.Ptr(false),
+	// 					RuleType: to.Ptr("ConnectionToIpNotAllowed"),
 	// 				},
 	// 				&armsecurity.LocalUserNotAllowed{
 	// 					Description: to.Ptr("Get an alert when a local user that isn't allowed logins to the device"),
@@ -61,6 +63,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					},
 	// 					DisplayName: to.Ptr("Login by a local user that isn't allowed"),
 	// 					IsEnabled: to.Ptr(false),
+	// 					RuleType: to.Ptr("LocalUserNotAllowed"),
 	// 				},
 	// 				&armsecurity.ProcessNotAllowed{
 	// 					Description: to.Ptr("Get an alert when a process that isn't allowed is executed"),
@@ -68,6 +71,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					},
 	// 					DisplayName: to.Ptr("Execution of a process that isn't allowed"),
 	// 					IsEnabled: to.Ptr(false),
+	// 					RuleType: to.Ptr("ProcessNotAllowed"),
 	// 				},
 	// 			},
 	// 			DenylistRules: []*armsecurity.DenylistCustomAlertRule{
@@ -81,6 +85,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(true),
 	// 					MaxThreshold: to.Ptr[int32](30),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("ActiveConnectionsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT05M"),
 	// 				},
 	// 				&armsecurity.AmqpC2DMessagesNotInAllowedRange{
@@ -89,6 +94,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("AmqpC2DMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.MqttC2DMessagesNotInAllowedRange{
@@ -97,6 +103,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("MqttC2DMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.HTTPC2DMessagesNotInAllowedRange{
@@ -105,6 +112,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("HttpC2DMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.AmqpC2DRejectedMessagesNotInAllowedRange{
@@ -113,6 +121,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("AmqpC2DRejectedMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.MqttC2DRejectedMessagesNotInAllowedRange{
@@ -121,6 +130,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("MqttC2DRejectedMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.HTTPC2DRejectedMessagesNotInAllowedRange{
@@ -129,6 +139,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("HttpC2DRejectedMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.AmqpD2CMessagesNotInAllowedRange{
@@ -137,6 +148,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("AmqpD2CMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.MqttD2CMessagesNotInAllowedRange{
@@ -145,6 +157,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("MqttD2CMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.HTTPD2CMessagesNotInAllowedRange{
@@ -153,6 +166,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("HttpD2CMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.DirectMethodInvokesNotInAllowedRange{
@@ -161,6 +175,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("DirectMethodInvokesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.FailedLocalLoginsNotInAllowedRange{
@@ -169,6 +184,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("FailedLocalLoginsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.FileUploadsNotInAllowedRange{
@@ -177,6 +193,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("FileUploadsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.QueuePurgesNotInAllowedRange{
@@ -185,6 +202,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("QueuePurgesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.TwinUpdatesNotInAllowedRange{
@@ -193,6 +211,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("TwinUpdatesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.UnauthorizedOperationsNotInAllowedRange{
@@ -201,6 +220,7 @@ func ExampleDeviceSecurityGroupsClient_CreateOrUpdate() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("UnauthorizedOperationsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 			},
@@ -262,6 +282,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					},
 	// 					DisplayName: to.Ptr("Outbound connection to an ip that isn't allowed"),
 	// 					IsEnabled: to.Ptr(false),
+	// 					RuleType: to.Ptr("ConnectionToIpNotAllowed"),
 	// 					ValueType: to.Ptr(armsecurity.ValueTypeIPCidr),
 	// 				},
 	// 				&armsecurity.LocalUserNotAllowed{
@@ -270,6 +291,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					},
 	// 					DisplayName: to.Ptr("Login by a local user that isn't allowed"),
 	// 					IsEnabled: to.Ptr(false),
+	// 					RuleType: to.Ptr("LocalUserNotAllowed"),
 	// 					ValueType: to.Ptr(armsecurity.ValueTypeString),
 	// 				},
 	// 				&armsecurity.ProcessNotAllowed{
@@ -278,6 +300,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					},
 	// 					DisplayName: to.Ptr("Execution of a process that isn't allowed"),
 	// 					IsEnabled: to.Ptr(false),
+	// 					RuleType: to.Ptr("ProcessNotAllowed"),
 	// 					ValueType: to.Ptr(armsecurity.ValueTypeString),
 	// 				},
 	// 			},
@@ -292,6 +315,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("ActiveConnectionsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.AmqpC2DMessagesNotInAllowedRange{
@@ -300,6 +324,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("AmqpC2DMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.MqttC2DMessagesNotInAllowedRange{
@@ -308,6 +333,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("MqttC2DMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.HTTPC2DMessagesNotInAllowedRange{
@@ -316,6 +342,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("HttpC2DMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.AmqpC2DRejectedMessagesNotInAllowedRange{
@@ -324,6 +351,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("AmqpC2DRejectedMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.MqttC2DRejectedMessagesNotInAllowedRange{
@@ -332,6 +360,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("MqttC2DRejectedMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.HTTPC2DRejectedMessagesNotInAllowedRange{
@@ -340,6 +369,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("HttpC2DRejectedMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.AmqpD2CMessagesNotInAllowedRange{
@@ -348,6 +378,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("AmqpD2CMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.MqttD2CMessagesNotInAllowedRange{
@@ -356,6 +387,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("MqttD2CMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.HTTPD2CMessagesNotInAllowedRange{
@@ -364,6 +396,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("HttpD2CMessagesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.DirectMethodInvokesNotInAllowedRange{
@@ -372,6 +405,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("DirectMethodInvokesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.FailedLocalLoginsNotInAllowedRange{
@@ -380,6 +414,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("FailedLocalLoginsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.FileUploadsNotInAllowedRange{
@@ -388,6 +423,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("FileUploadsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.QueuePurgesNotInAllowedRange{
@@ -396,6 +432,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("QueuePurgesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.TwinUpdatesNotInAllowedRange{
@@ -404,6 +441,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("TwinUpdatesNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 				&armsecurity.UnauthorizedOperationsNotInAllowedRange{
@@ -412,6 +450,7 @@ func ExampleDeviceSecurityGroupsClient_Get() {
 	// 					IsEnabled: to.Ptr(false),
 	// 					MaxThreshold: to.Ptr[int32](0),
 	// 					MinThreshold: to.Ptr[int32](0),
+	// 					RuleType: to.Ptr("UnauthorizedOperationsNotInAllowedRange"),
 	// 					TimeWindowSize: to.Ptr("PT15M"),
 	// 				},
 	// 			},
@@ -457,6 +496,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							},
 		// 							DisplayName: to.Ptr("Outbound connection to an ip that isn't allowed"),
 		// 							IsEnabled: to.Ptr(false),
+		// 							RuleType: to.Ptr("ConnectionToIpNotAllowed"),
 		// 							ValueType: to.Ptr(armsecurity.ValueTypeIPCidr),
 		// 						},
 		// 						&armsecurity.LocalUserNotAllowed{
@@ -465,6 +505,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							},
 		// 							DisplayName: to.Ptr("Login by a local user that isn't allowed"),
 		// 							IsEnabled: to.Ptr(false),
+		// 							RuleType: to.Ptr("LocalUserNotAllowed"),
 		// 							ValueType: to.Ptr(armsecurity.ValueTypeString),
 		// 						},
 		// 						&armsecurity.ProcessNotAllowed{
@@ -473,6 +514,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							},
 		// 							DisplayName: to.Ptr("Execution of a process that isn't allowed"),
 		// 							IsEnabled: to.Ptr(false),
+		// 							RuleType: to.Ptr("ProcessNotAllowed"),
 		// 							ValueType: to.Ptr(armsecurity.ValueTypeString),
 		// 						},
 		// 					},
@@ -487,6 +529,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("ActiveConnectionsNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.AmqpC2DMessagesNotInAllowedRange{
@@ -495,6 +538,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("AmqpC2DMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.MqttC2DMessagesNotInAllowedRange{
@@ -503,6 +547,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("MqttC2DMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.HTTPC2DMessagesNotInAllowedRange{
@@ -511,6 +556,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("HttpC2DMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.AmqpC2DRejectedMessagesNotInAllowedRange{
@@ -519,6 +565,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("AmqpC2DRejectedMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.MqttC2DRejectedMessagesNotInAllowedRange{
@@ -527,6 +574,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("MqttC2DRejectedMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.HTTPC2DRejectedMessagesNotInAllowedRange{
@@ -535,6 +583,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("HttpC2DRejectedMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.AmqpD2CMessagesNotInAllowedRange{
@@ -543,6 +592,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("AmqpD2CMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.MqttD2CMessagesNotInAllowedRange{
@@ -551,6 +601,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("MqttD2CMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.HTTPD2CMessagesNotInAllowedRange{
@@ -559,6 +610,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("HttpD2CMessagesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.DirectMethodInvokesNotInAllowedRange{
@@ -567,6 +619,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("DirectMethodInvokesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.FailedLocalLoginsNotInAllowedRange{
@@ -575,6 +628,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("FailedLocalLoginsNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.FileUploadsNotInAllowedRange{
@@ -583,6 +637,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("FileUploadsNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.QueuePurgesNotInAllowedRange{
@@ -591,6 +646,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("QueuePurgesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.TwinUpdatesNotInAllowedRange{
@@ -599,6 +655,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("TwinUpdatesNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 						&armsecurity.UnauthorizedOperationsNotInAllowedRange{
@@ -607,6 +664,7 @@ func ExampleDeviceSecurityGroupsClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(false),
 		// 							MaxThreshold: to.Ptr[int32](0),
 		// 							MinThreshold: to.Ptr[int32](0),
+		// 							RuleType: to.Ptr("UnauthorizedOperationsNotInAllowedRange"),
 		// 							TimeWindowSize: to.Ptr("PT15M"),
 		// 						},
 		// 					},

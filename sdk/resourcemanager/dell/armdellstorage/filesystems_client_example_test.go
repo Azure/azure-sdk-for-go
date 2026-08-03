@@ -67,13 +67,13 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMaxim
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdellstorage.FileSystemsClientCreateOrUpdateResponse{
-	// 	FileSystemResource: &armdellstorage.FileSystemResource{
+	// 	FileSystemResource: armdellstorage.FileSystemResource{
 	// 		Properties: &armdellstorage.FileSystemResourceProperties{
 	// 			Capacity: &armdellstorage.Capacity{
 	// 				Min: to.Ptr("1"),
@@ -176,13 +176,13 @@ func ExampleFileSystemsClient_BeginCreateOrUpdate_fileSystemsCreateOrUpdateMinim
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdellstorage.FileSystemsClientCreateOrUpdateResponse{
-	// 	FileSystemResource: &armdellstorage.FileSystemResource{
+	// 	FileSystemResource: armdellstorage.FileSystemResource{
 	// 		Properties: &armdellstorage.FileSystemResourceProperties{
 	// 			Capacity: &armdellstorage.Capacity{
 	// 				Min: to.Ptr("1"),
@@ -231,7 +231,7 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMaximumSetGen() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -252,7 +252,7 @@ func ExampleFileSystemsClient_BeginDelete_fileSystemsDeleteMinimumSetGen() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -275,7 +275,7 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdellstorage.FileSystemsClientGetResponse{
-	// 	FileSystemResource: &armdellstorage.FileSystemResource{
+	// 	FileSystemResource: armdellstorage.FileSystemResource{
 	// 		Properties: &armdellstorage.FileSystemResourceProperties{
 	// 			Capacity: &armdellstorage.Capacity{
 	// 				Min: to.Ptr("1"),
@@ -359,7 +359,7 @@ func ExampleFileSystemsClient_Get_fileSystemsGetMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdellstorage.FileSystemsClientGetResponse{
-	// 	FileSystemResource: &armdellstorage.FileSystemResource{
+	// 	FileSystemResource: armdellstorage.FileSystemResource{
 	// 		Properties: &armdellstorage.FileSystemResourceProperties{
 	// 			Capacity: &armdellstorage.Capacity{
 	// 				Min: to.Ptr("1"),
@@ -739,7 +739,7 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMaximumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdellstorage.FileSystemsClientUpdateResponse{
-	// 	FileSystemResource: &armdellstorage.FileSystemResource{
+	// 	FileSystemResource: armdellstorage.FileSystemResource{
 	// 		Properties: &armdellstorage.FileSystemResourceProperties{
 	// 			Capacity: &armdellstorage.Capacity{
 	// 				Min: to.Ptr("1"),
@@ -830,7 +830,7 @@ func ExampleFileSystemsClient_Update_fileSystemsUpdateMinimumSetGen() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdellstorage.FileSystemsClientUpdateResponse{
-	// 	FileSystemResource: &armdellstorage.FileSystemResource{
+	// 	FileSystemResource: armdellstorage.FileSystemResource{
 	// 		Identity: &armdellstorage.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 			TenantID: to.Ptr("11111111-1111-1111-1111-111111111111"),

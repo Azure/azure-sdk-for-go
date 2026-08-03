@@ -7,18 +7,19 @@ package armmaps
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // OperationResultClient contains the methods for the OperationResult group.
 // Don't use this type directly, use NewOperationResultClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type OperationResultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +43,6 @@ func NewOperationResultClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginGet - Get the result of a long running azure asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - location - The name of the Azure region.
 //   - operationID - The ID of an ongoing async operation.
 //   - options - OperationResultClientBeginGetOptions contains the optional parameters for the OperationResultClient.BeginGet
@@ -67,8 +66,6 @@ func (client *OperationResultClient) BeginGet(ctx context.Context, location stri
 
 // Get - Get the result of a long running azure asynchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *OperationResultClient) get(ctx context.Context, location string, operationID string, options *OperationResultClientBeginGetOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OperationResultClient.BeginGet"
@@ -110,7 +107,7 @@ func (client *OperationResultClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

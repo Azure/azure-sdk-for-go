@@ -16,6 +16,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // PostRulesServer is a fake server for instances of the armpanngfw.PostRulesClient type.
@@ -82,9 +83,7 @@ func (p *PostRulesServerTransport) Do(req *http.Request) (*http.Response, error)
 }
 
 func (p *PostRulesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -112,10 +111,7 @@ func (p *PostRulesServerTransport) dispatchToMethodFake(req *http.Request, metho
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -163,7 +159,7 @@ func (p *PostRulesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
 		p.beginCreateOrUpdate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
@@ -207,7 +203,7 @@ func (p *PostRulesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		p.beginDelete.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
@@ -241,7 +237,7 @@ func (p *PostRulesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PostRulesResource, req)
@@ -270,11 +266,7 @@ func (p *PostRulesServerTransport) dispatchGetCounters(req *http.Request) (*http
 	if err != nil {
 		return nil, err
 	}
-	firewallNameUnescaped, err := url.QueryUnescape(qp.Get("firewallName"))
-	if err != nil {
-		return nil, err
-	}
-	firewallNameParam := getOptional(firewallNameUnescaped)
+	firewallNameParam := getOptional(qp.Get("firewallName"))
 	var options *armpanngfw.PostRulesClientGetCountersOptions
 	if firewallNameParam != nil {
 		options = &armpanngfw.PostRulesClientGetCountersOptions{
@@ -286,7 +278,7 @@ func (p *PostRulesServerTransport) dispatchGetCounters(req *http.Request) (*http
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RuleCounter, req)
@@ -323,7 +315,7 @@ func (p *PostRulesServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		p.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}
@@ -352,11 +344,7 @@ func (p *PostRulesServerTransport) dispatchRefreshCounters(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	firewallNameUnescaped, err := url.QueryUnescape(qp.Get("firewallName"))
-	if err != nil {
-		return nil, err
-	}
-	firewallNameParam := getOptional(firewallNameUnescaped)
+	firewallNameParam := getOptional(qp.Get("firewallName"))
 	var options *armpanngfw.PostRulesClientRefreshCountersOptions
 	if firewallNameParam != nil {
 		options = &armpanngfw.PostRulesClientRefreshCountersOptions{
@@ -368,7 +356,7 @@ func (p *PostRulesServerTransport) dispatchRefreshCounters(req *http.Request) (*
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
 	}
 	resp, err := server.NewResponse(respContent, req, nil)
@@ -397,11 +385,7 @@ func (p *PostRulesServerTransport) dispatchResetCounters(req *http.Request) (*ht
 	if err != nil {
 		return nil, err
 	}
-	firewallNameUnescaped, err := url.QueryUnescape(qp.Get("firewallName"))
-	if err != nil {
-		return nil, err
-	}
-	firewallNameParam := getOptional(firewallNameUnescaped)
+	firewallNameParam := getOptional(qp.Get("firewallName"))
 	var options *armpanngfw.PostRulesClientResetCountersOptions
 	if firewallNameParam != nil {
 		options = &armpanngfw.PostRulesClientResetCountersOptions{
@@ -413,7 +397,7 @@ func (p *PostRulesServerTransport) dispatchResetCounters(req *http.Request) (*ht
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RuleCounterReset, req)

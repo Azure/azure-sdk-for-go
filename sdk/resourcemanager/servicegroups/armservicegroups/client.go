@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2024-02-01-preview
 type Client struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // Get - Get the details of the serviceGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 //   - serviceGroupName - ServiceGroup Name.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, serviceGroupName string, options *ClientGetOptions) (ClientGetResponse, error) {
@@ -76,8 +76,8 @@ func (client *Client) getCreateRequest(ctx context.Context, serviceGroupName str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -93,8 +93,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // ListAncestors - Get the details of the serviceGroup's ancestors
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01-preview
 //   - serviceGroupName - ServiceGroup Name.
 //   - options - ClientListAncestorsOptions contains the optional parameters for the Client.ListAncestors method.
 func (client *Client) ListAncestors(ctx context.Context, serviceGroupName string, options *ClientListAncestorsOptions) (ClientListAncestorsResponse, error) {
@@ -131,8 +129,8 @@ func (client *Client) listAncestorsCreateRequest(ctx context.Context, serviceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -20,6 +21,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/arrow"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
@@ -43,6 +45,9 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 	conOptions := shared.GetClientOptions(options)
 	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -57,8 +62,12 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
+	plOpts := runtime.PipelineOptions{}
+	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
+	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -73,6 +82,9 @@ func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCreden
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	plOpts := runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}
+	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
+		plOpts.PerRetry = append(plOpts.PerRetry, p)
+	}
 
 	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
 	if err != nil {
@@ -261,24 +273,30 @@ func (c *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
 func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	listOptions := generated.ContainerClientListBlobFlatSegmentOptions{}
+	arrowOptions := o.formatArrow()
+	var useArrow bool
 	if o != nil {
 		listOptions.Include = o.Include.format()
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
 		listOptions.StartFrom = o.StartFrom
+		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
 	}
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsFlatResponse]{
 		More: func(page ListBlobsFlatResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListBlobsFlatResponse) (ListBlobsFlatResponse, error) {
+			if page != nil {
+				listOptions.Marker = page.NextMarker
+				arrowOptions.Marker = page.NextMarker
+			}
 			var req *policy.Request
 			var err error
-			if page == nil {
-				req, err = c.generated().ListBlobFlatSegmentCreateRequest(ctx, &listOptions)
+			if useArrow {
+				req, err = c.generated().ListBlobFlatSegmentApacheArrowCreateRequest(ctx, &arrowOptions)
 			} else {
-				listOptions.Marker = page.NextMarker
 				req, err = c.generated().ListBlobFlatSegmentCreateRequest(ctx, &listOptions)
 			}
 			if err != nil {
@@ -289,8 +307,12 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 				return ListBlobsFlatResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				// TOOD: storage error?
 				return ListBlobsFlatResponse{}, runtime.NewResponseError(resp)
+			}
+			// If Arrow was requested and the service returned Arrow, parse it.
+			// Otherwise fall back to XML parsing (handles Photon-not-enabled case).
+			if useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType) {
+				return arrow.HandleFlatListResponse(resp)
 			}
 			return c.generated().ListBlobFlatSegmentHandleResponse(resp)
 		},
@@ -304,17 +326,25 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/list-blobs.
 func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierarchyOptions) *runtime.Pager[ListBlobsHierarchyResponse] {
 	listOptions := o.format()
+	arrowOptions := o.formatArrow()
+	var useArrow bool
+	if o != nil {
+		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
+	}
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsHierarchyResponse]{
 		More: func(page ListBlobsHierarchyResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
 		},
 		Fetcher: func(ctx context.Context, page *ListBlobsHierarchyResponse) (ListBlobsHierarchyResponse, error) {
+			if page != nil {
+				listOptions.Marker = page.NextMarker
+				arrowOptions.Marker = page.NextMarker
+			}
 			var req *policy.Request
 			var err error
-			if page == nil {
-				req, err = c.generated().ListBlobHierarchySegmentCreateRequest(ctx, delimiter, &listOptions)
+			if useArrow {
+				req, err = c.generated().ListBlobHierarchySegmentApacheArrowCreateRequest(ctx, delimiter, &arrowOptions)
 			} else {
-				listOptions.Marker = page.NextMarker
 				req, err = c.generated().ListBlobHierarchySegmentCreateRequest(ctx, delimiter, &listOptions)
 			}
 			if err != nil {
@@ -326,6 +356,9 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
 				return ListBlobsHierarchyResponse{}, runtime.NewResponseError(resp)
+			}
+			if useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType) {
+				return arrow.HandleHierarchyListResponse(resp)
 			}
 			return c.generated().ListBlobHierarchySegmentHandleResponse(resp)
 		},

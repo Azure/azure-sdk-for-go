@@ -18,6 +18,8 @@ import (
 
 // ManagedPrivateEndpointsClient contains the methods for the ManagedPrivateEndpoints group.
 // Don't use this type directly, use NewManagedPrivateEndpointsClient() instead.
+//
+// Generated from API version 2025-08-01
 type ManagedPrivateEndpointsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedPrivateEndpointsClient(subscriptionID string, credential azcore.T
 
 // BeginCreate - Create or update a managed private endpoint for a grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - managedPrivateEndpointName - The managed private endpoint name of Azure Managed Grafana.
@@ -69,8 +69,6 @@ func (client *ManagedPrivateEndpointsClient) BeginCreate(ctx context.Context, re
 
 // Create - Create or update a managed private endpoint for a grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ManagedPrivateEndpointsClient) create(ctx context.Context, resourceGroupName string, workspaceName string, managedPrivateEndpointName string, requestBodyParameters ManagedPrivateEndpointModel, options *ManagedPrivateEndpointsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedPrivateEndpointsClient.BeginCreate"
@@ -116,8 +114,8 @@ func (client *ManagedPrivateEndpointsClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBodyParameters); err != nil {
@@ -128,8 +126,6 @@ func (client *ManagedPrivateEndpointsClient) createCreateRequest(ctx context.Con
 
 // BeginDelete - Delete a managed private endpoint for a grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - managedPrivateEndpointName - The managed private endpoint name of Azure Managed Grafana.
@@ -154,8 +150,6 @@ func (client *ManagedPrivateEndpointsClient) BeginDelete(ctx context.Context, re
 
 // Delete - Delete a managed private endpoint for a grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ManagedPrivateEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, managedPrivateEndpointName string, options *ManagedPrivateEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedPrivateEndpointsClient.BeginDelete"
@@ -201,15 +195,13 @@ func (client *ManagedPrivateEndpointsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a specific managed private endpoint of a grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - managedPrivateEndpointName - The managed private endpoint name of Azure Managed Grafana.
@@ -261,8 +253,8 @@ func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -277,8 +269,6 @@ func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - List all managed private endpoints of a grafana resource.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - options - ManagedPrivateEndpointsClientListOptions contains the optional parameters for the ManagedPrivateEndpointsClient.NewListPager
@@ -326,8 +316,8 @@ func (client *ManagedPrivateEndpointsClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -343,8 +333,6 @@ func (client *ManagedPrivateEndpointsClient) listHandleResponse(resp *http.Respo
 
 // BeginRefresh - Refresh and sync managed private endpoints of a grafana resource to latest state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - options - ManagedPrivateEndpointsClientBeginRefreshOptions contains the optional parameters for the ManagedPrivateEndpointsClient.BeginRefresh
@@ -368,8 +356,6 @@ func (client *ManagedPrivateEndpointsClient) BeginRefresh(ctx context.Context, r
 
 // Refresh - Refresh and sync managed private endpoints of a grafana resource to latest state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ManagedPrivateEndpointsClient) refresh(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagedPrivateEndpointsClientBeginRefreshOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedPrivateEndpointsClient.BeginRefresh"
@@ -411,15 +397,13 @@ func (client *ManagedPrivateEndpointsClient) refreshCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Update a managed private endpoint for an existing grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The workspace name of Azure Managed Grafana.
 //   - managedPrivateEndpointName - The managed private endpoint name of Azure Managed Grafana.
@@ -445,8 +429,6 @@ func (client *ManagedPrivateEndpointsClient) BeginUpdate(ctx context.Context, re
 
 // Update - Update a managed private endpoint for an existing grafana resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ManagedPrivateEndpointsClient) update(ctx context.Context, resourceGroupName string, workspaceName string, managedPrivateEndpointName string, requestBodyParameters ManagedPrivateEndpointUpdateParameters, options *ManagedPrivateEndpointsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedPrivateEndpointsClient.BeginUpdate"
@@ -492,8 +474,8 @@ func (client *ManagedPrivateEndpointsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, requestBodyParameters); err != nil {

@@ -119,14 +119,6 @@ func (c *ClientFactory) NewPolicyClient() *PolicyClient {
 	}
 }
 
-// NewPrivateEndpointConnectionProxiesClient creates a new instance of PrivateEndpointConnectionProxiesClient.
-func (c *ClientFactory) NewPrivateEndpointConnectionProxiesClient() *PrivateEndpointConnectionProxiesClient {
-	return &PrivateEndpointConnectionProxiesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
 func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
 	return &PrivateEndpointConnectionsClient{

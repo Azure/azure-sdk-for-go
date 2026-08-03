@@ -7,18 +7,19 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ReplicationAppliancesClient contains the methods for the ReplicationAppliances group.
 // Don't use this type directly, use NewReplicationAppliancesClient() instead.
+//
+// Generated from API version 2025-08-01
 type ReplicationAppliancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +44,6 @@ func NewReplicationAppliancesClient(subscriptionID string, credential azcore.Tok
 // NewListPager - Gets the list of appliances.
 //
 // Gets the list of Azure Site Recovery appliances for the vault.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - options - ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.NewListPager
@@ -95,8 +94,8 @@ func (client *ReplicationAppliancesClient) listCreateRequest(ctx context.Context
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

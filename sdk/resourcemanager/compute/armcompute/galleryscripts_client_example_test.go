@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScript_Create.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Create.json
 func ExampleGalleryScriptsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,13 +38,13 @@ func ExampleGalleryScriptsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryScriptsClientCreateOrUpdateResponse{
-	// 	GalleryScript: &armcompute.GalleryScript{
+	// 	GalleryScript: armcompute.GalleryScript{
 	// 		Properties: &armcompute.GalleryScriptProperties{
 	// 			Description: to.Ptr("This is the gallery script description."),
 	// 			Eula: to.Ptr("This is the gallery script EULA."),
@@ -61,7 +61,7 @@ func ExampleGalleryScriptsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScript_Delete.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Delete.json
 func ExampleGalleryScriptsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,11 +78,11 @@ func ExampleGalleryScriptsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScript_Get.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Get.json
 func ExampleGalleryScriptsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleGalleryScriptsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryScriptsClientGetResponse{
-	// 	GalleryScript: &armcompute.GalleryScript{
+	// 	GalleryScript: armcompute.GalleryScript{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName/scripts/myGalleryScriptName"),
 	// 		Properties: &armcompute.GalleryScriptProperties{
 	// 			Description: to.Ptr("This is the gallery script description."),
@@ -117,7 +117,7 @@ func ExampleGalleryScriptsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScript_ListByGallery.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_ListByGallery.json
 func ExampleGalleryScriptsClient_NewListByGalleryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleGalleryScriptsClient_NewListByGalleryPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScript_Update.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScript_Update.json
 func ExampleGalleryScriptsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,13 +200,13 @@ func ExampleGalleryScriptsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleryScriptsClientUpdateResponse{
-	// 	GalleryScript: &armcompute.GalleryScript{
+	// 	GalleryScript: armcompute.GalleryScript{
 	// 		Properties: &armcompute.GalleryScriptProperties{
 	// 			Description: to.Ptr("This is the gallery script description."),
 	// 			Eula: to.Ptr("This is the gallery script EULA."),

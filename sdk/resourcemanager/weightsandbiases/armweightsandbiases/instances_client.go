@@ -18,6 +18,8 @@ import (
 
 // InstancesClient contains the methods for the Instances group.
 // Don't use this type directly, use NewInstancesClient() instead.
+//
+// Generated from API version 2024-09-18
 type InstancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewInstancesClient(subscriptionID string, credential azcore.TokenCredential
 
 // BeginCreateOrUpdate - Create a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-18
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancename - Name of the Instance resource
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *InstancesClient) BeginCreateOrUpdate(ctx context.Context, resource
 
 // CreateOrUpdate - Create a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-18
 func (client *InstancesClient) createOrUpdate(ctx context.Context, resourceGroupName string, instancename string, resource InstanceResource, options *InstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstancesClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *InstancesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-18")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240918)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *InstancesClient) createOrUpdateCreateRequest(ctx context.Context, 
 
 // BeginDelete - Delete a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-18
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancename - Name of the Instance resource
 //   - options - InstancesClientBeginDeleteOptions contains the optional parameters for the InstancesClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Delete a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-18
 func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, instancename string, options *InstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InstancesClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-18")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240918)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-18
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancename - Name of the Instance resource
 //   - options - InstancesClientGetOptions contains the optional parameters for the InstancesClient.Get method.
@@ -243,8 +235,8 @@ func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-18")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240918)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *InstancesClient) getHandleResponse(resp *http.Response) (Instances
 }
 
 // NewListByResourceGroupPager - List InstanceResource resources by resource group
-//
-// Generated from API version 2024-09-18
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - InstancesClientListByResourceGroupOptions contains the optional parameters for the InstancesClient.NewListByResourceGroupPager
 //     method.
@@ -303,8 +293,8 @@ func (client *InstancesClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-18")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240918)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -319,8 +309,6 @@ func (client *InstancesClient) listByResourceGroupHandleResponse(resp *http.Resp
 }
 
 // NewListBySubscriptionPager - List InstanceResource resources by subscription ID
-//
-// Generated from API version 2024-09-18
 //   - options - InstancesClientListBySubscriptionOptions contains the optional parameters for the InstancesClient.NewListBySubscriptionPager
 //     method.
 func (client *InstancesClient) NewListBySubscriptionPager(options *InstancesClientListBySubscriptionOptions) *runtime.Pager[InstancesClientListBySubscriptionResponse] {
@@ -358,8 +346,8 @@ func (client *InstancesClient) listBySubscriptionCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-18")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240918)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -375,8 +363,6 @@ func (client *InstancesClient) listBySubscriptionHandleResponse(resp *http.Respo
 
 // Update - Update a InstanceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-18
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancename - Name of the Instance resource
 //   - properties - The resource properties to be updated.
@@ -423,8 +409,8 @@ func (client *InstancesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-18")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240918)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

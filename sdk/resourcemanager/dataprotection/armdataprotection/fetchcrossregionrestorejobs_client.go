@@ -18,6 +18,8 @@ import (
 
 // FetchCrossRegionRestoreJobsClient contains the methods for the FetchCrossRegionRestoreJobs group.
 // Don't use this type directly, use NewFetchCrossRegionRestoreJobsClient() instead.
+//
+// Generated from API version 2026-03-01
 type FetchCrossRegionRestoreJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewFetchCrossRegionRestoreJobsClient(subscriptionID string, credential azco
 }
 
 // NewListPager - Fetches list of Cross Region Restore job belonging to the vault
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - location - The name of the Azure region.
 //   - parameters - Request body for operation
@@ -93,8 +93,8 @@ func (client *FetchCrossRegionRestoreJobsClient) listCreateRequest(ctx context.C
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

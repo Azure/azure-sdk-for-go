@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/CommunityGallery_Create.json
+// Generated from example definition: 2025-12-03/galleryExamples/CommunityGallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,13 +43,13 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientCreateOrUpdateResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			Description: to.Ptr("This is the gallery description."),
@@ -73,7 +73,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createACommunityGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Create.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,13 +95,13 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientCreateOrUpdateResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGallery"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			Description: to.Ptr("This is the gallery description."),
@@ -116,7 +116,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create_SoftDeletionEnabled.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSoftDeletionEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,13 +141,13 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientCreateOrUpdateResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			Description: to.Ptr("This is the gallery description."),
@@ -165,7 +165,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Create_WithManagedIdentity.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create_WithManagedIdentity.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSystemAssignedAndUserAssignedManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,13 +193,13 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientCreateOrUpdateResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Identity: &armcompute.GalleryIdentity{
 	// 			Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -223,7 +223,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Create_WithSharingProfile.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Create_WithSharingProfile.json
 func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWithSharingProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,13 +248,13 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientCreateOrUpdateResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			Description: to.Ptr("This is the gallery description."),
@@ -272,7 +272,7 @@ func ExampleGalleriesClient_BeginCreateOrUpdate_createOrUpdateASimpleGalleryWith
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Delete.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Delete.json
 func ExampleGalleriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleGalleriesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -298,7 +298,7 @@ func ExampleGalleriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/CommunityGallery_Get.json
+// Generated from example definition: 2025-12-03/galleryExamples/CommunityGallery_Get.json
 func ExampleGalleriesClient_Get_getACommunityGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,7 +317,7 @@ func ExampleGalleriesClient_Get_getACommunityGallery() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientGetResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/communityGalleries/myGalleryName"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			Description: to.Ptr("This is the gallery description."),
@@ -354,7 +354,7 @@ func ExampleGalleriesClient_Get_getACommunityGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Get.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get.json
 func ExampleGalleriesClient_Get_getAGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +373,7 @@ func ExampleGalleriesClient_Get_getAGallery() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientGetResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			Description: to.Ptr("This is the gallery description."),
@@ -388,7 +388,7 @@ func ExampleGalleriesClient_Get_getAGallery() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get_WithExpandSharingProfileGroups.json
 func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,7 +408,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientGetResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			SharingProfile: &armcompute.SharingProfile{
@@ -436,7 +436,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithExpandSharingProfileGroups() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Get_WithManagedIdentity.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get_WithManagedIdentity.json
 func ExampleGalleriesClient_Get_getAGalleryWithSystemAssignedAndUserAssignedManagedIdentities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -455,7 +455,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSystemAssignedAndUserAssignedMana
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientGetResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Identity: &armcompute.GalleryIdentity{
 	// 			Type: to.Ptr(armcompute.ResourceIdentityTypeSystemAssignedUserAssigned),
@@ -481,7 +481,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSystemAssignedAndUserAssignedMana
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Get_WithSelectPermissions.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Get_WithSelectPermissions.json
 func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +501,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientGetResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myGalleryName"),
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			SharingProfile: &armcompute.SharingProfile{
@@ -529,7 +529,7 @@ func ExampleGalleriesClient_Get_getAGalleryWithSelectPermissions() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_ListBySubscription.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_ListBySubscription.json
 func ExampleGalleriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,7 +573,7 @@ func ExampleGalleriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_ListByResourceGroup.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_ListByResourceGroup.json
 func ExampleGalleriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -617,7 +617,7 @@ func ExampleGalleriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_Update.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_Update.json
 func ExampleGalleriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -638,13 +638,13 @@ func ExampleGalleriesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GalleriesClientUpdateResponse{
-	// 	Gallery: &armcompute.Gallery{
+	// 	Gallery: armcompute.Gallery{
 	// 		Properties: &armcompute.GalleryProperties{
 	// 			Description: to.Ptr("This is the gallery description."),
 	// 			Identifier: &armcompute.GalleryIdentifier{

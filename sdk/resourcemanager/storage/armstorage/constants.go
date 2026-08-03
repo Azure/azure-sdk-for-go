@@ -4,6 +4,10 @@
 
 package armstorage
 
+const (
+	version20260401 string = "2026-04-01"
+)
+
 // AccessTier - The default access tier for block blobs in the storage account. Required for storage accounts where kind =
 // BlobStorage. See more details in: https://learn.microsoft.com/azure/storage/blobs/access-tiers-overview.
 type AccessTier string
@@ -80,6 +84,42 @@ func PossibleActiveDirectoryPropertiesAccountTypeValues() []ActiveDirectoryPrope
 	return []ActiveDirectoryPropertiesAccountType{
 		ActiveDirectoryPropertiesAccountTypeComputer,
 		ActiveDirectoryPropertiesAccountTypeUser,
+	}
+}
+
+// AdvancedPlatformMetricsFilterType - The type of filter applied to the advanced platform metrics rule.
+type AdvancedPlatformMetricsFilterType string
+
+const (
+	// AdvancedPlatformMetricsFilterTypeAllContainersFilter - Filter applies to all containers
+	AdvancedPlatformMetricsFilterTypeAllContainersFilter AdvancedPlatformMetricsFilterType = "AllContainersFilter"
+	// AdvancedPlatformMetricsFilterTypeContainerListFilter - Filter applies to a specific list of containers
+	AdvancedPlatformMetricsFilterTypeContainerListFilter AdvancedPlatformMetricsFilterType = "ContainerListFilter"
+	// AdvancedPlatformMetricsFilterTypeContainerPrefixFilter - Filter applies to containers matching a prefix
+	AdvancedPlatformMetricsFilterTypeContainerPrefixFilter AdvancedPlatformMetricsFilterType = "ContainerPrefixFilter"
+)
+
+// PossibleAdvancedPlatformMetricsFilterTypeValues returns the possible values for the AdvancedPlatformMetricsFilterType const type.
+func PossibleAdvancedPlatformMetricsFilterTypeValues() []AdvancedPlatformMetricsFilterType {
+	return []AdvancedPlatformMetricsFilterType{
+		AdvancedPlatformMetricsFilterTypeAllContainersFilter,
+		AdvancedPlatformMetricsFilterTypeContainerListFilter,
+		AdvancedPlatformMetricsFilterTypeContainerPrefixFilter,
+	}
+}
+
+// AdvancedPlatformMetricsRuleType - The type of the advanced platform metrics rule.
+type AdvancedPlatformMetricsRuleType string
+
+const (
+	// AdvancedPlatformMetricsRuleTypeContainerLevelCapacityMetrics - Container level capacity metrics rule type
+	AdvancedPlatformMetricsRuleTypeContainerLevelCapacityMetrics AdvancedPlatformMetricsRuleType = "ContainerLevelCapacityMetrics"
+)
+
+// PossibleAdvancedPlatformMetricsRuleTypeValues returns the possible values for the AdvancedPlatformMetricsRuleType const type.
+func PossibleAdvancedPlatformMetricsRuleTypeValues() []AdvancedPlatformMetricsRuleType {
+	return []AdvancedPlatformMetricsRuleType{
+		AdvancedPlatformMetricsRuleTypeContainerLevelCapacityMetrics,
 	}
 }
 
@@ -756,6 +796,24 @@ const (
 func PossibleManagementPolicyNameValues() []ManagementPolicyName {
 	return []ManagementPolicyName{
 		ManagementPolicyNameDefault,
+	}
+}
+
+// MetricsEmitted - The metrics emitted by the advanced platform metrics rule.
+type MetricsEmitted string
+
+const (
+	// MetricsEmittedContainerBlobCount - Container blob count metric
+	MetricsEmittedContainerBlobCount MetricsEmitted = "ContainerBlobCount"
+	// MetricsEmittedContainerUsedSize - Container used size metric
+	MetricsEmittedContainerUsedSize MetricsEmitted = "ContainerUsedSize"
+)
+
+// PossibleMetricsEmittedValues returns the possible values for the MetricsEmitted const type.
+func PossibleMetricsEmittedValues() []MetricsEmitted {
+	return []MetricsEmitted{
+		MetricsEmittedContainerBlobCount,
+		MetricsEmittedContainerUsedSize,
 	}
 }
 

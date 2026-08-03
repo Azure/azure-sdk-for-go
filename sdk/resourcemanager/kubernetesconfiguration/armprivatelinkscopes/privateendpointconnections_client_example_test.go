@@ -6,11 +6,10 @@ package armprivatelinkscopes_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/kubernetesconfiguration/armprivatelinkscopes"
+	"log"
 )
 
 // Generated from example definition: 2024-11-01-preview/PrivateEndpointConnectionUpdate.json
@@ -37,13 +36,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.PrivateEndpointConnectionsClientCreateOrUpdateResponse{
-	// 	PrivateEndpointConnection: &armprivatelinkscopes.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armprivatelinkscopes.PrivateEndpointConnection{
 	// 		Name: to.Ptr("private-endpoint-connection-name"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/privateLinkScopes/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.KubernetesConfiguration/privateLinkScopes/myPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name"),
@@ -103,7 +102,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armprivatelinkscopes.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armprivatelinkscopes.PrivateEndpointConnection{
 	// 		Name: to.Ptr("private-endpoint-connection-name"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/privateLinkScopes/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers//privateLinkScopes/myPrivateLinkScope/privateEndpointConnections/private-endpoint-connection-name"),
@@ -141,7 +140,7 @@ func ExamplePrivateEndpointConnectionsClient_ListByPrivateLinkScope() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armprivatelinkscopes.PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{
-	// 	PrivateEndpointConnectionListResult: &armprivatelinkscopes.PrivateEndpointConnectionListResult{
+	// 	PrivateEndpointConnectionListResult: armprivatelinkscopes.PrivateEndpointConnectionListResult{
 	// 		Value: []*armprivatelinkscopes.PrivateEndpointConnection{
 	// 			{
 	// 				Name: to.Ptr("private-endpoint-connection-name"),

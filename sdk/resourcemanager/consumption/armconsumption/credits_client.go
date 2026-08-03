@@ -18,6 +18,8 @@ import (
 
 // CreditsClient contains the methods for the Credits group.
 // Don't use this type directly, use NewCreditsClient() instead.
+//
+// Generated from API version 2024-08-01
 type CreditsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewCreditsClient(credential azcore.TokenCredential, options *arm.ClientOpti
 
 // Get - The credit summary by billingAccountId and billingProfileId.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-08-01
 //   - billingAccountID - BillingAccount ID
 //   - billingProfileID - Azure Billing Profile ID.
 //   - options - CreditsClientGetOptions contains the optional parameters for the CreditsClient.Get method.
@@ -81,8 +81,8 @@ func (client *CreditsClient) getCreateRequest(ctx context.Context, billingAccoun
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

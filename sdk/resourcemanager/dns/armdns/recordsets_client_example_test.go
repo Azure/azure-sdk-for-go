@@ -43,7 +43,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createAaaaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/AAAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -93,7 +93,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createARecordsetWithTrafficManagemen
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -144,7 +144,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createARecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -194,7 +194,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createARecordsetWithAliasTargetResou
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -243,7 +243,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createCnameRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/CNAME"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -295,7 +295,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createCaaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/CAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -354,7 +354,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createDsRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnszones/DS"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -412,7 +412,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createMxRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/MX"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -470,7 +470,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createNaptrRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/NAPTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -527,7 +527,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createNsRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/NS"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -579,7 +579,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createPtrRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/PTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -635,7 +635,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createSoaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("@"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/SOA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -694,7 +694,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createSrvRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/SRV"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -752,7 +752,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createTlsaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/TLSA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -810,7 +810,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_createTxtRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientCreateOrUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/TXT"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1117,7 +1117,7 @@ func ExampleRecordSetsClient_Get_getAaaaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/AAAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1157,7 +1157,7 @@ func ExampleRecordSetsClient_Get_getARecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1197,7 +1197,7 @@ func ExampleRecordSetsClient_Get_getCnameRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/CNAME"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1235,7 +1235,7 @@ func ExampleRecordSetsClient_Get_getCaaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/CAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1277,7 +1277,7 @@ func ExampleRecordSetsClient_Get_getDsRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/DS"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1322,7 +1322,7 @@ func ExampleRecordSetsClient_Get_getMxRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/MX"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1363,7 +1363,7 @@ func ExampleRecordSetsClient_Get_getNaptrRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/NAPTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1408,7 +1408,7 @@ func ExampleRecordSetsClient_Get_getNsRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/NS"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1448,7 +1448,7 @@ func ExampleRecordSetsClient_Get_getPtrRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/PTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1488,7 +1488,7 @@ func ExampleRecordSetsClient_Get_getSoaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("@"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/SOA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1532,7 +1532,7 @@ func ExampleRecordSetsClient_Get_getSrvRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/SRV"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1575,7 +1575,7 @@ func ExampleRecordSetsClient_Get_getTlsaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/TLSA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -1618,7 +1618,7 @@ func ExampleRecordSetsClient_Get_getTxtRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientGetResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/TXT"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2513,7 +2513,7 @@ func ExampleRecordSetsClient_Update_patchAaaaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/AAAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2559,7 +2559,7 @@ func ExampleRecordSetsClient_Update_patchARecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/A"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2605,7 +2605,7 @@ func ExampleRecordSetsClient_Update_patchCnameRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/CNAME"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2649,7 +2649,7 @@ func ExampleRecordSetsClient_Update_patchCaaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/CAA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2697,7 +2697,7 @@ func ExampleRecordSetsClient_Update_patchDsRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/DS"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2748,7 +2748,7 @@ func ExampleRecordSetsClient_Update_patchMxRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/MX"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2795,7 +2795,7 @@ func ExampleRecordSetsClient_Update_patchNaptrRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/NAPTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2846,7 +2846,7 @@ func ExampleRecordSetsClient_Update_patchNsRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/NS"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2892,7 +2892,7 @@ func ExampleRecordSetsClient_Update_patchPtrRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/PTR"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2938,7 +2938,7 @@ func ExampleRecordSetsClient_Update_patchSoaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("@"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/SOA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -2988,7 +2988,7 @@ func ExampleRecordSetsClient_Update_patchSrvRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/SRV"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -3037,7 +3037,7 @@ func ExampleRecordSetsClient_Update_patchTlsaRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/TLSA"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -3086,7 +3086,7 @@ func ExampleRecordSetsClient_Update_patchTxtRecordset() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdns.RecordSetsClientUpdateResponse{
-	// 	RecordSet: &armdns.RecordSet{
+	// 	RecordSet: armdns.RecordSet{
 	// 		Name: to.Ptr("record1"),
 	// 		Type: to.Ptr("Microsoft.Network/dnsZones/TXT"),
 	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),

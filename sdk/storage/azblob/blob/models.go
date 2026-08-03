@@ -20,6 +20,28 @@ func NewSharedKeyCredential(accountName, accountKey string) (*SharedKeyCredentia
 	return exported.NewSharedKeyCredential(accountName, accountKey)
 }
 
+// ExpectContinueMode is the mode for applying the HTTP "Expect: 100-continue" header to
+// operations that include a request body.
+type ExpectContinueMode = exported.ExpectContinueMode
+
+const (
+	// ExpectContinueModeApplyOnThrottle indicates that Expect-Continue will not be applied
+	// until specific errors are encountered from the service, at which point it will be
+	// applied for a fixed window of time after the last triggering error. This is the default.
+	ExpectContinueModeApplyOnThrottle = exported.ExpectContinueModeApplyOnThrottle
+
+	// ExpectContinueModeOn indicates Expect-Continue will be applied regardless of recent
+	// error status. The ContentLengthThreshold option still applies.
+	ExpectContinueModeOn = exported.ExpectContinueModeOn
+
+	// ExpectContinueModeOff indicates Expect-Continue will never be applied.
+	ExpectContinueModeOff = exported.ExpectContinueModeOff
+)
+
+// ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"
+// header to operations that include a request body.
+type ExpectContinueOptions = exported.ExpectContinueOptions
+
 // Type Declarations ---------------------------------------------------------------------
 
 // AccessConditions identifies blob-specific access conditions which you optionally set.
@@ -122,7 +144,8 @@ type downloadOptions struct {
 	CPKInfo      *CPKInfo
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -176,7 +199,8 @@ type DownloadBufferOptions struct {
 	// CPKScopeInfo contains a group of parameters for client provided encryption scope.
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.
@@ -204,7 +228,8 @@ type DownloadFileOptions struct {
 	CPKInfo      *CPKInfo
 	CPKScopeInfo *CPKScopeInfo
 
-	// Concurrency indicates the maximum number of blocks to download in parallel.  The default value is 5.
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
 	Concurrency uint16
 
 	// RetryReaderOptionsPerBlock is used when downloading each block.

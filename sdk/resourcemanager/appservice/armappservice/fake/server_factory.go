@@ -142,104 +142,104 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "CertificatesClient":
-		initServer(s, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
+		initServer(&s.trMu, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
 		resp, err = s.trCertificatesServer.Do(req)
 	case "DeletedWebAppsClient":
-		initServer(s, &s.trDeletedWebAppsServer, func() *DeletedWebAppsServerTransport {
+		initServer(&s.trMu, &s.trDeletedWebAppsServer, func() *DeletedWebAppsServerTransport {
 			return NewDeletedWebAppsServerTransport(&s.srv.DeletedWebAppsServer)
 		})
 		resp, err = s.trDeletedWebAppsServer.Do(req)
 	case "DiagnosticsClient":
-		initServer(s, &s.trDiagnosticsServer, func() *DiagnosticsServerTransport { return NewDiagnosticsServerTransport(&s.srv.DiagnosticsServer) })
+		initServer(&s.trMu, &s.trDiagnosticsServer, func() *DiagnosticsServerTransport { return NewDiagnosticsServerTransport(&s.srv.DiagnosticsServer) })
 		resp, err = s.trDiagnosticsServer.Do(req)
 	case "EnvironmentsClient":
-		initServer(s, &s.trEnvironmentsServer, func() *EnvironmentsServerTransport { return NewEnvironmentsServerTransport(&s.srv.EnvironmentsServer) })
+		initServer(&s.trMu, &s.trEnvironmentsServer, func() *EnvironmentsServerTransport { return NewEnvironmentsServerTransport(&s.srv.EnvironmentsServer) })
 		resp, err = s.trEnvironmentsServer.Do(req)
 	case "GetUsagesInLocationClient":
-		initServer(s, &s.trGetUsagesInLocationServer, func() *GetUsagesInLocationServerTransport {
+		initServer(&s.trMu, &s.trGetUsagesInLocationServer, func() *GetUsagesInLocationServerTransport {
 			return NewGetUsagesInLocationServerTransport(&s.srv.GetUsagesInLocationServer)
 		})
 		resp, err = s.trGetUsagesInLocationServer.Do(req)
 	case "GlobalClient":
-		initServer(s, &s.trGlobalServer, func() *GlobalServerTransport { return NewGlobalServerTransport(&s.srv.GlobalServer) })
+		initServer(&s.trMu, &s.trGlobalServer, func() *GlobalServerTransport { return NewGlobalServerTransport(&s.srv.GlobalServer) })
 		resp, err = s.trGlobalServer.Do(req)
 	case "KubeEnvironmentsClient":
-		initServer(s, &s.trKubeEnvironmentsServer, func() *KubeEnvironmentsServerTransport {
+		initServer(&s.trMu, &s.trKubeEnvironmentsServer, func() *KubeEnvironmentsServerTransport {
 			return NewKubeEnvironmentsServerTransport(&s.srv.KubeEnvironmentsServer)
 		})
 		resp, err = s.trKubeEnvironmentsServer.Do(req)
 	case "PlansClient":
-		initServer(s, &s.trPlansServer, func() *PlansServerTransport { return NewPlansServerTransport(&s.srv.PlansServer) })
+		initServer(&s.trMu, &s.trPlansServer, func() *PlansServerTransport { return NewPlansServerTransport(&s.srv.PlansServer) })
 		resp, err = s.trPlansServer.Do(req)
 	case "ProviderClient":
-		initServer(s, &s.trProviderServer, func() *ProviderServerTransport { return NewProviderServerTransport(&s.srv.ProviderServer) })
+		initServer(&s.trMu, &s.trProviderServer, func() *ProviderServerTransport { return NewProviderServerTransport(&s.srv.ProviderServer) })
 		resp, err = s.trProviderServer.Do(req)
 	case "RecommendationsClient":
-		initServer(s, &s.trRecommendationsServer, func() *RecommendationsServerTransport {
+		initServer(&s.trMu, &s.trRecommendationsServer, func() *RecommendationsServerTransport {
 			return NewRecommendationsServerTransport(&s.srv.RecommendationsServer)
 		})
 		resp, err = s.trRecommendationsServer.Do(req)
 	case "ResourceHealthMetadataClient":
-		initServer(s, &s.trResourceHealthMetadataServer, func() *ResourceHealthMetadataServerTransport {
+		initServer(&s.trMu, &s.trResourceHealthMetadataServer, func() *ResourceHealthMetadataServerTransport {
 			return NewResourceHealthMetadataServerTransport(&s.srv.ResourceHealthMetadataServer)
 		})
 		resp, err = s.trResourceHealthMetadataServer.Do(req)
 	case "SiteCertificatesClient":
-		initServer(s, &s.trSiteCertificatesServer, func() *SiteCertificatesServerTransport {
+		initServer(&s.trMu, &s.trSiteCertificatesServer, func() *SiteCertificatesServerTransport {
 			return NewSiteCertificatesServerTransport(&s.srv.SiteCertificatesServer)
 		})
 		resp, err = s.trSiteCertificatesServer.Do(req)
 	case "StaticSitesClient":
-		initServer(s, &s.trStaticSitesServer, func() *StaticSitesServerTransport { return NewStaticSitesServerTransport(&s.srv.StaticSitesServer) })
+		initServer(&s.trMu, &s.trStaticSitesServer, func() *StaticSitesServerTransport { return NewStaticSitesServerTransport(&s.srv.StaticSitesServer) })
 		resp, err = s.trStaticSitesServer.Do(req)
 	case "WebAppsClient":
-		initServer(s, &s.trWebAppsServer, func() *WebAppsServerTransport { return NewWebAppsServerTransport(&s.srv.WebAppsServer) })
+		initServer(&s.trMu, &s.trWebAppsServer, func() *WebAppsServerTransport { return NewWebAppsServerTransport(&s.srv.WebAppsServer) })
 		resp, err = s.trWebAppsServer.Do(req)
 	case "WebSiteManagementClient":
-		initServer(s, &s.trWebSiteManagementServer, func() *WebSiteManagementServerTransport {
+		initServer(&s.trMu, &s.trWebSiteManagementServer, func() *WebSiteManagementServerTransport {
 			return NewWebSiteManagementServerTransport(&s.srv.WebSiteManagementServer)
 		})
 		resp, err = s.trWebSiteManagementServer.Do(req)
 	case "WorkflowRunActionRepetitionsClient":
-		initServer(s, &s.trWorkflowRunActionRepetitionsServer, func() *WorkflowRunActionRepetitionsServerTransport {
+		initServer(&s.trMu, &s.trWorkflowRunActionRepetitionsServer, func() *WorkflowRunActionRepetitionsServerTransport {
 			return NewWorkflowRunActionRepetitionsServerTransport(&s.srv.WorkflowRunActionRepetitionsServer)
 		})
 		resp, err = s.trWorkflowRunActionRepetitionsServer.Do(req)
 	case "WorkflowRunActionRepetitionsRequestHistoriesClient":
-		initServer(s, &s.trWorkflowRunActionRepetitionsRequestHistoriesServer, func() *WorkflowRunActionRepetitionsRequestHistoriesServerTransport {
+		initServer(&s.trMu, &s.trWorkflowRunActionRepetitionsRequestHistoriesServer, func() *WorkflowRunActionRepetitionsRequestHistoriesServerTransport {
 			return NewWorkflowRunActionRepetitionsRequestHistoriesServerTransport(&s.srv.WorkflowRunActionRepetitionsRequestHistoriesServer)
 		})
 		resp, err = s.trWorkflowRunActionRepetitionsRequestHistoriesServer.Do(req)
 	case "WorkflowRunActionScopeRepetitionsClient":
-		initServer(s, &s.trWorkflowRunActionScopeRepetitionsServer, func() *WorkflowRunActionScopeRepetitionsServerTransport {
+		initServer(&s.trMu, &s.trWorkflowRunActionScopeRepetitionsServer, func() *WorkflowRunActionScopeRepetitionsServerTransport {
 			return NewWorkflowRunActionScopeRepetitionsServerTransport(&s.srv.WorkflowRunActionScopeRepetitionsServer)
 		})
 		resp, err = s.trWorkflowRunActionScopeRepetitionsServer.Do(req)
 	case "WorkflowRunActionsClient":
-		initServer(s, &s.trWorkflowRunActionsServer, func() *WorkflowRunActionsServerTransport {
+		initServer(&s.trMu, &s.trWorkflowRunActionsServer, func() *WorkflowRunActionsServerTransport {
 			return NewWorkflowRunActionsServerTransport(&s.srv.WorkflowRunActionsServer)
 		})
 		resp, err = s.trWorkflowRunActionsServer.Do(req)
 	case "WorkflowRunsClient":
-		initServer(s, &s.trWorkflowRunsServer, func() *WorkflowRunsServerTransport { return NewWorkflowRunsServerTransport(&s.srv.WorkflowRunsServer) })
+		initServer(&s.trMu, &s.trWorkflowRunsServer, func() *WorkflowRunsServerTransport { return NewWorkflowRunsServerTransport(&s.srv.WorkflowRunsServer) })
 		resp, err = s.trWorkflowRunsServer.Do(req)
 	case "WorkflowTriggerHistoriesClient":
-		initServer(s, &s.trWorkflowTriggerHistoriesServer, func() *WorkflowTriggerHistoriesServerTransport {
+		initServer(&s.trMu, &s.trWorkflowTriggerHistoriesServer, func() *WorkflowTriggerHistoriesServerTransport {
 			return NewWorkflowTriggerHistoriesServerTransport(&s.srv.WorkflowTriggerHistoriesServer)
 		})
 		resp, err = s.trWorkflowTriggerHistoriesServer.Do(req)
 	case "WorkflowTriggersClient":
-		initServer(s, &s.trWorkflowTriggersServer, func() *WorkflowTriggersServerTransport {
+		initServer(&s.trMu, &s.trWorkflowTriggersServer, func() *WorkflowTriggersServerTransport {
 			return NewWorkflowTriggersServerTransport(&s.srv.WorkflowTriggersServer)
 		})
 		resp, err = s.trWorkflowTriggersServer.Do(req)
 	case "WorkflowVersionsClient":
-		initServer(s, &s.trWorkflowVersionsServer, func() *WorkflowVersionsServerTransport {
+		initServer(&s.trMu, &s.trWorkflowVersionsServer, func() *WorkflowVersionsServerTransport {
 			return NewWorkflowVersionsServerTransport(&s.srv.WorkflowVersionsServer)
 		})
 		resp, err = s.trWorkflowVersionsServer.Do(req)
 	case "WorkflowsClient":
-		initServer(s, &s.trWorkflowsServer, func() *WorkflowsServerTransport { return NewWorkflowsServerTransport(&s.srv.WorkflowsServer) })
+		initServer(&s.trMu, &s.trWorkflowsServer, func() *WorkflowsServerTransport { return NewWorkflowsServerTransport(&s.srv.WorkflowsServer) })
 		resp, err = s.trWorkflowsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -250,12 +250,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

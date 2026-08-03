@@ -18,6 +18,8 @@ import (
 
 // CredentialsClient contains the methods for the Credentials group.
 // Don't use this type directly, use NewCredentialsClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type CredentialsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCredentialsClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Create a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *CredentialsClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Create a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *CredentialsClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, resource Credential, options *CredentialsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CredentialsClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *CredentialsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *CredentialsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Delete a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - options - CredentialsClientBeginDeleteOptions contains the optional parameters for the CredentialsClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *CredentialsClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Delete a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *CredentialsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CredentialsClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *CredentialsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - options - CredentialsClientGetOptions contains the optional parameters for the CredentialsClient.Get method.
@@ -243,8 +235,8 @@ func (client *CredentialsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -259,8 +251,6 @@ func (client *CredentialsClient) getHandleResponse(resp *http.Response) (Credent
 }
 
 // NewListByResourceGroupPager - List Credential resources by Namespace
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - options - CredentialsClientListByResourceGroupOptions contains the optional parameters for the CredentialsClient.NewListByResourceGroupPager
@@ -308,8 +298,8 @@ func (client *CredentialsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -325,8 +315,6 @@ func (client *CredentialsClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // BeginSynchronize - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - options - CredentialsClientBeginSynchronizeOptions contains the optional parameters for the CredentialsClient.BeginSynchronize
@@ -350,8 +338,6 @@ func (client *CredentialsClient) BeginSynchronize(ctx context.Context, resourceG
 
 // Synchronize - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *CredentialsClient) synchronize(ctx context.Context, resourceGroupName string, namespaceName string, options *CredentialsClientBeginSynchronizeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CredentialsClient.BeginSynchronize"
@@ -393,15 +379,13 @@ func (client *CredentialsClient) synchronizeCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Update a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The name of the namespace.
 //   - properties - The resource properties to be updated.
@@ -425,8 +409,6 @@ func (client *CredentialsClient) BeginUpdate(ctx context.Context, resourceGroupN
 
 // Update - Update a Credential
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *CredentialsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, properties CredentialUpdate, options *CredentialsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CredentialsClient.BeginUpdate"
@@ -468,8 +450,8 @@ func (client *CredentialsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

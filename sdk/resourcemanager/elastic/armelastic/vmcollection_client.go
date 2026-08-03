@@ -18,6 +18,8 @@ import (
 
 // VMCollectionClient contains the methods for the VMCollection group.
 // Don't use this type directly, use NewVMCollectionClient() instead.
+//
+// Generated from API version 2025-06-01
 type VMCollectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewVMCollectionClient(subscriptionID string, credential azcore.TokenCredent
 // Update - Update the VM details that will be monitored by the Elastic monitor resource, ensuring optimal observability and
 // performance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - VMCollectionClientUpdateOptions contains the optional parameters for the VMCollectionClient.Update method.
@@ -88,8 +88,8 @@ func (client *VMCollectionClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
 		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {

@@ -18,6 +18,8 @@ import (
 
 // DataSharesClient contains the methods for the DataShares group.
 // Don't use this type directly, use NewDataSharesClient() instead.
+//
+// Generated from API version 2026-04-01
 type DataSharesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDataSharesClient(subscriptionID string, credential azcore.TokenCredentia
 // BeginCreate - Create a Storage DataShare if it does not already exist; otherwise, error out. This API will not allow you
 // to replace an already existing resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -71,8 +71,6 @@ func (client *DataSharesClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Create - Create a Storage DataShare if it does not already exist; otherwise, error out. This API will not allow you to
 // replace an already existing resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *DataSharesClient) create(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, resource DataShare, options *DataSharesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataSharesClient.BeginCreate"
@@ -118,8 +116,8 @@ func (client *DataSharesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -130,8 +128,6 @@ func (client *DataSharesClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Delete a Storage DataShare.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -156,8 +152,6 @@ func (client *DataSharesClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete a Storage DataShare.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *DataSharesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, options *DataSharesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataSharesClient.BeginDelete"
@@ -203,15 +197,13 @@ func (client *DataSharesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the specified Storage DataShare.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -263,8 +255,8 @@ func (client *DataSharesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -279,8 +271,6 @@ func (client *DataSharesClient) getHandleResponse(resp *http.Response) (DataShar
 }
 
 // NewListByStorageAccountPager - List all Storage DataShares in a Storage Account.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -329,8 +319,8 @@ func (client *DataSharesClient) listByStorageAccountCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -346,8 +336,6 @@ func (client *DataSharesClient) listByStorageAccountHandleResponse(resp *http.Re
 
 // BeginUpdate - Update a Storage DataShare.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
@@ -373,8 +361,6 @@ func (client *DataSharesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Update a Storage DataShare.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *DataSharesClient) update(ctx context.Context, resourceGroupName string, accountName string, dataShareName string, properties DataShareUpdate, options *DataSharesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DataSharesClient.BeginUpdate"
@@ -420,8 +406,8 @@ func (client *DataSharesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -41,13 +41,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.PrivateEndpointConnectionsClientCreateResponse{
-	// 	PrivateEndpointConnection: &armelasticsan.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armelasticsan.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
@@ -98,13 +98,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate_privateEndpointConnecti
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.PrivateEndpointConnectionsClientCreateResponse{
-	// 	PrivateEndpointConnection: &armelasticsan.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armelasticsan.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
@@ -151,7 +151,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -177,7 +177,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete_privateEndpointConnecti
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -205,7 +205,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMa
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armelasticsan.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armelasticsan.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),
@@ -254,7 +254,7 @@ func ExamplePrivateEndpointConnectionsClient_Get_privateEndpointConnectionsGetMi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armelasticsan.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armelasticsan.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armelasticsan.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.ElasticSan/elasticSans/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/privateEndpointConnections/{privateEndpointConnectionName}"),

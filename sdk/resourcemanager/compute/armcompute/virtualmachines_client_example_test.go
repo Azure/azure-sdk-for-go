@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_AssessPatches.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_AssessPatches.json
 func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,13 +30,13 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientAssessPatchesResponse{
-	// 	VirtualMachineAssessPatchesResult: &armcompute.VirtualMachineAssessPatchesResult{
+	// 	VirtualMachineAssessPatchesResult: armcompute.VirtualMachineAssessPatchesResult{
 	// 		Status: to.Ptr(armcompute.PatchOperationStatusSucceeded),
 	// 		AssessmentActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
 	// 		RebootPending: to.Ptr(true),
@@ -77,7 +77,7 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttachDetachDataDisksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,13 +127,13 @@ func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttac
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientAttachDetachDataDisksResponse{
-	// 	StorageProfile: &armcompute.StorageProfile{
+	// 	StorageProfile: armcompute.StorageProfile{
 	// 		ImageReference: &armcompute.ImageReference{
 	// 			Publisher: to.Ptr("MicrosoftWindowsServer"),
 	// 			Offer: to.Ptr("WindowsServer"),
@@ -189,7 +189,7 @@ func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttac
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttachDetachDataDisksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,13 +217,13 @@ func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttac
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientAttachDetachDataDisksResponse{
-	// 	StorageProfile: &armcompute.StorageProfile{
+	// 	StorageProfile: armcompute.StorageProfile{
 	// 		ImageReference: &armcompute.ImageReference{
 	// 			Publisher: to.Ptr("MicrosoftWindowsServer"),
 	// 			Offer: to.Ptr("WindowsServer"),
@@ -258,7 +258,7 @@ func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttac
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,13 +279,13 @@ func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMaximumSetGe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCaptureResponse{
-	// 	VirtualMachineCaptureResult: &armcompute.VirtualMachineCaptureResult{
+	// 	VirtualMachineCaptureResult: armcompute.VirtualMachineCaptureResult{
 	// 		Schema: to.Ptr("aaaaa"),
 	// 		ContentVersion: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		Parameters: map[string]any{
@@ -299,7 +299,7 @@ func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMaximumSetGe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,18 +320,18 @@ func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMinimumSetGe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCaptureResponse{
-	// 	VirtualMachineCaptureResult: &armcompute.VirtualMachineCaptureResult{
+	// 	VirtualMachineCaptureResult: armcompute.VirtualMachineCaptureResult{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConvertToManagedDisksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConve
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -357,7 +357,7 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConve
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConvertToManagedDisksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -374,7 +374,7 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConve
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -383,7 +383,7 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConve
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVMFromAnUnmanagedGeneralizedOSImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,13 +436,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVMFromAn
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -497,7 +497,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVMFromAn
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACommunityGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,13 +549,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACommunityGal
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -610,7 +610,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACommunityGal
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACustomImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,13 +662,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACustomImage(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -723,7 +723,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACustomImage(
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromAGeneralizedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -775,13 +775,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromAGeneralizedS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -836,7 +836,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromAGeneralizedS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASharedGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -888,13 +888,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASharedGaller
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -949,7 +949,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASharedGaller
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASpecializedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -996,13 +996,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASpecializedS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1048,7 +1048,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASpecializedS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1107,13 +1107,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAVirtualMachine
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1175,7 +1175,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAVirtualMachine
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAnAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1233,13 +1233,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAnAvailabilityS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1300,7 +1300,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAnAvailabilityS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1366,13 +1366,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1437,7 +1437,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingAssessmentModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1498,13 +1498,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1564,7 +1564,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingPatchModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1625,13 +1625,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1691,7 +1691,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1753,13 +1753,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1820,7 +1820,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVMWithUnmanagedOSAndDataDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1893,13 +1893,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVMWith
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -1977,7 +1977,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVMWith
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2044,13 +2044,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -2116,7 +2116,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingAssessmentModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2178,13 +2178,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -2245,7 +2245,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfAutomaticByOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2307,13 +2307,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -2374,7 +2374,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2437,13 +2437,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -2505,7 +2505,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfManual() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2567,13 +2567,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -2634,7 +2634,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2697,13 +2697,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithPatchS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -2765,7 +2765,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithPatchS
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2828,13 +2828,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -2900,7 +2900,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskAndFullCachingEnabled.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskAndFullCachingEnabled.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskAndEnableFullCachingSetToTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2965,13 +2965,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -3037,7 +3037,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskProvisioningInCacheDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3101,13 +3101,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -3174,7 +3174,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskProvisioningInNvmeDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3238,13 +3238,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -3311,7 +3311,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskProvisioningInResourceDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3375,13 +3375,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -3448,7 +3448,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAMarketplaceImagePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3508,13 +3508,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAMarketplaceI
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -3577,7 +3577,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAMarketplaceI
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithApplicationProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3647,13 +3647,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithApplicationPr
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -3731,7 +3731,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithApplicationPr
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3792,13 +3792,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithBootDiagnosti
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -3862,7 +3862,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithBootDiagnosti
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3927,13 +3927,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithCapac
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -4001,7 +4001,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithCapac
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDataDisksUsingCopyAndRestoreOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4082,13 +4082,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDataDisksUsin
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -4182,7 +4182,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDataDisksUsin
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskControllerType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4262,13 +4262,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskControlle
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -4350,7 +4350,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskControlle
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskEncryptionSetResourceIdInTheOSDiskAndDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4432,13 +4432,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskEncryptio
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -4521,7 +4521,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskEncryptio
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEmptyDataDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4588,13 +4588,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEmptyDataDisk
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -4670,7 +4670,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEmptyDataDisk
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHostEncryptionUsingEncryptionAtHostProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4733,13 +4733,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHostEncryptio
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -4803,7 +4803,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHostEncryptio
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEncryptionIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4869,13 +4869,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEncryptionIde
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Identity: &armcompute.VirtualMachineIdentity{
 	// 			Type: to.Ptr(armcompute.ResourceIdentityTypeUserAssigned),
@@ -4943,7 +4943,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEncryptionIde
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAnExtensionsTimeBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5005,13 +5005,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAnExtensionsT
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -5076,7 +5076,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAnExtensionsT
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithFips1403Enabled.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithFips1403Enabled.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithFips1403Enabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5140,13 +5140,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithFips1403Enabl
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/{vm-name}"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -5213,7 +5213,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithFips1403Enabl
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHibernationEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5277,13 +5277,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHibernationEn
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/{vm-name}"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -5350,7 +5350,165 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHibernationEn
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithInterconnectBlock.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithInterconnectBlock() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_ND128isr_GB300_v6")),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					Publisher: to.Ptr("microsoft-dsvm"),
+					Offer:     to.Ptr("ubuntu-hpc"),
+					SKU:       to.Ptr("2404-gb"),
+					Version:   to.Ptr("latest"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					Name:         to.Ptr("myVMosdisk"),
+				},
+			},
+			InterconnectBlockProfile: &armcompute.InterconnectBlockProfile{
+				InterconnectBlock: &armcompute.APIEntityReference{
+					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"),
+				},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				AdminPassword: to.Ptr("{your-password}"),
+				LinuxConfiguration: &armcompute.LinuxConfiguration{
+					DisablePasswordAuthentication: to.Ptr(false),
+				},
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
+					InterconnectGroup: &armcompute.SubResource{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
+					},
+					Subgroups: []*armcompute.SubResource{
+						{
+							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
+						},
+					},
+				},
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					},
+				},
+			},
+		},
+		Zones: []*string{
+			to.Ptr("1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		Name: to.Ptr("myVM"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				LinuxConfiguration: &armcompute.LinuxConfiguration{
+	// 					DisablePasswordAuthentication: to.Ptr(false),
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			InterconnectBlockProfile: &armcompute.InterconnectBlockProfile{
+	// 				InterconnectBlock: &armcompute.APIEntityReference{
+	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"),
+	// 				},
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
+	// 					InterconnectGroup: &armcompute.SubResource{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
+	// 					},
+	// 					Subgroups: []*armcompute.SubResource{
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
+	// 						},
+	// 					},
+	// 				},
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					Publisher: to.Ptr("microsoft-dsvm"),
+	// 					Offer: to.Ptr("ubuntu-hpc"),
+	// 					SKU: to.Ptr("2404-gb"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesLinux),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 					},
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 			},
+	// 			VMID: to.Ptr("5c0d55a7-c407-4ed6-bf7d-ddb810267c85"),
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_ND128isr_GB300_v6")),
+	// 			},
+	// 			SecurityProfile: &armcompute.SecurityProfile{
+	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Location: to.Ptr("westus"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithManagedBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5410,13 +5568,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithManagedBootDi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -5479,7 +5637,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithManagedBootDi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterfaceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5561,13 +5719,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -5625,7 +5783,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterfaceConfigurationWithPublicIPAddressDnsSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5705,13 +5863,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -5769,7 +5927,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPasswordAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5824,13 +5982,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPasswordAuthe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -5888,7 +6046,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPasswordAuthe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithPlacement.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPlacement.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAutomaticZonePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5955,13 +6113,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAutomaticZone
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -6034,7 +6192,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAutomaticZone
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPremiumStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6089,13 +6247,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPremiumStorag
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -6153,7 +6311,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPremiumStorag
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithProxyAgentSettingsOfEnabledAndMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6219,13 +6377,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithProxyAgentSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -6292,7 +6450,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithProxyAgentSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithScheduledEventsProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6380,13 +6538,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithScheduledEven
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -6474,7 +6632,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithScheduledEven
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeConfidentialVMWithPlatformManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6539,13 +6697,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -6609,7 +6767,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeConfidentialVMWithCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6677,13 +6835,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -6750,7 +6908,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeConfidentialVMWithNonPersistedTpmSecurityEncryptionType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6815,13 +6973,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -6885,7 +7043,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSshAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6950,13 +7108,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSshAuthentica
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -7021,7 +7179,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSshAuthentica
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUefiSettingsOfSecureBootAndVTpm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7083,13 +7241,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUefiSettingsO
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
 	// 			OSProfile: &armcompute.OSProfile{
@@ -7151,7 +7309,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUefiSettingsO
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUserData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7213,13 +7371,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUserData() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/{vm-name}"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -7283,7 +7441,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUserData() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithVMSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7349,13 +7507,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithVMSizePropert
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -7423,7 +7581,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithVMSizePropert
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Create_WithZoneMovementEnabled.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithZoneMovementEnabled.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithResiliencyProfileAndZoneMovementEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7495,13 +7653,13 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithResiliencyPro
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -7574,7 +7732,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithResiliencyPro
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7591,7 +7749,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMinimu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -7600,7 +7758,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMinimu
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_WithForceDeallocate.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_WithForceDeallocate.json
 func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithForceDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7618,7 +7776,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithFo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -7627,7 +7785,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithFo
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Deallocate_WithHibernation.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_WithHibernation.json
 func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithHibernation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7645,7 +7803,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithHi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -7654,7 +7812,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithHi
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Delete_Force.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Delete_Force.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7672,7 +7830,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -7681,7 +7839,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Generalize.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Generalize.json
 func ExampleVirtualMachinesClient_Generalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7703,7 +7861,7 @@ func ExampleVirtualMachinesClient_Generalize() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Get.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7723,7 +7881,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientGetResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -7855,7 +8013,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7874,7 +8032,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGr
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientGetResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -7937,7 +8095,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGr
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7957,7 +8115,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypePr
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientGetResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -8088,7 +8246,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypePr
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVMSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8107,7 +8265,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVMSizeProperties() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientGetResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		Name: to.Ptr("myVM"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -8237,7 +8395,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVMSizeProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_InstallPatches.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_InstallPatches.json
 func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8270,13 +8428,13 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientInstallPatchesResponse{
-	// 	VirtualMachineInstallPatchesResult: &armcompute.VirtualMachineInstallPatchesResult{
+	// 	VirtualMachineInstallPatchesResult: armcompute.VirtualMachineInstallPatchesResult{
 	// 		Status: to.Ptr(armcompute.PatchOperationStatusSucceeded),
 	// 		InstallationActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
 	// 		RebootStatus: to.Ptr(armcompute.VMGuestPatchRebootStatusCompleted),
@@ -8313,7 +8471,7 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
 func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8332,7 +8490,7 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientInstanceViewResponse{
-	// 	VirtualMachineInstanceView: &armcompute.VirtualMachineInstanceView{
+	// 	VirtualMachineInstanceView: armcompute.VirtualMachineInstanceView{
 	// 		PlatformUpdateDomain: to.Ptr[int32](1),
 	// 		PlatformFaultDomain: to.Ptr[int32](1),
 	// 		ComputerName: to.Ptr("myVM"),
@@ -8460,7 +8618,7 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8479,7 +8637,7 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientInstanceViewResponse{
-	// 	VirtualMachineInstanceView: &armcompute.VirtualMachineInstanceView{
+	// 	VirtualMachineInstanceView: armcompute.VirtualMachineInstanceView{
 	// 		ComputerName: to.Ptr("myVM"),
 	// 		OSName: to.Ptr("Windows Server 2016 Datacenter"),
 	// 		OSVersion: to.Ptr("Microsoft Windows NT 10.0.14393.0"),
@@ -8527,7 +8685,76 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceView_WithInterconnectBlock.json
+func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineAssociatedWithAnInterconnectBlock() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachinesClient().InstanceView(ctx, "myResourceGroup", "myVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientInstanceViewResponse{
+	// 	VirtualMachineInstanceView: armcompute.VirtualMachineInstanceView{
+	// 		ComputerName: to.Ptr("myVM"),
+	// 		OSName: to.Ptr("Windows Server 2016 Datacenter"),
+	// 		OSVersion: to.Ptr("Microsoft Windows NT 10.0.14393.0"),
+	// 		VMAgent: &armcompute.VirtualMachineAgentInstanceView{
+	// 			VMAgentVersion: to.Ptr("2.7.41491.949"),
+	// 			Statuses: []*armcompute.InstanceViewStatus{
+	// 				{
+	// 					Code: to.Ptr("ProvisioningState/succeeded"),
+	// 					Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 					DisplayStatus: to.Ptr("Ready"),
+	// 					Message: to.Ptr("GuestAgent is running and accepting new configurations."),
+	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T23:11:22+00:00"); return t}()),
+	// 				},
+	// 			},
+	// 		},
+	// 		Disks: []*armcompute.DiskInstanceView{
+	// 			{
+	// 				Name: to.Ptr("myOsDisk"),
+	// 				Statuses: []*armcompute.InstanceViewStatus{
+	// 					{
+	// 						Code: to.Ptr("ProvisioningState/succeeded"),
+	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T21:29:47.477089+00:00"); return t}()),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 		HyperVGeneration: to.Ptr(armcompute.HyperVGenerationTypeV1),
+	// 		InterconnectInstanceView: &armcompute.InterconnectInstanceView{
+	// 			InterconnectSubgroupID: to.Ptr("{GUID}"),
+	// 		},
+	// 		Statuses: []*armcompute.InstanceViewStatus{
+	// 			{
+	// 				Code: to.Ptr("ProvisioningState/succeeded"),
+	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T21:30:12.8051917+00:00"); return t}()),
+	// 			},
+	// 			{
+	// 				Code: to.Ptr("PowerState/running"),
+	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 				DisplayStatus: to.Ptr("VM running"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_List_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9484,7 +9711,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_List_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9523,7 +9750,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMinimumSetGen()
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_ListAll_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListAll_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10243,7 +10470,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMaximumSe
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_ListAll_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListAll_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10282,7 +10509,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMinimumSe
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
 func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10329,7 +10556,7 @@ func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_ListBySubscription_ByLocation.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListBySubscription_ByLocation.json
 func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10482,7 +10709,7 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_MigrateToVirtualMachineScaleSet.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_MigrateToVirtualMachineScaleSet.json
 func ExampleVirtualMachinesClient_BeginMigrateToVMScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10503,11 +10730,11 @@ func ExampleVirtualMachinesClient_BeginMigrateToVMScaleSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformMaintenanceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10524,7 +10751,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformM
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10533,7 +10760,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformM
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformMaintenanceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10550,7 +10777,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformM
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10559,7 +10786,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformM
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10577,7 +10804,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMaximumSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10586,7 +10813,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMaximumSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10603,7 +10830,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMinimumSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10612,7 +10839,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMinimumSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Reapply.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Reapply.json
 func ExampleVirtualMachinesClient_BeginReapply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10629,7 +10856,7 @@ func ExampleVirtualMachinesClient_BeginReapply() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10638,7 +10865,7 @@ func ExampleVirtualMachinesClient_BeginReapply() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Redeploy_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Redeploy_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10655,7 +10882,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMaximumSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10664,7 +10891,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMaximumSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Redeploy_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Redeploy_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10681,7 +10908,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMinimumSet
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10690,7 +10917,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMinimumSet
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Reimage.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Reimage.json
 func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10710,7 +10937,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10719,7 +10946,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
 func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10744,7 +10971,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachin
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10753,7 +10980,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachin
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Restart_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Restart_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10770,7 +10997,7 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMaximumSetGe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10779,7 +11006,7 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMaximumSetGe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Restart_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Restart_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10796,7 +11023,7 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMinimumSetGe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10805,7 +11032,7 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMinimumSetGe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
 func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10825,14 +11052,14 @@ func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientRetrieveBootDiagnosticsDataResponse{
-	// 	RetrieveBootDiagnosticsDataResult: &armcompute.RetrieveBootDiagnosticsDataResult{
+	// 	RetrieveBootDiagnosticsDataResult: armcompute.RetrieveBootDiagnosticsDataResult{
 	// 		ConsoleScreenshotBlobURI: to.Ptr("https://storageuri/vm.screenshot.bmp?{sasKey}"),
 	// 		SerialConsoleLogBlobURI: to.Ptr("https://storageuri/vm.serialconsole.log?{sasKey}"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/runCommandExamples/VirtualMachineRunCommand.json
+// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand.json
 func ExampleVirtualMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10851,13 +11078,13 @@ func ExampleVirtualMachinesClient_BeginRunCommand() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientRunCommandResponse{
-	// 	RunCommandResult: &armcompute.RunCommandResult{
+	// 	RunCommandResult: armcompute.RunCommandResult{
 	// 		Value: []*armcompute.InstanceViewStatus{
 	// 			{
 	// 				Code: to.Ptr("ComponentStatus/StdOut/succeeded"),
@@ -10876,7 +11103,7 @@ func ExampleVirtualMachinesClient_BeginRunCommand() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_SimulateEviction.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_SimulateEviction.json
 func ExampleVirtualMachinesClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10893,7 +11120,7 @@ func ExampleVirtualMachinesClient_SimulateEviction() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Start_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Start_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10910,7 +11137,7 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMaximumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10919,7 +11146,7 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Start_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Start_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10936,7 +11163,7 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMinimumSetGen() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -10945,7 +11172,7 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
 func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByDetachingDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11013,13 +11240,13 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByDetachingDataDisk() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{
@@ -11097,7 +11324,7 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByDetachingDataDisk() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
 func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByForceDetachingDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11166,13 +11393,13 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByForceDetachingDataDisk(
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachinesClientUpdateResponse{
-	// 	VirtualMachine: &armcompute.VirtualMachine{
+	// 	VirtualMachine: armcompute.VirtualMachine{
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 		Properties: &armcompute.VirtualMachineProperties{

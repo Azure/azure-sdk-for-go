@@ -83,13 +83,13 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate_createsOrUpdatesASqlVir
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientCreateOrUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
@@ -236,13 +236,13 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate_createsOrUpdatesASqlVir
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientCreateOrUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
@@ -288,13 +288,13 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate_createsOrUpdatesASqlVir
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientCreateOrUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
@@ -348,13 +348,13 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate_createsOrUpdatesASqlVir
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientCreateOrUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
@@ -425,13 +425,13 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate_createsOrUpdatesASqlVir
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientCreateOrUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
@@ -481,13 +481,13 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate_createsOrUpdatesASqlVir
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientCreateOrUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
@@ -541,13 +541,13 @@ func ExampleSQLVirtualMachinesClient_BeginCreateOrUpdate_createsOrUpdatesASqlVir
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientCreateOrUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm2"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm2"),
@@ -590,7 +590,7 @@ func ExampleSQLVirtualMachinesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -618,7 +618,7 @@ func ExampleSQLVirtualMachinesClient_BeginFetchDCAssessment() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -641,7 +641,7 @@ func ExampleSQLVirtualMachinesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientGetResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
@@ -936,7 +936,7 @@ func ExampleSQLVirtualMachinesClient_BeginRedeploy() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -957,7 +957,7 @@ func ExampleSQLVirtualMachinesClient_BeginStartAssessment() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -982,13 +982,13 @@ func ExampleSQLVirtualMachinesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsqlvirtualmachine.SQLVirtualMachinesClientUpdateResponse{
-	// 	SQLVirtualMachine: &armsqlvirtualmachine.SQLVirtualMachine{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
 	// 		Name: to.Ptr("testvm"),
 	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),

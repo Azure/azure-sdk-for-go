@@ -46,7 +46,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientCreateOrUpdateResponse{
-	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 	JobDefinition: armstoragemover.JobDefinition{
 	// 		Name: to.Ptr("examples-jobDefinitionName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projectName/jobDefinitionName"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName/jobDefinitions/examples-jobDefinitionName"),
@@ -103,7 +103,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateClou
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientCreateOrUpdateResponse{
-	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 	JobDefinition: armstoragemover.JobDefinition{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName/jobDefinitions/examples-jobDefinitionName"),
 	// 		Name: to.Ptr("examples-jobDefinitionName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projectName/jobDefinitionName"),
@@ -175,7 +175,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateWith
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientCreateOrUpdateResponse{
-	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 	JobDefinition: armstoragemover.JobDefinition{
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName/jobDefinitions/examples-jobDefinitionName"),
 	// 		Name: to.Ptr("examples-jobDefinitionName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projectName/jobDefinitionName"),
@@ -231,7 +231,7 @@ func ExampleJobDefinitionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -259,7 +259,7 @@ func ExampleJobDefinitionsClient_Get_jobDefinitionsGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientGetResponse{
-	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 	JobDefinition: armstoragemover.JobDefinition{
 	// 		Name: to.Ptr("examples-jobDefinitionName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/jobDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/jobDefinitions/examples-jobDefinitionName"),
@@ -301,7 +301,7 @@ func ExampleJobDefinitionsClient_Get_jobDefinitionsGetWithSchedule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientGetResponse{
-	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 	JobDefinition: armstoragemover.JobDefinition{
 	// 		Name: to.Ptr("examples-jobDefinitionName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/jobDefinitions"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/jobDefinitions/examples-jobDefinitionName"),
@@ -458,7 +458,7 @@ func ExampleJobDefinitionsClient_StartJob() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientStartJobResponse{
-	// 	JobRunResourceID: &armstoragemover.JobRunResourceID{
+	// 	JobRunResourceID: armstoragemover.JobRunResourceID{
 	// 		JobRunResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/jobDefinitions/examples-jobDefinitionName/jobRuns/examples-jobRunName"),
 	// 	},
 	// }
@@ -483,7 +483,7 @@ func ExampleJobDefinitionsClient_StopJob() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientStopJobResponse{
-	// 	JobRunResourceID: &armstoragemover.JobRunResourceID{
+	// 	JobRunResourceID: armstoragemover.JobRunResourceID{
 	// 		JobRunResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/jobDefinitions/examples-jobDefinitionName/jobRuns/examples-jobRunName"),
 	// 	},
 	// }
@@ -516,7 +516,7 @@ func ExampleJobDefinitionsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragemover.JobDefinitionsClientUpdateResponse{
-	// 	JobDefinition: &armstoragemover.JobDefinition{
+	// 	JobDefinition: armstoragemover.JobDefinition{
 	// 		Name: to.Ptr("examples-jobDefinitionName"),
 	// 		Type: to.Ptr("Microsoft.StorageMover/storageMovers/projectName/jobDefinitionName"),
 	// 		ID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/projects/examples-projectName/jobDefinitions/examples-jobDefinitionName"),

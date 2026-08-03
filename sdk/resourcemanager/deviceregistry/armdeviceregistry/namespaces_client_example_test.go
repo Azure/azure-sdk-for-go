@@ -45,13 +45,13 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespacesClientCreateOrReplaceResponse{
-	// 	Namespace: &armdeviceregistry.Namespace{
+	// 	Namespace: armdeviceregistry.Namespace{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk0925-n01"),
 	// 		Name: to.Ptr("adr-namespace-gbk0925-n01"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),
@@ -105,7 +105,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -128,7 +128,7 @@ func ExampleNamespacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespacesClientGetResponse{
-	// 	Namespace: &armdeviceregistry.Namespace{
+	// 	Namespace: armdeviceregistry.Namespace{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk1001-n01"),
 	// 		Name: to.Ptr("adr-namespace-gbk1001-n01"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),
@@ -323,7 +323,7 @@ func ExampleNamespacesClient_BeginMigrate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -360,13 +360,13 @@ func ExampleNamespacesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdeviceregistry.NamespacesClientUpdateResponse{
-	// 	Namespace: &armdeviceregistry.Namespace{
+	// 	Namespace: armdeviceregistry.Namespace{
 	// 		ID: to.Ptr("/subscriptions/00000000-1366-430f-0000-cc873bcf2d27/resourceGroups/gbktestRG/providers/Microsoft.DeviceRegistry/namespaces/adr-namespace-gbk0925-n01"),
 	// 		Name: to.Ptr("adr-namespace-gbk0925-n01"),
 	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces"),

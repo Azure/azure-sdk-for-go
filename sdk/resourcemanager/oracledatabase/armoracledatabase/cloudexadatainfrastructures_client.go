@@ -18,6 +18,8 @@ import (
 
 // CloudExadataInfrastructuresClient contains the methods for the CloudExadataInfrastructures group.
 // Don't use this type directly, use NewCloudExadataInfrastructuresClient() instead.
+//
+// Generated from API version 2025-09-01
 type CloudExadataInfrastructuresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCloudExadataInfrastructuresClient(subscriptionID string, credential azco
 
 // BeginAddStorageCapacity - Perform add storage capacity on exadata infra
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - options - CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions contains the optional parameters for the CloudExadataInfrastructuresClient.BeginAddStorageCapacity
@@ -66,8 +66,6 @@ func (client *CloudExadataInfrastructuresClient) BeginAddStorageCapacity(ctx con
 
 // AddStorageCapacity - Perform add storage capacity on exadata infra
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *CloudExadataInfrastructuresClient) addStorageCapacity(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, options *CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudExadataInfrastructuresClient.BeginAddStorageCapacity"
@@ -109,16 +107,14 @@ func (client *CloudExadataInfrastructuresClient) addStorageCapacityCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginConfigureExascale - Configures Exascale on Cloud exadata infrastructure resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - body - The content of the action request
@@ -143,8 +139,6 @@ func (client *CloudExadataInfrastructuresClient) BeginConfigureExascale(ctx cont
 
 // ConfigureExascale - Configures Exascale on Cloud exadata infrastructure resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *CloudExadataInfrastructuresClient) configureExascale(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, body ConfigureExascaleCloudExadataInfrastructureDetails, options *CloudExadataInfrastructuresClientBeginConfigureExascaleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudExadataInfrastructuresClient.BeginConfigureExascale"
@@ -186,8 +180,8 @@ func (client *CloudExadataInfrastructuresClient) configureExascaleCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -198,8 +192,6 @@ func (client *CloudExadataInfrastructuresClient) configureExascaleCreateRequest(
 
 // BeginCreateOrUpdate - Create a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - resource - Resource create parameters.
@@ -224,8 +216,6 @@ func (client *CloudExadataInfrastructuresClient) BeginCreateOrUpdate(ctx context
 
 // CreateOrUpdate - Create a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *CloudExadataInfrastructuresClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, resource CloudExadataInfrastructure, options *CloudExadataInfrastructuresClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudExadataInfrastructuresClient.BeginCreateOrUpdate"
@@ -267,8 +257,8 @@ func (client *CloudExadataInfrastructuresClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -279,8 +269,6 @@ func (client *CloudExadataInfrastructuresClient) createOrUpdateCreateRequest(ctx
 
 // BeginDelete - Delete a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - options - CloudExadataInfrastructuresClientBeginDeleteOptions contains the optional parameters for the CloudExadataInfrastructuresClient.BeginDelete
@@ -304,8 +292,6 @@ func (client *CloudExadataInfrastructuresClient) BeginDelete(ctx context.Context
 
 // Delete - Delete a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *CloudExadataInfrastructuresClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, options *CloudExadataInfrastructuresClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudExadataInfrastructuresClient.BeginDelete"
@@ -347,15 +333,13 @@ func (client *CloudExadataInfrastructuresClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - options - CloudExadataInfrastructuresClientGetOptions contains the optional parameters for the CloudExadataInfrastructuresClient.Get
@@ -402,8 +386,8 @@ func (client *CloudExadataInfrastructuresClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -418,8 +402,6 @@ func (client *CloudExadataInfrastructuresClient) getHandleResponse(resp *http.Re
 }
 
 // NewListByResourceGroupPager - List CloudExadataInfrastructure resources by resource group
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - CloudExadataInfrastructuresClientListByResourceGroupOptions contains the optional parameters for the CloudExadataInfrastructuresClient.NewListByResourceGroupPager
 //     method.
@@ -462,8 +444,8 @@ func (client *CloudExadataInfrastructuresClient) listByResourceGroupCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -478,8 +460,6 @@ func (client *CloudExadataInfrastructuresClient) listByResourceGroupHandleRespon
 }
 
 // NewListBySubscriptionPager - List CloudExadataInfrastructure resources by subscription ID
-//
-// Generated from API version 2025-09-01
 //   - options - CloudExadataInfrastructuresClientListBySubscriptionOptions contains the optional parameters for the CloudExadataInfrastructuresClient.NewListBySubscriptionPager
 //     method.
 func (client *CloudExadataInfrastructuresClient) NewListBySubscriptionPager(options *CloudExadataInfrastructuresClientListBySubscriptionOptions) *runtime.Pager[CloudExadataInfrastructuresClientListBySubscriptionResponse] {
@@ -517,8 +497,8 @@ func (client *CloudExadataInfrastructuresClient) listBySubscriptionCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -534,8 +514,6 @@ func (client *CloudExadataInfrastructuresClient) listBySubscriptionHandleRespons
 
 // BeginUpdate - Update a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cloudexadatainfrastructurename - CloudExadataInfrastructure name
 //   - properties - The resource properties to be updated.
@@ -560,8 +538,6 @@ func (client *CloudExadataInfrastructuresClient) BeginUpdate(ctx context.Context
 
 // Update - Update a CloudExadataInfrastructure
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *CloudExadataInfrastructuresClient) update(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, options *CloudExadataInfrastructuresClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudExadataInfrastructuresClient.BeginUpdate"
@@ -603,8 +579,8 @@ func (client *CloudExadataInfrastructuresClient) updateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

@@ -18,6 +18,8 @@ import (
 
 // CryptoCertificatesClient contains the methods for the CryptoCertificates group.
 // Don't use this type directly, use NewCryptoCertificatesClient() instead.
+//
+// Generated from API version 2025-08-02
 type CryptoCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewCryptoCertificatesClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewListByFirmwarePager - Lists crypto certificate analysis results of a firmware.
-//
-// Generated from API version 2025-08-02
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
@@ -94,8 +94,8 @@ func (client *CryptoCertificatesClient) listByFirmwareCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-02")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250802)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

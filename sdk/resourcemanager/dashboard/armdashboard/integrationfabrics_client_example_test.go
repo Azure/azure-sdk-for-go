@@ -39,13 +39,13 @@ func ExampleIntegrationFabricsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.IntegrationFabricsClientCreateResponse{
-	// 	IntegrationFabric: &armdashboard.IntegrationFabric{
+	// 	IntegrationFabric: armdashboard.IntegrationFabric{
 	// 		Name: to.Ptr("sampleIntegration"),
 	// 		Type: to.Ptr("Microsoft.Dashboard/grafana/integrationFabrics"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Dashboard/grafana/myWorkspace/integrationFabrics/myIntegrationFabricName"),
@@ -80,7 +80,7 @@ func ExampleIntegrationFabricsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -103,7 +103,7 @@ func ExampleIntegrationFabricsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.IntegrationFabricsClientGetResponse{
-	// 	IntegrationFabric: &armdashboard.IntegrationFabric{
+	// 	IntegrationFabric: armdashboard.IntegrationFabric{
 	// 		Name: to.Ptr("sampleIntegration"),
 	// 		Type: to.Ptr("Microsoft.Dashboard/grafana/integrationFabrics"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Dashboard/grafana/myWorkspace/integrationFabrics/myIntegrationFabricName"),
@@ -208,13 +208,13 @@ func ExampleIntegrationFabricsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdashboard.IntegrationFabricsClientUpdateResponse{
-	// 	IntegrationFabric: &armdashboard.IntegrationFabric{
+	// 	IntegrationFabric: armdashboard.IntegrationFabric{
 	// 		Name: to.Ptr("sampleIntegration"),
 	// 		Type: to.Ptr("Microsoft.Dashboard/grafana/integrationFabrics"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Dashboard/grafana/myWorkspace/integrationFabrics/myIntegrationFabricName"),

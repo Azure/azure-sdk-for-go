@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -35,6 +36,9 @@ type Pager[T any] struct {
 	handler   PagingHandler[T]
 	tracer    tracing.Tracer
 	firstPage bool
+	// fetchErr is set when Fetcher returns an error, placing the Pager in a
+	// terminal state so that More returns false.
+	fetchErr error
 }
 
 // NewPager creates an instance of Pager using the specified PagingHandler.
@@ -48,7 +52,16 @@ func NewPager[T any](handler PagingHandler[T]) *Pager[T] {
 }
 
 // More returns true if there are more pages to retrieve.
+//
+// If a prior call to [Pager.NextPage] returned an error while fetching a page,
+// the Pager enters a terminal state and More returns false so that a for loop
+// over the pager terminates instead of retrying indefinitely.
 func (p *Pager[T]) More() bool {
+	// a failed fetch puts the Pager in a terminal state; there are no more pages
+	// to retrieve regardless of whether it was the first or a subsequent page.
+	if p.fetchErr != nil {
+		return false
+	}
 	if p.current != nil {
 		return p.handler.More(*p.current)
 	}
@@ -56,7 +69,17 @@ func (p *Pager[T]) More() bool {
 }
 
 // NextPage advances the pager to the next page.
+//
+// If fetching the page returns an error, the Pager enters a terminal state:
+// [Pager.More] returns false and every subsequent call to NextPage returns the
+// same error without invoking the fetcher again.
 func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
+	if p.fetchErr != nil {
+		// a prior fetch failed; the Pager is in a terminal state. return the
+		// stored error rather than re-invoking the fetcher, which may not be
+		// safe to retry (e.g. stateful handlers that latch into a done state).
+		return *new(T), p.fetchErr
+	}
 	if p.current != nil {
 		if p.firstPage {
 			// we get here if it's an LRO-pager, we already have the first page
@@ -76,6 +99,7 @@ func (p *Pager[T]) NextPage(ctx context.Context) (T, error) {
 
 	resp, err := p.handler.Fetcher(ctx, p.current)
 	if err != nil {
+		p.fetchErr = err
 		return *new(T), err
 	}
 	p.current = &resp
@@ -101,12 +125,17 @@ type FetcherForNextLinkOptions struct {
 	// The default value is http.MethodGet.
 	// This field is only used when NextReq is not specified.
 	HTTPVerb string
+
+	// Endpoint is the service endpoint used to resolve a relative next link,
+	// e.g. "https://contoso.com". It's ignored when the next link is absolute.
+	Endpoint string
 }
 
 // FetcherForNextLink is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher from a next link URL.
 //   - ctx is the [context.Context] controlling the lifetime of the HTTP operation
 //   - pl is the [Pipeline] used to dispatch the HTTP request
-//   - nextLink is the URL used to fetch the next page. the empty string indicates the first page is to be requested
+//   - nextLink is the URL used to fetch the next page. the empty string indicates the first page is to be requested.
+//     a relative next link is resolved against FetcherForNextLinkOptions.Endpoint
 //   - firstReq is the func to be called when creating the request for the first page
 //   - options contains any optional parameters, pass nil to accept the default values
 func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, firstReq func(context.Context) (*policy.Request, error), options *FetcherForNextLinkOptions) (*http.Response, error) {
@@ -117,7 +146,7 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 	}
 	if nextLink == "" {
 		req, err = firstReq(ctx)
-	} else if nextLink, err = EncodeQueryParams(nextLink); err == nil {
+	} else if nextLink, err = EncodeQueryParams(resolveNextLink(options.Endpoint, nextLink)); err == nil {
 		if options.NextReq != nil {
 			req, err = options.NextReq(ctx, nextLink)
 		} else {
@@ -141,4 +170,18 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 		return nil, NewResponseError(resp)
 	}
 	return resp, nil
+}
+
+// resolveNextLink joins a relative nextLink to endpoint, preserving nextLink's query params.
+// nextLink is returned unmodified when it's absolute or when endpoint is empty.
+func resolveNextLink(endpoint, nextLink string) string {
+	if endpoint == "" {
+		return nextLink
+	}
+	u, err := url.Parse(nextLink)
+	if err != nil || u.IsAbs() {
+		// a malformed next link is passed through so the failure surfaces when creating the request
+		return nextLink
+	}
+	return JoinPaths(endpoint, nextLink)
 }

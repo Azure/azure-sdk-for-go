@@ -48,13 +48,13 @@ func ExampleClient_BeginCreate_createExtension() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientCreateResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/ClusterMonitor"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("ClusterMonitor"),
@@ -120,13 +120,13 @@ func ExampleClient_BeginCreate_createExtensionWithPlan() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientCreateResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/azureVote"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("azureVote"),
@@ -181,7 +181,7 @@ func ExampleClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -209,7 +209,7 @@ func ExampleClient_Get_getExtension() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientGetResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/ClusterMonitor"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("ClusterMonitor"),
@@ -265,7 +265,7 @@ func ExampleClient_Get_getExtensionWithAdditionalDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientGetResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/ClusterMonitor"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("ClusterMonitor"),
@@ -326,7 +326,7 @@ func ExampleClient_Get_getExtensionWithExtensionState() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientGetResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/ClusterMonitor"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("ClusterMonitor"),
@@ -383,7 +383,7 @@ func ExampleClient_Get_getExtensionWithManagedBy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientGetResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/azureVote"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("azureVote"),
@@ -465,7 +465,7 @@ func ExampleClient_Get_getExtensionWithManagementDetails() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientGetResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/azureVote"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("azureVote"),
@@ -546,7 +546,7 @@ func ExampleClient_Get_getExtensionWithPlan() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientGetResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		ID: to.Ptr("/subscriptions/subId1/resourceGroups/rg1/providers/Microsoft.Kubernetes/connectedClusters/clusterName1/providers/Microsoft.KubernetesConfiguration/extensions/azureVote"),
 	// 		Type: to.Ptr("Microsoft.KubernetesConfiguration/extensions"),
 	// 		Name: to.Ptr("azureVote"),
@@ -754,13 +754,13 @@ func ExampleClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armextensions.ClientUpdateResponse{
-	// 	Extension: &armextensions.Extension{
+	// 	Extension: armextensions.Extension{
 	// 		Properties: &armextensions.ExtensionProperties{
 	// 			ExtensionType: to.Ptr("azuremonitor-containers"),
 	// 			AutoUpgradeMode: to.Ptr(armextensions.AutoUpgradeModeCompatible),

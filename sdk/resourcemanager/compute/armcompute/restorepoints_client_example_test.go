@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePoint_Copy_BetweenRegions.json
 func ExampleRestorePointsClient_BeginCreate_copyARestorePointToADifferentRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,11 +35,11 @@ func ExampleRestorePointsClient_BeginCreate_copyARestorePointToADifferentRegion(
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePoint_Create.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePoint_Create.json
 func ExampleRestorePointsClient_BeginCreate_createARestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,11 +65,11 @@ func ExampleRestorePointsClient_BeginCreate_createARestorePoint() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePoint_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePoint_Delete_MaximumSet_Gen.json
 func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMaximumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -95,7 +95,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePoint_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePoint_Delete_MinimumSet_Gen.json
 func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMinimumSetGen() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -121,7 +121,7 @@ func ExampleRestorePointsClient_BeginDelete_restorePointDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePoint_Get.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePoint_Get.json
 func ExampleRestorePointsClient_Get_getARestorePoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointsClientGetResponse{
-	// 	RestorePoint: &armcompute.RestorePoint{
+	// 	RestorePoint: armcompute.RestorePoint{
 	// 		Name: to.Ptr("rpName"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/rpName"),
 	// 		Properties: &armcompute.RestorePointProperties{
@@ -211,7 +211,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/restorePointExamples/RestorePoint_Get_WithInstanceView.json
+// Generated from example definition: 2026-03-01/restorePointExamples/RestorePoint_Get_WithInstanceView.json
 func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.RestorePointsClientGetResponse{
-	// 	RestorePoint: &armcompute.RestorePoint{
+	// 	RestorePoint: armcompute.RestorePoint{
 	// 		Name: to.Ptr("rpName"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/rpcName/restorePoints/rpName"),
 	// 		Properties: &armcompute.RestorePointProperties{

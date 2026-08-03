@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutRaiBlocklist.json
+// Generated from example definition: 2026-05-15-preview/PutRaiBlocklist.json
 func ExampleRaiBlocklistsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleRaiBlocklistsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteRaiBlocklist.json
+// Generated from example definition: 2026-05-15-preview/DeleteRaiBlocklist.json
 func ExampleRaiBlocklistsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleRaiBlocklistsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetRaiBlocklist.json
+// Generated from example definition: 2026-05-15-preview/GetRaiBlocklist.json
 func ExampleRaiBlocklistsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleRaiBlocklistsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListBlocklists.json
+// Generated from example definition: 2026-05-15-preview/ListBlocklists.json
 func ExampleRaiBlocklistsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

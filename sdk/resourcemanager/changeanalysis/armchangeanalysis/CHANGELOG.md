@@ -1,5 +1,10 @@
 # Release History
 
+## 1.2.1 (2026-06-01)
+### Other Changes
+
+- This module is now DEPRECATED. Azure Change Analysis service was retired on 2025-10-31. There is no replacement package because the service and its APIs are no longer available.
+
 ## 1.2.0 (2023-11-24)
 ### Features Added
 

@@ -7,18 +7,19 @@ package armrecoveryservicessiterecovery
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ReplicationvCentersClient contains the methods for the ReplicationvCenters group.
 // Don't use this type directly, use NewReplicationvCentersClient() instead.
+//
+// Generated from API version 2025-08-01
 type ReplicationvCentersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +45,6 @@ func NewReplicationvCentersClient(subscriptionID string, credential azcore.Token
 //
 // The operation to create a vCenter object..
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -74,8 +73,6 @@ func (client *ReplicationvCentersClient) BeginCreate(ctx context.Context, resour
 //
 // The operation to create a vCenter object..
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ReplicationvCentersClient) create(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, vcenterName string, addVCenterRequest AddVCenterRequest, options *ReplicationvCentersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationvCentersClient.BeginCreate"
@@ -125,8 +122,8 @@ func (client *ReplicationvCentersClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, addVCenterRequest); err != nil {
@@ -139,8 +136,6 @@ func (client *ReplicationvCentersClient) createCreateRequest(ctx context.Context
 //
 // The operation to remove(unregister) a registered vCenter server from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -168,8 +163,6 @@ func (client *ReplicationvCentersClient) BeginDelete(ctx context.Context, resour
 //
 // The operation to remove(unregister) a registered vCenter server from the vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ReplicationvCentersClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, vcenterName string, options *ReplicationvCentersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationvCentersClient.BeginDelete"
@@ -219,8 +212,8 @@ func (client *ReplicationvCentersClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -228,8 +221,6 @@ func (client *ReplicationvCentersClient) deleteCreateRequest(ctx context.Context
 //
 // Gets the details of a registered vCenter server(Add vCenter server).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -285,8 +276,8 @@ func (client *ReplicationvCentersClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -303,8 +294,6 @@ func (client *ReplicationvCentersClient) getHandleResponse(resp *http.Response) 
 // NewListPager - Gets the list of vCenter registered under the vault.
 //
 // Lists the vCenter servers registered in the vault.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the recovery services vault.
 //   - options - ReplicationvCentersClientListOptions contains the optional parameters for the ReplicationvCentersClient.NewListPager
@@ -352,8 +341,8 @@ func (client *ReplicationvCentersClient) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -370,8 +359,6 @@ func (client *ReplicationvCentersClient) listHandleResponse(resp *http.Response)
 // NewListByReplicationFabricsPager - Gets the list of vCenter registered under a fabric.
 //
 // Lists the vCenter servers registered in a fabric.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -424,8 +411,8 @@ func (client *ReplicationvCentersClient) listByReplicationFabricsCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -443,8 +430,6 @@ func (client *ReplicationvCentersClient) listByReplicationFabricsHandleResponse(
 //
 // The operation to update a registered vCenter.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Vault
 //   - fabricName - Fabric name.
@@ -473,8 +458,6 @@ func (client *ReplicationvCentersClient) BeginUpdate(ctx context.Context, resour
 //
 // The operation to update a registered vCenter.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-08-01
 func (client *ReplicationvCentersClient) update(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, vcenterName string, updateVCenterRequest UpdateVCenterRequest, options *ReplicationvCentersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReplicationvCentersClient.BeginUpdate"
@@ -524,8 +507,8 @@ func (client *ReplicationvCentersClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-08-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, updateVCenterRequest); err != nil {

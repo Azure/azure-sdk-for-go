@@ -30,7 +30,7 @@ func ExampleAutonomousDatabaseCharacterSetsClient_Get_getAutonomousDbCharacterSe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseCharacterSetsClientGetResponse{
-	// 	AutonomousDatabaseCharacterSet: &armoracledatabase.AutonomousDatabaseCharacterSet{
+	// 	AutonomousDatabaseCharacterSet: armoracledatabase.AutonomousDatabaseCharacterSet{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDatabaseCharacterSets/DATABASE"),
 	// 		Type: to.Ptr("Oracle.Database/locations/autonomousDatabaseCharacterSets"),
 	// 		Properties: &armoracledatabase.AutonomousDatabaseCharacterSetProperties{
@@ -68,7 +68,7 @@ func ExampleAutonomousDatabaseCharacterSetsClient_Get_getAutonomousDbCharacterSe
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseCharacterSetsClientGetResponse{
-	// 	AutonomousDatabaseCharacterSet: &armoracledatabase.AutonomousDatabaseCharacterSet{
+	// 	AutonomousDatabaseCharacterSet: armoracledatabase.AutonomousDatabaseCharacterSet{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDatabaseCharacterSets/DATABASE"),
 	// 	},
 	// }
@@ -93,7 +93,7 @@ func ExampleAutonomousDatabaseCharacterSetsClient_Get_autonomousDatabaseCharacte
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.AutonomousDatabaseCharacterSetsClientGetResponse{
-	// 	AutonomousDatabaseCharacterSet: &armoracledatabase.AutonomousDatabaseCharacterSet{
+	// 	AutonomousDatabaseCharacterSet: armoracledatabase.AutonomousDatabaseCharacterSet{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/locations/eastus/autonomousDatabaseCharacterSets/DATABASE"),
 	// 		Type: to.Ptr("Oracle.Database/locations/autonomousDatabaseCharacterSets"),
 	// 		Properties: &armoracledatabase.AutonomousDatabaseCharacterSetProperties{

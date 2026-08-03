@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultInvoiceSectionsClientVersion string = "2024-04-01"
-
 // InvoiceSectionsClient contains the methods for the InvoiceSections group.
 // Don't use this type directly, use NewInvoiceSectionsClient() instead.
 //
@@ -111,7 +109,7 @@ func (client *InvoiceSectionsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultInvoiceSectionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -190,7 +188,7 @@ func (client *InvoiceSectionsClient) deleteCreateRequest(ctx context.Context, bi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultInvoiceSectionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -244,7 +242,7 @@ func (client *InvoiceSectionsClient) getCreateRequest(ctx context.Context, billi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultInvoiceSectionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,7 +302,7 @@ func (client *InvoiceSectionsClient) listByBillingProfileCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultInvoiceSectionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatBool(*options.Count))
 	}
@@ -390,7 +388,7 @@ func (client *InvoiceSectionsClient) validateDeleteEligibilityCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultInvoiceSectionsClientVersion)
+	reqQP.Set("api-version", version20240401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

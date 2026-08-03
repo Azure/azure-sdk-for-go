@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBPercentileGetMetrics.json
+// Generated from example definition: 2026-03-15/CosmosDBPercentileGetMetrics.json
 func ExamplePercentileClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExamplePercentileClient_NewListMetricsPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewPercentileClient().NewListMetricsPager("rg1", "ddb1", "$filter=(name.value eq 'Probabilistic Bounded Staleness') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewPercentileClient().NewListMetricsPager("rg1", "ddb1", "(name.value eq 'Probabilistic Bounded Staleness') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -37,13 +37,13 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 	PercentileMetricListResult: armcosmos.PercentileMetricListResult{
 		// 		Value: []*armcosmos.PercentileMetric{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
-		// 					Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
-		// 				},
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 				MetricValues: []*armcosmos.PercentileMetricValue{
 		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 						P10: to.Ptr[float64](1.11),
 		// 						P25: to.Ptr[float64](2.5),
 		// 						P50: to.Ptr[float64](4.34),
@@ -51,21 +51,21 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 						P90: to.Ptr[float64](6.77),
 		// 						P95: to.Ptr[float64](7.1),
 		// 						P99: to.Ptr[float64](8.3),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 					},
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
+		// 					LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-East US"),
+		// 				},
 		// 			},
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-West US"),
-		// 					Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-West US"),
-		// 				},
+		// 				TimeGrain: to.Ptr("PT5M"),
+		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 				MetricValues: []*armcosmos.PercentileMetricValue{
 		// 					{
+		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 						P10: to.Ptr[float64](1.11),
 		// 						P25: to.Ptr[float64](2.5),
 		// 						P50: to.Ptr[float64](4.34),
@@ -73,12 +73,12 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 						P90: to.Ptr[float64](6.77),
 		// 						P95: to.Ptr[float64](7.1),
 		// 						P99: to.Ptr[float64](8.3),
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
 		// 					},
 		// 				},
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-West US"),
+		// 					LocalizedValue: to.Ptr("Probabilistic Bounded Staleness-S-West Central US-T-West US"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},

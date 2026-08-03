@@ -34,13 +34,13 @@ func ExampleCloudVMClustersClient_BeginAddVMs_addVMSToVMClusterGeneratedByMaximu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientAddVMsResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
 	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
 	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
@@ -175,13 +175,13 @@ func ExampleCloudVMClustersClient_BeginAddVMs_addVMSToVMClusterGeneratedByMinimu
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientAddVMsResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Location: to.Ptr("eastus"),
 	// 	},
@@ -210,13 +210,13 @@ func ExampleCloudVMClustersClient_BeginAddVMs_cloudVMClustersAddVms() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientAddVMsResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
 	// 		Location: to.Ptr("eastus"),
@@ -397,13 +397,13 @@ func ExampleCloudVMClustersClient_BeginCreateOrUpdate_createVMClusterGeneratedBy
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
 	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
 	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
@@ -535,13 +535,13 @@ func ExampleCloudVMClustersClient_BeginCreateOrUpdate_createVMClusterGeneratedBy
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Location: to.Ptr("eastus"),
 	// 	},
@@ -616,13 +616,13 @@ func ExampleCloudVMClustersClient_BeginCreateOrUpdate_cloudVMClustersCreateOrUpd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientCreateOrUpdateResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
 	// 		Location: to.Ptr("eastus"),
@@ -719,7 +719,7 @@ func ExampleCloudVMClustersClient_BeginDelete_deleteVMClusterGeneratedByMaximumS
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -740,7 +740,7 @@ func ExampleCloudVMClustersClient_BeginDelete_deleteVMClusterGeneratedByMinimumS
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -761,7 +761,7 @@ func ExampleCloudVMClustersClient_BeginDelete_cloudVMClustersDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -784,7 +784,7 @@ func ExampleCloudVMClustersClient_Get_getVMClusterGeneratedByMaximumSetRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientGetResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
 	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
 	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
@@ -916,7 +916,7 @@ func ExampleCloudVMClustersClient_Get_getVMClusterGeneratedByMinimumSetRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientGetResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Location: to.Ptr("eastus"),
 	// 	},
@@ -942,7 +942,7 @@ func ExampleCloudVMClustersClient_Get_cloudVMClustersGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientGetResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
 	// 		Location: to.Ptr("eastus"),
@@ -1613,7 +1613,7 @@ func ExampleCloudVMClustersClient_ListPrivateIPAddresses_listPrivateIPAddressesF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientListPrivateIPAddressesResponse{
-	// 	undefined: &[]*armoracledatabase.PrivateIPAddressProperties{
+	// 	PrivateIPAddressPropertiesArray: []*armoracledatabase.PrivateIPAddressProperties{
 	// 		{
 	// 			DisplayName: to.Ptr("ip1"),
 	// 			HostnameLabel: to.Ptr("hostname1"),
@@ -1647,7 +1647,7 @@ func ExampleCloudVMClustersClient_ListPrivateIPAddresses_listPrivateIPAddressesF
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientListPrivateIPAddressesResponse{
-	// 	undefined: &[]*armoracledatabase.PrivateIPAddressProperties{
+	// 	PrivateIPAddressPropertiesArray: []*armoracledatabase.PrivateIPAddressProperties{
 	// 		{
 	// 			DisplayName: to.Ptr("ip1"),
 	// 			HostnameLabel: to.Ptr("hostname1"),
@@ -1681,7 +1681,7 @@ func ExampleCloudVMClustersClient_ListPrivateIPAddresses_cloudVMClustersListPriv
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientListPrivateIPAddressesResponse{
-	// 	undefined: &[]*armoracledatabase.PrivateIPAddressProperties{
+	// 	PrivateIPAddressPropertiesArray: []*armoracledatabase.PrivateIPAddressProperties{
 	// 		{
 	// 			DisplayName: to.Ptr("ip1"),
 	// 			HostnameLabel: to.Ptr("hostname1"),
@@ -1715,13 +1715,13 @@ func ExampleCloudVMClustersClient_BeginRemoveVMs_removeVMSFromVMClusterGenerated
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientRemoveVMsResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
 	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
 	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
@@ -1856,13 +1856,13 @@ func ExampleCloudVMClustersClient_BeginRemoveVMs_removeVMSFromVMClusterGenerated
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientRemoveVMsResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		Location: to.Ptr("eastus"),
 	// 	},
 	// }
@@ -1889,13 +1889,13 @@ func ExampleCloudVMClustersClient_BeginRemoveVMs_cloudVMClustersRemoveVms() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientRemoveVMsResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
 	// 		Location: to.Ptr("eastus"),
@@ -2023,13 +2023,13 @@ func ExampleCloudVMClustersClient_BeginUpdate_patchVMClusterGeneratedByMaximumSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientUpdateResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		Properties: &armoracledatabase.CloudVMClusterProperties{
 	// 			DataStorageSizeInTbs: to.Ptr[float64](1000),
 	// 			DbNodeStorageSizeInGbs: to.Ptr[int32](1000),
@@ -2159,13 +2159,13 @@ func ExampleCloudVMClustersClient_BeginUpdate_patchVMClusterGeneratedByMinimumSe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientUpdateResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		Location: to.Ptr("eastus"),
 	// 	},
 	// }
@@ -2188,13 +2188,13 @@ func ExampleCloudVMClustersClient_BeginUpdate_cloudVMClustersUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armoracledatabase.CloudVMClustersClientUpdateResponse{
-	// 	CloudVMCluster: &armoracledatabase.CloudVMCluster{
+	// 	CloudVMCluster: armoracledatabase.CloudVMCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg000/providers/Oracle.Database/cloudVmClusters/cluster1"),
 	// 		Type: to.Ptr("Oracle.Database/cloudVmClusters"),
 	// 		Location: to.Ptr("eastus"),

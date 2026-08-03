@@ -1,6 +1,8 @@
 # Release History
 
-## 1.5.0-beta.7 (Unreleased)
+<!-- cSpell:ignore documentdb unmarshalling -->
+
+## 1.6.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +10,46 @@
 
 ### Bugs Fixed
 
-* Connection-error retry policy now attempts up to 3 retries against the current region before failing over, and performs at most one cross-region failover per call. Cross-region failover for writes only occurs when the error proves the request never reached the service (DNS, dial, TLS handshake, `ECONNREFUSED`, etc.); writes on ambiguous transport failures (e.g. `ECONNRESET`, `EOF`, transport-level timeouts) no longer fail over to another region, avoiding potential duplicate writes. Reads still fail over for any transport error. Caller-set context deadlines or cancellations short-circuit the policy without consuming the caller's budget with retries. See [PR 26858](https://github.com/Azure/azure-sdk-for-go/pull/26858).
+* Fixed partition key range cache refreshes failing against containers undergoing physical partition splits. A change-feed drain accumulates every page, so a range that is updated mid-split is re-delivered as a second revision of the same range ID; the routing map now deduplicates by range ID (keeping the latest revision) before validating range continuity, instead of rejecting the set with a "service returned an incomplete set of ranges" error reporting that the range overlaps itself. A full refresh that still observes an incomplete set is now retried up to three times with bounded jittered backoff before failing. See [PR 27282](https://github.com/Azure/azure-sdk-for-go/pull/27282).
+
+### Other Changes
+
+## 1.6.0-beta.1 (2026-07-16)
+
+### Features Added
+
+* Restored the query engine feature originally present in 1.5.0-beta releases (but removed for the 1.5.0 GA release).
+
+## 1.5.0 (2026-07-13)
+
+### Breaking Changes
+
+* Removed the external query engine integration from `QueryOptions` and deleted the `sdk/data/azcosmos/queryengine` package for the 1.5.0 GA release. This feature will return in the upcoming 1.6.0 preview release. See [PR 27134](https://github.com/Azure/azure-sdk-for-go/pull/27134).
+* Renamed `ChangeFeedResponse.GetContRanges()` to `ChangeFeedResponse.GetContinuationRange()`. This API was previously only present in a beta release. See [PR 27148](https://github.com/Azure/azure-sdk-for-go/pull/27148).
+* Renamed `ChangeFeedResponse.Documents` to `ChangeFeedResponse.Items` and changed its type from `[]json.RawMessage` to `[][]byte`. This API was previously only present in a beta release. See [PR 27175](https://github.com/Azure/azure-sdk-for-go/pull/27175).
+* Renamed `ContainerClient.GetFeedRanges` and `ContainerClient.GetChangeFeed` to `ContainerClient.ReadFeedRanges` and `ContainerClient.ReadChangeFeed`, respectively. This API was previously only present in a beta release. See [PR 27183](https://github.com/Azure/azure-sdk-for-go/pull/27183).
+* Renamed the `ReadManyOptions` type to `ReadManyItemsOptions` to align with the `ReadManyItems` method. This API was previously only present in a beta release. See [PR 27183](https://github.com/Azure/azure-sdk-for-go/pull/27183).
+* Added a `*FeedRangesOptions` parameter to `ContainerClient.ReadFeedRanges`. This API was previously only present in a beta release. See [PR 27175](https://github.com/Azure/azure-sdk-for-go/pull/27175).
+* Renamed `ChangeFeedRangeOptions.EpkMinHeader` and `ChangeFeedRangeOptions.EpkMaxHeader` to `EPKMinHeader` and `EPKMaxHeader`. These fields were previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+* `Diagnostics.StartTimeUTC()` now returns a `time.Time` (zero value when no diagnostics are present) instead of a `*time.Time`. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+* Removed the `NewFeedRange` constructor. Construct a `FeedRange` directly using a struct initializer instead. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+* Removed the `PriorityLevel.ToPtr` method. Use [`to.Ptr`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/to#Ptr) from `azcore` instead. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+
+### Other Changes
+
+* The per-account metadata caches (the shared container-properties and partition-key-range caches, see [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)) are now held in the process-wide registry via weak references. This lets the garbage collector reclaim a `Client`'s caches once the client is discarded, greatly reducing the memory retained when a `Client` is dropped without calling `Close`. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+
+## 1.5.0-beta.7 (2026-06-02)
+
+### Features Added
+
+* Added retry policy for transient `500`, `502`, and `504` server errors on read requests. The request is retried once in the current region and, if applicable, once against the next preferred region. Writes are not retried. This matches the behavior of the .NET, Java, and Python Cosmos SDKs. See [PR 26821](https://github.com/Azure/azure-sdk-for-go/pull/26821).
+
+### Bugs Fixed
+
+* Fixed missing OTel tracing spans for internal queries executed by `ReadManyItems`. Each per-partition query page now creates a `query_items` span, matching the tracing behavior of `NewQueryItemsPager`. See [PR 26813](https://github.com/Azure/azure-sdk-for-go/pull/26813).
+* 403/`WriteForbidden` retries refresh the global endpoint manager fire-and-forget (CAS-gated) instead of blocking on a synchronous `gem.Update`. See [PR 26889](https://github.com/Azure/azure-sdk-for-go/pull/26889).
+* Connection-error retry policy now attempts up to 3 retries against the current region before failing over, and performs at most one cross-region failover per call. Cross-region failover for writes only occurs when the error proves the request never reached the service (DNS, dial, TLS handshake, `ECONNREFUSED`, etc.); writes on ambiguous transport failures (e.g. `ECONNRESET`, `EOF`, transport-level timeouts) no longer fail over to another region, avoiding potential duplicate writes. Reads still fail over for any transport error. Caller-set context deadlines or cancellations short-circuit the policy without consuming the caller's budget with retries. See [PR 26858](https://github.com/Azure/azure-sdk-for-go/pull/26858) and [PR 26915](https://github.com/Azure/azure-sdk-for-go/pull/26915).
 * HTTP `408 Request Timeout` responses are now handled by the Cosmos client retry policy: reads are retried exactly once against another region, and writes are returned to the caller immediately to avoid potential duplicates. See [PR 26858](https://github.com/Azure/azure-sdk-for-go/pull/26858).
 * Fixed excessive `GetDatabaseAccount` HTTP calls when using preferred regions, and stopped data-plane retries from trailing into the customer-supplied (default) endpoint once account topology is populated. See [PR 26815](https://github.com/Azure/azure-sdk-for-go/pull/26815).
 * Partition key range cache now serves concurrent callers from a single in-flight refresh per container, and the cached routing map remains readable while a refresh is in progress. The refresh runs on a detached background `context.Background()` so a caller's cancellation no longer aborts the shared fetch for other waiters; each caller continues to honor its own context deadline. See [PR 26855](https://github.com/Azure/azure-sdk-for-go/pull/26855).
@@ -51,6 +92,12 @@
 ### Other Changes
 
 * Small performance optimizations to API's using query engine. See [PR 25669](https://github.com/Azure/azure-sdk-for-go/pull/25669)
+
+## 1.4.2 (2025-12-10)
+
+### Bugs Fixed
+
+* Fixed issue with read endpoint selection causing most-preferred region to be skipped when selecting read region. See [PR 25738](https://github.com/Azure/azure-sdk-for-go/pull/25738)
 
 ## 1.5.0-beta.4 (2025-11-24)
 

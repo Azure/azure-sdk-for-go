@@ -39,13 +39,13 @@ func ExamplePrefixListGlobalRulestackClient_BeginCreateOrUpdate_prefixListGlobal
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse{
-	// 	PrefixListGlobalRulestackResource: &armpanngfw.PrefixListGlobalRulestackResource{
+	// 	PrefixListGlobalRulestackResource: armpanngfw.PrefixListGlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -93,13 +93,13 @@ func ExamplePrefixListGlobalRulestackClient_BeginCreateOrUpdate_prefixListGlobal
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PrefixListGlobalRulestackClientCreateOrUpdateResponse{
-	// 	PrefixListGlobalRulestackResource: &armpanngfw.PrefixListGlobalRulestackResource{
+	// 	PrefixListGlobalRulestackResource: armpanngfw.PrefixListGlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval/prefixlists/armid1"),
 	// 		Properties: &armpanngfw.PrefixObject{
 	// 			PrefixList: []*string{
@@ -127,7 +127,7 @@ func ExamplePrefixListGlobalRulestackClient_BeginDelete_prefixListGlobalRulestac
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -153,7 +153,7 @@ func ExamplePrefixListGlobalRulestackClient_BeginDelete_prefixListGlobalRulestac
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -181,7 +181,7 @@ func ExamplePrefixListGlobalRulestackClient_Get_prefixListGlobalRulestackGetMaxi
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PrefixListGlobalRulestackClientGetResponse{
-	// 	PrefixListGlobalRulestackResource: &armpanngfw.PrefixListGlobalRulestackResource{
+	// 	PrefixListGlobalRulestackResource: armpanngfw.PrefixListGlobalRulestackResource{
 	// 		Name: to.Ptr("armid1"),
 	// 		Type: to.Ptr("certificates"),
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalrulestacks/armid1/certificates/armid1"),
@@ -225,7 +225,7 @@ func ExamplePrefixListGlobalRulestackClient_Get_prefixListGlobalRulestackGetMini
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpanngfw.PrefixListGlobalRulestackClientGetResponse{
-	// 	PrefixListGlobalRulestackResource: &armpanngfw.PrefixListGlobalRulestackResource{
+	// 	PrefixListGlobalRulestackResource: armpanngfw.PrefixListGlobalRulestackResource{
 	// 		ID: to.Ptr("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/praval/prefixlists/armid1"),
 	// 		Properties: &armpanngfw.PrefixObject{
 	// 			PrefixList: []*string{

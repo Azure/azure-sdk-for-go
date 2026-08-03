@@ -4,6 +4,13 @@
 
 package armcompute
 
+const (
+	version20210701 string = "2021-07-01"
+	version20251203 string = "2025-12-03"
+	version20260301 string = "2026-03-01"
+	version20260302 string = "2026-03-02"
+)
+
 // AccessControlRulesMode - This property allows you to specify whether the access control rules are in Audit mode, in Enforce
 // mode or Disabled. Possible values are: 'Audit', 'Enforce' or 'Disabled'.
 type AccessControlRulesMode string
@@ -227,6 +234,24 @@ func PossibleConfidentialVMEncryptionTypeValues() []ConfidentialVMEncryptionType
 		ConfidentialVMEncryptionTypeEncryptedWithCmk,
 		ConfidentialVMEncryptionTypeEncryptedWithPmk,
 		ConfidentialVMEncryptionTypeNonPersistedTPM,
+	}
+}
+
+// ConfidentialVMVersion - Indicates the version of Confidential VM for the resource.
+type ConfidentialVMVersion string
+
+const (
+	// ConfidentialVMVersionV1 - V1 indicates the resource does not have an associated Virtual Machine Metadata.
+	ConfidentialVMVersionV1 ConfidentialVMVersion = "V1"
+	// ConfidentialVMVersionV2 - V2 indicates the resource has an associated Virtual Machine Metadata.
+	ConfidentialVMVersionV2 ConfidentialVMVersion = "V2"
+)
+
+// PossibleConfidentialVMVersionValues returns the possible values for the ConfidentialVMVersion const type.
+func PossibleConfidentialVMVersionValues() []ConfidentialVMVersion {
+	return []ConfidentialVMVersion{
+		ConfidentialVMVersionV1,
+		ConfidentialVMVersionV2,
 	}
 }
 
@@ -1170,6 +1195,26 @@ func PossibleImageStateValues() []ImageState {
 	}
 }
 
+// ImmutabilityPolicyType - The type of the immutability policy. 'Unlocked' allows the policy to be modified by privileged
+// users; 'Locked' prevents reduction of the immutability duration but allows extension of the lock period.
+type ImmutabilityPolicyType string
+
+const (
+	// ImmutabilityPolicyTypeLocked - The snapshot immutability policy duration cannot be reduced but can be extended. The policy
+	// cannot be removed until the lock period expires.
+	ImmutabilityPolicyTypeLocked ImmutabilityPolicyType = "Locked"
+	// ImmutabilityPolicyTypeUnlocked - Privileged users can modify the snapshot's immutability policy, if it is unlocked type.
+	ImmutabilityPolicyTypeUnlocked ImmutabilityPolicyType = "Unlocked"
+)
+
+// PossibleImmutabilityPolicyTypeValues returns the possible values for the ImmutabilityPolicyType const type.
+func PossibleImmutabilityPolicyTypeValues() []ImmutabilityPolicyType {
+	return []ImmutabilityPolicyType{
+		ImmutabilityPolicyTypeLocked,
+		ImmutabilityPolicyTypeUnlocked,
+	}
+}
+
 type InstanceViewTypes string
 
 const (
@@ -1184,6 +1229,21 @@ func PossibleInstanceViewTypesValues() []InstanceViewTypes {
 		InstanceViewTypesInstanceView,
 		InstanceViewTypesResiliencyView,
 		InstanceViewTypesUserData,
+	}
+}
+
+// InterconnectBlockExpandTypes - The expand expression to apply on the operation for an Interconnect Block.
+type InterconnectBlockExpandTypes string
+
+const (
+	// InterconnectBlockExpandTypesInstanceView - Retrieve the runtime instance view of the Interconnect Block.
+	InterconnectBlockExpandTypesInstanceView InterconnectBlockExpandTypes = "instanceView"
+)
+
+// PossibleInterconnectBlockExpandTypesValues returns the possible values for the InterconnectBlockExpandTypes const type.
+func PossibleInterconnectBlockExpandTypesValues() []InterconnectBlockExpandTypes {
+	return []InterconnectBlockExpandTypes{
+		InterconnectBlockExpandTypesInstanceView,
 	}
 }
 
@@ -2143,6 +2203,7 @@ const (
 	RollingUpgradeStatusCodeCancelled      RollingUpgradeStatusCode = "Cancelled"
 	RollingUpgradeStatusCodeCompleted      RollingUpgradeStatusCode = "Completed"
 	RollingUpgradeStatusCodeFaulted        RollingUpgradeStatusCode = "Faulted"
+	RollingUpgradeStatusCodeRollingBack    RollingUpgradeStatusCode = "RollingBack"
 	RollingUpgradeStatusCodeRollingForward RollingUpgradeStatusCode = "RollingForward"
 )
 
@@ -2152,6 +2213,7 @@ func PossibleRollingUpgradeStatusCodeValues() []RollingUpgradeStatusCode {
 		RollingUpgradeStatusCodeCancelled,
 		RollingUpgradeStatusCodeCompleted,
 		RollingUpgradeStatusCodeFaulted,
+		RollingUpgradeStatusCodeRollingBack,
 		RollingUpgradeStatusCodeRollingForward,
 	}
 }
@@ -2646,6 +2708,7 @@ const (
 	UpgradeStateCancelled      UpgradeState = "Cancelled"
 	UpgradeStateCompleted      UpgradeState = "Completed"
 	UpgradeStateFaulted        UpgradeState = "Faulted"
+	UpgradeStateRollingBack    UpgradeState = "RollingBack"
 	UpgradeStateRollingForward UpgradeState = "RollingForward"
 )
 
@@ -2655,6 +2718,7 @@ func PossibleUpgradeStateValues() []UpgradeState {
 		UpgradeStateCancelled,
 		UpgradeStateCompleted,
 		UpgradeStateFaulted,
+		UpgradeStateRollingBack,
 		UpgradeStateRollingForward,
 	}
 }

@@ -4,6 +4,10 @@
 
 package armconsumption
 
+const (
+	version20240801 string = "2024-08-01"
+)
+
 // BillingFrequency - The billing frequency.
 type BillingFrequency string
 

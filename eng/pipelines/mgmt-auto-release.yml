@@ -41,9 +41,6 @@ extends:
                   version: '1.25.4'
 
               - template: /eng/common/pipelines/templates/steps/login-to-github.yml
-                parameters:
-                  TokenOwners:
-                    - azure
 
               - task: ShellScript@2
                 inputs:

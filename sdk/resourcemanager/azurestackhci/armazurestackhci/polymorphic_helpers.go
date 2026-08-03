@@ -6,29 +6,6 @@ package armazurestackhci
 
 import "encoding/json"
 
-func unmarshalClusterJobPropertiesClassification(rawMsg json.RawMessage) (ClusterJobPropertiesClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b ClusterJobPropertiesClassification
-	switch m["jobType"] {
-	case string(HciJobTypeConfigureSdnIntegration):
-		b = &HciConfigureSdnIntegrationJobProperties{}
-	case string(HciJobTypeConfigureCVM):
-		b = &HciConfigureCvmJobProperties{}
-	default:
-		b = &ClusterJobProperties{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
-}
-
 func unmarshalEdgeDeviceClassification(rawMsg json.RawMessage) (EdgeDeviceClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil
@@ -107,33 +84,6 @@ func unmarshalEdgeDeviceJobClassificationArray(rawMsg json.RawMessage) ([]EdgeDe
 		fArray[index] = f
 	}
 	return fArray, nil
-}
-
-func unmarshalEdgeMachineJobPropertiesClassification(rawMsg json.RawMessage) (EdgeMachineJobPropertiesClassification, error) {
-	if rawMsg == nil || string(rawMsg) == "null" {
-		return nil, nil
-	}
-	var m map[string]any
-	if err := json.Unmarshal(rawMsg, &m); err != nil {
-		return nil, err
-	}
-	var b EdgeMachineJobPropertiesClassification
-	switch m["jobType"] {
-	case string(EdgeMachineJobTypeRemoteSupport):
-		b = &EdgeMachineRemoteSupportJobProperties{}
-	case string(EdgeMachineJobTypeProvisionOs):
-		b = &ProvisionOsJobProperties{}
-	case string(EdgeMachineJobTypeDownloadOs):
-		b = &DownloadOsJobProperties{}
-	case string(EdgeMachineJobTypeCollectLog):
-		b = &EdgeMachineCollectLogJobProperties{}
-	default:
-		b = &EdgeMachineJobProperties{}
-	}
-	if err := json.Unmarshal(rawMsg, b); err != nil {
-		return nil, err
-	}
-	return b, nil
 }
 
 func unmarshalHciEdgeDeviceJobPropertiesClassification(rawMsg json.RawMessage) (HciEdgeDeviceJobPropertiesClassification, error) {

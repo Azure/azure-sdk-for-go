@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/StorageAppliances_Create.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_Create.json
 func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,13 +49,13 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.StorageAppliancesClientCreateOrUpdateResponse{
-	// 	StorageAppliance: &armnetworkcloud.StorageAppliance{
+	// 	StorageAppliance: armnetworkcloud.StorageAppliance{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -76,9 +76,23 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 	// 			DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
+	// 			ExpansionShelves: []*armnetworkcloud.StorageApplianceExpansionShelf{
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.0/2.2.0"),
+	// 				},
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.1/2.0.0"),
+	// 				},
+	// 			},
 	// 			ManagementIPv4Address: to.Ptr("192.0.2.2"),
 	// 			Manufacturer: to.Ptr("Contoso Storage"),
 	// 			Model: to.Ptr("ArrayStore-Flash70"),
+	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
+	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 			RackSlot: to.Ptr[int64](1),
@@ -118,7 +132,7 @@ func ExampleStorageAppliancesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_Delete.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_Delete.json
 func ExampleStorageAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,11 +149,11 @@ func ExampleStorageAppliancesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_DisableRemoteVendorManagement.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_DisableRemoteVendorManagement.json
 func ExampleStorageAppliancesClient_BeginDisableRemoteVendorManagement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,11 +170,11 @@ func ExampleStorageAppliancesClient_BeginDisableRemoteVendorManagement() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_EnableRemoteVendorManagement.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_EnableRemoteVendorManagement.json
 func ExampleStorageAppliancesClient_BeginEnableRemoteVendorManagement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,11 +196,11 @@ func ExampleStorageAppliancesClient_BeginEnableRemoteVendorManagement() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_Get.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_Get.json
 func ExampleStorageAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +219,7 @@ func ExampleStorageAppliancesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.StorageAppliancesClientGetResponse{
-	// 	StorageAppliance: &armnetworkcloud.StorageAppliance{
+	// 	StorageAppliance: armnetworkcloud.StorageAppliance{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -226,9 +240,23 @@ func ExampleStorageAppliancesClient_Get() {
 	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 	// 			DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
+	// 			ExpansionShelves: []*armnetworkcloud.StorageApplianceExpansionShelf{
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.0/2.2.0"),
+	// 				},
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.1/2.0.0"),
+	// 				},
+	// 			},
 	// 			ManagementIPv4Address: to.Ptr("192.0.2.2"),
 	// 			Manufacturer: to.Ptr("Contoso Storage"),
 	// 			Model: to.Ptr("ArrayStore-Flash70"),
+	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
+	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 			RackSlot: to.Ptr[int64](1),
@@ -268,7 +296,7 @@ func ExampleStorageAppliancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_ListByResourceGroup.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_ListByResourceGroup.json
 func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,9 +343,23 @@ func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 		// 					DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
+		// 					ExpansionShelves: []*armnetworkcloud.StorageApplianceExpansionShelf{
+		// 						{
+		// 							Model: to.Ptr("ArrayStore-Exp24"),
+		// 							Version: to.Ptr("6.5.0/2.2.0"),
+		// 						},
+		// 						{
+		// 							Model: to.Ptr("ArrayStore-Exp24"),
+		// 							Version: to.Ptr("6.5.1/2.0.0"),
+		// 						},
+		// 					},
 		// 					ManagementIPv4Address: to.Ptr("192.0.2.2"),
 		// 					Manufacturer: to.Ptr("Contoso Storage"),
 		// 					Model: to.Ptr("ArrayStore-Flash70"),
+		// 					MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
+		// 						LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
+		// 						MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 		// 					RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 		// 					RackSlot: to.Ptr[int64](1),
@@ -360,7 +402,7 @@ func ExampleStorageAppliancesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_ListBySubscription.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_ListBySubscription.json
 func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,9 +449,23 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 		// 					ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 		// 					DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 		// 					DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
+		// 					ExpansionShelves: []*armnetworkcloud.StorageApplianceExpansionShelf{
+		// 						{
+		// 							Model: to.Ptr("ArrayStore-Exp24"),
+		// 							Version: to.Ptr("6.5.0/2.2.0"),
+		// 						},
+		// 						{
+		// 							Model: to.Ptr("ArrayStore-Exp24"),
+		// 							Version: to.Ptr("6.5.1/2.0.0"),
+		// 						},
+		// 					},
 		// 					ManagementIPv4Address: to.Ptr("192.0.2.2"),
 		// 					Manufacturer: to.Ptr("Contoso Storage"),
 		// 					Model: to.Ptr("ArrayStore-Flash70"),
+		// 					MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
+		// 						LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
+		// 						MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 		// 					RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 		// 					RackSlot: to.Ptr[int64](1),
@@ -452,7 +508,7 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_RunReadCommands.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_RunReadCommands.json
 func ExampleStorageAppliancesClient_BeginRunReadCommands() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -481,11 +537,11 @@ func ExampleStorageAppliancesClient_BeginRunReadCommands() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-09-01/StorageAppliances_Patch.json
+// Generated from example definition: 2026-05-01-preview/StorageAppliances_Patch.json
 func ExampleStorageAppliancesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -510,13 +566,13 @@ func ExampleStorageAppliancesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetworkcloud.StorageAppliancesClientUpdateResponse{
-	// 	StorageAppliance: &armnetworkcloud.StorageAppliance{
+	// 	StorageAppliance: armnetworkcloud.StorageAppliance{
 	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
 	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
 	// 			Type: to.Ptr("CustomLocation"),
@@ -537,9 +593,23 @@ func ExampleStorageAppliancesClient_BeginUpdate() {
 	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
 	// 			DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
 	// 			DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
+	// 			ExpansionShelves: []*armnetworkcloud.StorageApplianceExpansionShelf{
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.0/2.2.0"),
+	// 				},
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.1/2.0.0"),
+	// 				},
+	// 			},
 	// 			ManagementIPv4Address: to.Ptr("192.0.2.2"),
 	// 			Manufacturer: to.Ptr("Contoso Storage"),
 	// 			Model: to.Ptr("ArrayStore-Flash70"),
+	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
+	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMetricsConfigurationStatusMetricsLevelDefault),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
 	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
 	// 			RackSlot: to.Ptr[int64](1),

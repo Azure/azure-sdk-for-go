@@ -30,7 +30,7 @@ func ExampleRecoveryPointsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdataprotection.RecoveryPointsClientGetResponse{
-	// 	AzureBackupRecoveryPointResource: &armdataprotection.AzureBackupRecoveryPointResource{
+	// 	AzureBackupRecoveryPointResource: armdataprotection.AzureBackupRecoveryPointResource{
 	// 		Name: to.Ptr("7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25"),
 	// 		Type: to.Ptr("microsoft.dataprotection/backupvaults/backupInstances/recoveryPoints"),
 	// 		ID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/HelloTest/providers/Microsoft.DataProtection/backupVaults/HelloTestVault/backupInstances/653213d-c5b3-44f6-a0d9-db3c4f9d8e34/recoveryPoints/7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25"),

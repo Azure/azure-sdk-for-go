@@ -62,18 +62,18 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "GatewaysClient":
-		initServer(s, &s.trGatewaysServer, func() *GatewaysServerTransport { return NewGatewaysServerTransport(&s.srv.GatewaysServer) })
+		initServer(&s.trMu, &s.trGatewaysServer, func() *GatewaysServerTransport { return NewGatewaysServerTransport(&s.srv.GatewaysServer) })
 		resp, err = s.trGatewaysServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "OperatorAPIConnectionsClient":
-		initServer(s, &s.trOperatorAPIConnectionsServer, func() *OperatorAPIConnectionsServerTransport {
+		initServer(&s.trMu, &s.trOperatorAPIConnectionsServer, func() *OperatorAPIConnectionsServerTransport {
 			return NewOperatorAPIConnectionsServerTransport(&s.srv.OperatorAPIConnectionsServer)
 		})
 		resp, err = s.trOperatorAPIConnectionsServer.Do(req)
 	case "OperatorAPIPlansClient":
-		initServer(s, &s.trOperatorAPIPlansServer, func() *OperatorAPIPlansServerTransport {
+		initServer(&s.trMu, &s.trOperatorAPIPlansServer, func() *OperatorAPIPlansServerTransport {
 			return NewOperatorAPIPlansServerTransport(&s.srv.OperatorAPIPlansServer)
 		})
 		resp, err = s.trOperatorAPIPlansServer.Do(req)
@@ -86,12 +86,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

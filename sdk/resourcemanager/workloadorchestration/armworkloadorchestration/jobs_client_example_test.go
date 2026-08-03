@@ -30,7 +30,7 @@ func ExampleJobsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.JobsClientGetResponse{
-	// 	Job: &armworkloadorchestration.Job{
+	// 	Job: armworkloadorchestration.Job{
 	// 		Properties: &armworkloadorchestration.JobProperties{
 	// 			JobType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
 	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),

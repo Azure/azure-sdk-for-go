@@ -18,6 +18,8 @@ import (
 
 // ConnectedClusterClient contains the methods for the ConnectedCluster group.
 // Don't use this type directly, use NewConnectedClusterClient() instead.
+//
+// Generated from API version 2024-12-01-preview
 type ConnectedClusterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +46,6 @@ func NewConnectedClusterClient(subscriptionID string, credential azcore.TokenCre
 // API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure Resource Manager
 // (ARM).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kubernetes cluster on which get is called.
 //   - connectedCluster - Parameters supplied to Create a Connected Cluster.
@@ -73,8 +73,6 @@ func (client *ConnectedClusterClient) BeginCreateOrReplace(ctx context.Context, 
 // API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure Resource Manager
 // (ARM).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 func (client *ConnectedClusterClient) createOrReplace(ctx context.Context, resourceGroupName string, clusterName string, connectedCluster ConnectedCluster, options *ConnectedClusterClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedClusterClient.BeginCreateOrReplace"
@@ -116,8 +114,8 @@ func (client *ConnectedClusterClient) createOrReplaceCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedCluster); err != nil {
@@ -130,8 +128,6 @@ func (client *ConnectedClusterClient) createOrReplaceCreateRequest(ctx context.C
 //
 // Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kubernetes cluster on which get is called.
 //   - options - ConnectedClusterClientBeginDeleteOptions contains the optional parameters for the ConnectedClusterClient.BeginDelete
@@ -157,8 +153,6 @@ func (client *ConnectedClusterClient) BeginDelete(ctx context.Context, resourceG
 //
 // Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 func (client *ConnectedClusterClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ConnectedClusterClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ConnectedClusterClient.BeginDelete"
@@ -200,8 +194,8 @@ func (client *ConnectedClusterClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -210,8 +204,6 @@ func (client *ConnectedClusterClient) deleteCreateRequest(ctx context.Context, r
 // Returns the properties of the specified connected cluster, including name, identity, properties, and additional cluster
 // details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kubernetes cluster on which get is called.
 //   - options - ConnectedClusterClientGetOptions contains the optional parameters for the ConnectedClusterClient.Get method.
@@ -257,8 +249,8 @@ func (client *ConnectedClusterClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -274,9 +266,7 @@ func (client *ConnectedClusterClient) getHandleResponse(resp *http.Response) (Co
 
 // NewListByResourceGroupPager - Lists all connected clusters in the given Resource Group
 //
-// # API to enumerate registered connected K8s clusters under a Resource Group
-//
-// Generated from API version 2024-12-01-preview
+// API to enumerate registered connected K8s clusters under a Resource Group
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ConnectedClusterClientListByResourceGroupOptions contains the optional parameters for the ConnectedClusterClient.NewListByResourceGroupPager
 //     method.
@@ -319,8 +309,8 @@ func (client *ConnectedClusterClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -336,9 +326,7 @@ func (client *ConnectedClusterClient) listByResourceGroupHandleResponse(resp *ht
 
 // NewListBySubscriptionPager - Lists all connected clusters in the given Subscription
 //
-// # API to enumerate registered connected K8s clusters under a Subscription
-//
-// Generated from API version 2024-12-01-preview
+// API to enumerate registered connected K8s clusters under a Subscription
 //   - options - ConnectedClusterClientListBySubscriptionOptions contains the optional parameters for the ConnectedClusterClient.NewListBySubscriptionPager
 //     method.
 func (client *ConnectedClusterClient) NewListBySubscriptionPager(options *ConnectedClusterClientListBySubscriptionOptions) *runtime.Pager[ConnectedClusterClientListBySubscriptionResponse] {
@@ -376,8 +364,8 @@ func (client *ConnectedClusterClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -395,8 +383,6 @@ func (client *ConnectedClusterClient) listBySubscriptionHandleResponse(resp *htt
 //
 // Gets cluster user credentials of the connected cluster with a specified resource group and name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kubernetes cluster on which get is called.
 //   - properties - ListClusterUserCredential properties
@@ -444,8 +430,8 @@ func (client *ConnectedClusterClient) listClusterUserCredentialCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -467,8 +453,6 @@ func (client *ConnectedClusterClient) listClusterUserCredentialHandleResponse(re
 //
 // API to update certain properties of the connected cluster resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the Kubernetes cluster on which get is called.
 //   - connectedClusterPatch - Parameters supplied to update Connected Cluster.
@@ -515,8 +499,8 @@ func (client *ConnectedClusterClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectedClusterPatch); err != nil {

@@ -24,7 +24,7 @@ func ExampleSaaSOperationGroupClient_ActivateResource() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSaaSOperationGroupClient().ActivateResource(ctx, armdatadog.ActivateSaaSParameterRequest{
-		SaaSGUID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		SaaSGUID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/mySaaSResource"),
 		UserInfo: &armdatadog.UserInfo{
 			Name:         to.Ptr("Alice"),
 			EmailAddress: to.Ptr("alice@example.com"),
@@ -42,7 +42,7 @@ func ExampleSaaSOperationGroupClient_ActivateResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armdatadog.SaaSOperationGroupClientActivateResourceResponse{
-	// 	SaaSResourceDetailsResponse: &armdatadog.SaaSResourceDetailsResponse{
+	// 	SaaSResourceDetailsResponse: armdatadog.SaaSResourceDetailsResponse{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Datadog/saasResources/saas-resource-001"),
 	// 		Name: to.Ptr("saas-resource-001"),
 	// 		Type: to.Ptr("Microsoft.Datadog/saasResources"),

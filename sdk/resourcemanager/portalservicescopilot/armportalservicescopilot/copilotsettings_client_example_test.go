@@ -35,7 +35,7 @@ func ExampleCopilotSettingsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armportalservicescopilot.CopilotSettingsClientCreateOrUpdateResponse{
-	// 	CopilotSettingsResource: &armportalservicescopilot.CopilotSettingsResource{
+	// 	CopilotSettingsResource: armportalservicescopilot.CopilotSettingsResource{
 	// 		Properties: &armportalservicescopilot.CopilotSettingsProperties{
 	// 			AccessControlEnabled: to.Ptr(true),
 	// 		},
@@ -87,7 +87,7 @@ func ExampleCopilotSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armportalservicescopilot.CopilotSettingsClientGetResponse{
-	// 	CopilotSettingsResource: &armportalservicescopilot.CopilotSettingsResource{
+	// 	CopilotSettingsResource: armportalservicescopilot.CopilotSettingsResource{
 	// 		Properties: &armportalservicescopilot.CopilotSettingsProperties{
 	// 			AccessControlEnabled: to.Ptr(true),
 	// 		},
@@ -121,7 +121,7 @@ func ExampleCopilotSettingsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armportalservicescopilot.CopilotSettingsClientUpdateResponse{
-	// 	CopilotSettingsResource: &armportalservicescopilot.CopilotSettingsResource{
+	// 	CopilotSettingsResource: armportalservicescopilot.CopilotSettingsResource{
 	// 		Properties: &armportalservicescopilot.CopilotSettingsProperties{
 	// 			AccessControlEnabled: to.Ptr(true),
 	// 		},

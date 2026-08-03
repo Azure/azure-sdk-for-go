@@ -4,6 +4,10 @@
 
 package armdnsresolver
 
+const (
+	version20251001Preview string = "2025-10-01-preview"
+)
+
 // Action - The action type in requests for bulk upload or download of a DNS resolver domain list.
 type Action string
 

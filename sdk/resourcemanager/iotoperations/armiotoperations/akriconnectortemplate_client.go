@@ -18,6 +18,8 @@ import (
 
 // AkriConnectorTemplateClient contains the methods for the AkriConnectorTemplate group.
 // Don't use this type directly, use NewAkriConnectorTemplateClient() instead.
+//
+// Generated from API version 2026-03-01
 type AkriConnectorTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAkriConnectorTemplateClient(subscriptionID string, credential azcore.Tok
 
 // BeginCreateOrUpdate - Create a AkriConnectorTemplateResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - akriConnectorTemplateName - Name of AkriConnectorTemplate resource.
@@ -68,8 +68,6 @@ func (client *AkriConnectorTemplateClient) BeginCreateOrUpdate(ctx context.Conte
 
 // CreateOrUpdate - Create a AkriConnectorTemplateResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 func (client *AkriConnectorTemplateClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, resource AkriConnectorTemplateResource, options *AkriConnectorTemplateClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AkriConnectorTemplateClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *AkriConnectorTemplateClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *AkriConnectorTemplateClient) createOrUpdateCreateRequest(ctx conte
 
 // BeginDelete - Delete a AkriConnectorTemplateResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - akriConnectorTemplateName - Name of AkriConnectorTemplate resource.
@@ -153,8 +149,6 @@ func (client *AkriConnectorTemplateClient) BeginDelete(ctx context.Context, reso
 
 // Delete - Delete a AkriConnectorTemplateResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 func (client *AkriConnectorTemplateClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, options *AkriConnectorTemplateClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AkriConnectorTemplateClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *AkriConnectorTemplateClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a AkriConnectorTemplateResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - akriConnectorTemplateName - Name of AkriConnectorTemplate resource.
@@ -260,8 +252,8 @@ func (client *AkriConnectorTemplateClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *AkriConnectorTemplateClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByInstanceResourcePager - List AkriConnectorTemplateResource resources by InstanceResource
-//
-// Generated from API version 2026-03-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instanceName - Name of instance.
 //   - options - AkriConnectorTemplateClientListByInstanceResourceOptions contains the optional parameters for the AkriConnectorTemplateClient.NewListByInstanceResourcePager
@@ -325,8 +315,8 @@ func (client *AkriConnectorTemplateClient) listByInstanceResourceCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

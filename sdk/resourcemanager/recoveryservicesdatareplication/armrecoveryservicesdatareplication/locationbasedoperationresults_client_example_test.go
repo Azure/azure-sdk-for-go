@@ -30,7 +30,7 @@ func ExampleLocationBasedOperationResultsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesdatareplication.LocationBasedOperationResultsClientGetResponse{
-	// 	OperationStatus: &armrecoveryservicesdatareplication.OperationStatus{
+	// 	OperationStatus: armrecoveryservicesdatareplication.OperationStatus{
 	// 		ID: to.Ptr("inhnjrxtqtyumflbzdne"),
 	// 		Name: to.Ptr("eawsgzqm"),
 	// 		Status: to.Ptr("jjijbsrjfqvqzriekxfvynb"),

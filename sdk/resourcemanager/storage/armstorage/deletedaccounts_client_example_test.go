@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/DeletedAccountGet.json
+// Generated from example definition: 2026-04-01/DeletedAccountGet.json
 func ExampleDeletedAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExampleDeletedAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/DeletedAccountList.json
+// Generated from example definition: 2026-04-01/DeletedAccountList.json
 func ExampleDeletedAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

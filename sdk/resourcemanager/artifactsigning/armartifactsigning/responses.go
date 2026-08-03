@@ -27,8 +27,8 @@ type CertificateProfilesClientListByCodeSigningAccountResponse struct {
 	CertificateProfileListResult
 }
 
-// CertificateProfilesClientRevokeCertificateResponse contains the response from method CertificateProfilesClient.RevokeCertificate.
-type CertificateProfilesClientRevokeCertificateResponse struct {
+// CertificateProfilesClientRevokeCertificatesResponse contains the response from method CertificateProfilesClient.RevokeCertificates.
+type CertificateProfilesClientRevokeCertificatesResponse struct {
 	// placeholder for future response values
 }
 

@@ -18,6 +18,8 @@ import (
 
 // DiscoverySourcesClient contains the methods for the DiscoverySources group.
 // Don't use this type directly, use NewDiscoverySourcesClient() instead.
+//
+// Generated from API version 2025-01-31-preview
 type DiscoverySourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDiscoverySourcesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreateOrUpdate - Create a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - sourceName - discovery source resource
@@ -68,8 +68,6 @@ func (client *DiscoverySourcesClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Create a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-31-preview
 func (client *DiscoverySourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, mapName string, sourceName string, resource DiscoverySourceResource, options *DiscoverySourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscoverySourcesClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *DiscoverySourcesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *DiscoverySourcesClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Delete a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - sourceName - discovery source resource
@@ -153,8 +149,6 @@ func (client *DiscoverySourcesClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Delete a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-31-preview
 func (client *DiscoverySourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, mapName string, sourceName string, options *DiscoverySourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscoverySourcesClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *DiscoverySourcesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - sourceName - discovery source resource
@@ -259,8 +251,8 @@ func (client *DiscoverySourcesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *DiscoverySourcesClient) getHandleResponse(resp *http.Response) (Di
 }
 
 // NewListByMapsResourcePager - List DiscoverySourceResource resources by MapsResource
-//
-// Generated from API version 2025-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - options - DiscoverySourcesClientListByMapsResourceOptions contains the optional parameters for the DiscoverySourcesClient.NewListByMapsResourcePager
@@ -324,8 +314,8 @@ func (client *DiscoverySourcesClient) listByMapsResourceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +331,6 @@ func (client *DiscoverySourcesClient) listByMapsResourceHandleResponse(resp *htt
 
 // BeginUpdate - Update a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - mapName - Maps resource name
 //   - sourceName - discovery source resource
@@ -368,8 +356,6 @@ func (client *DiscoverySourcesClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - Update a DiscoverySourceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-01-31-preview
 func (client *DiscoverySourcesClient) update(ctx context.Context, resourceGroupName string, mapName string, sourceName string, properties DiscoverySourceResourceTagsUpdate, options *DiscoverySourcesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DiscoverySourcesClient.BeginUpdate"
@@ -415,8 +401,8 @@ func (client *DiscoverySourcesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250131Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

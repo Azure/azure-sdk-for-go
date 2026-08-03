@@ -18,6 +18,8 @@ import (
 
 // PrefixListLocalRulestackClient contains the methods for the PrefixListLocalRulestack group.
 // Don't use this type directly, use NewPrefixListLocalRulestackClient() instead.
+//
+// Generated from API version 2025-10-08
 type PrefixListLocalRulestackClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrefixListLocalRulestackClient(subscriptionID string, credential azcore.
 
 // BeginCreateOrUpdate - Create a PrefixListResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - name - Local Rule priority
@@ -68,8 +68,6 @@ func (client *PrefixListLocalRulestackClient) BeginCreateOrUpdate(ctx context.Co
 
 // CreateOrUpdate - Create a PrefixListResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *PrefixListLocalRulestackClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource PrefixListResource, options *PrefixListLocalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrefixListLocalRulestackClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *PrefixListLocalRulestackClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *PrefixListLocalRulestackClient) createOrUpdateCreateRequest(ctx co
 
 // BeginDelete - Delete a PrefixListResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - name - Local Rule priority
@@ -153,8 +149,6 @@ func (client *PrefixListLocalRulestackClient) BeginDelete(ctx context.Context, r
 
 // Delete - Delete a PrefixListResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 func (client *PrefixListLocalRulestackClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *PrefixListLocalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrefixListLocalRulestackClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *PrefixListLocalRulestackClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a PrefixListResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - name - Local Rule priority
@@ -260,8 +252,8 @@ func (client *PrefixListLocalRulestackClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -276,8 +268,6 @@ func (client *PrefixListLocalRulestackClient) getHandleResponse(resp *http.Respo
 }
 
 // NewListByLocalRulestacksPager - List PrefixListResource resources by LocalRulestacks
-//
-// Generated from API version 2025-10-08
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - localRulestackName - LocalRulestack resource name
 //   - options - PrefixListLocalRulestackClientListByLocalRulestacksOptions contains the optional parameters for the PrefixListLocalRulestackClient.NewListByLocalRulestacksPager
@@ -325,8 +315,8 @@ func (client *PrefixListLocalRulestackClient) listByLocalRulestacksCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

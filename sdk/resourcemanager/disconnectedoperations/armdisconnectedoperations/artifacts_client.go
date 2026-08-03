@@ -18,6 +18,8 @@ import (
 
 // ArtifactsClient contains the methods for the Artifacts group.
 // Don't use this type directly, use NewArtifactsClient() instead.
+//
+// Generated from API version 2026-03-15
 type ArtifactsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewArtifactsClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Get the resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - imageName - The name of the Image
@@ -98,8 +98,8 @@ func (client *ArtifactsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -114,8 +114,6 @@ func (client *ArtifactsClient) getHandleResponse(resp *http.Response) (Artifacts
 }
 
 // NewListByParentPager - List by parent
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - imageName - The name of the Image
@@ -168,8 +166,8 @@ func (client *ArtifactsClient) listByParentCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -185,8 +183,6 @@ func (client *ArtifactsClient) listByParentHandleResponse(resp *http.Response) (
 
 // ListDownloadURI - Get artifact download link.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the resource
 //   - imageName - The name of the Image
@@ -243,8 +239,8 @@ func (client *ArtifactsClient) listDownloadURICreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260315)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

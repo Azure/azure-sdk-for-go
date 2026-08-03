@@ -18,6 +18,8 @@ import (
 
 // SingleSignOnClient contains the methods for the SingleSignOn group.
 // Don't use this type directly, use NewSingleSignOnClient() instead.
+//
+// Generated from API version 2024-04-24
 type SingleSignOnClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Create a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - Single Sign On Configuration Name
@@ -68,8 +68,6 @@ func (client *SingleSignOnClient) BeginCreateOrUpdate(ctx context.Context, resou
 
 // CreateOrUpdate - Create a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 func (client *SingleSignOnClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, resource SingleSignOnResource, options *SingleSignOnClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SingleSignOnClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -127,8 +125,6 @@ func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // Get - Get a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - Single Sign On Configuration Name
@@ -179,8 +175,8 @@ func (client *SingleSignOnClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -195,8 +191,6 @@ func (client *SingleSignOnClient) getHandleResponse(resp *http.Response) (Single
 }
 
 // NewListPager - List all DynatraceSingleSignOnResource by monitorName
-//
-// Generated from API version 2024-04-24
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.NewListPager method.
@@ -243,8 +237,8 @@ func (client *SingleSignOnClient) listCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-04-24")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240424)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

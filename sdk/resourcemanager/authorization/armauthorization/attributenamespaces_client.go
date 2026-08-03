@@ -18,6 +18,8 @@ import (
 
 // AttributeNamespacesClient contains the methods for the AttributeNamespaces group.
 // Don't use this type directly, use NewAttributeNamespacesClient() instead.
+//
+// Generated from API version 2025-12-01-preview
 type AttributeNamespacesClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewAttributeNamespacesClient(credential azcore.TokenCredential, options *ar
 
 // Create - Creates a new attribute namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - attributeNamespace - The name of the attribute namespace to get.
 //   - parameters - Parameters for creating the attribute namespace.
 //   - options - AttributeNamespacesClientCreateOptions contains the optional parameters for the AttributeNamespacesClient.Create
@@ -78,8 +78,8 @@ func (client *AttributeNamespacesClient) createCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -99,8 +99,6 @@ func (client *AttributeNamespacesClient) createHandleResponse(resp *http.Respons
 
 // Delete - Deletes the specified attribute namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - attributeNamespace - The name of the attribute namespace to get.
 //   - options - AttributeNamespacesClientDeleteOptions contains the optional parameters for the AttributeNamespacesClient.Delete
 //     method.
@@ -137,15 +135,13 @@ func (client *AttributeNamespacesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the specified attribute namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-01-preview
 //   - attributeNamespace - The name of the attribute namespace to get.
 //   - options - AttributeNamespacesClientGetOptions contains the optional parameters for the AttributeNamespacesClient.Get method.
 func (client *AttributeNamespacesClient) Get(ctx context.Context, attributeNamespace string, options *AttributeNamespacesClientGetOptions) (AttributeNamespacesClientGetResponse, error) {
@@ -182,8 +178,8 @@ func (client *AttributeNamespacesClient) getCreateRequest(ctx context.Context, a
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

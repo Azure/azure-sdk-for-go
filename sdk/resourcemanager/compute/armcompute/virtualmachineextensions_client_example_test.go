@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExtensionCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,13 +69,13 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExt
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionsClientCreateOrUpdateResponse{
-	// 	VirtualMachineExtension: &armcompute.VirtualMachineExtension{
+	// 	VirtualMachineExtension: armcompute.VirtualMachineExtension{
 	// 		Name: to.Ptr("myVMExtension"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines/extensions"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/extensions/myVMExtension"),
@@ -124,7 +124,7 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExt
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExtensionCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,20 +143,20 @@ func ExampleVirtualMachineExtensionsClient_BeginCreateOrUpdate_virtualMachineExt
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionsClientCreateOrUpdateResponse{
-	// 	VirtualMachineExtension: &armcompute.VirtualMachineExtension{
+	// 	VirtualMachineExtension: armcompute.VirtualMachineExtension{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVM/extensions/myVMExtension"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_Delete_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -182,7 +182,7 @@ func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_Delete_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -208,7 +208,7 @@ func ExampleVirtualMachineExtensionsClient_BeginDelete_virtualMachineExtensionDe
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionGetMaximum
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionsClientGetResponse{
-	// 	VirtualMachineExtension: &armcompute.VirtualMachineExtension{
+	// 	VirtualMachineExtension: armcompute.VirtualMachineExtension{
 	// 		Name: to.Ptr("myVMExtension"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines/extensions"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/extensions/myVMExtension"),
@@ -277,7 +277,7 @@ func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionGetMaximum
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,14 +296,14 @@ func ExampleVirtualMachineExtensionsClient_Get_virtualMachineExtensionGetMinimum
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionsClientGetResponse{
-	// 	VirtualMachineExtension: &armcompute.VirtualMachineExtension{
+	// 	VirtualMachineExtension: armcompute.VirtualMachineExtension{
 	// 		Location: to.Ptr("westus"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rgcompute/providers/Microsoft.Compute/virtualMachines/myVM/extensions/myVMExtension"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_List_MaximumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionListMaxim
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionsClientListResponse{
-	// 	VirtualMachineExtensionsListResult: &armcompute.VirtualMachineExtensionsListResult{
+	// 	VirtualMachineExtensionsListResult: armcompute.VirtualMachineExtensionsListResult{
 	// 		Value: []*armcompute.VirtualMachineExtension{
 	// 			{
 	// 				Name: to.Ptr("myVMExtension"),
@@ -376,7 +376,7 @@ func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionListMaxim
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_List_MinimumSet_Gen.json
 func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,12 +395,12 @@ func ExampleVirtualMachineExtensionsClient_List_virtualMachineExtensionListMinim
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionsClientListResponse{
-	// 	VirtualMachineExtensionsListResult: &armcompute.VirtualMachineExtensionsListResult{
+	// 	VirtualMachineExtensionsListResult: armcompute.VirtualMachineExtensionsListResult{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineExamples/VirtualMachineExtension_Update.json
+// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachineExtension_Update.json
 func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -434,13 +434,13 @@ func ExampleVirtualMachineExtensionsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineExtensionsClientUpdateResponse{
-	// 	VirtualMachineExtension: &armcompute.VirtualMachineExtension{
+	// 	VirtualMachineExtension: armcompute.VirtualMachineExtension{
 	// 		Name: to.Ptr("myVMExtension"),
 	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines/extensions"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM/extensions/myVMExtension"),

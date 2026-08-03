@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // AssociateTrafficFilterServer is a fake server for instances of the armelastic.AssociateTrafficFilterClient type.
@@ -53,9 +54,7 @@ func (a *AssociateTrafficFilterServerTransport) Do(req *http.Request) (*http.Res
 }
 
 func (a *AssociateTrafficFilterServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +70,7 @@ func (a *AssociateTrafficFilterServerTransport) dispatchToMethodFake(req *http.R
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -106,11 +102,7 @@ func (a *AssociateTrafficFilterServerTransport) dispatchBeginAssociate(req *http
 		if err != nil {
 			return nil, err
 		}
-		rulesetIDUnescaped, err := url.QueryUnescape(qp.Get("rulesetId"))
-		if err != nil {
-			return nil, err
-		}
-		rulesetIDParam := getOptional(rulesetIDUnescaped)
+		rulesetIDParam := getOptional(qp.Get("rulesetId"))
 		var options *armelastic.AssociateTrafficFilterClientBeginAssociateOptions
 		if rulesetIDParam != nil {
 			options = &armelastic.AssociateTrafficFilterClientBeginAssociateOptions{
@@ -130,7 +122,7 @@ func (a *AssociateTrafficFilterServerTransport) dispatchBeginAssociate(req *http
 		return nil, err
 	}
 
-	if !contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
 		a.beginAssociate.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_Create_MaximumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreementInTheSubscriptionMaximumset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.MarketplaceAgreementsClientCreateResponse{
-	// 	AgreementResource: &armconfluent.AgreementResource{
+	// 	AgreementResource: armconfluent.AgreementResource{
 	// 		ID: to.Ptr("hqrct"),
 	// 		Name: to.Ptr("nazsgocpqpboswffunhuxjytrya"),
 	// 		Type: to.Ptr("mshlvpqsrhkba"),
@@ -69,7 +69,7 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_Create_MinimumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreementInTheSubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,12 +88,12 @@ func ExampleMarketplaceAgreementsClient_Create_createConfluentMarketplaceAgreeme
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.MarketplaceAgreementsClientCreateResponse{
-	// 	AgreementResource: &armconfluent.AgreementResource{
+	// 	AgreementResource: armconfluent.AgreementResource{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_List_MaximumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgreementsInTheSubscriptionMaximumset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgr
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/MarketplaceAgreements_List_MinimumSet_Gen.json
 func ExampleMarketplaceAgreementsClient_NewListPager_listConfluentMarketplaceAgreementsInTheSubscriptionMinimumset() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

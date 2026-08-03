@@ -37,7 +37,7 @@ func ExampleRoleAssignmentsClient_Create_createRoleAssignmentForResource() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientCreateResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("05c5a614-a7d6-4502-b150-c2fb455033ff"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Authorization/roleAssignments/05c5a614-a7d6-4502-b150-c2fb455033ff"),
@@ -76,7 +76,7 @@ func ExampleRoleAssignmentsClient_Create_createRoleAssignmentForResourceGroup() 
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientCreateResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("05c5a614-a7d6-4502-b150-c2fb455033ff"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.Authorization/roleAssignments/05c5a614-a7d6-4502-b150-c2fb455033ff"),
@@ -115,7 +115,7 @@ func ExampleRoleAssignmentsClient_Create_createRoleAssignmentForSubscription() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientCreateResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("05c5a614-a7d6-4502-b150-c2fb455033ff"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleAssignments/05c5a614-a7d6-4502-b150-c2fb455033ff"),
@@ -154,7 +154,7 @@ func ExampleRoleAssignmentsClient_CreateByID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientCreateByIDResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("b0f43c54-e787-4862-89b1-a653fa9cf747"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleAssignments/b0f43c54-e787-4862-89b1-a653fa9cf747"),
@@ -187,7 +187,7 @@ func ExampleRoleAssignmentsClient_Delete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientDeleteResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("b0f43c54-e787-4862-89b1-a653fa9cf747"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleAssignments/b0f43c54-e787-4862-89b1-a653fa9cf747"),
@@ -220,7 +220,7 @@ func ExampleRoleAssignmentsClient_DeleteByID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientDeleteByIDResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("b0f43c54-e787-4862-89b1-a653fa9cf747"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleAssignments/b0f43c54-e787-4862-89b1-a653fa9cf747"),
@@ -253,7 +253,7 @@ func ExampleRoleAssignmentsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientGetResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("b0f43c54-e787-4862-89b1-a653fa9cf747"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleAssignments/b0f43c54-e787-4862-89b1-a653fa9cf747"),
@@ -286,7 +286,7 @@ func ExampleRoleAssignmentsClient_GetByID() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armauthorization.RoleAssignmentsClientGetByIDResponse{
-	// 	RoleAssignment: &armauthorization.RoleAssignment{
+	// 	RoleAssignment: armauthorization.RoleAssignment{
 	// 		Name: to.Ptr("b0f43c54-e787-4862-89b1-a653fa9cf747"),
 	// 		Type: to.Ptr("Microsoft.Authorization/roleAssignments"),
 	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Authorization/roleAssignments/b0f43c54-e787-4862-89b1-a653fa9cf747"),

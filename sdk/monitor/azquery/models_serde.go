@@ -9,8 +9,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"reflect"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
@@ -623,7 +625,7 @@ func (m MetricValue) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "count", m.Count)
 	populate(objectMap, "maximum", m.Maximum)
 	populate(objectMap, "minimum", m.Minimum)
-	populateDateTimeRFC3339(objectMap, "timeStamp", m.TimeStamp)
+	populateTime[datetime.RFC3339](objectMap, "timeStamp", m.TimeStamp)
 	populate(objectMap, "total", m.Total)
 	return json.Marshal(objectMap)
 }
@@ -650,7 +652,7 @@ func (m *MetricValue) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Minimum", &m.Minimum)
 			delete(rawMsg, key)
 		case "timeStamp":
-			err = unpopulateDateTimeRFC3339(val, "TimeStamp", &m.TimeStamp)
+			err = unpopulateTime[datetime.RFC3339](val, "TimeStamp", &m.TimeStamp)
 			delete(rawMsg, key)
 		case "total":
 			err = unpopulate(val, "Total", &m.Total)
@@ -829,6 +831,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+	if t == nil {
+		return
+	} else if azcore.IsNullValue(t) {
+		m[k] = nil
+	} else if !reflect.ValueOf(t).IsNil() {
+		newTime := T(*t)
+		m[k] = (*T)(&newTime)
+	}
+}
+
 func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil || string(data) == "null" {
 		return nil
@@ -837,4 +850,21 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return fmt.Errorf("struct field %s: %v", fn, err)
 	}
 	return nil
+}
+
+func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **time.Time) error {
+	if data == nil || string(data) == "null" {
+		return nil
+	}
+	var aux T
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return fmt.Errorf("struct field %s: %v", fn, err)
+	}
+	newTime := time.Time(aux)
+	*t = &newTime
+	return nil
+}
+
+type dateTimeConstraints interface {
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
 }

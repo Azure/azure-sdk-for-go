@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/GetOffer.json
+// Generated from example definition: 2026-04-30/GetOffer.json
 func ExampleOffersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleOffersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armazurestackhci.OffersClientGetResponse{
-	// 	Offer: &armazurestackhci.Offer{
+	// 	Offer: armazurestackhci.Offer{
 	// 		Name: to.Ptr("offer1"),
 	// 		Type: to.Ptr("Microsoft.AzureStackHCI/clusters/publishers/offers"),
 	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/clusters/myCluster/publishers/publisher1/offers/offer1"),
@@ -53,7 +53,7 @@ func ExampleOffersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/ListOffersByCluster.json
+// Generated from example definition: 2026-04-30/ListOffersByCluster.json
 func ExampleOffersClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleOffersClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/ListOffersByPublisher.json
+// Generated from example definition: 2026-04-30/ListOffersByPublisher.json
 func ExampleOffersClient_NewListByPublisherPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

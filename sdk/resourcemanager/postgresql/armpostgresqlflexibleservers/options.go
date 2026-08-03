@@ -179,6 +179,43 @@ type FirewallRulesClientListByServerOptions struct {
 	// placeholder for future optional parameters
 }
 
+// MaintenanceEventsClientBeginApplyNowOptions contains the optional parameters for the MaintenanceEventsClient.BeginApplyNow
+// method.
+type MaintenanceEventsClientBeginApplyNowOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceEventsClientBeginRescheduleOptions contains the optional parameters for the MaintenanceEventsClient.BeginReschedule
+// method.
+type MaintenanceEventsClientBeginRescheduleOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MaintenanceEventsClientGetOptions contains the optional parameters for the MaintenanceEventsClient.Get method.
+type MaintenanceEventsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MaintenanceEventsClientListOptions contains the optional parameters for the MaintenanceEventsClient.NewListPager method.
+type MaintenanceEventsClientListOptions struct {
+	// Filter maintenance events by status.
+	MaintenanceStatus *MaintenanceEventStatusFilter
+}
+
+// MajorVersionUpgradePrecheckClientGetOptions contains the optional parameters for the MajorVersionUpgradePrecheckClient.Get
+// method.
+type MajorVersionUpgradePrecheckClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// MajorVersionUpgradePrecheckClientListOptions contains the optional parameters for the MajorVersionUpgradePrecheckClient.NewListPager
+// method.
+type MajorVersionUpgradePrecheckClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // MigrationsClientCancelOptions contains the optional parameters for the MigrationsClient.Cancel method.
 type MigrationsClientCancelOptions struct {
 	// placeholder for future optional parameters
@@ -312,6 +349,13 @@ type ServersClientBeginRestartOptions struct {
 	// Parameters to restart a server.
 	Parameters *RestartParameter
 
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ServersClientBeginStartMajorVersionUpgradePrecheckOptions contains the optional parameters for the ServersClient.BeginStartMajorVersionUpgradePrecheck
+// method.
+type ServersClientBeginStartMajorVersionUpgradePrecheckOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

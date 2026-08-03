@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CreateOrUpdateQuotaTier.json
+// Generated from example definition: 2026-05-15-preview/CreateOrUpdateQuotaTier.json
 func ExampleQuotaTiersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleQuotaTiersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetQuotaTier.json
+// Generated from example definition: 2026-05-15-preview/GetQuotaTier.json
 func ExampleQuotaTiersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleQuotaTiersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListQuotaTiers.json
+// Generated from example definition: 2026-05-15-preview/ListQuotaTiers.json
 func ExampleQuotaTiersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleQuotaTiersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateQuotaTier.json
+// Generated from example definition: 2026-05-15-preview/UpdateQuotaTier.json
 func ExampleQuotaTiersClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

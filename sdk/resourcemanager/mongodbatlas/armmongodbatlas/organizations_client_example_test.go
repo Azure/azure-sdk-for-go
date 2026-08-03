@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,13 +63,13 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongodbatlas.OrganizationsClientCreateOrUpdateResponse{
-	// 	OrganizationResource: &armmongodbatlas.OrganizationResource{
+	// 	OrganizationResource: armmongodbatlas.OrganizationResource{
 	// 		Properties: &armmongodbatlas.OrganizationProperties{
 	// 			Marketplace: &armmongodbatlas.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("o"),
@@ -124,7 +124,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Organizations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_Delete_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,11 +141,11 @@ func ExampleOrganizationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-06-01/Organizations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_Get_MaximumSet_Gen.json
 func ExampleOrganizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleOrganizationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongodbatlas.OrganizationsClientGetResponse{
-	// 	OrganizationResource: &armmongodbatlas.OrganizationResource{
+	// 	OrganizationResource: armmongodbatlas.OrganizationResource{
 	// 		Properties: &armmongodbatlas.OrganizationProperties{
 	// 			Marketplace: &armmongodbatlas.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("isxzpjgmsgvwmqaridgqgnz"),
@@ -218,7 +218,7 @@ func ExampleOrganizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 	}
 }
 
-// Generated from example definition: 2025-06-01/Organizations_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +336,7 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 	}
 }
 
-// Generated from example definition: 2025-06-01/Organizations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_ListBySubscription_MaximumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,7 +419,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 	}
 }
 
-// Generated from example definition: 2025-06-01/Organizations_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_ListBySubscription_MinimumSet_Gen.json
 func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +454,7 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 	}
 }
 
-// Generated from example definition: 2025-06-01/Organizations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Organizations_Update_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -492,13 +492,13 @@ func ExampleOrganizationsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongodbatlas.OrganizationsClientUpdateResponse{
-	// 	OrganizationResource: &armmongodbatlas.OrganizationResource{
+	// 	OrganizationResource: armmongodbatlas.OrganizationResource{
 	// 		Properties: &armmongodbatlas.OrganizationProperties{
 	// 			Marketplace: &armmongodbatlas.MarketplaceDetails{
 	// 				SubscriptionID: to.Ptr("isxzpjgmsgvwmqaridgqgnz"),

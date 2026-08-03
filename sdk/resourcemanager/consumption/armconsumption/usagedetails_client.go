@@ -18,6 +18,8 @@ import (
 
 // UsageDetailsClient contains the methods for the UsageDetails group.
 // Don't use this type directly, use NewUsageDetailsClient() instead.
+//
+// Generated from API version 2024-08-01
 type UsageDetailsClient struct {
 	internal *arm.Client
 }
@@ -41,8 +43,6 @@ func NewUsageDetailsClient(credential azcore.TokenCredential, options *arm.Clien
 // **Note:Microsoft will be retiring the Consumption Usage Details API at some point in the future. We do not recommend that
 // you take a new dependency on this API. Please use the Cost Details API instead. We will notify customers once a date for
 // retirement has been determined.For Learn more,see [Generate Cost Details Report - Create Operation](https://learn.microsoft.com/en-us/rest/api/cost-management/generate-cost-details-report/create-operation?tabs=HTTP)**
-//
-// Generated from API version 2024-08-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - UsageDetailsClientListOptions contains the optional parameters for the UsageDetailsClient.NewListPager method.
 func (client *UsageDetailsClient) NewListPager(scope string, options *UsageDetailsClientListOptions) *runtime.Pager[UsageDetailsClientListResponse] {
@@ -92,11 +92,11 @@ func (client *UsageDetailsClient) listCreateRequest(ctx context.Context, scope s
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2024-08-01")
+	reqQP.Set("api-version", version20240801)
 	if options != nil && options.Metric != nil {
 		reqQP.Set("metric", string(*options.Metric))
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

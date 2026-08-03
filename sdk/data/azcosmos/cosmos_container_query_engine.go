@@ -8,7 +8,6 @@ package azcosmos
 import (
 	"bytes"
 	"context"
-	"runtime"
 	"sync"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
@@ -350,18 +349,6 @@ func runEngineRequests(
 	}
 
 	return totalCharge, nil
-}
-
-// determineConcurrency returns either the provided positive max or NumCPU (>=1).
-func determineConcurrency(max *int32) int {
-	if max != nil && *max > 0 {
-		return int(*max)
-	}
-	c := runtime.NumCPU()
-	if c <= 0 {
-		c = 1
-	}
-	return c
 }
 
 // Wrapper type because we can't define 'toHeaders' on DataRequest directly, nor can we define it in the queryengine package (because it's not a public method).

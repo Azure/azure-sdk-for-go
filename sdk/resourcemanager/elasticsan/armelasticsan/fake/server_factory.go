@@ -78,34 +78,34 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 
 	switch client {
 	case "ElasticSansClient":
-		initServer(s, &s.trElasticSansServer, func() *ElasticSansServerTransport { return NewElasticSansServerTransport(&s.srv.ElasticSansServer) })
+		initServer(&s.trMu, &s.trElasticSansServer, func() *ElasticSansServerTransport { return NewElasticSansServerTransport(&s.srv.ElasticSansServer) })
 		resp, err = s.trElasticSansServer.Do(req)
 	case "OperationsClient":
-		initServer(s, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
-		initServer(s, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
+		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
 		})
 		resp, err = s.trPrivateEndpointConnectionsServer.Do(req)
 	case "PrivateLinkResourcesClient":
-		initServer(s, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
+		initServer(&s.trMu, &s.trPrivateLinkResourcesServer, func() *PrivateLinkResourcesServerTransport {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
 	case "SKUsClient":
-		initServer(s, &s.trSKUsServer, func() *SKUsServerTransport { return NewSKUsServerTransport(&s.srv.SKUsServer) })
+		initServer(&s.trMu, &s.trSKUsServer, func() *SKUsServerTransport { return NewSKUsServerTransport(&s.srv.SKUsServer) })
 		resp, err = s.trSKUsServer.Do(req)
 	case "VolumeGroupsClient":
-		initServer(s, &s.trVolumeGroupsServer, func() *VolumeGroupsServerTransport { return NewVolumeGroupsServerTransport(&s.srv.VolumeGroupsServer) })
+		initServer(&s.trMu, &s.trVolumeGroupsServer, func() *VolumeGroupsServerTransport { return NewVolumeGroupsServerTransport(&s.srv.VolumeGroupsServer) })
 		resp, err = s.trVolumeGroupsServer.Do(req)
 	case "VolumeSnapshotsClient":
-		initServer(s, &s.trVolumeSnapshotsServer, func() *VolumeSnapshotsServerTransport {
+		initServer(&s.trMu, &s.trVolumeSnapshotsServer, func() *VolumeSnapshotsServerTransport {
 			return NewVolumeSnapshotsServerTransport(&s.srv.VolumeSnapshotsServer)
 		})
 		resp, err = s.trVolumeSnapshotsServer.Do(req)
 	case "VolumesClient":
-		initServer(s, &s.trVolumesServer, func() *VolumesServerTransport { return NewVolumesServerTransport(&s.srv.VolumesServer) })
+		initServer(&s.trMu, &s.trVolumesServer, func() *VolumesServerTransport { return NewVolumesServerTransport(&s.srv.VolumesServer) })
 		resp, err = s.trVolumesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
@@ -116,12 +116,4 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	}
 
 	return resp, nil
-}
-
-func initServer[T any](s *ServerFactoryTransport, dst **T, src func() *T) {
-	s.trMu.Lock()
-	if *dst == nil {
-		*dst = src()
-	}
-	s.trMu.Unlock()
 }

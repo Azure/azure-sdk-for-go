@@ -18,6 +18,8 @@ import (
 
 // UpdatesClient contains the methods for the Updates group.
 // Don't use this type directly, use NewUpdatesClient() instead.
+//
+// Generated from API version 2023-10-01-preview
 type UpdatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, 
 // NewListPager - Get Updates to resource
 //
 // Get updates to resources.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Resource provider name
 //   - resourceType - Resource type
@@ -100,8 +100,8 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -118,8 +118,6 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response) (UpdatesCli
 // NewListParentPager - Get Updates to resource
 //
 // Get updates to resources.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Resource provider name
 //   - resourceParentType - Resource parent type
@@ -186,8 +184,8 @@ func (client *UpdatesClient) listParentCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

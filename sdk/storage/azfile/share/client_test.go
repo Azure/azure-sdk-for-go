@@ -1937,6 +1937,13 @@ func (s *ShareUnrecordedTestsSuite) TestShareSASUsingAccessPolicy() {
 
 	_, err = fileClient.Delete(context.Background(), nil)
 	_require.NoError(err)
+
+	_, err = shareClient.SetAccessPolicy(context.Background(), nil)
+	_require.NoError(err)
+
+	resp2, err := shareClient.GetAccessPolicy(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp2.SignedIdentifiers, 0)
 }
 
 func (s *ShareRecordedTestsSuite) TestPremiumShareBandwidth() {

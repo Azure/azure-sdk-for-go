@@ -19,6 +19,8 @@ import (
 
 // DNSResolversClient contains the methods for the DNSResolvers group.
 // Don't use this type directly, use NewDNSResolversClient() instead.
+//
+// Generated from API version 2025-10-01-preview
 type DNSResolversClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewDNSResolversClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateOrUpdate - Creates or updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - parameters - Parameters supplied to the CreateOrUpdate operation.
@@ -68,8 +68,6 @@ func (client *DNSResolversClient) BeginCreateOrUpdate(ctx context.Context, resou
 
 // CreateOrUpdate - Creates or updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DNSResolversClient) createOrUpdate(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters DNSResolver, options *DNSResolversClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DNSResolversClient.BeginCreateOrUpdate"
@@ -111,8 +109,8 @@ func (client *DNSResolversClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -129,8 +127,6 @@ func (client *DNSResolversClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - options - DNSResolversClientBeginDeleteOptions contains the optional parameters for the DNSResolversClient.BeginDelete
@@ -154,8 +150,6 @@ func (client *DNSResolversClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Deletes a DNS resolver. WARNING: This operation cannot be undone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DNSResolversClient) deleteOperation(ctx context.Context, resourceGroupName string, dnsResolverName string, options *DNSResolversClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DNSResolversClient.BeginDelete"
@@ -197,8 +191,8 @@ func (client *DNSResolversClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
 	}
@@ -207,8 +201,6 @@ func (client *DNSResolversClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - Gets properties of a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - options - DNSResolversClientGetOptions contains the optional parameters for the DNSResolversClient.Get method.
@@ -254,8 +246,8 @@ func (client *DNSResolversClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -270,8 +262,6 @@ func (client *DNSResolversClient) getHandleResponse(resp *http.Response) (DNSRes
 }
 
 // NewListPager - Lists DNS resolvers in all resource groups of a subscription.
-//
-// Generated from API version 2025-10-01-preview
 //   - options - DNSResolversClientListOptions contains the optional parameters for the DNSResolversClient.NewListPager method.
 func (client *DNSResolversClient) NewListPager(options *DNSResolversClientListOptions) *runtime.Pager[DNSResolversClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DNSResolversClientListResponse]{
@@ -311,8 +301,8 @@ func (client *DNSResolversClient) listCreateRequest(ctx context.Context, options
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -327,8 +317,6 @@ func (client *DNSResolversClient) listHandleResponse(resp *http.Response) (DNSRe
 }
 
 // NewListByResourceGroupPager - Lists DNS resolvers within a resource group.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - DNSResolversClientListByResourceGroupOptions contains the optional parameters for the DNSResolversClient.NewListByResourceGroupPager
 //     method.
@@ -374,8 +362,8 @@ func (client *DNSResolversClient) listByResourceGroupCreateRequest(ctx context.C
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -390,8 +378,6 @@ func (client *DNSResolversClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListByVirtualNetworkPager - Lists DNS resolver resource IDs linked to a virtual network.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - virtualNetworkName - The name of the VirtualNetwork
 //   - options - DNSResolversClientListByVirtualNetworkOptions contains the optional parameters for the DNSResolversClient.NewListByVirtualNetworkPager
@@ -442,8 +428,8 @@ func (client *DNSResolversClient) listByVirtualNetworkCreateRequest(ctx context.
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -459,8 +445,6 @@ func (client *DNSResolversClient) listByVirtualNetworkHandleResponse(resp *http.
 
 // BeginUpdate - Updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - dnsResolverName - The name of the DNS resolver.
 //   - parameters - Parameters supplied to the Update operation.
@@ -485,8 +469,6 @@ func (client *DNSResolversClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Updates a DNS resolver.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01-preview
 func (client *DNSResolversClient) update(ctx context.Context, resourceGroupName string, dnsResolverName string, parameters Patch, options *DNSResolversClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DNSResolversClient.BeginUpdate"
@@ -528,8 +510,8 @@ func (client *DNSResolversClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}

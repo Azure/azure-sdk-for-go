@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/MongoClusters_ReplicaList.json
+// Generated from example definition: 2026-06-01/MongoClusters_ReplicaList.json
 func ExampleReplicasClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleReplicasClient_NewListByParentPager() {
 		// 	ReplicaListResult: armmongocluster.ReplicaListResult{
 		// 		Value: []*armmongocluster.Replica{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myReplicaMongoCluster"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DocumentDB/mongoClusters/myReplicaMongoCluster"),
 		// 				Name: to.Ptr("myReplicaMongoCluster"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
 		// 				Properties: &armmongocluster.Properties{

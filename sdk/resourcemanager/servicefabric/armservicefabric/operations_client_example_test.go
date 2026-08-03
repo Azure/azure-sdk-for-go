@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-11-01-preview/Operations_example.json
+// Generated from example definition: 2026-03-01-preview/Operations_example.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

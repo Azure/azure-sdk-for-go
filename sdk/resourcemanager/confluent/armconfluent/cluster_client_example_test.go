@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Cluster_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleClusterClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleClusterClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.ClusterClientCreateOrUpdateResponse{
-	// 	SCClusterRecord: &armconfluent.SCClusterRecord{
+	// 	SCClusterRecord: armconfluent.SCClusterRecord{
 	// 		Kind: to.Ptr("eroxushslwhufo"),
 	// 		Properties: &armconfluent.ClusterProperties{
 	// 			Metadata: &armconfluent.SCMetadataEntity{
@@ -138,7 +138,7 @@ func ExampleClusterClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Cluster_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Cluster_Delete_MaximumSet_Gen.json
 func ExampleClusterClient_BeginDelete_clusterDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,11 +155,11 @@ func ExampleClusterClient_BeginDelete_clusterDeleteMaximumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Cluster_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Cluster_Delete_MinimumSet_Gen.json
 func ExampleClusterClient_BeginDelete_clusterDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,6 +176,6 @@ func ExampleClusterClient_BeginDelete_clusterDeleteMinimumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

@@ -38,13 +38,13 @@ func ExampleOffersClient_BeginGenerateAccessToken() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgemarketplace.OffersClientGenerateAccessTokenResponse{
-	// 	DiskAccessToken: &armedgemarketplace.DiskAccessToken{
+	// 	DiskAccessToken: armedgemarketplace.DiskAccessToken{
 	// 		DiskID: to.Ptr("abcd"),
 	// 		Status: to.Ptr("created"),
 	// 		AccessToken: to.Ptr("hidden"),
@@ -71,7 +71,7 @@ func ExampleOffersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgemarketplace.OffersClientGetResponse{
-	// 	Offer: &armedgemarketplace.Offer{
+	// 	Offer: armedgemarketplace.Offer{
 	// 		Properties: &armedgemarketplace.OfferProperties{
 	// 			ContentVersion: to.Ptr("1.0"),
 	// 			ContentURL: to.Ptr("test"),
@@ -156,7 +156,7 @@ func ExampleOffersClient_GetAccessToken() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgemarketplace.OffersClientGetAccessTokenResponse{
-	// 	DiskAccessToken: &armedgemarketplace.DiskAccessToken{
+	// 	DiskAccessToken: armedgemarketplace.DiskAccessToken{
 	// 		DiskID: to.Ptr("abcd"),
 	// 		Status: to.Ptr("created"),
 	// 		AccessToken: to.Ptr("hidden"),

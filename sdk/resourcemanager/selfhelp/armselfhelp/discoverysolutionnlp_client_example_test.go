@@ -35,7 +35,7 @@ func ExampleDiscoverySolutionNLPClient_DiscoverSolutions() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.DiscoverySolutionNLPClientDiscoverSolutionsResponse{
-	// 	DiscoveryNlpResponse: &armselfhelp.DiscoveryNlpResponse{
+	// 	DiscoveryNlpResponse: armselfhelp.DiscoveryNlpResponse{
 	// 		Value: []*armselfhelp.SolutionNlpMetadataResource{
 	// 			{
 	// 				Name: to.Ptr("SampleProblemClassificationId1"),
@@ -105,7 +105,7 @@ func ExampleDiscoverySolutionNLPClient_DiscoverSolutionsBySubscription() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armselfhelp.DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse{
-	// 	DiscoveryNlpResponse: &armselfhelp.DiscoveryNlpResponse{
+	// 	DiscoveryNlpResponse: armselfhelp.DiscoveryNlpResponse{
 	// 		Value: []*armselfhelp.SolutionNlpMetadataResource{
 	// 			{
 	// 				Name: to.Ptr("SampleProblemClassificationId1"),

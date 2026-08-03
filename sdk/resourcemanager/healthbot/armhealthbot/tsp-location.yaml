@@ -1,4 +1,4 @@
 directory: specification/healthbot/HealthBot.Management
-commit: 16c5a93d4e3e6d4cec95c969991fd65cb3458327
+commit: 9bb28560c09f7e60f6df095e9530d27f77748bdf
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

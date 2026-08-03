@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/AgentDeployment/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/AgentDeployment/createOrUpdate.json
 func ExampleAgentDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleAgentDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/AgentDeployment/delete.json
+// Generated from example definition: 2026-05-15-preview/AgentDeployment/delete.json
 func ExampleAgentDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleAgentDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/AgentDeployment/get.json
+// Generated from example definition: 2026-05-15-preview/AgentDeployment/get.json
 func ExampleAgentDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleAgentDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/AgentDeployment/list.json
+// Generated from example definition: 2026-05-15-preview/AgentDeployment/list.json
 func ExampleAgentDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleAgentDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/AgentDeployment/start.json
+// Generated from example definition: 2026-05-15-preview/AgentDeployment/start.json
 func ExampleAgentDeploymentsClient_Start() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleAgentDeploymentsClient_Start() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/AgentDeployment/stop.json
+// Generated from example definition: 2026-05-15-preview/AgentDeployment/stop.json
 func ExampleAgentDeploymentsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

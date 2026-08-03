@@ -13,8 +13,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/newrelic/armnewrelicobservability/v2"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // OrganizationsServer is a fake server for instances of the armnewrelicobservability.OrganizationsClient type.
@@ -53,9 +53,7 @@ func (o *OrganizationsServerTransport) Do(req *http.Request) (*http.Response, er
 }
 
 func (o *OrganizationsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -71,10 +69,7 @@ func (o *OrganizationsServerTransport) dispatchToMethodFake(req *http.Request, m
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -98,15 +93,7 @@ func (o *OrganizationsServerTransport) dispatchNewListPager(req *http.Request) (
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
-		userEmailParam, err := url.QueryUnescape(qp.Get("userEmail"))
-		if err != nil {
-			return nil, err
-		}
-		locationParam, err := url.QueryUnescape(qp.Get("location"))
-		if err != nil {
-			return nil, err
-		}
-		resp := o.srv.NewListPager(userEmailParam, locationParam, nil)
+		resp := o.srv.NewListPager(qp.Get("userEmail"), qp.Get("location"), nil)
 		newListPager = &resp
 		o.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnewrelicobservability.OrganizationsClientListResponse, createLink func() string) {
@@ -117,7 +104,7 @@ func (o *OrganizationsServerTransport) dispatchNewListPager(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		o.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

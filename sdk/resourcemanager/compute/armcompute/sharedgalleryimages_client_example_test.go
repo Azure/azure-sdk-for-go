@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/sharedGalleryExamples/SharedGalleryImage_Get.json
+// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImage_Get.json
 func ExampleSharedGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleSharedGalleryImagesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.SharedGalleryImagesClientGetResponse{
-	// 	SharedGalleryImage: &armcompute.SharedGalleryImage{
+	// 	SharedGalleryImage: armcompute.SharedGalleryImage{
 	// 		Properties: &armcompute.SharedGalleryImageProperties{
 	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
 	// 			OSState: to.Ptr(armcompute.OperatingSystemStateTypesGeneralized),
@@ -54,7 +54,7 @@ func ExampleSharedGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/sharedGalleryExamples/SharedGalleryImages_List.json
+// Generated from example definition: 2025-12-03/sharedGalleryExamples/SharedGalleryImages_List.json
 func ExampleSharedGalleryImagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

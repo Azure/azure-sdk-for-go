@@ -4,6 +4,10 @@
 
 package armfluxconfigurations
 
+const (
+	version20250401 string = "2025-04-01"
+)
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 

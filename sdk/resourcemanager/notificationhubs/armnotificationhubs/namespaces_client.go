@@ -19,6 +19,8 @@ import (
 
 // NamespacesClient contains the methods for the Namespaces group.
 // Don't use this type directly, use NewNamespacesClient() instead.
+//
+// Generated from API version 2023-10-01-preview
 type NamespacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -46,8 +48,6 @@ func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredentia
 // Checks the availability of the given service namespace across all Azure subscriptions. This is useful because the domain
 // name is created based on the service namespace name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - parameters - The request body
 //   - options - NamespacesClientCheckAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckAvailability
 //     method.
@@ -85,8 +85,8 @@ func (client *NamespacesClient) checkAvailabilityCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -106,8 +106,6 @@ func (client *NamespacesClient) checkAvailabilityHandleResponse(resp *http.Respo
 
 // BeginCreateOrUpdate - Creates / Updates a Notification Hub namespace. This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - parameters - Request content.
@@ -132,8 +130,6 @@ func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Creates / Updates a Notification Hub namespace. This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters NamespaceResource, options *NamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespacesClient.BeginCreateOrUpdate"
@@ -175,8 +171,8 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -187,8 +183,6 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // CreateOrUpdateAuthorizationRule - Creates an authorization rule for a namespace
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - authorizationRuleName - Authorization Rule Name
@@ -241,8 +235,8 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -262,8 +256,6 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(re
 
 // Delete - Deletes an existing namespace. This operation also removes all associated notificationHubs under the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - options - NamespacesClientDeleteOptions contains the optional parameters for the NamespacesClient.Delete method.
@@ -308,15 +300,13 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteAuthorizationRule - Deletes a namespace authorization rule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - authorizationRuleName - Authorization Rule Name
@@ -367,15 +357,13 @@ func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Returns the given namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - options - NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
@@ -421,8 +409,8 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -438,8 +426,6 @@ func (client *NamespacesClient) getHandleResponse(resp *http.Response) (Namespac
 
 // GetAuthorizationRule - Gets an authorization rule for a namespace by name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - authorizationRuleName - Authorization Rule Name
@@ -491,8 +477,8 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -508,8 +494,6 @@ func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Re
 
 // GetPnsCredentials - Lists the PNS credentials associated with a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - options - NamespacesClientGetPnsCredentialsOptions contains the optional parameters for the NamespacesClient.GetPnsCredentials
@@ -556,8 +540,8 @@ func (client *NamespacesClient) getPnsCredentialsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -572,8 +556,6 @@ func (client *NamespacesClient) getPnsCredentialsHandleResponse(resp *http.Respo
 }
 
 // NewListPager - Lists the available namespaces within a resource group.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NamespacesClientListOptions contains the optional parameters for the NamespacesClient.NewListPager method.
 func (client *NamespacesClient) NewListPager(resourceGroupName string, options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
@@ -621,8 +603,8 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, resourceG
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -637,8 +619,6 @@ func (client *NamespacesClient) listHandleResponse(resp *http.Response) (Namespa
 }
 
 // NewListAllPager - Lists all the available namespaces within the subscription.
-//
-// Generated from API version 2023-10-01-preview
 //   - options - NamespacesClientListAllOptions contains the optional parameters for the NamespacesClient.NewListAllPager method.
 func (client *NamespacesClient) NewListAllPager(options *NamespacesClientListAllOptions) *runtime.Pager[NamespacesClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[NamespacesClientListAllResponse]{
@@ -681,8 +661,8 @@ func (client *NamespacesClient) listAllCreateRequest(ctx context.Context, option
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -697,8 +677,6 @@ func (client *NamespacesClient) listAllHandleResponse(resp *http.Response) (Name
 }
 
 // NewListAuthorizationRulesPager - Gets the authorization rules for a namespace.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - options - NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.NewListAuthorizationRulesPager
@@ -746,8 +724,8 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -763,8 +741,6 @@ func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.
 
 // ListKeys - Gets the Primary and Secondary ConnectionStrings to the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - authorizationRuleName - Authorization Rule Name
@@ -815,8 +791,8 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -832,8 +808,6 @@ func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (Nam
 
 // RegenerateKeys - Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - authorizationRuleName - Authorization Rule Name
@@ -886,8 +860,8 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -907,8 +881,6 @@ func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response
 
 // Update - Patches the existing namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-10-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - Namespace name
 //   - parameters - Request content.
@@ -955,8 +927,8 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-10-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20231001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

@@ -30,7 +30,7 @@ func ExampleOperationsStatusClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.OperationsStatusClientGetResponse{
-	// 	OperationStatus: &armredisenterprise.OperationStatus{
+	// 	OperationStatus: armredisenterprise.OperationStatus{
 	// 		Name: to.Ptr("testoperationid"),
 	// 		EndTime: to.Ptr("2017-01-01T16:13:13.933Z"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/providers/Microsoft.Cache/locations/westus/operationsStatus/testoperationid"),

@@ -18,6 +18,8 @@ import (
 
 // ConnectedPartnerResourcesClient contains the methods for the ConnectedPartnerResources group.
 // Don't use this type directly, use NewConnectedPartnerResourcesClient() instead.
+//
+// Generated from API version 2025-05-01-preview
 type ConnectedPartnerResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewConnectedPartnerResourcesClient(subscriptionID string, credential azcore
 // monitor.
 //
 // A synchronous resource action.
-//
-// Generated from API version 2025-05-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the Monitors resource
 //   - options - ConnectedPartnerResourcesClientListOptions contains the optional parameters for the ConnectedPartnerResourcesClient.NewListPager
@@ -92,8 +92,8 @@ func (client *ConnectedPartnerResourcesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

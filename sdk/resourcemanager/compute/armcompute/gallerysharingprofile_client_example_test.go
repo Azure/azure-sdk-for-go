@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_AddToSharingProfile.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_AddToSharingProfile.json
 func ExampleGallerySharingProfileClient_BeginUpdate_addSharingIdToTheSharingProfileOfAGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,13 +46,13 @@ func ExampleGallerySharingProfileClient_BeginUpdate_addSharingIdToTheSharingProf
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GallerySharingProfileClientUpdateResponse{
-	// 	SharingUpdate: &armcompute.SharingUpdate{
+	// 	SharingUpdate: armcompute.SharingUpdate{
 	// 		OperationType: to.Ptr(armcompute.SharingUpdateOperationTypesAdd),
 	// 		Groups: []*armcompute.SharingProfileGroup{
 	// 			{
@@ -73,7 +73,7 @@ func ExampleGallerySharingProfileClient_BeginUpdate_addSharingIdToTheSharingProf
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_EnableCommunityGallery.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_EnableCommunityGallery.json
 func ExampleGallerySharingProfileClient_BeginUpdate_shareAGalleryToCommunity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,19 +92,19 @@ func ExampleGallerySharingProfileClient_BeginUpdate_shareAGalleryToCommunity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GallerySharingProfileClientUpdateResponse{
-	// 	SharingUpdate: &armcompute.SharingUpdate{
+	// 	SharingUpdate: armcompute.SharingUpdate{
 	// 		OperationType: to.Ptr(armcompute.SharingUpdateOperationTypesEnableCommunity),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_ResetSharingProfile.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_ResetSharingProfile.json
 func ExampleGallerySharingProfileClient_BeginUpdate_resetSharingProfileOfAGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,13 +123,13 @@ func ExampleGallerySharingProfileClient_BeginUpdate_resetSharingProfileOfAGaller
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.GallerySharingProfileClientUpdateResponse{
-	// 	SharingUpdate: &armcompute.SharingUpdate{
+	// 	SharingUpdate: armcompute.SharingUpdate{
 	// 		OperationType: to.Ptr(armcompute.SharingUpdateOperationTypesReset),
 	// 	},
 	// }

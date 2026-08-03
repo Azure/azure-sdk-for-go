@@ -48,7 +48,7 @@ func ExampleInsightsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.InsightsClientCreateResponse{
-	// 	Insight: &armimpactreporting.Insight{
+	// 	Insight: armimpactreporting.Insight{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.Impact/workloadImpacts/impactid22/insights/insightId12"),
 	// 		Name: to.Ptr("insightId12"),
 	// 		Type: to.Ptr("Microsoft.Impact/insights"),
@@ -112,7 +112,7 @@ func ExampleInsightsClient_Get_getInsightSampleForDiagnosticsCategory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.InsightsClientGetResponse{
-	// 	Insight: &armimpactreporting.Insight{
+	// 	Insight: armimpactreporting.Insight{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadimpacts/impactid/insights/insight1"),
 	// 		Name: to.Ptr("insight1"),
 	// 		Type: to.Ptr("Microsoft.impact/workloadimpacts/insights"),
@@ -153,7 +153,7 @@ func ExampleInsightsClient_Get_getInsightSampleForMitigationActionCategory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.InsightsClientGetResponse{
-	// 	Insight: &armimpactreporting.Insight{
+	// 	Insight: armimpactreporting.Insight{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Impact/workloadimpacts/impactId/insights/HPCUASucceeded"),
 	// 		Name: to.Ptr("HPCUASucceeded"),
 	// 		Type: to.Ptr("Microsoft.impact/workloadimpacts/insights"),
@@ -197,7 +197,7 @@ func ExampleInsightsClient_Get_getInsightSampleForServiceHealthCategory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armimpactreporting.InsightsClientGetResponse{
-	// 	Insight: &armimpactreporting.Insight{
+	// 	Insight: armimpactreporting.Insight{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.Impact/workloadImpacts/impactname/insights/insightname"),
 	// 		Name: to.Ptr("insightname"),
 	// 		Type: to.Ptr("Microsoft.Impact/insights"),

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy/v2"
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicySetDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicySetDefinitionVersion.json
 func ExampleSetDefinitionVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleSetDefinitionVersionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientCreateOrUpdateResponse{
-	// 	SetDefinitionVersion: &armpolicy.SetDefinitionVersion{
+	// 	SetDefinitionVersion: armpolicy.SetDefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
@@ -128,7 +128,7 @@ func ExampleSetDefinitionVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/createOrUpdatePolicySetDefinitionVersionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicySetDefinitionVersionAtManagementGroup.json
 func ExampleSetDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleSetDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 							},
 						},
 					},
-					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
+					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1"),
 					PolicyDefinitionReferenceID: to.Ptr("Limit_Skus"),
 				},
 				{
@@ -168,7 +168,7 @@ func ExampleSetDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 							Value: "-LC",
 						},
 					},
-					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+					PolicyDefinitionID:          to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 					PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 				},
 			},
@@ -182,10 +182,10 @@ func ExampleSetDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientCreateOrUpdateAtManagementGroupResponse{
-	// 	SetDefinitionVersion: &armpolicy.SetDefinitionVersion{
+	// 	SetDefinitionVersion: armpolicy.SetDefinitionVersion{
 	// 		Name: to.Ptr("CostManagement"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
 	// 		Properties: &armpolicy.SetDefinitionVersionProperties{
 	// 			Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 	// 			DisplayName: to.Ptr("Cost Management"),
@@ -216,7 +216,7 @@ func ExampleSetDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	// 							Value: "-LC",
 	// 						},
 	// 					},
-	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 	// 					PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 	// 				},
 	// 			},
@@ -225,7 +225,7 @@ func ExampleSetDefinitionVersionsClient_CreateOrUpdateAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/deletePolicySetDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/deletePolicySetDefinitionVersion.json
 func ExampleSetDefinitionVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleSetDefinitionVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/deletePolicySetDefinitionVersionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/deletePolicySetDefinitionVersionAtManagementGroup.json
 func ExampleSetDefinitionVersionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleSetDefinitionVersionsClient_DeleteAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getPolicySetDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/getPolicySetDefinitionVersion.json
 func ExampleSetDefinitionVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleSetDefinitionVersionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientGetResponse{
-	// 	SetDefinitionVersion: &armpolicy.SetDefinitionVersion{
+	// 	SetDefinitionVersion: armpolicy.SetDefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions/versions"),
 	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
@@ -350,7 +350,7 @@ func ExampleSetDefinitionVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getPolicySetDefinitionVersionAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/getPolicySetDefinitionVersionAtManagementGroup.json
 func ExampleSetDefinitionVersionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,10 +369,10 @@ func ExampleSetDefinitionVersionsClient_GetAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientGetAtManagementGroupResponse{
-	// 	SetDefinitionVersion: &armpolicy.SetDefinitionVersion{
+	// 	SetDefinitionVersion: armpolicy.SetDefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions/versions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
 	// 		Properties: &armpolicy.SetDefinitionVersionProperties{
 	// 			Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 	// 			DisplayName: to.Ptr("Cost Management"),
@@ -403,7 +403,7 @@ func ExampleSetDefinitionVersionsClient_GetAtManagementGroup() {
 	// 							Value: "-LC",
 	// 						},
 	// 					},
-	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+	// 					PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 	// 					PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 	// 				},
 	// 			},
@@ -413,7 +413,7 @@ func ExampleSetDefinitionVersionsClient_GetAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/getBuiltInPolicySetDefinitionVersion.json
+// Generated from example definition: 2026-01-01-preview/getBuiltInPolicySetDefinitionVersion.json
 func ExampleSetDefinitionVersionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -432,7 +432,7 @@ func ExampleSetDefinitionVersionsClient_GetBuiltIn() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientGetBuiltInResponse{
-	// 	SetDefinitionVersion: &armpolicy.SetDefinitionVersion{
+	// 	SetDefinitionVersion: armpolicy.SetDefinitionVersion{
 	// 		Name: to.Ptr("1.2.1"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policySetDefinitions/versions"),
 	// 		ID: to.Ptr("/providers/Microsoft.Authorization/policySetDefinitions/1f3afdf9-d0c9-4c3d-847f-89da613e70a8/versions/1.2.1"),
@@ -503,7 +503,7 @@ func ExampleSetDefinitionVersionsClient_GetBuiltIn() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listPolicySetDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listPolicySetDefinitionVersions.json
 func ExampleSetDefinitionVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -575,7 +575,7 @@ func ExampleSetDefinitionVersionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/listAllPolicySetDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listAllPolicySetDefinitionVersions.json
 func ExampleSetDefinitionVersionsClient_ListAll() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -594,7 +594,7 @@ func ExampleSetDefinitionVersionsClient_ListAll() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientListAllResponse{
-	// 	SetDefinitionVersionListResult: &armpolicy.SetDefinitionVersionListResult{
+	// 	SetDefinitionVersionListResult: armpolicy.SetDefinitionVersionListResult{
 	// 		Value: []*armpolicy.SetDefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
@@ -642,7 +642,7 @@ func ExampleSetDefinitionVersionsClient_ListAll() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listAllPolicySetDefinitionVersionsByManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/listAllPolicySetDefinitionVersionsByManagementGroup.json
 func ExampleSetDefinitionVersionsClient_ListAllAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +661,7 @@ func ExampleSetDefinitionVersionsClient_ListAllAtManagementGroup() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientListAllAtManagementGroupResponse{
-	// 	SetDefinitionVersionListResult: &armpolicy.SetDefinitionVersionListResult{
+	// 	SetDefinitionVersionListResult: armpolicy.SetDefinitionVersionListResult{
 	// 		Value: []*armpolicy.SetDefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
@@ -734,7 +734,7 @@ func ExampleSetDefinitionVersionsClient_ListAllAtManagementGroup() {
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
 	// 				Type: to.Ptr("Microsoft.Authorization/policySetDefinitions/versions"),
-	// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
+	// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
 	// 				Properties: &armpolicy.SetDefinitionVersionProperties{
 	// 					Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 	// 					DisplayName: to.Ptr("Cost Management"),
@@ -765,7 +765,7 @@ func ExampleSetDefinitionVersionsClient_ListAllAtManagementGroup() {
 	// 									Value: "-LC",
 	// 								},
 	// 							},
-	// 							PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+	// 							PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 	// 							PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 	// 						},
 	// 					},
@@ -777,7 +777,7 @@ func ExampleSetDefinitionVersionsClient_ListAllAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listAllBuiltInPolicySetDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listAllBuiltInPolicySetDefinitionVersions.json
 func ExampleSetDefinitionVersionsClient_ListAllBuiltins() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -796,7 +796,7 @@ func ExampleSetDefinitionVersionsClient_ListAllBuiltins() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpolicy.SetDefinitionVersionsClientListAllBuiltinsResponse{
-	// 	SetDefinitionVersionListResult: &armpolicy.SetDefinitionVersionListResult{
+	// 	SetDefinitionVersionListResult: armpolicy.SetDefinitionVersionListResult{
 	// 		Value: []*armpolicy.SetDefinitionVersion{
 	// 			{
 	// 				Name: to.Ptr("1.2.1"),
@@ -871,7 +871,7 @@ func ExampleSetDefinitionVersionsClient_ListAllBuiltins() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/listBuiltInPolicySetDefinitionVersions.json
+// Generated from example definition: 2026-01-01-preview/listBuiltInPolicySetDefinitionVersions.json
 func ExampleSetDefinitionVersionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -970,7 +970,7 @@ func ExampleSetDefinitionVersionsClient_NewListBuiltInPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-01/listPolicySetDefinitionVersionsByManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/listPolicySetDefinitionVersionsByManagementGroup.json
 func ExampleSetDefinitionVersionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -998,7 +998,7 @@ func ExampleSetDefinitionVersionsClient_NewListByManagementGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("1.2.1"),
 		// 				Type: to.Ptr("Microsoft.Authorization/policySetDefinitions/versions"),
-		// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
+		// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policySetDefinitions/CostManagement/versions/1.2.1"),
 		// 				Properties: &armpolicy.SetDefinitionVersionProperties{
 		// 					Description: to.Ptr("Policies to enforce low cost storage SKUs"),
 		// 					DisplayName: to.Ptr("Cost Management"),
@@ -1029,7 +1029,7 @@ func ExampleSetDefinitionVersionsClient_NewListByManagementGroupPager() {
 		// 									Value: "-LC",
 		// 								},
 		// 							},
-		// 							PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+		// 							PolicyDefinitionID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 		// 							PolicyDefinitionReferenceID: to.Ptr("Resource_Naming"),
 		// 						},
 		// 					},

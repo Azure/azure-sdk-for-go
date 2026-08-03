@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/ProjectCapabilityHost/createOrUpdate.json
 func ExampleProjectCapabilityHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleProjectCapabilityHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/delete.json
+// Generated from example definition: 2026-05-15-preview/ProjectCapabilityHost/delete.json
 func ExampleProjectCapabilityHostsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleProjectCapabilityHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/get.json
+// Generated from example definition: 2026-05-15-preview/ProjectCapabilityHost/get.json
 func ExampleProjectCapabilityHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleProjectCapabilityHostsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ProjectCapabilityHost/list.json
+// Generated from example definition: 2026-05-15-preview/ProjectCapabilityHost/list.json
 func ExampleProjectCapabilityHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -40,6 +40,14 @@ func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	}
 }
 
+// NewAlertConfigurationsClient creates a new instance of AlertConfigurationsClient.
+func (c *ClientFactory) NewAlertConfigurationsClient() *AlertConfigurationsClient {
+	return &AlertConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewClient creates a new instance of Client.
 func (c *ClientFactory) NewClient() *Client {
 	return &Client{
@@ -83,6 +91,14 @@ func (c *ClientFactory) NewMachinesClient() *MachinesClient {
 // NewMaintenanceConfigurationsClient creates a new instance of MaintenanceConfigurationsClient.
 func (c *ClientFactory) NewMaintenanceConfigurationsClient() *MaintenanceConfigurationsClient {
 	return &MaintenanceConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMaintenanceWindowsClient creates a new instance of MaintenanceWindowsClient.
+func (c *ClientFactory) NewMaintenanceWindowsClient() *MaintenanceWindowsClient {
+	return &MaintenanceWindowsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

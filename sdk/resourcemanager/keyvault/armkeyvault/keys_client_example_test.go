@@ -35,7 +35,7 @@ func ExampleKeysClient_CreateIfNotExist() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.KeysClientCreateIfNotExistResponse{
-	// 	Key: &armkeyvault.Key{
+	// 	Key: armkeyvault.Key{
 	// 		Name: to.Ptr("sample-key-name"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults/keys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault-name/keys/sample-key-name"),
@@ -83,7 +83,7 @@ func ExampleKeysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.KeysClientGetResponse{
-	// 	Key: &armkeyvault.Key{
+	// 	Key: armkeyvault.Key{
 	// 		Name: to.Ptr("sample-key-name"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults/keys"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault-name/keys/sample-key-name"),
@@ -131,7 +131,7 @@ func ExampleKeysClient_GetVersion() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkeyvault.KeysClientGetVersionResponse{
-	// 	Key: &armkeyvault.Key{
+	// 	Key: armkeyvault.Key{
 	// 		Name: to.Ptr("fd618d9519b74f9aae94ade66b876acc"),
 	// 		Type: to.Ptr("Microsoft.KeyVault/vaults/keys/versions"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-group/providers/Microsoft.KeyVault/vaults/sample-vault-name/keys/sample-key-name/versions/fd618d9519b74f9aae94ade66b876acc"),

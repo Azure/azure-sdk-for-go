@@ -18,6 +18,8 @@ import (
 
 // PaloAltoNetworksCloudngfwOperationsClient contains the methods for the PaloAltoNetworksCloudngfwOperations group.
 // Don't use this type directly, use NewPaloAltoNetworksCloudngfwOperationsClient() instead.
+//
+// Generated from API version 2025-10-08
 type PaloAltoNetworksCloudngfwOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPaloAltoNetworksCloudngfwOperationsClient(subscriptionID string, credent
 
 // CreateProductSerialNumber -
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - options - PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberOptions contains the optional parameters for
 //     the PaloAltoNetworksCloudngfwOperationsClient.CreateProductSerialNumber method.
 func (client *PaloAltoNetworksCloudngfwOperationsClient) CreateProductSerialNumber(ctx context.Context, options *PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberOptions) (PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse, error) {
@@ -79,8 +79,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) createProductSerialNumb
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -96,8 +96,6 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) createProductSerialNumb
 
 // ListCloudManagerTenants -
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - options - PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsOptions contains the optional parameters for
 //     the PaloAltoNetworksCloudngfwOperationsClient.ListCloudManagerTenants method.
 func (client *PaloAltoNetworksCloudngfwOperationsClient) ListCloudManagerTenants(ctx context.Context, options *PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsOptions) (PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse, error) {
@@ -134,8 +132,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listCloudManagerTenants
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -151,8 +149,6 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listCloudManagerTenants
 
 // ListProductSerialNumberStatus -
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - options - PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusOptions contains the optional parameters
 //     for the PaloAltoNetworksCloudngfwOperationsClient.ListProductSerialNumberStatus method.
 func (client *PaloAltoNetworksCloudngfwOperationsClient) ListProductSerialNumberStatus(ctx context.Context, options *PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusOptions) (PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse, error) {
@@ -189,8 +185,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listProductSerialNumber
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -206,8 +202,6 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listProductSerialNumber
 
 // ListSupportInfo -
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-08
 //   - options - PaloAltoNetworksCloudngfwOperationsClientListSupportInfoOptions contains the optional parameters for the PaloAltoNetworksCloudngfwOperationsClient.ListSupportInfo
 //     method.
 func (client *PaloAltoNetworksCloudngfwOperationsClient) ListSupportInfo(ctx context.Context, options *PaloAltoNetworksCloudngfwOperationsClientListSupportInfoOptions) (PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse, error) {
@@ -244,8 +238,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listSupportInfoCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-08")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

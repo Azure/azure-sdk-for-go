@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMachineScaleSetExtensionCreateOrUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,13 +45,13 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSetExtension: &armcompute.VirtualMachineScaleSetExtension{
+	// 	VirtualMachineScaleSetExtension: armcompute.VirtualMachineScaleSetExtension{
 	// 		Name: to.Ptr("{extension-name}"),
 	// 		Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
 	// 			AutoUpgradeMinorVersion: to.Ptr(true),
@@ -76,7 +76,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMa
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_CreateOrUpdate_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMachineScaleSetExtensionCreateOrUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,18 +93,18 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginCreateOrUpdate_virtualMa
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetExtensionsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSetExtension: &armcompute.VirtualMachineScaleSetExtension{
+	// 	VirtualMachineScaleSetExtension: armcompute.VirtualMachineScaleSetExtension{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineScaleSetExtensionDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -130,7 +130,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Delete_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineScaleSetExtensionDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -156,7 +156,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginDelete_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExtensionGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExt
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetExtensionsClientGetResponse{
-	// 	VirtualMachineScaleSetExtension: &armcompute.VirtualMachineScaleSetExtension{
+	// 	VirtualMachineScaleSetExtension: armcompute.VirtualMachineScaleSetExtension{
 	// 		Name: to.Ptr("{extension-name}"),
 	// 		Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
 	// 			AutoUpgradeMinorVersion: to.Ptr(true),
@@ -201,7 +201,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExt
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Get_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExtensionGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,12 +220,12 @@ func ExampleVirtualMachineScaleSetExtensionsClient_Get_virtualMachineScaleSetExt
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetExtensionsClientGetResponse{
-	// 	VirtualMachineScaleSetExtension: &armcompute.VirtualMachineScaleSetExtension{
+	// 	VirtualMachineScaleSetExtension: armcompute.VirtualMachineScaleSetExtension{
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineScaleSetExtensionListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -279,7 +279,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineSc
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_List_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineScaleSetExtensionListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_NewListPager_virtualMachineSc
 	}
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineScaleSetExtensionUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,13 +344,13 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetExtensionsClientUpdateResponse{
-	// 	VirtualMachineScaleSetExtension: &armcompute.VirtualMachineScaleSetExtension{
+	// 	VirtualMachineScaleSetExtension: armcompute.VirtualMachineScaleSetExtension{
 	// 		Name: to.Ptr("{extension-name}"),
 	// 		Properties: &armcompute.VirtualMachineScaleSetExtensionProperties{
 	// 			AutoUpgradeMinorVersion: to.Ptr(true),
@@ -375,7 +375,7 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: 2025-11-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSetExtension_Update_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineScaleSetExtensionUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,13 +392,13 @@ func ExampleVirtualMachineScaleSetExtensionsClient_BeginUpdate_virtualMachineSca
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcompute.VirtualMachineScaleSetExtensionsClientUpdateResponse{
-	// 	VirtualMachineScaleSetExtension: &armcompute.VirtualMachineScaleSetExtension{
+	// 	VirtualMachineScaleSetExtension: armcompute.VirtualMachineScaleSetExtension{
 	// 	},
 	// }
 }

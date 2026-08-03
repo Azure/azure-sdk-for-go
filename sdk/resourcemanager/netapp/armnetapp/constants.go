@@ -4,6 +4,10 @@
 
 package armnetapp
 
+const (
+	version20260501 string = "2026-05-01"
+)
+
 // AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
 // not have enough space to accommodate the volume after split, it will be automatically resized, which will lead to increased
 // billing. To accept capacity pool size auto grow and create a short term clone volume, set the property as accepted.
@@ -128,6 +132,30 @@ func PossibleBackupTypeValues() []BackupType {
 	}
 }
 
+// BreakthroughMode - Specifies whether the volume operates in Breakthrough Mode. When set to 'Enabled', the volume runs on
+// the resources configured for this mode,
+// delivering improved performance and higher throughput. If set to 'Disabled' or omitted, the volume uses the basic configuration.
+// This feature
+// is available only in regions where it’s been configured and first-time users must finish onboarding prior to using Breakthrough
+// Mode.
+type BreakthroughMode string
+
+const (
+	// BreakthroughModeDisabled - The volume uses configuration that provides basic performance and throughput.
+	BreakthroughModeDisabled BreakthroughMode = "Disabled"
+	// BreakthroughModeEnabled - The volume runs on the resources configured for Breakthrough mode which ensures consistent high
+	// performance and a higher throughput.
+	BreakthroughModeEnabled BreakthroughMode = "Enabled"
+)
+
+// PossibleBreakthroughModeValues returns the possible values for the BreakthroughMode const type.
+func PossibleBreakthroughModeValues() []BreakthroughMode {
+	return []BreakthroughMode{
+		BreakthroughModeDisabled,
+		BreakthroughModeEnabled,
+	}
+}
+
 // BucketPatchPermissions - Access permissions for the bucket. Either ReadOnly or ReadWrite.
 type BucketPatchPermissions string
 
@@ -162,6 +190,25 @@ func PossibleBucketPermissionsValues() []BucketPermissions {
 	return []BucketPermissions{
 		BucketPermissionsReadOnly,
 		BucketPermissionsReadWrite,
+	}
+}
+
+// CacheFileAccessLogs - Flag indicating whether file access logs are enabled for the Cache, based on active diagnostic settings
+// present on the Cache.
+type CacheFileAccessLogs string
+
+const (
+	// CacheFileAccessLogsDisabled - fileAccessLogs are not enabled
+	CacheFileAccessLogsDisabled CacheFileAccessLogs = "Disabled"
+	// CacheFileAccessLogsEnabled - fileAccessLogs are enabled
+	CacheFileAccessLogsEnabled CacheFileAccessLogs = "Enabled"
+)
+
+// PossibleCacheFileAccessLogsValues returns the possible values for the CacheFileAccessLogs const type.
+func PossibleCacheFileAccessLogsValues() []CacheFileAccessLogs {
+	return []CacheFileAccessLogs{
+		CacheFileAccessLogsDisabled,
+		CacheFileAccessLogsEnabled,
 	}
 }
 
@@ -419,6 +466,7 @@ func PossibleDesiredRansomwareProtectionStateValues() []DesiredRansomwareProtect
 }
 
 // EnableSubvolumes - Flag indicating whether subvolume operations are enabled on the volume
+// Deprecated. This type will be removed in a future API version.
 type EnableSubvolumes string
 
 const (

@@ -4,6 +4,10 @@
 
 package armnotificationhubs
 
+const (
+	version20231001Preview string = "2023-10-01-preview"
+)
+
 // AccessRights - Defines values for AccessRights.
 type AccessRights string
 

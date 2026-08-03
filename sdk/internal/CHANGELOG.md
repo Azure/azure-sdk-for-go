@@ -4,6 +4,21 @@
 
 ### Features Added
 
+* Extended the `perf` framework with new command-line options aligned with the .NET `Azure.Test.Perf` runner:
+  * `--iterations`/`-i` to repeat the measurement phase multiple times.
+  * `--rate`/`-r` to cap aggregate throughput in operations per second.
+  * `--status-interval` to control the cadence of live status output.
+  * `--results-file` to emit per-operation results as JSON when `--latency` is enabled.
+  * `--output-file-prefix` to write run-summary artifacts as `.json`, `.csv`, `.txt`, and `.md`.
+  * `--resource-telemetry` to print a `runtime.MemStats` and goroutine-count delta at the end of a run.
+  * `--config` and `--workload` to load and select named workloads from a JSON workload-config file.
+  * `--job-statistics` to emit the `#StartJobStatistics` / `#EndJobStatistics` block consumed by perf-automation.
+  * `--maxprocs` to override `GOMAXPROCS` for the run.
+  * `--no-cleanup` to skip `Cleanup` / `GlobalCleanup` at end of run.
+  * `--debug` for additional diagnostic output.
+  * `--sync`, `--insecure`, `--max-io-completion-threads`, `--max-worker-threads`, `--min-io-completion-threads`, and `--min-worker-threads` are accepted for CLI parity with the .NET runner.
+* The `perf` runner now samples process CPU and memory usage in the background, displaying them in the live status line and including `averageCpuPercent` / `averageMemoryBytes` in run-summary artifacts.
+
 ### Breaking Changes
 
 ### Bugs Fixed

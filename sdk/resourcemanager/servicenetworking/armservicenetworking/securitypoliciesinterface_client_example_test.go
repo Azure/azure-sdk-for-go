@@ -36,13 +36,13 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putIPAccessRules
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.SecurityPoliciesInterfaceClientCreateOrUpdateResponse{
-	// 	SecurityPolicy: &armservicenetworking.SecurityPolicy{
+	// 	SecurityPolicy: armservicenetworking.SecurityPolicy{
 	// 		Name: to.Ptr("ipAccessRules-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
@@ -83,13 +83,13 @@ func ExampleSecurityPoliciesInterfaceClient_BeginCreateOrUpdate_putWafSecurityPo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.SecurityPoliciesInterfaceClientCreateOrUpdateResponse{
-	// 	SecurityPolicy: &armservicenetworking.SecurityPolicy{
+	// 	SecurityPolicy: armservicenetworking.SecurityPolicy{
 	// 		Name: to.Ptr("waf-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/waf-0"),
@@ -122,7 +122,7 @@ func ExampleSecurityPoliciesInterfaceClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -145,7 +145,7 @@ func ExampleSecurityPoliciesInterfaceClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.SecurityPoliciesInterfaceClientGetResponse{
-	// 	SecurityPolicy: &armservicenetworking.SecurityPolicy{
+	// 	SecurityPolicy: armservicenetworking.SecurityPolicy{
 	// 		Name: to.Ptr("waf-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/waf-0"),
@@ -230,7 +230,7 @@ func ExampleSecurityPoliciesInterfaceClient_Update_updateIPAccessRulesSecurityPo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.SecurityPoliciesInterfaceClientUpdateResponse{
-	// 	SecurityPolicy: &armservicenetworking.SecurityPolicy{
+	// 	SecurityPolicy: armservicenetworking.SecurityPolicy{
 	// 		Name: to.Ptr("ipAccessRules-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/ipAccessRules-0"),
@@ -272,7 +272,7 @@ func ExampleSecurityPoliciesInterfaceClient_Update_updateWafSecurityPolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armservicenetworking.SecurityPoliciesInterfaceClientUpdateResponse{
-	// 	SecurityPolicy: &armservicenetworking.SecurityPolicy{
+	// 	SecurityPolicy: armservicenetworking.SecurityPolicy{
 	// 		Name: to.Ptr("waf-0"),
 	// 		Type: to.Ptr("Microsoft.ServiceNetworking/trafficControllers/securityPolicies"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ServiceNetworking/trafficControllers/sample-tc/securityPolicies/waf-0"),

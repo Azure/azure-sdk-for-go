@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Topics_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Create_MaximumSet_Gen.json
 func ExampleTopicsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleTopicsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.TopicsClientCreateResponse{
-	// 	TopicRecord: &armconfluent.TopicRecord{
+	// 	TopicRecord: armconfluent.TopicRecord{
 	// 		Properties: &armconfluent.TopicProperties{
 	// 			Kind: to.Ptr("olpxpglrwgzffeibtxqbzqn"),
 	// 			TopicID: to.Ptr("pughhn"),
@@ -98,7 +98,7 @@ func ExampleTopicsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Delete_MaximumSet_Gen.json
 func ExampleTopicsClient_BeginDelete_topicsDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,11 +115,11 @@ func ExampleTopicsClient_BeginDelete_topicsDeleteMaximumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Delete_MinimumSet_Gen.json
 func ExampleTopicsClient_BeginDelete_topicsDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,11 +136,11 @@ func ExampleTopicsClient_BeginDelete_topicsDeleteMinimumSet() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_Get_MaximumSet_Gen.json
 func ExampleTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleTopicsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armconfluent.TopicsClientGetResponse{
-	// 	TopicRecord: &armconfluent.TopicRecord{
+	// 	TopicRecord: armconfluent.TopicRecord{
 	// 		Properties: &armconfluent.TopicProperties{
 	// 			Kind: to.Ptr("olpxpglrwgzffeibtxqbzqn"),
 	// 			TopicID: to.Ptr("pughhn"),
@@ -200,7 +200,7 @@ func ExampleTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Topics_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Topics_List_MaximumSet_Gen.json
 func ExampleTopicsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

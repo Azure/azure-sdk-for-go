@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"log"
 )
 
@@ -70,7 +70,7 @@ func ExampleSubscriptionsClient_GetTargetDirectory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.SubscriptionsClientGetTargetDirectoryResponse{
-	// 	TargetDirectoryResult: &armsubscription.TargetDirectoryResult{
+	// 	TargetDirectoryResult: armsubscription.TargetDirectoryResult{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Subscription/changeTenantRequest"),
 	// 		ID: to.Ptr("/subscriptions/ebe4f8fd-d8b3-4867-bcf4-b2407edd196d/providers/Microsoft.Subscription/changeTenantRequest/default"),
@@ -162,7 +162,7 @@ func ExampleSubscriptionsClient_PutTargetDirectory() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.SubscriptionsClientPutTargetDirectoryResponse{
-	// 	TargetDirectoryResult: &armsubscription.TargetDirectoryResult{
+	// 	TargetDirectoryResult: armsubscription.TargetDirectoryResult{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Subscription/changeTenantRequest"),
 	// 		ID: to.Ptr("/subscriptions/ecce7b25-862b-44a2-9e21-a1baa50618eb/providers/Microsoft.Subscription/changeTenantRequest/default"),
@@ -201,7 +201,7 @@ func ExampleSubscriptionsClient_TargetDirectoryStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.SubscriptionsClientTargetDirectoryStatusResponse{
-	// 	TargetDirectoryResultProperties: &armsubscription.TargetDirectoryResultProperties{
+	// 	TargetDirectoryResultProperties: armsubscription.TargetDirectoryResultProperties{
 	// 		AcceptedDate: nil,
 	// 		CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-18T17:57:40.0278346Z"); return t}()),
 	// 		DestinationOwnerID: to.Ptr("b11a05c8-6acc-435e-9a51-2140dea093a5"),

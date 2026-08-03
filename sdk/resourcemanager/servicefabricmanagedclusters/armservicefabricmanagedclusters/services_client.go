@@ -350,8 +350,6 @@ func (client *ServicesClient) listByApplicationsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginRestartReplica - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the cluster resource.
 //   - applicationName - The name of the application resource.
@@ -376,7 +374,7 @@ func (client *ServicesClient) BeginRestartReplica(ctx context.Context, resourceG
 	}
 }
 
-// RestartReplica - A long-running resource action.
+// RestartReplica -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServicesClient) restartReplica(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, options *ServicesClientBeginRestartReplicaOptions) (*http.Response, error) {
 	var err error

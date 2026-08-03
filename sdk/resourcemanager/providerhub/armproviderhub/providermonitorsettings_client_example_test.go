@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2"
 	"log"
 )
 
@@ -31,13 +31,13 @@ func ExampleProviderMonitorSettingsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientCreateResponse{
-	// 	ProviderMonitorSetting: &armproviderhub.ProviderMonitorSetting{
+	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
@@ -98,7 +98,7 @@ func ExampleProviderMonitorSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientGetResponse{
-	// 	ProviderMonitorSetting: &armproviderhub.ProviderMonitorSetting{
+	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
@@ -233,7 +233,7 @@ func ExampleProviderMonitorSettingsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientUpdateResponse{
-	// 	ProviderMonitorSetting: &armproviderhub.ProviderMonitorSetting{
+	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),

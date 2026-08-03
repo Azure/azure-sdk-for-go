@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v2"
 	"log"
 )
 
@@ -51,7 +51,7 @@ func ExampleSKUsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
@@ -106,7 +106,7 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
@@ -161,7 +161,7 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
@@ -216,7 +216,7 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/nestedEmployee3/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),
@@ -339,7 +339,7 @@ func ExampleSKUsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
@@ -393,7 +393,7 @@ func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetNestedResourceTypeFirstResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
@@ -447,7 +447,7 @@ func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetNestedResourceTypeSecondResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
@@ -501,7 +501,7 @@ func ExampleSKUsClient_GetNestedResourceTypeThird() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetNestedResourceTypeThirdResponse{
-	// 	SKUResource: &armproviderhub.SKUResource{
+	// 	SKUResource: armproviderhub.SKUResource{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/nestedEmployee3/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),

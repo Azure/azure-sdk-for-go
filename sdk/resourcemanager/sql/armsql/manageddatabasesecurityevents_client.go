@@ -19,6 +19,8 @@ import (
 
 // ManagedDatabaseSecurityEventsClient contains the methods for the ManagedDatabaseSecurityEvents group.
 // Don't use this type directly, use NewManagedDatabaseSecurityEventsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseSecurityEventsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedDatabaseSecurityEventsClient(subscriptionID string, credential az
 }
 
 // NewListByDatabasePager - Gets a list of security events.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -107,8 +107,8 @@ func (client *ManagedDatabaseSecurityEventsClient) listByDatabaseCreateRequest(c
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

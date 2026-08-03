@@ -18,6 +18,8 @@ import (
 
 // ServerUsagesClient contains the methods for the ServerUsages group.
 // Don't use this type directly, use NewServerUsagesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewServerUsagesClient(subscriptionID string, credential azcore.TokenCredent
 }
 
 // NewListByServerPager - Gets server usages.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerUsagesClientListByServerOptions contains the optional parameters for the ServerUsagesClient.NewListByServerPager
@@ -89,8 +89,8 @@ func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

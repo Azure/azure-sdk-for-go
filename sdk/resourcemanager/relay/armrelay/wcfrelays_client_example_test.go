@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/relay/armrelay"
 	"log"
 )
 
@@ -37,7 +37,7 @@ func ExampleWCFRelaysClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientCreateOrUpdateResponse{
-	// 	WcfRelay: &armrelay.WcfRelay{
+	// 	WcfRelay: armrelay.WcfRelay{
 	// 		Name: to.Ptr("example-Relay-Wcf-1194"),
 	// 		Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
@@ -79,7 +79,7 @@ func ExampleWCFRelaysClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -156,7 +156,7 @@ func ExampleWCFRelaysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientGetResponse{
-	// 	WcfRelay: &armrelay.WcfRelay{
+	// 	WcfRelay: armrelay.WcfRelay{
 	// 		Name: to.Ptr("example-Relay-Wcf-1194"),
 	// 		Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-ServiceBus-WestUS/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
@@ -192,7 +192,7 @@ func ExampleWCFRelaysClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientGetAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -311,7 +311,7 @@ func ExampleWCFRelaysClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientListKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -342,7 +342,7 @@ func ExampleWCFRelaysClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientRegenerateKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),

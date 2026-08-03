@@ -11,10 +11,10 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"net/http"
-	"net/url"
 	"regexp"
+	"slices"
 )
 
 // LookingGlassServer is a fake server for instances of the armpeering.LookingGlassClient type.
@@ -49,9 +49,7 @@ func (l *LookingGlassServerTransport) Do(req *http.Request) (*http.Response, err
 }
 
 func (l *LookingGlassServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -67,10 +65,7 @@ func (l *LookingGlassServerTransport) dispatchToMethodFake(req *http.Request, me
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -92,40 +87,12 @@ func (l *LookingGlassServerTransport) dispatchInvoke(req *http.Request) (*http.R
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	commandParam, err := parseWithCast(qp.Get("command"), func(v string) (armpeering.LookingGlassCommand, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armpeering.LookingGlassCommand(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	sourceTypeParam, err := parseWithCast(qp.Get("sourceType"), func(v string) (armpeering.LookingGlassSourceType, error) {
-		p, unescapeErr := url.QueryUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armpeering.LookingGlassSourceType(p), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-	sourceLocationParam, err := url.QueryUnescape(qp.Get("sourceLocation"))
-	if err != nil {
-		return nil, err
-	}
-	destinationIPParam, err := url.QueryUnescape(qp.Get("destinationIP"))
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := l.srv.Invoke(req.Context(), commandParam, sourceTypeParam, sourceLocationParam, destinationIPParam, nil)
+	respr, errRespr := l.srv.Invoke(req.Context(), armpeering.LookingGlassCommand(qp.Get("command")), armpeering.LookingGlassSourceType(qp.Get("sourceType")), qp.Get("sourceLocation"), qp.Get("destinationIP"), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).LookingGlassOutput, req)

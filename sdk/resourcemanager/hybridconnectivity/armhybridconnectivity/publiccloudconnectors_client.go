@@ -344,8 +344,6 @@ func (client *PublicCloudConnectorsClient) listBySubscriptionHandleResponse(resp
 	return result, nil
 }
 
-// BeginTestPermissions - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - options - PublicCloudConnectorsClientBeginTestPermissionsOptions contains the optional parameters for the PublicCloudConnectorsClient.BeginTestPermissions
@@ -367,7 +365,7 @@ func (client *PublicCloudConnectorsClient) BeginTestPermissions(ctx context.Cont
 	}
 }
 
-// TestPermissions - A long-running resource action.
+// TestPermissions -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PublicCloudConnectorsClient) testPermissions(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *PublicCloudConnectorsClientBeginTestPermissionsOptions) (*http.Response, error) {
 	var err error

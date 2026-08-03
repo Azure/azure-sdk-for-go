@@ -172,8 +172,6 @@ func (client *DeletedBackupInstancesClient) listHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginUndelete - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - backupInstanceName - The name of the deleted backup instance
@@ -196,7 +194,7 @@ func (client *DeletedBackupInstancesClient) BeginUndelete(ctx context.Context, r
 	}
 }
 
-// Undelete - A long-running resource action.
+// Undelete -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DeletedBackupInstancesClient) undelete(ctx context.Context, resourceGroupName string, vaultName string, backupInstanceName string, options *DeletedBackupInstancesClientBeginUndeleteOptions) (*http.Response, error) {
 	var err error

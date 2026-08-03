@@ -972,8 +972,6 @@ func (client *MonitorsClient) refreshIngestionKeyCreateRequest(ctx context.Conte
 }
 
 // BeginResubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
-//
-// A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Name of the Monitors resource
@@ -998,8 +996,6 @@ func (client *MonitorsClient) BeginResubscribe(ctx context.Context, resourceGrou
 }
 
 // Resubscribe - Resubscribes the New Relic Organization of the underline Monitor Resource to be billed by Azure Marketplace
-//
-// A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MonitorsClient) resubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*http.Response, error) {
 	var err error

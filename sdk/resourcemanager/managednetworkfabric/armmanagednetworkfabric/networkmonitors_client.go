@@ -18,6 +18,8 @@ import (
 
 // NetworkMonitorsClient contains the methods for the NetworkMonitors group.
 // Don't use this type directly, use NewNetworkMonitorsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkMonitorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkMonitorsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Creates NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - body - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *NetworkMonitorsClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Creates NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) create(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitor, options *NetworkMonitorsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *NetworkMonitorsClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *NetworkMonitorsClient) createCreateRequest(ctx context.Context, re
 
 // BeginDelete - Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - options - NetworkMonitorsClientBeginDeleteOptions contains the optional parameters for the NetworkMonitorsClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *NetworkMonitorsClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Deletes layer 2 connectivity between compute nodes by managed by named NetworkMonitor name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkMonitorName string, options *NetworkMonitorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *NetworkMonitorsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements NetworkMonitor GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - options - NetworkMonitorsClientGetOptions contains the optional parameters for the NetworkMonitorsClient.Get method.
@@ -244,8 +236,8 @@ func (client *NetworkMonitorsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *NetworkMonitorsClient) getHandleResponse(resp *http.Response) (Net
 }
 
 // NewListByResourceGroupPager - Displays NetworkMonitors list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkMonitorsClientListByResourceGroupOptions contains the optional parameters for the NetworkMonitorsClient.NewListByResourceGroupPager
 //     method.
@@ -304,8 +294,8 @@ func (client *NetworkMonitorsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *NetworkMonitorsClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Displays NetworkMonitors list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkMonitorsClientListBySubscriptionOptions contains the optional parameters for the NetworkMonitorsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkMonitorsClient) NewListBySubscriptionPager(options *NetworkMonitorsClientListBySubscriptionOptions) *runtime.Pager[NetworkMonitorsClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *NetworkMonitorsClient) listBySubscriptionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *NetworkMonitorsClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginUpdate - API to update certain properties of the NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - body - The resource properties to be updated.
@@ -402,8 +388,6 @@ func (client *NetworkMonitorsClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - API to update certain properties of the NetworkMonitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) update(ctx context.Context, resourceGroupName string, networkMonitorName string, body NetworkMonitorPatch, options *NetworkMonitorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginUpdate"
@@ -445,8 +429,8 @@ func (client *NetworkMonitorsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -457,8 +441,6 @@ func (client *NetworkMonitorsClient) updateCreateRequest(ctx context.Context, re
 
 // BeginUpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkMonitorName - Name of the Network Monitor.
 //   - body - Request payload.
@@ -483,8 +465,6 @@ func (client *NetworkMonitorsClient) BeginUpdateAdministrativeState(ctx context.
 
 // UpdateAdministrativeState - Enables isolation domain across the fabric or on specified racks.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkMonitorsClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkMonitorName string, body UpdateAdministrativeState, options *NetworkMonitorsClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkMonitorsClient.BeginUpdateAdministrativeState"
@@ -526,8 +506,8 @@ func (client *NetworkMonitorsClient) updateAdministrativeStateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

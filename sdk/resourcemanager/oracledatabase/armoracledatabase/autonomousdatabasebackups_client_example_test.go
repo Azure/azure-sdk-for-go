@@ -271,7 +271,7 @@ func ExampleAutonomousDatabaseBackupsClient_Get_autonomousDatabaseBackupsGet() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/autonomousDatabaseBackup_listByParent.json
+// Generated from example definition: 2025-09-01/AutonomousDatabaseBackups_ListByParent_MaximumSet_Gen.json
 func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAutonomousDatabaseBackupsClient().NewListByAutonomousDatabasePager("rg000", "databasedb1", nil)
+	pager := clientFactory.NewAutonomousDatabaseBackupsClient().NewListByAutonomousDatabasePager("rgopenapi", "databasedb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -315,9 +315,20 @@ func ExampleAutonomousDatabaseBackupsClient_NewListByAutonomousDatabasePager() {
 		// 					TimeEnded: to.Ptr("2024-01-09T20:44:09.466Z"),
 		// 					BackupType: to.Ptr(armoracledatabase.AutonomousDatabaseBackupTypeFull),
 		// 					ProvisioningState: to.Ptr(armoracledatabase.AzureResourceProvisioningStateSucceeded),
+		// 					TimeStarted: to.Ptr("krhgmxolymoepnkghvd"),
+		// 				},
+		// 				Name: to.Ptr("oqossvyqkeitdj"),
+		// 				SystemData: &armoracledatabase.SystemData{
+		// 					CreatedBy: to.Ptr("sqehacivpuim"),
+		// 					CreatedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
+		// 					LastModifiedBy: to.Ptr("axrqfdkqylvjv"),
+		// 					LastModifiedByType: to.Ptr(armoracledatabase.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T04:32:58.716Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSecurityMLAnalyticsSettingsClientVersion string = "2025-07-01-preview"
-
 // SecurityMLAnalyticsSettingsClient contains the methods for the SecurityMLAnalyticsSettings group.
 // Don't use this type directly, use NewSecurityMLAnalyticsSettingsClient() instead.
 //
@@ -97,7 +95,7 @@ func (client *SecurityMLAnalyticsSettingsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -168,7 +166,7 @@ func (client *SecurityMLAnalyticsSettingsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -226,7 +224,7 @@ func (client *SecurityMLAnalyticsSettingsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -289,7 +287,7 @@ func (client *SecurityMLAnalyticsSettingsClient) listCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

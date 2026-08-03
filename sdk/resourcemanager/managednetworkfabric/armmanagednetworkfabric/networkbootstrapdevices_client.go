@@ -18,6 +18,8 @@ import (
 
 // NetworkBootstrapDevicesClient contains the methods for the NetworkBootstrapDevices group.
 // Don't use this type directly, use NewNetworkBootstrapDevicesClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkBootstrapDevicesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkBootstrapDevicesClient(subscriptionID string, credential azcore.T
 
 // BeginCreate - Creates a Network Bootstrap Device resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *NetworkBootstrapDevicesClient) BeginCreate(ctx context.Context, re
 
 // Create - Creates a Network Bootstrap Device resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) create(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body NetworkBootstrapDevice, options *NetworkBootstrapDevicesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *NetworkBootstrapDevicesClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *NetworkBootstrapDevicesClient) createCreateRequest(ctx context.Con
 
 // BeginDelete - Deletes a Network Bootstrap Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - options - NetworkBootstrapDevicesClientBeginDeleteOptions contains the optional parameters for the NetworkBootstrapDevicesClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *NetworkBootstrapDevicesClient) BeginDelete(ctx context.Context, re
 
 // Delete - Deletes a Network Bootstrap Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *NetworkBootstrapDevicesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a Network Bootstrap Device resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - options - NetworkBootstrapDevicesClientGetOptions contains the optional parameters for the NetworkBootstrapDevicesClient.Get
@@ -245,8 +237,8 @@ func (client *NetworkBootstrapDevicesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -261,8 +253,6 @@ func (client *NetworkBootstrapDevicesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByResourceGroupPager - Lists all the Network Bootstrap Device resources in a given resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkBootstrapDevicesClientListByResourceGroupOptions contains the optional parameters for the NetworkBootstrapDevicesClient.NewListByResourceGroupPager
 //     method.
@@ -305,8 +295,8 @@ func (client *NetworkBootstrapDevicesClient) listByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -321,8 +311,6 @@ func (client *NetworkBootstrapDevicesClient) listByResourceGroupHandleResponse(r
 }
 
 // NewListBySubscriptionPager - List all the Network Bootstrap Device resources in a given subscription.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkBootstrapDevicesClientListBySubscriptionOptions contains the optional parameters for the NetworkBootstrapDevicesClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkBootstrapDevicesClient) NewListBySubscriptionPager(options *NetworkBootstrapDevicesClientListBySubscriptionOptions) *runtime.Pager[NetworkBootstrapDevicesClientListBySubscriptionResponse] {
@@ -360,8 +348,8 @@ func (client *NetworkBootstrapDevicesClient) listBySubscriptionCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -377,8 +365,6 @@ func (client *NetworkBootstrapDevicesClient) listBySubscriptionHandleResponse(re
 
 // BeginReboot - Reboot the Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - options - NetworkBootstrapDevicesClientBeginRebootOptions contains the optional parameters for the NetworkBootstrapDevicesClient.BeginReboot
@@ -402,8 +388,6 @@ func (client *NetworkBootstrapDevicesClient) BeginReboot(ctx context.Context, re
 
 // Reboot - Reboot the Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) reboot(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginRebootOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginReboot"
@@ -445,16 +429,14 @@ func (client *NetworkBootstrapDevicesClient) rebootCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRefreshConfiguration - Refreshes the configuration of Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - options - NetworkBootstrapDevicesClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkBootstrapDevicesClient.BeginRefreshConfiguration
@@ -478,8 +460,6 @@ func (client *NetworkBootstrapDevicesClient) BeginRefreshConfiguration(ctx conte
 
 // RefreshConfiguration - Refreshes the configuration of Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) refreshConfiguration(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginRefreshConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginRefreshConfiguration"
@@ -521,8 +501,8 @@ func (client *NetworkBootstrapDevicesClient) refreshConfigurationCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -532,8 +512,6 @@ func (client *NetworkBootstrapDevicesClient) refreshConfigurationCreateRequest(c
 // Updates the Network Bootstrap Device to use the latest passwords. Does not generate new passwords. Allows network bootstrap
 // devices missed during a previous password rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - options - NetworkBootstrapDevicesClientBeginResyncPasswordsOptions contains the optional parameters for the NetworkBootstrapDevicesClient.BeginResyncPasswords
@@ -560,8 +538,6 @@ func (client *NetworkBootstrapDevicesClient) BeginResyncPasswords(ctx context.Co
 // Updates the Network Bootstrap Device to use the latest passwords. Does not generate new passwords. Allows network bootstrap
 // devices missed during a previous password rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) resyncPasswords(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, options *NetworkBootstrapDevicesClientBeginResyncPasswordsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginResyncPasswords"
@@ -603,16 +579,14 @@ func (client *NetworkBootstrapDevicesClient) resyncPasswordsCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Update certain properties of the Network Bootstrap Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - body - Network Bootstrap Device properties to update.
@@ -637,8 +611,6 @@ func (client *NetworkBootstrapDevicesClient) BeginUpdate(ctx context.Context, re
 
 // Update - Update certain properties of the Network Bootstrap Device resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) update(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body NetworkBootstrapDevicePatch, options *NetworkBootstrapDevicesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginUpdate"
@@ -680,8 +652,8 @@ func (client *NetworkBootstrapDevicesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -692,8 +664,6 @@ func (client *NetworkBootstrapDevicesClient) updateCreateRequest(ctx context.Con
 
 // BeginUpdateAdministrativeState - Updates the Administrative state of the Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - body - Request payload.
@@ -718,8 +688,6 @@ func (client *NetworkBootstrapDevicesClient) BeginUpdateAdministrativeState(ctx 
 
 // UpdateAdministrativeState - Updates the Administrative state of the Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body UpdateDeviceAdministrativeState, options *NetworkBootstrapDevicesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginUpdateAdministrativeState"
@@ -761,8 +729,8 @@ func (client *NetworkBootstrapDevicesClient) updateAdministrativeStateCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -773,8 +741,6 @@ func (client *NetworkBootstrapDevicesClient) updateAdministrativeStateCreateRequ
 
 // BeginUpgrade - Upgrades the version of the Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - body - Request payload.
@@ -799,8 +765,6 @@ func (client *NetworkBootstrapDevicesClient) BeginUpgrade(ctx context.Context, r
 
 // Upgrade - Upgrades the version of the Network Bootstrap Device.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapDevicesClient) upgrade(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body UpdateVersion, options *NetworkBootstrapDevicesClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapDevicesClient.BeginUpgrade"
@@ -842,8 +806,8 @@ func (client *NetworkBootstrapDevicesClient) upgradeCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

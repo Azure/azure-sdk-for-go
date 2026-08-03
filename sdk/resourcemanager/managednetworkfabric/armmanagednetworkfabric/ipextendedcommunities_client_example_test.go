@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric"
 	"log"
 )
 
@@ -47,13 +47,13 @@ func ExampleIPExtendedCommunitiesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.IPExtendedCommunitiesClientCreateResponse{
-	// 	IPExtendedCommunity: &armmanagednetworkfabric.IPExtendedCommunity{
+	// 	IPExtendedCommunity: armmanagednetworkfabric.IPExtendedCommunity{
 	// 		Properties: &armmanagednetworkfabric.IPExtendedCommunityProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
@@ -106,7 +106,7 @@ func ExampleIPExtendedCommunitiesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -129,7 +129,7 @@ func ExampleIPExtendedCommunitiesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.IPExtendedCommunitiesClientGetResponse{
-	// 	IPExtendedCommunity: &armmanagednetworkfabric.IPExtendedCommunity{
+	// 	IPExtendedCommunity: armmanagednetworkfabric.IPExtendedCommunity{
 	// 		Properties: &armmanagednetworkfabric.IPExtendedCommunityProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
@@ -337,13 +337,13 @@ func ExampleIPExtendedCommunitiesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.IPExtendedCommunitiesClientUpdateResponse{
-	// 	IPExtendedCommunity: &armmanagednetworkfabric.IPExtendedCommunity{
+	// 	IPExtendedCommunity: armmanagednetworkfabric.IPExtendedCommunity{
 	// 		Properties: &armmanagednetworkfabric.IPExtendedCommunityProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),

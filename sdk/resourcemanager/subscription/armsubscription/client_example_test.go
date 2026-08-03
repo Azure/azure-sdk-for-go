@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/subscription/armsubscription"
 	"log"
 )
 
@@ -38,7 +38,7 @@ func ExampleClient_BeginAcceptOwnership() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -61,7 +61,7 @@ func ExampleClient_AcceptOwnershipStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.ClientAcceptOwnershipStatusResponse{
-	// 	AcceptOwnershipStatusResponse: &armsubscription.AcceptOwnershipStatusResponse{
+	// 	AcceptOwnershipStatusResponse: armsubscription.AcceptOwnershipStatusResponse{
 	// 		AcceptOwnershipState: to.Ptr(armsubscription.AcceptOwnershipPending),
 	// 		BillingOwner: to.Ptr("abc@test.com"),
 	// 		DisplayName: to.Ptr("Test Subscription"),
@@ -94,7 +94,7 @@ func ExampleClient_Cancel() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.ClientCancelResponse{
-	// 	CanceledSubscriptionID: &armsubscription.CanceledSubscriptionID{
+	// 	CanceledSubscriptionID: armsubscription.CanceledSubscriptionID{
 	// 		SubscriptionID: to.Ptr("83aa47df-e3e9-49ff-877b-94304bf3d3ad"),
 	// 	},
 	// }
@@ -119,7 +119,7 @@ func ExampleClient_Enable() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.ClientEnableResponse{
-	// 	EnabledSubscriptionID: &armsubscription.EnabledSubscriptionID{
+	// 	EnabledSubscriptionID: armsubscription.EnabledSubscriptionID{
 	// 		SubscriptionID: to.Ptr("7948bcee-488c-47ce-941c-38e20ede803d"),
 	// 	},
 	// }
@@ -146,7 +146,7 @@ func ExampleClient_Rename() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsubscription.ClientRenameResponse{
-	// 	RenamedSubscriptionID: &armsubscription.RenamedSubscriptionID{
+	// 	RenamedSubscriptionID: armsubscription.RenamedSubscriptionID{
 	// 		SubscriptionID: to.Ptr("83aa47df-e3e9-49ff-877b-94304bf3d3ad"),
 	// 	},
 	// }

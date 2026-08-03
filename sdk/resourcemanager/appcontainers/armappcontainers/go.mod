@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers/v5
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appcontainers/armappcontainers
 
 go 1.25.0
 

@@ -18,6 +18,8 @@ import (
 
 // ServerAdvancedThreatProtectionSettingsClient contains the methods for the ServerAdvancedThreatProtectionSettings group.
 // Don't use this type directly, use NewServerAdvancedThreatProtectionSettingsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerAdvancedThreatProtectionSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServerAdvancedThreatProtectionSettingsClient(subscriptionID string, cred
 
 // BeginCreateOrUpdate - Creates or updates an Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -68,8 +68,6 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) BeginCreateOrUpdate(
 
 // CreateOrUpdate - Creates or updates an Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerAdvancedThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters ServerAdvancedThreatProtection, options *ServerAdvancedThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerAdvancedThreatProtectionSettingsClient.BeginCreateOrUpdate"
@@ -115,8 +113,8 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) createOrUpdateCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +125,6 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) createOrUpdateCreate
 
 // Get - Get a server's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -180,8 +176,8 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -196,8 +192,6 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) getHandleResponse(re
 }
 
 // NewListByServerPager - Get a list of the server's Advanced Threat Protection states.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerAdvancedThreatProtectionSettingsClientListByServerOptions contains the optional parameters for the ServerAdvancedThreatProtectionSettingsClient.NewListByServerPager
@@ -245,8 +239,8 @@ func (client *ServerAdvancedThreatProtectionSettingsClient) listByServerCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

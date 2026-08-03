@@ -18,6 +18,8 @@ import (
 
 // DatabaseColumnsClient contains the methods for the DatabaseColumns group.
 // Don't use this type directly, use NewDatabaseColumnsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseColumnsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDatabaseColumnsClient(subscriptionID string, credential azcore.TokenCred
 
 // Get - Get database column
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -108,8 +108,8 @@ func (client *DatabaseColumnsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -124,8 +124,6 @@ func (client *DatabaseColumnsClient) getHandleResponse(resp *http.Response) (Dat
 }
 
 // NewListByDatabasePager - List database columns
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -181,7 +179,7 @@ func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Con
 	if options != nil && options.Skiptoken != nil {
 		reqQP.Set("$skiptoken", *options.Skiptoken)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.Column != nil {
 		for _, qv := range options.Column {
 			reqQP.Add("column", qv)
@@ -202,7 +200,7 @@ func (client *DatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Con
 			reqQP.Add("table", qv)
 		}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -217,8 +215,6 @@ func (client *DatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Res
 }
 
 // NewListByTablePager - List database columns
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -284,8 +280,8 @@ func (client *DatabaseColumnsClient) listByTableCreateRequest(ctx context.Contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

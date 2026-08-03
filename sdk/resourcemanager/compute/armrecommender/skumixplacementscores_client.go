@@ -16,60 +16,61 @@ import (
 	"strings"
 )
 
-// SpotPlacementScoresClient contains the methods for the SpotPlacementScores group.
-// Don't use this type directly, use NewSpotPlacementScoresClient() instead.
+// SKUMixPlacementScoresClient contains the methods for the SKUMixPlacementScores group.
+// Don't use this type directly, use NewSKUMixPlacementScoresClient() instead.
 //
 // Generated from API version 2026-05-05-preview
-type SpotPlacementScoresClient struct {
+type SKUMixPlacementScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSpotPlacementScoresClient creates a new instance of SpotPlacementScoresClient with the specified values.
+// NewSKUMixPlacementScoresClient creates a new instance of SKUMixPlacementScoresClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewSpotPlacementScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SpotPlacementScoresClient, error) {
+func NewSKUMixPlacementScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUMixPlacementScoresClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &SpotPlacementScoresClient{
+	client := &SKUMixPlacementScoresClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// Get - Gets Spot Placement Scores metadata.
+// Get - Gets SkuMixPlacement scoring metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The name of the Azure region.
-//   - options - SpotPlacementScoresClientGetOptions contains the optional parameters for the SpotPlacementScoresClient.Get method.
-func (client *SpotPlacementScoresClient) Get(ctx context.Context, location string, options *SpotPlacementScoresClientGetOptions) (SpotPlacementScoresClientGetResponse, error) {
+//   - options - SKUMixPlacementScoresClientGetOptions contains the optional parameters for the SKUMixPlacementScoresClient.Get
+//     method.
+func (client *SKUMixPlacementScoresClient) Get(ctx context.Context, location string, options *SKUMixPlacementScoresClientGetOptions) (SKUMixPlacementScoresClientGetResponse, error) {
 	var err error
-	const operationName = "SpotPlacementScoresClient.Get"
+	const operationName = "SKUMixPlacementScoresClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, location, options)
 	if err != nil {
-		return SpotPlacementScoresClientGetResponse{}, err
+		return SKUMixPlacementScoresClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SpotPlacementScoresClientGetResponse{}, err
+		return SKUMixPlacementScoresClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SpotPlacementScoresClientGetResponse{}, err
+		return SKUMixPlacementScoresClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, location string, _ *SpotPlacementScoresClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot"
+func (client *SKUMixPlacementScoresClient) getCreateRequest(ctx context.Context, location string, _ *SKUMixPlacementScoresClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/skuMixPlacementScores/recommendations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -90,45 +91,45 @@ func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *SpotPlacementScoresClient) getHandleResponse(resp *http.Response) (SpotPlacementScoresClientGetResponse, error) {
-	result := SpotPlacementScoresClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeDiagnosticBase); err != nil {
-		return SpotPlacementScoresClientGetResponse{}, err
+func (client *SKUMixPlacementScoresClient) getHandleResponse(resp *http.Response) (SKUMixPlacementScoresClientGetResponse, error) {
+	result := SKUMixPlacementScoresClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUMixPlacementBase); err != nil {
+		return SKUMixPlacementScoresClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// Post - Generates placement scores for Spot VM skus.
+// Post - Generates placement scores for VM SKU mix placement.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The name of the Azure region.
-//   - spotPlacementScoresInput - SpotPlacementScores object supplied in the body of the Post spot placement scores operation.
-//   - options - SpotPlacementScoresClientPostOptions contains the optional parameters for the SpotPlacementScoresClient.Post
+//   - skuMixPlacementRequest - SkuMixPlacement request object supplied in the body of the generate operation.
+//   - options - SKUMixPlacementScoresClientPostOptions contains the optional parameters for the SKUMixPlacementScoresClient.Post
 //     method.
-func (client *SpotPlacementScoresClient) Post(ctx context.Context, location string, spotPlacementScoresInput SpotPlacementScoresInput, options *SpotPlacementScoresClientPostOptions) (SpotPlacementScoresClientPostResponse, error) {
+func (client *SKUMixPlacementScoresClient) Post(ctx context.Context, location string, skuMixPlacementRequest SKUMixPlacementRequest, options *SKUMixPlacementScoresClientPostOptions) (SKUMixPlacementScoresClientPostResponse, error) {
 	var err error
-	const operationName = "SpotPlacementScoresClient.Post"
+	const operationName = "SKUMixPlacementScoresClient.Post"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.postCreateRequest(ctx, location, spotPlacementScoresInput, options)
+	req, err := client.postCreateRequest(ctx, location, skuMixPlacementRequest, options)
 	if err != nil {
-		return SpotPlacementScoresClientPostResponse{}, err
+		return SKUMixPlacementScoresClientPostResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SpotPlacementScoresClientPostResponse{}, err
+		return SKUMixPlacementScoresClientPostResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return SpotPlacementScoresClientPostResponse{}, err
+		return SKUMixPlacementScoresClientPostResponse{}, err
 	}
 	resp, err := client.postHandleResponse(httpResp)
 	return resp, err
 }
 
 // postCreateRequest creates the Post request.
-func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, location string, spotPlacementScoresInput SpotPlacementScoresInput, _ *SpotPlacementScoresClientPostOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot/generate"
+func (client *SKUMixPlacementScoresClient) postCreateRequest(ctx context.Context, location string, skuMixPlacementRequest SKUMixPlacementRequest, _ *SKUMixPlacementScoresClientPostOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/skuMixPlacementScores/recommendations/generate"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -146,17 +147,17 @@ func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, 
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, spotPlacementScoresInput); err != nil {
+	if err := runtime.MarshalAsJSON(req, skuMixPlacementRequest); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
 // postHandleResponse handles the Post response.
-func (client *SpotPlacementScoresClient) postHandleResponse(resp *http.Response) (SpotPlacementScoresClientPostResponse, error) {
-	result := SpotPlacementScoresClientPostResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SpotPlacementScoresResponse); err != nil {
-		return SpotPlacementScoresClientPostResponse{}, err
+func (client *SKUMixPlacementScoresClient) postHandleResponse(resp *http.Response) (SKUMixPlacementScoresClientPostResponse, error) {
+	result := SKUMixPlacementScoresClientPostResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SKUMixPlacementResponse); err != nil {
+		return SKUMixPlacementScoresClientPostResponse{}, err
 	}
 	return result, nil
 }

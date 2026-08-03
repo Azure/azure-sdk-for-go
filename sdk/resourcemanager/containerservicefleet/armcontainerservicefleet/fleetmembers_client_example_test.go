@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-02-preview/FleetMembers_Create.json
+// Generated from example definition: 2026-06-01/FleetMembers_Create.json
 func ExampleFleetMembersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleFleetMembersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/FleetMembers_Delete.json
+// Generated from example definition: 2026-06-01/FleetMembers_Delete.json
 func ExampleFleetMembersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleFleetMembersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/FleetMembers_Get.json
+// Generated from example definition: 2026-06-01/FleetMembers_Get.json
 func ExampleFleetMembersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,17 +128,6 @@ func ExampleFleetMembersClient_Get() {
 	// 			Status: &armcontainerservicefleet.FleetMemberStatus{
 	// 				LastOperationID: to.Ptr("12345678-1234-1234-1234-123456789012"),
 	// 			},
-	// 			MeshProperties: &armcontainerservicefleet.MeshProperties{
-	// 				CiliumProperties: &armcontainerservicefleet.CiliumProperties{
-	// 					ID: to.Ptr[int32](1),
-	// 					Name: to.Ptr("cilium-1"),
-	// 				},
-	// 				Status: &armcontainerservicefleet.MeshMemberStatus{
-	// 					State: to.Ptr(armcontainerservicefleet.MeshMemberStateConnected),
-	// 					LastOperationID: to.Ptr("abcdef78-1234-1234-1234-123456789012"),
-	// 				},
-	// 				ClusterMeshProfileResourceID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet/clusterMeshProfiles/clusterMeshProfile-1"),
-	// 			},
 	// 		},
 	// 		ETag: to.Ptr("kd30rkdfo49="),
 	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet-1/members/member-1"),
@@ -156,7 +145,7 @@ func ExampleFleetMembersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/FleetMembers_ListByFleet.json
+// Generated from example definition: 2026-06-01/FleetMembers_ListByFleet.json
 func ExampleFleetMembersClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +201,7 @@ func ExampleFleetMembersClient_NewListByFleetPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-02-preview/FleetMembers_Update.json
+// Generated from example definition: 2026-06-01/FleetMembers_Update.json
 func ExampleFleetMembersClient_BeginUpdateAsync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

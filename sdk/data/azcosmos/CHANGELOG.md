@@ -2,17 +2,11 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.6.0-beta.2 (2026-08-03)
 
 ### Bugs Fixed
 
 * Fixed partition key range cache refreshes failing against containers undergoing physical partition splits. A change-feed drain accumulates every page, so a range that is updated mid-split is re-delivered as a second revision of the same range ID; the routing map now deduplicates by range ID (keeping the latest revision) before validating range continuity, instead of rejecting the set with a "service returned an incomplete set of ranges" error reporting that the range overlaps itself. A full refresh that still observes an incomplete set is now retried up to three times with bounded jittered backoff before failing. See [PR 27282](https://github.com/Azure/azure-sdk-for-go/pull/27282).
-
-### Other Changes
 
 ## 1.6.0-beta.1 (2026-07-16)
 

@@ -6,5 +6,5 @@ package armdiscovery
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/discovery/armdiscovery"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.1.0"
 )

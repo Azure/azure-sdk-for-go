@@ -6768,7 +6768,7 @@ func (s *UnrecordedTestSuite) TestUploadFileWithStructuredMessageCRC64() {
 
 	tmpFile, err := os.CreateTemp("", "datalake-upload-test")
 	_require.NoError(err)
-	defer os.Remove(tmpFile.Name())
+	defer func() { _ = os.Remove(tmpFile.Name()) }()
 
 	_, err = tmpFile.Write(contentD)
 	_require.NoError(err)
@@ -6779,7 +6779,8 @@ func (s *UnrecordedTestSuite) TestUploadFileWithStructuredMessageCRC64() {
 		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
 	})
 	_require.NoError(err)
-	tmpFile.Close()
+	err = tmpFile.Close()
+	_require.NoError(err)
 
 	resp, err := fClient.DownloadStream(context.Background(), nil)
 	_require.NoError(err)

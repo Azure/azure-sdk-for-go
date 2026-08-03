@@ -8,7 +8,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -47,12 +46,7 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 		size:          downloadTestOpts.size,
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(connStr, d.containerName, nil)
+	containerClient, err := newContainerClient(d.containerName, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -88,12 +82,7 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 }
 
 func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(connStr, d.containerName, nil)
+	containerClient, err := newContainerClient(d.containerName, nil)
 	if err != nil {
 		return err
 	}
@@ -119,12 +108,7 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 		PerfTestOptions:    *options,
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(connStr, d.downloadTestGlobal.containerName, &container.ClientOptions{
+	containerClient, err := newContainerClient(d.downloadTestGlobal.containerName, &container.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: d.PerfTestOptions.Transporter,
 		},

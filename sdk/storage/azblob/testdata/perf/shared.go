@@ -9,8 +9,36 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"os"
 	"strconv"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
+
+// newContainerClient creates a container.Client for the given container using
+// either Azure AD token credentials or a shared key connection string,
+// depending on which environment variables are configured.
+//
+// Token auth is preferred and is selected when AZURE_STORAGE_ACCOUNT_NAME is
+// set, since some test environments disable shared key access. When only
+// AZURE_STORAGE_CONNECTION_STRING is set, shared key auth is used.
+func newContainerClient(containerName string, options *container.ClientOptions) (*container.Client, error) {
+	if accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME"); ok && accountName != "" {
+		cred, err := azidentity.NewDefaultAzureCredential(nil)
+		if err != nil {
+			return nil, err
+		}
+		containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+		return container.NewClient(containerURL, cred, options)
+	}
+
+	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		return nil, fmt.Errorf("no storage credentials found: set 'AZURE_STORAGE_ACCOUNT_NAME' for token auth or 'AZURE_STORAGE_CONNECTION_STRING' for shared key auth")
+	}
+	return container.NewClientFromConnectionString(connStr, containerName, options)
+}
 
 type nopCloser struct {
 	io.ReadSeeker

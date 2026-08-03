@@ -22,6 +22,8 @@ that perf-automation can drive both languages from a single matrix.
 | `--test-proxies` | `-x` |  | Semicolon-separated list of test-proxy URLs. |
 | `--results-file` |  |  | When combined with `--latency`, writes per-operation results as JSON. |
 | `--output-file-prefix` |  |  | Writes run summary artifacts to `<prefix>.json/.csv/.txt/.md`. |
+| `--profile` |  | false | Collect a Go CPU profile across setup, warmup, measurement, and cleanup. |
+| `--profile-path` |  | `cpu.pprof` | CPU profile destination when `--profile` is set. |
 | `--resource-telemetry` |  | false | Print a `runtime.MemStats` / goroutine-count delta at end of run. |
 | `--config` |  |  | Path to a workload-config JSON file. |
 | `--workload` |  |  | Workload name to select from the config file. |
@@ -35,6 +37,69 @@ that perf-automation can drive both languages from a single matrix.
 The runner always samples process CPU and memory in the background; both are
 shown live in the status line (`CPU`, `Memory(MiB)`) and as
 `averageCpuPercent` / `averageMemoryBytes` in the run-summary artifacts.
+
+## Testing the azblob Performance Tests
+
+The following examples exercise upload, download, and list operations while
+collecting a CPU profile. Run them from the azblob perf-test module:
+
+```bash
+cd sdk/storage/azblob/testdata/perf
+```
+
+For OAuth authentication, sign in with the Azure CLI and set the storage
+account name. The identity must have permission to create containers and blobs,
+such as the Storage Blob Data Contributor role.
+
+```bash
+az login
+export AZURE_STORAGE_ACCOUNT_NAME="<storage-account-name>"
+unset AZURE_STORAGE_CONNECTION_STRING
+```
+
+Alternatively, unset `AZURE_STORAGE_ACCOUNT_NAME` and set
+`AZURE_STORAGE_CONNECTION_STRING` to use shared-key authentication.
+
+### Upload
+
+```bash
+go run . UploadBlobTest \
+	--size 10240 \
+	--iterations 1 \
+	--warmup 0 \
+	--profile \
+	--profile-path ./upload-blob.pprof
+```
+
+### Download
+
+```bash
+go run . DownloadBlobTest \
+	--size 10240 \
+	--iterations 1 \
+	--warmup 0 \
+	--profile \
+	--profile-path ./download-blob.pprof
+```
+
+### List
+
+```bash
+go run . ListBlobTest \
+	--num-blobs 100 \
+	--num-blobs-parallelism 8 \
+	--iterations 1 \
+	--warmup 0 \
+	--profile \
+	--profile-path ./list-blobs.pprof
+```
+
+Verify and inspect any generated profile with `go tool pprof`:
+
+```bash
+test -s ./list-blobs.pprof
+go tool pprof -top ./list-blobs.pprof
+```
 
 
 ## Adding Performance Tests to an SDK

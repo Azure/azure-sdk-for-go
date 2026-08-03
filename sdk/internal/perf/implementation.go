@@ -56,6 +56,12 @@ var (
 	// outputFilePrefix writes result artifacts to <prefix>.json/.csv/.txt/.md when set
 	outputFilePrefix string
 
+	// profile enables CPU profiling for the full performance test lifecycle.
+	profile bool
+
+	// profilePath is the destination for the Go CPU profile.
+	profilePath string
+
 	// noCleanup skips per-test Cleanup() and GlobalCleanup() at the end of a run.
 	// Mirrors --no-cleanup in other language perf runners; used by perf-automation
 	// to leave server-side state in place between iterations.

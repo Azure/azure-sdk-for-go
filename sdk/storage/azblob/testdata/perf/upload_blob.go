@@ -7,7 +7,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -66,12 +65,7 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 		}
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(connStr, u.containerName, nil)
+	containerClient, err := newContainerClient(u.containerName, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -124,13 +118,7 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 		blobName: fmt.Sprintf("%s-%s", g.blobPrefix, options.Name),
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(
-		connStr,
+	containerClient, err := newContainerClient(
 		u.uploadTestGlobal.containerName,
 		&container.ClientOptions{
 			ClientOptions: azcore.ClientOptions{

@@ -42,6 +42,8 @@ func snapshotFlags(t *testing.T) func() {
 		workloadConfigPath     string
 		workloadName           string
 		outputFilePrefix       string
+		profile                bool
+		profilePath            string
 		maxIOCompletionThreads int
 		maxWorkerThreads       int
 		minIOCompletionThreads int
@@ -51,6 +53,7 @@ func snapshotFlags(t *testing.T) func() {
 		jobStatistics, numProcesses, debug, syncMode, resourceTelemetry,
 		enableOperationLatency, noCleanup, insecureSkipVerify, testProxyURLs,
 		resultsFilePath, maxResults, workloadConfigPath, workloadName, outputFilePrefix,
+		profile, profilePath,
 		maxIOCompletionThreads, maxWorkerThreads, minIOCompletionThreads, minWorkerThreads,
 	}
 	return func() {
@@ -74,6 +77,8 @@ func snapshotFlags(t *testing.T) func() {
 		workloadConfigPath = saved.workloadConfigPath
 		workloadName = saved.workloadName
 		outputFilePrefix = saved.outputFilePrefix
+		profile = saved.profile
+		profilePath = saved.profilePath
 		maxIOCompletionThreads = saved.maxIOCompletionThreads
 		maxWorkerThreads = saved.maxWorkerThreads
 		minIOCompletionThreads = saved.minIOCompletionThreads
@@ -113,6 +118,8 @@ func TestDefaults(t *testing.T) {
 	require.Equal(t, "", resultsFilePath, "--results-file default")
 	require.Equal(t, defaultMaxOperationResults, maxResults, "--max-results default")
 	require.Equal(t, "", outputFilePrefix, "--output-file-prefix default")
+	require.False(t, profile, "--profile default")
+	require.Equal(t, "", profilePath, "--profile-path default")
 	require.Equal(t, 0, maxIOCompletionThreads, "--max-io-completion-threads default")
 	require.Equal(t, 0, maxWorkerThreads, "--max-worker-threads default")
 	require.Equal(t, 0, minIOCompletionThreads, "--min-io-completion-threads default")
@@ -147,6 +154,8 @@ func TestFlagLongForms(t *testing.T) {
 		{"results-file", []string{"--results-file", "/tmp/out.json"}, func(t *testing.T) { require.Equal(t, "/tmp/out.json", resultsFilePath) }},
 		{"max-results", []string{"--max-results", "500"}, func(t *testing.T) { require.Equal(t, 500, maxResults) }},
 		{"output-file-prefix", []string{"--output-file-prefix", "/tmp/run"}, func(t *testing.T) { require.Equal(t, "/tmp/run", outputFilePrefix) }},
+		{"profile", []string{"--profile"}, func(t *testing.T) { require.True(t, profile) }},
+		{"profile-path", []string{"--profile-path", "/tmp/cpu.pprof"}, func(t *testing.T) { require.Equal(t, "/tmp/cpu.pprof", profilePath) }},
 		{"config", []string{"--config", "wl.json"}, func(t *testing.T) { require.Equal(t, "wl.json", workloadConfigPath) }},
 		{"workload", []string{"--workload", "wl-upload"}, func(t *testing.T) { require.Equal(t, "wl-upload", workloadName) }},
 		{"debug", []string{"--debug"}, func(t *testing.T) { require.True(t, debug) }},

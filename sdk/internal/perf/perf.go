@@ -60,6 +60,8 @@ func registerFlags(fs *flag.FlagSet) {
 	fs.StringVar(&workloadConfigPath, "config", "", "Path to workload config JSON file.")
 	fs.StringVar(&workloadName, "workload", "", "Workload name from config JSON.")
 	fs.StringVar(&outputFilePrefix, "output-file-prefix", "", "Write run artifacts to <prefix>.json/.csv/.txt/.md.")
+	fs.BoolVar(&profile, "profile", false, "Collect a CPU profile for the performance test.")
+	fs.StringVar(&profilePath, "profile-path", "", "File path for the CPU profile (default cpu.pprof when --profile is set).")
 
 	// .NET ThreadPool tuning flags — accepted for CLI compatibility, ignored at runtime.
 	fs.IntVar(&maxIOCompletionThreads, "max-io-completion-threads", 0, "Compatibility flag; no-op in Go.")
@@ -216,6 +218,9 @@ func Run(tests map[string]PerfMethods) {
 	if targetRate < 0 {
 		targetRate = 0
 	}
+	if profile && profilePath == "" {
+		profilePath = "cpu.pprof"
+	}
 
 	if numProcesses > 0 {
 		val := runtime.GOMAXPROCS(numProcesses)
@@ -237,6 +242,18 @@ func Run(tests map[string]PerfMethods) {
 		fmt.Printf("\tRunning %s (workload: %s, config: %s)\n", testNameToRun, invocation.Workload, invocation.ConfigPath)
 	} else {
 		fmt.Printf("\tRunning %s\n", testNameToRun)
+	}
+
+	stopProfile, err := startCPUProfile(profile, profilePath)
+	if err != nil {
+		panic(err)
+	}
+	if stopProfile != nil {
+		defer func() {
+			if err := stopProfile(); err != nil {
+				panic(err)
+			}
+		}()
 	}
 
 	runner := newPerfRunner(perfTestToRun, testNameToRun)
@@ -266,6 +283,8 @@ func printOptions(testName string) {
 		Insecure               bool   `json:"insecure"`
 		TestProxies            string `json:"testProxies,omitempty"`
 		ResultsFile            string `json:"resultsFile,omitempty"`
+		Profile                bool   `json:"profile"`
+		ProfilePath            string `json:"profilePath,omitempty"`
 		MaxIOCompletionThreads int    `json:"maxIOCompletionThreads"`
 		MaxWorkerThreads       int    `json:"maxWorkerThreads"`
 		MinIOCompletionThreads int    `json:"minIOCompletionThreads"`
@@ -286,6 +305,8 @@ func printOptions(testName string) {
 		Insecure:               insecureSkipVerify,
 		TestProxies:            testProxyURLs,
 		ResultsFile:            resultsFilePath,
+		Profile:                profile,
+		ProfilePath:            profilePath,
 		MaxIOCompletionThreads: maxIOCompletionThreads,
 		MaxWorkerThreads:       maxWorkerThreads,
 		MinIOCompletionThreads: minIOCompletionThreads,

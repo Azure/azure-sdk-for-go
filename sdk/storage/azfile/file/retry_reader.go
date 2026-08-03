@@ -5,6 +5,7 @@ package file
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net"
 	"strings"
@@ -121,7 +122,7 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 		}
 
 		// We successfully read data or end EOF.
-		if err == nil || err == io.EOF {
+		if err == nil || errors.Is(err, io.EOF) {
 			s.info.Range.Offset += int64(n) // Increments the start offset in case we need to make a new HTTP request in the future
 			if s.info.Range.Count != CountToEnd {
 				s.info.Range.Count -= int64(n) // Decrement the count in case we need to make a new HTTP request in the future
@@ -134,8 +135,11 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 
 		// Check the retry count and error code, and decide whether to retry.
 		retriesExhausted := try >= s.retryReaderOptions.MaxRetries
-		_, isNetError := err.(net.Error)
-		isUnexpectedEOF := err == io.ErrUnexpectedEOF
+		// Use errors.As so that a net.Error wrapped further down the chain (e.g. by the structured
+		// message decoder via fmt.Errorf("...: %w", err)) is still recognized as retryable.
+		var netErr net.Error
+		isNetError := errors.As(err, &netErr)
+		isUnexpectedEOF := errors.Is(err, io.ErrUnexpectedEOF)
 		willRetry := (isNetError || isUnexpectedEOF || s.wasRetryableEarlyClose(err)) && !retriesExhausted
 
 		// Notify, for logging purposes, of any failures
@@ -165,11 +169,11 @@ func (s *RetryReader) wasRetryableEarlyClose(err error) bool {
 		return false // user wants all early closes to be errors, and so not retryable
 	}
 	// unfortunately, http.errReadOnClosedResBody is private, so the best we can do here is to check for its text
-	return strings.HasSuffix(err.Error(), ReadOnClosedBodyMessage)
+	return strings.HasSuffix(err.Error(), readOnClosedBodyMessage)
 }
 
-// ReadOnClosedBodyMessage of retry reader
-const ReadOnClosedBodyMessage = "read on closed response body"
+// readOnClosedBodyMessage of retry reader
+const readOnClosedBodyMessage = "read on closed response body"
 
 // Close retry reader
 func (s *RetryReader) Close() error {

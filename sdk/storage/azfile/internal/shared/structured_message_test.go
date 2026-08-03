@@ -496,6 +496,54 @@ func TestStreamingDecoderTrailerCRCMismatch(t *testing.T) {
 	require.Error(t, err)
 }
 
+// TestStreamingDecoderValidatesTrailerOnExactBufferFill verifies that the final segment footer
+// and message trailer CRC64 are drained and validated within the same Read call that emits the
+// last payload byte, even when the payload exactly fills the caller's buffer. This guards against
+// a bounded reader (e.g. RetryReader) reporting EOF and skipping validation when the read boundary
+// aligns with the end of the payload.
+func TestStreamingDecoderValidatesTrailerOnExactBufferFill(t *testing.T) {
+	data := make([]byte, 2048)
+	for i := range data {
+		data[i] = byte(i % 251)
+	}
+
+	// Corrupt only the message trailer CRC (last 8 bytes); the segment data and footer remain valid.
+	corrupted := makeCorruptedSM(data, func(d []byte) { d[len(d)-1] ^= 0xFF })
+
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(corrupted)))
+
+	// Buffer sized exactly to the payload length so the last payload byte fills it exactly.
+	buf := make([]byte, len(data))
+	n, err := dec.Read(buf)
+	require.Equal(t, len(data), n)
+	// The trailing framing must have been drained and validated in this same call.
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "trailer CRC64 mismatch")
+}
+
+// TestStreamingDecoderExactBufferFillValid verifies the happy path for the same exact-fill boundary:
+// a valid message returns all payload bytes plus a nil error on the fill read, and a subsequent read
+// reports io.EOF with no extra bytes.
+func TestStreamingDecoderExactBufferFillValid(t *testing.T) {
+	data := make([]byte, 2048)
+	for i := range data {
+		data[i] = byte(i % 251)
+	}
+
+	valid := SMEncode(data, 0).EncodedData
+	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(valid)))
+
+	buf := make([]byte, len(data))
+	n, err := dec.Read(buf)
+	require.NoError(t, err)
+	require.Equal(t, len(data), n)
+	require.Equal(t, data, buf)
+
+	n, err = dec.Read(make([]byte, 8))
+	require.Equal(t, 0, n)
+	require.ErrorIs(t, err, io.EOF)
+}
+
 func TestStreamingDecoderBadVersion(t *testing.T) {
 	smData := makeCorruptedSM([]byte("test"), func(d []byte) { d[0] = 99 })
 

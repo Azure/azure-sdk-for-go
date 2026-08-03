@@ -5203,6 +5203,18 @@ func (c *captureBodyTransport) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
+// foldedHeaderValues looks up a header value using a case-insensitive key match. The generated
+// storage client writes some request headers with non-canonical keys (e.g. "x-ms-structured-body")
+// via direct map assignment, so http.Header.Get (which canonicalizes) would not find them.
+func foldedHeaderValues(h http.Header, key string) []string {
+	for k, v := range h {
+		if strings.EqualFold(k, key) {
+			return v
+		}
+	}
+	return nil
+}
+
 // TestFileUploadRangeStructuredMessageBody is a regression test for PR #27263: when a structured
 // message CRC64 TransferValidationType is used, UploadRange must send the SM-encoded (framed) body
 // produced by Apply, not the original unframed reader. Previously the transformed reader was
@@ -5241,10 +5253,10 @@ func TestFileUploadRangeStructuredMessageBody(t *testing.T) {
 	_require.Equal(expectedBody, transport.capturedBody)
 
 	// The structured-message framing metadata must accompany the request.
-	sbHeader := transport.capturedHeaders["x-ms-structured-body"]
+	sbHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-body")
 	_require.Len(sbHeader, 1)
 	_require.Equal(shared.SMHeaderValue, sbHeader[0])
-	sclHeader := transport.capturedHeaders["x-ms-structured-content-length"]
+	sclHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-content-length")
 	_require.Len(sclHeader, 1)
 	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])
 }

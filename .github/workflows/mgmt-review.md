@@ -16,7 +16,10 @@ on:
   steps:
     - name: Swap trigger label to in-progress
       id: swap_label
-      if: github.event_name == 'pull_request_target' && github.event.label.name == 'mgmt-review-needed'
+      # Also require the membership check to have passed, otherwise a triage-role user
+      # can consume the trigger label while the activation job is skipped, leaving the
+      # PR stuck in mgmt-review-in-progress.
+      if: github.event_name == 'pull_request_target' && github.event.label.name == 'mgmt-review-needed' && steps.check_membership.outputs.is_team_member == 'true'
       uses: actions/github-script@v9
       with:
         script: |
@@ -94,7 +97,7 @@ Fetch the PR details. If the PR is in **draft** state, use the `update_pull_requ
 3. Determine if this is a **first on-board service** (first beta version): check whether the PR adds a new `ci.yml` file under the module path (i.e., `ci.yml` appears in the changed files with status `added`). If so, this PR has two extra onboarding requirements to verify (record the results for the Step 5 checklist):
    - **Release pipelines** — created via `/azp run prepare-pipelines`.
    - **Namespace approval** — a new module namespace must be approved before its first release. Determine approval using the **namespace review process** below. This is the same logic captured by the repo's [`query-released-azure-lib`](../skills/query-released-azure-lib/SKILL.md) skill (`.github/skills/query-released-azure-lib/`, runnable from a CLI checkout as `python .github/skills/query-released-azure-lib/scripts/query_released_azure_lib.py --service <token> --lang dotnet`); since this workflow runs with `checkout: false`, perform the equivalent steps inline with `bash`/`curl`:
-     1. Derive the service token from the module path `sdk/resourcemanager/<mid>/arm<suffix>` (e.g. combine `<mid>` and `<suffix>`, dropping the `arm` prefix and any separators, lowercased — so `compute/armbulkactions` → `computebulkactions`).
+     1. Derive the service token from the module path `sdk/resourcemanager/<mid>/arm<suffix>`: normalize each of `<mid>` and `<suffix>` (drop the `arm` prefix and any separators, lowercased); when the two normalized components are identical use just one, otherwise concatenate them — so `compute/armbulkactions` → `computebulkactions`, but `network/armnetwork` → `network` (not `networknetwork`).
      2. Using `bash` (e.g. `curl`), read the public per-language release inventory CSVs at `https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/<lang>-packages.csv` for `lang ∈ {dotnet, java, python, js, go}`. Collapse each row's `Package`/`ServiceName` to a token (strip the language prefix such as `Azure.ResourceManager.`, `azure-resourcemanager-`, `azure-mgmt-`, `@azure/arm-`; drop `.`/`-`/`/`; lowercase) and compare to the service token. A row with a non-empty `VersionGA` or `VersionPreview` means that language has released the library. If **another language — particularly .NET** — has already released this service, the namespace is already established → treat namespace approval as **satisfied**.
      3. Otherwise, fall back to the manual signal: fetch PR comments and confirm the PR author posted a comment that includes a GitHub issue URL (`https://github.com/.../issues/<number>`) and references `namespace review`. Treat namespace approval as **missing** only if neither the release-status signal nor the comment link is present. (When you have authenticated Azure DevOps access, the authoritative source is the Release Plan work item's `Custom.NamespaceApprovalIssue` field — see the [`query-release-plan`](../skills/query-release-plan/SKILL.md) skill.)
 

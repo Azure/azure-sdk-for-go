@@ -9,8 +9,10 @@
 A "Release Plan" is a work item in the `Release` project of the
 `dev.azure.com/azure-sdk` org. The auth-gated dashboard URL
 `https://azsdk-releaseplan-dashboard-*.azurewebsites.net/?releaseplan=<id>`
-returns HTTP 401 on plain web fetch, but the same `<id>` is the work item id and
-is readable via the ADO REST API with a corp-account token.
+returns HTTP 401 on plain web fetch. That `<id>` is the dashboard
+`Custom.ReleasePlanID`, which for newer plans coincides with the work item id
+but for older ones differs; it is resolved to the work item id via WIQL and then
+read via the ADO REST API with a corp-account token.
 
 Look up a plan by:
   --id <n>            release plan / work item id (from the dashboard URL)
@@ -185,13 +187,27 @@ def main():
     pkg = args.java_package or args.package
     ids = find_id_by_package(token, pkg, java_only=bool(args.java_package))
     if not ids:
-        # fall back to a fuzzy CONTAINS match on the package fields
+        # Fall back to a fuzzy CONTAINS match on the package fields.
+        #
+        # WIQL CONTAINS only tests whether a stored value contains the given
+        # pattern, so a single "[field] CONTAINS '<pkg>'" clause fails when the
+        # stored name is *shorter* than the query (e.g. query
+        # 'commvaultcontentstore' vs stored 'commvault'). Try the full query
+        # first, then progressively shorter prefixes so a shorter stored name can
+        # still match; stop at the first (longest) candidate that returns rows.
         fields = ["Custom.JavaPackageName"] if args.java_package else PKG_FIELDS
-        where = " OR ".join(f"[{f}] CONTAINS '{pkg}'" for f in fields)
-        ids = wiql_ids(token, where)
-        if ids:
-            print(f"No exact package match for '{pkg}'; showing closest CONTAINS "
-                  f"match(es): {ids}\n")
+        min_len = 4
+        for cand_len in range(len(pkg), min_len - 1, -1):
+            cand = pkg[:cand_len]
+            where = " OR ".join(f"[{f}] CONTAINS '{cand}'" for f in fields)
+            ids = wiql_ids(token, where)
+            if ids:
+                if cand != pkg:
+                    print(f"No CONTAINS match for '{pkg}'; matched on prefix "
+                          f"'{cand}' instead.")
+                print(f"No exact package match for '{pkg}'; showing closest "
+                      f"CONTAINS match(es): {ids}\n")
+                break
     if not ids:
         print(f"No Release Plan found with package name '{pkg}'.")
         sys.exit(1)

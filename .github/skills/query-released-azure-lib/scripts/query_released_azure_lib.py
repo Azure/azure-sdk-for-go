@@ -162,17 +162,23 @@ def main():
     label = args.service or next(v for v in overrides.values() if v)
     print(f"Release status for '{label}' (source: {BASE})\n")
     print(f"  {'language':<9} {'status':<26} {'GA date':<12} {'preview date':<12} package")
-    released_langs, missing_langs = [], []
+    released_langs, missing_langs, error_langs = [], [], []
     for lang in langs:
         try:
             rows = fetch_csv(lang)
         except Exception as e:  # noqa: BLE001 - report and continue per language
             print(f"  {lang:<9} ERROR fetching CSV: {e}")
+            error_langs.append(lang)
             continue
         exact_pkg = overrides.get(lang)
         if exact_pkg:
             want = norm(exact_pkg)
-            matched = [r for r in rows if norm(r.get("Package")) == want]
+            # For Go the CSV Package is a full module path (e.g.
+            # sdk/resourcemanager/commvault/armcommvault), so also accept the
+            # trailing path segment (armcommvault) as an exact override.
+            matched = [r for r in rows
+                       if norm(r.get("Package")) == want
+                       or norm((r.get("Package") or "").rsplit("/", 1)[-1]) == want]
             kind = "exact-package" if matched else None
         else:
             matched, kind = find_rows(rows, lang, query_token)
@@ -195,8 +201,17 @@ def main():
     print()
     print(f"  released:     {', '.join(released_langs) or '(none)'}")
     print(f"  not released: {', '.join(missing_langs) or '(none)'}")
-    dotnet_state = "released" if "dotnet" in released_langs else (
-        "NOT released" if "dotnet" in langs else "not checked")
+    if error_langs:
+        print(f"  errors:       {', '.join(error_langs)}")
+    # A CSV fetch failure is an unavailable data source, not a release verdict.
+    if "dotnet" in error_langs:
+        dotnet_state = "ERROR/unknown (CSV fetch failed)"
+    elif "dotnet" in released_langs:
+        dotnet_state = "released"
+    elif "dotnet" in langs:
+        dotnet_state = "NOT released"
+    else:
+        dotnet_state = "not checked"
     print(f"  .NET: {dotnet_state}")
 
 

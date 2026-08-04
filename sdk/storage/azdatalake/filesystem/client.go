@@ -65,7 +65,10 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 		// the inner blob client rather than the DFS pipeline
 		Session: options.Session,
 	}
-	blobContainerClient, _ := container.NewClient(containerURL, cred, &containerClientOpts)
+blobContainerClient, err := container.NewClient(containerURL, cred, &containerClientOpts)
+	if err != nil {
+		return nil, err
+	}
 	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil

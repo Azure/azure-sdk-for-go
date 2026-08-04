@@ -72,7 +72,10 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 		// the inner blob client rather than the DFS pipeline
 		Session: options.Session,
 	}
-	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+blobClient, err := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+	if err != nil {
+		return nil, err
+	}
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil

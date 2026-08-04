@@ -11,7 +11,7 @@ package azcosmos
 // first semver-shaped literal to determine the module version, so a second version constant
 // there would eventually be misreported as the module version.
 //
-// TODO(#27306): confirm the GA pin with the Rust driver crew before API sign-off.
+// TODO: confirm the GA pin with the Rust driver crew before API sign-off.
 //
 //nolint:unused // consumed once client construction lands.
 const nativeDriverVersion = "0.1.0"

@@ -116,7 +116,10 @@ feed:
 	close(indexes)
 	wg.Wait()
 
-	return firstErr
+	if firstErr != nil {
+		return firstErr
+	}
+	return ctx.Err()
 }
 
 func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {

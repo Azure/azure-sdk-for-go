@@ -3,6 +3,7 @@
 ## 1.6.1-beta.2 (Unreleased)
 
 ### Features Added
+* Added structured message (XSM/1.0) CRC64 content validation for `azdatalake` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
 
 ### Breaking Changes
 

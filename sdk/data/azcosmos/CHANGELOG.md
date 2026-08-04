@@ -18,6 +18,10 @@
   JSON null component and `AppendUndefined` produces one whose value is missing from the item,
   which route differently.
 
+* Added `Client`, `DatabaseClient` and `ContainerClient`, along with `ClientOptions`,
+  `KeyCredential` and the `NewClient`, `NewClientWithKey` and `NewClientFromConnectionString`
+  constructors. Operations on these clients are not implemented yet.
+
 ### Breaking Changes
 
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2

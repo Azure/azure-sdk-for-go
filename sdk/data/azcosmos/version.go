@@ -4,8 +4,13 @@
 package azcosmos
 
 const (
+	// moduleName intentionally omits the major version suffix; it is reported in telemetry.
+	//
+	//nolint:unused // consumed once client construction lands.
 	moduleName = "github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos"
 
 	// serviceLibVersion is the semantic version (see http://semver.org) of this module.
-	serviceLibVersion = "v1.6.0-beta.3"
+	//
+	//nolint:unused // consumed once client construction lands.
+	serviceLibVersion = "v2.0.0-beta.1"
 )

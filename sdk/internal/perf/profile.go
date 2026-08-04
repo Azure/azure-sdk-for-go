@@ -4,11 +4,25 @@
 package perf
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"runtime/pprof"
 )
+
+func runWithCPUProfile(enabled bool, path string, run func() error) (retErr error) {
+	stop, err := startCPUProfile(enabled, path)
+	if err != nil {
+		return err
+	}
+	if stop != nil {
+		defer func() {
+			retErr = errors.Join(retErr, stop())
+		}()
+	}
+	return run()
+}
 
 func startCPUProfile(enabled bool, path string) (func() error, error) {
 	if !enabled {

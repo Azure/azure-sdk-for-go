@@ -207,19 +207,8 @@ func Run(tests map[string]PerfMethods) {
 		workloadName = invocation.Workload
 	}
 
-	// Normalize sentinel defaults for the .NET-compatible Rate/Iterations/
-	// StatusInterval flags.
-	if iterations < 1 {
-		iterations = 1
-	}
-	if statusInterval < 1 {
-		statusInterval = 1
-	}
-	if targetRate < 0 {
-		targetRate = 0
-	}
-	if profile && profilePath == "" {
-		profilePath = "cpu.pprof"
+	if err = normalizeAndValidateOptions(); err != nil {
+		panic(err)
 	}
 
 	if numProcesses > 0 {
@@ -244,23 +233,42 @@ func Run(tests map[string]PerfMethods) {
 		fmt.Printf("\tRunning %s\n", testNameToRun)
 	}
 
-	stopProfile, err := startCPUProfile(profile, profilePath)
+	err = runWithCPUProfile(profile, profilePath, func() error {
+		return newPerfRunner(perfTestToRun, testNameToRun).Run()
+	})
 	if err != nil {
 		panic(err)
 	}
-	if stopProfile != nil {
-		defer func() {
-			if err := stopProfile(); err != nil {
-				panic(err)
-			}
-		}()
-	}
+}
 
-	runner := newPerfRunner(perfTestToRun, testNameToRun)
-	err = runner.Run()
-	if err != nil {
-		panic(err)
+func normalizeAndValidateOptions() error {
+	if duration <= 0 {
+		return fmt.Errorf("--duration must be greater than zero, got %d", duration)
 	}
+	if warmUpDuration < 0 {
+		return fmt.Errorf("--warmup must be non-negative, got %d", warmUpDuration)
+	}
+	if parallelInstances <= 0 {
+		return fmt.Errorf("--parallel must be greater than zero, got %d", parallelInstances)
+	}
+	if maxResults < 0 {
+		return fmt.Errorf("--max-results must be non-negative, got %d", maxResults)
+	}
+	// Normalize sentinel defaults for the .NET-compatible Rate/Iterations/
+	// StatusInterval flags.
+	if iterations < 1 {
+		iterations = 1
+	}
+	if statusInterval < 1 {
+		statusInterval = 1
+	}
+	if targetRate < 0 {
+		targetRate = 0
+	}
+	if profile && profilePath == "" {
+		profilePath = "cpu.pprof"
+	}
+	return nil
 }
 
 // printOptions writes a "=== Options ===" header followed by a JSON object

@@ -5,7 +5,6 @@ package perf
 
 import (
 	"strings"
-	"sync"
 )
 
 var (
@@ -21,9 +20,6 @@ var (
 	warmUpDuration int
 	// parallelInstances is the -p/--parallel flag
 	parallelInstances int
-
-	// wg is used to keep track of the number of goroutines created
-	wg sync.WaitGroup
 
 	// number of processes to use, the --maxprocs flag
 	numProcesses int

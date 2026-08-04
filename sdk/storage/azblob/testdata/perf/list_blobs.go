@@ -37,7 +37,10 @@ type listTestGlobal struct {
 }
 
 // NewListTest is called once per process
-func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+func NewListTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.GlobalPerfTest, retErr error) {
+	if err := validateListOptions(); err != nil {
+		return nil, err
+	}
 	l := &listTestGlobal{
 		PerfTestOptions: options,
 		// Suffix with a unique timestamp so concurrent runs and --no-cleanup
@@ -45,10 +48,11 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		containerName: fmt.Sprintf("listcontainer-%d", time.Now().UnixNano()),
 		blobPrefix:    "listblob",
 	}
-	containerClient, err := newContainerClient(l.containerName, nil)
+	containerClient, err := containerClientFactory(l.containerName, nil)
 	if err != nil {
 		return nil, err
 	}
+	defer cleanupContainerOnError(&retErr, containerClient)
 	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -123,7 +127,7 @@ feed:
 }
 
 func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
-	containerClient, err := newContainerClient(l.containerName, nil)
+	containerClient, err := containerClientFactory(l.containerName, nil)
 	if err != nil {
 		return err
 	}
@@ -145,7 +149,7 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 		PerfTestOptions: *options,
 	}
 
-	containerClient, err := newContainerClient(
+	containerClient, err := containerClientFactory(
 		u.listTestGlobal.containerName,
 		&container.ClientOptions{
 			ClientOptions: azcore.ClientOptions{

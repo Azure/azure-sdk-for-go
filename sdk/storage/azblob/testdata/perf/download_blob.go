@@ -36,7 +36,10 @@ type downloadTestGlobal struct {
 }
 
 // NewDownloadTest is called once per process
-func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.GlobalPerfTest, retErr error) {
+	if err := validateTransferOptions("download", downloadTestOpts.size); err != nil {
+		return nil, err
+	}
 	d := &downloadTestGlobal{
 		PerfTestOptions: options,
 		// Suffix with a unique timestamp so concurrent runs and --no-cleanup
@@ -46,10 +49,11 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 		size:          downloadTestOpts.size,
 	}
 
-	containerClient, err := newContainerClient(d.containerName, nil)
+	containerClient, err := containerClientFactory(d.containerName, nil)
 	if err != nil {
 		return nil, err
 	}
+	defer cleanupContainerOnError(&retErr, containerClient)
 	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
@@ -82,7 +86,7 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Gl
 }
 
 func (d *downloadTestGlobal) GlobalCleanup(ctx context.Context) error {
-	containerClient, err := newContainerClient(d.containerName, nil)
+	containerClient, err := containerClientFactory(d.containerName, nil)
 	if err != nil {
 		return err
 	}
@@ -108,7 +112,7 @@ func (g *downloadTestGlobal) NewPerfTest(ctx context.Context, options *perf.Perf
 		PerfTestOptions:    *options,
 	}
 
-	containerClient, err := newContainerClient(d.downloadTestGlobal.containerName, &container.ClientOptions{
+	containerClient, err := containerClientFactory(d.downloadTestGlobal.containerName, &container.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
 			Transport: d.PerfTestOptions.Transporter,
 		},

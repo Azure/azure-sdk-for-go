@@ -4,16 +4,31 @@
 package main
 
 import (
+	"context"
 	"crypto/rand"
+	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"math"
+	"net/url"
 	"os"
 	"strconv"
+	"strings"
+	"sync"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
+)
+
+var (
+	credentialMu      sync.Mutex
+	sharedCredential  azcore.TokenCredential
+	credentialFactory = func() (azcore.TokenCredential, error) {
+		return azidentity.NewDefaultAzureCredential(nil)
+	}
+	containerClientFactory = newContainerClient
 )
 
 // newContainerClient creates a container.Client for the given container using
@@ -24,20 +39,78 @@ import (
 // set, since some test environments disable shared key access. When only
 // AZURE_STORAGE_CONNECTION_STRING is set, shared key auth is used.
 func newContainerClient(containerName string, options *container.ClientOptions) (*container.Client, error) {
-	if accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME"); ok && accountName != "" {
-		cred, err := azidentity.NewDefaultAzureCredential(nil)
+	accountURL := strings.TrimSpace(os.Getenv("AZURE_STORAGE_ACCOUNT_URL"))
+	accountName := strings.TrimSpace(os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"))
+	if accountURL != "" || accountName != "" {
+		if accountURL == "" {
+			accountURL = fmt.Sprintf("https://%s.blob.core.windows.net", accountName)
+		}
+		parsed, err := url.Parse(accountURL)
+		if err != nil || parsed.Scheme == "" || parsed.Host == "" {
+			return nil, fmt.Errorf("invalid AZURE_STORAGE_ACCOUNT_URL %q", accountURL)
+		}
+		credentialMu.Lock()
+		cred := sharedCredential
+		if cred == nil {
+			cred, err = credentialFactory()
+			if err == nil {
+				sharedCredential = cred
+			}
+		}
+		credentialMu.Unlock()
 		if err != nil {
 			return nil, err
 		}
-		containerURL := fmt.Sprintf("https://%s.blob.core.windows.net/%s", accountName, containerName)
+		containerURL := strings.TrimRight(accountURL, "/") + "/" + containerName
 		return container.NewClient(containerURL, cred, options)
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("no storage credentials found: set 'AZURE_STORAGE_ACCOUNT_NAME' for token auth or 'AZURE_STORAGE_CONNECTION_STRING' for shared key auth")
+	connStr := strings.TrimSpace(os.Getenv("AZURE_STORAGE_CONNECTION_STRING"))
+	if connStr == "" {
+		return nil, fmt.Errorf("no storage credentials found: set AZURE_STORAGE_ACCOUNT_URL or AZURE_STORAGE_ACCOUNT_NAME for token auth, or AZURE_STORAGE_CONNECTION_STRING for shared key auth")
 	}
 	return container.NewClientFromConnectionString(connStr, containerName, options)
+}
+
+func cleanupContainerOnError(retErr *error, client *container.Client) {
+	if *retErr == nil || client == nil {
+		return
+	}
+	_, cleanupErr := client.Delete(context.Background(), nil)
+	*retErr = errors.Join(*retErr, cleanupErr)
+}
+
+func validateTransferOptions(testName string, size int) error {
+	if size < 0 {
+		return fmt.Errorf("--size must be non-negative, got %d", size)
+	}
+	if commonBlockSize < 0 {
+		return fmt.Errorf("--block-size must be non-negative, got %d", commonBlockSize)
+	}
+	switch testName {
+	case "upload":
+		if uploadMethod != "" && uploadMethod != "single" && uploadMethod != "buffer" && uploadMethod != "stream" {
+			return fmt.Errorf("unknown --upload-method %q (expected single|buffer|stream)", uploadMethod)
+		}
+	case "download":
+		if downloadMethod != "" && downloadMethod != "stream" && downloadMethod != "buffer" {
+			return fmt.Errorf("unknown --download-method %q (expected stream|buffer)", downloadMethod)
+		}
+	}
+	return nil
+}
+
+func validateListOptions() error {
+	if listTestOpts.count < 0 {
+		return fmt.Errorf("--num-blobs must be non-negative, got %d", listTestOpts.count)
+	}
+	if listTestOpts.parallelism < 0 {
+		return fmt.Errorf("--num-blobs-parallelism must be non-negative, got %d", listTestOpts.parallelism)
+	}
+	if listPageSize < 0 || int64(listPageSize) > math.MaxInt32 {
+		return fmt.Errorf("--page-size must be between 0 and %d, got %d", int64(math.MaxInt32), listPageSize)
+	}
+	return nil
 }
 
 type nopCloser struct {

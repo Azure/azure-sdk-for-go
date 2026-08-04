@@ -4,6 +4,7 @@
 package perf
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -11,6 +12,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 )
+
+var errProfileRun = errors.New("profiled run failed")
 
 func TestStartCPUProfileDisabled(t *testing.T) {
 	stop, err := startCPUProfile(false, "")
@@ -40,5 +43,20 @@ func TestStartCPUProfileWritesFile(t *testing.T) {
 
 	stat, err := os.Stat(path)
 	require.NoError(t, err)
+	require.Positive(t, stat.Size())
+}
+
+func TestRunWithCPUProfileStopsAfterRunError(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "cpu.pprof")
+	err := runWithCPUProfile(true, path, func() error {
+		deadline := time.Now().Add(25 * time.Millisecond)
+		for time.Now().Before(deadline) {
+		}
+		return errProfileRun
+	})
+
+	require.ErrorIs(t, err, errProfileRun)
+	stat, statErr := os.Stat(path)
+	require.NoError(t, statErr)
 	require.Positive(t, stat.Size())
 }

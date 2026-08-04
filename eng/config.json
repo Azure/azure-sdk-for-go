@@ -25,9 +25,8 @@
             "CoverageGoal": 0.92
         },
         {
-            "_comment": "Temporarily 0 while the v2 surface is being assembled: the reset leaves this module with no tests, and the coverage gate fails a 0.0% result against any non-zero goal. Restored to 0.40 as soon as the v2 tests land.",
             "Name": "azcosmos",
-            "CoverageGoal": 0
+            "CoverageGoal": 0.40
         },
         {
             "Name": "azidentity",

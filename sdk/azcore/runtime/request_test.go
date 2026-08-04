@@ -477,10 +477,10 @@ func TestEncodeQueryParams(t *testing.T) {
 	const testURL = "https://contoso.com/"
 	nextLink, err := EncodeQueryParams(testURL + "query?$skip=5&$filter='foo eq bar'")
 	require.NoError(t, err)
-	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", nextLink)
+	require.EqualValues(t, testURL+"query?%24filter=%27foo%20eq%20bar%27&%24skip=5", nextLink)
 	nextLink, err = EncodeQueryParams(testURL + "query?%24filter=%27foo+eq+bar%27&%24skip=5")
 	require.NoError(t, err)
-	require.EqualValues(t, testURL+"query?%24filter=%27foo+eq+bar%27&%24skip=5", nextLink)
+	require.EqualValues(t, testURL+"query?%24filter=%27foo%20eq%20bar%27&%24skip=5", nextLink)
 	nextLink, err = EncodeQueryParams(testURL + "query?foo=bar&one=two")
 	require.NoError(t, err)
 	require.EqualValues(t, testURL+"query?foo=bar&one=two", nextLink)
@@ -490,6 +490,14 @@ func TestEncodeQueryParams(t *testing.T) {
 	nextLink, err = EncodeQueryParams(testURL + "query?compound=thing1;thing2;thing3")
 	require.NoError(t, err)
 	require.EqualValues(t, testURL+"query?compound=thing1%3Bthing2%3Bthing3", nextLink)
+	// a literal '+' encoded as %2B is preserved (i.e. round-trips as %2B, not a space)
+	nextLink, err = EncodeQueryParams(testURL + "query?a=1%2B2")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?a=1%2B2", nextLink)
+	// a bare '+' is interpreted as a space and emitted as %20
+	nextLink, err = EncodeQueryParams(testURL + "query?a=1+2")
+	require.NoError(t, err)
+	require.EqualValues(t, testURL+"query?a=1%202", nextLink)
 }
 
 func TestNewUUID(t *testing.T) {

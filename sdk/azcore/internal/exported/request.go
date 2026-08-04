@@ -11,8 +11,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"reflect"
 	"strconv"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
 )
@@ -256,4 +258,46 @@ func SetBody(req *Request, body io.ReadSeekCloser, contentType string, clobberCo
 		req.req.Header.Set(shared.HeaderContentType, contentType)
 	}
 	return nil
+}
+
+// EncodeQueryParamsOptions contains the optional values for [EncodeQueryParams].
+type EncodeQueryParamsOptions struct {
+	// Parameters contains any additional query parameters to inject into the URL.
+	Parameters url.Values
+}
+
+// EncodeQueryParams will parse and encode any query parameters in the specified URL.
+// Any semicolons will automatically be escaped.
+func EncodeQueryParams(u string, o *EncodeQueryParamsOptions) (string, error) {
+	if o == nil {
+		o = &EncodeQueryParamsOptions{}
+	}
+
+	before, after, found := strings.Cut(u, "?")
+	qp := url.Values{}
+	if found {
+		// starting in Go 1.17, url.ParseQuery will reject semicolons in query params.
+		// so, we must escape them first. note that this assumes that semicolons aren't
+		// being used as query param separators which is per the current RFC.
+		// for more info:
+		// https://github.com/golang/go/issues/25192
+		// https://github.com/golang/go/issues/50034
+		var err error
+		qp, err = url.ParseQuery(strings.ReplaceAll(after, ";", "%3B"))
+		if err != nil {
+			return "", err
+		}
+	}
+	// inject any additional query parameters from the options, overwriting any
+	// existing values for a given key
+	for k, vs := range o.Parameters {
+		qp.Del(k)
+		for _, v := range vs {
+			qp.Add(k, v)
+		}
+	}
+	if len(qp) == 0 {
+		return before, nil
+	}
+	return before + "?" + strings.ReplaceAll(qp.Encode(), "+", "%20"), nil
 }

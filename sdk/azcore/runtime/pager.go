@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"reflect"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/tracing"
 )
@@ -128,7 +129,13 @@ type FetcherForNextLinkOptions struct {
 
 	// Endpoint is the service endpoint used to resolve a relative next link,
 	// e.g. "https://contoso.com". It's ignored when the next link is absolute.
+	// This field is only used when NextReq is not specified.
 	Endpoint string
+
+	// Parameters contains any additional query parameters to inject into the request.
+	// Any overlapping query parameters in nextLink will be overwritten.
+	// This field is only used when NextReq is not specified.
+	Parameters url.Values
 }
 
 // FetcherForNextLink is a helper containing boilerplate code to simplify creating a PagingHandler[T].Fetcher from a next link URL.
@@ -146,10 +153,13 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 	}
 	if nextLink == "" {
 		req, err = firstReq(ctx)
-	} else if nextLink, err = EncodeQueryParams(resolveNextLink(options.Endpoint, nextLink)); err == nil {
-		if options.NextReq != nil {
-			req, err = options.NextReq(ctx, nextLink)
-		} else {
+	} else if options.NextReq != nil {
+		req, err = options.NextReq(ctx, nextLink)
+	} else {
+		nextLink, err = exported.EncodeQueryParams(resolveNextLink(options.Endpoint, nextLink), &exported.EncodeQueryParamsOptions{
+			Parameters: options.Parameters,
+		})
+		if err == nil {
 			verb := http.MethodGet
 			if options.HTTPVerb != "" {
 				verb = options.HTTPVerb
@@ -175,13 +185,30 @@ func FetcherForNextLink(ctx context.Context, pl Pipeline, nextLink string, first
 // resolveNextLink joins a relative nextLink to endpoint, preserving nextLink's query params.
 // nextLink is returned unmodified when it's absolute or when endpoint is empty.
 func resolveNextLink(endpoint, nextLink string) string {
-	if endpoint == "" {
-		return nextLink
-	}
-	u, err := url.Parse(nextLink)
-	if err != nil || u.IsAbs() {
-		// a malformed next link is passed through so the failure surfaces when creating the request
+	if endpoint == "" || hasScheme(nextLink) {
 		return nextLink
 	}
 	return JoinPaths(endpoint, nextLink)
+}
+
+// hasScheme reports whether s begins with a URI scheme, i.e. is an absolute URI.
+// Per RFC 3986: scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." ) ":".
+// This avoids the allocations of url.Parse when we only need to know if the URI is absolute.
+func hasScheme(s string) bool {
+	for i := 0; i < len(s); i++ {
+		c := s[i]
+		switch {
+		case c >= 'a' && c <= 'z', c >= 'A' && c <= 'Z':
+			// always valid
+		case c == ':':
+			return i > 0
+		case i == 0:
+			return false
+		case c >= '0' && c <= '9', c == '+', c == '-', c == '.':
+			// valid after the first character
+		default:
+			return false
+		}
+	}
+	return false
 }

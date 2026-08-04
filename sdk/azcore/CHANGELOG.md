@@ -4,13 +4,16 @@
 
 ### Features Added
 
-* `runtime.FetcherForNextLinkOptions` has a new field `Endpoint`, the service endpoint used to resolve a relative next link.
+* New fields in `runtime.FetcherForNextLinkOptions`
+  * `Endpoint` is the service endpoint used to resolve a relative next link.
+  * `Parameters` contains additional query parameters to inject into the next link.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 * Fixed an issue where `runtime.Pager[T].More` could return `true` indefinitely after `NextPage` failed to retrieve the first page, causing `for pager.More()` loops to spin. After a page fetch returns an error the `Pager` now enters a terminal state: `More` returns `false` and subsequent `NextPage` calls return the same error without invoking the fetcher again.
+* Fixed `runtime.EncodeQueryParams()` to replace `+` characters with `%20` after calling `url.Values.Encode()`.
 
 ### Other Changes
 

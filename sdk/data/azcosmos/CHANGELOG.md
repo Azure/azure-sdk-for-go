@@ -6,6 +6,13 @@
 
 ### Features Added
 
+* Added the v2 error and response model. `Error` reports a `Code` classifying the failure, along
+  with the status code, sub-status code, message, activity ID, session token, ETag and retry-after
+  of the operation, and whether the service or the client produced it. Retrieve it with
+  `errors.As` and branch on `Code`, following the same shape as `azservicebus`. `Response` carries
+  the request charge, activity ID, ETag and session token common to every operation, and
+  `ItemResponse` adds the returned item content.
+
 ### Breaking Changes
 
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2

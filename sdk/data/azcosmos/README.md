@@ -7,9 +7,9 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 ## Status: v2 is under construction
 
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
-assembled incrementally so that it can be reviewed as it lands; this release contains no public
-API. Operations arrive in subsequent releases and will initially return an error reporting that
-they are not implemented.
+assembled incrementally so that it can be reviewed as it lands; this release contains the error
+and response model but no operations. Operations arrive in subsequent releases and will initially
+return an error reporting that they are not implemented.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the

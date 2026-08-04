@@ -29,6 +29,7 @@ const (
 )
 
 // Client is used to interact with the Azure Cosmos DB database service.
+// DUMMY TEST CHANGE - branch protection validation, do not merge.
 type Client struct {
 	endpoint    string
 	internal    *azcore.Client

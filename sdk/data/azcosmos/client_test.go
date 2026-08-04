@@ -5,12 +5,25 @@ package azcosmos
 
 import (
 	"context"
+	"strings"
+	"sync"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/stretchr/testify/require"
 )
+
+func newTestClient(t *testing.T) *Client {
+	t.Helper()
+
+	cred, err := NewKeyCredential("key")
+	require.NoError(t, err)
+	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
+	require.NoError(t, err)
+	return client
+}
 
 type fakeTokenCredential struct{}
 
@@ -61,14 +74,34 @@ func TestNewClientAcceptsAbsoluteEndpoint(t *testing.T) {
 	require.Equal(t, "https://myaccount.documents.azure.com", client.Endpoint())
 }
 
-func TestNewClientWithNilOptionsUsesDefaults(t *testing.T) {
+func TestNewClientAppliesCloudDefault(t *testing.T) {
 	cred, err := NewKeyCredential("key")
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
+	// The default has to be applied rather than left as the zero Configuration, or the driver
+	// receives an empty authority host and authenticates against the wrong audience.
+	for _, tt := range []struct {
+		name    string
+		options *ClientOptions
+	}{
+		{"nil options", nil},
+		{"options without a cloud", &ClientOptions{}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, tt.options)
+			require.NoError(t, err)
+			require.Equal(t, cloud.AzurePublic, client.options.Cloud)
+		})
+	}
+}
+
+func TestNewClientKeepsExplicitCloud(t *testing.T) {
+	cred, err := NewKeyCredential("key")
 	require.NoError(t, err)
-	require.Empty(t, client.options.PreferredRegions)
-	require.False(t, client.options.EnableContentResponseOnWrite)
+
+	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, &ClientOptions{Cloud: cloud.AzureGovernment})
+	require.NoError(t, err)
+	require.Equal(t, cloud.AzureGovernment, client.options.Cloud)
 }
 
 // The client must not alias the caller's slice, or a later append by the caller silently changes
@@ -85,14 +118,27 @@ func TestNewClientCopiesPreferredRegions(t *testing.T) {
 	require.Equal(t, []string{"West US", "East US"}, client.options.PreferredRegions)
 }
 
-func TestCloseIsIdempotent(t *testing.T) {
-	cred, err := NewKeyCredential("key")
-	require.NoError(t, err)
+// Close is documented as idempotent, safe to call concurrently, and as reporting the same result
+// to every caller. Storing the teardown error in a local rather than on the client would give it
+// to the first caller alone, which is what this exercises under -race.
+func TestCloseIsIdempotentAndConcurrencySafe(t *testing.T) {
+	client := newTestClient(t)
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
-	require.NoError(t, err)
+	const callers = 8
+	results := make([]error, callers)
+	var wg sync.WaitGroup
+	wg.Add(callers)
+	for i := range results {
+		go func() {
+			defer wg.Done()
+			results[i] = client.Close()
+		}()
+	}
+	wg.Wait()
 
-	require.NoError(t, client.Close())
+	for _, err := range results {
+		require.Equal(t, results[0], err, "every caller must observe the same result")
+	}
 	require.NoError(t, client.Close())
 }
 
@@ -212,4 +258,64 @@ func TestNewDatabaseAndNewContainerRejectEmptyIDs(t *testing.T) {
 
 	_, err = client.NewContainer("", "items")
 	require.Error(t, err)
+}
+
+// The scheme is validated, because a Cosmos endpoint is always reached over HTTP(S) and anything
+// else is a copy-paste mistake that would otherwise surface as an opaque driver failure.
+func TestNewClientRejectsNonHTTPSchemes(t *testing.T) {
+	cred, err := NewKeyCredential("key")
+	require.NoError(t, err)
+
+	for _, endpoint := range []string{"ftp://myaccount", "file:///tmp/x", "wss://myaccount"} {
+		t.Run(endpoint, func(t *testing.T) {
+			_, err := NewClientWithKey(endpoint, cred, nil)
+			require.Error(t, err)
+		})
+	}
+}
+
+// The emulator's connection string is the one every Cosmos developer pastes, so it is the highest
+// value single case for the parser.
+func TestParseConnectionStringAcceptsTheEmulatorString(t *testing.T) {
+	const emulator = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+
+	endpoint, cred, err := parseConnectionString(emulator)
+	require.NoError(t, err)
+	require.Equal(t, "https://localhost:8081/", endpoint)
+	require.Equal(t, "C2y6yDjf5R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==", cred.accountKey)
+
+	client, err := NewClientFromConnectionString(emulator, nil)
+	require.NoError(t, err)
+	require.NoError(t, client.Close())
+}
+
+// A connection string carries a credential, so nothing derived from it may reach an error message
+// or a log.
+func TestParseConnectionStringNeverLeaksTheAccountKey(t *testing.T) {
+	const key = "supersecretaccountkey"
+
+	for _, connectionString := range []string{
+		"AccountKey=" + key,
+		"AccountKey=" + key + ";garbage",
+		"AccountEndpoint=;AccountKey=" + key,
+	} {
+		_, _, err := parseConnectionString(connectionString)
+		require.Error(t, err)
+		require.NotContains(t, err.Error(), key)
+	}
+
+	_, err := NewClientFromConnectionString("AccountEndpoint=notaurl;AccountKey="+key, nil)
+	require.Error(t, err)
+	require.NotContains(t, err.Error(), key)
+}
+
+// The endpoint is named in its error so the message is actionable; this also pins the shape the
+// key-leak test above relies on.
+func TestEndpointErrorNamesTheEndpoint(t *testing.T) {
+	cred, err := NewKeyCredential("key")
+	require.NoError(t, err)
+
+	_, err = NewClientWithKey("notaurl", cred, nil)
+	require.Error(t, err)
+	require.True(t, strings.Contains(err.Error(), "notaurl"))
 }

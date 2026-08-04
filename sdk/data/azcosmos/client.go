@@ -48,9 +48,11 @@ type ClientOptions struct {
 // resources backing it, along with the routing and metadata caches that make requests cheap, so
 // creating one per operation is expensive and defeats them. Call [Client.Close] when done.
 type Client struct {
-	endpoint  string
-	options   ClientOptions
+	endpoint string
+	options  ClientOptions
+
 	closeOnce sync.Once
+	closeErr  error
 }
 
 // NewClient creates a client that authenticates with Microsoft Entra ID.
@@ -101,11 +103,17 @@ func newClient(endpoint string, options *ClientOptions) (*Client, error) {
 	if !parsed.IsAbs() || parsed.Host == "" {
 		return nil, fmt.Errorf("azcosmos: endpoint %q must be an absolute URL, for example https://myaccount.documents.azure.com", endpoint)
 	}
+	if parsed.Scheme != "https" && parsed.Scheme != "http" {
+		return nil, fmt.Errorf("azcosmos: endpoint %q must use the http or https scheme", endpoint)
+	}
 
 	client := &Client{endpoint: endpoint}
 	if options != nil {
 		client.options = *options
 		client.options.PreferredRegions = append([]string(nil), options.PreferredRegions...)
+	}
+	if client.options.Cloud.ActiveDirectoryAuthorityHost == "" && client.options.Cloud.Services == nil {
+		client.options.Cloud = cloud.AzurePublic
 	}
 	return client, nil
 }
@@ -152,20 +160,21 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// Close releases the driver resources the client owns and waits for its in-flight operations to
-// finish. The client must not be used afterwards.
+// Close releases the driver resources the client owns. The client must not be used afterwards.
 //
-// Close is idempotent. It returns an error only when the client could not be torn down cleanly;
-// the resources are released either way, so there is nothing to retry.
+// Close is idempotent and safe to call concurrently; every caller observes the same result. It
+// returns an error only when the client could not be torn down cleanly, in which case the
+// resources are released anyway, so there is nothing to retry.
+//
+// Callers must not have operations in flight when Close is called. Waiting for them, and failing
+// operations attempted after Close, arrives with the operations themselves.
 func (c *Client) Close() error {
-	var err error
 	c.closeOnce.Do(func() {
-		// Nothing to release until the driver binding lands. The error return is part of the
-		// contract from the start because teardown has to drain in-flight operations, and adding
-		// it later would break every caller.
-		err = nil
+		// Driver resources are released here once the binding lands, recording a teardown that
+		// did not complete cleanly in c.closeErr. The error is stored on the client rather than
+		// in a local so that the second and subsequent callers see it too.
 	})
-	return err
+	return c.closeErr
 }
 
 // NewDatabase returns a client for a database in the account. It does not contact the service, so

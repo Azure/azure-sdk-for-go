@@ -8,6 +8,9 @@ package azcosmos
 // This is deliberately not the account's consistency level. The driver exposes a smaller set of
 // read strategies, and a read can only relax what the account guarantees, never strengthen it. See
 // https://learn.microsoft.com/azure/cosmos-db/consistency-levels for the account-level concept.
+//
+// The driver also defines a latest-committed strategy that the C ABI has no value for, so it is
+// not offered here.
 type ReadConsistencyStrategy string
 
 const (

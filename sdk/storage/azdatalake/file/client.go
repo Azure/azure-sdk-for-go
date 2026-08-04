@@ -428,7 +428,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 
 // AppendData appends data to existing file with a given offset.
 func (f *Client) AppendData(ctx context.Context, offset int64, body io.ReadSeekCloser, options *AppendDataOptions) (AppendDataResponse, error) {
-	appendDataOptions, leaseAccessConditions, cpkInfo, err := options.format(offset, body)
+	body, appendDataOptions, leaseAccessConditions, cpkInfo, err := options.format(offset, body)
 	if err != nil {
 		return AppendDataResponse{}, err
 	}
@@ -587,11 +587,12 @@ func (f *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	}
 	newResp := FormatDownloadStreamResponse(&resp, respFromCtx)
 	fullResp := DownloadStreamResponse{
-		client:           f,
-		DownloadResponse: newResp,
-		getInfo:          httpGetterInfo{Range: o.Range, ETag: newResp.ETag},
-		cpkInfo:          o.CPKInfo,
-		cpkScope:         o.CPKScopeInfo,
+		client:                  f,
+		DownloadResponse:        newResp,
+		getInfo:                 httpGetterInfo{Range: o.Range, ETag: newResp.ETag},
+		cpkInfo:                 o.CPKInfo,
+		cpkScope:                o.CPKScopeInfo,
+		transactionalValidation: o.TransactionalValidation,
 	}
 
 	return fullResp, nil

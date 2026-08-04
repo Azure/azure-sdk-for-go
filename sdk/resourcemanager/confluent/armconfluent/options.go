@@ -55,6 +55,31 @@ type AccessClientListUsersOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AccessPointResourcesClientBeginCreateOrReplaceOptions contains the optional parameters for the AccessPointResourcesClient.BeginCreateOrReplace
+// method.
+type AccessPointResourcesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AccessPointResourcesClientBeginDeleteOptions contains the optional parameters for the AccessPointResourcesClient.BeginDelete
+// method.
+type AccessPointResourcesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// AccessPointResourcesClientGetOptions contains the optional parameters for the AccessPointResourcesClient.Get method.
+type AccessPointResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AccessPointResourcesClientListOptions contains the optional parameters for the AccessPointResourcesClient.NewListPager
+// method.
+type AccessPointResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ClusterClientBeginDeleteOptions contains the optional parameters for the ClusterClient.BeginDelete method.
 type ClusterClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -113,6 +138,38 @@ type MarketplaceAgreementsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// NetworkGatewayResourcesClientBeginCreateOrReplaceOptions contains the optional parameters for the NetworkGatewayResourcesClient.BeginCreateOrReplace
+// method.
+type NetworkGatewayResourcesClientBeginCreateOrReplaceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkGatewayResourcesClientBeginDeleteOptions contains the optional parameters for the NetworkGatewayResourcesClient.BeginDelete
+// method.
+type NetworkGatewayResourcesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// NetworkGatewayResourcesClientGetOptions contains the optional parameters for the NetworkGatewayResourcesClient.Get method.
+type NetworkGatewayResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NetworkGatewayResourcesClientListOptions contains the optional parameters for the NetworkGatewayResourcesClient.NewListPager
+// method.
+type NetworkGatewayResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientBeginActivateResourceOptions contains the optional parameters for the OrganizationClient.BeginActivateResource
+// method.
+type OrganizationClientBeginActivateResourceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // OrganizationClientBeginCreateOptions contains the optional parameters for the OrganizationClient.BeginCreate method.
 type OrganizationClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -121,6 +178,12 @@ type OrganizationClientBeginCreateOptions struct {
 
 // OrganizationClientBeginDeleteOptions contains the optional parameters for the OrganizationClient.BeginDelete method.
 type OrganizationClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// OrganizationClientBeginLinkSaaSOptions contains the optional parameters for the OrganizationClient.BeginLinkSaaS method.
+type OrganizationClientBeginLinkSaaSOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -161,6 +224,12 @@ type OrganizationClientGetOptions struct {
 // OrganizationClientGetSchemaRegistryClusterByIDOptions contains the optional parameters for the OrganizationClient.GetSchemaRegistryClusterByID
 // method.
 type OrganizationClientGetSchemaRegistryClusterByIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OrganizationClientLatestLinkedSaaSOptions contains the optional parameters for the OrganizationClient.LatestLinkedSaaS
+// method.
+type OrganizationClientLatestLinkedSaaSOptions struct {
 	// placeholder for future optional parameters
 }
 

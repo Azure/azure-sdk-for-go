@@ -7,11 +7,11 @@ package armhybridcompute_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/NetworkProfile_Get.json
+// Generated from example definition: 2026-06-16-preview/NetworkProfile_Get.json
 func ExampleNetworkProfileClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

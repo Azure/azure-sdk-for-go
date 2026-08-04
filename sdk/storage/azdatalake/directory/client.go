@@ -212,6 +212,10 @@ func (d *Client) NewFileClient(fileName string) (*file.Client, error) {
 	newBlobURL, fileURL := shared.GetURLs(fileURL)
 	var newBlobClient *blockblob.Client
 	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions}
+	// The blob client built here must capture the raw response so that file.GetProperties
+	// can read the datalake-specific headers (owner, group, permissions). Without this the
+	// captured response is nil and GetProperties panics. See issue #25490.
+	clientOptions.PerCallPolicies = append([]policy.Policy{shared.NewIncludeBlobResponsePolicy()}, clientOptions.PerCallPolicies...)
 	var err error
 	if d.identityCredential() != nil {
 		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), clientOptions)
@@ -235,6 +239,10 @@ func (d *Client) NewSubdirectoryClient(subdirectoryName string) (*Client, error)
 	newBlobURL, subDirectoryURL := shared.GetURLs(subDirectoryURL)
 	var newBlobClient *blockblob.Client
 	clientOptions := &blockblob.ClientOptions{ClientOptions: d.getClientOptions().ClientOptions}
+	// The blob client built here must capture the raw response so that GetProperties can read
+	// the datalake-specific headers (owner, group, permissions). Without this the captured
+	// response is nil and GetProperties panics. See issue #25490.
+	clientOptions.PerCallPolicies = append([]policy.Policy{shared.NewIncludeBlobResponsePolicy()}, clientOptions.PerCallPolicies...)
 	var err error
 	if d.identityCredential() != nil {
 		newBlobClient, err = blockblob.NewClient(newBlobURL, *d.identityCredential(), clientOptions)

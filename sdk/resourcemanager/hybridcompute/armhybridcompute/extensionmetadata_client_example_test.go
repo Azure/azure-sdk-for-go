@@ -7,18 +7,18 @@ package armhybridcompute_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/extension/ExtensionMetadata_Get.json
+// Generated from example definition: 2026-06-16-preview/extension/ExtensionMetadata_Get.json
 func ExampleExtensionMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -31,7 +31,7 @@ func ExampleExtensionMetadataClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridcompute.ExtensionMetadataClientGetResponse{
 	// 	ExtensionValue: armhybridcompute.ExtensionValue{
-	// 		ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Providers/Microsoft.HybridCompute/locations/eastus/publishers/microsoft.azure.monitor/extensionTypes/azuremonitorlinuxagent/versions/1.9.1"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/Providers/Microsoft.HybridCompute/locations/eastus/publishers/microsoft.azure.monitor/extensionTypes/azuremonitorlinuxagent/versions/1.9.1"),
 	// 		Properties: &armhybridcompute.ExtensionValueProperties{
 	// 			ExtensionType: to.Ptr("azuremonitorlinuxagent"),
 	// 			Publisher: to.Ptr("microsoft.azure.monitor"),
@@ -41,14 +41,14 @@ func ExampleExtensionMetadataClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/extension/ExtensionMetadata_List.json
+// Generated from example definition: 2026-06-16-preview/extension/ExtensionMetadata_List.json
 func ExampleExtensionMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -67,7 +67,7 @@ func ExampleExtensionMetadataClient_NewListPager() {
 		// 	ExtensionValueListResult: armhybridcompute.ExtensionValueListResult{
 		// 		Value: []*armhybridcompute.ExtensionValue{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Providers/Microsoft.HybridCompute/locations/eastus/publishers/microsoft.azure.monitor/extensionTypes/azuremonitorlinuxagent/versions/1.9.1"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/Providers/Microsoft.HybridCompute/locations/eastus/publishers/microsoft.azure.monitor/extensionTypes/azuremonitorlinuxagent/versions/1.9.1"),
 		// 				Properties: &armhybridcompute.ExtensionValueProperties{
 		// 					ExtensionType: to.Ptr("azuremonitorlinuxagent"),
 		// 					Publisher: to.Ptr("microsoft.azure.monitor"),
@@ -75,7 +75,7 @@ func ExampleExtensionMetadataClient_NewListPager() {
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Providers/Microsoft.HybridCompute/locations/eastus/publishers/microsoft.azure.monitor/extensionTypes/azuremonitorlinuxagent/versions/1.9.2"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/Providers/Microsoft.HybridCompute/locations/eastus/publishers/microsoft.azure.monitor/extensionTypes/azuremonitorlinuxagent/versions/1.9.2"),
 		// 				Properties: &armhybridcompute.ExtensionValueProperties{
 		// 					ExtensionType: to.Ptr("azuremonitorlinuxagent"),
 		// 					Publisher: to.Ptr("microsoft.azure.monitor"),

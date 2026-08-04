@@ -67,7 +67,8 @@ func ExampleClient_AddSetting() {
 
 	// Create configuration setting
 	resp, err := client.AddSetting(context.TODO(), "example-key", to.Ptr("example-value"), &azappconfig.AddSettingOptions{
-		Label: to.Ptr("example-label"),
+		Label:       to.Ptr("example-label"),
+		Description: to.Ptr("An example configuration setting."),
 	})
 
 	if err != nil {
@@ -123,7 +124,8 @@ func ExampleClient_SetSetting() {
 
 	// Set configuration setting
 	resp, err := client.SetSetting(context.TODO(), "example-key", to.Ptr("example-new-value"), &azappconfig.SetSettingOptions{
-		Label: to.Ptr("example-label"),
+		Label:       to.Ptr("example-label"),
+		Description: to.Ptr("An updated example configuration setting."),
 	})
 
 	if err != nil {
@@ -264,7 +266,9 @@ func ExampleClient_BeginCreateSnapshot() {
 		},
 	}
 
-	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, nil)
+	_, err = client.BeginCreateSnapshot(context.TODO(), snapshotName, filter, &azappconfig.BeginCreateSnapshotOptions{
+		Description: to.Ptr("An example snapshot."),
+	})
 
 	if err != nil {
 		//  TODO: Update the following line with your application specific error handling logic

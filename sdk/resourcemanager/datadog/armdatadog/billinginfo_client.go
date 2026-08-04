@@ -18,6 +18,8 @@ import (
 
 // BillingInfoClient contains the methods for the BillingInfo group.
 // Don't use this type directly, use NewBillingInfoClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type BillingInfoClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewBillingInfoClient(subscriptionID string, credential azcore.TokenCredenti
 //
 // Get marketplace and organization info mapped to the given monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - BillingInfoClientGetOptions contains the optional parameters for the BillingInfoClient.Get method.
@@ -90,8 +90,8 @@ func (client *BillingInfoClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

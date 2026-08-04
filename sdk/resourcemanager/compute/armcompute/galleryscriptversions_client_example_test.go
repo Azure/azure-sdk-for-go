@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Create.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Create.json
 func ExampleGalleryScriptVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleGalleryScriptVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Delete.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Delete.json
 func ExampleGalleryScriptVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleGalleryScriptVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Get.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Get.json
 func ExampleGalleryScriptVersionsClient_Get_getAGalleryScriptVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -324,7 +324,7 @@ func ExampleGalleryScriptVersionsClient_Get_getAGalleryScriptVersion() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Get_WithReplicationStatus.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Get_WithReplicationStatus.json
 func ExampleGalleryScriptVersionsClient_Get_getAGalleryScriptVersionWithReplicationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -439,7 +439,7 @@ func ExampleGalleryScriptVersionsClient_Get_getAGalleryScriptVersionWithReplicat
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_ListByGalleryScript.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_ListByGalleryScript.json
 func ExampleGalleryScriptVersionsClient_NewListByGalleryScriptPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -600,7 +600,7 @@ func ExampleGalleryScriptVersionsClient_NewListByGalleryScriptPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryScriptExamples/GalleryScriptVersion_Update.json
+// Generated from example definition: 2025-12-03/galleryScriptExamples/GalleryScriptVersion_Update.json
 func ExampleGalleryScriptVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

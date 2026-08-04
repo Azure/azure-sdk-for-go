@@ -164,10 +164,12 @@ func TestPagerFetcherError(t *testing.T) {
 		},
 	})
 	require.True(t, pager.firstPage)
+	require.True(t, pager.More())
 
 	page, err := pager.NextPage(context.Background())
 	require.Error(t, err)
 	require.Empty(t, page)
+	require.False(t, pager.More())
 }
 
 func TestPagerPipelineError(t *testing.T) {
@@ -185,10 +187,42 @@ func TestPagerPipelineError(t *testing.T) {
 		},
 	})
 	require.True(t, pager.firstPage)
+	require.True(t, pager.More())
 
 	page, err := pager.NextPage(context.Background())
 	require.Error(t, err)
 	require.Empty(t, page)
+	require.False(t, pager.More())
+}
+
+func TestPagerTerminalAfterError(t *testing.T) {
+	attempts := 0
+	sentinel := errors.New("transient failure")
+	pager := NewPager(PagingHandler[PageResponse]{
+		More: func(current PageResponse) bool {
+			return current.NextPage
+		},
+		Fetcher: func(ctx context.Context, current *PageResponse) (PageResponse, error) {
+			attempts++
+			return PageResponse{}, sentinel
+		},
+	})
+	require.True(t, pager.More())
+
+	// the first fetch fails, placing the pager in a terminal state
+	page, err := pager.NextPage(context.Background())
+	require.ErrorIs(t, err, sentinel)
+	require.Empty(t, page)
+	require.False(t, pager.More())
+	require.Equal(t, 1, attempts)
+
+	// the pager is terminal: NextPage returns the stored error without
+	// re-invoking the fetcher, so stateful handlers can't be corrupted.
+	page, err = pager.NextPage(context.Background())
+	require.ErrorIs(t, err, sentinel)
+	require.Empty(t, page)
+	require.False(t, pager.More())
+	require.Equal(t, 1, attempts)
 }
 
 func TestPagerSecondPageError(t *testing.T) {
@@ -227,10 +261,11 @@ func TestPagerSecondPageError(t *testing.T) {
 			var respErr *exported.ResponseError
 			require.True(t, errors.As(err, &respErr))
 			require.Equal(t, "PageError", respErr.ErrorCode)
-			goto ExitLoop
+			// a subsequent-page error puts the pager in a terminal state, so
+			// More returns false and the loop terminates on its own.
+			require.False(t, pager.More())
 		}
 	}
-ExitLoop:
 	require.Equal(t, 2, pageCount)
 }
 
@@ -435,4 +470,68 @@ func TestFetcherForNextLinkWithHTTPMethod(t *testing.T) {
 	require.True(t, nextReqCalled)
 	require.NotNil(t, resp)
 	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+}
+
+func TestFetcherForNextLinkRelative(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	pl := exported.NewPipeline(srv)
+
+	var gotURL string
+	capture := mock.WithPredicate(func(req *http.Request) bool {
+		gotURL = "http://" + req.Host + req.URL.RequestURI()
+		return true
+	})
+
+	// a relative next link is resolved against the endpoint
+	srv.AppendResponse(capture, mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // predicate failure response
+	resp, err := FetcherForNextLink(context.Background(), pl, "/page/2?api-version=1.0", func(ctx context.Context) (*policy.Request, error) {
+		t.Fatal("first page shouldn't be requested")
+		return nil, nil
+	}, &FetcherForNextLinkOptions{Endpoint: srv.URL()})
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, srv.URL()+"/page/2?api-version=1.0", gotURL)
+
+	// an absolute next link ignores the endpoint
+	srv.AppendResponse(capture, mock.WithStatusCode(http.StatusOK))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest)) // predicate failure response
+	resp, err = FetcherForNextLink(context.Background(), pl, srv.URL()+"/page/3", func(ctx context.Context) (*policy.Request, error) {
+		t.Fatal("first page shouldn't be requested")
+		return nil, nil
+	}, &FetcherForNextLinkOptions{Endpoint: "https://microsoft.com"})
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, srv.URL()+"/page/3", gotURL)
+
+	// a relative next link without an endpoint fails as before
+	_, err = FetcherForNextLink(context.Background(), pl, "/page/2", func(ctx context.Context) (*policy.Request, error) {
+		t.Fatal("first page shouldn't be requested")
+		return nil, nil
+	}, nil)
+	require.Error(t, err)
+}
+
+func TestResolveNextLink(t *testing.T) {
+	for _, test := range []struct {
+		endpoint string
+		nextLink string
+		want     string
+	}{
+		{"https://contoso.com", "https://fabrikam.com/page/2", "https://fabrikam.com/page/2"},
+		{"", "/page/2", "/page/2"},
+		{"https://contoso.com", "/page/2", "https://contoso.com/page/2"},
+		{"https://contoso.com/", "/page/2", "https://contoso.com/page/2"},
+		{"https://contoso.com/api/v1", "/page/2", "https://contoso.com/api/v1/page/2"},
+		{"https://contoso.com/api/v1", "page/2", "https://contoso.com/api/v1/page/2"},
+		{"https://contoso.com", "/page/2?skip=1&url=https%3A%2F%2Ffabrikam.com", "https://contoso.com/page/2?skip=1&url=https%3A%2F%2Ffabrikam.com"},
+		{"https://contoso.com", "?skip=1", "https://contoso.com?skip=1"},
+		{"https://contoso.com?api-version=1.0", "/page/2?skip=1", "https://contoso.com/page/2?skip=1&api-version=1.0"},
+		{"https://contoso.com", "/page/it%2Fem", "https://contoso.com/page/it%2Fem"},
+		// a malformed next link is passed through so the failure surfaces when creating the request
+		{"https://contoso.com", "/page/\x7f", "/page/\x7f"},
+	} {
+		require.EqualValues(t, test.want, resolveNextLink(test.endpoint, test.nextLink), "%s + %s", test.endpoint, test.nextLink)
+	}
 }

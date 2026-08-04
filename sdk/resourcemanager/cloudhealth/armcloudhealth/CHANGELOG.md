@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (2026-07-07)
+## 0.3.0 (2026-07-12)
 ### Breaking Changes
 
 - Field `Dimension` of struct `AzureResourceSignal` has been removed

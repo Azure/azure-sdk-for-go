@@ -58,6 +58,10 @@ type AgentPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, resourceName string, options *armcontainerservice.AgentPoolsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse])
 
+	// ListBootstrapData is the fake for method AgentPoolsClient.ListBootstrapData
+	// HTTP status codes to indicate success: http.StatusOK
+	ListBootstrapData func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body armcontainerservice.ListBootstrapDataRequest, options *armcontainerservice.AgentPoolsClientListBootstrapDataOptions) (resp azfake.Responder[armcontainerservice.AgentPoolsClientListBootstrapDataResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpgradeNodeImageVersion is the fake for method AgentPoolsClient.BeginUpgradeNodeImageVersion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUpgradeNodeImageVersion func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse], errResp azfake.ErrorResponder)
@@ -131,6 +135,8 @@ func (a *AgentPoolsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = a.dispatchGetUpgradeProfile(req)
 			case "AgentPoolsClient.NewListPager":
 				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AgentPoolsClient.ListBootstrapData":
+				res.resp, res.err = a.dispatchListBootstrapData(req)
 			case "AgentPoolsClient.BeginUpgradeNodeImageVersion":
 				res.resp, res.err = a.dispatchBeginUpgradeNodeImageVersion(req)
 			default:
@@ -563,6 +569,47 @@ func (a *AgentPoolsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	}
 	if !server.PagerResponderMore(newListPager) {
 		a.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AgentPoolsServerTransport) dispatchListBootstrapData(req *http.Request) (*http.Response, error) {
+	if a.srv.ListBootstrapData == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListBootstrapData not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/agentPools/(?P<agentPoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listBootstrapData`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerservice.ListBootstrapDataRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListBootstrapData(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PoolBootstrapData, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

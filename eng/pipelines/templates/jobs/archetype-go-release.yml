@@ -69,10 +69,19 @@ stages:
       dependsOn:
         - CheckRelease
         - AutoReleasePrepare
-      condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'), eq(dependencies.AutoReleasePrepare.outputs['ResolveAutoReleasePackages.resolve.AutoReleaseLabelPresent'], 'true'), eq(dependencies.AutoReleasePrepare.outputs['ResolveAutoReleasePackages.resolve.HasAutoReleaseArtifacts'], 'true'))
+      condition: >-
+        and(
+          succeeded(),
+          eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'),
+          eq(dependencies.AutoReleasePrepare.outputs['ResolveAutoReleasePackages.resolve.HasAutoReleaseArtifacts'], 'true')
+        )
     ${{ else }}:
       dependsOn: CheckRelease
-      condition: and(succeeded(), eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true'))
+      condition: >-
+        and(
+          succeeded(),
+          eq(dependencies.CheckRelease.outputs['CheckReleaseJob.Verify.NeedToRelease'], 'true')
+        )
     jobs:
       - deployment: ReleaseGate
         environment: package-publish

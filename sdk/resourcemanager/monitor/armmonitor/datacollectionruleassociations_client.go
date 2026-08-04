@@ -46,7 +46,7 @@ func NewDataCollectionRuleAssociationsClient(subscriptionID string, credential a
 //
 // Creates or updates an association.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The identifier of the resource.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - associationName - The name of the association. The name is case insensitive.
 //   - body - The payload
 //   - options - DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create

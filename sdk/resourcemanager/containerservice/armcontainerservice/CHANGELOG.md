@@ -1,10 +1,13 @@
 # Release History
 
-## 9.4.0-beta.1 (2026-06-04)
+## 9.5.0-beta.1 (2026-07-24)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`
 - New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
+- New value `AgentPoolTypeFlexNodes` added to enum type `AgentPoolType`
+- New value `BackendPoolTypePodIP` added to enum type `BackendPoolType`
+- New value `LoadBalancerSKUService` added to enum type `LoadBalancerSKU`
 - New value `OSSKUFlatcar`, `OSSKUMariner`, `OSSKUWindowsAnnual` added to enum type `OSSKU`
 - New value `OutboundTypeManagedNATGatewayV2` added to enum type `OutboundType`
 - New value `PublicNetworkAccessSecuredByPerimeter` added to enum type `PublicNetworkAccess`
@@ -13,6 +16,8 @@
 - New value `WorkloadRuntimeKataMshvVMIsolation` added to enum type `WorkloadRuntime`
 - New enum type `AddonAutoscaling` with values `AddonAutoscalingDisabled`, `AddonAutoscalingEnabled`
 - New enum type `AgentPoolNetworkInterfaceType` with values `AgentPoolNetworkInterfaceTypeDynamic`, `AgentPoolNetworkInterfaceTypeStandard`
+- New enum type `AlertConfigurationMode` with values `AlertConfigurationModeDisabled`, `AlertConfigurationModeManaged`
+- New enum type `AlertConfigurationProvisioningState` with values `AlertConfigurationProvisioningStateCanceled`, `AlertConfigurationProvisioningStateCreating`, `AlertConfigurationProvisioningStateDeleting`, `AlertConfigurationProvisioningStateFailed`, `AlertConfigurationProvisioningStateSucceeded`, `AlertConfigurationProvisioningStateUpdating`
 - New enum type `BastionSKU` with values `BastionSKUPremium`, `BastionSKUStandard`
 - New enum type `ClusterServiceLoadBalancerHealthProbeMode` with values `ClusterServiceLoadBalancerHealthProbeModeServiceNodePort`, `ClusterServiceLoadBalancerHealthProbeModeShared`
 - New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
@@ -35,13 +40,19 @@
 - New enum type `ResourceSKURestrictionsReasonCode` with values `ResourceSKURestrictionsReasonCodeNotAvailableForSubscription`, `ResourceSKURestrictionsReasonCodeQuotaID`
 - New enum type `ResourceSKURestrictionsType` with values `ResourceSKURestrictionsTypeLocation`, `ResourceSKURestrictionsTypeZone`
 - New enum type `SafeguardsSupport` with values `SafeguardsSupportPreview`, `SafeguardsSupportStable`
-- New enum type `SchedulerConfigMode` with values `SchedulerConfigModeDefault`, `SchedulerConfigModeManagedByCRD`
 - New enum type `SeccompDefault` with values `SeccompDefaultRuntimeDefault`, `SeccompDefaultUnconfined`
 - New enum type `UpgradeStrategy` with values `UpgradeStrategyBlueGreen`, `UpgradeStrategyRolling`
 - New enum type `VMState` with values `VMStateDeleted`, `VMStateRunning`
 - New function `*AgentPoolsClient.BeginCompleteUpgrade(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *AgentPoolsClientBeginCompleteUpgradeOptions) (*runtime.Poller[AgentPoolsClientCompleteUpgradeResponse], error)`
+- New function `*AgentPoolsClient.ListBootstrapData(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body ListBootstrapDataRequest, options *AgentPoolsClientListBootstrapDataOptions) (AgentPoolsClientListBootstrapDataResponse, error)`
+- New function `NewAlertConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertConfigurationsClient, error)`
+- New function `*AlertConfigurationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, resource AlertConfiguration, options *AlertConfigurationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AlertConfigurationsClientCreateOrUpdateResponse], error)`
+- New function `*AlertConfigurationsClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, options *AlertConfigurationsClientBeginDeleteOptions) (*runtime.Poller[AlertConfigurationsClientDeleteResponse], error)`
+- New function `*AlertConfigurationsClient.Get(ctx context.Context, resourceGroupName string, resourceName string, configurationName string, options *AlertConfigurationsClientGetOptions) (AlertConfigurationsClientGetResponse, error)`
+- New function `*AlertConfigurationsClient.NewListByManagedClusterPager(resourceGroupName string, resourceName string, options *AlertConfigurationsClientListByManagedClusterOptions) *runtime.Pager[AlertConfigurationsClientListByManagedClusterResponse]`
 - New function `NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error)`
 - New function `*Client.NewListNodeImageVersionsPager(location string, options *ClientListNodeImageVersionsOptions) *runtime.Pager[ClientListNodeImageVersionsResponse]`
+- New function `*ClientFactory.NewAlertConfigurationsClient() *AlertConfigurationsClient`
 - New function `*ClientFactory.NewClient() *Client`
 - New function `*ClientFactory.NewJWTAuthenticatorsClient() *JWTAuthenticatorsClient`
 - New function `*ClientFactory.NewLoadBalancersClient() *LoadBalancersClient`
@@ -93,8 +104,19 @@
 - New function `*VMSKUsClient.NewListPager(location string, options *VMSKUsClientListOptions) *runtime.Pager[VMSKUsClientListResponse]`
 - New struct `AgentPoolBlueGreenUpgradeSettings`
 - New struct `AgentPoolNetworkInterface`
-- New struct `AutoScaleProfile`
+- New struct `AlertConfiguration`
+- New struct `AlertConfigurationListResult`
+- New struct `AlertConfigurationProperties`
+- New struct `AlertNotification`
+- New struct `AllowedSubject`
 - New struct `BastionProfile`
+- New struct `BootstrapAzureConfig`
+- New struct `BootstrapComponentVersions`
+- New struct `BootstrapKubeletConfig`
+- New struct `BootstrapNetworkingConfig`
+- New struct `BootstrapNodeConfig`
+- New struct `BootstrapTargetCluster`
+- New struct `BootstrapTokenInfo`
 - New struct `Component`
 - New struct `ComponentsByRelease`
 - New struct `GuardrailsAvailableVersion`
@@ -113,6 +135,7 @@
 - New struct `KubernetesResourceObjectEncryptionProfile`
 - New struct `LabelSelector`
 - New struct `LabelSelectorRequirement`
+- New struct `ListBootstrapDataRequest`
 - New struct `LoadBalancer`
 - New struct `LoadBalancerListResult`
 - New struct `LoadBalancerProperties`
@@ -136,8 +159,6 @@
 - New struct `ManagedClusterNATGatewayProfileOutboundIPPrefixes`
 - New struct `ManagedClusterNATGatewayProfileOutboundIPs`
 - New struct `ManagedClusterPropertiesForSnapshot`
-- New struct `ManagedClusterSecurityProfileDefenderSecurityGating`
-- New struct `ManagedClusterSecurityProfileDefenderSecurityGatingIdentitiesItem`
 - New struct `ManagedClusterSecurityProfileImageIntegrity`
 - New struct `ManagedClusterSecurityProfileNodeRestriction`
 - New struct `ManagedClusterSnapshot`
@@ -156,6 +177,7 @@
 - New struct `NvidiaGPUProfile`
 - New struct `OperationStatusResult`
 - New struct `OperationStatusResultList`
+- New struct `PoolBootstrapData`
 - New struct `PreparedImageSpecificationProfile`
 - New struct `RebalanceLoadBalancersRequestBody`
 - New struct `ResourceSKU`
@@ -169,9 +191,6 @@
 - New struct `SafeguardsAvailableVersion`
 - New struct `SafeguardsAvailableVersionsList`
 - New struct `SafeguardsAvailableVersionsProperties`
-- New struct `SchedulerInstanceProfile`
-- New struct `SchedulerProfile`
-- New struct `SchedulerProfileSchedulerInstanceProfiles`
 - New struct `ServiceAccountImagePullProfile`
 - New struct `VMSKUsListResult`
 - New field `NodePublicIPPrefixIDs`, `SecondaryNetworkInterfaces` in struct `AgentPoolNetworkProfile`
@@ -179,9 +198,11 @@
 - New field `IsOutOfSupport` in struct `AgentPoolUpgradeProfilePropertiesUpgradesItem`
 - New field `MaxBlockedNodes` in struct `AgentPoolUpgradeSettings`
 - New field `DriverType`, `Nvidia` in struct `GPUProfile`
+- New field `AllowedSubjects` in struct `IdentityBindingProperties`
 - New field `HardEvictionThreshold`, `KubeReserved`, `SeccompDefault` in struct `KubeletConfig`
 - New field `EnableNodePublicIP`, `NodePublicIPPrefixID`, `NodePublicIPTags`, `PodSubnetID`, `VnetSubnetID` in struct `MachineNetworkProperties`
 - New field `Billing`, `ETag`, `EvictionPolicy`, `Hardware`, `Kubernetes`, `LocalDNSProfile`, `Mode`, `NodeImageVersion`, `OperatingSystem`, `Priority`, `ProvisioningState`, `Security`, `Status`, `Tags` in struct `MachineProperties`
+- New field `MaintenanceWindowID` in struct `MaintenanceConfigurationProperties`
 - New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfile`
 - New field `EnableOSDiskFullCaching`, `NodeInitializationTaints`, `PreparedImageSpecificationProfile`, `UpgradeSettingsBlueGreen`, `UpgradeStrategy` in struct `ManagedClusterAgentPoolProfileProperties`
 - New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
@@ -194,12 +215,24 @@
 - New field `OutboundIPPrefixes`, `OutboundIPs` in struct `ManagedClusterNATGatewayProfile`
 - New field `ComponentsByReleases` in struct `ManagedClusterPoolUpgradeProfile`
 - New field `IsOutOfSupport` in struct `ManagedClusterPoolUpgradeProfileUpgradesItem`
-- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableFIPS`, `EnableNamespaceResources`, `HealthMonitorProfile`, `NodeDisruptionProfile`, `SchedulerProfile` in struct `ManagedClusterProperties`
+- New field `ControlPlaneScalingProfile`, `CreationData`, `EnableFIPS`, `EnableNamespaceResources`, `HealthMonitorProfile`, `NodeDisruptionProfile` in struct `ManagedClusterProperties`
 - New field `ImageIntegrity`, `KubernetesResourceObjectEncryptionProfile`, `NodeRestriction`, `ServiceAccountImagePullProfile` in struct `ManagedClusterSecurityProfile`
-- New field `SecurityGating` in struct `ManagedClusterSecurityProfileDefender`
 - New field `AddonAutoscaling` in struct `ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler`
 - New field `IgnorePodDisruptionBudget` in struct `ManagedClustersClientBeginDeleteOptions`
-- New field `BastionProfile`, `KubeProxyConfig`, `PodLinkLocalAccess` in struct `NetworkProfile`
+- New field `BastionProfile`, `KubeProxyConfig`, `NatGatewayID`, `PodLinkLocalAccess` in struct `NetworkProfile`
+
+
+## 9.4.0 (2026-07-22)
+### Features Added
+
+- New enum type `SchedulerConfigMode` with values `SchedulerConfigModeDefault`, `SchedulerConfigModeManagedByCRD`
+- New struct `AutoScaleProfile`
+- New struct `ManagedClusterSecurityProfileDefenderSecurityGating`
+- New struct `ManagedClusterSecurityProfileDefenderSecurityGatingIdentity`
+- New struct `SchedulerInstanceProfile`
+- New struct `SchedulerProfile`
+- New field `SchedulerProfile` in struct `ManagedClusterProperties`
+- New field `SecurityGating` in struct `ManagedClusterSecurityProfileDefender`
 - New field `Autoscale` in struct `ScaleProfile`
 
 

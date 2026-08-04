@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsCreateOrUpdate.json
+// Generated from example definition: 2026-05-02-preview/MaintenanceWindowsCreateOrUpdate.json
 func ExampleMaintenanceWindowsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleMaintenanceWindowsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsDelete.json
+// Generated from example definition: 2026-05-02-preview/MaintenanceWindowsDelete.json
 func ExampleMaintenanceWindowsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleMaintenanceWindowsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsGet.json
+// Generated from example definition: 2026-05-02-preview/MaintenanceWindowsGet.json
 func ExampleMaintenanceWindowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleMaintenanceWindowsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsList.json
+// Generated from example definition: 2026-05-02-preview/MaintenanceWindowsList.json
 func ExampleMaintenanceWindowsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ func ExampleMaintenanceWindowsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsListBySubscription.json
+// Generated from example definition: 2026-05-02-preview/MaintenanceWindowsListBySubscription.json
 func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +363,7 @@ func ExampleMaintenanceWindowsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-02-preview/MaintenanceWindowsUpdateTags.json
+// Generated from example definition: 2026-05-02-preview/MaintenanceWindowsUpdateTags.json
 func ExampleMaintenanceWindowsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

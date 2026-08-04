@@ -169,11 +169,11 @@ func (s *RetryReader) wasRetryableEarlyClose(err error) bool {
 		return false // user wants all early closes to be errors, and so not retryable
 	}
 	// unfortunately, http.errReadOnClosedResBody is private, so the best we can do here is to check for its text
-	return strings.HasSuffix(err.Error(), readOnClosedBodyMessage)
+	return strings.HasSuffix(err.Error(), ReadOnClosedBodyMessage)
 }
 
-// readOnClosedBodyMessage of retry reader
-const readOnClosedBodyMessage = "read on closed response body"
+// ReadOnClosedBodyMessage of retry reader
+const ReadOnClosedBodyMessage = "read on closed response body"
 
 // Close retry reader
 func (s *RetryReader) Close() error {

@@ -30,9 +30,9 @@ func TestNewTopicRuntimePropertiesItem_FilterCounts(t *testing.T) {
 
 	item, err := newTopicRuntimePropertiesItem(env)
 	require.NoError(t, err)
-	require.Equal(t, int32(2), item.TopicRuntimeProperties.SubscriptionCount)
-	require.Equal(t, int32(7), item.TopicRuntimeProperties.SQLFilterCount)
-	require.Equal(t, int32(9), item.TopicRuntimeProperties.CorrelationFilterCount)
+	require.Equal(t, int32(2), item.SubscriptionCount)
+	require.Equal(t, int32(7), item.SQLFilterCount)
+	require.Equal(t, int32(9), item.CorrelationFilterCount)
 }
 
 func TestNewTopicRuntimePropertiesItem_FilterCountsDefaultZero(t *testing.T) {
@@ -53,7 +53,7 @@ func TestNewTopicRuntimePropertiesItem_FilterCountsDefaultZero(t *testing.T) {
 
 	item, err := newTopicRuntimePropertiesItem(env)
 	require.NoError(t, err)
-	require.Equal(t, int32(1), item.TopicRuntimeProperties.SubscriptionCount)
-	require.Zero(t, item.TopicRuntimeProperties.SQLFilterCount)
-	require.Zero(t, item.TopicRuntimeProperties.CorrelationFilterCount)
+	require.Equal(t, int32(1), item.SubscriptionCount)
+	require.Zero(t, item.SQLFilterCount)
+	require.Zero(t, item.CorrelationFilterCount)
 }

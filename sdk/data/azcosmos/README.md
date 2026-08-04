@@ -13,8 +13,8 @@ return an error reporting that they are not implemented.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
-Cosmos DB SDKs. The decision record is ADR 0001, added by
-[PR 27238](https://github.com/Azure/azure-sdk-for-go/pull/27238).
+Cosmos DB SDKs. The decision record is
+[`docs/adr/0001-go-v2-uses-ffi.md`](docs/adr/0001-go-v2-uses-ffi.md).
 
 Because v2 binds to a native driver, it requires cgo (`CGO_ENABLED=1`). v1's WebAssembly support
 does not carry over.
@@ -25,8 +25,7 @@ Until v2 is ready, use v1:
 go get github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
 ```
 
-Usage documentation and samples return to this README as the v2 surface lands. Migration guidance
-from v1 is in [`migrationguide.md`](migrationguide.md).
+Usage documentation and samples return to this README as the v2 surface lands.
 
 ## Getting Started
 

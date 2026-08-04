@@ -18,9 +18,7 @@
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete
-  breaking-change list and the migration guide are tracked by
-  [issue 27329](https://github.com/Azure/azure-sdk-for-go/issues/27329) and will land here before
-  the beta ships.
+  breaking-change list lands here before the beta ships.
 
 ### Bugs Fixed
 

@@ -36,6 +36,15 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// PaymentHsmClusterPrivateEndpointConnectionsServer contains the fakes for client PaymentHsmClusterPrivateEndpointConnectionsClient
+	PaymentHsmClusterPrivateEndpointConnectionsServer PaymentHsmClusterPrivateEndpointConnectionsServer
+
+	// PaymentHsmClusterPrivateLinkResourcesServer contains the fakes for client PaymentHsmClusterPrivateLinkResourcesClient
+	PaymentHsmClusterPrivateLinkResourcesServer PaymentHsmClusterPrivateLinkResourcesServer
+
+	// PaymentHsmClustersServer contains the fakes for client PaymentHsmClustersClient
+	PaymentHsmClustersServer PaymentHsmClustersServer
+
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
 }
@@ -52,16 +61,19 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armhardwaresecuritymodules.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                               *ServerFactory
-	trMu                                              sync.Mutex
-	trCloudHsmClusterBackupStatusServer               *CloudHsmClusterBackupStatusServerTransport
-	trCloudHsmClusterPrivateEndpointConnectionsServer *CloudHsmClusterPrivateEndpointConnectionsServerTransport
-	trCloudHsmClusterPrivateLinkResourcesServer       *CloudHsmClusterPrivateLinkResourcesServerTransport
-	trCloudHsmClusterRestoreStatusServer              *CloudHsmClusterRestoreStatusServerTransport
-	trCloudHsmClustersServer                          *CloudHsmClustersServerTransport
-	trDedicatedHsmServer                              *DedicatedHsmServerTransport
-	trOperationsServer                                *OperationsServerTransport
-	trPrivateEndpointConnectionsServer                *PrivateEndpointConnectionsServerTransport
+	srv                                                 *ServerFactory
+	trMu                                                sync.Mutex
+	trCloudHsmClusterBackupStatusServer                 *CloudHsmClusterBackupStatusServerTransport
+	trCloudHsmClusterPrivateEndpointConnectionsServer   *CloudHsmClusterPrivateEndpointConnectionsServerTransport
+	trCloudHsmClusterPrivateLinkResourcesServer         *CloudHsmClusterPrivateLinkResourcesServerTransport
+	trCloudHsmClusterRestoreStatusServer                *CloudHsmClusterRestoreStatusServerTransport
+	trCloudHsmClustersServer                            *CloudHsmClustersServerTransport
+	trDedicatedHsmServer                                *DedicatedHsmServerTransport
+	trOperationsServer                                  *OperationsServerTransport
+	trPaymentHsmClusterPrivateEndpointConnectionsServer *PaymentHsmClusterPrivateEndpointConnectionsServerTransport
+	trPaymentHsmClusterPrivateLinkResourcesServer       *PaymentHsmClusterPrivateLinkResourcesServerTransport
+	trPaymentHsmClustersServer                          *PaymentHsmClustersServerTransport
+	trPrivateEndpointConnectionsServer                  *PrivateEndpointConnectionsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -108,6 +120,21 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PaymentHsmClusterPrivateEndpointConnectionsClient":
+		initServer(&s.trMu, &s.trPaymentHsmClusterPrivateEndpointConnectionsServer, func() *PaymentHsmClusterPrivateEndpointConnectionsServerTransport {
+			return NewPaymentHsmClusterPrivateEndpointConnectionsServerTransport(&s.srv.PaymentHsmClusterPrivateEndpointConnectionsServer)
+		})
+		resp, err = s.trPaymentHsmClusterPrivateEndpointConnectionsServer.Do(req)
+	case "PaymentHsmClusterPrivateLinkResourcesClient":
+		initServer(&s.trMu, &s.trPaymentHsmClusterPrivateLinkResourcesServer, func() *PaymentHsmClusterPrivateLinkResourcesServerTransport {
+			return NewPaymentHsmClusterPrivateLinkResourcesServerTransport(&s.srv.PaymentHsmClusterPrivateLinkResourcesServer)
+		})
+		resp, err = s.trPaymentHsmClusterPrivateLinkResourcesServer.Do(req)
+	case "PaymentHsmClustersClient":
+		initServer(&s.trMu, &s.trPaymentHsmClustersServer, func() *PaymentHsmClustersServerTransport {
+			return NewPaymentHsmClustersServerTransport(&s.srv.PaymentHsmClustersServer)
+		})
+		resp, err = s.trPaymentHsmClustersServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)

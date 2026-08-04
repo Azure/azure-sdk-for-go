@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_CreateOrValidate_Backup_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_CreateOrValidate_Backup_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleCloudHsmClustersClient_BeginBackup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Delete_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleCloudHsmClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Get_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleCloudHsmClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleCloudHsmClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_ListBySubscription_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +429,7 @@ func ExampleCloudHsmClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -467,7 +467,7 @@ func ExampleCloudHsmClustersClient_BeginRestore() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Update_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -544,7 +544,7 @@ func ExampleCloudHsmClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
 func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -584,7 +584,7 @@ func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
 func ExampleCloudHsmClustersClient_BeginValidateRestoreProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Create_MaximumSet_Gen.json
 func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Delete_MaximumSet_Gen.json
 func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmClusterPrivateEndpointConnection_Get_MaximumSet_Gen.json
 func ExampleCloudHsmClusterPrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

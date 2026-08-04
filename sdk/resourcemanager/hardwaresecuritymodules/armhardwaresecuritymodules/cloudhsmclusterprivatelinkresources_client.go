@@ -19,7 +19,7 @@ import (
 // CloudHsmClusterPrivateLinkResourcesClient contains the methods for the CloudHsmClusterPrivateLinkResources group.
 // Don't use this type directly, use NewCloudHsmClusterPrivateLinkResourcesClient() instead.
 //
-// Generated from API version 2025-03-31
+// Generated from API version 2025-12-01-preview
 type CloudHsmClusterPrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *CloudHsmClusterPrivateLinkResourcesClient) listByCloudHsmClusterCr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250331)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

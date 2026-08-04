@@ -1,8 +1,11 @@
 # Release History
 
-## 1.10.1-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added `SQLFilterCount` and `CorrelationFilterCount` to `TopicRuntimeProperties`, exposing the total number of SQL filters and correlation filters across all of a topic's subscriptions.
+- The administration client now sends `api-version=2024-05` (previously `2021-05`), which is required for the topic filter counts above.
 
 ### Breaking Changes
 

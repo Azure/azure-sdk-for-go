@@ -77,6 +77,12 @@ type TopicRuntimeProperties struct {
 	// SubscriptionCount is the number of subscriptions to the topic.
 	SubscriptionCount int32
 
+	// SQLFilterCount is the total number of SQL filters across all subscriptions of the topic.
+	SQLFilterCount int32
+
+	// CorrelationFilterCount is the total number of correlation filters across all subscriptions of the topic.
+	CorrelationFilterCount int32
+
 	// ScheduledMessageCount is the number of messages that are scheduled to be entopicd.
 	ScheduledMessageCount int32
 }
@@ -414,9 +420,11 @@ func newTopicRuntimePropertiesItem(env *atom.TopicEnvelope) (*TopicRuntimeProper
 	}
 
 	props := &TopicRuntimeProperties{
-		SizeInBytes:           int64OrZero(desc.SizeInBytes),
-		ScheduledMessageCount: int32OrZero(desc.CountDetails.ScheduledMessageCount),
-		SubscriptionCount:     int32OrZero(desc.SubscriptionCount),
+		SizeInBytes:            int64OrZero(desc.SizeInBytes),
+		ScheduledMessageCount:  int32OrZero(desc.CountDetails.ScheduledMessageCount),
+		SubscriptionCount:      int32OrZero(desc.SubscriptionCount),
+		SQLFilterCount:         int32OrZero(desc.SQLFilterCount),
+		CorrelationFilterCount: int32OrZero(desc.CorrelationFilterCount),
 	}
 
 	var err error

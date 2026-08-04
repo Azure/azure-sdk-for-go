@@ -25,9 +25,8 @@
             "CoverageGoal": 0.92
         },
         {
-            "_comment": "TODO(#27306): restore to 0.40 once the v2 surface and its tests land. The v2 reset temporarily leaves this module with no tests, and the coverage gate fails a 0.0% result against any non-zero goal.",
             "Name": "azcosmos",
-            "CoverageGoal": 0
+            "CoverageGoal": 0.40
         },
         {
             "Name": "azidentity",

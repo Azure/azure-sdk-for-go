@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"sync"
 	"testing"
@@ -318,4 +319,22 @@ func TestEndpointErrorNamesTheEndpoint(t *testing.T) {
 	_, err = NewClientWithKey("notaurl", cred, nil)
 	require.Error(t, err)
 	require.True(t, strings.Contains(err.Error(), "notaurl"))
+}
+
+// After Close the client must refuse work rather than hand a released driver handle to an
+// operation.
+func TestOperationsAfterCloseAreRejected(t *testing.T) {
+	client := newTestClient(t)
+	container, err := client.NewContainer("db", "items")
+	require.NoError(t, err)
+	require.NoError(t, client.Close())
+
+	_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item-1", nil)
+	var cosmosErr *Error
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+
+	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("pk"), []byte(`{"id":"x"}`), nil)
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 }

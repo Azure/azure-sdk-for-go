@@ -77,6 +77,9 @@ const (
 	// CodeClientError means the client produced the failure without a response from the service,
 	// for example a transport, serialization or configuration failure.
 	CodeClientError Code = "ClientError"
+
+	// CodeClientClosed means the operation was attempted on a [Client] that has been closed.
+	CodeClientClosed Code = "ClientClosed"
 )
 
 // Error describes a failed Cosmos DB operation.

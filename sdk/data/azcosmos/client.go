@@ -51,6 +51,13 @@ type Client struct {
 	endpoint string
 	options  ClientOptions
 
+	// mu guards the client's lifetime rather than its fields. Operations hold it for read while
+	// they run, so Close taking it for write is exactly "wait for in-flight operations to
+	// finish". That matters more here than it would in a pure-Go client: closing releases handles
+	// owned by the driver, and an operation still running would be using freed memory.
+	mu     sync.RWMutex
+	closed bool
+
 	closeOnce sync.Once
 	closeErr  error
 }
@@ -160,21 +167,36 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// Close releases the driver resources the client owns. The client must not be used afterwards.
+// Close releases the driver resources the client owns. It first waits for the client's in-flight
+// operations to finish, and afterwards every operation on the client fails with [CodeClientClosed]
+// rather than reaching the driver.
 //
 // Close is idempotent and safe to call concurrently; every caller observes the same result. It
 // returns an error only when the client could not be torn down cleanly, in which case the
 // resources are released anyway, so there is nothing to retry.
-//
-// Callers must not have operations in flight when Close is called. Waiting for them, and failing
-// operations attempted after Close, arrives with the operations themselves.
 func (c *Client) Close() error {
 	c.closeOnce.Do(func() {
+		// Taking the write lock blocks until every operation holding it for read has finished,
+		// and keeps later operations out once closed is set.
+		c.mu.Lock()
+		defer c.mu.Unlock()
+		c.closed = true
 		// Driver resources are released here once the binding lands, recording a teardown that
 		// did not complete cleanly in c.closeErr. The error is stored on the client rather than
 		// in a local so that the second and subsequent callers see it too.
 	})
 	return c.closeErr
+}
+
+// acquire registers an operation as in flight, or reports that the client has been closed. The
+// returned function must be called when the operation finishes.
+func (c *Client) acquire() (release func(), err error) {
+	c.mu.RLock()
+	if c.closed {
+		c.mu.RUnlock()
+		return nil, &Error{Code: CodeClientClosed, Message: "the client has been closed"}
+	}
+	return c.mu.RUnlock, nil
 }
 
 // NewDatabase returns a client for a database in the account. It does not contact the service, so

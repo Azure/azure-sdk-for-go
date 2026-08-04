@@ -169,5 +169,5 @@ the sign-off is on the record rather than distributed across PR threads.
 ## Related deliverables
 
 The v1→v2 breaking-change list and migration guide are tracked separately by
-[#27329](https://github.com/Azure/azure-sdk-for-go/issues/27329), and land in `CHANGELOG.md` and
-`migrationguide.md`.
+[#27329](https://github.com/Azure/azure-sdk-for-go/issues/27329). The breaking-change list lands in
+`CHANGELOG.md`; where the migration guidance lives is that issue's call.

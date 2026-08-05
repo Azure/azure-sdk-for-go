@@ -9,6 +9,7 @@ package shared
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"hash/crc64"
 	"io"
@@ -1031,4 +1032,66 @@ func TestSMEncoderSegmentSizeJustOverLimit(t *testing.T) {
 	decodedData, err := io.ReadAll(dec)
 	require.NoError(t, err)
 	require.Equal(t, content, decodedData)
+}
+
+// segBoundaryReader returns its data in a single Read together with err, so the returned
+// bytes land exactly on a segment boundary in the encoder. This exercises the io.Reader
+// contract where a source may return data and a non-nil error in the same call.
+type segBoundaryReader struct {
+	data []byte
+	err  error
+	off  int
+}
+
+func (r *segBoundaryReader) Read(p []byte) (int, error) {
+	if r.off >= len(r.data) {
+		return 0, r.err
+	}
+	n := copy(p, r.data[r.off:])
+	r.off += n
+	if r.off >= len(r.data) {
+		return n, r.err
+	}
+	return n, nil
+}
+
+func (r *segBoundaryReader) Seek(offset int64, whence int) (int64, error) {
+	switch whence {
+	case io.SeekStart:
+		r.off = int(offset)
+	case io.SeekCurrent:
+		r.off += int(offset)
+	case io.SeekEnd:
+		r.off = len(r.data) + int(offset)
+	}
+	return int64(r.off), nil
+}
+
+// TestEncoderPropagatesNonEOFErrorAtSegmentBoundary verifies that when the inner reader
+// returns data together with a non-EOF error and those bytes exactly complete a segment,
+// the encoder propagates the error instead of silently emitting a valid trailer.
+func TestEncoderPropagatesNonEOFErrorAtSegmentBoundary(t *testing.T) {
+	data := []byte("ABCD") // exactly one 4-byte segment
+	sentinel := errors.New("read failure at segment boundary")
+
+	enc := NewSMEncoder(&segBoundaryReader{data: data, err: sentinel}, int64(len(data)), len(data))
+	_, err := io.ReadAll(enc)
+	require.Error(t, err)
+	require.ErrorIs(t, err, sentinel)
+}
+
+// TestEncoderAcceptsDataWithEOFAtFinalBoundary verifies that a source returning its final
+// bytes together with io.EOF (valid io.Reader behavior) still produces a correctly encoded
+// message rather than a spurious error.
+func TestEncoderAcceptsDataWithEOFAtFinalBoundary(t *testing.T) {
+	data := []byte("ABCDEFGHIJ") // 10 bytes across two 5-byte segments
+	segSize := 5
+
+	enc := NewSMEncoder(&segBoundaryReader{data: data, err: io.EOF}, int64(len(data)), segSize)
+	encoded, err := io.ReadAll(enc)
+	require.NoError(t, err)
+
+	decoded, err := SMDecode(encoded)
+	require.NoError(t, err)
+	require.Equal(t, data, decoded.Data)
 }

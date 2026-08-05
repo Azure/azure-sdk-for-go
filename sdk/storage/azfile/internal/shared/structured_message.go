@@ -6,6 +6,7 @@ package shared
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"hash/crc64"
 	"io"
@@ -404,8 +405,11 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 				e.pendingOff = 0
 				e.state = encStateSegFooter
 			}
-			if err != nil && e.segRemain > 0 {
-				return totalRead, err
+			if err != nil {
+				finalContentBoundary := e.segRemain == 0 && e.segIndex == e.numSegments
+				if !errors.Is(err, io.EOF) || !finalContentBoundary {
+					return totalRead, err
+				}
 			}
 
 		case encStateSegFooter:
@@ -780,7 +784,7 @@ func (d *SMDecoder) fillFrame() (bool, error) {
 			return true, nil
 		}
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				return false, fmt.Errorf("unexpected EOF reading structured message framing (have %d of %d bytes)", d.frameHave, d.frameNeed)
 			}
 			return false, err

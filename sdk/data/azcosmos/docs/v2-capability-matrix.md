@@ -160,6 +160,12 @@ the sign-off is on the record rather than distributed across PR threads.
    always NULL. Tracked by [#27305](https://github.com/Azure/azure-sdk-for-go/issues/27305). v1
    exposed `Diagnostics` on every response and `DiagnosticsFromError`, so this is a visible
    regression for v1 users until it is designed.
+
+   When it lands it is **additive**, not a replacement for the status fields already on `Error` and
+   the response types. `cosmos_completion_t` carries `http_status_code`, `sub_status`,
+   `request_charge` and `activity_id` alongside `void *diagnostics`, and the Rust SDK likewise
+   exposes `status()`, `response()` and `diagnostics()` as three separate things. Expect a handle
+   on `Error` and on the response types, not an absorption of their fields.
 6. **PPAF and hedging have no ABI surface.** Both are in the planned capability set.
 7. **`LatestCommitted` read consistency is unbindable.** The driver's
    `ReadConsistencyStrategy` has a `LatestCommitted` variant, but the C ABI's mirror of that enum

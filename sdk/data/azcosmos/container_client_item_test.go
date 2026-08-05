@@ -8,14 +8,13 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 )
 
 func newTestContainer(t *testing.T) *ContainerClient {
 	t.Helper()
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", azcore.NewKeyCredential("key"), nil)
+	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), nil)
 	require.NoError(t, err)
 	container, err := client.NewContainer("db", "items")
 	require.NoError(t, err)

@@ -9,7 +9,6 @@ import (
 	"errors"
 	"log"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
@@ -45,13 +44,16 @@ func ExampleNewClient() {
 	}
 }
 
-// An account key authenticates too, though Entra ID is preferable where it is available. The key
-// can be rotated in place on the credential without rebuilding the client.
+// An account key authenticates too, though Entra ID is preferable where it is available.
 //
 // Routing is worth setting: naming the region the application runs in lets the SDK order the
 // account's regions by proximity to it, rather than leaving the order to the account.
 func ExampleNewClientWithKey() {
-	cred := azcore.NewKeyCredential("myAccountKey")
+	cred, err := azcosmos.NewKeyCredential("myAccountKey")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
 
 	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
 		Routing: azcosmos.ProximityTo(azcosmos.RegionEastUS),

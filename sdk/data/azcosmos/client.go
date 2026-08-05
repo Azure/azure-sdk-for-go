@@ -7,33 +7,28 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 )
 
 // ClientOptions configures a [Client].
 //
-// Unlike v1 this does not embed [azcore.ClientOptions]. v2 executes operations through the Cosmos
-// driver rather than an azcore HTTP pipeline, so the transport, retry and per-call policy knobs on
-// that type have no effect here. Advertising options the client would silently ignore is worse
-// than not offering them, so the fields below are only the ones the driver honors.
+// This does not embed [azcore.ClientOptions]. v2 executes operations through the Cosmos driver
+// rather than an azcore HTTP pipeline, so the transport, retry and per-call policy knobs on that
+// type have no effect here. Advertising options the client would silently ignore is worse than not
+// offering them, so the fields below are only the ones the driver honors.
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
-	// Cloud specifies which Azure cloud the account belongs to, which determines the audience
-	// used for Microsoft Entra ID authentication. Defaults to [cloud.AzurePublic].
-	Cloud cloud.Configuration
+	// Routing decides the order in which the client considers the account's regions. The zero
+	// value leaves the order to the account; prefer setting it with [ProximityTo] or
+	// [PreferredRegions].
+	Routing RoutingStrategy
 
 	// ApplicationID is an application-specific identifier appended to the user agent sent with
 	// every request. Keep it short and free of personally identifiable information.
 	ApplicationID string
-
-	// PreferredRegions orders the regions the client routes to, most preferred first. When empty,
-	// the client uses the account's own region order.
-	PreferredRegions []string
 
 	// EnableContentResponseOnWrite requests that writes return the resulting item. Leaving it
 	// false reduces network and CPU cost, because the service does not send the item back and the
@@ -76,25 +71,13 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 // NewClientWithKey creates a client that authenticates with an account key.
 //
 // Prefer [NewClient] where possible; account keys grant full access to the account and cannot be
-// scoped down. options may be nil to accept the defaults.
-func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
-	if cred.accountKey == "" {
-		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
+// scoped down. Rotate the key in place with [azcore.KeyCredential.Update]. options may be nil to
+// accept the defaults.
+func NewClientWithKey(endpoint string, cred *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
+	if cred == nil {
+		return nil, errors.New("azcosmos: credential must not be nil")
 	}
 	return newClient(endpoint, options)
-}
-
-// NewClientFromConnectionString creates a client from a Cosmos DB connection string, which carries
-// both the account endpoint and an account key.
-//
-// Prefer [NewClient] where possible; account keys grant full access to the account and cannot be
-// scoped down. options may be nil to accept the defaults.
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
-	endpoint, cred, err := parseConnectionString(connectionString)
-	if err != nil {
-		return nil, err
-	}
-	return NewClientWithKey(endpoint, cred, options)
 }
 
 // newClient validates the inputs shared by every constructor and returns a client handle.
@@ -117,49 +100,9 @@ func newClient(endpoint string, options *ClientOptions) (*Client, error) {
 	client := &Client{endpoint: endpoint}
 	if options != nil {
 		client.options = *options
-		client.options.PreferredRegions = append([]string(nil), options.PreferredRegions...)
-	}
-	if client.options.Cloud.ActiveDirectoryAuthorityHost == "" && client.options.Cloud.Services == nil {
-		client.options.Cloud = cloud.AzurePublic
+		client.options.Routing = options.Routing.clone()
 	}
 	return client, nil
-}
-
-// parseConnectionString splits a connection string into its endpoint and account key. The format
-// is a semicolon-separated list of key=value pairs; only AccountEndpoint and AccountKey are
-// meaningful here, and any other pairs are ignored so that a string copied from the portal works
-// as-is.
-func parseConnectionString(connectionString string) (string, KeyCredential, error) {
-	const (
-		endpointKey = "AccountEndpoint"
-		accountKey  = "AccountKey"
-	)
-
-	var endpoint, key string
-	for _, pair := range strings.Split(connectionString, ";") {
-		if pair == "" {
-			continue
-		}
-		name, value, found := strings.Cut(pair, "=")
-		if !found {
-			return "", KeyCredential{}, errors.New("azcosmos: connection string must be a ';'-separated list of 'key=value' pairs")
-		}
-		switch {
-		case strings.EqualFold(name, endpointKey):
-			endpoint = value
-		case strings.EqualFold(name, accountKey):
-			key = value
-		}
-	}
-
-	if endpoint == "" {
-		return "", KeyCredential{}, fmt.Errorf("azcosmos: connection string is missing %q", endpointKey)
-	}
-	cred, err := NewKeyCredential(key)
-	if err != nil {
-		return "", KeyCredential{}, fmt.Errorf("azcosmos: connection string is missing %q", accountKey)
-	}
-	return endpoint, cred, nil
 }
 
 // Endpoint returns the Cosmos DB account endpoint the client was created with.

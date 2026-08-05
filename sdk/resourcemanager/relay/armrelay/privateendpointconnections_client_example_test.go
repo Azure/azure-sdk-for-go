@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsCreate.json
+// Generated from example definition: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsCreate.json
 func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.PrivateEndpointConnectionsClientCreateOrUpdateResponse{
-	// 	PrivateEndpointConnection: &armrelay.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armrelay.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnection name}"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/alitest/providers/Microsoft.Relay/namespaces/relay-private-endpoint-test/privateEndpointConnections/{privateEndpointConnection name}"),
@@ -60,7 +60,7 @@ func ExamplePrivateEndpointConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsDelete.json
+// Generated from example definition: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -86,7 +86,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsGet.json
+// Generated from example definition: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armrelay.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armrelay.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnection name}"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/PrivateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/{RGName}/providers/Microsoft.Relay/namespaces/relay-private-endpoint-test/privateEndpointConnections/{privateEndpointConnection name}"),
@@ -124,7 +124,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/PrivateEndpointConnections/PrivateEndpointConnectionsList.json
+// Generated from example definition: 2026-07-01-preview/PrivateEndpointConnections/PrivateEndpointConnectionsList.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

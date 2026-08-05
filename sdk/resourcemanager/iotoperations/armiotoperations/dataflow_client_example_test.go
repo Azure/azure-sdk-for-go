@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
+// Generated from example definition: 2026-07-01/Dataflow_CreateOrUpdate_ComplexContextualization.json
 func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateComplexContextualization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateComplexCont
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
+// Generated from example definition: 2026-07-01/Dataflow_CreateOrUpdate_ComplexEventHub.json
 func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateComplexEventHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +355,7 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateComplexEven
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_CreateOrUpdate_FilterToTopic.json
+// Generated from example definition: 2026-07-01/Dataflow_CreateOrUpdate_FilterToTopic.json
 func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateFilterToTopic() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,7 +502,7 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateFilterToTop
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Dataflow_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -669,7 +669,7 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
+// Generated from example definition: 2026-07-01/Dataflow_CreateOrUpdate_SimpleEventGrid.json
 func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateSimpleEventGrid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -764,7 +764,7 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateSimpleEvent
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_CreateOrUpdate_SimpleFabric.json
+// Generated from example definition: 2026-07-01/Dataflow_CreateOrUpdate_SimpleFabric.json
 func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateSimpleFabric() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -873,7 +873,7 @@ func ExampleDataflowClient_BeginCreateOrUpdate_dataflowCreateOrUpdateSimpleFabri
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Dataflow_Delete_MaximumSet_Gen.json
 func ExampleDataflowClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -894,7 +894,7 @@ func ExampleDataflowClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Dataflow_Get_MaximumSet_Gen.json
 func ExampleDataflowClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -992,7 +992,7 @@ func ExampleDataflowClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/Dataflow_ListByProfileResource_MaximumSet_Gen.json
 func ExampleDataflowClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

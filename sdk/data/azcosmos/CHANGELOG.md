@@ -23,7 +23,6 @@
   `KeyCredential` and the `NewClient`, `NewClientWithKey` and `NewClientFromConnectionString`
   constructors. Operations on these clients are not implemented yet.
   See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
-
 * Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with `ReadItemOptions` and
   `CreateItemOptions`, and `ReadConsistencyStrategy` for relaxing how fresh a read must be. These
   operations are not implemented yet. Their session token fields use the `SessionToken` type.

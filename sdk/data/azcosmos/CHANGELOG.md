@@ -26,7 +26,7 @@
 
 * Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with `ReadItemOptions` and
   `CreateItemOptions`, and `ReadConsistencyStrategy` for relaxing how fresh a read must be. These
-  operations are not implemented yet.
+  operations are not implemented yet. Their session token fields use the `SessionToken` type.
   See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
 
 ### Breaking Changes

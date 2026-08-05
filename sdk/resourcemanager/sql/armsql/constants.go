@@ -4,6 +4,10 @@
 
 package armsql
 
+const (
+	version20250801Preview string = "2025-08-01-preview"
+)
+
 type AdministratorName string
 
 const (
@@ -1803,6 +1807,24 @@ func PossibleLedgerDigestUploadsStateValues() []LedgerDigestUploadsState {
 	}
 }
 
+// LinkModeType - Specifies whether the link operates in single-database or multi-database mode.
+type LinkModeType string
+
+const (
+	// LinkModeTypeMultiDatabase - The link operates in multi-database mode.
+	LinkModeTypeMultiDatabase LinkModeType = "MultiDatabase"
+	// LinkModeTypeSingleDatabase - The link operates in single-database mode.
+	LinkModeTypeSingleDatabase LinkModeType = "SingleDatabase"
+)
+
+// PossibleLinkModeTypeValues returns the possible values for the LinkModeType const type.
+func PossibleLinkModeTypeValues() []LinkModeType {
+	return []LinkModeType{
+		LinkModeTypeMultiDatabase,
+		LinkModeTypeSingleDatabase,
+	}
+}
+
 // LinkRole - SQL server side link role
 type LinkRole string
 
@@ -1939,6 +1961,27 @@ func PossibleManagedDatabaseStatusValues() []ManagedDatabaseStatus {
 		ManagedDatabaseStatusStopped,
 		ManagedDatabaseStatusStopping,
 		ManagedDatabaseStatusUpdating,
+	}
+}
+
+// ManagedInstanceAdministratorPrincipalType - Principal type of the managed instance administrator.
+type ManagedInstanceAdministratorPrincipalType string
+
+const (
+	// ManagedInstanceAdministratorPrincipalTypeApplication - Indicates that the principal is an application.
+	ManagedInstanceAdministratorPrincipalTypeApplication ManagedInstanceAdministratorPrincipalType = "Application"
+	// ManagedInstanceAdministratorPrincipalTypeGroup - Indicates that the principal is a group.
+	ManagedInstanceAdministratorPrincipalTypeGroup ManagedInstanceAdministratorPrincipalType = "Group"
+	// ManagedInstanceAdministratorPrincipalTypeUser - Indicates that the principal is a user.
+	ManagedInstanceAdministratorPrincipalTypeUser ManagedInstanceAdministratorPrincipalType = "User"
+)
+
+// PossibleManagedInstanceAdministratorPrincipalTypeValues returns the possible values for the ManagedInstanceAdministratorPrincipalType const type.
+func PossibleManagedInstanceAdministratorPrincipalTypeValues() []ManagedInstanceAdministratorPrincipalType {
+	return []ManagedInstanceAdministratorPrincipalType{
+		ManagedInstanceAdministratorPrincipalTypeApplication,
+		ManagedInstanceAdministratorPrincipalTypeGroup,
+		ManagedInstanceAdministratorPrincipalTypeUser,
 	}
 }
 
@@ -2369,26 +2412,26 @@ func PossiblePrincipalTypeValues() []PrincipalType {
 type PrivateEndpointProvisioningState string
 
 const (
-	// PrivateEndpointProvisioningStateApproving - Approving
-	PrivateEndpointProvisioningStateApproving PrivateEndpointProvisioningState = "Approving"
-	// PrivateEndpointProvisioningStateDropping - Dropping
-	PrivateEndpointProvisioningStateDropping PrivateEndpointProvisioningState = "Dropping"
+	// PrivateEndpointProvisioningStateCanceled - Provisioning Canceled
+	PrivateEndpointProvisioningStateCanceled PrivateEndpointProvisioningState = "Canceled"
+	// PrivateEndpointProvisioningStateCreated - Provisioning Created
+	PrivateEndpointProvisioningStateCreated PrivateEndpointProvisioningState = "Created"
 	// PrivateEndpointProvisioningStateFailed - Failed
 	PrivateEndpointProvisioningStateFailed PrivateEndpointProvisioningState = "Failed"
-	// PrivateEndpointProvisioningStateReady - Ready
-	PrivateEndpointProvisioningStateReady PrivateEndpointProvisioningState = "Ready"
-	// PrivateEndpointProvisioningStateRejecting - Rejecting
-	PrivateEndpointProvisioningStateRejecting PrivateEndpointProvisioningState = "Rejecting"
+	// PrivateEndpointProvisioningStateInProgress - Provisioning InProgress
+	PrivateEndpointProvisioningStateInProgress PrivateEndpointProvisioningState = "InProgress"
+	// PrivateEndpointProvisioningStateSucceeded - Provisioning Succeeded
+	PrivateEndpointProvisioningStateSucceeded PrivateEndpointProvisioningState = "Succeeded"
 )
 
 // PossiblePrivateEndpointProvisioningStateValues returns the possible values for the PrivateEndpointProvisioningState const type.
 func PossiblePrivateEndpointProvisioningStateValues() []PrivateEndpointProvisioningState {
 	return []PrivateEndpointProvisioningState{
-		PrivateEndpointProvisioningStateApproving,
-		PrivateEndpointProvisioningStateDropping,
+		PrivateEndpointProvisioningStateCanceled,
+		PrivateEndpointProvisioningStateCreated,
 		PrivateEndpointProvisioningStateFailed,
-		PrivateEndpointProvisioningStateReady,
-		PrivateEndpointProvisioningStateRejecting,
+		PrivateEndpointProvisioningStateInProgress,
+		PrivateEndpointProvisioningStateSucceeded,
 	}
 }
 
@@ -3246,6 +3289,8 @@ const (
 	ServerNetworkAccessFlagDisabled ServerNetworkAccessFlag = "Disabled"
 	// ServerNetworkAccessFlagEnabled - Enabled
 	ServerNetworkAccessFlagEnabled ServerNetworkAccessFlag = "Enabled"
+	// ServerNetworkAccessFlagSecuredByPerimeter - SecuredByPerimeter
+	ServerNetworkAccessFlagSecuredByPerimeter ServerNetworkAccessFlag = "SecuredByPerimeter"
 )
 
 // PossibleServerNetworkAccessFlagValues returns the possible values for the ServerNetworkAccessFlag const type.
@@ -3253,6 +3298,7 @@ func PossibleServerNetworkAccessFlagValues() []ServerNetworkAccessFlag {
 	return []ServerNetworkAccessFlag{
 		ServerNetworkAccessFlagDisabled,
 		ServerNetworkAccessFlagEnabled,
+		ServerNetworkAccessFlagSecuredByPerimeter,
 	}
 }
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/CreateOrUpdateMaintenanceWindows.json
+// Generated from example definition: 2025-08-01-preview/CreateOrUpdateMaintenanceWindows.json
 func ExampleMaintenanceWindowsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleMaintenanceWindowsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetMaintenanceWindows.json
+// Generated from example definition: 2025-08-01-preview/GetMaintenanceWindows.json
 func ExampleMaintenanceWindowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

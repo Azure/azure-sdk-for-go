@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/CheckNameAvailabilityServerAlreadyExists.json
+// Generated from example definition: 2025-08-01-preview/CheckNameAvailabilityServerAlreadyExists.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatAlreadyEx
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CheckNameAvailabilityServerAvailable.json
+// Generated from example definition: 2025-08-01-preview/CheckNameAvailabilityServerAvailable.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsAvailab
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CheckNameAvailabilityServerInvalid.json
+// Generated from example definition: 2025-08-01-preview/CheckNameAvailabilityServerInvalid.json
 func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleServersClient_CheckNameAvailability_checkForAServerNameThatIsInvalid
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerCreate.json
+// Generated from example definition: 2025-08-01-preview/ServerCreate.json
 func ExampleServersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleServersClient_BeginCreateOrUpdate() {
 	// 							ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 	// 							Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 	// 						},
-	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 	// 					},
 	// 				},
 	// 			},
@@ -187,7 +187,7 @@ func ExampleServersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerDelete.json
+// Generated from example definition: 2025-08-01-preview/ServerDelete.json
 func ExampleServersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleServersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerGet.json
+// Generated from example definition: 2025-08-01-preview/ServerGet.json
 func ExampleServersClient_Get_getServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleServersClient_Get_getServer() {
 	// 							ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 	// 							Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 	// 						},
-	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 	// 					},
 	// 				},
 	// 			},
@@ -273,7 +273,7 @@ func ExampleServersClient_Get_getServer() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerGetWithExpandEqualsAdministrators.json
+// Generated from example definition: 2025-08-01-preview/ServerGetWithExpandEqualsAdministrators.json
 func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory()
 	// 							ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 	// 							Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 	// 						},
-	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 	// 					},
 	// 				},
 	// 			},
@@ -340,7 +340,7 @@ func ExampleServersClient_Get_getServerWithExpandAdministratorsActivedirectory()
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportNewDatabase.json
+// Generated from example definition: 2025-08-01-preview/ImportNewDatabase.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportNewDatabaseWithManagedIdentity.json
+// Generated from example definition: 2025-08-01-preview/ImportNewDatabaseWithManagedIdentity.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingManagedIdentityForTheSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +437,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingManagedI
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportNewDatabaseWithNetworkIsolation.json
+// Generated from example definition: 2025-08-01-preview/ImportNewDatabaseWithNetworkIsolation.json
 func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateLinkForTheSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +490,7 @@ func ExampleServersClient_BeginImportDatabase_importsToANewDatabaseUsingPrivateL
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerList.json
+// Generated from example definition: 2025-08-01-preview/ServerList.json
 func ExampleServersClient_NewListPager_listServers() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -538,7 +538,7 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -572,7 +572,7 @@ func ExampleServersClient_NewListPager_listServers() {
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -589,7 +589,7 @@ func ExampleServersClient_NewListPager_listServers() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerListWithExpandEqualsAdministrators.json
+// Generated from example definition: 2025-08-01-preview/ServerListWithExpandEqualsAdministrators.json
 func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -644,7 +644,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActive
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -686,7 +686,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActive
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -704,7 +704,7 @@ func ExampleServersClient_NewListPager_listServersWithExpandAdministratorsActive
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerListByResourceGroup.json
+// Generated from example definition: 2025-08-01-preview/ServerListByResourceGroup.json
 func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,7 +752,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -787,7 +787,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -805,7 +805,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerListByResourceGroupWithExpandEqualsAdministrators.json
+// Generated from example definition: 2025-08-01-preview/ServerListByResourceGroupWithExpandEqualsAdministrators.json
 func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroupWithExpandAdministratorsActivedirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -860,7 +860,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -902,7 +902,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 		// 									ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 									Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 								},
-		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 								ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 							},
 		// 						},
 		// 					},
@@ -920,7 +920,7 @@ func ExampleServersClient_NewListByResourceGroupPager_listServersByResourceGroup
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/RefreshExternalGovernanceStatus.json
+// Generated from example definition: 2025-08-01-preview/RefreshExternalGovernanceStatus.json
 func ExampleServersClient_BeginRefreshStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -958,7 +958,7 @@ func ExampleServersClient_BeginRefreshStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ServerUpdate.json
+// Generated from example definition: 2025-08-01-preview/ServerUpdate.json
 func ExampleServersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +1012,7 @@ func ExampleServersClient_BeginUpdate() {
 	// 							ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 	// 							Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 	// 						},
-	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+	// 						ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 	// 					},
 	// 				},
 	// 			},

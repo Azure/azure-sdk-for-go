@@ -1759,6 +1759,12 @@ type DeletedServerProperties struct {
 	// READ-ONLY; The original ID of the server before deletion.
 	OriginalID *string
 
+	// READ-ONLY; The resource group of the original server before deletion.
+	OriginalResourceGroup *string
+
+	// READ-ONLY; The date and time when the deleted server will be permanently deleted (purged).
+	ScheduledPurgeTime *time.Time
+
 	// READ-ONLY; The version of the deleted server.
 	Version *string
 }
@@ -1861,6 +1867,9 @@ type DistributedAvailabilityGroupProperties struct {
 
 	// Managed instance side link role
 	InstanceLinkRole *LinkRole
+
+	// Specifies whether the link operates in single-database or multi-database mode.
+	LinkMode *LinkModeType
 
 	// SQL server side availability group name
 	PartnerAvailabilityGroupName *string
@@ -2353,6 +2362,9 @@ type EndpointCertificateListResult struct {
 type EndpointCertificateProperties struct {
 	// The certificate public blob
 	PublicBlob *string
+
+	// READ-ONLY; Trusted root certificates required to validate the instance certificate
+	TrustedRootCertificates []*EndpointTrustedRootCertificateInfo
 }
 
 // EndpointDependency - A domain name that the managed instance service needs to communicate with, along with additional details.
@@ -2368,6 +2380,15 @@ type EndpointDependency struct {
 type EndpointDetail struct {
 	// READ-ONLY; The port an endpoint is connected to.
 	Port *int32
+}
+
+// EndpointTrustedRootCertificateInfo - Trusted root certificate required to validate the instance certificate
+type EndpointTrustedRootCertificateInfo struct {
+	// Root certificate public blob as DER encoded hex string
+	PublicBlob *string
+
+	// Root certificate subject name
+	Subject *string
 }
 
 // ExportDatabaseDefinition - Contains the information necessary to perform export database operation.
@@ -4728,6 +4749,9 @@ type ManagedInstanceAdministratorProperties struct {
 
 	// REQUIRED; SID (object ID) of the managed instance administrator.
 	Sid *string
+
+	// Principal type of the managed instance administrator.
+	PrincipalType *ManagedInstanceAdministratorPrincipalType
 
 	// Tenant ID of the managed instance administrator.
 	TenantID *string
@@ -8099,6 +8123,12 @@ type ServerUsageProperties struct {
 
 	// READ-ONLY; Boundary value of the metric.
 	Limit *float64
+
+	// READ-ONLY; The next reset time for the metric (ISO8601 format).
+	NextResetTime *time.Time
+
+	// READ-ONLY; The name of the resource.
+	ResourceName *string
 
 	// READ-ONLY; Unit of the metric.
 	Unit *string

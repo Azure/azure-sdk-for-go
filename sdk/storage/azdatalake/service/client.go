@@ -64,7 +64,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 		// the inner blob client rather than the DFS pipeline
 		Session: options.Session,
 	}
-blobSvcClient, err := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
+	blobSvcClient, err := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
 	if err != nil {
 		return nil, err
 	}

@@ -65,7 +65,7 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 		// the inner blob client rather than the DFS pipeline
 		Session: options.Session,
 	}
-blobContainerClient, err := container.NewClient(containerURL, cred, &containerClientOpts)
+	blobContainerClient, err := container.NewClient(containerURL, cred, &containerClientOpts)
 	if err != nil {
 		return nil, err
 	}

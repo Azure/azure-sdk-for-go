@@ -89,10 +89,9 @@ const (
 //		// the item, container or database does not exist
 //	}
 //
-// Unlike v1, this is not an [azcore.ResponseError] and carries no *http.Response: v2 operations
-// are executed by the Cosmos driver rather than by an azcore HTTP pipeline, so there is no HTTP
-// response for a caller to inspect. The fields below carry the diagnostic values that were
-// previously read off response headers.
+// A failed operation returns the zero response value, so this type is what carries whatever the
+// service sent back with the failure. That includes the request charge: Cosmos DB bills for failed
+// requests, so [Error.RequestCharge] is the only place to account for them.
 //
 // [Error.Code] is part of the published API. The string returned by [Error.Error] is not, and is
 // subject to change.
@@ -101,30 +100,45 @@ type Error struct {
 	// verbatim and are harder to interpret correctly.
 	Code Code
 
-	// StatusCode is the HTTP status code reported for the operation. It is zero when the failure
-	// occurred before the service responded.
+	// StatusCode is the HTTP status code reported for the operation, as defined in
+	// https://pkg.go.dev/net/http#pkg-constants. It is zero when the failure occurred before the
+	// service responded.
 	StatusCode int
 
-	// SubStatus is the Cosmos DB sub-status code, which qualifies StatusCode. It is zero when the
-	// service did not report one.
+	// SubStatus is the Cosmos DB sub-status code, which qualifies StatusCode
+	// (`x-ms-substatus`). It is zero when the service did not report one.
+	//
+	// Its values are only meaningful together with StatusCode, which reuses them: sub-status 1002
+	// means the session token could not be satisfied under status 404, and that the partition key
+	// range is gone under status 410. Prefer Code, which resolves the pair.
 	SubStatus int
 
 	// Message describes the failure.
 	Message string
 
-	// ActivityID correlates the operation with server-side telemetry. It is empty when the
-	// failure occurred before the service responded.
+	// RequestCharge is the number of request units the failed operation consumed
+	// (`x-ms-request-charge`). Failed requests are still billed, most notably when they are
+	// throttled. See https://learn.microsoft.com/azure/cosmos-db/request-units.
+	RequestCharge float32
+
+	// ActivityID correlates the operation with server-side telemetry (`x-ms-activity-id`). It is
+	// empty when the failure occurred before the service responded.
 	ActivityID string
 
-	// SessionToken is the session token reported alongside the failure, if any.
+	// SessionToken is the session token reported alongside the failure, if any
+	// (`x-ms-session-token`).
 	SessionToken SessionToken
 
-	// ETag is the entity tag reported alongside the failure, if any.
+	// ETag is the entity tag reported alongside the failure, if any (`etag`).
 	ETag azcore.ETag
 
-	// RetryAfter is how long the service asked the caller to wait before retrying. It is zero
-	// when the service did not ask for a delay.
+	// RetryAfter is how long the service asked the caller to wait before retrying
+	// (`x-ms-retry-after-ms`). It is zero when the service did not ask for a delay.
 	RetryAfter time.Duration
+
+	// Body is the error document the service returned, verbatim and unparsed. It is nil for
+	// failures the client produced, and is the payload to quote when reporting a problem.
+	Body []byte
 
 	// FromWire reports whether the service produced this failure, which is to say whether the
 	// request reached it at all. It is false for failures the client produced without a service
@@ -133,7 +147,7 @@ type Error struct {
 	// StatusCode does not imply this: the driver synthesizes statuses for client-side failures
 	// too, so a non-zero status is not evidence the service replied. The distinction matters most
 	// for writes, where a wire failure means the operation definitely reached the service and a
-	// client-side one leaves that unknown. ActivityID, ETag and SessionToken are only populated
+	// client-side one leaves that unknown. The response-derived fields above are only populated
 	// when this is true.
 	FromWire bool
 }

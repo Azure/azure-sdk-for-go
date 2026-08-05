@@ -23,7 +23,6 @@ does not carry over.
 
 ### Prerequisites
 
-* Go 1.25 or higher
 * An Azure subscription or free Azure Cosmos DB trial account
 * A C toolchain, because v2 requires cgo
 

@@ -19,14 +19,6 @@ Cosmos DB SDKs. The decision record is
 Because v2 binds to a native driver, it requires cgo (`CGO_ENABLED=1`). v1's WebAssembly support
 does not carry over.
 
-Until v2 is ready, use v1:
-
-```bash
-go get github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos
-```
-
-Usage documentation and samples return to this README as the v2 surface lands.
-
 ## Getting Started
 
 ### Prerequisites

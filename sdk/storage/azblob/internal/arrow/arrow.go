@@ -35,6 +35,7 @@ const (
 
 // HandleFlatListResponse parses an Arrow IPC stream response into a ContainerClientListBlobFlatSegmentResponse.
 func HandleFlatListResponse(resp *http.Response) (generated.ContainerClientListBlobFlatSegmentResponse, error) {
+	defer func() { _ = resp.Body.Close() }()
 	result := generated.ContainerClientListBlobFlatSegmentResponse{}
 
 	h := extractResponseHeaders(resp)
@@ -61,6 +62,7 @@ func HandleFlatListResponse(resp *http.Response) (generated.ContainerClientListB
 
 // HandleHierarchyListResponse parses an Arrow IPC stream response into a ContainerClientListBlobHierarchySegmentResponse.
 func HandleHierarchyListResponse(resp *http.Response) (generated.ContainerClientListBlobHierarchySegmentResponse, error) {
+	defer func() { _ = resp.Body.Close() }()
 	result := generated.ContainerClientListBlobHierarchySegmentResponse{}
 
 	h := extractResponseHeaders(resp)

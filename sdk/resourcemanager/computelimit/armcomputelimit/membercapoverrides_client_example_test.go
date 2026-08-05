@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/MemberCapOverrides_CreateOrUpdate.json
+// Generated from example definition: 2026-07-31/MemberCapOverrides_CreateOrUpdate.json
 func ExampleMemberCapOverridesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,7 +47,7 @@ func ExampleMemberCapOverridesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/MemberCapOverrides_Delete.json
+// Generated from example definition: 2026-07-31/MemberCapOverrides_Delete.json
 func ExampleMemberCapOverridesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleMemberCapOverridesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/MemberCapOverrides_Get.json
+// Generated from example definition: 2026-07-31/MemberCapOverrides_Get.json
 func ExampleMemberCapOverridesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleMemberCapOverridesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/MemberCapOverrides_ListByParent.json
+// Generated from example definition: 2026-07-31/MemberCapOverrides_ListByParent.json
 func ExampleMemberCapOverridesClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

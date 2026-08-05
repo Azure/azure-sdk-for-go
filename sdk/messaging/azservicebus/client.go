@@ -391,21 +391,22 @@ type ListSessionsResponse struct {
 // and [Client.NewListSessionsForSubscriptionPager].
 type ListSessionsOptions struct {
 	// SessionStateUpdatedAfter, if set, lists only sessions whose session state was updated
-	// after this time. If nil, lists sessions that have active messages in the entity.
+	// after this time. If nil, lists sessions that have active messages in the entity, as
+	// well as sessions that have session state set but no active messages.
 	SessionStateUpdatedAfter *time.Time
 }
 
 // listSessionsPageSize is the number of session IDs requested per service round-trip.
-// Enumeration continues until the service returns an empty page, so this is only a batch
-// size and never a correctness boundary. It is kept fixed rather than exposed as an option
-// to keep the public surface minimal.
+// Enumeration ends when the service returns a page with fewer IDs than this (a short or
+// empty page signals the end), matching the .NET SDK's SessionBrowsePageSize convention.
+// It is kept fixed rather than exposed as an option to keep the public surface minimal.
 const listSessionsPageSize = 100
 
 // NewListSessionsForQueuePager creates a pager that lists the IDs of sessions in a session-enabled queue.
 //
-// By default it lists sessions that have active messages in the queue. Sessions on the
-// dead-letter queue, and sessions that have only session state (but no messages), are not
-// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists sessions whose
+// By default it lists sessions that have active messages in the queue, as well as sessions that
+// have session state set but no active messages. Sessions on the dead-letter queue are not
+// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists only sessions whose
 // session state was updated after that time.
 //
 // The IDs are enumerated in pages; call [runtime.Pager.NextPage] until [runtime.Pager.More] returns false.
@@ -420,9 +421,9 @@ func (client *Client) NewListSessionsForQueuePager(queueName string, options *Li
 
 // NewListSessionsForSubscriptionPager creates a pager that lists the IDs of sessions in a session-enabled subscription.
 //
-// By default it lists sessions that have active messages in the subscription. Sessions on the
-// dead-letter queue, and sessions that have only session state (but no messages), are not
-// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists sessions whose
+// By default it lists sessions that have active messages in the subscription, as well as sessions
+// that have session state set but no active messages. Sessions on the dead-letter queue are not
+// listed. If options.SessionStateUpdatedAfter is set, the pager instead lists only sessions whose
 // session state was updated after that time.
 //
 // The IDs are enumerated in pages; call [runtime.Pager.NextPage] until [runtime.Pager.More] returns false.
@@ -547,7 +548,11 @@ func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, er
 	}
 
 	p.skip += int32(len(page))
-	if len(page) == 0 {
+	// A page shorter than the requested size is treated as the final page, so
+	// enumeration ends here. This assumes the service under-fills only the last page
+	// (see the listSessionsPageSize doc comment). Matches the .NET SDK, which breaks
+	// on page.Count < SessionBrowsePageSize.
+	if len(page) < listSessionsPageSize {
 		p.done = true
 	}
 	return ListSessionsResponse{Sessions: page}, nil

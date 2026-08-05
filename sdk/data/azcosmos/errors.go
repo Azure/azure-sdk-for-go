@@ -126,8 +126,15 @@ type Error struct {
 	// when the service did not ask for a delay.
 	RetryAfter time.Duration
 
-	// FromWire reports whether the service produced this failure. It is false for failures the
-	// client produced without a service response, such as transport and serialization failures.
+	// FromWire reports whether the service produced this failure, which is to say whether the
+	// request reached it at all. It is false for failures the client produced without a service
+	// response, such as transport and serialization failures.
+	//
+	// StatusCode does not imply this: the driver synthesizes statuses for client-side failures
+	// too, so a non-zero status is not evidence the service replied. The distinction matters most
+	// for writes, where a wire failure means the operation definitely reached the service and a
+	// client-side one leaves that unknown. ActivityID, ETag and SessionToken are only populated
+	// when this is true.
 	FromWire bool
 }
 

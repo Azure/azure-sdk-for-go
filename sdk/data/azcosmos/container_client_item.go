@@ -24,7 +24,7 @@ type ReadItemOptions struct {
 
 	// SessionToken is the session token to read under, for observing writes made by another
 	// process. Empty uses the token the client captured itself.
-	SessionToken string
+	SessionToken SessionToken
 
 	// ExcludedRegions removes regions from consideration for this operation, in addition to any
 	// the client is already avoiding.
@@ -49,7 +49,7 @@ type CreateItemOptions struct {
 
 	// SessionToken is the session token to write under. Empty uses the token the client captured
 	// itself.
-	SessionToken string
+	SessionToken SessionToken
 
 	// ExcludedRegions removes regions from consideration for this operation, in addition to any
 	// the client is already avoiding.

@@ -9,6 +9,7 @@ import (
 	"errors"
 	"log"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
@@ -44,9 +45,17 @@ func ExampleNewClient() {
 	}
 }
 
-func ExampleNewClientFromConnectionString() {
-	client, err := azcosmos.NewClientFromConnectionString(
-		"AccountEndpoint=https://myaccount.documents.azure.com;AccountKey=myAccountKey;", nil)
+// An account key authenticates too, though Entra ID is preferable where it is available. The key
+// can be rotated in place on the credential without rebuilding the client.
+//
+// Routing is worth setting: naming the region the application runs in lets the SDK order the
+// account's regions by proximity to it, rather than leaving the order to the account.
+func ExampleNewClientWithKey() {
+	cred := azcore.NewKeyCredential("myAccountKey")
+
+	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
+		Routing: azcosmos.ProximityTo(azcosmos.RegionEastUS),
+	})
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
@@ -56,6 +65,16 @@ func ExampleNewClientFromConnectionString() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
+}
+
+// When the regions to prefer are known ahead of time, give them explicitly. The order is a
+// preference, not a restriction: once it is exhausted the client may still use other regions.
+func ExamplePreferredRegions() {
+	options := &azcosmos.ClientOptions{
+		Routing: azcosmos.PreferredRegions(azcosmos.RegionEastUS, azcosmos.RegionWestUS),
+	}
+
+	log.Printf("client will prefer East US, then West US: %+v", options.Routing)
 }
 
 func ExampleContainerClient_CreateItem() {

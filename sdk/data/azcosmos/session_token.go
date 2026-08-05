@@ -8,10 +8,11 @@ package azcosmos
 //
 // Tokens are opaque and are produced by the service, so callers obtain one from a response rather
 // than constructing it. Passing a token from one operation to another is how session consistency
-// is carried across processes: take [Response.SessionToken] from a write and set it on the options
-// of a later read that must observe it.
+// is carried across processes: take [ItemResponse.SessionToken] from a write and set it on the
+// options of a later read that must observe it.
 //
 // The client captures and carries tokens on its own, so this is only needed when the two
-// operations run in different processes, or behind a load balancer that does not keep a caller on
-// the node that served the write.
+// operations run in different processes.
+//
+// See https://learn.microsoft.com/azure/cosmos-db/consistency-levels#session-consistency.
 type SessionToken string

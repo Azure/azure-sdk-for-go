@@ -7,12 +7,14 @@
 ### Features Added
 
 * Added the v2 error and response model. `Error` reports a `Code` classifying the failure, along
-  with the status code, sub-status code, message, activity ID, session token, ETag and retry-after
-  of the operation, and whether the service or the client produced it. Retrieve it with
-  `errors.As` and branch on `Code`, following the same shape as `azservicebus`. `Response` carries
-  the request charge, activity ID, ETag and session token common to every operation, and
-  `ItemResponse` adds the returned item content. Session tokens are carried as a named
-  `SessionToken` type rather than a bare string. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+  with the status and sub-status codes, message, request charge, activity ID, session token, ETag,
+  retry-after and error document, and whether the service or the client produced it. Retrieve it
+  with `errors.As` and branch on `Code`, following the same shape as `azservicebus`. A failed
+  operation returns the zero response value, so `Error` is what carries the request charge for
+  requests that are billed but do not succeed. `Response` carries the request charge and activity
+  ID common to every operation, and `ItemResponse` adds the ETag, session token and item content.
+  Session tokens are carried as a named `SessionToken` type rather than a bare string.
+  See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 
 * Added `PartitionKey`, including support for hierarchical partition keys via the `Append*`
   methods. Null and undefined components are now distinct: `AppendNull` produces an explicitly

@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -260,6 +261,25 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 		return UploadRangeResponse{}, err
 	}
 
+	if options != nil && options.TransactionalValidation != nil {
+		if _, ok := options.TransactionalValidation.(TransferValidationTypeMD5); !ok {
+			body, err = options.TransactionalValidation.Apply(body, uploadRangeOptions)
+			if err != nil {
+				return UploadRangeResponse{}, err
+			}
+			// Apply may return a replacement reader (the structured message encoder or a
+			// rewound buffer for computed CRC64). The generated client reads the request body
+			// from uploadRangeOptions.Optionalbody, so the transformed reader must be assigned
+			// back onto it; otherwise the original, unframed (and possibly already-consumed)
+			// reader is sent instead.
+			uploadRangeOptions.Optionalbody = body
+			contentLength, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+			if err != nil {
+				return UploadRangeResponse{}, err
+			}
+		}
+	}
+
 	return f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, uploadRangeOptions)
 }
 
@@ -461,6 +481,12 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 	if options != nil {
 		uploadOptions = *options
 	}
+
+	if uploadOptions.TransactionalValidation != nil &&
+		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		return fileerror.UnsupportedChecksum
+	}
+
 	return f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
 }
 
@@ -474,6 +500,12 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 	if options != nil {
 		uploadOptions = *options
 	}
+
+	if uploadOptions.TransactionalValidation != nil &&
+		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		return fileerror.UnsupportedChecksum
+	}
+
 	return f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
 }
 
@@ -482,6 +514,11 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *UploadStreamOptions) error {
 	if options == nil {
 		options = &UploadStreamOptions{}
+	}
+
+	if options.TransactionalValidation != nil &&
+		exported.GetStructuredBodyType(options.TransactionalValidation) == "" {
+		return fileerror.UnsupportedChecksum
 	}
 
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)
@@ -553,7 +590,11 @@ func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOpt
 				return err
 			}
 			if computeReadLength {
-				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
+					atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
+				} else {
+					atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				}
 			}
 			err = body.Close()
 			return err
@@ -579,11 +620,16 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 		return DownloadStreamResponse{}, err
 	}
 
+	if resp.StructuredBodyType != nil && *resp.StructuredBodyType != "" {
+		resp.Body = shared.NewSMDecoder(resp.Body)
+	}
+
 	return DownloadStreamResponse{
-		DownloadResponse:      resp,
-		client:                f,
-		getInfo:               httpGetterInfo{Range: options.Range},
-		leaseAccessConditions: options.LeaseAccessConditions,
+		DownloadResponse:        resp,
+		client:                  f,
+		getInfo:                 httpGetterInfo{Range: options.Range},
+		leaseAccessConditions:   options.LeaseAccessConditions,
+		transactionalValidation: options.TransactionalValidation,
 	}, err
 }
 
@@ -637,4 +683,12 @@ func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	} else { // if the file's size is 0, there is no need in downloading it
 		return 0, nil
 	}
+}
+
+func parseContentRangeLength(contentRange string) int64 {
+	var start, end int64
+	if _, err := fmt.Sscanf(contentRange, "bytes %d-%d/", &start, &end); err != nil {
+		return 0
+	}
+	return end - start + 1
 }

@@ -29,6 +29,7 @@
 * Added `Client`, `DatabaseClient` and `ContainerClient`, along with `ClientOptions`,
   `KeyCredential` and the `NewClient`, `NewClientWithKey` and `NewClientFromConnectionString`
   constructors. Operations on these clients are not implemented yet.
+  See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
 
 ### Breaking Changes
 

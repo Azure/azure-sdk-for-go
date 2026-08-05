@@ -14,10 +14,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func mustKeyCredential(t *testing.T) KeyCredential {
+	t.Helper()
+
+	cred, err := NewKeyCredential("key")
+	require.NoError(t, err)
+	return cred
+}
+
 func newTestClient(t *testing.T) *Client {
 	t.Helper()
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", azcore.NewKeyCredential("key"), nil)
+	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), nil)
 	require.NoError(t, err)
 	return client
 }
@@ -38,15 +46,24 @@ func TestNewClientRejectsNilCredential(t *testing.T) {
 	_, err := NewClient("https://myaccount.documents.azure.com", nil, nil)
 	require.Error(t, err)
 }
-func TestNewClientWithKeyRejectsNilCredential(t *testing.T) {
-	_, err := NewClientWithKey("https://myaccount.documents.azure.com", nil, nil)
+
+// The zero value is what a caller gets if they ignore the error from NewKeyCredential.
+func TestNewClientWithKeyRejectsZeroCredential(t *testing.T) {
+	_, err := NewClientWithKey("https://myaccount.documents.azure.com", KeyCredential{}, nil)
+	require.Error(t, err)
+}
+
+func TestNewKeyCredentialRejectsEmptyKey(t *testing.T) {
+	_, err := NewKeyCredential("")
 	require.Error(t, err)
 }
 
 func TestNewClientRejectsNonAbsoluteEndpoint(t *testing.T) {
-	cred := azcore.NewKeyCredential("key")
+	cred := mustKeyCredential(t)
 
-	for _, endpoint := range []string{"", "myaccount.documents.azure.com", "/relative/path", "https://"} {
+	// "https://:8081" has a non-empty Host (":8081") but no hostname, which is why the check is
+	// on Hostname rather than Host.
+	for _, endpoint := range []string{"", "myaccount.documents.azure.com", "/relative/path", "https://", "https://:8081"} {
 		t.Run(endpoint, func(t *testing.T) {
 			_, err := NewClientWithKey(endpoint, cred, nil)
 			require.Error(t, err, "endpoint %q should be rejected", endpoint)
@@ -55,7 +72,7 @@ func TestNewClientRejectsNonAbsoluteEndpoint(t *testing.T) {
 }
 
 func TestNewClientAcceptsAbsoluteEndpoint(t *testing.T) {
-	cred := azcore.NewKeyCredential("key")
+	cred := mustKeyCredential(t)
 
 	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
 	require.NoError(t, err)
@@ -66,7 +83,7 @@ func TestNewClientAcceptsAbsoluteEndpoint(t *testing.T) {
 // the routing order of a client that has already been created.
 func TestNewClientCopiesRoutingRegions(t *testing.T) {
 	regions := []Region{RegionWestUS, RegionEastUS}
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", azcore.NewKeyCredential("key"), &ClientOptions{
+	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), &ClientOptions{
 		Routing: PreferredRegions(regions...),
 	})
 	require.NoError(t, err)
@@ -110,7 +127,7 @@ func TestCloseIsIdempotentAndConcurrencySafe(t *testing.T) {
 }
 
 func TestNewDatabaseAndNewContainer(t *testing.T) {
-	cred := azcore.NewKeyCredential("key")
+	cred := mustKeyCredential(t)
 	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
 	require.NoError(t, err)
 
@@ -129,7 +146,7 @@ func TestNewDatabaseAndNewContainer(t *testing.T) {
 }
 
 func TestNewDatabaseAndNewContainerRejectEmptyIDs(t *testing.T) {
-	cred := azcore.NewKeyCredential("key")
+	cred := mustKeyCredential(t)
 	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
 	require.NoError(t, err)
 
@@ -146,7 +163,7 @@ func TestNewDatabaseAndNewContainerRejectEmptyIDs(t *testing.T) {
 // The scheme is validated, because a Cosmos endpoint is always reached over HTTP(S) and anything
 // else is a copy-paste mistake that would otherwise surface as an opaque driver failure.
 func TestNewClientRejectsNonHTTPSchemes(t *testing.T) {
-	cred := azcore.NewKeyCredential("key")
+	cred := mustKeyCredential(t)
 
 	for _, endpoint := range []string{"ftp://myaccount", "file:///tmp/x", "wss://myaccount"} {
 		t.Run(endpoint, func(t *testing.T) {
@@ -159,7 +176,7 @@ func TestNewClientRejectsNonHTTPSchemes(t *testing.T) {
 // The endpoint is named in its error so the message is actionable; this also pins the shape the
 // key-leak test above relies on.
 func TestEndpointErrorNamesTheEndpoint(t *testing.T) {
-	cred := azcore.NewKeyCredential("key")
+	cred := mustKeyCredential(t)
 
 	_, err := NewClientWithKey("notaurl", cred, nil)
 	require.Error(t, err)

@@ -43,9 +43,8 @@ type ClientOptions struct {
 // resources backing it, along with the routing and metadata caches that make requests cheap, so
 // creating one per operation is expensive and defeats them. Call [Client.Close] when done.
 type Client struct {
-	endpoint string
-	options  ClientOptions
-
+	endpoint  string
+	options   ClientOptions
 	closeOnce sync.Once
 	closeErr  error
 }
@@ -64,11 +63,10 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 // NewClientWithKey creates a client that authenticates with an account key.
 //
 // Prefer [NewClient] where possible; account keys grant full access to the account and cannot be
-// scoped down. Rotate the key in place with [azcore.KeyCredential.Update]. options may be nil to
-// accept the defaults.
-func NewClientWithKey(endpoint string, cred *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
-	if cred == nil {
-		return nil, errors.New("azcosmos: credential must not be nil")
+// scoped down. options may be nil to accept the defaults.
+func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
+	if cred.accountKey == "" {
+		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
 	}
 	return newClient(endpoint, options)
 }
@@ -83,9 +81,16 @@ func newClient(endpoint string, options *ClientOptions) (*Client, error) {
 	if err != nil {
 		return nil, fmt.Errorf("azcosmos: parsing endpoint: %w", err)
 	}
-	if !parsed.IsAbs() || parsed.Host == "" {
+	// Go's url.Parse is permissive where the Rust SDK's URL parser is not: it accepts a relative
+	// path and an endpoint whose authority is only a port, so both are rejected here to reach the
+	// same effective validation. Hostname() rather than Host, because Host includes the port.
+	if !parsed.IsAbs() || parsed.Hostname() == "" {
 		return nil, fmt.Errorf("azcosmos: endpoint %q must be an absolute URL, for example https://myaccount.documents.azure.com", endpoint)
 	}
+	// The driver rejects http:// for anything that is not an emulator host, when the driver is
+	// created and so before any credential is sent, and documents itself as the single source of
+	// truth for that rule. Emulator detection is deliberately not duplicated here; this only
+	// catches an obviously wrong scheme early.
 	if parsed.Scheme != "https" && parsed.Scheme != "http" {
 		return nil, fmt.Errorf("azcosmos: endpoint %q must use the http or https scheme", endpoint)
 	}

@@ -20,11 +20,10 @@
   JSON null component and `AppendUndefined` produces one whose value is missing from the item,
   which route differently. See [PR 27333](https://github.com/Azure/azure-sdk-for-go/pull/27333).
 * Added `Client`, `DatabaseClient` and `ContainerClient`, along with `ClientOptions` and the
-  `NewClient` and `NewClientWithKey` constructors. Key authentication uses `azcore.KeyCredential`
-  rather than a Cosmos-specific type, so keys can be rotated in place with its `Update` method.
-  Region preference is expressed as a `RoutingStrategy`, built with either `ProximityTo` for the
-  SDK to order regions by proximity to where the application runs, or `PreferredRegions` for an
-  explicit order; both take a typed `Region`. Operations on these clients are not implemented yet.
+  `NewClient` and `NewClientWithKey` constructors. Region preference is expressed as a
+  `RoutingStrategy`, built with either `ProximityTo` for the SDK to order regions by proximity to
+  where the application runs, or `PreferredRegions` for an explicit order; both take a typed
+  `Region`. Operations on these clients are not implemented yet.
   See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
 
 ### Breaking Changes

@@ -75,15 +75,17 @@ func TestCodeForStatusIsInjective(t *testing.T) {
 func TestErrorAsRetrievesFields(t *testing.T) {
 	// Wrapped, because callers see errors that operations have annotated on the way out.
 	err := fmt.Errorf("reading item: %w", &Error{
-		Code:         CodeThrottled,
-		StatusCode:   http.StatusTooManyRequests,
-		SubStatus:    3200,
-		Message:      "Request rate is large",
-		ActivityID:   "8fd3d1d1-5cbb-4a2a-9c4b-6a2b1f6c9d55",
-		SessionToken: "0:-1#42",
-		ETag:         `"00000000-0000-0000-0000-000000000000"`,
-		RetryAfter:   150 * time.Millisecond,
-		FromWire:     true,
+		Code:          CodeThrottled,
+		StatusCode:    http.StatusTooManyRequests,
+		SubStatus:     3200,
+		Message:       "Request rate is large",
+		RequestCharge: 4.5,
+		ActivityID:    "8fd3d1d1-5cbb-4a2a-9c4b-6a2b1f6c9d55",
+		SessionToken:  "0:-1#42",
+		ETag:          `"00000000-0000-0000-0000-000000000000"`,
+		RetryAfter:    150 * time.Millisecond,
+		Body:          []byte(`{"code":"TooManyRequests"}`),
+		FromWire:      true,
 	})
 
 	var cosmosErr *Error
@@ -96,6 +98,11 @@ func TestErrorAsRetrievesFields(t *testing.T) {
 	require.Equal(t, SessionToken("0:-1#42"), cosmosErr.SessionToken)
 	require.Equal(t, 150*time.Millisecond, cosmosErr.RetryAfter)
 	require.True(t, cosmosErr.FromWire)
+
+	// A throttled request is still billed, so the charge has to survive onto the error: it is the
+	// only place a caller can account for the RUs a failed operation consumed.
+	require.Equal(t, float32(4.5), cosmosErr.RequestCharge)
+	require.Equal(t, []byte(`{"code":"TooManyRequests"}`), cosmosErr.Body)
 }
 
 // The preview returns errNotImplemented from every operation, so it has to satisfy the errors.As

@@ -11,7 +11,8 @@
   of the operation, and whether the service or the client produced it. Retrieve it with
   `errors.As` and branch on `Code`, following the same shape as `azservicebus`. `Response` carries
   the request charge, activity ID, ETag and session token common to every operation, and
-  `ItemResponse` adds the returned item content. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+  `ItemResponse` adds the returned item content. Session tokens are carried as a named
+  `SessionToken` type rather than a bare string. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 
 ### Breaking Changes
 

@@ -15,6 +15,10 @@
   ID common to every operation, and `ItemResponse` adds the ETag, session token and item content.
   Session tokens are carried as a named `SessionToken` type rather than a bare string.
   See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+* Added `PartitionKey`, including support for hierarchical partition keys via the `Append*`
+  methods. Null and undefined components are now distinct: `AppendNull` produces an explicitly
+  JSON null component and `AppendUndefined` produces one whose value is missing from the item,
+  which route differently. See [PR 27333](https://github.com/Azure/azure-sdk-for-go/pull/27333).
 
 ### Breaking Changes
 

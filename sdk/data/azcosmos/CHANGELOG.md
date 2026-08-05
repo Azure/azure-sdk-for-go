@@ -11,7 +11,7 @@
   of the operation, and whether the service or the client produced it. Retrieve it with
   `errors.As` and branch on `Code`, following the same shape as `azservicebus`. `Response` carries
   the request charge, activity ID, ETag and session token common to every operation, and
-  `ItemResponse` adds the returned item content.
+  `ItemResponse` adds the returned item content. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 
 * Added `PartitionKey`, including support for hierarchical partition keys via the `Append*`
   methods. Null and undefined components are now distinct: `AppendNull` produces an explicitly
@@ -23,7 +23,7 @@
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete
-  breaking-change list lands here before the beta ships.
+  breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 
 ### Bugs Fixed
 

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Fixed WASM compilation by using heap-allocated buffers on JS targets.
+
 ### Other Changes
 
 ## 1.8.1-beta.1 (2026-07-24)

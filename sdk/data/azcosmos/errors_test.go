@@ -93,7 +93,7 @@ func TestErrorAsRetrievesFields(t *testing.T) {
 	require.Equal(t, 3200, cosmosErr.SubStatus)
 	require.Equal(t, "Request rate is large", cosmosErr.Message)
 	require.Equal(t, "8fd3d1d1-5cbb-4a2a-9c4b-6a2b1f6c9d55", cosmosErr.ActivityID)
-	require.Equal(t, "0:-1#42", cosmosErr.SessionToken)
+	require.Equal(t, SessionToken("0:-1#42"), cosmosErr.SessionToken)
 	require.Equal(t, 150*time.Millisecond, cosmosErr.RetryAfter)
 	require.True(t, cosmosErr.FromWire)
 }

@@ -26,7 +26,7 @@ type Response struct {
 
 	// SessionToken is the session token the operation produced. Pass it to a later operation to
 	// read your own writes under session consistency.
-	SessionToken string
+	SessionToken SessionToken
 }
 
 // ItemResponse is the response from an operation on a single item.

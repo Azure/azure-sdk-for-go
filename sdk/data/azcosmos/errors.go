@@ -120,7 +120,7 @@ type Error struct {
 	ActivityID string
 
 	// SessionToken is the session token reported alongside the failure, if any.
-	SessionToken string
+	SessionToken SessionToken
 
 	// ETag is the entity tag reported alongside the failure, if any.
 	ETag azcore.ETag

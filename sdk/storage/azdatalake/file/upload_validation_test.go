@@ -59,7 +59,7 @@ func TestUploadRejectsPrecomputedValidation(t *testing.T) {
 
 	f, err := os.Open(tmp.Name())
 	require.NoError(t, err)
-	defer f.Close()
+	defer func() { _ = f.Close() }()
 
 	uploadErr = client.UploadFile(context.Background(), f, &UploadFileOptions{
 		TransactionalValidation: TransferValidationTypeCRC64(98765),

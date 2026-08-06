@@ -13,11 +13,35 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2"
 )
 
+// exampleContainer builds the client and container the operation examples below work against, so
+// that each of those can show the operation rather than repeating the setup. ExampleNewClient
+// shows the construction it stands in for.
+func exampleContainer() *azcosmos.ContainerClient {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	container, err := client.NewContainer("myDatabase", "myContainer")
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	return container
+}
+
 // A client is safe for concurrent use and holds the caches that make requests cheap, so create one
 // per account and keep it for the lifetime of the application rather than one per operation.
 //
-// Close is called directly rather than deferred in these examples only because log.Fatalf would
-// skip a deferred call. In an application that returns errors rather than exiting, defer it.
+// Close is called directly rather than deferred here only because log.Fatalf would skip a deferred
+// call. In an application that returns errors rather than exiting, defer it.
 func ExampleNewClient() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,23 +104,7 @@ func ExamplePreferredRegions() {
 }
 
 func ExampleContainerClient_CreateItem() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	container, err := client.NewContainer("myDatabase", "myContainer")
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	container := exampleContainer()
 
 	item, err := json.Marshal(map[string]string{
 		"id":           "item-1",
@@ -119,24 +127,7 @@ func ExampleContainerClient_CreateItem() {
 }
 
 func ExampleContainerClient_ReadItem() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	container, err := client.NewContainer("myDatabase", "myContainer")
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
+	container := exampleContainer()
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
 	response, err := container.ReadItem(context.TODO(), pk, "item-1", nil)
@@ -156,23 +147,7 @@ func ExampleContainerClient_ReadItem() {
 // Reads can relax the account's consistency level, and can carry a session token captured from a
 // write elsewhere so that the read is guaranteed to observe it.
 func ExampleContainerClient_ReadItem_sessionConsistency() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	container, err := client.NewContainer("myDatabase", "myContainer")
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
+	container := exampleContainer()
 
 	options := &azcosmos.ReadItemOptions{
 		Operation: azcosmos.OperationOptions{
@@ -193,27 +168,10 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 // A missing item is reported as an *azcosmos.Error with the CodeNotFound code, which is usually
 // something to handle rather than to fail on.
 func ExampleError() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	client, err := azcosmos.NewClient("https://myaccount.documents.azure.com", cred, nil)
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
-	container, err := client.NewContainer("myDatabase", "myContainer")
-	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
-	}
-
+	container := exampleContainer()
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
-	_, err = container.ReadItem(context.TODO(), pk, "item-1", nil)
+	_, err := container.ReadItem(context.TODO(), pk, "item-1", nil)
 
 	var cosmosErr *azcosmos.Error
 	switch {

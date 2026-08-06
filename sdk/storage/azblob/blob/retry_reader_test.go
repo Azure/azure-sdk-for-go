@@ -428,3 +428,45 @@ func TestRetryReaderReadWithForcedRetry(t *testing.T) {
 		}
 	}
 }
+
+// TestRetryReaderWithRetryWrappedNetError verifies that a net.Error wrapped in an error chain via
+// fmt.Errorf("...: %w", err) — as the structured message decoder does for segment-read failures —
+// is still classified as retryable. The previous direct type assertion err.(net.Error) did not
+// unwrap the chain and so would not retry these transient failures.
+func TestRetryReaderWithRetryWrappedNetError(t *testing.T) {
+	byteCount := 1
+	body := newPerByteReader(byteCount)
+	body.doInjectError = true
+	body.doInjectErrorByteIndex = 0
+	body.doInjectTimes = 1
+	// A net.Error wrapped in an error chain, mirroring SMDecoder's fmt.Errorf("segment %d: %w", ...).
+	body.injectedError = fmt.Errorf("segment 1: %w", &net.DNSError{IsTemporary: true})
+
+	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
+		r := http.Response{}
+		body.currentByteIndex = int(info.Range.Offset)
+		r.Body = body
+		return r.Body, nil
+	}
+
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+	initResponse, err := getter(context.Background(), httpGetterInfo)
+	require.NoError(t, err)
+
+	retryReader := newRetryReader(context.Background(), initResponse, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 1})
+
+	// The wrapped net.Error should be recognized as retryable, and the retry should succeed.
+	can := make([]byte, 1)
+	n, err := retryReader.Read(can)
+	require.Equal(t, 1, n)
+	require.NoError(t, err)
+
+	// Subsequent read returns EOF.
+	n, err = retryReader.Read(can)
+	require.Equal(t, 0, n)
+	require.Equal(t, io.EOF, err)
+}

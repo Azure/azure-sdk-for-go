@@ -9,6 +9,10 @@
 ### Bugs Fixed
 
 * Fixed WASM compilation by using heap-allocated buffers on JS targets.
+* Fixed Structured Message CRC64 download validation being skipped when the final payload byte exactly fills the caller's read buffer; the trailing segment footer and message trailer CRC64 are now drained and validated in the same `Read`.
+* Fixed transient `net.Error`/`io.ErrUnexpectedEOF` failures during a Structured Message download not being retried: the decoder now preserves the error chain with `%w` and the retry reader classifies retryable errors with `errors.Is`/`errors.As`.
+* Structured Message download now rejects a response missing the negotiated CRC64 flag instead of silently skipping validation.
+* Fixed the Structured Message encoder emitting a valid, complete message when the source returned a non-EOF error exactly on a segment boundary; such errors are now propagated.
 
 ### Other Changes
 

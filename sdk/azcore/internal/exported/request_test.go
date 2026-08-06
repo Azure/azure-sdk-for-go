@@ -7,6 +7,7 @@ import (
 	"context"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 	"testing"
 
@@ -226,4 +227,127 @@ func TestSetBodyWithNoClobber(t *testing.T) {
 	req.req.Header.Set(shared.HeaderContentType, mergePatch)
 	require.NoError(t, SetBody(req, NopCloser(strings.NewReader(`"json-string"`)), shared.ContentTypeAppJSON, false))
 	require.EqualValues(t, mergePatch, req.req.Header.Get(shared.HeaderContentType))
+}
+
+func TestEncodeQueryParams(t *testing.T) {
+	for _, test := range []struct {
+		name    string
+		url     string
+		options *EncodeQueryParamsOptions
+		want    string
+	}{
+		{
+			name: "no query params",
+			url:  "https://contoso.com/path",
+			want: "https://contoso.com/path",
+		},
+		{
+			name: "empty query string",
+			url:  "https://contoso.com/path?",
+			want: "https://contoso.com/path",
+		},
+		{
+			name: "existing params are re-encoded",
+			url:  "https://contoso.com/path?b=2&a=1",
+			want: "https://contoso.com/path?a=1&b=2",
+		},
+		{
+			name: "semicolon in existing value is escaped",
+			url:  "https://contoso.com/path?a=1;2",
+			want: "https://contoso.com/path?a=1%3B2",
+		},
+		{
+			name: "space in existing value uses %20 not +",
+			url:  "https://contoso.com/path?a=hello world",
+			want: "https://contoso.com/path?a=hello%20world",
+		},
+		{
+			name: "plus in existing value is treated as a space and encoded as %20",
+			url:  "https://contoso.com/path?a=1+2",
+			want: "https://contoso.com/path?a=1%202",
+		},
+		{
+			name:    "literal plus in option value is escaped as %2B",
+			url:     "https://contoso.com/path",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"1+2"}}},
+			want:    "https://contoso.com/path?a=1%2B2",
+		},
+		{
+			name: "reserved characters in existing value are escaped",
+			url:  "https://contoso.com/path?a=a b&c=d/e",
+			want: "https://contoso.com/path?a=a%20b&c=d%2Fe",
+		},
+		{
+			name:    "nil options is a no-op",
+			url:     "https://contoso.com/path?a=1",
+			options: nil,
+			want:    "https://contoso.com/path?a=1",
+		},
+		{
+			name:    "options params added to URL with no query string",
+			url:     "https://contoso.com/path",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"1"}}},
+			want:    "https://contoso.com/path?a=1",
+		},
+		{
+			name:    "options params added to URL with trailing ?",
+			url:     "https://contoso.com/path?",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"1"}}},
+			want:    "https://contoso.com/path?a=1",
+		},
+		{
+			name:    "options params merged with existing params",
+			url:     "https://contoso.com/path?a=1",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"b": {"2"}}},
+			want:    "https://contoso.com/path?a=1&b=2",
+		},
+		{
+			name:    "options overwrite an existing single-valued key",
+			url:     "https://contoso.com/path?a=1",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"2"}}},
+			want:    "https://contoso.com/path?a=2",
+		},
+		{
+			name:    "options overwrite an existing multi-valued key",
+			url:     "https://contoso.com/path?a=1&a=2",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"3"}}},
+			want:    "https://contoso.com/path?a=3",
+		},
+		{
+			name:    "options overwrite an existing key with multiple new values",
+			url:     "https://contoso.com/path?a=1",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"2", "3"}}},
+			want:    "https://contoso.com/path?a=2&a=3",
+		},
+		{
+			name:    "multiple option values for a key",
+			url:     "https://contoso.com/path",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"1", "2"}}},
+			want:    "https://contoso.com/path?a=1&a=2",
+		},
+		{
+			name:    "option values with special characters are escaped",
+			url:     "https://contoso.com/path",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{"a": {"x;y z"}}},
+			want:    "https://contoso.com/path?a=x%3By%20z",
+		},
+		{
+			name:    "empty options parameters is a no-op",
+			url:     "https://contoso.com/path?a=1",
+			options: &EncodeQueryParamsOptions{Parameters: url.Values{}},
+			want:    "https://contoso.com/path?a=1",
+		},
+	} {
+		t.Run(test.name, func(t *testing.T) {
+			got, err := EncodeQueryParams(test.url, test.options)
+			require.NoError(t, err)
+			require.EqualValues(t, test.want, got)
+		})
+	}
+}
+
+func TestEncodeQueryParamsInvalid(t *testing.T) {
+	// an invalid percent-encoding in the existing query string surfaces as an error
+	_, err := EncodeQueryParams("https://contoso.com/path?a=%zz", nil)
+	require.Error(t, err)
 }

@@ -529,8 +529,8 @@ func TestResolveNextLink(t *testing.T) {
 		{"https://contoso.com", "?skip=1", "https://contoso.com?skip=1"},
 		{"https://contoso.com?api-version=1.0", "/page/2?skip=1", "https://contoso.com/page/2?skip=1&api-version=1.0"},
 		{"https://contoso.com", "/page/it%2Fem", "https://contoso.com/page/it%2Fem"},
-		// a malformed next link is passed through so the failure surfaces when creating the request
-		{"https://contoso.com", "/page/\x7f", "/page/\x7f"},
+		// a malformed next link is joined and passed through; the failure surfaces when creating the request
+		{"https://contoso.com", "/page/\x7f", "https://contoso.com/page/\x7f"},
 	} {
 		require.EqualValues(t, test.want, resolveNextLink(test.endpoint, test.nextLink), "%s + %s", test.endpoint, test.nextLink)
 	}

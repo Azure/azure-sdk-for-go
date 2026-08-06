@@ -14,7 +14,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
-	"net/url"
 	"path"
 	"strings"
 
@@ -51,21 +50,7 @@ func NewRequestFromRequest(req *http.Request) (*policy.Request, error) {
 // EncodeQueryParams will parse and encode any query parameters in the specified URL.
 // Any semicolons will automatically be escaped.
 func EncodeQueryParams(u string) (string, error) {
-	before, after, found := strings.Cut(u, "?")
-	if !found {
-		return u, nil
-	}
-	// starting in Go 1.17, url.ParseQuery will reject semicolons in query params.
-	// so, we must escape them first. note that this assumes that semicolons aren't
-	// being used as query param separators which is per the current RFC.
-	// for more info:
-	// https://github.com/golang/go/issues/25192
-	// https://github.com/golang/go/issues/50034
-	qp, err := url.ParseQuery(strings.ReplaceAll(after, ";", "%3B"))
-	if err != nil {
-		return "", err
-	}
-	return before + "?" + qp.Encode(), nil
+	return exported.EncodeQueryParams(u, nil)
 }
 
 // JoinPaths concatenates multiple URL path segments into one path,

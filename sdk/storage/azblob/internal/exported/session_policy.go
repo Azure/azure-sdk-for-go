@@ -59,6 +59,12 @@ func (p *sessionPolicy) Do(req *policy.Request) (*http.Response, error) {
 		if rwErr := req.RewindBody(); rwErr != nil {
 			return nil, rwErr
 		}
+
+		// remove the headers added for session authentication so the request is handed to the
+		// bearer token policy as it would have been had a session never been applied. The bearer
+		// token policy sets Authorization itself, and x-ms-date isn't set on bearer requests.
+		req.Raw().Header.Del(shared.HeaderAuthorization)
+		req.Raw().Header.Del(shared.HeaderXmsDate)
 	}
 
 	return p.bearerTokenPolicy.Do(req)

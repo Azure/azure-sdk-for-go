@@ -47,6 +47,11 @@ type containerSessionProvider struct {
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - storageURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
 //   - options - client options; pass nil to accept the default values
+//
+// The provider caches one session per container for its lifetime, so its memory use grows with
+// the number of distinct containers it's used with. Sharing a single provider across an
+// application that accesses a large or unbounded set of containers will retain an entry per
+// container.
 func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string, options *ClientOptions) (exported.SessionProvider, error) {
 	if options == nil {
 		options = &ClientOptions{}
@@ -104,6 +109,7 @@ func (p *containerSessionProvider) InvalidateSession(req *http.Request, reqCred 
 }
 
 // IsRequestEligible returns true if the request is eligible for session-based authentication.
+// Only GET requests are eligible, so writes and every other verb continue to authenticate with the bearer token.
 func (p *containerSessionProvider) IsRequestEligible(req *http.Request) bool {
 	if req == nil || req.Method != http.MethodGet {
 		return false

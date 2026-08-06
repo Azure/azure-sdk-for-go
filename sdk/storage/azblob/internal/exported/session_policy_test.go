@@ -83,11 +83,14 @@ type mockBearerPolicy struct {
 	// bodySeen records the request body observed by the policy, which is how tests verify that
 	// the body was rewound before falling back.
 	bodySeen []byte
-	doFn     func(req *policy.Request) (*http.Response, error)
+	// headersSeen records the request headers observed by the policy.
+	headersSeen http.Header
+	doFn        func(req *policy.Request) (*http.Response, error)
 }
 
 func (m *mockBearerPolicy) Do(req *policy.Request) (*http.Response, error) {
 	m.doCalls++
+	m.headersSeen = req.Raw().Header.Clone()
 	if body := req.Body(); body != nil {
 		m.bodySeen, _ = io.ReadAll(body)
 	}
@@ -442,6 +445,23 @@ func TestSessionPolicyRewindsBodyBeforeBearerFallback(t *testing.T) {
 
 	require.Equal(t, body, transport.bodySeen, "the session-authenticated attempt sends the body")
 	require.Equal(t, body, bearer.bodySeen, "the body must be rewound before falling back to bearer auth")
+}
+
+// The headers added to authenticate the request with the session must not be handed to the
+// bearer token policy; the request falls back as it would have had no session been applied.
+func TestSessionPolicyClearsSessionHeadersBeforeBearerFallback(t *testing.T) {
+	provider := newEligibleProvider()
+	bearer := &mockBearerPolicy{}
+	transport := &recordingTransport{statusCode: http.StatusUnauthorized}
+
+	pl := newTestPipeline(NewSessionPolicy(testAccountName, provider, bearer), transport)
+
+	_, err := pl.Do(newTestPolicyRequest(t, http.MethodGet, testBlobURL))
+	require.NoError(t, err)
+
+	require.Equal(t, 1, bearer.doCalls)
+	require.Empty(t, bearer.headersSeen.Get(shared.HeaderAuthorization), "the session authorization header must be cleared")
+	require.Empty(t, bearer.headersSeen.Get(shared.HeaderXmsDate), "the date set for the session signature must be cleared")
 }
 
 func TestSessionPolicyNonUnauthorizedErrorPropagates(t *testing.T) {

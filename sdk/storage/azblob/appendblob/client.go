@@ -47,7 +47,6 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-
 	azClient, err := base.GetAzClient(blobURL, nil, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
@@ -366,4 +365,10 @@ func (ab *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.Dow
 // The file would be truncated if the size doesn't match.
 func (ab *Client) DownloadFile(ctx context.Context, file *os.File, o *blob.DownloadFileOptions) (int64, error) {
 	return ab.BlobClient().DownloadFile(ctx, file, o)
+}
+
+// GetLayoutPager returns the blob's layout.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (ab *Client) GetLayoutPager(options *blob.GetLayoutOptions) *runtime.Pager[blob.GetLayoutResponse] {
+	return ab.BlobClient().GetLayoutPager(options)
 }

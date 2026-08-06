@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -98,4 +99,24 @@ func TestItemOperationsReportNotImplemented(t *testing.T) {
 		require.True(t, errors.As(err, &cosmosErr))
 		require.Equal(t, CodeClientError, cosmosErr.Code)
 	}
+}
+
+// The point of factoring OperationOptions out is that every operation takes the same driver-level
+// settings without restating them, so a knob added there reaches all of them at once. This pins
+// that both item operations carry it, which a per-type copy would not guarantee.
+func TestItemOptionsShareOperationOptions(t *testing.T) {
+	shared := OperationOptions{
+		ConsistencyStrategy:    ReadConsistencyStrategySession,
+		ExcludedRegions:        []Region{RegionEastUS},
+		ThroughputControlGroup: "background",
+		EndToEndTimeout:        5 * time.Second,
+	}
+
+	read := ReadItemOptions{Operation: shared}
+	create := CreateItemOptions{Operation: shared}
+
+	require.Equal(t, shared, read.Operation)
+	require.Equal(t, shared, create.Operation)
+	require.Equal(t, []Region{RegionEastUS}, read.Operation.ExcludedRegions,
+		"excluded regions are typed, not free strings")
 }

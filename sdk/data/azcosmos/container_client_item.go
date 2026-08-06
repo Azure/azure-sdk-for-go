@@ -6,7 +6,6 @@ package azcosmos
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -14,54 +13,27 @@ import (
 // ReadItemOptions configures [ContainerClient.ReadItem]. A nil *ReadItemOptions selects the
 // defaults for every field.
 type ReadItemOptions struct {
-	// ConsistencyStrategy relaxes how fresh the read must be. The zero value reads with whatever
-	// the account's consistency level implies.
-	ConsistencyStrategy ReadConsistencyStrategy
-
-	// IfNoneMatchETag skips returning the item when its ETag matches, so an unchanged item costs
-	// no payload. Pass the ETag from a previous response.
-	IfNoneMatchETag *azcore.ETag
+	// Operation holds the settings every operation accepts.
+	Operation OperationOptions
 
 	// SessionToken is the session token to read under, for observing writes made by another
 	// process. Empty uses the token the client captured itself.
 	SessionToken SessionToken
 
-	// ExcludedRegions removes regions from consideration for this operation, in addition to any
-	// the client is already avoiding.
-	ExcludedRegions []string
-
-	// ThroughputControlGroup assigns the operation to a throughput control group registered on
-	// the client.
-	ThroughputControlGroup string
-
-	// EndToEndTimeout bounds the whole operation, including the retries the driver performs on
-	// the caller's behalf. Zero means no bound beyond the context's deadline.
-	EndToEndTimeout time.Duration
+	// IfNoneMatchETag skips returning the item when its ETag matches, so an unchanged item costs
+	// no payload. Pass the ETag from a previous response.
+	IfNoneMatchETag *azcore.ETag
 }
 
 // CreateItemOptions configures [ContainerClient.CreateItem]. A nil *CreateItemOptions selects the
 // defaults for every field.
 type CreateItemOptions struct {
-	// EnableContentResponseOnWrite requests that the created item be returned in the response.
-	// Nil uses the client-level setting, and a non-nil value overrides it in either direction.
-	// Leaving it off reduces network and CPU cost.
-	EnableContentResponseOnWrite *bool
+	// Operation holds the settings every operation accepts.
+	Operation OperationOptions
 
 	// SessionToken is the session token to write under. Empty uses the token the client captured
 	// itself.
 	SessionToken SessionToken
-
-	// ExcludedRegions removes regions from consideration for this operation, in addition to any
-	// the client is already avoiding.
-	ExcludedRegions []string
-
-	// ThroughputControlGroup assigns the operation to a throughput control group registered on
-	// the client.
-	ThroughputControlGroup string
-
-	// EndToEndTimeout bounds the whole operation, including the retries the driver performs on
-	// the caller's behalf. Zero means no bound beyond the context's deadline.
-	EndToEndTimeout time.Duration
 }
 
 // ReadItem reads a single item.

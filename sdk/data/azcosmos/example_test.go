@@ -175,7 +175,9 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 	}
 
 	options := &azcosmos.ReadItemOptions{
-		ConsistencyStrategy: azcosmos.ReadConsistencyStrategySession,
+		Operation: azcosmos.OperationOptions{
+			ConsistencyStrategy: azcosmos.ReadConsistencyStrategySession,
+		},
 		// Taken from the ItemResponse of the write this read needs to observe.
 		SessionToken: "0:-1#42",
 	}

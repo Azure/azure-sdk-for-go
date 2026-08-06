@@ -21,11 +21,8 @@ import (
 
 const featureNotEnabled = "FeatureNotEnabled"
 
-// cooldown durations applied when the service indicates sessions are unavailable.
-const (
-	transientFailureCooldown   = time.Minute
-	featureUnavailableCooldown = 24 * time.Hour
-)
+// cooldown duration applied when the service indicates sessions are unavailable.
+const transientFailureCooldown = time.Minute
 
 // containerSessionProvider implements SessionProvider for container-scoped token credential sessions.
 type containerSessionProvider struct {
@@ -172,12 +169,10 @@ func acquireSession(client *generated.ContainerClient) func(context.Context) (ex
 			var respErr *azcore.ResponseError
 			if errors.As(err, &respErr) {
 				switch {
-				case respErr.StatusCode >= 500:
-					errorExpiry := time.Now().Add(transientFailureCooldown)
-					return exported.NewSessionCredentialFallback(errorExpiry), errorExpiry, nil
-				case respErr.StatusCode == http.StatusBadRequest && respErr.ErrorCode == featureNotEnabled,
+				case respErr.StatusCode >= 500,
+					respErr.StatusCode == http.StatusBadRequest && respErr.ErrorCode == featureNotEnabled,
 					respErr.StatusCode == http.StatusForbidden:
-					errorExpiry := time.Now().Add(featureUnavailableCooldown)
+					errorExpiry := time.Now().Add(transientFailureCooldown)
 					return exported.NewSessionCredentialFallback(errorExpiry), errorExpiry, nil
 				}
 			}

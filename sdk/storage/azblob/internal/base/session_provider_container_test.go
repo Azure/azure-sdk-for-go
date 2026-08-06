@@ -130,7 +130,7 @@ func TestAcquireSession_Success(t *testing.T) {
 	require.Equal(t, expiration.Format(time.RFC1123), creds.Expiry().Format(time.RFC1123))
 }
 
-func TestAcquireSession_FallbackToBearer_TransientFailure(t *testing.T) {
+func TestAcquireSession_FallbackToBearer(t *testing.T) {
 	tests := []struct {
 		name       string
 		statusCode int
@@ -145,6 +145,16 @@ func TestAcquireSession_FallbackToBearer_TransientFailure(t *testing.T) {
 			name:       "ServiceUnavailable503",
 			statusCode: http.StatusServiceUnavailable,
 			errorCode:  "ServiceUnavailable",
+		},
+		{
+			name:       "FeatureNotEnabled",
+			statusCode: http.StatusBadRequest,
+			errorCode:  featureNotEnabled,
+		},
+		{
+			name:       "Forbidden",
+			statusCode: http.StatusForbidden,
+			errorCode:  "AuthorizationFailure",
 		},
 	}
 
@@ -169,47 +179,6 @@ func TestAcquireSession_FallbackToBearer_TransientFailure(t *testing.T) {
 			require.Empty(t, creds.Key())
 			// the fallback decision is cached for a short cooldown so sessions are retried soon
 			require.WithinDuration(t, before.Add(transientFailureCooldown), exp, time.Minute)
-		})
-	}
-}
-
-func TestAcquireSession_FallbackToBearer_FeatureUnavailable(t *testing.T) {
-	tests := []struct {
-		name       string
-		statusCode int
-		errorCode  string
-	}{
-		{
-			name:       "FeatureNotEnabled",
-			statusCode: http.StatusBadRequest,
-			errorCode:  featureNotEnabled,
-		},
-		{
-			name:       "Forbidden",
-			statusCode: http.StatusForbidden,
-			errorCode:  "AuthorizationFailure",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
-			defer closeFn()
-
-			srv.AppendResponse(
-				mock.WithStatusCode(tt.statusCode),
-				mock.WithHeader("x-ms-error-code", tt.errorCode),
-				mock.WithBody(createErrorResponseXML(tt.errorCode, "error message")),
-			)
-
-			client := newTestContainerClient(t, srv)
-
-			before := time.Now()
-			creds, exp, err := acquireSession(client)(context.Background())
-			require.NoError(t, err)
-			require.True(t, creds.Fallback())
-			// the feature is unavailable, so the decision is cached for much longer
-			require.WithinDuration(t, before.Add(featureUnavailableCooldown), exp, time.Minute)
 		})
 	}
 }

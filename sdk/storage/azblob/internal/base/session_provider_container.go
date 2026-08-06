@@ -22,7 +22,7 @@ import (
 const featureNotEnabled = "FeatureNotEnabled"
 
 // cooldown duration applied when the service indicates sessions are unavailable.
-const transientFailureCooldown = time.Minute
+const transientFailureCooldown = 5 * time.Minute
 
 // containerSessionProvider implements SessionProvider for container-scoped token credential sessions.
 type containerSessionProvider struct {

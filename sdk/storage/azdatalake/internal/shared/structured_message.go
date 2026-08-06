@@ -6,6 +6,7 @@ package shared
 import (
 	"bytes"
 	"encoding/binary"
+	"errors"
 	"fmt"
 	"hash/crc64"
 	"io"
@@ -199,6 +200,12 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 
 	flags := binary.LittleEndian.Uint16(smData[9:11])
 	numSegments := binary.LittleEndian.Uint16(smData[11:13])
+	// The structured message body is negotiated with properties=crc64, so the CRC64 flag
+	// must be present. Rejecting its absence prevents silently skipping validation. Only the
+	// CRC64 bit is required; other flag bits are ignored to preserve forward compatibility.
+	if flags&SMFlagCRC64 == 0 {
+		return SMDecodeResult{}, fmt.Errorf("structured message is missing the required CRC64 flag (flags=0x%04x)", flags)
+	}
 	hasCRC := flags&SMFlagCRC64 != 0
 
 	offset := SMHeaderSize
@@ -404,8 +411,11 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 				e.pendingOff = 0
 				e.state = encStateSegFooter
 			}
-			if err != nil && e.segRemain > 0 {
-				return totalRead, err
+			if err != nil {
+				finalContentBoundary := e.segRemain == 0 && e.segIndex == e.numSegments
+				if !errors.Is(err, io.EOF) || !finalContentBoundary {
+					return totalRead, err
+				}
 			}
 
 		case encStateSegFooter:
@@ -573,7 +583,13 @@ func (d *SMDecoder) Read(p []byte) (int, error) {
 	}
 
 	totalOut := 0
-	for totalOut < len(p) {
+	// NOTE: framing states (header, segment header/footer, trailer) are processed even once the
+	// caller's buffer is full, because that framing is consumed from the source into an internal
+	// buffer rather than into p. Only segment *data* requires space in p. This guarantees the final
+	// segment footer and message trailer CRC64 are drained and validated within the same Read call
+	// that emits the last payload byte, so a bounded reader (e.g. RetryReader) cannot report EOF and
+	// skip validation when the payload happens to fill the buffer exactly.
+	for {
 		switch d.state {
 		case decStateHeader:
 			done, err := d.fillFrame()
@@ -604,33 +620,41 @@ func (d *SMDecoder) Read(p []byte) (int, error) {
 			}
 
 		case decStateSegData:
-			// Read segment data from source, pass through to caller
-			toRead := int64(len(p) - totalOut)
-			if toRead > d.segRemain {
-				toRead = d.segRemain
-			}
-			n, err := d.source.Read(p[totalOut : totalOut+int(toRead)])
-			if n > 0 {
-				d.bytesRead += int64(n)
-				if d.hasCRC {
-					_, _ = d.segCRC.Write(p[totalOut : totalOut+n])
-					_, _ = d.msgCRC.Write(p[totalOut : totalOut+n])
+			if d.segRemain > 0 {
+				if totalOut >= len(p) {
+					// Caller's buffer is full and more segment data is pending;
+					// the remainder will be produced on the next Read.
+					return totalOut, nil
 				}
-				totalOut += n
-				d.segRemain -= int64(n)
+				// Read segment data from source, pass through to caller
+				toRead := int64(len(p) - totalOut)
+				if toRead > d.segRemain {
+					toRead = d.segRemain
+				}
+				n, err := d.source.Read(p[totalOut : totalOut+int(toRead)])
+				if n > 0 {
+					d.bytesRead += int64(n)
+					if d.hasCRC {
+						_, _ = d.segCRC.Write(p[totalOut : totalOut+n])
+						_, _ = d.msgCRC.Write(p[totalOut : totalOut+n])
+					}
+					totalOut += n
+					d.segRemain -= int64(n)
+				}
+				if err != nil && d.segRemain > 0 {
+					d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
+					return totalOut, d.err
+				}
 			}
 			if d.segRemain == 0 {
-				// Segment data done
+				// Segment data is fully consumed. Advance to the footer/next segment even when the
+				// caller's buffer is full so trailing framing is drained and validated before EOF.
 				if d.hasCRC {
 					d.prepareFrame(SMSegmentFooterSize)
 					d.state = decStateSegFooter
 				} else {
 					d.advanceAfterSegment()
 				}
-			}
-			if err != nil && d.segRemain > 0 {
-				d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
-				return totalOut, d.err
 			}
 
 		case decStateSegFooter:
@@ -671,7 +695,6 @@ func (d *SMDecoder) Read(p []byte) (int, error) {
 			return totalOut, d.err
 		}
 	}
-	return totalOut, nil
 }
 
 func (d *SMDecoder) parseHeader() error {
@@ -684,6 +707,12 @@ func (d *SMDecoder) parseHeader() error {
 	d.msgLen = binary.LittleEndian.Uint64(buf[1:9])
 	d.flags = binary.LittleEndian.Uint16(buf[9:11])
 	d.numSegments = binary.LittleEndian.Uint16(buf[11:13])
+	// The structured message body is negotiated with properties=crc64, so the CRC64 flag
+	// must be present. Rejecting its absence prevents silently skipping validation. Only the
+	// CRC64 bit is required; other flag bits are ignored to preserve forward compatibility.
+	if d.flags&SMFlagCRC64 == 0 {
+		return fmt.Errorf("structured message is missing the required CRC64 flag (flags=0x%04x)", d.flags)
+	}
 	d.hasCRC = d.flags&SMFlagCRC64 != 0
 
 	if d.hasCRC {
@@ -767,7 +796,7 @@ func (d *SMDecoder) fillFrame() (bool, error) {
 			return true, nil
 		}
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				return false, fmt.Errorf("unexpected EOF reading structured message framing (have %d of %d bytes)", d.frameHave, d.frameNeed)
 			}
 			return false, err

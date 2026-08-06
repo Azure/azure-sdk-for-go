@@ -449,10 +449,26 @@ func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushData
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
+// rejectPrecomputedValidation returns datalakeerror.UnsupportedChecksum when tv is a user-supplied
+// precomputed checksum (e.g. TransferValidationTypeCRC64). Multipart uploads split the payload across
+// multiple AppendData calls, so a single precomputed checksum for the whole payload cannot validate
+// every chunk. Computed CRC64 (a func type, hashed per chunk) and structured message CRC64 are allowed.
+func rejectPrecomputedValidation(tv TransferValidationType) error {
+	if tv != nil &&
+		reflect.TypeOf(tv).Kind() != reflect.Func &&
+		exported.GetStructuredBodyType(tv) == "" {
+		return datalakeerror.UnsupportedChecksum
+	}
+	return nil
+}
+
 // uploadFromReader uploads a buffer in chunks to an Azure file.
 func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) error {
 	if actualSize > MaxFileSize {
 		return errors.New("buffer is too large to upload to a file")
+	}
+	if err := rejectPrecomputedValidation(o.TransactionalValidation); err != nil {
+		return err
 	}
 	if o.ChunkSize == 0 {
 		o.ChunkSize = MaxAppendBytes
@@ -560,6 +576,9 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 		if err != nil {
 			return err
 		}
+	}
+	if err := rejectPrecomputedValidation(options.TransactionalValidation); err != nil {
+		return err
 	}
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)
 

@@ -16,64 +16,64 @@ import (
 	"strings"
 )
 
-// ScenariosClient contains the methods for the Scenarios group.
-// Don't use this type directly, use NewScenariosClient() instead.
+// ConnectionsClient contains the methods for the Connections group.
+// Don't use this type directly, use NewConnectionsClient() instead.
 //
 // Generated from API version 2026-08-01-preview
-type ScenariosClient struct {
+type ConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewScenariosClient creates a new instance of ScenariosClient with the specified values.
+// NewConnectionsClient creates a new instance of ConnectionsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewScenariosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScenariosClient, error) {
+func NewConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ScenariosClient{
+	client := &ConnectionsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Create or update a scenario.
+// CreateOrUpdate - Create or update a connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
-//   - scenarioName - Name of the scenario.
-//   - resource - Resource create parameters.
-//   - options - ScenariosClientCreateOrUpdateOptions contains the optional parameters for the ScenariosClient.CreateOrUpdate
+//   - connectionName - Name of the connection.
+//   - resource - Connection resource to be created or updated.
+//   - options - ConnectionsClientCreateOrUpdateOptions contains the optional parameters for the ConnectionsClient.CreateOrUpdate
 //     method.
-func (client *ScenariosClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, resource Scenario, options *ScenariosClientCreateOrUpdateOptions) (ScenariosClientCreateOrUpdateResponse, error) {
+func (client *ConnectionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, resource Connection, options *ConnectionsClientCreateOrUpdateOptions) (ConnectionsClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "ScenariosClient.CreateOrUpdate"
+	const operationName = "ConnectionsClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, resource, options)
 	if err != nil {
-		return ScenariosClientCreateOrUpdateResponse{}, err
+		return ConnectionsClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScenariosClientCreateOrUpdateResponse{}, err
+		return ConnectionsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
 		err = runtime.NewResponseError(httpResp)
-		return ScenariosClientCreateOrUpdateResponse{}, err
+		return ConnectionsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ScenariosClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, resource Scenario, _ *ScenariosClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}"
+func (client *ConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, resource Connection, _ *ConnectionsClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -86,10 +86,10 @@ func (client *ScenariosClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if scenarioName == "" {
-		return nil, errors.New("parameter scenarioName cannot be empty")
+	if connectionName == "" {
+		return nil, errors.New("parameter connectionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scenarioName}", url.PathEscape(scenarioName))
+	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -106,44 +106,44 @@ func (client *ScenariosClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ScenariosClient) createOrUpdateHandleResponse(resp *http.Response) (ScenariosClientCreateOrUpdateResponse, error) {
-	result := ScenariosClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Scenario); err != nil {
-		return ScenariosClientCreateOrUpdateResponse{}, err
+func (client *ConnectionsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectionsClientCreateOrUpdateResponse, error) {
+	result := ConnectionsClientCreateOrUpdateResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
+		return ConnectionsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
 
-// Delete - Delete a scenario.
+// Delete - Delete a connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
-//   - scenarioName - Name of the scenario.
-//   - options - ScenariosClientDeleteOptions contains the optional parameters for the ScenariosClient.Delete method.
-func (client *ScenariosClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, options *ScenariosClientDeleteOptions) (ScenariosClientDeleteResponse, error) {
+//   - connectionName - Name of the connection.
+//   - options - ConnectionsClientDeleteOptions contains the optional parameters for the ConnectionsClient.Delete method.
+func (client *ConnectionsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *ConnectionsClientDeleteOptions) (ConnectionsClientDeleteResponse, error) {
 	var err error
-	const operationName = "ScenariosClient.Delete"
+	const operationName = "ConnectionsClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, options)
 	if err != nil {
-		return ScenariosClientDeleteResponse{}, err
+		return ConnectionsClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScenariosClientDeleteResponse{}, err
+		return ConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return ScenariosClientDeleteResponse{}, err
+		return ConnectionsClientDeleteResponse{}, err
 	}
-	return ScenariosClientDeleteResponse{}, nil
+	return ConnectionsClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ScenariosClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, _ *ScenariosClientDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}"
+func (client *ConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, _ *ConnectionsClientDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -156,10 +156,10 @@ func (client *ScenariosClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if scenarioName == "" {
-		return nil, errors.New("parameter scenarioName cannot be empty")
+	if connectionName == "" {
+		return nil, errors.New("parameter connectionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scenarioName}", url.PathEscape(scenarioName))
+	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -170,37 +170,37 @@ func (client *ScenariosClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
-// Get - Get a scenario.
+// Get - Get a connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
-//   - scenarioName - Name of the scenario.
-//   - options - ScenariosClientGetOptions contains the optional parameters for the ScenariosClient.Get method.
-func (client *ScenariosClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, options *ScenariosClientGetOptions) (ScenariosClientGetResponse, error) {
+//   - connectionName - Name of the connection.
+//   - options - ConnectionsClientGetOptions contains the optional parameters for the ConnectionsClient.Get method.
+func (client *ConnectionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *ConnectionsClientGetOptions) (ConnectionsClientGetResponse, error) {
 	var err error
-	const operationName = "ScenariosClient.Get"
+	const operationName = "ConnectionsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, scenarioName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, options)
 	if err != nil {
-		return ScenariosClientGetResponse{}, err
+		return ConnectionsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ScenariosClientGetResponse{}, err
+		return ConnectionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
 		err = runtime.NewResponseError(httpResp)
-		return ScenariosClientGetResponse{}, err
+		return ConnectionsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *ScenariosClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, _ *ScenariosClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}"
+func (client *ConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, _ *ConnectionsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/connections/{connectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -213,10 +213,10 @@ func (client *ScenariosClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if scenarioName == "" {
-		return nil, errors.New("parameter scenarioName cannot be empty")
+	if connectionName == "" {
+		return nil, errors.New("parameter connectionName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scenarioName}", url.PathEscape(scenarioName))
+	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -229,25 +229,25 @@ func (client *ScenariosClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScenariosClient) getHandleResponse(resp *http.Response) (ScenariosClientGetResponse, error) {
-	result := ScenariosClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Scenario); err != nil {
-		return ScenariosClientGetResponse{}, err
+func (client *ConnectionsClient) getHandleResponse(resp *http.Response) (ConnectionsClientGetResponse, error) {
+	result := ConnectionsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Connection); err != nil {
+		return ConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListAllPager - Get a list of scenarios.
+// NewListAllPager - Get a list of connections.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
-//   - options - ScenariosClientListAllOptions contains the optional parameters for the ScenariosClient.NewListAllPager method.
-func (client *ScenariosClient) NewListAllPager(resourceGroupName string, workspaceName string, options *ScenariosClientListAllOptions) *runtime.Pager[ScenariosClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ScenariosClientListAllResponse]{
-		More: func(page ScenariosClientListAllResponse) bool {
+//   - options - ConnectionsClientListAllOptions contains the optional parameters for the ConnectionsClient.NewListAllPager method.
+func (client *ConnectionsClient) NewListAllPager(resourceGroupName string, workspaceName string, options *ConnectionsClientListAllOptions) *runtime.Pager[ConnectionsClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConnectionsClientListAllResponse]{
+		More: func(page ConnectionsClientListAllResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ScenariosClientListAllResponse) (ScenariosClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScenariosClient.NewListAllPager")
+		Fetcher: func(ctx context.Context, page *ConnectionsClientListAllResponse) (ConnectionsClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectionsClient.NewListAllPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
@@ -256,7 +256,7 @@ func (client *ScenariosClient) NewListAllPager(resourceGroupName string, workspa
 				return client.listAllCreateRequest(ctx, resourceGroupName, workspaceName, options)
 			}, nil)
 			if err != nil {
-				return ScenariosClientListAllResponse{}, err
+				return ConnectionsClientListAllResponse{}, err
 			}
 			return client.listAllHandleResponse(resp)
 		},
@@ -265,8 +265,8 @@ func (client *ScenariosClient) NewListAllPager(resourceGroupName string, workspa
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *ScenariosClient) listAllCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *ScenariosClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios"
+func (client *ConnectionsClient) listAllCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *ConnectionsClientListAllOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/connections"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -291,10 +291,10 @@ func (client *ScenariosClient) listAllCreateRequest(ctx context.Context, resourc
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *ScenariosClient) listAllHandleResponse(resp *http.Response) (ScenariosClientListAllResponse, error) {
-	result := ScenariosClientListAllResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScenarioListResult); err != nil {
-		return ScenariosClientListAllResponse{}, err
+func (client *ConnectionsClient) listAllHandleResponse(resp *http.Response) (ConnectionsClientListAllResponse, error) {
+	result := ConnectionsClientListAllResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionListResult); err != nil {
+		return ConnectionsClientListAllResponse{}, err
 	}
 	return result, nil
 }

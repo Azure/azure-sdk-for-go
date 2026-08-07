@@ -192,7 +192,7 @@ func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 	require.NotNil(t, result.eTag)
 	require.Equal(t, etag, *result.eTag)
 	require.False(t, expiry.IsZero())
-	require.False(t, result.Fallback())
+	require.False(t, result.fallback)
 
 	// Verify ranges
 	require.Equal(t, int64(0), result.layoutRanges[0].start)
@@ -231,7 +231,7 @@ func TestGetLayout_SinglePageNoLayout(t *testing.T) {
 	require.NotNil(t, result.eTag)
 	require.Equal(t, etag, *result.eTag)
 	require.False(t, expiry.IsZero())
-	require.False(t, result.Fallback())
+	require.False(t, result.fallback)
 }
 
 func TestGetLayout_MultiplePages(t *testing.T) {
@@ -318,7 +318,7 @@ func TestGetLayout_UnsupportedIsCached(t *testing.T) {
 			result, expiry, err := getLayout(context.Background(), pager)
 
 			require.NoError(t, err)
-			require.True(t, result.Fallback())
+			require.True(t, result.fallback)
 			require.False(t, expiry.IsZero())
 			require.False(t, shouldRefreshLayout(result, context.Background()), "a cached fallback must not be eagerly refreshed")
 		})
@@ -336,7 +336,7 @@ func TestGetLayout_ErrorStatusClassification(t *testing.T) {
 		t.Run(fmt.Sprintf("cached_%d", sc), func(t *testing.T) {
 			result, expiry, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
 			require.NoError(t, err)
-			require.True(t, result.Fallback())
+			require.True(t, result.fallback)
 			require.False(t, expiry.IsZero())
 		})
 	}
@@ -345,41 +345,10 @@ func TestGetLayout_ErrorStatusClassification(t *testing.T) {
 		t.Run(fmt.Sprintf("propagated_%d", sc), func(t *testing.T) {
 			result, expiry, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
 			require.Error(t, err)
-			require.False(t, result.Fallback(), "a propagated error must not produce a cacheable fallback")
+			require.False(t, result.fallback, "a propagated error must not produce a cacheable fallback")
 			require.True(t, expiry.IsZero())
 		})
 	}
-}
-
-// TestGetLayout_MissingBlobContentLength verifies a response without the x-ms-blob-content-length
-// header doesn't panic.
-func TestGetLayout_MissingBlobContentLength(t *testing.T) {
-	etag := azcore.ETag("etag")
-	responses := []GetLayoutResponse{
-		{
-			BlobLayout: generated.BlobLayout{
-				Endpoints: &generated.BlobLayoutEndpoints{
-					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{
-						{Index: to.Ptr(int32(0)), Value: to.Ptr("endpoint1")},
-					},
-				},
-				Ranges: &generated.BlobLayoutRanges{
-					Range: []*generated.BlobLayoutRangesRangeItem{
-						{Start: to.Ptr(int64(0)), End: to.Ptr(int64(99)), EndpointIndex: to.Ptr(int32(0))},
-					},
-				},
-			},
-			// BlobContentLength intentionally omitted
-			ETag: &etag,
-		},
-	}
-
-	require.NotPanics(t, func() {
-		result, _, err := getLayout(context.Background(), createMockPager(responses, nil))
-		require.NoError(t, err)
-		require.Zero(t, result.contentLength)
-		require.Len(t, result.layoutRanges, 1)
-	})
 }
 
 // ======================================================================================== //

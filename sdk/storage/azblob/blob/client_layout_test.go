@@ -545,7 +545,7 @@ func TestClientLayoutFallbackCachedSingleRequest(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		l, err := temporalLayout.Get(context.Background())
 		require.NoError(t, err)
-		require.True(t, l.Fallback())
+		require.True(t, l.fallback)
 	}
 	layoutCalls, _, _, _ := f.counts()
 	require.Equal(t, 1, layoutCalls, "the failure should be cached, not re-requested")

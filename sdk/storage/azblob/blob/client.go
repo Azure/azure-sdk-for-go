@@ -353,7 +353,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			// getLayout caches "layout unavailable" as a fallback layout, so any error here is fatal.
 			return 0, err
 		}
-		if l.Fallback() {
+		if l.fallback {
 			// The service can't provide a layout, fall back to the old behavior.
 			useLayout = false
 		} else {
@@ -427,7 +427,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			}, nil)
 			// Fetch ideal endpoint for this chunk from layout
 			if useLayout {
-				if chunkLayout, err := temporalLayout.Get(ctx); err == nil && !chunkLayout.Fallback() {
+				if chunkLayout, err := temporalLayout.Get(ctx); err == nil && !chunkLayout.fallback {
 					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(chunkStart+o.Range.Offset, chunkLayout)
 				}
 			}

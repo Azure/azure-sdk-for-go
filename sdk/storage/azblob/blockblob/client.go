@@ -1,4 +1,4 @@
- // Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
 package blockblob
@@ -190,7 +190,6 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 // For more information, see https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url
 func (bb *Client) UploadBlobFromURL(ctx context.Context, copySource string, options *UploadBlobFromURLOptions) (UploadBlobFromURLResponse, error) {
 	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions, sourceCPKInfo := options.format()
-	
 	resp, err := bb.generated().PutBlobFromURL(ctx, int64(0), copySource, opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions, sourceCPKInfo)
 
 	return resp, err

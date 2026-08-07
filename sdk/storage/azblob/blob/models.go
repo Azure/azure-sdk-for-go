@@ -202,7 +202,7 @@ func (o *downloadOptions) getBlobLayoutOptions() *GetLayoutOptions {
 
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
-	// EnableLayoutAwareRouting (private-preview) indicates that downloads should attempt to be routed to the ideal endpoint for that block.
+	// EnableLayoutAwareRouting indicates that downloads should attempt to be routed to the ideal endpoint for that block.
 	EnableLayoutAwareRouting bool
 
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -236,7 +236,7 @@ type DownloadBufferOptions struct {
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
-	// EnableLayoutAwareRouting (private-preview) indicates that downloads should attempt to be routed to the ideal endpoint for that block.
+	// EnableLayoutAwareRouting indicates that downloads should attempt to be routed to the ideal endpoint for that block.
 	EnableLayoutAwareRouting bool
 
 	// Range specifies a range of bytes.  The default value is all bytes.

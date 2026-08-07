@@ -8,14 +8,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"net/url"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -61,6 +58,7 @@ const (
 
 var (
 	BlobContentType        = "my_type"
+	BlobContentType        = "my_type"
 	BlobContentDisposition = "my_disposition"
 	BlobCacheControl       = "control"
 	BlobContentLanguage    = "my_language"
@@ -94,25 +92,18 @@ var SpecialCharBlobTagsMap = map[string]string{
 	"go":              "written in golang",
 }
 
-func init() {
-	log.SetListener(func(event log.Event, msg string) {
-		fmt.Printf("[%s] %s\n", event, msg)
-	})
-	log.SetEvents(log.EventRequest, log.EventResponse)
-}
-
 func SetClientOptions(t *testing.T, opts *azcore.ClientOptions) {
 	opts.Logging.AllowedHeaders = append(opts.Logging.AllowedHeaders, "X-Request-Mismatch", "X-Request-Mismatch-Error")
 
 	// To enable Fiddler for live debugging, uncomment the block below.
 	// NOTE: This bypasses test recording - only use for live debugging!
-	proxyURL, _ := url.Parse("http://127.0.0.1:8888")
-	opts.Transport = &http.Client{
-		Transport: &http.Transport{
-			Proxy: http.ProxyURL(proxyURL),
-		},
-	}
-	return
+	//proxyURL, _ := url.Parse("http://127.0.0.1:8888")
+	//opts.Transport = &http.Client{
+	//	Transport: &http.Transport{
+	//		Proxy: http.ProxyURL(proxyURL),
+	//	},
+	//}
+	//return
 
 	transport, err := recording.NewRecordingHTTPClient(t, nil)
 	require.NoError(t, err)
@@ -148,7 +139,7 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 		return nil, err
 	}
 
-	serviceClient, err := service.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".blob.preprod.core.windows.net/", cred, options)
+	serviceClient, err := service.NewClientWithSharedKeyCredential("https://"+cred.AccountName()+".blob.core.windows.net/", cred, options)
 
 	return serviceClient, err
 }

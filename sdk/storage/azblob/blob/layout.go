@@ -29,14 +29,6 @@ type layout struct {
 	expiry        time.Time
 }
 
-func (l *layout) Fallback() bool {
-	return l.fallback
-}
-
-func (l *layout) Expiry() time.Time {
-	return l.expiry
-}
-
 func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (layout, time.Time, error) {
 	layoutRanges := make([]layoutRange, 0)
 
@@ -103,10 +95,10 @@ func getIdealEndpoint(offset int64, l layout) string {
 }
 
 func shouldRefreshLayout(resource layout, _ context.Context) bool {
-	if resource.Fallback() {
+	if resource.fallback {
 		// A fallback layout is a cached "layout is unavailable" decision. Refreshing it early would
 		// contact the service before the decision was due to be reconsidered; let it expire instead.
 		return false
 	}
-	return resource.Expiry().Add(-30 * time.Second).Before(time.Now())
+	return resource.expiry.Add(-30 * time.Second).Before(time.Now())
 }

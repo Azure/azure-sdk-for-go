@@ -24,9 +24,6 @@ type ClientOptions struct {
 	// Only has an effect when credential is of type TokenCredential. The value could be
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
 	Audience string
-
-	// Session configures session-based authentication behavior.
-	Session exported.SessionOptions
 }
 
 func GetPipelineOptions(clOpts *ClientOptions) *runtime.PipelineOptions {

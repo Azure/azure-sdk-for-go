@@ -61,14 +61,8 @@ func NewClient(filesystemURL string, cred azcore.TokenCredential, options *Clien
 	options.PerCallPolicies = perCallPolicies
 	containerClientOpts := container.ClientOptions{
 		ClientOptions: options.ClientOptions,
-		// session-based authentication is served by the blob endpoint, so it is configured on
-		// the inner blob client rather than the DFS pipeline
-		Session: options.Session,
 	}
-	blobContainerClient, err := container.NewClient(containerURL, cred, &containerClientOpts)
-	if err != nil {
-		return nil, err
-	}
+	blobContainerClient, _ := container.NewClient(containerURL, cred, &containerClientOpts)
 	fsClient := base.NewFileSystemClient(filesystemURL, containerURL, blobContainerClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fsClient), nil

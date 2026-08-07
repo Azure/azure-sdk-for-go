@@ -60,14 +60,8 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 	options.PerCallPolicies = perCallPolicies
 	blobServiceClientOpts := service.ClientOptions{
 		ClientOptions: options.ClientOptions,
-		// session-based authentication is served by the blob endpoint, so it is configured on
-		// the inner blob client rather than the DFS pipeline
-		Session: options.Session,
 	}
-	blobSvcClient, err := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
-	if err != nil {
-		return nil, err
-	}
+	blobSvcClient, _ := service.NewClient(blobServiceURL, cred, &blobServiceClientOpts)
 	svcClient := base.NewServiceClient(datalakeServiceURL, blobServiceURL, blobSvcClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(svcClient), nil

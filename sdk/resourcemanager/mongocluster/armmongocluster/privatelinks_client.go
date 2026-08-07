@@ -19,7 +19,7 @@ import (
 // PrivateLinksClient contains the methods for the PrivateLinks group.
 // Don't use this type directly, use NewPrivateLinksClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-06-15-preview
 type PrivateLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +89,7 @@ func (client *PrivateLinksClient) listByMongoClusterCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

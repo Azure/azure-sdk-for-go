@@ -1119,3 +1119,37 @@ func TestDecoderRejectsMissingCRC64Flag(t *testing.T) {
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "missing the required CRC64 flag")
 }
+
+// TestDecodeRejectsTrailingBytes verifies that SMDecode rejects a payload whose declared length
+// matches the input but whose parsed segments/trailer end before the end of the buffer, leaving
+// unexamined trailing bytes. This guards against declaring fewer segments, placing a valid message
+// CRC at the resulting trailer offset, and appending arbitrary bytes.
+func TestDecodeRejectsTrailingBytes(t *testing.T) {
+	data := []byte("payload that will be followed by junk")
+	encoded := SMEncode(data, 0).EncodedData
+
+	// Append arbitrary trailing bytes and bump the header's declared message length to match, so the
+	// initial length check passes but the parsed message ends before len(smData).
+	junk := []byte{0xDE, 0xAD, 0xBE, 0xEF}
+	tampered := make([]byte, 0, len(encoded)+len(junk))
+	tampered = append(tampered, encoded...)
+	tampered = append(tampered, junk...)
+	binary.LittleEndian.PutUint64(tampered[1:9], uint64(len(tampered)))
+
+	_, err := SMDecode(tampered)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "unexpected trailing bytes")
+}
+
+// TestEncoderPrematureEOFIsUnexpected verifies that when the source ends before the declared content
+// length, the encoder surfaces io.ErrUnexpectedEOF rather than a plain io.EOF, so callers such as
+// io.ReadAll do not accept a truncated structured message as success.
+func TestEncoderPrematureEOFIsUnexpected(t *testing.T) {
+	// Declare 10 bytes of content but only supply 4 before EOF.
+	data := []byte("ABCD")
+	enc := NewSMEncoder(&segBoundaryReader{data: data, err: io.EOF}, 10, 0)
+
+	_, err := io.ReadAll(enc)
+	require.Error(t, err)
+	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
+}

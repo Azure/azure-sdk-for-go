@@ -141,9 +141,8 @@ func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 	}
 
 	pager := createMockPager(responses, nil)
-	state := layoutState{ctx: ctx}
 
-	result, expiry, err := getLayout(state, pager)
+	result, expiry, err := getLayout(ctx, pager)
 
 	require.NoError(t, err)
 	require.Len(t, result.layoutRanges, 2)
@@ -179,9 +178,8 @@ func TestGetLayout_SinglePageNoLayout(t *testing.T) {
 	}
 
 	pager := createMockPager(responses, nil)
-	state := layoutState{ctx: ctx}
 
-	result, expiry, err := getLayout(state, pager)
+	result, expiry, err := getLayout(ctx, pager)
 
 	require.NoError(t, err)
 	require.Len(t, result.layoutRanges, 0)
@@ -234,9 +232,8 @@ func TestGetLayout_MultiplePages(t *testing.T) {
 	}
 
 	pager := createMockPager(responses, nil)
-	state := layoutState{ctx: ctx}
 
-	result, expiry, err := getLayout(state, pager)
+	result, expiry, err := getLayout(ctx, pager)
 
 	require.NoError(t, err)
 	require.Len(t, result.layoutRanges, 3)
@@ -254,9 +251,8 @@ func TestGetLayout_Error(t *testing.T) {
 	testErr := errors.New("pager error")
 
 	pager := createMockPager(nil, testErr)
-	state := layoutState{ctx: ctx}
 
-	result, expiry, err := getLayout(state, pager)
+	result, expiry, err := getLayout(ctx, pager)
 
 	require.Error(t, err)
 	require.Equal(t, testErr, err)

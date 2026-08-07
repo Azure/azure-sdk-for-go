@@ -17,6 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -334,10 +335,10 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	count := o.Range.Count
 
 	// TODO : SDK should ideally start with an initial download instead of get properties to optimize for small blobs.
-	state := layoutState{
-		ctx: ctx,
-	}
 	useLayout := o.EnableLayoutAwareRouting
+	temporalLayout := temporal.NewResource(func(ctx context.Context) (layout, time.Time, error) {
+		return getLayout(ctx, b.GetLayoutPager(o.getBlobLayoutOptions()))
+	})
 	var l layout
 	// If we don't have the length at all, get it
 	var length int64
@@ -345,7 +346,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	// Try layout-aware routing first if enabled, otherwise use GetProperties
 	if o.EnableLayoutAwareRouting {
 		var err error
-		l, _, err = getLayout(state, b.GetLayoutPager(o.getBlobLayoutOptions()))
+		l, err = temporalLayout.Get(ctx)
 		sc := bloberror.GetStatusCode(err)
 		if err != nil {
 			if sc == 400 || sc >= 500 { // fall back to old behavior if service doesn't support layout or layout wasn't fetched
@@ -377,6 +378,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		computeReadLength = false
 	}
 
+	// Optionally resize the file after we know the length of the blob.
 	if resizeFile != nil {
 		if err := resizeFile(count); err != nil {
 			return 0, err
@@ -414,17 +416,18 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		NumChunks:     uint64(((count - 1) / o.BlockSize) + 1),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			// Fetch ideal endpoint for this chunk from layout
-			if useLayout {
-				endpoint := getIdealEndpoint(chunkStart+o.Range.Offset, l)
-				if endpoint != "" {
-					ctx = shared.WithLayoutEndpoint(ctx, endpoint)
-				}
-			}
 			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
 				Offset: chunkStart + o.Range.Offset,
 				Count:  count,
 			}, nil)
+			// Fetch ideal endpoint for this chunk from layout
+			if useLayout {
+				var err error
+				l, err = temporalLayout.Get(ctx)
+				if err != nil {
+					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(chunkStart+o.Range.Offset, l)
+				}
+			}
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
@@ -472,6 +475,9 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions := o.format()
 	if o == nil {
 		o = &DownloadStreamOptions{}
+	}
+	if o.LayoutEndpoint != "" {
+		ctx = shared.WithLayoutEndpoint(ctx, o.LayoutEndpoint)
 	}
 
 	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)

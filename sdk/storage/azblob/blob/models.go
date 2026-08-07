@@ -100,6 +100,13 @@ type DownloadStreamOptions struct {
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
+
+	// LayoutEndpoint for this download, optimized for locality. When set, the SDK rewrites the
+	// outgoing request URI's host/port to the specified endpoint while preserving the original Host header.
+	// List the pages returned by BlobClient.GetLayoutPager and select the endpoint whose layout
+	// range covers the offset of the requested Range. Pass that value here. By default, the request is
+	// sent to the client configured endpoint with not rewriting.
+	LayoutEndpoint string
 }
 
 func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {

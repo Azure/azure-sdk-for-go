@@ -23,18 +23,13 @@ type layout struct {
 	eTag          *azcore.ETag
 }
 
-// layoutState is the state needed to refresh the layout
-type layoutState struct {
-	ctx context.Context
-}
-
-func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layout, time.Time, error) {
+func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (layout, time.Time, error) {
 	layoutRanges := make([]layoutRange, 0)
 
 	var contentLength int64
 	var eTag *azcore.ETag
 	for pager.More() {
-		resp, err := pager.NextPage(state.ctx)
+		resp, err := pager.NextPage(ctx)
 		if err != nil {
 			return layout{}, time.Time{}, err
 		}
@@ -61,9 +56,9 @@ func getLayout(state layoutState, pager *runtime.Pager[GetLayoutResponse]) (layo
 		}
 	}
 
-	// Expire the cache after 9 minutes so that we refresh the layout at 4 minutes by default.
+	// Expire the cache after 9 minutes 30 sec so that we refresh the layout at 4 minutes 30 sec by default.
 	// The default refresh time of temporal resource is 5 minutes.
-	return layout{layoutRanges: layoutRanges, contentLength: contentLength, eTag: eTag}, time.Now().Add(9 * time.Minute), nil
+	return layout{layoutRanges: layoutRanges, contentLength: contentLength, eTag: eTag}, time.Now().Add(9 * time.Minute).Add(30 * time.Second), nil
 }
 
 func getIdealEndpoint(offset int64, l layout) string {

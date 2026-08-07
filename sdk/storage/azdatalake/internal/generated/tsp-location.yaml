@@ -1,0 +1,3 @@
+directory: specification/storage/data-plane/DataLakeStorage
+commit: 8ea236243a558726329859dda1384f7a3ff242d8
+repo: Azure/azure-rest-api-specs

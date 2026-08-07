@@ -126,6 +126,7 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 		authPolicy := exported.NewSharedKeyCredPolicy(sharedKey)
 		plOpts.PerRetry = []policy.Policy{authPolicy}
 	}
+	plOpts.PerCall = []policy.Policy{shared.NewLayoutPolicy()}
 	if p := NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
 		plOpts.PerRetry = append(plOpts.PerRetry, p)
 	}

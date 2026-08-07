@@ -30,6 +30,8 @@ type ServiceClient struct {
 // expression. Filter blobs searches across all containers within a storage account but can
 // be scoped within the expression to a single container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-06
 //   - where - Filters the results to return only to return only blobs whose tags match the specified expression.
 //   - options - ServiceClientFilterBlobsOptions contains the optional parameters for the ServiceClient.FilterBlobs method.
 func (client *ServiceClient) FilterBlobs(ctx context.Context, where string, options *ServiceClientFilterBlobsOptions) (ServiceClientFilterBlobsResponse, error) {
@@ -76,7 +78,7 @@ func (client *ServiceClient) filterBlobsCreateRequest(ctx context.Context, where
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -107,6 +109,8 @@ func (client *ServiceClient) filterBlobsHandleResponse(resp *http.Response) (Ser
 
 // GetAccountInfo - Returns the sku name and account kind
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-06
 //   - options - ServiceClientGetAccountInfoOptions contains the optional parameters for the ServiceClient.GetAccountInfo method.
 func (client *ServiceClient) GetAccountInfo(ctx context.Context, options *ServiceClientGetAccountInfoOptions) (ServiceClientGetAccountInfoResponse, error) {
 	var err error
@@ -143,7 +147,7 @@ func (client *ServiceClient) getAccountInfoCreateRequest(ctx context.Context, op
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -185,6 +189,8 @@ func (client *ServiceClient) getAccountInfoHandleResponse(resp *http.Response) (
 // GetProperties - gets the properties of a storage account's Blob service, including properties for Storage Analytics and
 // CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-06
 //   - options - ServiceClientGetPropertiesOptions contains the optional parameters for the ServiceClient.GetProperties method.
 func (client *ServiceClient) GetProperties(ctx context.Context, options *ServiceClientGetPropertiesOptions) (ServiceClientGetPropertiesResponse, error) {
 	var err error
@@ -221,7 +227,7 @@ func (client *ServiceClient) getPropertiesCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -246,6 +252,8 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response) (S
 // GetStatistics - Retrieves statistics related to replication for the Blob service. It is only available on the secondary
 // location endpoint when read-access geo-redundant replication is enabled for the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-06
 //   - options - ServiceClientGetStatisticsOptions contains the optional parameters for the ServiceClient.GetStatistics method.
 func (client *ServiceClient) GetStatistics(ctx context.Context, options *ServiceClientGetStatisticsOptions) (ServiceClientGetStatisticsResponse, error) {
 	var err error
@@ -282,7 +290,7 @@ func (client *ServiceClient) getStatisticsCreateRequest(ctx context.Context, opt
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -314,6 +322,8 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response) (S
 // GetUserDelegationKey - Retrieves a user delegation key for the Blob service. This is only a valid operation when using
 // bearer token authentication.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-06
 //   - keyInfo - Key information
 //   - options - ServiceClientGetUserDelegationKeyOptions contains the optional parameters for the ServiceClient.GetUserDelegationKey
 //     method.
@@ -352,7 +362,7 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	if err := runtime.MarshalAsXML(req, keyInfo); err != nil {
 		return nil, err
 	}
@@ -386,6 +396,8 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 
 // NewListContainersSegmentPager - The List Containers Segment operation returns a list of the containers under the specified
 // account
+//
+// Generated from API version 2026-02-06
 //   - options - ServiceClientListContainersSegmentOptions contains the optional parameters for the ServiceClient.NewListContainersSegmentPager
 //     method.
 //
@@ -417,7 +429,7 @@ func (client *ServiceClient) ListContainersSegmentCreateRequest(ctx context.Cont
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	return req, nil
 }
 
@@ -442,6 +454,8 @@ func (client *ServiceClient) ListContainersSegmentHandleResponse(resp *http.Resp
 // SetProperties - Sets properties for a storage account's Blob service endpoint, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-06
 //   - storageServiceProperties - The StorageService properties.
 //   - options - ServiceClientSetPropertiesOptions contains the optional parameters for the ServiceClient.SetProperties method.
 func (client *ServiceClient) SetProperties(ctx context.Context, storageServiceProperties StorageServiceProperties, options *ServiceClientSetPropertiesOptions) (ServiceClientSetPropertiesResponse, error) {
@@ -479,7 +493,7 @@ func (client *ServiceClient) setPropertiesCreateRequest(ctx context.Context, sto
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	if err := runtime.MarshalAsXML(req, storageServiceProperties); err != nil {
 		return nil, err
 	}
@@ -503,6 +517,8 @@ func (client *ServiceClient) setPropertiesHandleResponse(resp *http.Response) (S
 
 // SubmitBatch - The Batch operation allows multiple API calls to be embedded into a single HTTP request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
+// Generated from API version 2026-02-06
 //   - contentLength - The length of the request.
 //   - multipartContentType - Required. The value of this header must be multipart/mixed with a batch boundary. Example header
 //     value: multipart/mixed; boundary=batch_
@@ -544,7 +560,7 @@ func (client *ServiceClient) submitBatchCreateRequest(ctx context.Context, conte
 	if options != nil && options.RequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{client.version}
+	req.Raw().Header["x-ms-version"] = []string{"2026-02-06"}
 	if err := req.SetBody(body, multipartContentType); err != nil {
 		return nil, err
 	}

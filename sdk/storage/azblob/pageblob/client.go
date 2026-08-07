@@ -448,3 +448,9 @@ func (pb *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.Dow
 func (pb *Client) DownloadFile(ctx context.Context, file *os.File, o *blob.DownloadFileOptions) (int64, error) {
 	return pb.BlobClient().DownloadFile(ctx, file, o)
 }
+
+// GetLayoutPager returns the blob's layout.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (pb *Client) GetLayoutPager(options *blob.GetLayoutOptions) *runtime.Pager[blob.GetLayoutResponse] {
+	return pb.BlobClient().GetLayoutPager(options)
+}

@@ -7,14 +7,17 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"net/http"
 	"os"
 	"sync"
 	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
@@ -323,27 +326,89 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // downloadBuffer downloads an Azure blob to a WriterAt in parallel.
-func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
+func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downloadOptions, resizeFile func(int64) error) (int64, error) {
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
 	}
 	dataDownloaded := int64(0)
 	computeReadLength := true
 	count := o.Range.Count
-	if count == CountToEnd { // If size not specified, calculate it
-		// If we don't have the length at all, get it
+
+	// TODO : SDK should ideally start with an initial download instead of get properties to optimize for small blobs.
+	layoutAware := o.layoutAwareRoutingEnabled()
+	useLayout := layoutAware
+	temporalLayout := temporal.NewResourceWithOptions(
+		func(ctx context.Context) (layout, time.Time, error) {
+			return getLayout(ctx, b.GetLayoutPager(o.getBlobLayoutOptions()))
+		}, temporal.ResourceOptions[layout, context.Context]{
+			ShouldRefresh: shouldRefreshLayout,
+		})
+	// If we don't have the length at all, get it
+	var length int64
+	var initialIfMatch *azcore.ETag
+	// Try layout-aware routing first if enabled, otherwise use GetProperties
+	haveLength := false
+	if layoutAware {
+		l, err := temporalLayout.Get(ctx)
+		if err != nil {
+			// getLayout caches "layout unavailable" as a fallback layout, so any error here is fatal.
+			return 0, err
+		}
+		if l.fallback {
+			// The service can't provide a layout, fall back to the old behavior.
+			useLayout = false
+		} else {
+			// The response carries the blob's length and ETag, so GetProperties isn't needed.
+			length = l.contentLength
+			initialIfMatch = l.eTag
+			haveLength = true
+			if len(l.layoutRanges) == 0 {
+				// The blob has no layout: download everything from the primary endpoint.
+				useLayout = false
+			}
+		}
+	}
+
+	if !haveLength {
 		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
 		if err != nil {
 			return 0, err
 		}
-		count = *gr.ContentLength - o.Range.Offset
+		length = *gr.ContentLength
+		initialIfMatch = gr.ETag
+	}
+
+	if count == CountToEnd { // If size not specified, calculate it
+		count = length - o.Range.Offset
 		dataDownloaded = count
 		computeReadLength = false
+	}
+
+	// Optionally resize the file after we know the length of the blob.
+	if resizeFile != nil {
+		if err := resizeFile(count); err != nil {
+			return 0, err
+		}
 	}
 
 	if count <= 0 {
 		// The file is empty, there is nothing to download.
 		return 0, nil
+	}
+
+	// If unspecified by the user, eTag lock on the initial call to ensure consistency of the blob through the download.
+	if o.AccessConditions == nil {
+		o.AccessConditions = &AccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{
+				IfMatch: initialIfMatch,
+			},
+		}
+	} else if o.AccessConditions.ModifiedAccessConditions == nil {
+		o.AccessConditions.ModifiedAccessConditions = &ModifiedAccessConditions{
+			IfMatch: initialIfMatch,
+		}
+	} else if o.AccessConditions.ModifiedAccessConditions.IfMatch == nil {
+		o.AccessConditions.ModifiedAccessConditions.IfMatch = initialIfMatch
 	}
 
 	// Prepare and do parallel download.
@@ -361,6 +426,12 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 				Offset: chunkStart + o.Range.Offset,
 				Count:  count,
 			}, nil)
+			// Fetch ideal endpoint for this chunk from layout
+			if useLayout {
+				if chunkLayout, err := temporalLayout.Get(ctx); err == nil && !chunkLayout.fallback {
+					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(chunkStart+o.Range.Offset, chunkLayout)
+				}
+			}
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
@@ -409,6 +480,9 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	if o == nil {
 		o = &DownloadStreamOptions{}
 	}
+	if o.LayoutEndpoint != "" {
+		ctx = shared.WithLayoutEndpoint(ctx, o.LayoutEndpoint)
+	}
 
 	dr, err := b.generated().Download(ctx, downloadOptions, leaseAccessConditions, cpkInfo, modifiedAccessConditions)
 	if err != nil {
@@ -437,7 +511,7 @@ func (b *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadB
 	if o == nil {
 		o = &DownloadBufferOptions{}
 	}
-	return b.downloadBuffer(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o))
+	return b.downloadBuffer(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o), nil)
 }
 
 // DownloadFile downloads an Azure blob to a local file.
@@ -448,39 +522,71 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 	do := (*downloadOptions)(o)
 
-	// 1. Calculate the size of the destination file
-	var size int64
-
-	count := do.Range.Count
-	if count == CountToEnd {
-		// Try to get Azure blob's size
-		getBlobPropertiesOptions := do.getBlobPropertiesOptions()
-		props, err := b.GetProperties(ctx, getBlobPropertiesOptions)
+	// Compare and try to resize local file's size if it doesn't match Azure blob's size.
+	resizeFile := func(size int64) error {
+		stat, err := file.Stat()
 		if err != nil {
-			return 0, err
+			return err
 		}
-		size = *props.ContentLength - do.Range.Offset
-		do.Range.Count = size
-	} else {
-		size = count
-	}
-
-	// 2. Compare and try to resize local file's size if it doesn't match Azure blob's size.
-	stat, err := file.Stat()
-	if err != nil {
-		return 0, err
-	}
-	if stat.Size() != size {
-		if err = file.Truncate(size); err != nil {
-			return 0, err
+		if stat.Size() != size {
+			if err = file.Truncate(size); err != nil {
+				return err
+			}
 		}
+		return nil
 	}
+	return b.downloadBuffer(ctx, file, *do, resizeFile)
+}
 
-	if size > 0 {
-		return b.downloadBuffer(ctx, file, *do)
-	} else { // if the blob's size is 0, there is no need in downloading it
-		return 0, nil
+// GetLayoutPager returns the blob's layout.
+// For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
+func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
+	opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions := options.format()
+	// Use user's IfMatch if provided, otherwise we'll capture the ETag from the initial response
+	var initialIfMatch *azcore.ETag
+	if modifiedAccessConditions != nil {
+		initialIfMatch = modifiedAccessConditions.IfMatch
 	}
+	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
+		More: func(page GetLayoutResponse) bool {
+			return page.NextMarker != nil && len(*page.NextMarker) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GetLayoutResponse) (GetLayoutResponse, error) {
+			var req *policy.Request
+			var err error
+			if page == nil {
+				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, modifiedAccessConditions, cpkInfo)
+			} else {
+				opts.Marker = page.NextMarker
+				// Use the ETag to ensure consistency across all pages
+				mac := modifiedAccessConditions
+				if mac == nil {
+					mac = &generated.ModifiedAccessConditions{}
+				}
+				mac.IfMatch = initialIfMatch
+				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, mac, cpkInfo)
+			}
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			resp, err := b.generated().InternalClient().Pipeline().Do(req)
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusNoContent) {
+				return GetLayoutResponse{}, runtime.NewResponseError(resp)
+			}
+			result, err := b.generated().GetLayoutHandleResponse(resp)
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			// Capture the ETag from the initial response for all subsequent requests
+			if page == nil && initialIfMatch == nil {
+				initialIfMatch = result.ETag
+			}
+			return result, nil
+		},
+	})
 }
 
 // parseContentRangeLength parses the range length from a Content-Range header value.

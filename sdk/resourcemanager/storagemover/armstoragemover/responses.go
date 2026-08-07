@@ -108,6 +108,12 @@ type JobDefinitionsClientListResponse struct {
 	JobDefinitionList
 }
 
+// JobDefinitionsClientReconcileJobResponse contains the response from method JobDefinitionsClient.ReconcileJob.
+type JobDefinitionsClientReconcileJobResponse struct {
+	// Response that identifies a Job Run.
+	JobRunResourceID
+}
+
 // JobDefinitionsClientStartJobResponse contains the response from method JobDefinitionsClient.StartJob.
 type JobDefinitionsClientStartJobResponse struct {
 	// Response that identifies a Job Run.

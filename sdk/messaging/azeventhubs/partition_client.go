@@ -64,6 +64,7 @@ type PartitionClient struct {
 	eventHub         string
 	instanceID       string
 	links            internal.LinksForPartitionClient[amqpwrap.AMQPReceiverCloser]
+	namespace        internal.NamespaceForManagementOps
 	offsetExpression string
 	ownerLevel       *int64
 	partitionID      string
@@ -188,6 +189,13 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 	return events, nil
 }
 
+// GetPartitionProperties gets properties for the partition that this client receives from. This includes
+// data like the last enqueued sequence number, the first sequence number and when an event was last enqueued
+// to the partition.
+func (pc *PartitionClient) GetPartitionProperties(ctx context.Context, options *GetPartitionPropertiesOptions) (PartitionProperties, error) {
+	return getPartitionProperties(ctx, EventConsumer, pc.namespace, pc.links, pc.eventHub, pc.partitionID, pc.retryOptions, options)
+}
+
 // Close releases resources for this client.
 func (pc *PartitionClient) Close(ctx context.Context) error {
 	if pc.links != nil {
@@ -262,7 +270,7 @@ func (pc *PartitionClient) init(ctx context.Context) error {
 }
 
 type partitionClientArgs struct {
-	namespace internal.NamespaceForAMQPLinks
+	namespace internal.NamespaceForManagementOps
 
 	consumerGroup string
 	eventHub      string
@@ -290,6 +298,7 @@ func newPartitionClient(args partitionClientArgs, options *PartitionClientOption
 	client := &PartitionClient{
 		consumerGroup:    args.consumerGroup,
 		eventHub:         args.eventHub,
+		namespace:        args.namespace,
 		offsetExpression: offsetExpr,
 		ownerLevel:       options.OwnerLevel,
 		partitionID:      args.partitionID,

@@ -1,10 +1,12 @@
 # Release History
 
-## 1.10.1-beta.1 (Unreleased)
+## 1.11.0-beta.1 (Unreleased)
 
 ### Features Added
 
 - Added `Client.NewListSessionsForQueuePager()` and `Client.NewListSessionsForSubscriptionPager()` to list the IDs of sessions in session-enabled queues and subscriptions. By default they list sessions that have active messages, as well as sessions that have session state set but no active messages; set `SessionStateUpdatedAfter` to instead list sessions whose session state was updated after a given time. (PR#26688)
+- Added `SQLFilterCount` and `CorrelationFilterCount` to `TopicRuntimeProperties`, exposing the total number of SQL filters and correlation filters across all of a topic's subscriptions.
+- The administration client now sends `api-version=2024-05` (previously `2021-05`), which is required for the topic filter counts above.
 
 ### Breaking Changes
 

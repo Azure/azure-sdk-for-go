@@ -49,7 +49,7 @@ func TestDirectoryRenameEncodesSourcePath(t *testing.T) {
 	_require.NotNil(ct.req)
 
 	// The generated client sets the header via a raw (non-canonical) map key, so read it directly.
-	renameSourceVals := ct.req.Header["x-ms-rename-source"]
+	renameSourceVals := ct.req.Header["x-ms-rename-source"] //nolint:staticcheck // SA1008: the generated client stores this header under a non-canonical key, so it must be read with the same raw key.
 	_require.NotEmpty(renameSourceVals)
 	renameSource := renameSourceVals[0]
 	_require.Contains(renameSource, "my%20dir")

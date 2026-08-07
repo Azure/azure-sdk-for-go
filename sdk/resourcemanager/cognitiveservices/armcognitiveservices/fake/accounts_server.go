@@ -29,10 +29,6 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, options *armcognitiveservices.AccountsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcognitiveservices.AccountsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// EvaluateDeploymentPolicies is the fake for method AccountsClient.EvaluateDeploymentPolicies
-	// HTTP status codes to indicate success: http.StatusOK
-	EvaluateDeploymentPolicies func(ctx context.Context, resourceGroupName string, accountName string, body armcognitiveservices.EvaluateDeploymentPoliciesRequest, options *armcognitiveservices.AccountsClientEvaluateDeploymentPoliciesOptions) (resp azfake.Responder[armcognitiveservices.AccountsClientEvaluateDeploymentPoliciesResponse], errResp azfake.ErrorResponder)
-
 	// Get is the fake for method AccountsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armcognitiveservices.AccountsClientGetOptions) (resp azfake.Responder[armcognitiveservices.AccountsClientGetResponse], errResp azfake.ErrorResponder)
@@ -122,8 +118,6 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchBeginCreate(req)
 			case "AccountsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AccountsClient.EvaluateDeploymentPolicies":
-				res.resp, res.err = a.dispatchEvaluateDeploymentPolicies(req)
 			case "AccountsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AccountsClient.NewListPager":
@@ -247,43 +241,6 @@ func (a *AccountsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		a.beginDelete.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchEvaluateDeploymentPolicies(req *http.Request) (*http.Response, error) {
-	if a.srv.EvaluateDeploymentPolicies == nil {
-		return nil, &nonRetriableError{errors.New("fake for method EvaluateDeploymentPolicies not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/evaluateDeploymentPolicies`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.EvaluateDeploymentPoliciesRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.EvaluateDeploymentPolicies(req.Context(), resourceGroupNameParam, accountNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EvaluateDeploymentPoliciesResponse, req)
-	if err != nil {
-		return nil, err
-	}
 	return resp, nil
 }
 

@@ -5,7 +5,7 @@
 package armcognitiveservices
 
 const (
-	version20260515Preview string = "2026-05-15-preview"
+	version20260701 string = "2026-07-01"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -278,93 +278,6 @@ func PossibleCommitmentPlanProvisioningStateValues() []CommitmentPlanProvisionin
 		CommitmentPlanProvisioningStateFailed,
 		CommitmentPlanProvisioningStateMoving,
 		CommitmentPlanProvisioningStateSucceeded,
-	}
-}
-
-// ComputeOperationStatusType - The status type of a compute operation.
-type ComputeOperationStatusType string
-
-const (
-	// ComputeOperationStatusTypeCanceled - The operation has been canceled.
-	ComputeOperationStatusTypeCanceled ComputeOperationStatusType = "Canceled"
-	// ComputeOperationStatusTypeFailed - The operation has failed.
-	ComputeOperationStatusTypeFailed ComputeOperationStatusType = "Failed"
-	// ComputeOperationStatusTypeInProgress - The operation is in progress.
-	ComputeOperationStatusTypeInProgress ComputeOperationStatusType = "InProgress"
-	// ComputeOperationStatusTypeSucceeded - The operation has succeeded.
-	ComputeOperationStatusTypeSucceeded ComputeOperationStatusType = "Succeeded"
-)
-
-// PossibleComputeOperationStatusTypeValues returns the possible values for the ComputeOperationStatusType const type.
-func PossibleComputeOperationStatusTypeValues() []ComputeOperationStatusType {
-	return []ComputeOperationStatusType{
-		ComputeOperationStatusTypeCanceled,
-		ComputeOperationStatusTypeFailed,
-		ComputeOperationStatusTypeInProgress,
-		ComputeOperationStatusTypeSucceeded,
-	}
-}
-
-// ComputeProvisioningState - The provisioning state of a compute resource.
-type ComputeProvisioningState string
-
-const (
-	// ComputeProvisioningStateAccepted - The resource provisioning request has been accepted.
-	ComputeProvisioningStateAccepted ComputeProvisioningState = "Accepted"
-	// ComputeProvisioningStateCanceled - The resource provisioning was canceled.
-	ComputeProvisioningStateCanceled ComputeProvisioningState = "Canceled"
-	// ComputeProvisioningStateDeleting - The resource is being deleted.
-	ComputeProvisioningStateDeleting ComputeProvisioningState = "Deleting"
-	// ComputeProvisioningStateDisabled - The resource is disabled.
-	ComputeProvisioningStateDisabled ComputeProvisioningState = "Disabled"
-	// ComputeProvisioningStateFailed - The resource provisioning has failed.
-	ComputeProvisioningStateFailed ComputeProvisioningState = "Failed"
-	// ComputeProvisioningStateRestarting - The compute resource is restarting.
-	ComputeProvisioningStateRestarting ComputeProvisioningState = "Restarting"
-	// ComputeProvisioningStateScaling - The resource is scaling.
-	ComputeProvisioningStateScaling ComputeProvisioningState = "Scaling"
-	// ComputeProvisioningStateStarting - The compute resource is starting.
-	ComputeProvisioningStateStarting ComputeProvisioningState = "Starting"
-	// ComputeProvisioningStateStopped - The compute resource is stopped.
-	ComputeProvisioningStateStopped ComputeProvisioningState = "Stopped"
-	// ComputeProvisioningStateStopping - The compute resource is stopping.
-	ComputeProvisioningStateStopping ComputeProvisioningState = "Stopping"
-	// ComputeProvisioningStateSucceeded - The resource has been fully provisioned.
-	ComputeProvisioningStateSucceeded ComputeProvisioningState = "Succeeded"
-)
-
-// PossibleComputeProvisioningStateValues returns the possible values for the ComputeProvisioningState const type.
-func PossibleComputeProvisioningStateValues() []ComputeProvisioningState {
-	return []ComputeProvisioningState{
-		ComputeProvisioningStateAccepted,
-		ComputeProvisioningStateCanceled,
-		ComputeProvisioningStateDeleting,
-		ComputeProvisioningStateDisabled,
-		ComputeProvisioningStateFailed,
-		ComputeProvisioningStateRestarting,
-		ComputeProvisioningStateScaling,
-		ComputeProvisioningStateStarting,
-		ComputeProvisioningStateStopped,
-		ComputeProvisioningStateStopping,
-		ComputeProvisioningStateSucceeded,
-	}
-}
-
-// ComputeType - The type of compute resource.
-type ComputeType string
-
-const (
-	// ComputeTypeCluster - Cluster (AKS-backed) compute type.
-	ComputeTypeCluster ComputeType = "Cluster"
-	// ComputeTypeContainerInstance - Container Instance compute type.
-	ComputeTypeContainerInstance ComputeType = "ContainerInstance"
-)
-
-// PossibleComputeTypeValues returns the possible values for the ComputeType const type.
-func PossibleComputeTypeValues() []ComputeType {
-	return []ComputeType{
-		ComputeTypeCluster,
-		ComputeTypeContainerInstance,
 	}
 }
 
@@ -912,24 +825,6 @@ func PossibleFirewallSKUValues() []FirewallSKU {
 	}
 }
 
-// FoundryAutoUpgradeMode - Represents the mode for foundry auto-upgrade configuration.
-type FoundryAutoUpgradeMode string
-
-const (
-	// FoundryAutoUpgradeModeDisabled - Auto-upgrade is disabled (opted out).
-	FoundryAutoUpgradeModeDisabled FoundryAutoUpgradeMode = "Disabled"
-	// FoundryAutoUpgradeModeEnabled - Auto-upgrade is enabled.
-	FoundryAutoUpgradeModeEnabled FoundryAutoUpgradeMode = "Enabled"
-)
-
-// PossibleFoundryAutoUpgradeModeValues returns the possible values for the FoundryAutoUpgradeMode const type.
-func PossibleFoundryAutoUpgradeModeValues() []FoundryAutoUpgradeMode {
-	return []FoundryAutoUpgradeMode{
-		FoundryAutoUpgradeModeDisabled,
-		FoundryAutoUpgradeModeEnabled,
-	}
-}
-
 // HostingModel - Account hosting model.
 type HostingModel string
 
@@ -1256,27 +1151,6 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// PolicyEvaluationOutcome - The outcome of a policy evaluation.
-type PolicyEvaluationOutcome string
-
-const (
-	// PolicyEvaluationOutcomeCompliant - The deployment is compliant with all policies.
-	PolicyEvaluationOutcomeCompliant PolicyEvaluationOutcome = "Compliant"
-	// PolicyEvaluationOutcomeError - An error occurred during evaluation.
-	PolicyEvaluationOutcomeError PolicyEvaluationOutcome = "Error"
-	// PolicyEvaluationOutcomeNonCompliant - The deployment violates one or more policies.
-	PolicyEvaluationOutcomeNonCompliant PolicyEvaluationOutcome = "NonCompliant"
-)
-
-// PossiblePolicyEvaluationOutcomeValues returns the possible values for the PolicyEvaluationOutcome const type.
-func PossiblePolicyEvaluationOutcomeValues() []PolicyEvaluationOutcome {
-	return []PolicyEvaluationOutcome{
-		PolicyEvaluationOutcomeCompliant,
-		PolicyEvaluationOutcomeError,
-		PolicyEvaluationOutcomeNonCompliant,
-	}
-}
-
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -1425,125 +1299,6 @@ func PossibleRaiActionTypeValues() []RaiActionType {
 		RaiActionTypeHITL,
 		RaiActionTypeNone,
 		RaiActionTypeRETRY,
-	}
-}
-
-// RaiEgressDefaultAction - The default action when no user-defined egress rules match.
-type RaiEgressDefaultAction string
-
-const (
-	// RaiEgressDefaultActionAllow - Allow traffic by default when no rules match.
-	RaiEgressDefaultActionAllow RaiEgressDefaultAction = "Allow"
-	// RaiEgressDefaultActionDeny - Deny traffic by default when no rules match.
-	RaiEgressDefaultActionDeny RaiEgressDefaultAction = "Deny"
-)
-
-// PossibleRaiEgressDefaultActionValues returns the possible values for the RaiEgressDefaultAction const type.
-func PossibleRaiEgressDefaultActionValues() []RaiEgressDefaultAction {
-	return []RaiEgressDefaultAction{
-		RaiEgressDefaultActionAllow,
-		RaiEgressDefaultActionDeny,
-	}
-}
-
-// RaiEgressHeaderOperation - The operation to apply to a header in a Transform or Rewrite action.
-type RaiEgressHeaderOperation string
-
-const (
-	// RaiEgressHeaderOperationInsert - Add the header only if it is not already present.
-	RaiEgressHeaderOperationInsert RaiEgressHeaderOperation = "Insert"
-	// RaiEgressHeaderOperationRemove - Remove the header if present.
-	RaiEgressHeaderOperationRemove RaiEgressHeaderOperation = "Remove"
-	// RaiEgressHeaderOperationSet - Set or overwrite the header value, creating it if it does not exist.
-	RaiEgressHeaderOperationSet RaiEgressHeaderOperation = "Set"
-)
-
-// PossibleRaiEgressHeaderOperationValues returns the possible values for the RaiEgressHeaderOperation const type.
-func PossibleRaiEgressHeaderOperationValues() []RaiEgressHeaderOperation {
-	return []RaiEgressHeaderOperation{
-		RaiEgressHeaderOperationInsert,
-		RaiEgressHeaderOperationRemove,
-		RaiEgressHeaderOperationSet,
-	}
-}
-
-// RaiEgressMode - The enforcement mode for egress rules.
-// If omitted on create, the server defaults to Enforced.
-type RaiEgressMode string
-
-const (
-	// RaiEgressModeAudit - Rules are evaluated and logged but not enforced. Traffic is always forwarded regardless of
-	// rule action. A would-be Deny is logged but not applied. Transform and Rewrite actions are
-	// still applied to matching traffic (only Deny enforcement is suppressed).
-	RaiEgressModeAudit RaiEgressMode = "Audit"
-	// RaiEgressModeEnforced - Rules are enforced. Matching traffic is allowed or denied per rule actions.
-	RaiEgressModeEnforced RaiEgressMode = "Enforced"
-)
-
-// PossibleRaiEgressModeValues returns the possible values for the RaiEgressMode const type.
-func PossibleRaiEgressModeValues() []RaiEgressMode {
-	return []RaiEgressMode{
-		RaiEgressModeAudit,
-		RaiEgressModeEnforced,
-	}
-}
-
-// RaiEgressRuleActionType - The kind of action an egress rule takes when it matches.
-type RaiEgressRuleActionType string
-
-const (
-	// RaiEgressRuleActionTypeAllow - Allow the matched traffic.
-	RaiEgressRuleActionTypeAllow RaiEgressRuleActionType = "Allow"
-	// RaiEgressRuleActionTypeDeny - Deny the matched traffic.
-	RaiEgressRuleActionTypeDeny RaiEgressRuleActionType = "Deny"
-	// RaiEgressRuleActionTypeRewrite - Redirect the matched traffic to a new destination, optionally applying header transforms.
-	// Requires a rewrite target.
-	RaiEgressRuleActionTypeRewrite RaiEgressRuleActionType = "Rewrite"
-	// RaiEgressRuleActionTypeTransform - Forward the matched traffic after applying header transforms. Requires at least one
-	// header.
-	RaiEgressRuleActionTypeTransform RaiEgressRuleActionType = "Transform"
-)
-
-// PossibleRaiEgressRuleActionTypeValues returns the possible values for the RaiEgressRuleActionType const type.
-func PossibleRaiEgressRuleActionTypeValues() []RaiEgressRuleActionType {
-	return []RaiEgressRuleActionType{
-		RaiEgressRuleActionTypeAllow,
-		RaiEgressRuleActionTypeDeny,
-		RaiEgressRuleActionTypeRewrite,
-		RaiEgressRuleActionTypeTransform,
-	}
-}
-
-// RaiEgressRuleType - The type of an egress rule, determining what kind of traffic matching it performs.
-type RaiEgressRuleType string
-
-const (
-	// RaiEgressRuleTypeFqdn - Fully qualified domain name (FQDN) based rule matching on host and path patterns.
-	RaiEgressRuleTypeFqdn RaiEgressRuleType = "Fqdn"
-)
-
-// PossibleRaiEgressRuleTypeValues returns the possible values for the RaiEgressRuleType const type.
-func PossibleRaiEgressRuleTypeValues() []RaiEgressRuleType {
-	return []RaiEgressRuleType{
-		RaiEgressRuleTypeFqdn,
-	}
-}
-
-// RaiEgressScheme - URL scheme for rewrite targets. Only HTTP and HTTPS are supported.
-type RaiEgressScheme string
-
-const (
-	// RaiEgressSchemeHTTP - HTTP scheme.
-	RaiEgressSchemeHTTP RaiEgressScheme = "http"
-	// RaiEgressSchemeHTTPS - HTTPS scheme.
-	RaiEgressSchemeHTTPS RaiEgressScheme = "https"
-)
-
-// PossibleRaiEgressSchemeValues returns the possible values for the RaiEgressScheme const type.
-func PossibleRaiEgressSchemeValues() []RaiEgressScheme {
-	return []RaiEgressScheme{
-		RaiEgressSchemeHTTP,
-		RaiEgressSchemeHTTPS,
 	}
 }
 
@@ -1907,23 +1662,5 @@ func PossibleUpgradeAvailabilityStatusValues() []UpgradeAvailabilityStatus {
 	return []UpgradeAvailabilityStatus{
 		UpgradeAvailabilityStatusAvailable,
 		UpgradeAvailabilityStatusNotAvailable,
-	}
-}
-
-// VMPriority - VM priority for a compute pool.
-type VMPriority string
-
-const (
-	// VMPriorityLowPriority - Low-priority VM.
-	VMPriorityLowPriority VMPriority = "LowPriority"
-	// VMPriorityRegular - Regular VM priority.
-	VMPriorityRegular VMPriority = "Regular"
-)
-
-// PossibleVMPriorityValues returns the possible values for the VMPriority const type.
-func PossibleVMPriorityValues() []VMPriority {
-	return []VMPriority{
-		VMPriorityLowPriority,
-		VMPriorityRegular,
 	}
 }

@@ -26,6 +26,30 @@ type ChatTranscriptsNoSubscriptionClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClassifyProblemsClientClassifyProblemsOptions contains the optional parameters for the ClassifyProblemsClient.ClassifyProblems
+// method.
+type ClassifyProblemsClientClassifyProblemsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClassifyProblemsNoSubscriptionClientClassifyProblemsOptions contains the optional parameters for the ClassifyProblemsNoSubscriptionClient.ClassifyProblems
+// method.
+type ClassifyProblemsNoSubscriptionClientClassifyProblemsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClassifyServicesClientClassifyServicesOptions contains the optional parameters for the ClassifyServicesClient.ClassifyServices
+// method.
+type ClassifyServicesClientClassifyServicesOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ClassifyServicesNoSubscriptionClientClassifyServicesOptions contains the optional parameters for the ClassifyServicesNoSubscriptionClient.ClassifyServices
+// method.
+type ClassifyServicesNoSubscriptionClientClassifyServicesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // CommunicationsClientBeginCreateOptions contains the optional parameters for the CommunicationsClient.BeginCreate method.
 type CommunicationsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -200,6 +224,11 @@ type TicketsClientListOptions struct {
 
 	// The number of values to return in the collection. Default is 25 and max is 100.
 	Top *int32
+}
+
+// TicketsClientLookUpResourceIDOptions contains the optional parameters for the TicketsClient.LookUpResourceID method.
+type TicketsClientLookUpResourceIDOptions struct {
+	// placeholder for future optional parameters
 }
 
 // TicketsClientUpdateOptions contains the optional parameters for the TicketsClient.Update method.

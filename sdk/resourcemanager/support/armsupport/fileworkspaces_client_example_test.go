@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/CreateFileWorkspaceForSubscription.json
+// Generated from example definition: 2026-07-01/CreateFileWorkspaceForSubscription.json
 func ExampleFileWorkspacesClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleFileWorkspacesClient_Create() {
 	}
 }
 
-// Generated from example definition: 2024-04-01/GetFileWorkspaceDetailsForSubscription.json
+// Generated from example definition: 2026-07-01/GetFileWorkspaceDetailsForSubscription.json
 func ExampleFileWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

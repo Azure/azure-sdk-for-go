@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/GetchatTranscriptDetailsForSupportTicket.json
+// Generated from example definition: 2026-07-01/GetchatTranscriptDetailsForSupportTicket.json
 func ExampleChatTranscriptsNoSubscriptionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleChatTranscriptsNoSubscriptionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/ListChatTranscriptsForSupportTicket.json
+// Generated from example definition: 2026-07-01/ListChatTranscriptsForSupportTicket.json
 func ExampleChatTranscriptsNoSubscriptionClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

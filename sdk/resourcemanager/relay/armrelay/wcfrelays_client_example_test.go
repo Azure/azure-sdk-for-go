@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/Relay/RelayCreate.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayCreate.json
 func ExampleWCFRelaysClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleWCFRelaysClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientCreateOrUpdateResponse{
-	// 	WcfRelay: &armrelay.WcfRelay{
+	// 	WcfRelay: armrelay.WcfRelay{
 	// 		Name: to.Ptr("example-Relay-Wcf-1194"),
 	// 		Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
@@ -53,7 +53,7 @@ func ExampleWCFRelaysClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleCreate.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayAuthorizationRuleCreate.json
 func ExampleWCFRelaysClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleWCFRelaysClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -93,7 +93,7 @@ func ExampleWCFRelaysClient_CreateOrUpdateAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayDelete.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayDelete.json
 func ExampleWCFRelaysClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleWCFRelaysClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleDelete.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayAuthorizationRuleDelete.json
 func ExampleWCFRelaysClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleWCFRelaysClient_DeleteAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayGet.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayGet.json
 func ExampleWCFRelaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleWCFRelaysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientGetResponse{
-	// 	WcfRelay: &armrelay.WcfRelay{
+	// 	WcfRelay: armrelay.WcfRelay{
 	// 		Name: to.Ptr("example-Relay-Wcf-1194"),
 	// 		Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-ServiceBus-WestUS/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
@@ -173,7 +173,7 @@ func ExampleWCFRelaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleGet.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayAuthorizationRuleGet.json
 func ExampleWCFRelaysClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleWCFRelaysClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientGetAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -205,7 +205,7 @@ func ExampleWCFRelaysClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleListAll.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayAuthorizationRuleListAll.json
 func ExampleWCFRelaysClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleWCFRelaysClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayListAll.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayListAll.json
 func ExampleWCFRelaysClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleWCFRelaysClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleListKey.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayAuthorizationRuleListKey.json
 func ExampleWCFRelaysClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleWCFRelaysClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientListKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -321,7 +321,7 @@ func ExampleWCFRelaysClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Relay/RelayAuthorizationRuleRegenerateKey.json
+// Generated from example definition: 2026-07-01-preview/Relay/RelayAuthorizationRuleRegenerateKey.json
 func ExampleWCFRelaysClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +342,7 @@ func ExampleWCFRelaysClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientRegenerateKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),

@@ -4,6 +4,7 @@
 package shared
 
 import (
+	"net/url"
 	"runtime"
 	"strings"
 	"testing"
@@ -272,4 +273,158 @@ func TestDefaultStreamConcurrencyValue_LegacyEnvVar(t *testing.T) {
 	val := DefaultStreamConcurrencyValue()
 	require.GreaterOrEqual(t, val, uint16(8))
 	require.LessOrEqual(t, val, uint16(96))
+}
+
+func TestGetServiceURL(t *testing.T) {
+	tests := []struct {
+		name        string
+		inputURL    string
+		expectedURL string
+		expectError bool
+		errorSubstr string
+	}{
+		// Standard-style URLs
+		{"StandardBlobURL", "https://account.blob.core.windows.net/container/blob", "https://account.blob.core.windows.net/", false, ""},
+		{"StandardContainerURL", "https://account.blob.core.windows.net/container", "https://account.blob.core.windows.net/", false, ""},
+		{"StandardServiceURL", "https://account.blob.core.windows.net/", "https://account.blob.core.windows.net/", false, ""},
+		{"StandardServiceURLNoTrailingSlash", "https://account.blob.core.windows.net", "https://account.blob.core.windows.net/", false, ""},
+
+		// IP-style URLs (Azurite/emulator)
+		{"IPStyleBlobURL", "https://127.0.0.1:10000/devstoreaccount1/container/blob", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+		{"IPStyleContainerURL", "https://127.0.0.1:10000/devstoreaccount1/container", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+		{"IPStyleServiceURL", "https://127.0.0.1:10000/devstoreaccount1/", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+		{"IPStyleServiceURLNoTrailingSlash", "https://127.0.0.1:10000/devstoreaccount1", "https://127.0.0.1:10000/devstoreaccount1/", false, ""},
+
+		// SAS token preservation
+		{"StandardURLWithSAS", "https://account.blob.core.windows.net/container/blob?sv=2021-06-08&ss=b&srt=sco&sig=test", "https://account.blob.core.windows.net/?sv=2021-06-08&ss=b&srt=sco&sig=test", false, ""},
+		{"IPStyleURLWithSAS", "https://127.0.0.1:10000/devstoreaccount1/container?sv=2021-06-08&sig=test", "https://127.0.0.1:10000/devstoreaccount1/?sv=2021-06-08&sig=test", false, ""},
+
+		// HTTP scheme
+		{"HTTPScheme", "http://account.blob.core.windows.net/container", "http://account.blob.core.windows.net/", false, ""},
+
+		// Custom domain
+		{"CustomDomain", "https://mydomain.com/container/blob", "https://mydomain.com/", false, ""},
+
+		// China cloud
+		{"ChinaCloud", "https://account.blob.core.chinacloudapi.cn/container", "https://account.blob.core.chinacloudapi.cn/", false, ""},
+		// Error cases
+		{"IPStyleMissingAccountName", "https://127.0.0.1:10000/", "", true, "missing the account name"},
+		{"IPStyleEmptyPath", "https://127.0.0.1:10000", "", true, "missing the account name"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			serviceURL, err := GetServiceURL(tt.inputURL)
+			if tt.expectError {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), tt.errorSubstr)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, tt.expectedURL, serviceURL)
+			}
+		})
+	}
+}
+
+func TestGetContainerAndBlobName(t *testing.T) {
+	tests := []struct {
+		name              string
+		inputURL          string
+		expectedContainer string
+		expectedBlob      string
+		expectError       bool
+		errorSubstr       string
+	}{
+		// Standard-style URLs: container is the first path segment
+		{"StandardBlobURL", "https://account.blob.core.windows.net/container/blob", "container", "blob", false, ""},
+		{"StandardNestedBlobURL", "https://account.blob.core.windows.net/container/dir/sub/blob.txt", "container", "dir/sub/blob.txt", false, ""},
+		{"StandardContainerURL", "https://account.blob.core.windows.net/container", "container", "", false, ""},
+		{"StandardContainerURLTrailingSlash", "https://account.blob.core.windows.net/container/", "container", "", false, ""},
+
+		// IP-style URLs: first segment is the account, container is the second
+		{"IPStyleBlobURL", "https://127.0.0.1:10000/devstoreaccount1/container/blob", "container", "blob", false, ""},
+		{"IPStyleNestedBlobURL", "https://127.0.0.1:10000/devstoreaccount1/container/dir/blob.txt", "container", "dir/blob.txt", false, ""},
+		{"IPStyleContainerURL", "https://127.0.0.1:10000/devstoreaccount1/container", "container", "", false, ""},
+
+		// Query strings must not leak into the names
+		{"StandardURLWithSAS", "https://account.blob.core.windows.net/container/blob?sv=2021-06-08&sig=test", "container", "blob", false, ""},
+		{"IPStyleURLWithSAS", "https://127.0.0.1:10000/devstoreaccount1/container?sv=2021-06-08&sig=test", "container", "", false, ""},
+
+		// Encoded blob names are returned decoded
+		{"BlobNameWithSpace", "https://account.blob.core.windows.net/container/my%20blob.txt", "container", "my blob.txt", false, ""},
+
+		// Custom domain and sovereign clouds behave as standard-style
+		{"CustomDomain", "https://mydomain.com/container/blob", "container", "blob", false, ""},
+		{"ChinaCloud", "https://account.blob.core.chinacloudapi.cn/container/blob", "container", "blob", false, ""},
+
+		// Error cases
+		{"StandardServiceURL", "https://account.blob.core.windows.net/", "", "", true, "missing the container name"},
+		{"StandardServiceURLNoTrailingSlash", "https://account.blob.core.windows.net", "", "", true, "missing the container name"},
+		{"IPStyleAccountOnly", "https://127.0.0.1:10000/devstoreaccount1", "", "", true, "missing the container name"},
+		{"IPStyleAccountOnlyTrailingSlash", "https://127.0.0.1:10000/devstoreaccount1/", "", "", true, "missing the container name"},
+		{"IPStyleEmptyPath", "https://127.0.0.1:10000", "", "", true, "missing the container name"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			u, err := url.Parse(tt.inputURL)
+			require.NoError(t, err)
+
+			container, blob, err := GetContainerAndBlobName(u)
+			if tt.expectError {
+				require.Error(t, err)
+				require.Contains(t, err.Error(), tt.errorSubstr)
+			} else {
+				require.NoError(t, err)
+				require.Equal(t, tt.expectedContainer, container)
+				require.Equal(t, tt.expectedBlob, blob)
+			}
+		})
+	}
+}
+
+func TestGetContainerAndBlobNameNilURL(t *testing.T) {
+	_, _, err := GetContainerAndBlobName(nil)
+	require.Error(t, err)
+}
+
+func TestGetAccountName(t *testing.T) {
+	tests := []struct {
+		name        string
+		inputURL    string
+		expected    string
+		expectError bool
+	}{
+		// Standard-style URLs
+		{"StandardBlobURL", "https://account.blob.core.windows.net/container/blob", "account", false},
+		{"StandardContainerURL", "https://account.blob.core.windows.net/container", "account", false},
+		{"StandardServiceURL", "https://account.blob.core.windows.net/", "account", false},
+		{"StandardServiceURLNoTrailingSlash", "https://account.blob.core.windows.net", "account", false},
+		{"StandardURLWithPort", "https://account.blob.core.windows.net:443/container", "account", false},
+		{"StandardURLWithSAS", "https://account.blob.core.windows.net/container/blob?sig=test", "account", false},
+
+		// IP-style URLs (Azurite/emulator): the account is the first path segment
+		{"IPStyleBlobURL", "https://127.0.0.1:10000/devstoreaccount1/container/blob", "devstoreaccount1", false},
+		{"IPStyleServiceURL", "https://127.0.0.1:10000/devstoreaccount1/", "devstoreaccount1", false},
+		{"IPStyleServiceURLNoTrailingSlash", "http://127.0.0.1:10000/devstoreaccount1", "devstoreaccount1", false},
+
+		// Error cases
+		{"IPStyleMissingAccount", "https://127.0.0.1:10000/", "", true},
+		{"IPStyleNoPath", "https://127.0.0.1:10000", "", true},
+		{"HostWithoutSubdomain", "https://localhost/container/blob", "", true},
+		{"EmptyHost", "/container/blob", "", true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			accountName, err := GetAccountName(tt.inputURL)
+			if tt.expectError {
+				require.Error(t, err)
+				require.Empty(t, accountName)
+				return
+			}
+			require.NoError(t, err)
+			require.Equal(t, tt.expected, accountName)
+		})
+	}
 }

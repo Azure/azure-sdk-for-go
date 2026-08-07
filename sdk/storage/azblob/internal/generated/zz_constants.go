@@ -90,6 +90,20 @@ func PossibleArchiveStatusValues() []ArchiveStatus {
 	}
 }
 
+// AuthenticationType - The type of authentication required to create the session. The only type currently supported is HMAC.
+type AuthenticationType string
+
+const (
+	AuthenticationTypeHMAC AuthenticationType = "HMAC"
+)
+
+// PossibleAuthenticationTypeValues returns the possible values for the AuthenticationType const type.
+func PossibleAuthenticationTypeValues() []AuthenticationType {
+	return []AuthenticationType{
+		AuthenticationTypeHMAC,
+	}
+}
+
 type BlobCopySourceTags string
 
 const (

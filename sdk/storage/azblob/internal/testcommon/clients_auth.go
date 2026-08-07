@@ -58,7 +58,6 @@ const (
 
 var (
 	BlobContentType        = "my_type"
-	BlobContentType        = "my_type"
 	BlobContentDisposition = "my_disposition"
 	BlobCacheControl       = "control"
 	BlobContentLanguage    = "my_language"

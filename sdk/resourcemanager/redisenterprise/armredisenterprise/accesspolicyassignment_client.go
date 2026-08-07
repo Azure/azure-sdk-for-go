@@ -19,7 +19,7 @@ import (
 // AccessPolicyAssignmentClient contains the methods for the AccessPolicyAssignment group.
 // Don't use this type directly, use NewAccessPolicyAssignmentClient() instead.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-06-01-preview
 type AccessPolicyAssignmentClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -120,7 +120,7 @@ func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -208,7 +208,7 @@ func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -272,7 +272,7 @@ func (client *AccessPolicyAssignmentClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -341,7 +341,7 @@ func (client *AccessPolicyAssignmentClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

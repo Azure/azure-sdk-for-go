@@ -20,7 +20,7 @@ import (
 // DatastoresClient contains the methods for the Datastores group.
 // Don't use this type directly, use NewDatastoresClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-05-15-preview
 type DatastoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -98,7 +98,7 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.SkipValidation != nil {
 		reqQP.Set("skipValidation", strconv.FormatBool(*options.SkipValidation))
 	}
@@ -173,7 +173,7 @@ func (client *DatastoresClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -232,7 +232,7 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +299,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 	}
@@ -386,7 +386,7 @@ func (client *DatastoresClient) listSecretsCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

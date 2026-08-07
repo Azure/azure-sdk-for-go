@@ -20,7 +20,7 @@ import (
 // InferenceGroupsClient - InferenceGroups is preview-only.
 // Don't use this type directly, use NewInferenceGroupsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-05-15-preview
 type InferenceGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -124,7 +124,7 @@ func (client *InferenceGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -214,7 +214,7 @@ func (client *InferenceGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -278,7 +278,7 @@ func (client *InferenceGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -354,7 +354,7 @@ func (client *InferenceGroupsClient) getDeltaModelsStatusAsyncCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -433,7 +433,7 @@ func (client *InferenceGroupsClient) getStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -506,7 +506,7 @@ func (client *InferenceGroupsClient) listCreateRequest(ctx context.Context, reso
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 	}
@@ -594,7 +594,7 @@ func (client *InferenceGroupsClient) listDeltaModelsAsyncCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -676,7 +676,7 @@ func (client *InferenceGroupsClient) listSKUsCreateRequest(ctx context.Context, 
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.Count != nil {
 		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 	}
@@ -775,7 +775,7 @@ func (client *InferenceGroupsClient) modifyDeltaModelsAsyncCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -865,7 +865,7 @@ func (client *InferenceGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

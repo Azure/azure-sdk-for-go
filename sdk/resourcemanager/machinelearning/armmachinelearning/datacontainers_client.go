@@ -19,7 +19,7 @@ import (
 // DataContainersClient contains the methods for the DataContainers group.
 // Don't use this type directly, use NewDataContainersClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-05-15-preview
 type DataContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -97,7 +97,7 @@ func (client *DataContainersClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -169,7 +169,7 @@ func (client *DataContainersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -228,7 +228,7 @@ func (client *DataContainersClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -295,7 +295,7 @@ func (client *DataContainersClient) listCreateRequest(ctx context.Context, resou
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", *options.Skip)
 	}
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.ListViewType != nil {
 		reqQP.Set("listViewType", string(*options.ListViewType))
 	}

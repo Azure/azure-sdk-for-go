@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetVersion/backfill.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetVersion/backfill.json
 func ExampleFeaturesetVersionsClient_BeginBackfill() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleFeaturesetVersionsClient_BeginBackfill() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetVersion/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetVersion/createOrUpdate.json
 func ExampleFeaturesetVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -220,7 +220,7 @@ func ExampleFeaturesetVersionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetVersion/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetVersion/delete.json
 func ExampleFeaturesetVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleFeaturesetVersionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetVersion/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetVersion/get.json
 func ExampleFeaturesetVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,7 +339,7 @@ func ExampleFeaturesetVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetVersion/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/FeaturesetVersion/list.json
 func ExampleFeaturesetVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -16,7 +16,10 @@ import (
 // exampleContainer builds the client and container the operation examples below work against, so
 // that each of those can show the operation rather than repeating the setup. ExampleNewClient
 // shows the construction it stands in for.
-func exampleContainer() *azcosmos.ContainerClient {
+//
+// The returned function closes the client. It is called rather than deferred because a deferred
+// call would not run if a later log.Fatalf fired.
+func exampleContainer() (*azcosmos.ContainerClient, func()) {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
@@ -34,7 +37,13 @@ func exampleContainer() *azcosmos.ContainerClient {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	return container
+
+	return container, func() {
+		if err := client.Close(); err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+	}
 }
 
 // A client is safe for concurrent use and holds the caches that make requests cheap, so create one
@@ -104,7 +113,7 @@ func ExamplePreferredRegions() {
 }
 
 func ExampleContainerClient_CreateItem() {
-	container := exampleContainer()
+	container, closeClient := exampleContainer()
 
 	item, err := json.Marshal(map[string]string{
 		"id":           "item-1",
@@ -124,10 +133,12 @@ func ExampleContainerClient_CreateItem() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Printf("created the item, charged %v RU", response.RequestCharge)
+
+	closeClient()
 }
 
 func ExampleContainerClient_ReadItem() {
-	container := exampleContainer()
+	container, closeClient := exampleContainer()
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
 	response, err := container.ReadItem(context.TODO(), pk, "item-1", nil)
@@ -142,12 +153,14 @@ func ExampleContainerClient_ReadItem() {
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Printf("read item %v, charged %v RU", item["id"], response.RequestCharge)
+
+	closeClient()
 }
 
 // Reads can relax the account's consistency level, and can carry a session token captured from a
 // write elsewhere so that the read is guaranteed to observe it.
 func ExampleContainerClient_ReadItem_sessionConsistency() {
-	container := exampleContainer()
+	container, closeClient := exampleContainer()
 
 	options := &azcosmos.ReadItemOptions{
 		Operation: azcosmos.OperationOptions{
@@ -163,12 +176,14 @@ func ExampleContainerClient_ReadItem_sessionConsistency() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
+
+	closeClient()
 }
 
 // A missing item is reported as an *azcosmos.Error with the CodeNotFound code, which is usually
 // something to handle rather than to fail on.
 func ExampleError() {
-	container := exampleContainer()
+	container, closeClient := exampleContainer()
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
 	_, err := container.ReadItem(context.TODO(), pk, "item-1", nil)
@@ -183,6 +198,8 @@ func ExampleError() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
+
+	closeClient()
 }
 
 // A container with a hierarchical partition key takes one component per level of its definition,

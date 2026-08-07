@@ -56,15 +56,18 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 	if itemID == "" {
 		return ItemResponse{}, errors.New("azcosmos: item id must not be empty")
 	}
-	if err := ctx.Err(); err != nil {
-		return ItemResponse{}, err
-	}
-
+	// The client is consulted before the context so that a call made after Close reports
+	// CodeClientClosed, which Close guarantees, rather than whatever the caller's context happens
+	// to say. Shutdown is exactly when both are likely to be true at once.
 	release, err := c.database.client.acquire()
 	if err != nil {
 		return ItemResponse{}, err
 	}
 	defer release()
+
+	if err := ctx.Err(); err != nil {
+		return ItemResponse{}, err
+	}
 
 	_ = options
 	return ItemResponse{}, errNotImplemented
@@ -86,15 +89,18 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 	if len(item) == 0 {
 		return ItemResponse{}, errors.New("azcosmos: item must not be empty")
 	}
-	if err := ctx.Err(); err != nil {
-		return ItemResponse{}, err
-	}
-
+	// The client is consulted before the context so that a call made after Close reports
+	// CodeClientClosed, which Close guarantees, rather than whatever the caller's context happens
+	// to say. Shutdown is exactly when both are likely to be true at once.
 	release, err := c.database.client.acquire()
 	if err != nil {
 		return ItemResponse{}, err
 	}
 	defer release()
+
+	if err := ctx.Err(); err != nil {
+		return ItemResponse{}, err
+	}
 
 	_ = options
 	return ItemResponse{}, errNotImplemented

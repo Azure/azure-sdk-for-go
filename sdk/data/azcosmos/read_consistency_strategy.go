@@ -11,9 +11,14 @@ package azcosmos
 type ReadConsistencyStrategy string
 
 const (
-	// ReadConsistencyStrategyDefault reads with whatever the account's consistency level implies.
-	// This is the zero value's behavior.
-	ReadConsistencyStrategyDefault ReadConsistencyStrategy = ""
+	// ReadConsistencyStrategyUnset inherits the strategy configured for the account, the runtime
+	// and the environment. It is the zero value, and is not the same as
+	// [ReadConsistencyStrategyDefault], which overrides that inheritance.
+	ReadConsistencyStrategyUnset ReadConsistencyStrategy = ""
+
+	// ReadConsistencyStrategyDefault reads with the default behavior for the account's
+	// consistency level, rather than inheriting a strategy configured elsewhere.
+	ReadConsistencyStrategyDefault ReadConsistencyStrategy = "Default"
 
 	// ReadConsistencyStrategyEventual reads without any ordering guarantee. It is the cheapest
 	// strategy and may serve stale data.

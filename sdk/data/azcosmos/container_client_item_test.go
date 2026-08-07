@@ -106,10 +106,9 @@ func TestItemOperationsReportNotImplemented(t *testing.T) {
 // that both item operations carry it, which a per-type copy would not guarantee.
 func TestItemOptionsShareOperationOptions(t *testing.T) {
 	shared := OperationOptions{
-		ConsistencyStrategy:    ReadConsistencyStrategySession,
-		ExcludedRegions:        []Region{RegionEastUS},
-		ThroughputControlGroup: "background",
-		EndToEndTimeout:        5 * time.Second,
+		ConsistencyStrategy: ReadConsistencyStrategySession,
+		ExcludedRegions:     []Region{RegionEastUS},
+		EndToEndTimeout:     5 * time.Second,
 	}
 
 	read := ReadItemOptions{Operation: shared}
@@ -119,4 +118,35 @@ func TestItemOptionsShareOperationOptions(t *testing.T) {
 	require.Equal(t, shared, create.Operation)
 	require.Equal(t, []Region{RegionEastUS}, read.Operation.ExcludedRegions,
 		"excluded regions are typed, not free strings")
+}
+
+// Close guarantees that later operations fail with CodeClientClosed. Shutdown is exactly when a
+// caller's context is also likely to be cancelled, so the closed client has to win: checking the
+// context first would report context.Canceled and hide the real problem.
+func TestClosedClientReportedAheadOfCancelledContext(t *testing.T) {
+	container := newTestContainer(t)
+	require.NoError(t, container.database.client.Close())
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	_, err := container.ReadItem(ctx, NewPartitionKeyString("pk"), "item-1", nil)
+	var cosmosErr *Error
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+	require.NotErrorIs(t, err, context.Canceled)
+
+	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"x"}`), nil)
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+}
+
+// The ABI distinguishes "inherit whatever is configured" from "use the default for this account's
+// consistency level". Collapsing both onto the zero value would make one of them unreachable, and
+// silently so: the read would just use the wrong strategy.
+func TestReadConsistencyStrategyUnsetIsNotDefault(t *testing.T) {
+	require.NotEqual(t, ReadConsistencyStrategyUnset, ReadConsistencyStrategyDefault)
+
+	var zero ReadConsistencyStrategy
+	require.Equal(t, ReadConsistencyStrategyUnset, zero, "the zero value must mean inherit")
 }

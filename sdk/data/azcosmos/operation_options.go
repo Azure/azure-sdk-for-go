@@ -27,10 +27,6 @@ type OperationOptions struct {
 	// keeps the operation away from them entirely.
 	ExcludedRegions []Region
 
-	// ThroughputControlGroup assigns the operation to a throughput control group registered on
-	// the client.
-	ThroughputControlGroup string
-
 	// EndToEndTimeout bounds the whole operation, including the retries the driver performs on
 	// the caller's behalf. Zero means no bound beyond the context's deadline.
 	EndToEndTimeout time.Duration

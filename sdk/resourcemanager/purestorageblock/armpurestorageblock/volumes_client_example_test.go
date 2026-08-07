@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/Volumes_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Create_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,6 +26,7 @@ func ExampleVolumesClient_BeginCreate() {
 	poller, err := clientFactory.NewVolumesClient().BeginCreate(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01", armpurestorageblock.Volume{
 		Properties: &armpurestorageblock.AzureVolumeProperties{
 			ProvisionedSize:        to.Ptr[int64](10737418240),
+			SourceType:             to.Ptr(armpurestorageblock.VolumeSourceTypeVolume),
 			SourceVolumeResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/source-volume"),
 		},
 	}, nil)
@@ -51,6 +52,9 @@ func ExampleVolumesClient_BeginCreate() {
 	// 			ProvisionedSize: to.Ptr[int64](10737418240),
 	// 			SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
+	// 				Destroyed: to.Ptr(false),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/volume-01"),
@@ -68,7 +72,7 @@ func ExampleVolumesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Volumes_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Delete_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +93,7 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Volumes_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Get_MaximumSet_Gen.json
 func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,6 +123,9 @@ func ExampleVolumesClient_Get() {
 	// 			ProvisionedSize: to.Ptr[int64](10737418240),
 	// 			SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
 	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
+	// 				Destroyed: to.Ptr(false),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/volume-01"),
@@ -136,7 +143,7 @@ func ExampleVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_ListByVolumeGroup_MaximumSet_Gen.json
 func ExampleVolumesClient_NewListByVolumeGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,6 +179,9 @@ func ExampleVolumesClient_NewListByVolumeGroupPager() {
 		// 					ProvisionedSize: to.Ptr[int64](10737418240),
 		// 					SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
 		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
+		// 						Destroyed: to.Ptr(false),
+		// 					},
 		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/volume-01"),
@@ -192,7 +202,35 @@ func ExampleVolumesClient_NewListByVolumeGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/Volumes_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Volumes_Overwrite_MaximumSet_Gen.json
+func ExampleVolumesClient_BeginOverwrite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginOverwrite(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01", armpurestorageblock.VolumeOverwriteRequest{
+		SourceType:                  to.Ptr(armpurestorageblock.VolumeSourceTypeSnapshot),
+		SourceVolumeGroupResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
+		SourceVolumeSnapshot: &armpurestorageblock.VolumeSnapshotSource{
+			VolumeGroupSnapshotResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/snapshots/snapshot-01"),
+			VolumeSnapshotName:            to.Ptr("volume-01"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
 func ExampleVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -653,6 +653,16 @@ func (d *SMDecoder) Read(p []byte) (int, error) {
 					d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
 					return totalOut, d.err
 				}
+				if err != nil && d.segRemain == 0 {
+					// The source returned bytes that exactly completed the segment together with
+					// an error. Footer/trailer framing must still follow, so even io.EOF is
+					// premature here; convert it to io.ErrUnexpectedEOF so RetryReader can retry.
+					if errors.Is(err, io.EOF) {
+						err = io.ErrUnexpectedEOF
+					}
+					d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
+					return totalOut, d.err
+				}
 			}
 			if d.segRemain == 0 {
 				// Segment data is fully consumed. Advance to the footer/next segment even when the
@@ -807,7 +817,7 @@ func (d *SMDecoder) fillFrame() (bool, error) {
 		}
 		if err != nil {
 			if errors.Is(err, io.EOF) {
-				return false, fmt.Errorf("unexpected EOF reading structured message framing (have %d of %d bytes)", d.frameHave, d.frameNeed)
+				return false, fmt.Errorf("reading structured message framing (have %d of %d bytes): %w", d.frameHave, d.frameNeed, io.ErrUnexpectedEOF)
 			}
 			return false, err
 		}

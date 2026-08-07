@@ -571,14 +571,14 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 		options = &UploadStreamOptions{}
 	}
 
+	if err := rejectPrecomputedValidation(options.TransactionalValidation); err != nil {
+		return err
+	}
 	if options.EncryptionContext != nil {
 		_, err := f.Create(ctx, &CreateOptions{EncryptionContext: options.EncryptionContext})
 		if err != nil {
 			return err
 		}
-	}
-	if err := rejectPrecomputedValidation(options.TransactionalValidation); err != nil {
-		return err
 	}
 	err := copyFromReader(ctx, body, f, *options, newMMBPool)
 

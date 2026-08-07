@@ -246,6 +246,15 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 		if expectedMsgCRC != actualMsgCRC {
 			return SMDecodeResult{}, fmt.Errorf("message trailer CRC64 mismatch (expected 0x%016x, got 0x%016x)", expectedMsgCRC, actualMsgCRC)
 		}
+		offset += SMMessageTrailerSize
+	}
+
+	// The parsed message must consume the entire input. Declaring fewer segments and appending
+	// arbitrary trailing bytes would otherwise pass the header length check yet leave those bytes
+	// unvalidated, so reject any leftover data. (The streaming decoder enforces the equivalent via
+	// its consumed-length check in validateTrailerCRC.)
+	if offset != len(smData) {
+		return SMDecodeResult{}, fmt.Errorf("structured message has %d unexpected trailing bytes after offset %d", len(smData)-offset, offset)
 	}
 
 	return SMDecodeResult{
@@ -413,7 +422,15 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 			}
 			if err != nil {
 				finalContentBoundary := e.segRemain == 0 && e.segIndex == e.numSegments
-				if !errors.Is(err, io.EOF) || !finalContentBoundary {
+				if errors.Is(err, io.EOF) {
+					// EOF is only valid exactly at the final declared content boundary. A premature EOF
+					// means the source produced fewer bytes than the declared content length; surface it
+					// as io.ErrUnexpectedEOF so callers (e.g. io.ReadAll) don't accept a truncated message.
+					if !finalContentBoundary {
+						return totalRead, io.ErrUnexpectedEOF
+					}
+				} else {
+					// Any non-EOF error is propagated so a failed read is never encoded as a valid message.
 					return totalRead, err
 				}
 			}

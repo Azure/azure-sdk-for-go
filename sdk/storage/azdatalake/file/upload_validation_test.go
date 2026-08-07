@@ -11,7 +11,9 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/stretchr/testify/require"
 )
@@ -64,5 +66,24 @@ func TestUploadRejectsPrecomputedValidation(t *testing.T) {
 	uploadErr = client.UploadFile(context.Background(), f, &UploadFileOptions{
 		TransactionalValidation: TransferValidationTypeCRC64(98765),
 	})
+	require.ErrorIs(t, uploadErr, datalakeerror.UnsupportedChecksum)
+}
+
+// TestUploadStreamValidatesBeforeCreate verifies that UploadStream rejects a precomputed checksum
+// before issuing the EncryptionContext Create call, so invalid arguments have no remote side effect.
+// The client points at an unreachable endpoint; a short timeout ensures that if the guard were to run
+// after Create (the previous order), the test fails fast on a network error instead of hanging.
+func TestUploadStreamValidatesBeforeCreate(t *testing.T) {
+	client, err := NewClientWithNoCredential("https://fake.dfs.core.windows.net/fs/file", nil)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	uploadErr := client.UploadStream(ctx, strings.NewReader("some content"), &UploadStreamOptions{
+		EncryptionContext:       to.Ptr("test-encryption-context"),
+		TransactionalValidation: TransferValidationTypeCRC64(98765),
+	})
+	// Must be the validation error, not a network error from a premature Create.
 	require.ErrorIs(t, uploadErr, datalakeerror.UnsupportedChecksum)
 }

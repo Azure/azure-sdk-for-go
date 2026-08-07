@@ -12,6 +12,7 @@
 
 - Management operations (PeekMessages, ScheduleMessages, CancelScheduledMessages, and others) now send a `server-timeout` that expires one second before the caller's context, so the broker answers first and the caller gets a service-side timeout instead of `context deadline exceeded`. When the context has no deadline, each attempt asks the broker to answer within 60 seconds, where it was previously given no bound at all. The client still waits only on its context, so set one to cap the call itself. (#26421)
 - Read `com.microsoft:max-message-batch-size` vendor property from the AMQP sender link to correctly limit batch size on Premium large-message entities, where `max-message-size` can be up to 100 MB but the batch limit is 1 MB.
+- Propagate the caller's `context.Context` through to the underlying `azcore.TokenCredential.GetToken` call instead of using `context.TODO()`. Credentials that rely on the context (for cancellation, deadlines, or values used to fetch the token) now behave correctly during authentication.
 
 ### Other Changes
 

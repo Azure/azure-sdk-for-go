@@ -4,6 +4,8 @@
 // Package auth provides an abstraction over claims-based security for Azure Event Hub and Service Bus.
 package auth
 
+import "context"
+
 const (
 	// CBSTokenTypeJWT is the type of token to be used for JWTs. For example Azure Active Directory tokens.
 	CBSTokenTypeJWT TokenType = "jwt"
@@ -25,7 +27,7 @@ type (
 
 	// TokenProvider abstracts the fetching of authentication tokens
 	TokenProvider interface {
-		GetToken(uri string) (*Token, error)
+		GetToken(ctx context.Context, uri string) (*Token, error)
 	}
 )
 

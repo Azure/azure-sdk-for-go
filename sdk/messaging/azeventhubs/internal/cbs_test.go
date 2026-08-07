@@ -31,7 +31,7 @@ func TestNegotiateClaimWithCloseTimeout(t *testing.T) {
 			client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
 			session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
 			session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
-			tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
+			tp.EXPECT().GetToken(gomock.Any(), gomock.Any()).Return(&auth.Token{}, nil)
 
 			mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
 				response.ApplicationProperties = map[string]any{
@@ -76,7 +76,7 @@ func TestNegotiateClaimWithAuthFailure(t *testing.T) {
 	session.EXPECT().Close(test.NotCancelled)
 	session.EXPECT().ConnID().Return(uint64(101))
 
-	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
+	tp.EXPECT().GetToken(gomock.Any(), gomock.Any()).Return(&auth.Token{}, nil)
 
 	mock.SetupRPC(sender, receiver, 1, func(sent, response *amqp.Message) {
 		// this is the kind of error you get if your connection string is inconsistent
@@ -112,7 +112,7 @@ func TestNegotiateClaimSuccess(t *testing.T) {
 	client.EXPECT().NewSession(test.NotCancelled, gomock.Any()).Return(session, nil)
 	session.EXPECT().NewReceiver(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(receiver, nil)
 	session.EXPECT().NewSender(test.NotCancelled, gomock.Any(), gomock.Any(), gomock.Any()).Return(sender, nil)
-	tp.EXPECT().GetToken(gomock.Any()).Return(&auth.Token{}, nil)
+	tp.EXPECT().GetToken(gomock.Any(), gomock.Any()).Return(&auth.Token{}, nil)
 
 	session.EXPECT().Close(test.NotCancelled)
 

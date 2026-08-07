@@ -82,6 +82,276 @@ directive:
       };
 ```
 
+### Add Offset, Crc64, and Sha256 to the Block definition
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions
+  transform: >
+    $.Block.properties["Offset"] = {
+      "type": "integer",
+      "format": "int64",
+      "description": "The block's start offset in the blob, in bytes."
+    };
+    $.Block.properties["Crc64"] = {
+      "type": "string",
+      "format": "byte",
+      "x-ms-client-name": "Crc64",
+      "description": "The CRC64 hash of the block."
+    };
+    $.Block.properties["Sha256"] = {
+      "type": "string",
+      "format": "byte",
+      "x-ms-client-name": "Sha256",
+      "description": "The SHA256 hash of the block."
+    };
+    $.RangeHash = {
+      "type": "object",
+      "xml": { "name": "RangeHash" },
+      "required": ["Offset", "Length", "Sha256"],
+      "properties": {
+        "Offset": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The range's start offset in the blob, in bytes."
+        },
+        "Length": {
+          "type": "integer",
+          "format": "int64",
+          "description": "The range's length, in bytes."
+        },
+        "Sha256": {
+          "type": "string",
+          "format": "byte",
+          "x-ms-client-name": "Sha256",
+          "description": "The SHA256 hash of the range."
+        }
+      }
+    };
+    $.RangeHashList = {
+      "type": "object",
+      "xml": { "name": "RangeHashList" },
+      "required": ["RangeHash"],
+      "properties": {
+        "RangeHash": {
+          "type": "array",
+          "x-ms-client-name": "RangeHashes",
+          "items": { "$ref": "#/definitions/RangeHash" }
+        }
+      }
+    };
+```
+
+### Add include query parameter to GetBlockList (per-block crc64/sha256 hashes)
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.GetBlockListInclude = {
+      "name": "include",
+      "in": "query",
+      "required": false,
+      "type": "array",
+      "collectionFormat": "csv",
+      "items": {
+        "type": "string",
+        "enum": ["crc64", "sha256"],
+        "x-ms-enum": {
+          "name": "BlockListIncludeItem",
+          "modelAsString": false,
+          "values": [
+            { "value": "crc64", "name": "Crc64" },
+            { "value": "sha256", "name": "Sha256" }
+          ]
+        }
+      },
+      "x-ms-parameter-location": "method",
+      "description": "Specifies one or more datasets to include in the response, such as the per-block crc64 and sha256 content hashes. Requires service-side support and is only honored for committed block lists."
+    };
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=blocklist"].get
+  transform: >
+    $.parameters.push({ "$ref": "#/parameters/GetBlockListInclude" });
+```
+
+### Preserve the established public dedupe hash names
+``` yaml
+directive:
+- from: zz_constants.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`BlockListIncludeItemCRC64`, `BlockListIncludeItemCrc64`).
+      replaceAll(`BlockListIncludeItemSHA256`, `BlockListIncludeItemSha256`);
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/\bCRC64 \[\]byte/, `Crc64 []byte`).
+      replace(/\bSHA256 \[\]byte/g, `Sha256 []byte`);
+- from: zz_models_serde.go
+  where: $
+  transform: >-
+    return $.
+      replaceAll(`CRC64`, `Crc64`).
+      replaceAll(`SHA256`, `Sha256`).
+      replaceAll(`if aux.Sha256 != nil {`,
+      `if aux.Sha256 != nil {\n\t\tif len(*aux.Sha256) > 0 && (*aux.Sha256)[0] == '"' && (len(*aux.Sha256) < 2 || (*aux.Sha256)[len(*aux.Sha256)-1] != '"') {\n\t\t\treturn fmt.Errorf("invalid quoted base64 value")\n\t\t}`);
+```
+
+### Add the XStore selective multi-range GetBlobHash operation
+``` yaml
+directive:
+- from: swagger-document
+  where: $.parameters
+  transform: >
+    $.GetBlobHashAlgorithm = {
+      "name": "x-ms-hash-algorithm",
+      "x-ms-client-name": "hashAlgorithm",
+      "in": "header",
+      "required": true,
+      "type": "string",
+      "enum": ["Sha256"],
+      "x-ms-enum": {
+        "name": "BlobHashAlgorithm",
+        "modelAsString": false
+      },
+      "x-ms-parameter-location": "method",
+      "description": "Specifies Sha256 as the hash algorithm for the requested ranges."
+    };
+    $.GetBlobHashMultiRange = {
+      "name": "x-ms-multi-range",
+      "x-ms-client-name": "multiRange",
+      "in": "header",
+      "required": true,
+      "type": "string",
+      "x-ms-parameter-location": "method",
+      "description": "Specifies sorted, non-overlapping inclusive byte ranges to hash."
+    };
+- from: swagger-document
+  where: $["x-ms-paths"]
+  transform: >
+    const blockListPath = $["/{containerName}/{blob}?comp=blocklist"];
+    const getBlobHashPath = JSON.parse(JSON.stringify(blockListPath));
+    delete getBlobHashPath.put;
+    getBlobHashPath.parameters[2].enum = ["hash"];
+    getBlobHashPath.get = {
+      "tags": ["blockblob"],
+      "operationId": "BlockBlob_GetBlobHash",
+      "description": "Calculates SHA256 hashes for selected byte ranges in a block blob.",
+      "parameters": [
+        { "$ref": "#/parameters/GetBlobHashAlgorithm" },
+        { "$ref": "#/parameters/GetBlobHashMultiRange" },
+        { "$ref": "#/parameters/Timeout" },
+        { "$ref": "#/parameters/LeaseIdOptional" },
+        { "$ref": "#/parameters/EncryptionKey" },
+        { "$ref": "#/parameters/EncryptionKeySha256" },
+        { "$ref": "#/parameters/EncryptionAlgorithm" },
+        { "$ref": "#/parameters/IfModifiedSince" },
+        { "$ref": "#/parameters/IfUnmodifiedSince" },
+        { "$ref": "#/parameters/IfMatch" },
+        { "$ref": "#/parameters/IfNoneMatch" },
+        { "$ref": "#/parameters/IfTags" },
+        { "$ref": "#/parameters/ApiVersionParameter" },
+        { "$ref": "#/parameters/ClientRequestId" }
+      ],
+      "responses": {
+        "200": {
+          "description": "The SHA256 hashes were calculated.",
+          "headers": {
+            "Last-Modified": {
+              "type": "string",
+              "format": "date-time-rfc1123"
+            },
+            "ETag": {
+              "type": "string"
+            },
+            "x-ms-blob-content-length": {
+              "x-ms-client-name": "BlobContentLength",
+              "type": "integer",
+              "format": "int64"
+            },
+            "x-ms-hash-algorithm": {
+              "x-ms-client-name": "HashAlgorithm",
+              "type": "string"
+            },
+            "x-ms-test-dedupe-sha256-cpu-time-us": {
+              "x-ms-client-name": "SHA256CPUTimeUS",
+              "type": "integer",
+              "format": "int64",
+              "description": "The server CPU time spent calculating SHA256 hashes, in microseconds."
+            },
+            "x-ms-client-request-id": {
+              "x-ms-client-name": "ClientRequestId",
+              "type": "string"
+            },
+            "x-ms-request-id": {
+              "x-ms-client-name": "RequestId",
+              "type": "string"
+            },
+            "x-ms-version": {
+              "x-ms-client-name": "Version",
+              "type": "string"
+            },
+            "Date": {
+              "type": "string",
+              "format": "date-time-rfc1123"
+            }
+          },
+          "schema": { "$ref": "#/definitions/RangeHashList" }
+        },
+        "default": JSON.parse(JSON.stringify(blockListPath.get.responses["default"]))
+      }
+    };
+    $["/{containerName}/{blob}?comp=hash"] = getBlobHashPath;
+```
+
+### Drain GetBlobHash bodies on every response parsing path
+``` yaml
+directive:
+- from: zz_blockblob_client.go
+  where: $
+  transform: >-
+    return $.replace(
+      /func \(client \*BlockBlobClient\) getBlobHashHandleResponse\(resp \*http\.Response\) \(BlockBlobClientGetBlobHashResponse, error\) \{\s+result := BlockBlobClientGetBlobHashResponse\{\}/,
+      `func (client *BlockBlobClient) getBlobHashHandleResponse(resp *http.Response) (BlockBlobClientGetBlobHashResponse, error) {\n\tdefer runtime.Drain(resp)\n\tresult := BlockBlobClientGetBlobHashResponse{}`
+    );
+```
+
+### Add dedupe CPU time response headers to GetBlockList
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?comp=blocklist"].get.responses["200"].headers
+  transform: >
+    $["x-ms-test-dedupe-crc64-cpu-time-us"] = {
+      "x-ms-client-name": "CRC64CPUTimeUS",
+      "type": "integer",
+      "format": "int64",
+      "description": "The server CPU time spent calculating CRC64 hashes, in microseconds."
+    };
+    $["x-ms-test-dedupe-sha256-cpu-time-us"] = {
+      "x-ms-client-name": "SHA256CPUTimeUS",
+      "type": "integer",
+      "format": "int64",
+      "description": "The server CPU time spent calculating SHA256 hashes, in microseconds."
+    };
+```
+
+### Ignore invalid dedupe CPU time response headers
+``` yaml
+directive:
+- from: zz_blockblob_client.go
+  where: $
+  transform: >-
+    return $.
+      replace(/if val := resp\.Header\.Get\("x-ms-test-dedupe-crc64-cpu-time-us"\); val != "" \{\s+cRC64CPUTimeUS, err := strconv\.ParseInt\(val, 10, 64\)\s+if err != nil \{\s+return BlockBlobClientGetBlockListResponse\{\}, err\s+\}\s+result\.CRC64CPUTimeUS = &cRC64CPUTimeUS\s+\}/,
+      `if val := resp.Header.Get("x-ms-test-dedupe-crc64-cpu-time-us"); val != "" {\n\t\tcrc64CPUTimeUS, err := strconv.ParseInt(val, 10, 64)\n\t\tif err == nil && crc64CPUTimeUS >= 0 {\n\t\t\tresult.CRC64CPUTimeUS = &crc64CPUTimeUS\n\t\t}\n\t}`).
+      replace(/if val := resp\.Header\.Get\("x-ms-test-dedupe-sha256-cpu-time-us"\); val != "" \{\s+sHA256CPUTimeUS, err := strconv\.ParseInt\(val, 10, 64\)\s+if err != nil \{\s+return BlockBlobClientGet(?:BlobHash|BlockList)Response\{\}, err\s+\}\s+result\.SHA256CPUTimeUS = &sHA256CPUTimeUS\s+\}/g,
+      `if val := resp.Header.Get("x-ms-test-dedupe-sha256-cpu-time-us"); val != "" {\n\t\tsha256CPUTimeUS, err := strconv.ParseInt(val, 10, 64)\n\t\tif err == nil && sha256CPUTimeUS >= 0 {\n\t\t\tresult.SHA256CPUTimeUS = &sha256CPUTimeUS\n\t\t}\n\t}`);
+```
+
 ### Undo breaking change with BlobName 
 ``` yaml
 directive:

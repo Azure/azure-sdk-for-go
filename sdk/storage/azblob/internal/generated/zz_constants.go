@@ -140,6 +140,21 @@ func PossibleBlobTypeValues() []BlobType {
 	}
 }
 
+type BlockListIncludeItem string
+
+const (
+	BlockListIncludeItemCrc64  BlockListIncludeItem = "crc64"
+	BlockListIncludeItemSha256 BlockListIncludeItem = "sha256"
+)
+
+// PossibleBlockListIncludeItemValues returns the possible values for the BlockListIncludeItem const type.
+func PossibleBlockListIncludeItemValues() []BlockListIncludeItem {
+	return []BlockListIncludeItem{
+		BlockListIncludeItemCrc64,
+		BlockListIncludeItemSha256,
+	}
+}
+
 type BlockListType string
 
 const (

@@ -688,8 +688,23 @@ type BlockBlobClientCommitBlockListOptions struct {
 	TransactionalContentMD5 []byte
 }
 
+// BlockBlobClientGetBlobHashOptions contains the optional parameters for the BlockBlobClient.GetBlobHash method.
+type BlockBlobClientGetBlobHashOptions struct {
+	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
+	// analytics logging is enabled.
+	RequestID *string
+
+	// The timeout parameter is expressed in seconds. For more information, see Setting Timeouts for Blob Service Operations.
+	// [https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations]
+	Timeout *int32
+}
+
 // BlockBlobClientGetBlockListOptions contains the optional parameters for the BlockBlobClient.GetBlockList method.
 type BlockBlobClientGetBlockListOptions struct {
+	// Specifies one or more datasets to include in the response, such as the per-block crc64 and sha256 content hashes. Requires
+	// service-side support and is only honored for committed block lists.
+	Include []BlockListIncludeItem
+
 	// Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage
 	// analytics logging is enabled.
 	RequestID *string

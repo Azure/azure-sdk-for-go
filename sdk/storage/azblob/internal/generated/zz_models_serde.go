@@ -229,6 +229,56 @@ func (b BlobTags) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type Block.
+func (b Block) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias Block
+	aux := &struct {
+		*alias
+		Crc64  *string `xml:"Crc64"`
+		Sha256 *string `xml:"Sha256"`
+	}{
+		alias: (*alias)(&b),
+	}
+	if b.Crc64 != nil {
+		encodedCrc64 := runtime.EncodeByteArray(b.Crc64, runtime.Base64StdFormat)
+		aux.Crc64 = &encodedCrc64
+	}
+	if b.Sha256 != nil {
+		encodedSha256 := runtime.EncodeByteArray(b.Sha256, runtime.Base64StdFormat)
+		aux.Sha256 = &encodedSha256
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type Block.
+func (b *Block) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias Block
+	aux := &struct {
+		*alias
+		Crc64  *string `xml:"Crc64"`
+		Sha256 *string `xml:"Sha256"`
+	}{
+		alias: (*alias)(b),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.Crc64 != nil {
+		if err := runtime.DecodeByteArray(*aux.Crc64, &b.Crc64, runtime.Base64StdFormat); err != nil {
+			return err
+		}
+	}
+	if aux.Sha256 != nil {
+		if len(*aux.Sha256) > 0 && (*aux.Sha256)[0] == '"' && (len(*aux.Sha256) < 2 || (*aux.Sha256)[len(*aux.Sha256)-1] != '"') {
+			return fmt.Errorf("invalid quoted base64 value")
+		}
+		if err := runtime.DecodeByteArray(*aux.Sha256, &b.Sha256, runtime.Base64StdFormat); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // MarshalXML implements the xml.Marshaller interface for type BlockList.
 func (b BlockList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	type alias BlockList
@@ -465,6 +515,60 @@ func (p PageList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	}
 	if p.PageRange != nil {
 		aux.PageRange = &p.PageRange
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type RangeHash.
+func (r RangeHash) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias RangeHash
+	aux := &struct {
+		*alias
+		Sha256 *string `xml:"Sha256"`
+	}{
+		alias: (*alias)(&r),
+	}
+	if r.Sha256 != nil {
+		encodedSha256 := runtime.EncodeByteArray(r.Sha256, runtime.Base64StdFormat)
+		aux.Sha256 = &encodedSha256
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type RangeHash.
+func (r *RangeHash) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias RangeHash
+	aux := &struct {
+		*alias
+		Sha256 *string `xml:"Sha256"`
+	}{
+		alias: (*alias)(r),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.Sha256 != nil {
+		if len(*aux.Sha256) > 0 && (*aux.Sha256)[0] == '"' && (len(*aux.Sha256) < 2 || (*aux.Sha256)[len(*aux.Sha256)-1] != '"') {
+			return fmt.Errorf("invalid quoted base64 value")
+		}
+		if err := runtime.DecodeByteArray(*aux.Sha256, &r.Sha256, runtime.Base64StdFormat); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// MarshalXML implements the xml.Marshaller interface for type RangeHashList.
+func (r RangeHashList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	type alias RangeHashList
+	aux := &struct {
+		*alias
+		RangeHashes *[]*RangeHash `xml:"RangeHash"`
+	}{
+		alias: (*alias)(&r),
+	}
+	if r.RangeHashes != nil {
+		aux.RangeHashes = &r.RangeHashes
 	}
 	return enc.EncodeElement(aux, start)
 }

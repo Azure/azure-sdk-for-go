@@ -172,6 +172,15 @@ type Block struct {
 
 	// REQUIRED; The block size in bytes.
 	Size *int64 `xml:"Size"`
+
+	// The CRC64 hash of the block.
+	Crc64 []byte `xml:"Crc64"`
+
+	// The block's start offset in the blob, in bytes.
+	Offset *int64 `xml:"Offset"`
+
+	// The SHA256 hash of the block.
+	Sha256 []byte `xml:"Sha256"`
 }
 
 type BlockList struct {
@@ -454,6 +463,22 @@ type QueryRequest struct {
 type QuerySerialization struct {
 	// REQUIRED
 	Format *QueryFormat `xml:"Format"`
+}
+
+type RangeHash struct {
+	// REQUIRED; The range's length, in bytes.
+	Length *int64 `xml:"Length"`
+
+	// REQUIRED; The range's start offset in the blob, in bytes.
+	Offset *int64 `xml:"Offset"`
+
+	// REQUIRED; The SHA256 hash of the range.
+	Sha256 []byte `xml:"Sha256"`
+}
+
+type RangeHashList struct {
+	// REQUIRED
+	RangeHashes []*RangeHash `xml:"RangeHash"`
 }
 
 // RetentionPolicy - the retention policy which determines how long the associated data should persist

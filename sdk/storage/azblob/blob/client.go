@@ -335,7 +335,8 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	count := o.Range.Count
 
 	// TODO : SDK should ideally start with an initial download instead of get properties to optimize for small blobs.
-	useLayout := o.EnableLayoutAwareRouting
+	layoutAware := o.layoutAwareRoutingEnabled()
+	useLayout := layoutAware
 	temporalLayout := temporal.NewResourceWithOptions(
 		func(ctx context.Context) (layout, time.Time, error) {
 			return getLayout(ctx, b.GetLayoutPager(o.getBlobLayoutOptions()))
@@ -347,7 +348,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	var initialIfMatch *azcore.ETag
 	// Try layout-aware routing first if enabled, otherwise use GetProperties
 	haveLength := false
-	if o.EnableLayoutAwareRouting {
+	if layoutAware {
 		l, err := temporalLayout.Get(ctx)
 		if err != nil {
 			// getLayout caches "layout unavailable" as a fallback layout, so any error here is fatal.

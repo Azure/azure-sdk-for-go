@@ -5133,11 +5133,11 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadBufferWithLayoutAwareRouting() {
 	})
 	_require.NoError(err)
 
-	// Test with EnableLayoutAwareRouting = true
+	// Test with LayoutAwareRouting = true
 	buff := make([]byte, blobSize)
 	_, err = bbClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-		BlockSize:                4 * 1024 * 1024, // 4 MiB blocks
+		LayoutAwareRouting: blob.LayoutAwareRoutingEnabled,
+		BlockSize:          4 * 1024 * 1024, // 4 MiB blocks
 	})
 	_require.NoError(err)
 	_require.Equal(expectedData, buff)

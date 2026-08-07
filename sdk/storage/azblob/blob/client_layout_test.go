@@ -278,7 +278,7 @@ func TestDownloadBufferWithLayoutAwareRoutingError(t *testing.T) {
 	// 412 should trigger an error
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusPreconditionFailed)}
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 	})
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "412")
@@ -288,7 +288,7 @@ func TestDownloadBufferWithLayoutAwareRoutingError(t *testing.T) {
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)}
 	f.getPropertiesResponse = newMockGetPropertiesResponse(0, "etag")
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 	})
 	require.NoError(t, err)
 	layoutCalls, localityGets, _, getPropsCalled := f.counts()
@@ -309,7 +309,7 @@ func TestDownloadBufferWithLayoutAwareRoutingNoLayout(t *testing.T) {
 	buff := make([]byte, 0)
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(10, "etag", generated.BlobLayout{}, http.StatusOK)}
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 	})
 	require.NoError(t, err)
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
@@ -336,7 +336,7 @@ func TestDownloadBufferWithLayoutAwareRoutingWithLayout(t *testing.T) {
 
 	buff := make([]byte, 300)
 	_, err := client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 	})
 	require.NoError(t, err)
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
@@ -365,7 +365,7 @@ func TestDownloadBufferWithLayoutAwareRoutingMultiplePages(t *testing.T) {
 
 	buff := make([]byte, 500)
 	_, err := client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
 	})
 	require.NoError(t, err)
 	// With maxRangesPerPage=3 in splitLayoutToPages, 5 ranges should create 2 pages
@@ -388,9 +388,9 @@ func TestDownloadBufferLayoutFetchedOncePerDownload(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-		BlockSize:                rangeSize, // one chunk per layout range
-		Concurrency:              8,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          rangeSize, // one chunk per layout range
+		Concurrency:        8,
 	})
 	require.NoError(t, err)
 
@@ -412,9 +412,9 @@ func TestDownloadBufferFallbackCachedAcrossChunks(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 2000), &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-		BlockSize:                100, // 20 chunks
-		Concurrency:              8,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100, // 20 chunks
+		Concurrency:        8,
 	})
 	require.NoError(t, err)
 
@@ -453,9 +453,9 @@ func TestDownloadBufferLayoutETagLock(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-		BlockSize:                100,
-		Concurrency:              4,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+		Concurrency:        4,
 	})
 	require.NoError(t, err)
 
@@ -477,8 +477,8 @@ func TestDownloadBufferUserETagWins(t *testing.T) {
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-		BlockSize:                100,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
 		AccessConditions: &AccessConditions{
 			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &userETag},
 		},
@@ -516,9 +516,9 @@ func TestDownloadBufferRefreshFailureIsNonFatal(t *testing.T) {
 	time.Sleep(5 * time.Millisecond) // ensure the first fetch is already stale when chunks run
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-		BlockSize:                100,
-		Concurrency:              1,
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+		Concurrency:        1,
 	})
 	require.NoError(t, err, "a failed layout refresh must not fail the download")
 

@@ -133,10 +133,36 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// LayoutAwareRouting defines whether downloads should attempt to be routed to the ideal
+// endpoint for each block, based on the blob's layout.
+type LayoutAwareRouting string
+
+const (
+	// LayoutAwareRoutingAuto lets the SDK decide whether to use layout aware routing.
+	// This is the default when no value is specified.
+	LayoutAwareRoutingAuto LayoutAwareRouting = "Auto"
+
+	// LayoutAwareRoutingEnabled always attempts to route requests to the ideal endpoint for each block.
+	LayoutAwareRoutingEnabled LayoutAwareRouting = "Enabled"
+
+	// LayoutAwareRoutingDisabled never uses layout aware routing; requests are sent to the client's configured endpoint.
+	LayoutAwareRoutingDisabled LayoutAwareRouting = "Disabled"
+)
+
+// PossibleLayoutAwareRoutingValues returns the possible values for the LayoutAwareRouting const type.
+func PossibleLayoutAwareRoutingValues() []LayoutAwareRouting {
+	return []LayoutAwareRouting{
+		LayoutAwareRoutingAuto,
+		LayoutAwareRoutingEnabled,
+		LayoutAwareRoutingDisabled,
+	}
+}
+
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
-	// EnableLayoutAwareRouting indicates that downloads should attempt to be routed to the ideal endpoint for that block.
-	EnableLayoutAwareRouting bool
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block. The default, LayoutAwareRoutingAuto, is disabled.
+	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
@@ -163,6 +189,15 @@ type downloadOptions struct {
 
 	// TransactionalValidation specifies the transfer validation type to use on download.
 	TransactionalValidation TransferValidationType
+}
+
+// layoutAwareRoutingEnabled reports whether layout aware routing should be attempted.
+// LayoutAwareRoutingAuto currently resolves to disabled.
+func (o *downloadOptions) layoutAwareRoutingEnabled() bool {
+	if o == nil {
+		return false
+	}
+	return o.LayoutAwareRouting == LayoutAwareRoutingEnabled
 }
 
 func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
@@ -202,8 +237,9 @@ func (o *downloadOptions) getBlobLayoutOptions() *GetLayoutOptions {
 
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
-	// EnableLayoutAwareRouting indicates that downloads should attempt to be routed to the ideal endpoint for that block.
-	EnableLayoutAwareRouting bool
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block. The default, LayoutAwareRoutingAuto, lets the SDK decide.
+	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
@@ -236,8 +272,9 @@ type DownloadBufferOptions struct {
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
-	// EnableLayoutAwareRouting indicates that downloads should attempt to be routed to the ideal endpoint for that block.
-	EnableLayoutAwareRouting bool
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block. The default, LayoutAwareRoutingAuto, lets the SDK decide.
+	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange

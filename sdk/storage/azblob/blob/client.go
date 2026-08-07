@@ -336,40 +336,45 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 
 	// TODO : SDK should ideally start with an initial download instead of get properties to optimize for small blobs.
 	useLayout := o.EnableLayoutAwareRouting
-	temporalLayout := temporal.NewResource(func(ctx context.Context) (layout, time.Time, error) {
-		return getLayout(ctx, b.GetLayoutPager(o.getBlobLayoutOptions()))
-	})
-	var l layout
+	temporalLayout := temporal.NewResourceWithOptions(
+		func(ctx context.Context) (layout, time.Time, error) {
+			return getLayout(ctx, b.GetLayoutPager(o.getBlobLayoutOptions()))
+		}, temporal.ResourceOptions[layout, context.Context]{
+			ShouldRefresh: shouldRefreshLayout,
+		})
 	// If we don't have the length at all, get it
 	var length int64
 	var initialIfMatch *azcore.ETag
 	// Try layout-aware routing first if enabled, otherwise use GetProperties
+	haveLength := false
 	if o.EnableLayoutAwareRouting {
-		var err error
-		l, err = temporalLayout.Get(ctx)
-		sc := bloberror.GetStatusCode(err)
+		l, err := temporalLayout.Get(ctx)
 		if err != nil {
-			if sc == 400 || sc >= 500 { // fall back to old behavior if service doesn't support layout or layout wasn't fetched
-				useLayout = false
-			} else { // fail the operation
-				return 0, err
-			}
+			// getLayout caches "layout unavailable" as a fallback layout, so any error here is fatal.
+			return 0, err
+		}
+		if l.Fallback() {
+			// The service can't provide a layout, fall back to the old behavior.
+			useLayout = false
 		} else {
+			// The response carries the blob's length and ETag, so GetProperties isn't needed.
 			length = l.contentLength
 			initialIfMatch = l.eTag
+			haveLength = true
+			if len(l.layoutRanges) == 0 {
+				// The blob has no layout: download everything from the primary endpoint.
+				useLayout = false
+			}
 		}
 	}
 
-	if !useLayout {
+	if !haveLength {
 		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
 		if err != nil {
 			return 0, err
 		}
 		length = *gr.ContentLength
 		initialIfMatch = gr.ETag
-	}
-	if len(l.layoutRanges) == 0 { // fall back to old behavior if layout doesn't exist
-		useLayout = false
 	}
 
 	if count == CountToEnd { // If size not specified, calculate it
@@ -422,10 +427,8 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			}, nil)
 			// Fetch ideal endpoint for this chunk from layout
 			if useLayout {
-				var err error
-				l, err = temporalLayout.Get(ctx)
-				if err != nil {
-					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(chunkStart+o.Range.Offset, l)
+				if chunkLayout, err := temporalLayout.Get(ctx); err == nil && !chunkLayout.Fallback() {
+					downloadBlobOptions.LayoutEndpoint = getIdealEndpoint(chunkStart+o.Range.Offset, chunkLayout)
 				}
 			}
 			dr, err := b.DownloadStream(ctx, downloadBlobOptions)

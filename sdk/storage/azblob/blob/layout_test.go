@@ -4,23 +4,47 @@
 package blob
 
 import (
-	"bytes"
 	"context"
-	"encoding/xml"
 	"errors"
 	"fmt"
-	"io"
 	"net/http"
-	"strconv"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/stretchr/testify/require"
 )
+
+// This file covers the pure layout logic in layout.go: parsing a GetLayout response into a layout,
+// choosing an endpoint for an offset, and deciding when a cached layout should be refreshed.
+// Client-level behavior (what DownloadBuffer puts on the wire) lives in client_layout_test.go.
+
+// createMockPager creates a mock pager for testing getLayout function
+func createMockPager(responses []GetLayoutResponse, err error) *runtime.Pager[GetLayoutResponse] {
+	index := 0
+	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
+		More: func(resp GetLayoutResponse) bool {
+			return resp.BlobLayout.NextMarker != nil && *resp.BlobLayout.NextMarker != ""
+		},
+		Fetcher: func(ctx context.Context, current *GetLayoutResponse) (GetLayoutResponse, error) {
+			if err != nil {
+				return GetLayoutResponse{}, err
+			}
+			if index >= len(responses) {
+				return GetLayoutResponse{}, errors.New("no more pages")
+			}
+			resp := responses[index]
+			index++
+			return resp, nil
+		},
+	})
+}
+
+// ======================================================================================== //
+// getIdealEndpoint
 
 func TestGetIdealEndpoint_EmptyLayoutRanges(t *testing.T) {
 	l := layout{
@@ -114,6 +138,23 @@ func TestGetIdealEndpoint_SameEndpointDifferentRanges(t *testing.T) {
 	require.Equal(t, "endpointA", getIdealEndpoint(125, l))
 }
 
+// TestGetIdealEndpoint_OffsetOutOfRange documents the behavior for an offset outside the covered
+// ranges: the binary search clamps to the first/last range rather than returning "".
+func TestGetIdealEndpoint_OffsetOutOfRange(t *testing.T) {
+	l := layout{
+		layoutRanges: []layoutRange{
+			{start: 0, end: 99, endpoint: "endpoint1"},
+			{start: 100, end: 199, endpoint: "endpoint2"},
+		},
+		contentLength: 200,
+	}
+	require.Equal(t, "endpoint2", getIdealEndpoint(500, l))
+	require.Equal(t, "endpoint1", getIdealEndpoint(-1, l))
+}
+
+// ======================================================================================== //
+// getLayout
+
 func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 	ctx := context.Background()
 	contentLength := int64(1000)
@@ -135,8 +176,9 @@ func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 					},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			ContentLength:     &contentLength,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 	}
 
@@ -150,6 +192,7 @@ func TestGetLayout_SinglePageWithLayout(t *testing.T) {
 	require.NotNil(t, result.eTag)
 	require.Equal(t, etag, *result.eTag)
 	require.False(t, expiry.IsZero())
+	require.False(t, result.Fallback())
 
 	// Verify ranges
 	require.Equal(t, int64(0), result.layoutRanges[0].start)
@@ -172,8 +215,9 @@ func TestGetLayout_SinglePageNoLayout(t *testing.T) {
 					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			ContentLength:     &contentLength,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 	}
 
@@ -186,7 +230,8 @@ func TestGetLayout_SinglePageNoLayout(t *testing.T) {
 	require.Equal(t, int64(500), result.contentLength)
 	require.NotNil(t, result.eTag)
 	require.Equal(t, etag, *result.eTag)
-	require.True(t, expiry.IsZero())
+	require.False(t, expiry.IsZero())
+	require.False(t, result.Fallback())
 }
 
 func TestGetLayout_MultiplePages(t *testing.T) {
@@ -209,8 +254,9 @@ func TestGetLayout_MultiplePages(t *testing.T) {
 					},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			ContentLength:     &contentLength,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 		{
 			BlobLayout: generated.BlobLayout{
@@ -226,8 +272,9 @@ func TestGetLayout_MultiplePages(t *testing.T) {
 					},
 				},
 			},
-			ContentLength: &contentLength,
-			ETag:          &etag,
+			ContentLength:     &contentLength,
+			BlobContentLength: &contentLength,
+			ETag:              &etag,
 		},
 	}
 
@@ -260,313 +307,99 @@ func TestGetLayout_Error(t *testing.T) {
 	require.True(t, expiry.IsZero())
 }
 
-// createMockPager creates a mock pager for testing getLayout function
-func createMockPager(responses []GetLayoutResponse, err error) *runtime.Pager[GetLayoutResponse] {
-	index := 0
-	return runtime.NewPager(runtime.PagingHandler[GetLayoutResponse]{
-		More: func(resp GetLayoutResponse) bool {
-			return resp.BlobLayout.NextMarker != nil && *resp.BlobLayout.NextMarker != ""
+// TestGetLayout_UnsupportedIsCached verifies that when the service says it can't provide a layout
+// (400 or 5xx), getLayout returns a fallback layout with a nil error so temporal.Resource caches
+// the decision instead of contacting the service on every call.
+func TestGetLayout_UnsupportedIsCached(t *testing.T) {
+	for _, statusCode := range []int{http.StatusBadRequest, http.StatusInternalServerError, http.StatusServiceUnavailable} {
+		t.Run(fmt.Sprintf("status_%d", statusCode), func(t *testing.T) {
+			pager := createMockPager(nil, &azcore.ResponseError{StatusCode: statusCode})
+
+			result, expiry, err := getLayout(context.Background(), pager)
+
+			require.NoError(t, err)
+			require.True(t, result.Fallback())
+			require.False(t, expiry.IsZero())
+			require.False(t, shouldRefreshLayout(result, context.Background()), "a cached fallback must not be eagerly refreshed")
+		})
+	}
+}
+
+// TestGetLayout_ErrorStatusClassification pins down which status codes are cached as a fallback and
+// which are surfaced to the caller. 499 in particular guards the `>= 500` boundary.
+func TestGetLayout_ErrorStatusClassification(t *testing.T) {
+	cached := []int{http.StatusBadRequest, http.StatusInternalServerError, http.StatusServiceUnavailable, 599}
+	propagated := []int{http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound,
+		http.StatusConflict, http.StatusPreconditionFailed, 499}
+
+	for _, sc := range cached {
+		t.Run(fmt.Sprintf("cached_%d", sc), func(t *testing.T) {
+			result, expiry, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
+			require.NoError(t, err)
+			require.True(t, result.Fallback())
+			require.False(t, expiry.IsZero())
+		})
+	}
+
+	for _, sc := range propagated {
+		t.Run(fmt.Sprintf("propagated_%d", sc), func(t *testing.T) {
+			result, expiry, err := getLayout(context.Background(), createMockPager(nil, &azcore.ResponseError{StatusCode: sc}))
+			require.Error(t, err)
+			require.False(t, result.Fallback(), "a propagated error must not produce a cacheable fallback")
+			require.True(t, expiry.IsZero())
+		})
+	}
+}
+
+// TestGetLayout_MissingBlobContentLength verifies a response without the x-ms-blob-content-length
+// header doesn't panic.
+func TestGetLayout_MissingBlobContentLength(t *testing.T) {
+	etag := azcore.ETag("etag")
+	responses := []GetLayoutResponse{
+		{
+			BlobLayout: generated.BlobLayout{
+				Endpoints: &generated.BlobLayoutEndpoints{
+					Endpoint: []*generated.BlobLayoutEndpointsEndpointItem{
+						{Index: to.Ptr(int32(0)), Value: to.Ptr("endpoint1")},
+					},
+				},
+				Ranges: &generated.BlobLayoutRanges{
+					Range: []*generated.BlobLayoutRangesRangeItem{
+						{Start: to.Ptr(int64(0)), End: to.Ptr(int64(99)), EndpointIndex: to.Ptr(int32(0))},
+					},
+				},
+			},
+			// BlobContentLength intentionally omitted
+			ETag: &etag,
 		},
-		Fetcher: func(ctx context.Context, current *GetLayoutResponse) (GetLayoutResponse, error) {
-			if err != nil {
-				return GetLayoutResponse{}, err
-			}
-			if index >= len(responses) {
-				return GetLayoutResponse{}, errors.New("no more pages")
-			}
-			resp := responses[index]
-			index++
-			return resp, nil
-		},
+	}
+
+	require.NotPanics(t, func() {
+		result, _, err := getLayout(context.Background(), createMockPager(responses, nil))
+		require.NoError(t, err)
+		require.Zero(t, result.contentLength)
+		require.Len(t, result.layoutRanges, 1)
 	})
 }
 
 // ======================================================================================== //
-// Helper methods for layout mock tests
-type fakeLayoutResponder struct {
-	l                     layout
-	layoutResponses       map[string]*http.Response
-	getPropertiesResponse *http.Response
+// shouldRefreshLayout
 
-	// populated by the pipeline policy
-	layoutCalls         int
-	getPropertiesCalled bool
-	localityGets        int
-	normalGets          int
-}
+func TestShouldRefreshLayout(t *testing.T) {
+	ctx := context.Background()
 
-func (f *fakeLayoutResponder) reset() {
-	f.layoutCalls = 0
-	f.getPropertiesCalled = false
-	f.localityGets = 0
-	f.normalGets = 0
-}
-
-func newFakeLayoutResponder(l layout, getPropsResponse *http.Response) *fakeLayoutResponder {
-	layoutResponses := make(map[string]*http.Response)
-	pages := splitLayoutToPages(l, 3) // Use a small page size to create multiple pages for testing
-	for i, page := range pages {
-		if i == 0 {
-			layoutResponses[""] = newMockLayoutResponse(l.contentLength, string(*l.eTag), page, 0)
-		} else {
-			layoutResponses[strconv.Itoa(i)] = newMockLayoutResponse(l.contentLength, string(*l.eTag), page, 0)
-		}
-	}
-	return &fakeLayoutResponder{
-		l:                     l,
-		layoutResponses:       layoutResponses,
-		getPropertiesResponse: getPropsResponse,
-	}
-}
-
-func (f *fakeLayoutResponder) Do(req *http.Request) (*http.Response, error) {
-	// Layout
-	qp := req.URL.Query()
-	if comp := qp.Get("comp"); comp == "layout" {
-		f.layoutCalls++
-		marker := qp.Get("marker")
-		return f.layoutResponses[marker], nil
-	}
-
-	// Get properties
-	if req.Method == http.MethodHead {
-		f.getPropertiesCalled = true
-		return f.getPropertiesResponse, nil
-	}
-
-	// Validate that the request range is going to the right layout
-	if req.Method == http.MethodGet {
-		// If the request Host is different from the URL host
-		if req.Host != req.URL.Host {
-			f.localityGets++
-		} else {
-			f.normalGets++
-		}
-		// Download
-		return &http.Response{
-			StatusCode: http.StatusPartialContent,
-			Body:       io.NopCloser(bytes.NewReader([]byte{})),
-		}, nil
-	}
-	return nil, fmt.Errorf("unexpected request: %s %s", req.Method, req.URL.Path)
-}
-
-func newMockLayoutResponse(contentLength int64, eTag string, layout generated.BlobLayout, statusCode int) *http.Response {
-	if statusCode == 0 || statusCode == http.StatusOK {
-		data, _ := xml.Marshal(layout)
-		return &http.Response{
-			StatusCode: http.StatusOK,
-			Body:       io.NopCloser(bytes.NewReader(data)),
-			Header: http.Header{
-				"X-Ms-Blob-Content-Length": []string{fmt.Sprintf("%d", contentLength)},
-				"ETag":                     []string{eTag},
-			},
-		}
-	}
-
-	return &http.Response{
-		StatusCode: statusCode,
-		Body:       io.NopCloser(bytes.NewReader([]byte{})),
-	}
-}
-
-func newMockGetPropertiesResponse(contentLength int64, eTag string) *http.Response {
-	return &http.Response{
-		StatusCode: http.StatusOK,
-		Header: http.Header{
-			"Content-Length": []string{fmt.Sprintf("%d", contentLength)},
-			"ETag":           []string{eTag},
-		},
-	}
-}
-
-// splitLayoutToPages splits a layout into multiple BlobLayout pages with sequential ranges.
-// Each page contains up to maxRangesPerPage ranges.
-func splitLayoutToPages(l layout, maxRangesPerPage int) []generated.BlobLayout {
-	if len(l.layoutRanges) == 0 {
-		return nil
-	}
-
-	if maxRangesPerPage <= 0 {
-		maxRangesPerPage = 1
-	}
-
-	// Build unique endpoints map
-	endpointMap := make(map[string]int32)
-	var endpointIndex int32
-	for _, lr := range l.layoutRanges {
-		if _, exists := endpointMap[lr.endpoint]; !exists {
-			endpointMap[lr.endpoint] = endpointIndex
-			endpointIndex++
-		}
-	}
-
-	// Convert map to Endpoint slice
-	endpoints := make([]*generated.BlobLayoutEndpointsEndpointItem, len(endpointMap))
-	for ep, idx := range endpointMap {
-		epCopy := ep
-		idxCopy := idx
-		endpoints[idx] = &generated.BlobLayoutEndpointsEndpointItem{
-			Index: &idxCopy,
-			Value: &epCopy,
-		}
-	}
-
-	var pages []generated.BlobLayout
-	for i := 0; i < len(l.layoutRanges); i += maxRangesPerPage {
-		end := i + maxRangesPerPage
-		if end > len(l.layoutRanges) {
-			end = len(l.layoutRanges)
-		}
-
-		ranges := make([]*generated.BlobLayoutRangesRangeItem, 0, end-i)
-		for j := i; j < end; j++ {
-			lr := l.layoutRanges[j]
-			start := lr.start
-			rangeEnd := lr.end
-			epIdx := endpointMap[lr.endpoint]
-			ranges = append(ranges, &generated.BlobLayoutRangesRangeItem{
-				Start:         &start,
-				End:           &rangeEnd,
-				EndpointIndex: &epIdx,
-			})
-		}
-
-		// just pass in the index as a marker for testing purposes, the actual value doesn't matter
-		iCopy := strconv.Itoa(len(pages) + 1)
-		page := generated.BlobLayout{
-			Endpoints: &generated.BlobLayoutEndpoints{
-				Endpoint: endpoints,
-			},
-			Ranges: &generated.BlobLayoutRanges{
-				Range: ranges,
-			},
-			NextMarker: &iCopy,
-		}
-		pages = append(pages, page)
-	}
-
-	// Last page should have empty NextMarker to indicate no more pages
-	if len(pages) > 0 {
-		pages[len(pages)-1].NextMarker = nil
-	}
-
-	return pages
-}
-
-func TestDownloadBufferWithLayoutAwareRoutingError(t *testing.T) {
-	f := &fakeLayoutResponder{}
-	client, err := NewClientWithNoCredential("https://fake/blob/path", &ClientOptions{
-		ClientOptions: policy.ClientOptions{
-			Transport: f,
-		},
+	t.Run("fallback is never eagerly refreshed", func(t *testing.T) {
+		// Even an already-expired fallback returns false; temporal.Resource refreshes it on expiry.
+		require.False(t, shouldRefreshLayout(layout{fallback: true, expiry: time.Now().Add(-time.Hour)}, ctx))
+		require.False(t, shouldRefreshLayout(layout{fallback: true, expiry: time.Now().Add(time.Hour)}, ctx))
 	})
-	require.NoError(t, err)
 
-	buff := make([]byte, 0)
-	// 412 should trigger an error
-	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusPreconditionFailed)}
-	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
+	t.Run("fresh layout is not refreshed", func(t *testing.T) {
+		require.False(t, shouldRefreshLayout(layout{expiry: time.Now().Add(time.Hour)}, ctx))
 	})
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "412")
 
-	// 400 should trigger a fallback to get  properties
-	f.reset()
-	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)}
-	f.getPropertiesResponse = newMockGetPropertiesResponse(0, "etag")
-	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
+	t.Run("layout expiring within 30s is refreshed", func(t *testing.T) {
+		require.True(t, shouldRefreshLayout(layout{expiry: time.Now().Add(10 * time.Second)}, ctx))
+		require.True(t, shouldRefreshLayout(layout{expiry: time.Now().Add(-time.Second)}, ctx))
 	})
-	require.NoError(t, err)
-	require.Equal(t, 1, f.layoutCalls)
-	require.True(t, f.getPropertiesCalled)
-	require.Zero(t, f.localityGets)
-}
-
-func TestDownloadBufferWithLayoutAwareRoutingNoLayout(t *testing.T) {
-	f := &fakeLayoutResponder{}
-	client, err := NewClientWithNoCredential("https://fake/blob/path", &ClientOptions{
-		ClientOptions: policy.ClientOptions{
-			Transport: f,
-		},
-	})
-	require.NoError(t, err)
-
-	buff := make([]byte, 0)
-	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(10, "etag", generated.BlobLayout{}, http.StatusOK)}
-	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-	})
-	require.NoError(t, err)
-	require.Equal(t, 1, f.layoutCalls)
-	require.False(t, f.getPropertiesCalled)
-	require.Equal(t, 1, f.normalGets)
-	require.Zero(t, f.localityGets)
-}
-
-func TestDownloadBufferWithLayoutAwareRoutingWithLayout(t *testing.T) {
-	etag := azcore.ETag("test-etag")
-	l := layout{
-		layoutRanges: []layoutRange{
-			{start: 0, end: 99, endpoint: "https://locality1.blob.core.windows.net"},
-			{start: 100, end: 199, endpoint: "https://locality2.blob.core.windows.net"},
-			{start: 200, end: 299, endpoint: "https://locality1.blob.core.windows.net"},
-		},
-		contentLength: 300,
-		eTag:          &etag,
-	}
-
-	f := newFakeLayoutResponder(l, nil)
-	client, err := NewClientWithNoCredential("https://fake.blob.core.windows.net/container/blob", &ClientOptions{
-		ClientOptions: policy.ClientOptions{
-			Transport: f,
-		},
-	})
-	require.NoError(t, err)
-
-	buff := make([]byte, 300)
-	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-	})
-	require.NoError(t, err)
-	require.GreaterOrEqual(t, f.layoutCalls, 1)
-	require.False(t, f.getPropertiesCalled)
-	require.Greater(t, f.localityGets, 0)
-	require.Zero(t, f.normalGets)
-}
-
-func TestDownloadBufferWithLayoutAwareRoutingMultiplePages(t *testing.T) {
-	etag := azcore.ETag("multi-page-etag")
-	l := layout{
-		layoutRanges: []layoutRange{
-			{start: 0, end: 99, endpoint: "https://locality1.blob.core.windows.net"},
-			{start: 100, end: 199, endpoint: "https://locality2.blob.core.windows.net"},
-			{start: 200, end: 299, endpoint: "https://locality3.blob.core.windows.net"},
-			{start: 300, end: 399, endpoint: "https://locality1.blob.core.windows.net"},
-			{start: 400, end: 499, endpoint: "https://locality2.blob.core.windows.net"},
-		},
-		contentLength: 500,
-		eTag:          &etag,
-	}
-
-	f := newFakeLayoutResponder(l, nil)
-	client, err := NewClientWithNoCredential("https://fake.blob.core.windows.net/container/blob", &ClientOptions{
-		ClientOptions: policy.ClientOptions{
-			Transport: f,
-		},
-	})
-	require.NoError(t, err)
-
-	buff := make([]byte, 500)
-	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
-		EnableLayoutAwareRouting: true,
-	})
-	require.NoError(t, err)
-	// With maxRangesPerPage=3 in splitLayoutToPages, 5 ranges should create 2 pages
-	require.GreaterOrEqual(t, f.layoutCalls, 2)
-	require.False(t, f.getPropertiesCalled)
-	require.Greater(t, f.localityGets, 0)
-	require.Zero(t, f.normalGets)
 }

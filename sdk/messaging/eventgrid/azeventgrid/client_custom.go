@@ -26,6 +26,7 @@ func NewClient(endpoint string, tokenCredential azcore.TokenCredential, options 
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	applyRedirectCredentialProtection(options)
 
 	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
@@ -50,6 +51,7 @@ func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCreden
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	applyRedirectCredentialProtection(options)
 
 	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
@@ -74,6 +76,7 @@ func NewClientWithSAS(endpoint string, sasCred *azcore.SASCredential, options *C
 	if options == nil {
 		options = &ClientOptions{}
 	}
+	applyRedirectCredentialProtection(options)
 
 	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{

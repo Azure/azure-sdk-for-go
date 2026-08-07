@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/EncryptionProtectorCreateOrUpdateKeyVault.json
+// Generated from example definition: 2025-08-01-preview/EncryptionProtectorCreateOrUpdateKeyVault.json
 func ExampleEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionProtectorToKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionPr
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/EncryptionProtectorCreateOrUpdateKeyVaultWithVersionlessKey.json
+// Generated from example definition: 2025-08-01-preview/EncryptionProtectorCreateOrUpdateKeyVaultWithVersionlessKey.json
 func ExampleEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionProtectorToKeyVaultWithVersionlessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionPr
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/EncryptionProtectorCreateOrUpdateServiceManaged.json
+// Generated from example definition: 2025-08-01-preview/EncryptionProtectorCreateOrUpdateServiceManaged.json
 func ExampleEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionProtectorToServiceManaged() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExampleEncryptionProtectorsClient_BeginCreateOrUpdate_updateTheEncryptionPr
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/EncryptionProtectorGet.json
+// Generated from example definition: 2025-08-01-preview/EncryptionProtectorGet.json
 func ExampleEncryptionProtectorsClient_Get_getTheEncryptionProtector() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleEncryptionProtectorsClient_Get_getTheEncryptionProtector() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/EncryptionProtectorGetWithVersionlessKey.json
+// Generated from example definition: 2025-08-01-preview/EncryptionProtectorGetWithVersionlessKey.json
 func ExampleEncryptionProtectorsClient_Get_getTheEncryptionProtectorWithVersionlessKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleEncryptionProtectorsClient_Get_getTheEncryptionProtectorWithVersionl
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/EncryptionProtectorList.json
+// Generated from example definition: 2025-08-01-preview/EncryptionProtectorList.json
 func ExampleEncryptionProtectorsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleEncryptionProtectorsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/EncryptionProtectorRevalidate.json
+// Generated from example definition: 2025-08-01-preview/EncryptionProtectorRevalidate.json
 func ExampleEncryptionProtectorsClient_BeginRevalidate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberCreate.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberCreate.json
 func ExampleSyncMembersClient_BeginCreateOrUpdate_createANewSyncMember() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleSyncMembersClient_BeginCreateOrUpdate_createANewSyncMember() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberCreateWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberCreateWithIdentity.json
 func ExampleSyncMembersClient_BeginCreateOrUpdate_createANewSyncMemberWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleSyncMembersClient_BeginCreateOrUpdate_createANewSyncMemberWithUserAs
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberUpdate.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberUpdate.json
 func ExampleSyncMembersClient_BeginCreateOrUpdate_updateASyncMember() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleSyncMembersClient_BeginCreateOrUpdate_updateASyncMember() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberDelete.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberDelete.json
 func ExampleSyncMembersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleSyncMembersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberGet.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberGet.json
 func ExampleSyncMembersClient_Get_getASyncMember() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleSyncMembersClient_Get_getASyncMember() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberGetWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberGetWithIdentity.json
 func ExampleSyncMembersClient_Get_getASyncMemberWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleSyncMembersClient_Get_getASyncMemberWithUserAssignedIdentity() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberListBySyncGroup.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberListBySyncGroup.json
 func ExampleSyncMembersClient_NewListBySyncGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -338,7 +338,7 @@ func ExampleSyncMembersClient_NewListBySyncGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberGetSchema.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberGetSchema.json
 func ExampleSyncMembersClient_NewListMemberSchemasPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +398,7 @@ func ExampleSyncMembersClient_NewListMemberSchemasPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberRefreshSchema.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberRefreshSchema.json
 func ExampleSyncMembersClient_BeginRefreshMemberSchema() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -424,7 +424,7 @@ func ExampleSyncMembersClient_BeginRefreshMemberSchema() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberPatch.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberPatch.json
 func ExampleSyncMembersClient_BeginUpdate_updateAnExistingSyncMember() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,7 +476,7 @@ func ExampleSyncMembersClient_BeginUpdate_updateAnExistingSyncMember() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberPatchAddAndRemoveIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberPatchAddAndRemoveIdentity.json
 func ExampleSyncMembersClient_BeginUpdate_updateAnExistingSyncMemberWithNewUserAssignedIdentityAndRemovingOlderUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -541,7 +541,7 @@ func ExampleSyncMembersClient_BeginUpdate_updateAnExistingSyncMemberWithNewUserA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncMemberPatchWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncMemberPatchWithIdentity.json
 func ExampleSyncMembersClient_BeginUpdate_updateAnExistingSyncMemberWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

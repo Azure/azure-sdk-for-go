@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/DatabaseSecurityAlertCreateMax.json
+// Generated from example definition: 2025-08-01-preview/DatabaseSecurityAlertCreateMax.json
 func ExampleDatabaseSecurityAlertPoliciesClient_CreateOrUpdate_updateADatabaseSThreatDetectionPolicyWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleDatabaseSecurityAlertPoliciesClient_CreateOrUpdate_updateADatabaseST
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DatabaseSecurityAlertCreateMin.json
+// Generated from example definition: 2025-08-01-preview/DatabaseSecurityAlertCreateMin.json
 func ExampleDatabaseSecurityAlertPoliciesClient_CreateOrUpdate_updateADatabaseSThreatDetectionPolicyWithMinimalParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleDatabaseSecurityAlertPoliciesClient_CreateOrUpdate_updateADatabaseST
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DatabaseSecurityAlertGet.json
+// Generated from example definition: 2025-08-01-preview/DatabaseSecurityAlertGet.json
 func ExampleDatabaseSecurityAlertPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +177,7 @@ func ExampleDatabaseSecurityAlertPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DatabaseSecurityAlertListByDatabase.json
+// Generated from example definition: 2025-08-01-preview/DatabaseSecurityAlertListByDatabase.json
 func ExampleDatabaseSecurityAlertPoliciesClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

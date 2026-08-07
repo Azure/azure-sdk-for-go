@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/LocationCapabilityListByLocation.json
+// Generated from example definition: 2025-08-01-preview/LocationCapabilityListByLocation.json
 func ExampleCapabilitiesClient_ListByLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -25,6 +25,12 @@
   where the application runs, or `PreferredRegions` for an explicit order; both take a typed
   `Region`. Operations on these clients are not implemented yet.
   See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
+* Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with `ReadItemOptions` and
+  `CreateItemOptions`. Both carry an `OperationOptions`, which holds the settings every operation
+  accepts: the read consistency strategy, whether writes return content, excluded regions and the
+  end-to-end timeout. Each options type adds only what is specific to it. These operations are not
+  implemented yet.
+  See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
 
 ### Breaking Changes
 

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/WorkspacesDisableIntelligencePack.json
+// Generated from example definition: 2026-03-01/WorkspacesDisableIntelligencePack.json
 func ExampleIntelligencePacksClient_Disable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleIntelligencePacksClient_Disable() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesEnableIntelligencePack.json
+// Generated from example definition: 2026-03-01/WorkspacesEnableIntelligencePack.json
 func ExampleIntelligencePacksClient_Enable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleIntelligencePacksClient_Enable() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesListIntelligencePacks.json
+// Generated from example definition: 2026-03-01/WorkspacesListIntelligencePacks.json
 func ExampleIntelligencePacksClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // DeletedWorkspacesClient contains the methods for the DeletedWorkspaces group.
 // Don't use this type directly, use NewDeletedWorkspacesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 type DeletedWorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -79,7 +79,7 @@ func (client *DeletedWorkspacesClient) listCreateRequest(ctx context.Context, _ 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +137,7 @@ func (client *DeletedWorkspacesClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

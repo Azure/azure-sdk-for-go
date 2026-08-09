@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/WorkspacesCreate.json
+// Generated from example definition: 2026-03-01/WorkspacesCreate.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesDelete.json
+// Generated from example definition: 2026-03-01/WorkspacesDelete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesFailback.json
+// Generated from example definition: 2026-03-01/WorkspacesFailback.json
 func ExampleWorkspacesClient_BeginFailback() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleWorkspacesClient_BeginFailback() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesFailover.json
+// Generated from example definition: 2026-03-01/WorkspacesFailover.json
 func ExampleWorkspacesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleWorkspacesClient_BeginFailover() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesGet.json
+// Generated from example definition: 2026-03-01/WorkspacesGet.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NSPForWorkspaces_Get.json
+// Generated from example definition: 2026-03-01/NSPForWorkspaces_Get.json
 func ExampleWorkspacesClient_GetNSP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleWorkspacesClient_GetNSP() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesSubscriptionListForWorkSpace.json
+// Generated from example definition: 2026-03-01/WorkspacesSubscriptionListForWorkSpace.json
 func ExampleWorkspacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleWorkspacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesListByResourceGroup.json
+// Generated from example definition: 2026-03-01/WorkspacesListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,7 +339,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NSPForWorkspaces_List.json
+// Generated from example definition: 2026-03-01/NSPForWorkspaces_List.json
 func ExampleWorkspacesClient_NewListNSPPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -402,7 +402,7 @@ func ExampleWorkspacesClient_NewListNSPPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NSPForWorkspaces_Reconcile.json
+// Generated from example definition: 2026-03-01/NSPForWorkspaces_Reconcile.json
 func ExampleWorkspacesClient_BeginReconcileNSP() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExampleWorkspacesClient_BeginReconcileNSP() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/WorkspacesUpdate.json
+// Generated from example definition: 2026-03-01/WorkspacesUpdate.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -230,7 +230,8 @@ type Column struct {
 	// Column description.
 	Description *string
 
-	// Column display name.
+	// Column display name. Can be set at creation time; after creation, updates must either match column name or set to null/empty.
+	// If not provided, defaults to column name.
 	DisplayName *string
 
 	// Column name.
@@ -1228,6 +1229,9 @@ type StorageInsightStatus struct {
 
 // SummaryLogs - Workspace data summary rules definition.
 type SummaryLogs struct {
+	// The managed identity of the summary logs resource. Only user-assigned identity is supported.
+	Identity *SummaryLogsIdentity
+
 	// Summary rule properties.
 	Properties *SummaryLogsProperties
 
@@ -1242,6 +1246,22 @@ type SummaryLogs struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// SummaryLogsIdentity - Identity for the summary logs resource.
+type SummaryLogsIdentity struct {
+	// REQUIRED; Type of managed service identity.
+	Type *SummaryLogsIdentityType
+
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*SummaryLogsUserIdentityProperties
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string
 }
 
 // SummaryLogsListResult - The response of a SummaryLogs list operation.
@@ -1290,6 +1310,15 @@ type SummaryLogsRetryBinProperties struct {
 	RetryBinStartTime *time.Time
 }
 
+// SummaryLogsUserIdentityProperties - User assigned identity properties.
+type SummaryLogsUserIdentityProperties struct {
+	// READ-ONLY; The client id of user assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -1333,6 +1362,9 @@ type Table struct {
 type TableProperties struct {
 	// Instruct the system how to handle and charge the logs ingested to this table.
 	Plan *TablePlanEnum
+
+	// The protection level of the table. Determines the default data access isolation behavior.
+	ProtectionLevel *TableProtectionLevelEnum
 
 	// Parameters of the restore operation that initiated this table.
 	RestoredLogs *RestoredLogs
@@ -1491,6 +1523,9 @@ type WorkspaceFeatures struct {
 	// Dedicated LA cluster resourceId that is linked to the workspaces.
 	ClusterResourceID *string
 
+	// Enable Data authorization mode for the workspace.
+	DataAuthorizationMode *bool
+
 	// Disable Non-AAD based Auth.
 	DisableLocalAuth *bool
 
@@ -1637,6 +1672,26 @@ type WorkspacePurgeBodyFilters struct {
 	// the value for the operator to function over. This can be a number (e.g., > 100), a string (timestamp >= '2017-09-01') or
 	// array of values.
 	Value any
+}
+
+// WorkspacePurgeLakeDataBody - Describes the body of a request to purge data lake data in a Log Analytics workspace.
+type WorkspacePurgeLakeDataBody struct {
+	// REQUIRED; The name of the table from which to purge data lake data. Must be an Auxiliary table, or an Analytics table that
+	// is mirrored to the data lake.
+	Table *string
+
+	// REQUIRED; The time range over which data lake data is purged.
+	TimeRange *WorkspacePurgeLakeDataTimeRange
+}
+
+// WorkspacePurgeLakeDataTimeRange - The time range over which a data lake purge request operates.
+type WorkspacePurgeLakeDataTimeRange struct {
+	// REQUIRED; The exclusive end of the time range, in UTC. Must fall on an hour boundary and be earlier than the start of the
+	// current hour.
+	EndTime *time.Time
+
+	// REQUIRED; The inclusive start of the time range, in UTC. Must fall on an hour boundary (minutes and seconds must be zero).
+	StartTime *time.Time
 }
 
 // WorkspacePurgeResponse - Response containing operationId for a specific purge action.

@@ -5,7 +5,7 @@
 package armoperationalinsights
 
 const (
-	version20250701 string = "2025-07-01"
+	version20260301 string = "2026-03-01"
 )
 
 // AccessRuleDirection - Direction of Access Rule
@@ -144,6 +144,8 @@ const (
 	ColumnDataTypeHintEnumIP ColumnDataTypeHintEnum = "ip"
 	// ColumnDataTypeHintEnumURI - A string that matches the pattern of a URI, for example, scheme://username:password@host:1234/this/is/a/path?k1=v1&k2=v2#fragment
 	ColumnDataTypeHintEnumURI ColumnDataTypeHintEnum = "uri"
+	// ColumnDataTypeHintEnumVector16 - A vector of single-precision floating-point values used for semantic / similarity search.
+	ColumnDataTypeHintEnumVector16 ColumnDataTypeHintEnum = "vector16"
 )
 
 // PossibleColumnDataTypeHintEnumValues returns the possible values for the ColumnDataTypeHintEnum const type.
@@ -153,6 +155,7 @@ func PossibleColumnDataTypeHintEnumValues() []ColumnDataTypeHintEnum {
 		ColumnDataTypeHintEnumGUID,
 		ColumnDataTypeHintEnumIP,
 		ColumnDataTypeHintEnumURI,
+		ColumnDataTypeHintEnumVector16,
 	}
 }
 
@@ -736,6 +739,25 @@ func PossibleStorageInsightStateValues() []StorageInsightState {
 	}
 }
 
+// SummaryLogsIdentityType - Type of managed service identity.
+type SummaryLogsIdentityType string
+
+const (
+	// SummaryLogsIdentityTypeNone - The default identity type. summary logs do not have a managed identity.
+	SummaryLogsIdentityTypeNone SummaryLogsIdentityType = "None"
+	// SummaryLogsIdentityTypeUserAssigned - summary logs is associated with a user assigned managed identity. User assigned identities
+	// are created as separate Azure resources and can be shared across multiple summary logs.
+	SummaryLogsIdentityTypeUserAssigned SummaryLogsIdentityType = "UserAssigned"
+)
+
+// PossibleSummaryLogsIdentityTypeValues returns the possible values for the SummaryLogsIdentityType const type.
+func PossibleSummaryLogsIdentityTypeValues() []SummaryLogsIdentityType {
+	return []SummaryLogsIdentityType{
+		SummaryLogsIdentityTypeNone,
+		SummaryLogsIdentityTypeUserAssigned,
+	}
+}
+
 // TablePlanEnum - Instruct the system how to handle and charge the logs ingested to this table.
 type TablePlanEnum string
 
@@ -754,6 +776,25 @@ func PossibleTablePlanEnumValues() []TablePlanEnum {
 		TablePlanEnumAnalytics,
 		TablePlanEnumAuxiliary,
 		TablePlanEnumBasic,
+	}
+}
+
+// TableProtectionLevelEnum - The protection level of the table. Determines the default data access isolation behavior.
+type TableProtectionLevelEnum string
+
+const (
+	// TableProtectionLevelEnumGeneral - The default protection level. Table data is accessible through standard permissions.
+	TableProtectionLevelEnumGeneral TableProtectionLevelEnum = "General"
+	// TableProtectionLevelEnumProtected - Table data is isolated by default. Accessing or exporting data requires explicit, scoped
+	// authorization.
+	TableProtectionLevelEnumProtected TableProtectionLevelEnum = "Protected"
+)
+
+// PossibleTableProtectionLevelEnumValues returns the possible values for the TableProtectionLevelEnum const type.
+func PossibleTableProtectionLevelEnumValues() []TableProtectionLevelEnum {
+	return []TableProtectionLevelEnum{
+		TableProtectionLevelEnumGeneral,
+		TableProtectionLevelEnumProtected,
 	}
 }
 

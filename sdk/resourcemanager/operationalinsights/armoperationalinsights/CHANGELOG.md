@@ -1,5 +1,21 @@
 # Release History
 
+## 3.1.0 (2026-08-09)
+### Features Added
+
+- New value `ColumnDataTypeHintEnumVector16` added to enum type `ColumnDataTypeHintEnum`
+- New enum type `SummaryLogsIdentityType` with values `SummaryLogsIdentityTypeNone`, `SummaryLogsIdentityTypeUserAssigned`
+- New enum type `TableProtectionLevelEnum` with values `TableProtectionLevelEnumGeneral`, `TableProtectionLevelEnumProtected`
+- New function `*WorkspacePurgeClient.BeginPurgeLakeData(ctx context.Context, resourceGroupName string, workspaceName string, body WorkspacePurgeLakeDataBody, options *WorkspacePurgeClientBeginPurgeLakeDataOptions) (*runtime.Poller[WorkspacePurgeClientPurgeLakeDataResponse], error)`
+- New struct `SummaryLogsIdentity`
+- New struct `SummaryLogsUserIdentityProperties`
+- New struct `WorkspacePurgeLakeDataBody`
+- New struct `WorkspacePurgeLakeDataTimeRange`
+- New field `Identity` in struct `SummaryLogs`
+- New field `ProtectionLevel` in struct `TableProperties`
+- New field `DataAuthorizationMode` in struct `WorkspaceFeatures`
+
+
 ## 3.0.0 (2026-06-24)
 ### Breaking Changes
 

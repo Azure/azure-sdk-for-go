@@ -4,7 +4,7 @@
 
 ### Features Added
 
-* Method `runtime.NewRequestForNextLink` is used when creating a paged request that uses a next link.  It handles absolute and relative next links.
+* Helper method `runtime.NewRequestForNextLink` for creating requests for pageable operations that uses a next link.  It handles absolute and relative next links.
 
 ### Breaking Changes
 

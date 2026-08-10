@@ -125,7 +125,7 @@ func NewRequest(ctx context.Context, httpMethod string, endpoint string) (*Reque
 // NewRequestForNextLink creates a new policy.Request with the specified input.
 // This helper is for use in paged operations that use the "next link" pattern.
 //   - endpoint is the service endpoint (e.g. https://contoso.com)
-//   - nextLink the the absolute or relative URL to the next page of items
+//   - nextLink the absolute or relative URL to the next page of items
 //
 // When nextLink is an absolute URL, its value is used to create the request to the next page.
 // If nextLink is a relative URL, it will be joined with the specified endpoint.

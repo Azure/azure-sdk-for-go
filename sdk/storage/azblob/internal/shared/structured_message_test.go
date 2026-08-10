@@ -1185,10 +1185,10 @@ func TestDecoderPropagatesNetErrorAtExactSegmentCompletion(t *testing.T) {
 // segDataNetErrorReader serves an encoded SM stream but injects a net.Error exactly when the
 // segment data bytes are exhausted (bytes + error at segment completion boundary).
 type segDataNetErrorReader struct {
-	encoded []byte
-	segSize int
-	netErr  net.Error
-	off     int
+	encoded  []byte
+	segSize  int
+	netErr   net.Error
+	off      int
 	injected bool
 }
 

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultThreatIntelligenceIndicatorMetricsClientVersion string = "2025-07-01-preview"
-
 // ThreatIntelligenceIndicatorMetricsClient contains the methods for the ThreatIntelligenceIndicatorMetrics group.
 // Don't use this type directly, use NewThreatIntelligenceIndicatorMetricsClient() instead.
 //
@@ -91,7 +89,7 @@ func (client *ThreatIntelligenceIndicatorMetricsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorMetricsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

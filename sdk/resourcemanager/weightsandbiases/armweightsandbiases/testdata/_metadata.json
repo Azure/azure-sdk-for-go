@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.WeightsAndBiases": "2024-09-18"
   },
-  "emitterVersion": "0.14.2"
+  "emitterVersion": "0.15.0"
 }

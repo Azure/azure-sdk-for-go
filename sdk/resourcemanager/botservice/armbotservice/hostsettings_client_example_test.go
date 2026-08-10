@@ -7,7 +7,7 @@ package armbotservice_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice"
 	"log"
 )
 
@@ -30,7 +30,7 @@ func ExampleHostSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbotservice.HostSettingsClientGetResponse{
-	// 	HostSettingsResponse: &armbotservice.HostSettingsResponse{
+	// 	HostSettingsResponse: armbotservice.HostSettingsResponse{
 	// 		BotOpenIDMetadata: to.Ptr("https://login.botframework.com/v1/.well-known/openidconfiguration"),
 	// 		OAuthURL: to.Ptr("https://token.botframework.com/"),
 	// 		ToBotFromChannelOpenIDMetadataURL: to.Ptr("https://login.botframework.com/v1/.well-known/openidconfiguration"),

@@ -18,6 +18,8 @@ import (
 
 // SyncGroupsClient contains the methods for the SyncGroups group.
 // Don't use this type directly, use NewSyncGroupsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type SyncGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSyncGroupsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CancelSync - Cancels a sync group synchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -97,15 +97,13 @@ func (client *SyncGroupsClient) cancelSyncCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -132,8 +130,6 @@ func (client *SyncGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 
 // CreateOrUpdate - Creates or updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *SyncGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SyncGroupsClient.BeginCreateOrUpdate"
@@ -183,8 +179,8 @@ func (client *SyncGroupsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -195,8 +191,6 @@ func (client *SyncGroupsClient) createOrUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -221,8 +215,6 @@ func (client *SyncGroupsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Deletes a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *SyncGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SyncGroupsClient.BeginDelete"
@@ -272,15 +264,13 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -336,8 +326,8 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -352,8 +342,6 @@ func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGrou
 }
 
 // NewListByDatabasePager - Lists sync groups under a hub database.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -406,8 +394,8 @@ func (client *SyncGroupsClient) listByDatabaseCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -422,8 +410,6 @@ func (client *SyncGroupsClient) listByDatabaseHandleResponse(resp *http.Response
 }
 
 // NewListHubSchemasPager - Gets a collection of hub database schemas.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -481,8 +467,8 @@ func (client *SyncGroupsClient) listHubSchemasCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -497,8 +483,6 @@ func (client *SyncGroupsClient) listHubSchemasHandleResponse(resp *http.Response
 }
 
 // NewListLogsPager - Gets a collection of sync group logs.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -558,14 +542,14 @@ func (client *SyncGroupsClient) listLogsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
+	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.ContinuationToken != nil {
 		reqQP.Set("continuationToken", *options.ContinuationToken)
 	}
 	reqQP.Set("endTime", endTime)
 	reqQP.Set("startTime", startTime)
 	reqQP.Set("type", string(typeParam))
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -580,8 +564,6 @@ func (client *SyncGroupsClient) listLogsHandleResponse(resp *http.Response) (Syn
 }
 
 // NewListSyncDatabaseIDsPager - Gets a collection of sync database ids.
-//
-// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - options - SyncGroupsClientListSyncDatabaseIDsOptions contains the optional parameters for the SyncGroupsClient.NewListSyncDatabaseIDsPager
 //     method.
@@ -624,8 +606,8 @@ func (client *SyncGroupsClient) listSyncDatabaseIDsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -641,8 +623,6 @@ func (client *SyncGroupsClient) listSyncDatabaseIDsHandleResponse(resp *http.Res
 
 // BeginRefreshHubSchema - Refreshes a hub database schema.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -668,8 +648,6 @@ func (client *SyncGroupsClient) BeginRefreshHubSchema(ctx context.Context, resou
 
 // RefreshHubSchema - Refreshes a hub database schema.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *SyncGroupsClient) refreshHubSchema(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, options *SyncGroupsClientBeginRefreshHubSchemaOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SyncGroupsClient.BeginRefreshHubSchema"
@@ -719,15 +697,13 @@ func (client *SyncGroupsClient) refreshHubSchemaCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // TriggerSync - Triggers a sync group synchronization.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -782,15 +758,13 @@ func (client *SyncGroupsClient) triggerSyncCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginUpdate - Updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -816,8 +790,6 @@ func (client *SyncGroupsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Updates a sync group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *SyncGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, databaseName string, syncGroupName string, parameters SyncGroup, options *SyncGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SyncGroupsClient.BeginUpdate"
@@ -867,8 +839,8 @@ func (client *SyncGroupsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

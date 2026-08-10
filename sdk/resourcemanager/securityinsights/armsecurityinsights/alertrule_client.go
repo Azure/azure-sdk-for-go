@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultAlertRuleClientVersion string = "2025-07-01-preview"
-
 // AlertRuleClient contains the methods for the AlertRule group.
 // Don't use this type directly, use NewAlertRuleClient() instead.
 //
@@ -115,7 +113,7 @@ func (client *AlertRuleClient) triggerRuleRunCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultAlertRuleClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, analyticsRuleRunTriggerParameter); err != nil {

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/attestation/armattestation"
 	"log"
 )
 
@@ -38,7 +38,7 @@ func ExamplePrivateEndpointConnectionsClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.PrivateEndpointConnectionsClientCreateResponse{
-	// 	PrivateEndpointConnection: &armattestation.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armattestation.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.Attestation/attestationProviders/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Attestation/attestationProviders/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),
@@ -97,7 +97,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armattestation.PrivateEndpointConnectionsClientGetResponse{
-	// 	PrivateEndpointConnection: &armattestation.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armattestation.PrivateEndpointConnection{
 	// 		Name: to.Ptr("{privateEndpointConnectionName}"),
 	// 		Type: to.Ptr("Microsoft.Attestation/attestationProviders/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Attestation/attestationProviders/sto288/privateEndpointConnections/{privateEndpointConnectionName}"),

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v3"
 	"log"
 )
 
@@ -29,7 +29,7 @@ func ExamplePrivateEndpointConnectionClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -52,7 +52,7 @@ func ExamplePrivateEndpointConnectionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PrivateEndpointConnectionClientGetResponse{
-	// 	PrivateEndpointConnection: &armbatch.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armbatch.PrivateEndpointConnection{
 	// 		Name: to.Ptr("testprivateEndpointConnection5testprivateEndpointConnection5.24d6b4b5-e65c-4330-bbe9-3a290d62f8e0"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/privateEndpointConnections/testprivateEndpointConnection5testprivateEndpointConnection5.24d6b4b5-e65c-4330-bbe9-3a290d62f8e0"),
@@ -146,13 +146,13 @@ func ExamplePrivateEndpointConnectionClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.PrivateEndpointConnectionClientUpdateResponse{
-	// 	PrivateEndpointConnection: &armbatch.PrivateEndpointConnection{
+	// 	PrivateEndpointConnection: armbatch.PrivateEndpointConnection{
 	// 		Name: to.Ptr("testprivateEndpointConnection5.24d6b4b5-e65c-4330-bbe9-3a290d62f8e0"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/privateEndpointConnections"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/privateEndpointConnections/testprivateEndpointConnection5.24d6b4b5-e65c-4330-bbe9-3a290d62f8e0"),

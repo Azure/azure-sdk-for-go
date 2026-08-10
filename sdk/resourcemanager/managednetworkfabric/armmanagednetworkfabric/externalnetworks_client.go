@@ -18,6 +18,8 @@ import (
 
 // ExternalNetworksClient contains the methods for the ExternalNetworks group.
 // Don't use this type directly, use NewExternalNetworksClient() instead.
+//
+// Generated from API version 2025-07-15
 type ExternalNetworksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewExternalNetworksClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreate - Creates ExternalNetwork PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - externalNetworkName - Name of the External Network.
@@ -68,8 +68,6 @@ func (client *ExternalNetworksClient) BeginCreate(ctx context.Context, resourceG
 
 // Create - Creates ExternalNetwork PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *ExternalNetworksClient) create(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetwork, options *ExternalNetworksClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExternalNetworksClient.BeginCreate"
@@ -115,8 +113,8 @@ func (client *ExternalNetworksClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,8 +125,6 @@ func (client *ExternalNetworksClient) createCreateRequest(ctx context.Context, r
 
 // BeginDelete - Implements ExternalNetworks DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - externalNetworkName - Name of the External Network.
@@ -153,8 +149,6 @@ func (client *ExternalNetworksClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Implements ExternalNetworks DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *ExternalNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, options *ExternalNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExternalNetworksClient.BeginDelete"
@@ -200,15 +194,13 @@ func (client *ExternalNetworksClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements ExternalNetworks GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - externalNetworkName - Name of the External Network.
@@ -259,8 +251,8 @@ func (client *ExternalNetworksClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -275,8 +267,6 @@ func (client *ExternalNetworksClient) getHandleResponse(resp *http.Response) (Ex
 }
 
 // NewListByL3IsolationDomainPager - Implements External Networks list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - options - ExternalNetworksClientListByL3IsolationDomainOptions contains the optional parameters for the ExternalNetworksClient.NewListByL3IsolationDomainPager
@@ -324,8 +314,8 @@ func (client *ExternalNetworksClient) listByL3IsolationDomainCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -341,8 +331,6 @@ func (client *ExternalNetworksClient) listByL3IsolationDomainHandleResponse(resp
 
 // BeginUpdate - API to update certain properties of the ExternalNetworks resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - externalNetworkName - Name of the External Network.
@@ -368,8 +356,6 @@ func (client *ExternalNetworksClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - API to update certain properties of the ExternalNetworks resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *ExternalNetworksClient) update(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetworkPatch, options *ExternalNetworksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExternalNetworksClient.BeginUpdate"
@@ -415,8 +401,8 @@ func (client *ExternalNetworksClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -427,8 +413,6 @@ func (client *ExternalNetworksClient) updateCreateRequest(ctx context.Context, r
 
 // BeginUpdateAdministrativeState - Executes update operation to enable or disable administrative State for externalNetwork.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - externalNetworkName - Name of the External Network.
@@ -454,8 +438,6 @@ func (client *ExternalNetworksClient) BeginUpdateAdministrativeState(ctx context
 
 // UpdateAdministrativeState - Executes update operation to enable or disable administrative State for externalNetwork.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *ExternalNetworksClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExternalNetworksClient.BeginUpdateAdministrativeState"
@@ -501,8 +483,8 @@ func (client *ExternalNetworksClient) updateAdministrativeStateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -513,8 +495,6 @@ func (client *ExternalNetworksClient) updateAdministrativeStateCreateRequest(ctx
 
 // BeginUpdateBfdAdministrativeState - BFD administrative state for either static or bgp for internalNetwork.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - externalNetworkName - Name of the External Network.
@@ -540,8 +520,6 @@ func (client *ExternalNetworksClient) BeginUpdateBfdAdministrativeState(ctx cont
 
 // UpdateBfdAdministrativeState - BFD administrative state for either static or bgp for internalNetwork.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *ExternalNetworksClient) updateBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body ExternalNetworkUpdateBfdAdministrativeStateRequest, options *ExternalNetworksClientBeginUpdateBfdAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExternalNetworksClient.BeginUpdateBfdAdministrativeState"
@@ -587,8 +565,8 @@ func (client *ExternalNetworksClient) updateBfdAdministrativeStateCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -599,8 +577,6 @@ func (client *ExternalNetworksClient) updateBfdAdministrativeStateCreateRequest(
 
 // BeginUpdateStaticRouteBfdAdministrativeState - Update Static Route BFD for external Network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - l3IsolationDomainName - Name of the L3 Isolation Domain.
 //   - externalNetworkName - Name of the External Network.
@@ -626,8 +602,6 @@ func (client *ExternalNetworksClient) BeginUpdateStaticRouteBfdAdministrativeSta
 
 // UpdateStaticRouteBfdAdministrativeState - Update Static Route BFD for external Network.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *ExternalNetworksClient) updateStaticRouteBfdAdministrativeState(ctx context.Context, resourceGroupName string, l3IsolationDomainName string, externalNetworkName string, body UpdateAdministrativeState, options *ExternalNetworksClientBeginUpdateStaticRouteBfdAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExternalNetworksClient.BeginUpdateStaticRouteBfdAdministrativeState"
@@ -673,8 +647,8 @@ func (client *ExternalNetworksClient) updateStaticRouteBfdAdministrativeStateCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

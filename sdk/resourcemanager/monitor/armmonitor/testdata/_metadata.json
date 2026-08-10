@@ -18,5 +18,5 @@
     "VmInsightsOnboarding": "2018-11-27-preview",
     "DiagnosticsSettings": "2021-05-01-preview"
   },
-  "emitterVersion": "0.14.3"
+  "emitterVersion": "0.15.0"
 }

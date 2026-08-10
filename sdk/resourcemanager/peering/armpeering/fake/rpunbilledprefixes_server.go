@@ -11,10 +11,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 	"strconv"
 )
 
@@ -54,9 +55,7 @@ func (r *RpUnbilledPrefixesServerTransport) Do(req *http.Request) (*http.Respons
 }
 
 func (r *RpUnbilledPrefixesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -72,10 +71,7 @@ func (r *RpUnbilledPrefixesServerTransport) dispatchToMethodFake(req *http.Reque
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -107,11 +103,7 @@ func (r *RpUnbilledPrefixesServerTransport) dispatchNewListPager(req *http.Reque
 		if err != nil {
 			return nil, err
 		}
-		consolidateUnescaped, err := url.QueryUnescape(qp.Get("consolidate"))
-		if err != nil {
-			return nil, err
-		}
-		consolidateParam, err := parseOptional(consolidateUnescaped, strconv.ParseBool)
+		consolidateParam, err := parseOptional(qp.Get("consolidate"), strconv.ParseBool)
 		if err != nil {
 			return nil, err
 		}
@@ -132,7 +124,7 @@ func (r *RpUnbilledPrefixesServerTransport) dispatchNewListPager(req *http.Reque
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		r.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

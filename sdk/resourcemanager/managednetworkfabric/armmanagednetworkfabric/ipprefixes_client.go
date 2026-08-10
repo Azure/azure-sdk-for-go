@@ -18,6 +18,8 @@ import (
 
 // IPPrefixesClient contains the methods for the IPPrefixes group.
 // Don't use this type directly, use NewIPPrefixesClient() instead.
+//
+// Generated from API version 2025-07-15
 type IPPrefixesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewIPPrefixesClient(subscriptionID string, credential azcore.TokenCredentia
 
 // BeginCreate - Implements IP Prefix PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipPrefixName - Name of the IP Prefix.
 //   - body - Request payload.
@@ -66,8 +66,6 @@ func (client *IPPrefixesClient) BeginCreate(ctx context.Context, resourceGroupNa
 
 // Create - Implements IP Prefix PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPPrefixesClient) create(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefix, options *IPPrefixesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPPrefixesClient.BeginCreate"
@@ -109,8 +107,8 @@ func (client *IPPrefixesClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -121,8 +119,6 @@ func (client *IPPrefixesClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Implements IP Prefix DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipPrefixName - Name of the IP Prefix.
 //   - options - IPPrefixesClientBeginDeleteOptions contains the optional parameters for the IPPrefixesClient.BeginDelete method.
@@ -145,8 +141,6 @@ func (client *IPPrefixesClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Implements IP Prefix DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPPrefixesClient) deleteOperation(ctx context.Context, resourceGroupName string, ipPrefixName string, options *IPPrefixesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPPrefixesClient.BeginDelete"
@@ -188,15 +182,13 @@ func (client *IPPrefixesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements IP Prefix GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipPrefixName - Name of the IP Prefix.
 //   - options - IPPrefixesClientGetOptions contains the optional parameters for the IPPrefixesClient.Get method.
@@ -242,8 +234,8 @@ func (client *IPPrefixesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -258,8 +250,6 @@ func (client *IPPrefixesClient) getHandleResponse(resp *http.Response) (IPPrefix
 }
 
 // NewListByResourceGroupPager - Implements IpPrefixes list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IPPrefixesClientListByResourceGroupOptions contains the optional parameters for the IPPrefixesClient.NewListByResourceGroupPager
 //     method.
@@ -302,8 +292,8 @@ func (client *IPPrefixesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -318,8 +308,6 @@ func (client *IPPrefixesClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - Implements IpPrefixes list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - IPPrefixesClientListBySubscriptionOptions contains the optional parameters for the IPPrefixesClient.NewListBySubscriptionPager
 //     method.
 func (client *IPPrefixesClient) NewListBySubscriptionPager(options *IPPrefixesClientListBySubscriptionOptions) *runtime.Pager[IPPrefixesClientListBySubscriptionResponse] {
@@ -357,8 +345,8 @@ func (client *IPPrefixesClient) listBySubscriptionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -374,8 +362,6 @@ func (client *IPPrefixesClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // BeginUpdate - API to update certain properties of the IP Prefix resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipPrefixName - Name of the IP Prefix.
 //   - body - IP Prefix properties to update.
@@ -399,8 +385,6 @@ func (client *IPPrefixesClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - API to update certain properties of the IP Prefix resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPPrefixesClient) update(ctx context.Context, resourceGroupName string, ipPrefixName string, body IPPrefixPatch, options *IPPrefixesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPPrefixesClient.BeginUpdate"
@@ -442,8 +426,8 @@ func (client *IPPrefixesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

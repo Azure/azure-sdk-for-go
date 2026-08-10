@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultGetClientVersion string = "2025-07-01-preview"
-
 // GetClient contains the methods for the Get group.
 // Don't use this type directly, use NewGetClient() instead.
 //
@@ -96,7 +94,7 @@ func (client *GetClient) singleRecommendationCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGetClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

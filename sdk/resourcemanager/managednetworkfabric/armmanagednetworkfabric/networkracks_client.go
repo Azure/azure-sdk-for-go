@@ -18,6 +18,8 @@ import (
 
 // NetworkRacksClient contains the methods for the NetworkRacks group.
 // Don't use this type directly, use NewNetworkRacksClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkRacksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkRacksClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreate - Create Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkRackName - Name of the Network Rack.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *NetworkRacksClient) BeginCreate(ctx context.Context, resourceGroup
 
 // Create - Create Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkRacksClient) create(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRack, options *NetworkRacksClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkRacksClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *NetworkRacksClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *NetworkRacksClient) createCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Delete Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkRackName - Name of the Network Rack.
 //   - options - NetworkRacksClientBeginDeleteOptions contains the optional parameters for the NetworkRacksClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *NetworkRacksClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Delete Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkRacksClient) deleteOperation(ctx context.Context, resourceGroupName string, networkRackName string, options *NetworkRacksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkRacksClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *NetworkRacksClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Network Rack resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkRackName - Name of the Network Rack.
 //   - options - NetworkRacksClientGetOptions contains the optional parameters for the NetworkRacksClient.Get method.
@@ -244,8 +236,8 @@ func (client *NetworkRacksClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *NetworkRacksClient) getHandleResponse(resp *http.Response) (Networ
 }
 
 // NewListByResourceGroupPager - List all Network Rack resources in the given resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkRacksClientListByResourceGroupOptions contains the optional parameters for the NetworkRacksClient.NewListByResourceGroupPager
 //     method.
@@ -304,8 +294,8 @@ func (client *NetworkRacksClient) listByResourceGroupCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *NetworkRacksClient) listByResourceGroupHandleResponse(resp *http.R
 }
 
 // NewListBySubscriptionPager - List all Network Rack resources in the given subscription
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkRacksClientListBySubscriptionOptions contains the optional parameters for the NetworkRacksClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkRacksClient) NewListBySubscriptionPager(options *NetworkRacksClientListBySubscriptionOptions) *runtime.Pager[NetworkRacksClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *NetworkRacksClient) listBySubscriptionCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *NetworkRacksClient) listBySubscriptionHandleResponse(resp *http.Re
 
 // BeginUpdate - Update certain properties of the Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkRackName - Name of the Network Rack.
 //   - body - Network Rack properties to update.
@@ -402,8 +388,6 @@ func (client *NetworkRacksClient) BeginUpdate(ctx context.Context, resourceGroup
 
 // Update - Update certain properties of the Network Rack resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkRacksClient) update(ctx context.Context, resourceGroupName string, networkRackName string, body NetworkRackPatch, options *NetworkRacksClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkRacksClient.BeginUpdate"
@@ -445,8 +429,8 @@ func (client *NetworkRacksClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

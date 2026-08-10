@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultManagedRuleSetsClientVersion string = "2025-06-01"
-
 // ManagedRuleSetsClient contains the methods for the ManagedRuleSets group.
 // Don't use this type directly, use NewManagedRuleSetsClient() instead.
 //
@@ -81,7 +79,7 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, _ *M
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultManagedRuleSetsClientVersion)
+	reqQP.Set("api-version", version20250601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

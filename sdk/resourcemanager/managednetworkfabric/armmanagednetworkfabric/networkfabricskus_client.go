@@ -18,6 +18,8 @@ import (
 
 // NetworkFabricSKUsClient contains the methods for the NetworkFabricSKUs group.
 // Don't use this type directly, use NewNetworkFabricSKUsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkFabricSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkFabricSKUsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Implements Network Fabric SKU GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - networkFabricSKUName - Name of the Network Fabric SKU.
 //   - options - NetworkFabricSKUsClientGetOptions contains the optional parameters for the NetworkFabricSKUsClient.Get method.
 func (client *NetworkFabricSKUsClient) Get(ctx context.Context, networkFabricSKUName string, options *NetworkFabricSKUsClientGetOptions) (NetworkFabricSKUsClientGetResponse, error) {
@@ -83,8 +83,8 @@ func (client *NetworkFabricSKUsClient) getCreateRequest(ctx context.Context, net
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -99,8 +99,6 @@ func (client *NetworkFabricSKUsClient) getHandleResponse(resp *http.Response) (N
 }
 
 // NewListBySubscriptionPager - Implements Network Fabric SKUs list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkFabricSKUsClientListBySubscriptionOptions contains the optional parameters for the NetworkFabricSKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkFabricSKUsClient) NewListBySubscriptionPager(options *NetworkFabricSKUsClientListBySubscriptionOptions) *runtime.Pager[NetworkFabricSKUsClientListBySubscriptionResponse] {
@@ -138,8 +136,8 @@ func (client *NetworkFabricSKUsClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

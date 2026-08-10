@@ -6,11 +6,10 @@ package armmarketplace_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace"
+	"log"
 )
 
 // Generated from example definition: 2025-01-01/ApproveAllItems.json
@@ -32,7 +31,7 @@ func ExamplePrivateStoreCollectionClient_ApproveAllItems() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientApproveAllItemsResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
@@ -91,7 +90,7 @@ func ExamplePrivateStoreCollectionClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientCreateOrUpdateResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("d0f5aa2c-ecc3-4d87-906a-f8c486dcc4f1"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/d0f5aa2c-ecc3-4d87-906a-f8c486dcc4f1"),
@@ -160,7 +159,7 @@ func ExamplePrivateStoreCollectionClient_DisableApproveAllItems() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientDisableApproveAllItemsResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
@@ -214,7 +213,7 @@ func ExamplePrivateStoreCollectionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientGetResponse{
-	// 	Collection: &armmarketplace.Collection{
+	// 	Collection: armmarketplace.Collection{
 	// 		Name: to.Ptr("56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
 	// 		Type: to.Ptr("Microsoft.Marketplace/privateStores/collections"),
 	// 		ID: to.Ptr("providers/Microsoft.Marketplace/privateStores/a0e28e55-90c4-41d8-8e34-bb7ef7775406/collections/56a1a02d-8cf8-45df-bf37-d5f7120fcb3d"),
@@ -265,7 +264,7 @@ func ExamplePrivateStoreCollectionClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientListResponse{
-	// 	CollectionsList: &armmarketplace.CollectionsList{
+	// 	CollectionsList: armmarketplace.CollectionsList{
 	// 		NextLink: to.Ptr(""),
 	// 		Value: []*armmarketplace.Collection{
 	// 			{
@@ -384,7 +383,7 @@ func ExamplePrivateStoreCollectionClient_TransferOffers() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmarketplace.PrivateStoreCollectionClientTransferOffersResponse{
-	// 	TransferOffersResponse: &armmarketplace.TransferOffersResponse{
+	// 	TransferOffersResponse: armmarketplace.TransferOffersResponse{
 	// 		Failed: []*armmarketplace.CollectionsDetails{
 	// 			{
 	// 				CollectionID: to.Ptr("f47ef1c7-e908-4f39-ae29-db181634ad8d"),

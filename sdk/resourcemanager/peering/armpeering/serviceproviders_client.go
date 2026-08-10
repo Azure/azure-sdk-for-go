@@ -18,6 +18,8 @@ import (
 
 // ServiceProvidersClient contains the methods for the ServiceProviders group.
 // Don't use this type directly, use NewServiceProvidersClient() instead.
+//
+// Generated from API version 2025-05-01
 type ServiceProvidersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewServiceProvidersClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListPager - Lists all of the available peering service locations for the specified kind of peering.
-//
-// Generated from API version 2025-05-01
 //   - options - ServiceProvidersClientListOptions contains the optional parameters for the ServiceProvidersClient.NewListPager
 //     method.
 func (client *ServiceProvidersClient) NewListPager(options *ServiceProvidersClientListOptions) *runtime.Pager[ServiceProvidersClientListResponse] {
@@ -79,8 +79,8 @@ func (client *ServiceProvidersClient) listCreateRequest(ctx context.Context, _ *
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

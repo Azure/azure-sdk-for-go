@@ -18,6 +18,8 @@ import (
 
 // InternetGatewaysClient contains the methods for the InternetGateways group.
 // Don't use this type directly, use NewInternetGatewaysClient() instead.
+//
+// Generated from API version 2025-07-15
 type InternetGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewInternetGatewaysClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreate - Creates a Network Fabric Service Internet Gateway resource instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *InternetGatewaysClient) BeginCreate(ctx context.Context, resourceG
 
 // Create - Creates a Network Fabric Service Internet Gateway resource instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *InternetGatewaysClient) create(ctx context.Context, resourceGroupName string, internetGatewayName string, body InternetGateway, options *InternetGatewaysClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InternetGatewaysClient.BeginCreate"
@@ -110,8 +108,8 @@ func (client *InternetGatewaysClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +120,6 @@ func (client *InternetGatewaysClient) createCreateRequest(ctx context.Context, r
 
 // BeginDelete - Execute a delete on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - options - InternetGatewaysClientBeginDeleteOptions contains the optional parameters for the InternetGatewaysClient.BeginDelete
@@ -147,8 +143,6 @@ func (client *InternetGatewaysClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Execute a delete on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *InternetGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, internetGatewayName string, options *InternetGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InternetGatewaysClient.BeginDelete"
@@ -190,15 +184,13 @@ func (client *InternetGatewaysClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements Gateway GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - options - InternetGatewaysClientGetOptions contains the optional parameters for the InternetGatewaysClient.Get method.
@@ -244,8 +236,8 @@ func (client *InternetGatewaysClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *InternetGatewaysClient) getHandleResponse(resp *http.Response) (In
 }
 
 // NewListByResourceGroupPager - Displays Internet Gateways list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - InternetGatewaysClientListByResourceGroupOptions contains the optional parameters for the InternetGatewaysClient.NewListByResourceGroupPager
 //     method.
@@ -304,8 +294,8 @@ func (client *InternetGatewaysClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -320,8 +310,6 @@ func (client *InternetGatewaysClient) listByResourceGroupHandleResponse(resp *ht
 }
 
 // NewListBySubscriptionPager - Displays Internet Gateways list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - InternetGatewaysClientListBySubscriptionOptions contains the optional parameters for the InternetGatewaysClient.NewListBySubscriptionPager
 //     method.
 func (client *InternetGatewaysClient) NewListBySubscriptionPager(options *InternetGatewaysClientListBySubscriptionOptions) *runtime.Pager[InternetGatewaysClientListBySubscriptionResponse] {
@@ -359,8 +347,8 @@ func (client *InternetGatewaysClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -376,8 +364,6 @@ func (client *InternetGatewaysClient) listBySubscriptionHandleResponse(resp *htt
 
 // BeginUpdate - Execute patch on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - body - API to update certain properties of the InternetGateway resource..
@@ -402,8 +388,6 @@ func (client *InternetGatewaysClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - Execute patch on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *InternetGatewaysClient) update(ctx context.Context, resourceGroupName string, internetGatewayName string, body InternetGatewayPatch, options *InternetGatewaysClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InternetGatewaysClient.BeginUpdate"
@@ -445,8 +429,8 @@ func (client *InternetGatewaysClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

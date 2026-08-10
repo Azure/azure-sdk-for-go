@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/peering/armpeering"
 	"log"
 )
 
@@ -76,7 +76,7 @@ func ExamplePeeringsClient_CreateOrUpdate_createADirectPeering() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.PeeringsClientCreateOrUpdateResponse{
-	// 	Peering: &armpeering.Peering{
+	// 	Peering: armpeering.Peering{
 	// 		Name: to.Ptr("peeringName"),
 	// 		Type: to.Ptr("Microsoft.Peering/peerings"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName"),
@@ -215,7 +215,7 @@ func ExamplePeeringsClient_CreateOrUpdate_createAnExchangePeering() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.PeeringsClientCreateOrUpdateResponse{
-	// 	Peering: &armpeering.Peering{
+	// 	Peering: armpeering.Peering{
 	// 		Name: to.Ptr("peeringName"),
 	// 		Type: to.Ptr("Microsoft.Peering/peerings"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName"),
@@ -339,7 +339,7 @@ func ExamplePeeringsClient_CreateOrUpdate_createAPeeringWithExchangeRouteServer(
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.PeeringsClientCreateOrUpdateResponse{
-	// 	Peering: &armpeering.Peering{
+	// 	Peering: armpeering.Peering{
 	// 		Name: to.Ptr("peeringName"),
 	// 		Type: to.Ptr("Microsoft.Peering/peerings"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName"),
@@ -434,7 +434,7 @@ func ExamplePeeringsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.PeeringsClientGetResponse{
-	// 	Peering: &armpeering.Peering{
+	// 	Peering: armpeering.Peering{
 	// 		Name: to.Ptr("peeringName"),
 	// 		Type: to.Ptr("Microsoft.Peering/peerings"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName"),
@@ -721,7 +721,7 @@ func ExamplePeeringsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.PeeringsClientUpdateResponse{
-	// 	Peering: &armpeering.Peering{
+	// 	Peering: armpeering.Peering{
 	// 		Name: to.Ptr("peeringName"),
 	// 		Type: to.Ptr("Microsoft.Peering/peerings"),
 	// 		ID: to.Ptr("/subscriptions/subId/resourceGroups/rgName/providers/Microsoft.Peering/peerings/peeringName"),

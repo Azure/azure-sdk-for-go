@@ -7,11 +7,11 @@ package armkeyvault_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/ManagedHsm_ListRegionsByResource.json
+// Generated from example definition: 2026-03-01-preview/ManagedHsm_ListRegionsByResource.json
 func ExampleMHSMRegionsClient_NewListByResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

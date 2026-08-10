@@ -7,11 +7,11 @@ package armkeyvault_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/listPrivateLinkResources.json
+// Generated from example definition: 2026-03-01-preview/listPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_ListByVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

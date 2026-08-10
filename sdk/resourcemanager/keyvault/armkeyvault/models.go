@@ -746,7 +746,7 @@ type ManagedHsmSKU struct {
 	Family *ManagedHsmSKUFamily
 
 	// REQUIRED; SKU of the managed HSM Pool
-	Name *ManagedHsmSKUName
+	Name *ManagedHsmSKUNameV2
 }
 
 type ManagedHsmTrigger struct {
@@ -1166,6 +1166,16 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TokenBindingParameters - Configuration for Token Binding for Entra tokens
+type TokenBindingParameters struct {
+	// Must be one of the following values "NoValidation", "Unattested", "AttestedTrustedLaunch", "AttestedConfidential". Strength
+	// of the token binding increases with each value in that order.
+	MinimumTokenBindingStrength *TokenBindingStrength
+
+	// This specifies whether token binding is disabled, enabled or enforced.
+	Mode *TokenBindingMode
+}
+
 // TrackedResource - Tracked Resource
 //
 // The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
@@ -1347,6 +1357,9 @@ type VaultPatchProperties struct {
 
 	// The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
 	TenantID *string
+
+	// Configuration for Token Binding for Entra tokens
+	TokenBindingParameters *TokenBindingParameters
 }
 
 // VaultProperties - Properties of the vault
@@ -1405,6 +1418,9 @@ type VaultProperties struct {
 
 	// softDelete data retention days. It accepts >=7 and <=90.
 	SoftDeleteRetentionInDays *int32
+
+	// Configuration for Token Binding for Entra tokens
+	TokenBindingParameters *TokenBindingParameters
 
 	// The URI of the vault for performing operations on keys and secrets.
 	VaultURI *string

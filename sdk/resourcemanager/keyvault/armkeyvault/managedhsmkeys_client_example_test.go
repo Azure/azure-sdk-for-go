@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/managedHsmCreateKey.json
+// Generated from example definition: 2026-03-01-preview/managedHsmCreateKey.json
 func ExampleManagedHsmKeysClient_CreateIfNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleManagedHsmKeysClient_CreateIfNotExist() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/managedHsmGetKey.json
+// Generated from example definition: 2026-03-01-preview/managedHsmGetKey.json
 func ExampleManagedHsmKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleManagedHsmKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/managedHsmGetKeyVersion.json
+// Generated from example definition: 2026-03-01-preview/managedHsmGetKeyVersion.json
 func ExampleManagedHsmKeysClient_GetVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleManagedHsmKeysClient_GetVersion() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/managedHsmListKeys.json
+// Generated from example definition: 2026-03-01-preview/managedHsmListKeys.json
 func ExampleManagedHsmKeysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleManagedHsmKeysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/managedHsmListKeyVersions.json
+// Generated from example definition: 2026-03-01-preview/managedHsmListKeyVersions.json
 func ExampleManagedHsmKeysClient_NewListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

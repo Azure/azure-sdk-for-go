@@ -1,5 +1,22 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-08-10)
+### Breaking Changes
+
+- Type of `ManagedHsmSKU.Name` has been changed from `*ManagedHsmSKUName` to `*ManagedHsmSKUNameV2`
+- Enum `ManagedHsmSKUName` has been removed
+
+### Features Added
+
+- New value `JSONWebKeyTypeOctHSM` added to enum type `JSONWebKeyType`
+- New enum type `ManagedHsmSKUNameV2` with values `ManagedHsmSKUNameV2CustomB32`, `ManagedHsmSKUNameV2CustomB6`, `ManagedHsmSKUNameV2CustomC10`, `ManagedHsmSKUNameV2CustomC42`, `ManagedHsmSKUNameV2StandardB1`
+- New enum type `TokenBindingMode` with values `TokenBindingModeEnforced`, `TokenBindingModeNotEnforced`
+- New enum type `TokenBindingStrength` with values `TokenBindingStrengthAttestedConfidential`, `TokenBindingStrengthAttestedTrustedLaunch`, `TokenBindingStrengthNoValidation`, `TokenBindingStrengthUnattested`
+- New struct `TokenBindingParameters`
+- New field `TokenBindingParameters` in struct `VaultPatchProperties`
+- New field `TokenBindingParameters` in struct `VaultProperties`
+
+
 ## 2.0.2 (2026-03-17)
 ### Other Changes
 

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v3
 
 go 1.25.0
 
@@ -26,5 +26,3 @@ require (
 	golang.org/x/text v0.40.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-retract v2.0.0 // contains an unwanted breaking change

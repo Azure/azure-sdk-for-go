@@ -5,7 +5,7 @@
 package armkeyvault
 
 const (
-	version20260201 string = "2026-02-01"
+	version20260301Preview string = "2026-03-01-preview"
 )
 
 type AccessPolicyUpdateKind string
@@ -249,6 +249,7 @@ type JSONWebKeyType string
 const (
 	JSONWebKeyTypeEC     JSONWebKeyType = "EC"
 	JSONWebKeyTypeECHSM  JSONWebKeyType = "EC-HSM"
+	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
 	JSONWebKeyTypeRSA    JSONWebKeyType = "RSA"
 	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
 )
@@ -258,6 +259,7 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	return []JSONWebKeyType{
 		JSONWebKeyTypeEC,
 		JSONWebKeyTypeECHSM,
+		JSONWebKeyTypeOctHSM,
 		JSONWebKeyTypeRSA,
 		JSONWebKeyTypeRSAHSM,
 	}
@@ -348,25 +350,30 @@ func PossibleManagedHsmSKUFamilyValues() []ManagedHsmSKUFamily {
 	}
 }
 
-// ManagedHsmSKUName - SKU of the managed HSM Pool
-type ManagedHsmSKUName string
+// ManagedHsmSKUNameV2 - SKU of the managed HSM Pool
+type ManagedHsmSKUNameV2 string
 
 const (
-	ManagedHsmSKUNameCustomB32  ManagedHsmSKUName = "Custom_B32"
-	ManagedHsmSKUNameCustomB6   ManagedHsmSKUName = "Custom_B6"
-	ManagedHsmSKUNameCustomC10  ManagedHsmSKUName = "Custom_C10"
-	ManagedHsmSKUNameCustomC42  ManagedHsmSKUName = "Custom_C42"
-	ManagedHsmSKUNameStandardB1 ManagedHsmSKUName = "Standard_B1"
+	// ManagedHsmSKUNameV2CustomB32 - Custom_B32 SKU
+	ManagedHsmSKUNameV2CustomB32 ManagedHsmSKUNameV2 = "Custom_B32"
+	// ManagedHsmSKUNameV2CustomB6 - Custom_B6 SKU
+	ManagedHsmSKUNameV2CustomB6 ManagedHsmSKUNameV2 = "Custom_B6"
+	// ManagedHsmSKUNameV2CustomC10 - Custom_C10 SKU
+	ManagedHsmSKUNameV2CustomC10 ManagedHsmSKUNameV2 = "Custom_C10"
+	// ManagedHsmSKUNameV2CustomC42 - Custom_C42 SKU
+	ManagedHsmSKUNameV2CustomC42 ManagedHsmSKUNameV2 = "Custom_C42"
+	// ManagedHsmSKUNameV2StandardB1 - Standard_B1 SKU
+	ManagedHsmSKUNameV2StandardB1 ManagedHsmSKUNameV2 = "Standard_B1"
 )
 
-// PossibleManagedHsmSKUNameValues returns the possible values for the ManagedHsmSKUName const type.
-func PossibleManagedHsmSKUNameValues() []ManagedHsmSKUName {
-	return []ManagedHsmSKUName{
-		ManagedHsmSKUNameCustomB32,
-		ManagedHsmSKUNameCustomB6,
-		ManagedHsmSKUNameCustomC10,
-		ManagedHsmSKUNameCustomC42,
-		ManagedHsmSKUNameStandardB1,
+// PossibleManagedHsmSKUNameV2Values returns the possible values for the ManagedHsmSKUNameV2 const type.
+func PossibleManagedHsmSKUNameV2Values() []ManagedHsmSKUNameV2 {
+	return []ManagedHsmSKUNameV2{
+		ManagedHsmSKUNameV2CustomB32,
+		ManagedHsmSKUNameV2CustomB6,
+		ManagedHsmSKUNameV2CustomC10,
+		ManagedHsmSKUNameV2CustomC42,
+		ManagedHsmSKUNameV2StandardB1,
 	}
 }
 
@@ -637,6 +644,52 @@ func PossibleStoragePermissionsValues() []StoragePermissions {
 		StoragePermissionsSet,
 		StoragePermissionsSetsas,
 		StoragePermissionsUpdate,
+	}
+}
+
+// TokenBindingMode - This specifies whether token binding is disabled, enabled or enforced.
+type TokenBindingMode string
+
+const (
+	// TokenBindingModeEnforced - Token binding is enforced for the vault. Only bounded tokens will be accepted. Bearer tokens
+	// will be rejected.
+	TokenBindingModeEnforced TokenBindingMode = "Enforced"
+	// TokenBindingModeNotEnforced - Token binding is not enforced for the vault. Bounded tokens will be rejected.
+	TokenBindingModeNotEnforced TokenBindingMode = "NotEnforced"
+)
+
+// PossibleTokenBindingModeValues returns the possible values for the TokenBindingMode const type.
+func PossibleTokenBindingModeValues() []TokenBindingMode {
+	return []TokenBindingMode{
+		TokenBindingModeEnforced,
+		TokenBindingModeNotEnforced,
+	}
+}
+
+// TokenBindingStrength - Must be one of the following values "NoValidation", "Unattested", "AttestedTrustedLaunch", "AttestedConfidential".
+// Strength of the token binding increases with each value in that order.
+type TokenBindingStrength string
+
+const (
+	// TokenBindingStrengthAttestedConfidential - Bounded Entra token must originate from a confidential VM with attestation proof
+	// from the attestation authority like Microsoft Azure Attestation.
+	TokenBindingStrengthAttestedConfidential TokenBindingStrength = "AttestedConfidential"
+	// TokenBindingStrengthAttestedTrustedLaunch - Bounded Entra token must originate from a trusted launch VM with attestation
+	// proof from the attestation authority like Microsoft Azure Attestation.
+	TokenBindingStrengthAttestedTrustedLaunch TokenBindingStrength = "AttestedTrustedLaunch"
+	// TokenBindingStrengthNoValidation - This is default when token binding is not enabled.
+	TokenBindingStrengthNoValidation TokenBindingStrength = "NoValidation"
+	// TokenBindingStrengthUnattested - No attestation proof is required for the bounded token.
+	TokenBindingStrengthUnattested TokenBindingStrength = "Unattested"
+)
+
+// PossibleTokenBindingStrengthValues returns the possible values for the TokenBindingStrength const type.
+func PossibleTokenBindingStrengthValues() []TokenBindingStrength {
+	return []TokenBindingStrength{
+		TokenBindingStrengthAttestedConfidential,
+		TokenBindingStrengthAttestedTrustedLaunch,
+		TokenBindingStrengthNoValidation,
+		TokenBindingStrengthUnattested,
 	}
 }
 

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-02-01/createSecret.json
+// Generated from example definition: 2026-03-01-preview/createSecret.json
 func ExampleSecretsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleSecretsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/getSecret.json
+// Generated from example definition: 2026-03-01-preview/getSecret.json
 func ExampleSecretsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleSecretsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01/listSecrets.json
+// Generated from example definition: 2026-03-01-preview/listSecrets.json
 func ExampleSecretsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleSecretsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01/updateSecret.json
+// Generated from example definition: 2026-03-01-preview/updateSecret.json
 func ExampleSecretsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

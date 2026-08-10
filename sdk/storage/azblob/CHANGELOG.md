@@ -15,8 +15,12 @@
 * Fixed the Structured Message encoder emitting a valid, complete message when the source returned a non-EOF error exactly on a segment boundary; such errors are now propagated.
 * Structured Message decoding now rejects a payload that declares fewer segments and appends unvalidated trailing bytes (`SMDecode` requires the parsed message to consume the entire input, and the streaming decoder validates the consumed byte count against the declared message length).
 * Fixed the Structured Message encoder returning `io.EOF` when the source ends before the declared content length; a premature EOF is now surfaced as `io.ErrUnexpectedEOF` so callers do not accept a truncated message.
+* Fixed Structured Message decoder discarding errors (including `net.Error` and `io.EOF`) when the returned bytes exactly complete a segment; such errors are now propagated so `RetryReader` can retry transient failures at segment boundaries.
+* Premature EOF during Structured Message framing reads (header, segment footer, or message trailer) now wraps `io.ErrUnexpectedEOF` so `RetryReader` classifies truncated framing as retryable.
 
 ### Other Changes
+
+* **Known limitation:** after a mid-segment connection failure, `RetryReader` resumes from a byte offset past already-emitted data whose segment CRC has not yet been validated. Only the suffix of that segment is CRC-checked on the retried response. A follow-up to buffer full segments or checkpoint at validated boundaries is tracked in [#27362](https://github.com/Azure/azure-sdk-for-go/issues/27362).
 
 ## 1.8.1-beta.1 (2026-07-24)
 

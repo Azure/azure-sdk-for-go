@@ -127,7 +127,7 @@ Fetch the PR details. If the PR is in **draft** state, use the `update_pull_requ
 
 Fetch **check runs** for the PR head commit. Find the `go - pullrequest` parent check and its child jobs (`go - pullrequest (Build <job_name>)`). These are **Azure DevOps pipeline** results — do NOT call `get_job_logs` (returns 404).
 
-- If the `go - pullrequest` parent check is **not present**, or any checks still have a `status` of `queued` or `in_progress`, **do not wait**. Skip to Step 5 and post a comment telling the user that pipeline checks have not completed yet and to re-trigger this workflow (by re-applying the `mgmt-review-needed` label, or manually via **workflow_dispatch**) after the pipelines finish.
+- If the `go - pullrequest` parent check is **not present**, or any checks still have a `status` of `queued` or `in_progress`, **do not wait**. Skip to Step 5 and post a comment telling the user that pipeline checks have not completed yet and to re-trigger this workflow (by re-applying the `mgmt-review-needed` label) after the pipelines finish.
 - If **all** pipeline checks have reached `completed` status, read success/failure from the `conclusion` field and extract the `target_url` for ADO log links. NEVER fabricate ADO URLs. Proceed to Step 3.
 
 ### Step 3 — Check for manual edits to auto-generated files

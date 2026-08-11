@@ -29,7 +29,7 @@ type MonitorsServer struct {
 
 	// BeginDelete is the fake for method MonitorsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, monitorName string, userEmail string, options *armnewrelicobservability.MonitorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, userEmail string, monitorName string, options *armnewrelicobservability.MonitorsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnewrelicobservability.MonitorsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MonitorsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -275,7 +275,7 @@ func (m *MonitorsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, monitorNameParam, qp.Get("userEmail"), nil)
+		respr, errRespr := m.srv.BeginDelete(req.Context(), resourceGroupNameParam, qp.Get("userEmail"), monitorNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

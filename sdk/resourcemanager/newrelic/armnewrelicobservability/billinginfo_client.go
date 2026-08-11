@@ -19,7 +19,7 @@ import (
 // BillingInfoClient contains the methods for the BillingInfo group.
 // Don't use this type directly, use NewBillingInfoClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-06-01
 type BillingInfoClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -90,7 +90,7 @@ func (client *BillingInfoClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

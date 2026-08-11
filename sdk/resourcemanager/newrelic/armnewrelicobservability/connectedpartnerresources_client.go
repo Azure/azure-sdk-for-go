@@ -19,7 +19,7 @@ import (
 // ConnectedPartnerResourcesClient contains the methods for the ConnectedPartnerResources group.
 // Don't use this type directly, use NewConnectedPartnerResourcesClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-06-01
 type ConnectedPartnerResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,7 @@ func (client *ConnectedPartnerResourcesClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

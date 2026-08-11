@@ -4,6 +4,8 @@
 package azblob
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
@@ -53,3 +55,38 @@ const (
 // ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"
 // header to operations that include a request body.
 type ExpectContinueOptions = exported.ExpectContinueOptions
+
+// SessionMode specifies how session-based authentication is handled.
+type SessionMode = exported.SessionMode
+
+const (
+	// SessionModeDefault is the default mode where sessions are disabled.
+	SessionModeDefault = exported.SessionModeDefault
+	// SessionModeDisabled explicitly disables session-based authentication.
+	SessionModeDisabled = exported.SessionModeDisabled
+	// SessionModeEnabled enables session-based authentication.
+	SessionModeEnabled = exported.SessionModeEnabled
+)
+
+// PossibleSessionModeValues returns the possible values for the SessionMode const type.
+func PossibleSessionModeValues() []SessionMode {
+	return exported.PossibleSessionModeValues()
+}
+
+// SessionOptions configures session-based authentication behavior.
+type SessionOptions = exported.SessionOptions
+
+// SessionCredential contains session authentication credentials.
+type SessionCredential = exported.SessionCredential
+
+// SessionProvider is the interface for session-based authentication providers.
+type SessionProvider = exported.SessionProvider
+
+// NewContainerSessionProvider creates a SessionProvider that manages container-scoped sessions
+// using the provided token credential.
+//   - cred - an Azure AD credential, typically obtained via the azidentity module
+//   - storageURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
+//   - options - client options; pass nil to accept the default values
+func NewContainerSessionProvider(cred azcore.TokenCredential, storageURL string, options *ClientOptions) (SessionProvider, error) {
+	return base.NewContainerSessionProvider(cred, storageURL, (*base.ClientOptions)(options))
+}

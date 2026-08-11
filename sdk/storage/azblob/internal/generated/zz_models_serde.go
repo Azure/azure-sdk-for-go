@@ -339,6 +339,50 @@ func (c *ContainerProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElem
 	return nil
 }
 
+// MarshalXML implements the xml.Marshaller interface for type CreateSessionConfiguration.
+func (c CreateSessionConfiguration) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "CreateSessionRequest"
+	type alias CreateSessionConfiguration
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&c),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type CreateSessionResponse.
+func (c CreateSessionResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "CreateSessionResult"
+	type alias CreateSessionResponse
+	aux := &struct {
+		*alias
+		Expiration *datetime.RFC1123 `xml:"Expiration"`
+	}{
+		alias:      (*alias)(&c),
+		Expiration: (*datetime.RFC1123)(c.Expiration),
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// UnmarshalXML implements the xml.Unmarshaller interface for type CreateSessionResponse.
+func (c *CreateSessionResponse) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error {
+	type alias CreateSessionResponse
+	aux := &struct {
+		*alias
+		Expiration *datetime.RFC1123 `xml:"Expiration"`
+	}{
+		alias: (*alias)(c),
+	}
+	if err := dec.DecodeElement(aux, &start); err != nil {
+		return err
+	}
+	if aux.Expiration != nil && !(*time.Time)(aux.Expiration).IsZero() {
+		c.Expiration = (*time.Time)(aux.Expiration)
+	}
+	return nil
+}
+
 // MarshalXML implements the xml.Marshaller interface for type FilterBlobItem.
 func (f FilterBlobItem) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "Blob"
@@ -465,6 +509,18 @@ func (p PageList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	}
 	if p.PageRange != nil {
 		aux.PageRange = &p.PageRange
+	}
+	return enc.EncodeElement(aux, start)
+}
+
+// MarshalXML implements the xml.Marshaller interface for type SessionCredentials.
+func (s SessionCredentials) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Credentials"
+	type alias SessionCredentials
+	aux := &struct {
+		*alias
+	}{
+		alias: (*alias)(&s),
 	}
 	return enc.EncodeElement(aux, start)
 }

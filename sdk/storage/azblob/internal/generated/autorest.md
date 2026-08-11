@@ -7,7 +7,7 @@ go: true
 clear-output-folder: false
 version: "^3.0.0"
 license-header: MICROSOFT_MIT_NO_VERSION
-input-file: "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/71d693b624c8e5bfd8ccdb413807a28861103f23/specification/storage/data-plane/Microsoft.BlobStorage/stable/2026-12-06/blob.json"
+input-file: "https://raw.githubusercontent.com/nickliu-msft/azure-rest-api-specs/7c058345a1ef9a85676c955ddbe790ce3f90faed/specification/storage/data-plane/Microsoft.BlobStorage/stable/2027-03-07/blob.json"
 credential-scope: "https://storage.azure.com/.default"
 containing-module: github.com/Azure/azure-sdk-for-go/sdk/storage/azblob
 output-folder: ../generated

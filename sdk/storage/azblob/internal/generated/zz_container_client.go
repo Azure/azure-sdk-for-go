@@ -398,6 +398,60 @@ func (client *ContainerClient) createHandleResponse(resp *http.Response) (Contai
 	return result, nil
 }
 
+// CreateSession - The Create Session operation enables users to create a session scoped to a container.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - options - ContainerClientCreateSessionOptions contains the optional parameters for the ContainerClient.CreateSession method.
+func (client *ContainerClient) CreateSession(ctx context.Context, createSessionConfiguration CreateSessionConfiguration, options *ContainerClientCreateSessionOptions) (ContainerClientCreateSessionResponse, error) {
+	var err error
+	req, err := client.createSessionCreateRequest(ctx, createSessionConfiguration, options)
+	if err != nil {
+		return ContainerClientCreateSessionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerClientCreateSessionResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return ContainerClientCreateSessionResponse{}, err
+	}
+	resp, err := client.createSessionHandleResponse(httpResp)
+	return resp, err
+}
+
+// createSessionCreateRequest creates the CreateSession request.
+func (client *ContainerClient) createSessionCreateRequest(ctx context.Context, createSessionConfiguration CreateSessionConfiguration, options *ContainerClientCreateSessionOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.endpoint)
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("comp", "session")
+	reqQP.Set("restype", "container")
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.RequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.RequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{client.version}
+	if err := runtime.MarshalAsXML(req, createSessionConfiguration); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createSessionHandleResponse handles the CreateSession response.
+func (client *ContainerClient) createSessionHandleResponse(resp *http.Response) (ContainerClientCreateSessionResponse, error) {
+	result := ContainerClientCreateSessionResponse{}
+	if err := runtime.UnmarshalAsXML(resp, &result.CreateSessionResponse); err != nil {
+		return ContainerClientCreateSessionResponse{}, err
+	}
+	return result, nil
+}
+
 // Delete - operation marks the specified container for deletion. The container and any blobs contained within it are later
 // deleted during garbage collection
 // If the operation fails it returns an *azcore.ResponseError type.

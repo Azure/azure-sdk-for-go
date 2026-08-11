@@ -19,7 +19,7 @@ import (
 // QueryClient contains the methods for the Query group.
 // Don't use this type directly, use NewQueryClient() instead.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2026-06-01
 type QueryClient struct {
 	internal *arm.Client
 }
@@ -85,7 +85,7 @@ func (client *QueryClient) usageCreateRequest(ctx context.Context, scope string,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -151,7 +151,7 @@ func (client *QueryClient) usageByExternalCloudProviderTypeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

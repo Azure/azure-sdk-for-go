@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewGenerateDetailedCostReportOperationStatusClient() instead.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2026-06-01
 type GenerateDetailedCostReportOperationStatusClient struct {
 	internal *arm.Client
 }
@@ -82,7 +82,7 @@ func (client *GenerateDetailedCostReportOperationStatusClient) getCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

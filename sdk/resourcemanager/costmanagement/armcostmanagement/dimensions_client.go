@@ -20,7 +20,7 @@ import (
 // DimensionsClient contains the methods for the Dimensions group.
 // Don't use this type directly, use NewDimensionsClient() instead.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2026-06-01
 type DimensionsClient struct {
 	internal *arm.Client
 }
@@ -97,7 +97,7 @@ func (client *DimensionsClient) byExternalCloudProviderTypeCreateRequest(ctx con
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -170,7 +170,7 @@ func (client *DimensionsClient) listCreateRequest(ctx context.Context, scope str
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

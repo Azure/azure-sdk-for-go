@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/GenerateReservationDetailsReportByBillingAccount.json
+// Generated from example definition: 2026-06-01/GenerateReservationDetailsReportByBillingAccount.json
 func ExampleGenerateReservationDetailsReportClient_BeginByBillingAccountID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleGenerateReservationDetailsReportClient_BeginByBillingAccountID() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/GenerateReservationDetailsReportByBillingProfile.json
+// Generated from example definition: 2026-06-01/GenerateReservationDetailsReportByBillingProfile.json
 func ExampleGenerateReservationDetailsReportClient_BeginByBillingProfileID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

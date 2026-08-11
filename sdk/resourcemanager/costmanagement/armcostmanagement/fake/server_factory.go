@@ -57,6 +57,9 @@ type ServerFactory struct {
 	// GenerateReservationDetailsReportServer contains the fakes for client GenerateReservationDetailsReportClient
 	GenerateReservationDetailsReportServer GenerateReservationDetailsReportServer
 
+	// MarkupRulesServer contains the fakes for client MarkupRulesClient
+	MarkupRulesServer MarkupRulesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -104,6 +107,7 @@ type ServerFactoryTransport struct {
 	trGenerateDetailedCostReportOperationResultsServer *GenerateDetailedCostReportOperationResultsServerTransport
 	trGenerateDetailedCostReportOperationStatusServer  *GenerateDetailedCostReportOperationStatusServerTransport
 	trGenerateReservationDetailsReportServer           *GenerateReservationDetailsReportServerTransport
+	trMarkupRulesServer                                *MarkupRulesServerTransport
 	trOperationsServer                                 *OperationsServerTransport
 	trPriceSheetServer                                 *PriceSheetServerTransport
 	trQueryServer                                      *QueryServerTransport
@@ -185,6 +189,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewGenerateReservationDetailsReportServerTransport(&s.srv.GenerateReservationDetailsReportServer)
 		})
 		resp, err = s.trGenerateReservationDetailsReportServer.Do(req)
+	case "MarkupRulesClient":
+		initServer(&s.trMu, &s.trMarkupRulesServer, func() *MarkupRulesServerTransport { return NewMarkupRulesServerTransport(&s.srv.MarkupRulesServer) })
+		resp, err = s.trMarkupRulesServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

@@ -18,7 +18,7 @@ import (
 // BenefitRecommendationsClient contains the methods for the BenefitRecommendations group.
 // Don't use this type directly, use NewBenefitRecommendationsClient() instead.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2026-06-01
 type BenefitRecommendationsClient struct {
 	internal *arm.Client
 }
@@ -88,7 +88,7 @@ func (client *BenefitRecommendationsClient) listCreateRequest(ctx context.Contex
 	if options != nil && options.Orderby != nil {
 		reqQP.Set("$orderby", *options.Orderby)
 	}
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

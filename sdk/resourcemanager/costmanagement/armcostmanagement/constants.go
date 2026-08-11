@@ -5,7 +5,7 @@
 package armcostmanagement
 
 const (
-	version20250301 string = "2025-03-01"
+	version20260601 string = "2026-06-01"
 )
 
 // AccumulatedType - Show costs accumulated over time.
@@ -1349,6 +1349,8 @@ func PossibleScheduledActionStatusValues() []ScheduledActionStatus {
 type Scope string
 
 const (
+	// ScopeManagementGroup - Management group scope recommendation.
+	ScopeManagementGroup Scope = "ManagementGroup"
 	// ScopeShared - Shared scope recommendation.
 	ScopeShared Scope = "Shared"
 	// ScopeSingle - Single scope recommendation.
@@ -1358,6 +1360,7 @@ const (
 // PossibleScopeValues returns the possible values for the Scope const type.
 func PossibleScopeValues() []Scope {
 	return []Scope{
+		ScopeManagementGroup,
 		ScopeShared,
 		ScopeSingle,
 	}

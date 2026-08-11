@@ -19,7 +19,7 @@ import (
 // BenefitUtilizationSummariesClient contains the methods for the BenefitUtilizationSummaries group.
 // Don't use this type directly, use NewBenefitUtilizationSummariesClient() instead.
 //
-// Generated from API version 2025-03-01
+// Generated from API version 2026-06-01
 type BenefitUtilizationSummariesClient struct {
 	internal *arm.Client
 }
@@ -78,7 +78,7 @@ func (client *BenefitUtilizationSummariesClient) listByBillingAccountIDCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
@@ -144,7 +144,7 @@ func (client *BenefitUtilizationSummariesClient) listByBillingProfileIDCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	if options != nil && options.Filter != nil {
 		reqQP.Set("filter", *options.Filter)
 	}
@@ -212,7 +212,7 @@ func (client *BenefitUtilizationSummariesClient) listBySavingsPlanIDCreateReques
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	if options != nil && options.GrainParameter != nil {
 		reqQP.Set("grainParameter", string(*options.GrainParameter))
 	}
@@ -272,7 +272,7 @@ func (client *BenefitUtilizationSummariesClient) listBySavingsPlanOrderCreateReq
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250301)
+	reqQP.Set("api-version", version20260601)
 	if options != nil && options.GrainParameter != nil {
 		reqQP.Set("grainParameter", string(*options.GrainParameter))
 	}

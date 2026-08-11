@@ -101,11 +101,24 @@ type DownloadStreamOptions struct {
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
 
-	// LayoutEndpoint for this download, optimized for locality. When set, the SDK rewrites the
-	// outgoing request URI's host/port to the specified endpoint while preserving the original Host header.
-	// List the pages returned by BlobClient.GetLayoutPager and select the endpoint whose layout
-	// range covers the offset of the requested Range. Pass that value here. By default, the request is
-	// sent to the client configured endpoint with not rewriting.
+	// LayoutEndpoint optionally routes this download to a specific storage endpoint for
+	// better locality. This is an advanced option; most callers should leave it empty, or
+	// use DownloadBuffer/DownloadFile with LayoutAwareRoutingEnabled, which selects
+	// endpoints automatically.
+	//
+	// Set it only when implementing a custom chunked download: page through
+	// Client.GetLayoutPager, find the layout range covering Range.Offset, and pass that
+	// range's endpoint here. Passing an endpoint that does not cover the requested range is
+	// not an error, but forfeits the locality benefit.
+	//
+	// Cache the layout rather than calling Client.GetLayoutPager per chunk: a single layout
+	// covers the whole range/blob, so one enumeration can serve every chunk of a download. A blob's
+	// layout can change over time, so refresh the cached layout roughly every 5 minutes, which
+	// is the interval DownloadBuffer and DownloadFile use internally.
+	//
+	// When set, the SDK rewrites the outgoing request URI's host/port to this endpoint while
+	// preserving the original Host header, so authentication (including SAS) is unaffected.
+	// When empty (the default), the request is sent to the client's configured endpoint.
 	LayoutEndpoint string
 }
 
@@ -138,9 +151,11 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 type LayoutAwareRouting string
 
 const (
-	// LayoutAwareRoutingAuto lets the SDK decide whether to use layout aware routing.
-	// This is the default when no value is specified.
-	LayoutAwareRoutingAuto LayoutAwareRouting = "Auto"
+	// LayoutAwareRoutingAuto is the zero value, and therefore the default when no value is
+	// specified. Currently, the SDK resolves Auto to enabled, so it behaves identically to
+	// LayoutAwareRoutingEnabled. Specify LayoutAwareRoutingEnabled or
+	// LayoutAwareRoutingDisabled to pin the behavior.
+	LayoutAwareRoutingAuto LayoutAwareRouting = ""
 
 	// LayoutAwareRoutingEnabled always attempts to route requests to the ideal endpoint for each block.
 	LayoutAwareRoutingEnabled LayoutAwareRouting = "Enabled"
@@ -161,7 +176,7 @@ func PossibleLayoutAwareRoutingValues() []LayoutAwareRouting {
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
 	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
-	// for each block. The default, LayoutAwareRoutingAuto, is disabled.
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled.
 	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -192,12 +207,13 @@ type downloadOptions struct {
 }
 
 // layoutAwareRoutingEnabled reports whether layout aware routing should be attempted.
-// LayoutAwareRoutingAuto currently resolves to disabled.
+// LayoutAwareRoutingAuto, which is the zero value, currently resolves to enabled, so only
+// an explicit LayoutAwareRoutingDisabled turns it off.
 func (o *downloadOptions) layoutAwareRoutingEnabled() bool {
 	if o == nil {
-		return false
+		return true
 	}
-	return o.LayoutAwareRouting == LayoutAwareRoutingEnabled
+	return o.LayoutAwareRouting != LayoutAwareRoutingDisabled
 }
 
 func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
@@ -238,7 +254,8 @@ func (o *downloadOptions) getBlobLayoutOptions() *GetLayoutOptions {
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
 	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
-	// for each block. The default, LayoutAwareRoutingAuto, lets the SDK decide.
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
+	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
 	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.
@@ -273,7 +290,8 @@ type DownloadBufferOptions struct {
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
 	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
-	// for each block. The default, LayoutAwareRoutingAuto, lets the SDK decide.
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
+	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
 	LayoutAwareRouting LayoutAwareRouting
 
 	// Range specifies a range of bytes.  The default value is all bytes.

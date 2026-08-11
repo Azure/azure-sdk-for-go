@@ -425,14 +425,15 @@ func TestDownloadBufferFallbackCachedAcrossChunks(t *testing.T) {
 	require.Zero(t, localityGets)
 }
 
-// TestDownloadBufferLayoutDisabled verifies the default path is untouched: no GetLayout request is
-// issued at all when layout-aware routing is off.
+// TestDownloadBufferLayoutDisabled verifies the legacy path is untouched: no GetLayout request is
+// issued at all when layout-aware routing is explicitly disabled.
 func TestDownloadBufferLayoutDisabled(t *testing.T) {
 	f := &fakeLayoutResponder{getPropertiesResponse: newMockGetPropertiesResponse(300, "etag")}
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 300), &DownloadBufferOptions{
-		BlockSize: 100,
+		LayoutAwareRouting: LayoutAwareRoutingDisabled,
+		BlockSize:          100,
 	})
 	require.NoError(t, err)
 
@@ -441,6 +442,27 @@ func TestDownloadBufferLayoutDisabled(t *testing.T) {
 	require.True(t, getPropsCalled)
 	require.Equal(t, 3, normalGets)
 	require.Zero(t, localityGets)
+}
+
+// TestDownloadBufferLayoutDefaultEnabled verifies that leaving LayoutAwareRouting unset (the zero
+// value, LayoutAwareRoutingAuto) resolves to enabled: the layout is fetched and used for routing.
+func TestDownloadBufferLayoutDefaultEnabled(t *testing.T) {
+	etag := azcore.ETag("etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+		BlockSize: 100,
+	})
+	require.NoError(t, err)
+
+	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
+	require.NotZero(t, layoutCalls, "the default must fetch the layout")
+	require.Equal(t, 3, localityGets, "every chunk should be routed to a locality endpoint by default")
+	require.Zero(t, normalGets)
+	require.False(t, getPropsCalled, "the layout response supplies the length, so GetProperties is unnecessary")
 }
 
 // TestDownloadBufferLayoutETagLock verifies the ETag returned by GetLayout is used to lock every

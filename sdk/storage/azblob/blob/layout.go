@@ -5,13 +5,22 @@ package blob
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/bloberror"
 )
+
+func getStatusCode(err error) int {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return 0
+	}
+
+	return respErr.StatusCode
+}
 
 var layoutRefresh = 5 * time.Minute
 
@@ -41,7 +50,7 @@ func getLayout(ctx context.Context, pager *runtime.Pager[GetLayoutResponse]) (la
 			// A 400 or 5xx means the service can't provide a layout. Return a fallback layout with a
 			// nil error so temporal.Resource caches the decision; returning an error would leave the
 			// resource unset and cause every subsequent call to hit the service again.
-			if sc := bloberror.GetStatusCode(err); sc == http.StatusBadRequest || sc >= 500 {
+			if sc := getStatusCode(err); sc == http.StatusBadRequest || sc >= 500 {
 				return layout{fallback: true, expiry: expiry}, expiry, nil
 			}
 			return layout{}, time.Time{}, err

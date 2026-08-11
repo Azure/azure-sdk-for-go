@@ -4335,7 +4335,12 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	_require.NoError(err)
 	defer func() { _ = tmp.Close() }()
 
-	_, err = blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{BlockSize: blockSize})
+	// This test exercises block-size chunking only; the fake transport doesn't model the
+	// GetLayout API, so opt out of layout-aware routing (on by default).
+	_, err = blobClient.DownloadFile(context.Background(), tmp, &blob.DownloadFileOptions{
+		BlockSize:          blockSize,
+		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
+	})
 	_require.NoError(err)
 
 	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
@@ -4344,7 +4349,10 @@ func TestDownloadSmallBlockSize(t *testing.T) {
 	atomic.StoreUint64(&fbb.numChunks, 0)
 
 	buff := make([]byte, fileSize)
-	_, err = blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{BlockSize: blockSize})
+	_, err = blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
+		BlockSize:          blockSize,
+		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
+	})
 	_require.NoError(err)
 
 	_require.Equal(atomic.LoadUint64(&fbb.numChunks), numChunks)
@@ -4588,7 +4596,6 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 	blobSize := 100 * 1024 * 1024 // 100 MiB
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
-	_require.NoError(err)
 	// Create some data to test the upload stream
 	blobContentReader, _ := testcommon.GenerateData(blobSize)
 
@@ -4603,7 +4610,6 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerMaxResults() {
 		})
 
 	// Assert that upload was successful
-	_require.NoError(err)
 	_require.NoError(err)
 
 	pager := bbClient.GetLayoutPager(&blob.GetLayoutOptions{MaxResults: to.Ptr(int32(5))}) // 4 MiB block size to ensure multiple pages
@@ -5123,7 +5129,7 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadBufferWithLayoutAwareRouting() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	// Create a blob with enough data to test chunked download
-	blobSize := 100 * 1024 * 1024 // 10 MiB
+	blobSize := 100 * 1024 * 1024 // 100 MiB
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := testcommon.GetBlockBlobClient(blobName, containerClient)
 	blobContentReader, expectedData := testcommon.GenerateData(blobSize)

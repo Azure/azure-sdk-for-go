@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/temporal"
@@ -537,7 +538,15 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	return b.downloadBuffer(ctx, file, *do, resizeFile)
 }
 
-// GetLayoutPager returns the blob's layout.
+// GetLayoutPager returns the blob's layout: the set of byte ranges making up the blob and the
+// storage endpoint that serves each one. Pass the endpoint covering a given offset as
+// DownloadStreamOptions.LayoutEndpoint to route that read for better locality.
+//
+// A single enumeration describes the whole blob, so callers implementing a custom chunked
+// download should enumerate once and reuse the result across chunks rather than paging per
+// chunk. A blob's layout can change over time; refresh the cached layout roughly every
+// 5 minutes, which is the interval Client.DownloadBuffer and Client.DownloadFile use internally.
+//
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
 func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
 	opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions := options.format()

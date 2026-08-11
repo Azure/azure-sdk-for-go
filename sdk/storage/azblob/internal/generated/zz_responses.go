@@ -425,7 +425,7 @@ type BlobClientDownloadResponse struct {
 	Date *time.Time
 
 	// DownloadHint contains the information returned from the x-ms-download-hint header response.
-	DownloadHint *string
+	DownloadHint *DownloadHint
 
 	// ETag contains the information returned from the ETag header response.
 	ETag *azcore.ETag
@@ -683,6 +683,9 @@ type BlobClientGetLayoutResponse struct {
 
 	// RequestID contains the information returned from the x-ms-request-id header response.
 	RequestID *string
+
+	// SmartAccessTier contains the information returned from the x-ms-smart-access-tier header response.
+	SmartAccessTier *string
 
 	// TagCount contains the information returned from the x-ms-tag-count header response.
 	TagCount *int64

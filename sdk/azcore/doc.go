@@ -192,7 +192,7 @@ and determining if there are more pages to fetch.  No IO calls are made until th
 		page, err := pager.NextPage(context.TODO())
 		if err != nil {
 			// process error
-			break;
+			break
 		}
 		for _, widget := range page.Values {
 			// process widget

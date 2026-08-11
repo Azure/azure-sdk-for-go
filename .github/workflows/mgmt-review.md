@@ -190,7 +190,7 @@ Post **exactly one** PR comment via `add_comment`. Include the marker `<!-- gh-a
 
 The `go - pullrequest` pipeline checks have not completed yet. Analysis cannot proceed until all checks finish.
 
-**Action required:** Re-trigger this workflow by re-applying the `mgmt-review-needed` label (or manually via **workflow_dispatch** with the PR number) after the pipeline checks have completed.
+**Action required:** Re-trigger this workflow by re-applying the `mgmt-review-needed` label after the pipeline checks have completed.
 ```
 
 **If all checks completed and nothing blocks:**

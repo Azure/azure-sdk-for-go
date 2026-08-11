@@ -350,30 +350,30 @@ func PossibleManagedHsmSKUFamilyValues() []ManagedHsmSKUFamily {
 	}
 }
 
-// ManagedHsmSKUNameV2 - SKU of the managed HSM Pool
-type ManagedHsmSKUNameV2 string
+// ManagedHsmSKUName - SKU of the managed HSM Pool
+type ManagedHsmSKUName string
 
 const (
-	// ManagedHsmSKUNameV2CustomB32 - Custom_B32 SKU
-	ManagedHsmSKUNameV2CustomB32 ManagedHsmSKUNameV2 = "Custom_B32"
-	// ManagedHsmSKUNameV2CustomB6 - Custom_B6 SKU
-	ManagedHsmSKUNameV2CustomB6 ManagedHsmSKUNameV2 = "Custom_B6"
-	// ManagedHsmSKUNameV2CustomC10 - Custom_C10 SKU
-	ManagedHsmSKUNameV2CustomC10 ManagedHsmSKUNameV2 = "Custom_C10"
-	// ManagedHsmSKUNameV2CustomC42 - Custom_C42 SKU
-	ManagedHsmSKUNameV2CustomC42 ManagedHsmSKUNameV2 = "Custom_C42"
-	// ManagedHsmSKUNameV2StandardB1 - Standard_B1 SKU
-	ManagedHsmSKUNameV2StandardB1 ManagedHsmSKUNameV2 = "Standard_B1"
+	// ManagedHsmSKUNameCustomB32 - Custom_B32 SKU
+	ManagedHsmSKUNameCustomB32 ManagedHsmSKUName = "Custom_B32"
+	// ManagedHsmSKUNameCustomB6 - Custom_B6 SKU
+	ManagedHsmSKUNameCustomB6 ManagedHsmSKUName = "Custom_B6"
+	// ManagedHsmSKUNameCustomC10 - Custom_C10 SKU
+	ManagedHsmSKUNameCustomC10 ManagedHsmSKUName = "Custom_C10"
+	// ManagedHsmSKUNameCustomC42 - Custom_C42 SKU
+	ManagedHsmSKUNameCustomC42 ManagedHsmSKUName = "Custom_C42"
+	// ManagedHsmSKUNameStandardB1 - Standard_B1 SKU
+	ManagedHsmSKUNameStandardB1 ManagedHsmSKUName = "Standard_B1"
 )
 
-// PossibleManagedHsmSKUNameV2Values returns the possible values for the ManagedHsmSKUNameV2 const type.
-func PossibleManagedHsmSKUNameV2Values() []ManagedHsmSKUNameV2 {
-	return []ManagedHsmSKUNameV2{
-		ManagedHsmSKUNameV2CustomB32,
-		ManagedHsmSKUNameV2CustomB6,
-		ManagedHsmSKUNameV2CustomC10,
-		ManagedHsmSKUNameV2CustomC42,
-		ManagedHsmSKUNameV2StandardB1,
+// PossibleManagedHsmSKUNameValues returns the possible values for the ManagedHsmSKUName const type.
+func PossibleManagedHsmSKUNameValues() []ManagedHsmSKUName {
+	return []ManagedHsmSKUName{
+		ManagedHsmSKUNameCustomB32,
+		ManagedHsmSKUNameCustomB6,
+		ManagedHsmSKUNameCustomC10,
+		ManagedHsmSKUNameCustomC42,
+		ManagedHsmSKUNameStandardB1,
 	}
 }
 

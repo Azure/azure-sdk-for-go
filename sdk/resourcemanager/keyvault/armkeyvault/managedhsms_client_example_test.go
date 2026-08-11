@@ -6,11 +6,10 @@ package armkeyvault_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault/v2"
+	"log"
 )
 
 // Generated from example definition: 2026-03-01-preview/ManagedHsm_checkMhsmNameAvailability.json
@@ -63,7 +62,7 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 			TenantID:                  to.Ptr("00000000-0000-0000-0000-000000000000"),
 		},
 		SKU: &armkeyvault.ManagedHsmSKU{
-			Name:   to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+			Name:   to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 		},
 		Tags: map[string]*string{
@@ -100,7 +99,7 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SKU: &armkeyvault.ManagedHsmSKU{
-	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 	// 			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -174,7 +173,7 @@ func ExampleManagedHsmsClient_Get() {
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SKU: &armkeyvault.ManagedHsmSKU{
-	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 	// 			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -267,7 +266,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				SKU: &armkeyvault.ManagedHsmSKU{
-		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -293,7 +292,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				SKU: &armkeyvault.ManagedHsmSKU{
-		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -351,7 +350,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				SKU: &armkeyvault.ManagedHsmSKU{
-		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -377,7 +376,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				SKU: &armkeyvault.ManagedHsmSKU{
-		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+		// 					Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 		// 					Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -523,7 +522,7 @@ func ExampleManagedHsmsClient_BeginUpdate() {
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SKU: &armkeyvault.ManagedHsmSKU{
-	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameV2StandardB1),
+	// 			Name: to.Ptr(armkeyvault.ManagedHsmSKUNameStandardB1),
 	// 			Family: to.Ptr(armkeyvault.ManagedHsmSKUFamilyB),
 	// 		},
 	// 		Tags: map[string]*string{

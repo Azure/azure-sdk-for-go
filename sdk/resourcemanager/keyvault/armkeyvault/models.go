@@ -746,7 +746,7 @@ type ManagedHsmSKU struct {
 	Family *ManagedHsmSKUFamily
 
 	// REQUIRED; SKU of the managed HSM Pool
-	Name *ManagedHsmSKUNameV2
+	Name *ManagedHsmSKUName
 }
 
 type ManagedHsmTrigger struct {

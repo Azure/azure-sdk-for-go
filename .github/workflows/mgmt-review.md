@@ -48,6 +48,7 @@ strict: false
 network:
   allowed:
     - defaults
+    - "dev.azure.com"
     - "raw.githubusercontent.com"
 tools:
   github:
@@ -120,8 +121,9 @@ Fetch the PR details. If the PR is in **draft** state, use the `update_pull_requ
    - **Release pipelines** — created via `/azp run prepare-pipelines`.
    - **Namespace approval** — a new module namespace must be approved before its first release. Determine approval using the following namespace review process:
      1. Derive the service token from the module path `sdk/resourcemanager/<mid>/arm<suffix>`: normalize each of `<mid>` and `<suffix>` (drop the `arm` prefix and any separators, lowercased); when the two normalized components are identical use just one, otherwise concatenate them — so `compute/armbulkactions` → `computebulkactions`, but `network/armnetwork` → `network` (not `networknetwork`).
-     2. Using `bash`/`curl`, read the public .NET release inventory CSV at `https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/dotnet-packages.csv`. Normalize each row's `Package` by stripping the `Azure.ResourceManager.` prefix and all non-alphanumeric characters, then lowercasing it. Compare it to the service token using exact equality only. A matching row with a non-empty `VersionGA` or `VersionPreview` means the namespace is already established → treat namespace approval as **satisfied**. Do not use prefix, substring, or fuzzy matching.
-     3. If no released .NET package matches, fall back to the manual signal: fetch PR comments and confirm the PR author posted a comment that includes a GitHub issue URL (`https://github.com/.../issues/<number>`) and references `namespace review`. Treat namespace approval as **missing** only if neither the .NET release-status signal nor the comment link is present.
+     2. **Check the Azure DevOps Release Plan first.** Extract the numeric `releaseplan` value from the `azsdk-releaseplan-dashboard-*.azurewebsites.net/?releaseplan=<id>` link in the PR body. If the link is present and an authenticated Azure DevOps token is available, use `bash` to obtain the token with `az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798`, then query `https://dev.azure.com/azure-sdk/Release/_apis/wit/wiql?api-version=7.1` for a `Release Plan` whose `Custom.ReleasePlanID` exactly equals that value. Read the returned work item and inspect `Custom.NamespaceApprovalIssue`. A non-empty namespace approval issue means approval is **satisfied**. The dashboard value is not necessarily the work-item id: always resolve it through `Custom.ReleasePlanID`, never fetch that number directly as a work-item id. If the PR has no Release Plan link, authentication is unavailable, the query fails, no matching plan exists, or the field is empty, continue to the .NET fallback rather than reporting approval from this signal.
+     3. **Check the .NET release inventory second.** Using `bash`/`curl`, read `https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/dotnet-packages.csv`. Normalize each row's `Package` by stripping the `Azure.ResourceManager.` prefix and all non-alphanumeric characters, then lowercasing it. Compare it to the service token using exact equality only. A matching row with a non-empty `VersionGA` or `VersionPreview` means the namespace is already established → treat namespace approval as **satisfied**. Do not use prefix, substring, or fuzzy matching.
+     4. If neither the Release Plan nor a released .NET package establishes approval, fall back to the manual signal: fetch PR comments and confirm the PR author posted a comment that includes a GitHub issue URL (`https://github.com/.../issues/<number>`) and references `namespace review`. Treat namespace approval as **missing** only if none of the three signals is present.
 
 ### Step 2 — Check pipeline status
 
@@ -209,7 +211,7 @@ List only the items that are still outstanding. Omit an item once its requiremen
 This PR cannot be merged until the following onboarding requirements are completed:
 
 - **Pipeline setup** (release pipelines not created yet): comment `/azp run prepare-pipelines` on this PR to create the release pipelines.
-- **Namespace approval** (not yet approved — no matching .NET package release and no namespace review link was found): get the module namespace approved via the namespace review process, then comment the namespace review issue link, for example `Namespace review issue: https://github.com/Azure/azure-sdk/issues/12345`.
+- **Namespace approval** (not yet approved — the Release Plan has no namespace approval issue, no matching .NET package release exists, and no namespace review link was found): get the module namespace approved via the namespace review process, then comment the namespace review issue link, for example `Namespace review issue: https://github.com/Azure/azure-sdk/issues/12345`.
 ```
 
 **If there are failures** → use this template, then append the **First On-Board Service Checklist** above (with only the outstanding items) when this is a first on-board service:

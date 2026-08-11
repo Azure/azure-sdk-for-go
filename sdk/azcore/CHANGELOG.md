@@ -1,10 +1,10 @@
 # Release History
 
-## 1.22.1 (Unreleased)
+## 1.23.0 (Unreleased)
 
 ### Features Added
 
-* `runtime.FetcherForNextLinkOptions` has a new field `Endpoint`, the service endpoint used to resolve a relative next link.
+* Helper method `runtime.NewRequestForNextLink` for creating requests for pageable operations that uses a next link.  It handles absolute and relative next links.
 
 ### Breaking Changes
 

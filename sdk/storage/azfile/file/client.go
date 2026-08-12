@@ -11,7 +11,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"reflect"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -268,6 +267,12 @@ func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeek
 			if err != nil {
 				return UploadRangeResponse{}, err
 			}
+			// Apply may return a replacement reader (the structured message encoder or a
+			// rewound buffer for computed CRC64). The generated client reads the request body
+			// from uploadRangeOptions.Optionalbody, so the transformed reader must be assigned
+			// back onto it; otherwise the original, unframed (and possibly already-consumed)
+			// reader is sent instead.
+			uploadRangeOptions.Optionalbody = body
 			contentLength, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
 			if err != nil {
 				return UploadRangeResponse{}, err
@@ -478,7 +483,6 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 	}
 
 	if uploadOptions.TransactionalValidation != nil &&
-		reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func &&
 		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
 		return fileerror.UnsupportedChecksum
 	}
@@ -498,7 +502,6 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 	}
 
 	if uploadOptions.TransactionalValidation != nil &&
-		reflect.TypeOf(uploadOptions.TransactionalValidation).Kind() != reflect.Func &&
 		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
 		return fileerror.UnsupportedChecksum
 	}
@@ -514,7 +517,6 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 	}
 
 	if options.TransactionalValidation != nil &&
-		reflect.TypeOf(options.TransactionalValidation).Kind() != reflect.Func &&
 		exported.GetStructuredBodyType(options.TransactionalValidation) == "" {
 		return fileerror.UnsupportedChecksum
 	}

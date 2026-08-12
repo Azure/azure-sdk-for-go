@@ -35,6 +35,9 @@
 # ServiceLabel: %Azure.Identity
 # ServiceOwners:                                                   @Azure/azure-sdk-write-identity @rickwinter @xirzec
 
+# PRLabel: %Container Service
+/sdk/resourcemanager/containerservice/                             @elvazhu521 @FumingZhang
+
 # PRLabel: %Cosmos
 /sdk/data/azcosmos/                                                @Azure/azure-cosmos-go-sdk
 
@@ -310,7 +313,7 @@
 # ServiceOwners:                                                   @northtyphoon @toddysm
 
 # ServiceLabel: %Container Service
-# ServiceOwners:                                                   @jwilder @qike-ms @seanmck @thomas1206
+# ServiceOwners:                                                   @elvazhu521 @FumingZhang
 
 # ServiceLabel: %Cost Management - Billing
 # ServiceOwners:                                                   @ccmbpxpcrew

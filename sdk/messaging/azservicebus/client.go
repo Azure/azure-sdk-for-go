@@ -397,9 +397,9 @@ type ListSessionsOptions struct {
 }
 
 // listSessionsPageSize is the number of session IDs requested per service round-trip.
-// Enumeration continues until the service returns an empty page, so this is only a batch
-// size and never a correctness boundary. It is kept fixed rather than exposed as an option
-// to keep the public surface minimal.
+// Enumeration ends when the service returns a page with fewer IDs than this (a short or
+// empty page signals the end), matching the .NET SDK's SessionBrowsePageSize convention.
+// It is kept fixed rather than exposed as an option to keep the public surface minimal.
 const listSessionsPageSize = 100
 
 // NewListSessionsForQueuePager creates a pager that lists the IDs of sessions in a session-enabled queue.
@@ -548,7 +548,11 @@ func (p *listSessionsPager) fetch(ctx context.Context) (ListSessionsResponse, er
 	}
 
 	p.skip += int32(len(page))
-	if len(page) == 0 {
+	// A page shorter than the requested size is treated as the final page, so
+	// enumeration ends here. This assumes the service under-fills only the last page
+	// (see the listSessionsPageSize doc comment). Matches the .NET SDK, which breaks
+	// on page.Count < SessionBrowsePageSize.
+	if len(page) < listSessionsPageSize {
 		p.done = true
 	}
 	return ListSessionsResponse{Sessions: page}, nil

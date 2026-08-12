@@ -262,7 +262,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			RootCertificate: &armiothub.RootCertificateProperties{
 	// 				EnableRootCertificateV2: to.Ptr(true),
-	// 				LastUpdatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-08T11:16:49.0748958-07:00"); return t}()),
+	// 				LastUpdatedTimeUTC: to.Ptr(time.Date(2022, time.April, 8, 18, 16, 49, 74895800, time.UTC)),
 	// 			},
 	// 			Routing: &armiothub.RoutingProperties{
 	// 				Endpoints: &armiothub.RoutingEndpoints{
@@ -304,7 +304,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithDeviceRe
 	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
 	// 		},
 	// 		SystemData: &armiothub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -508,7 +508,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			RootCertificate: &armiothub.RootCertificateProperties{
 	// 				EnableRootCertificateV2: to.Ptr(true),
-	// 				LastUpdatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-08T11:16:49.0748958-07:00"); return t}()),
+	// 				LastUpdatedTimeUTC: to.Ptr(time.Date(2022, time.April, 8, 18, 16, 49, 74895800, time.UTC)),
 	// 			},
 	// 			Routing: &armiothub.RoutingProperties{
 	// 				Endpoints: &armiothub.RoutingEndpoints{
@@ -560,7 +560,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
 	// 		},
 	// 		SystemData: &armiothub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -697,7 +697,7 @@ func ExampleResourceClient_BeginDelete() {
 	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
 	// 		},
 	// 		SystemData: &armiothub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -755,9 +755,9 @@ func ExampleResourceClient_ExportDevices() {
 	// res = armiothub.ResourceClientExportDevicesResponse{
 	// 	JobResponse: armiothub.JobResponse{
 	// 		Type: to.Ptr(armiothub.JobTypeUnknown),
-	// 		EndTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 		EndTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 	// 		JobID: to.Ptr("test"),
-	// 		StartTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 		StartTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 	// 		Status: to.Ptr(armiothub.JobStatusUnknown),
 	// 	},
 	// }
@@ -905,7 +905,7 @@ func ExampleResourceClient_Get() {
 	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
 	// 		},
 	// 		SystemData: &armiothub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -941,8 +941,8 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 		// 			{
 		// 				EndpointID: to.Ptr("id1"),
 		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusHealthy),
-		// 				LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Wed, 13 Sep 2017 18:04:32 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-		// 				LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Wed, 13 Sep 2017 18:04:32 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 				LastSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 				LastSuccessfulSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
 		// 			},
 		// 			{
 		// 				EndpointID: to.Ptr("id2"),
@@ -952,9 +952,9 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 		// 				EndpointID: to.Ptr("id3"),
 		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusUnhealthy),
 		// 				LastKnownError: to.Ptr("NotFound"),
-		// 				LastKnownErrorTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Wed, 13 Sep 2017 18:04:32 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-		// 				LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Wed, 13 Sep 2017 18:04:32 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
-		// 				LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Wed, 13 Sep 2017 18:04:32 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 				LastKnownErrorTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 				LastSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 				LastSuccessfulSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
 		// 			},
 		// 		},
 		// 	},
@@ -1014,9 +1014,9 @@ func ExampleResourceClient_GetJob() {
 	// res = armiothub.ResourceClientGetJobResponse{
 	// 	JobResponse: armiothub.JobResponse{
 	// 		Type: to.Ptr(armiothub.JobTypeUnknown),
-	// 		EndTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 		EndTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 	// 		JobID: to.Ptr("test"),
-	// 		StartTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 		StartTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 	// 		Status: to.Ptr(armiothub.JobStatusUnknown),
 	// 	},
 	// }
@@ -1210,9 +1210,9 @@ func ExampleResourceClient_ImportDevices() {
 	// res = armiothub.ResourceClientImportDevicesResponse{
 	// 	JobResponse: armiothub.JobResponse{
 	// 		Type: to.Ptr(armiothub.JobTypeUnknown),
-	// 		EndTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 		EndTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 	// 		JobID: to.Ptr("test"),
-	// 		StartTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+	// 		StartTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 	// 		Status: to.Ptr(armiothub.JobStatusUnknown),
 	// 	},
 	// }
@@ -1350,7 +1350,7 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 		// 					Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
 		// 				},
 		// 				SystemData: &armiothub.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -1493,7 +1493,7 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 		// 					Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
 		// 				},
 		// 				SystemData: &armiothub.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -1571,9 +1571,9 @@ func ExampleResourceClient_NewListJobsPager() {
 		// 		Value: []*armiothub.JobResponse{
 		// 			{
 		// 				Type: to.Ptr(armiothub.JobTypeUnknown),
-		// 				EndTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 				EndTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 		// 				JobID: to.Ptr("test"),
-		// 				StartTimeUTC: to.Ptr(func() time.Time { t, _ := strconv.ParseInt(Thu, 15 Jun 2017 19:20:58 GMT, 10, 64); return time.Unix(t, 0).UTC()}()),
+		// 				StartTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
 		// 				Status: to.Ptr(armiothub.JobStatusUnknown),
 		// 			},
 		// 		},
@@ -1885,7 +1885,7 @@ func ExampleResourceClient_BeginUpdate() {
 	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
 	// 		},
 	// 		SystemData: &armiothub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"foo": to.Ptr("bar"),

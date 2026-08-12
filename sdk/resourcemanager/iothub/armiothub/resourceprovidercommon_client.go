@@ -61,12 +61,7 @@ func (client *ResourceProviderCommonClient) GetSubscriptionQuota(ctx context.Con
 	if err != nil {
 		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
-	}
-	resp, err := client.getSubscriptionQuotaHandleResponse(httpResp)
-	return resp, err
+	return client.getSubscriptionQuotaHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSubscriptionQuotaCreateRequest creates the GetSubscriptionQuota request.
@@ -88,8 +83,11 @@ func (client *ResourceProviderCommonClient) getSubscriptionQuotaCreateRequest(ct
 }
 
 // getSubscriptionQuotaHandleResponse handles the GetSubscriptionQuota response.
-func (client *ResourceProviderCommonClient) getSubscriptionQuotaHandleResponse(resp *http.Response) (ResourceProviderCommonClientGetSubscriptionQuotaResponse, error) {
+func (client *ResourceProviderCommonClient) getSubscriptionQuotaHandleResponse(resp *http.Response, successCodes ...int) (ResourceProviderCommonClientGetSubscriptionQuotaResponse, error) {
 	result := ResourceProviderCommonClientGetSubscriptionQuotaResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserSubscriptionQuotaListResult); err != nil {
 		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
 	}

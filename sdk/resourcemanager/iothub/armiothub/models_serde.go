@@ -200,13 +200,13 @@ func (c *CertificateListDescription) UnmarshalJSON(data []byte) error {
 func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificate", c.Certificate)
-	populateTime[datetime.RFC7231](objectMap, "created", c.Created)
-	populateTime[datetime.RFC7231](objectMap, "expiry", c.Expiry)
+	populateTime[datetime.RFC7231](objectMap, "created", c.Created, false)
+	populateTime[datetime.RFC7231](objectMap, "expiry", c.Expiry, false)
 	populate(objectMap, "isVerified", c.IsVerified)
 	populate(objectMap, "policyResourceId", c.PolicyResourceID)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateTime[datetime.RFC7231](objectMap, "updated", c.Updated)
+	populateTime[datetime.RFC7231](objectMap, "updated", c.Updated, false)
 	return json.Marshal(objectMap)
 }
 
@@ -255,13 +255,13 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 func (c CertificatePropertiesWithNonce) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificate", c.Certificate)
-	populateTime[datetime.RFC7231](objectMap, "created", c.Created)
-	populateTime[datetime.RFC7231](objectMap, "expiry", c.Expiry)
+	populateTime[datetime.RFC7231](objectMap, "created", c.Created, false)
+	populateTime[datetime.RFC7231](objectMap, "expiry", c.Expiry, false)
 	populate(objectMap, "isVerified", c.IsVerified)
 	populate(objectMap, "policyResourceId", c.PolicyResourceID)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateTime[datetime.RFC7231](objectMap, "updated", c.Updated)
+	populateTime[datetime.RFC7231](objectMap, "updated", c.Updated, false)
 	populate(objectMap, "verificationCode", c.VerificationCode)
 	return json.Marshal(objectMap)
 }
@@ -604,9 +604,9 @@ func (e EndpointHealthData) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "endpointId", e.EndpointID)
 	populate(objectMap, "healthStatus", e.HealthStatus)
 	populate(objectMap, "lastKnownError", e.LastKnownError)
-	populateTime[datetime.RFC7231](objectMap, "lastKnownErrorTime", e.LastKnownErrorTime)
-	populateTime[datetime.RFC7231](objectMap, "lastSendAttemptTime", e.LastSendAttemptTime)
-	populateTime[datetime.RFC7231](objectMap, "lastSuccessfulSendAttemptTime", e.LastSuccessfulSendAttemptTime)
+	populateTime[datetime.RFC7231](objectMap, "lastKnownErrorTime", e.LastKnownErrorTime, false)
+	populateTime[datetime.RFC7231](objectMap, "lastSendAttemptTime", e.LastSendAttemptTime, false)
+	populateTime[datetime.RFC7231](objectMap, "lastSuccessfulSendAttemptTime", e.LastSuccessfulSendAttemptTime, false)
 	return json.Marshal(objectMap)
 }
 
@@ -1209,11 +1209,11 @@ func (i *ImportDevicesRequest) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type JobResponse.
 func (j JobResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC7231](objectMap, "endTimeUtc", j.EndTimeUTC)
+	populateTime[datetime.RFC7231](objectMap, "endTimeUtc", j.EndTimeUTC, false)
 	populate(objectMap, "failureReason", j.FailureReason)
 	populate(objectMap, "jobId", j.JobID)
 	populate(objectMap, "parentJobId", j.ParentJobID)
-	populateTime[datetime.RFC7231](objectMap, "startTimeUtc", j.StartTimeUTC)
+	populateTime[datetime.RFC7231](objectMap, "startTimeUtc", j.StartTimeUTC, false)
 	populate(objectMap, "status", j.Status)
 	populate(objectMap, "statusMessage", j.StatusMessage)
 	populate(objectMap, "type", j.Type)
@@ -2153,7 +2153,7 @@ func (r *RegistryStatistics) UnmarshalJSON(data []byte) error {
 func (r RootCertificateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "enableRootCertificateV2", r.EnableRootCertificateV2)
-	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTimeUtc", r.LastUpdatedTimeUTC)
+	populateTime[datetime.RFC3339](objectMap, "lastUpdatedTimeUtc", r.LastUpdatedTimeUTC, true)
 	return json.Marshal(objectMap)
 }
 
@@ -3106,10 +3106,10 @@ func (s *StorageEndpointProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -3420,13 +3420,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -3436,7 +3440,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -3447,7 +3451,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

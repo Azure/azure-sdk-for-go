@@ -109,4 +109,4 @@ func (t transferValidationTypeFn) Apply(rsc io.ReadSeekCloser, cfg generated.Tra
 }
 
 func (transferValidationTypeFn) notPubliclyImplementable() {}
-func (transferValidationTypeFn) supportsMultiBlock() bool  { return true }
+func (transferValidationTypeFn) supportsMultiBlock() bool  { return false }

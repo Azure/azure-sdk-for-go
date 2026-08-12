@@ -75,6 +75,47 @@ type BlobItem struct {
 	VersionID  *string            `xml:"VersionId"`
 }
 
+type BlobLayout struct {
+	Endpoints *BlobLayoutEndpoints `xml:"Endpoints"`
+
+	// The continuation marker used for this request.
+	Marker *string `xml:"Marker"`
+
+	// The maximum number of ranges to return per request.
+	MaxResults *int32 `xml:"MaxResults"`
+
+	// If the number of ranges exceeds MaxResults, a NextMarker is returned for use in subsequent requests to continue listing.
+	NextMarker *string           `xml:"NextMarker"`
+	Ranges     *BlobLayoutRanges `xml:"Ranges"`
+}
+
+type BlobLayoutEndpoints struct {
+	Endpoint []*BlobLayoutEndpointsEndpointItem `xml:"Endpoint"`
+}
+
+type BlobLayoutEndpointsEndpointItem struct {
+	// REQUIRED; The index of the endpoint, referenced by Range elements.
+	Index *int32 `xml:"Index,attr"`
+
+	// REQUIRED; The host:port of the endpoint.
+	Value *string `xml:"Value,attr"`
+}
+
+type BlobLayoutRanges struct {
+	Range []*BlobLayoutRangesRangeItem `xml:"Range"`
+}
+
+type BlobLayoutRangesRangeItem struct {
+	// REQUIRED; The end byte offset of the range.
+	End *int64 `xml:"End,attr"`
+
+	// REQUIRED; Index into the Endpoints array indicating which endpoint serves this range.
+	EndpointIndex *int32 `xml:"EndpointIndex,attr"`
+
+	// REQUIRED; The start byte offset of the range.
+	Start *int64 `xml:"Start,attr"`
+}
+
 type BlobName struct {
 	// The name of the blob.
 	Content *string `xml:",chardata"`

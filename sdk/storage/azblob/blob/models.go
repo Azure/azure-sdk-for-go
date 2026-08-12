@@ -100,6 +100,26 @@ type DownloadStreamOptions struct {
 	AccessConditions *AccessConditions
 	CPKInfo          *CPKInfo
 	CPKScopeInfo     *CPKScopeInfo
+
+	// LayoutEndpoint optionally routes this download to a specific storage endpoint for
+	// better locality. This is an advanced option; most callers should leave it empty, or
+	// use DownloadBuffer/DownloadFile with LayoutAwareRoutingEnabled, which selects
+	// endpoints automatically.
+	//
+	// Set it only when implementing a custom chunked download: page through
+	// Client.GetLayoutPager, find the layout range covering Range.Offset, and pass that
+	// range's endpoint here. Passing an endpoint that does not cover the requested range is
+	// not an error, but forfeits the locality benefit.
+	//
+	// Cache the layout rather than calling Client.GetLayoutPager per chunk: a single layout
+	// covers the whole range/blob, so one enumeration can serve every chunk of a download. A blob's
+	// layout can change over time, so refresh the cached layout roughly every 5 minutes, which
+	// is the interval DownloadBuffer and DownloadFile use internally.
+	//
+	// When set, the SDK rewrites the outgoing request URI's host/port to this endpoint while
+	// preserving the original Host header, so authentication (including SAS) is unaffected.
+	// When empty (the default), the request is sent to the client's configured endpoint.
+	LayoutEndpoint string
 }
 
 func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, *generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
@@ -126,8 +146,39 @@ func (o *DownloadStreamOptions) format() (*generated.BlobClientDownloadOptions, 
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// LayoutAwareRouting defines whether downloads should attempt to be routed to the ideal
+// endpoint for each block, based on the blob's layout.
+type LayoutAwareRouting string
+
+const (
+	// LayoutAwareRoutingAuto is the zero value, and therefore the default when no value is
+	// specified. Currently, the SDK resolves Auto to enabled, so it behaves identically to
+	// LayoutAwareRoutingEnabled. Specify LayoutAwareRoutingEnabled or
+	// LayoutAwareRoutingDisabled to pin the behavior.
+	LayoutAwareRoutingAuto LayoutAwareRouting = ""
+
+	// LayoutAwareRoutingEnabled always attempts to route requests to the ideal endpoint for each block.
+	LayoutAwareRoutingEnabled LayoutAwareRouting = "Enabled"
+
+	// LayoutAwareRoutingDisabled never uses layout aware routing; requests are sent to the client's configured endpoint.
+	LayoutAwareRoutingDisabled LayoutAwareRouting = "Disabled"
+)
+
+// PossibleLayoutAwareRoutingValues returns the possible values for the LayoutAwareRouting const type.
+func PossibleLayoutAwareRoutingValues() []LayoutAwareRouting {
+	return []LayoutAwareRouting{
+		LayoutAwareRoutingAuto,
+		LayoutAwareRoutingEnabled,
+		LayoutAwareRoutingDisabled,
+	}
+}
+
 // downloadOptions contains common options used by the DownloadBuffer and DownloadFile functions.
 type downloadOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled.
+	LayoutAwareRouting LayoutAwareRouting
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -155,6 +206,16 @@ type downloadOptions struct {
 	TransactionalValidation TransferValidationType
 }
 
+// layoutAwareRoutingEnabled reports whether layout aware routing should be attempted.
+// LayoutAwareRoutingAuto, which is the zero value, currently resolves to enabled, so only
+// an explicit LayoutAwareRoutingDisabled turns it off.
+func (o *downloadOptions) layoutAwareRoutingEnabled() bool {
+	if o == nil {
+		return true
+	}
+	return o.LayoutAwareRouting != LayoutAwareRoutingDisabled
+}
+
 func (o *downloadOptions) getBlobPropertiesOptions() *GetPropertiesOptions {
 	if o == nil {
 		return nil
@@ -179,8 +240,24 @@ func (o *downloadOptions) getDownloadBlobOptions(rnge HTTPRange, rangeGetContent
 	}
 }
 
+func (o *downloadOptions) getBlobLayoutOptions() *GetLayoutOptions {
+	if o == nil {
+		return nil
+	}
+	return &GetLayoutOptions{
+		Range:            o.Range,
+		AccessConditions: o.AccessConditions,
+		CPKInfo:          o.CPKInfo,
+	}
+}
+
 // DownloadBufferOptions contains the optional parameters for the DownloadBuffer method.
 type DownloadBufferOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
+	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
+	LayoutAwareRouting LayoutAwareRouting
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -212,6 +289,11 @@ type DownloadBufferOptions struct {
 
 // DownloadFileOptions contains the optional parameters for the DownloadFile method.
 type DownloadFileOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block. The default, LayoutAwareRoutingAuto, currently resolves to enabled; set
+	// LayoutAwareRoutingDisabled to always use the client's configured endpoint.
+	LayoutAwareRouting LayoutAwareRouting
+
 	// Range specifies a range of bytes.  The default value is all bytes.
 	Range HTTPRange
 
@@ -661,3 +743,32 @@ type GetAccountInfoOptions struct {
 func (o *GetAccountInfoOptions) format() *generated.BlobClientGetAccountInfoOptions {
 	return nil
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// GetLayoutOptions contains the optional parameters for the Client.GetLayout method
+type GetLayoutOptions struct {
+	Marker           *string
+	MaxResults       *int32
+	Range            HTTPRange
+	AccessConditions *AccessConditions
+	CPKInfo          *CPKInfo
+}
+
+func (o *GetLayoutOptions) format() (*generated.BlobClientGetLayoutOptions,
+	*generated.LeaseAccessConditions, *generated.CPKInfo, *generated.ModifiedAccessConditions) {
+	if o == nil {
+		return nil, nil, nil, nil
+	}
+
+	options := &generated.BlobClientGetLayoutOptions{
+		Marker:     o.Marker,
+		Maxresults: o.MaxResults,
+		Range:      exported.FormatHTTPRange(o.Range),
+	}
+
+	leaseAccessConditions, modifiedAccessConditions := exported.FormatBlobAccessConditions(o.AccessConditions)
+	return options, leaseAccessConditions, o.CPKInfo, modifiedAccessConditions
+}
+
+// ---------------------------------------------------------------------------------------------------------------------

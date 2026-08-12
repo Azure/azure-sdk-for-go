@@ -10,6 +10,8 @@ import (
 	"net"
 	"strings"
 	"sync"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/errorinfo"
 )
 
 // HTTPGetter is a function type that refers to a method that performs an HTTP GET operation.
@@ -133,14 +135,13 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 
 		s.setResponse(nil) // Our stream is no longer good
 
-		// Check the retry count and error code, and decide whether to retry.
+		// Check the retry count and error kind, and decide whether to retry.
+		// Errors are assumed retryable unless explicitly marked non-retriable via
+		// errorinfo.NonRetriableError, matching the model used by azcore's retry policy.
 		retriesExhausted := try >= s.retryReaderOptions.MaxRetries
-		// Use errors.As so that a net.Error wrapped further down the chain (e.g. by the structured
-		// message decoder via fmt.Errorf("...: %w", err)) is still recognized as retryable.
-		var netErr net.Error
-		isNetError := errors.As(err, &netErr)
-		isUnexpectedEOF := errors.Is(err, io.ErrUnexpectedEOF)
-		willRetry := (isNetError || isUnexpectedEOF || s.wasRetryableEarlyClose(err)) && !retriesExhausted
+		var nre errorinfo.NonRetriable
+		isNonRetriable := errors.As(err, &nre)
+		willRetry := !isNonRetriable && !s.isNonRetriableEarlyClose(err) && !retriesExhausted
 
 		// Notify, for logging purposes, of any failures
 		if s.retryReaderOptions.OnFailedRead != nil {
@@ -156,19 +157,14 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 	}
 }
 
-// By default, we allow early Closing, from another concurrent goroutine, to be used to force a retry
-// Is this safe, to close early from another goroutine?  Early close ultimately ends up calling
-// net.Conn.Close, and that is documented as "Any blocked Read or Write operations will be unblocked and return errors"
-// which is exactly the behaviour we want.
-// NOTE: that if caller has forced an early Close from a separate goroutine (separate from the Read)
-// then there are two different types of error that may happen - either the one we check for here,
-// or a net.Error (due to closure of connection). Which one happens depends on timing. We only need this routine
-// to check for one, since the other is a net.Error, which our main Read retry loop is already handing.
-func (s *RetryReader) wasRetryableEarlyClose(err error) bool {
-	if s.retryReaderOptions.EarlyCloseAsError {
-		return false // user wants all early closes to be errors, and so not retryable
+// isNonRetriableEarlyClose returns true when the error is a "read on closed response body" and the
+// caller has opted into treating early closes as fatal via EarlyCloseAsError. When EarlyCloseAsError
+// is false (the default), closing from another goroutine is a supported way to force a retry, so the
+// error is left retryable.
+func (s *RetryReader) isNonRetriableEarlyClose(err error) bool {
+	if !s.retryReaderOptions.EarlyCloseAsError {
+		return false
 	}
-	// unfortunately, http.errReadOnClosedResBody is private, so the best we can do here is to check for its text
 	return strings.HasSuffix(err.Error(), ReadOnClosedBodyMessage)
 }
 

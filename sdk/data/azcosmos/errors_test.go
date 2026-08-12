@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/http"
@@ -13,63 +14,137 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestCodeForStatus(t *testing.T) {
+func TestCodeForDriverStatus(t *testing.T) {
 	for _, tt := range []struct {
-		name       string
-		statusCode int
-		subStatus  int
-		want       Code
+		name      string
+		status    driverStatus
+		subStatus int
+		want      Code
 	}{
-		{"bad request", http.StatusBadRequest, 0, CodeBadRequest},
-		{"unauthorized", http.StatusUnauthorized, 0, CodeUnauthorized},
-		{"forbidden", http.StatusForbidden, 0, CodeForbidden},
-		{"not found", http.StatusNotFound, 0, CodeNotFound},
-		{"request timeout", http.StatusRequestTimeout, 0, CodeRequestTimeout},
-		{"conflict", http.StatusConflict, 0, CodeConflict},
-		{"gone", http.StatusGone, 0, CodeGone},
-		{"precondition failed", http.StatusPreconditionFailed, 0, CodePreconditionFailed},
-		{"throttled", http.StatusTooManyRequests, 0, CodeThrottled},
-		{"service unavailable", http.StatusServiceUnavailable, 0, CodeServiceUnavailable},
+		{"bad request", driverStatusBadRequest, -1, CodeBadRequest},
+		{"unauthorized", driverStatusUnauthorized, -1, CodeUnauthorized},
+		{"forbidden", driverStatusForbidden, -1, CodeForbidden},
+		{"not found", driverStatusNotFound, -1, CodeNotFound},
+		{"request timeout", driverStatusTimeout, -1, CodeRequestTimeout},
+		{"conflict", driverStatusConflict, -1, CodeConflict},
+		{"gone", driverStatusGone, -1, CodeGone},
+		{"precondition failed", driverStatusPreconditionFailed, -1, CodePreconditionFailed},
+		{"throttled", driverStatusThrottled, -1, CodeThrottled},
+		{"service unavailable", driverStatusServiceUnavailable, -1, CodeServiceUnavailable},
+		{"service error", driverStatusServiceError, -1, CodeServiceError},
+
+		// Failures the client produced carry no HTTP status, so classifying on one would have
+		// collapsed every one of these into CodeUnknown.
+		{"client error", driverStatusClientError, -1, CodeClientError},
+		{"transport failure", driverStatusTransportFailure, -1, CodeTransportFailure},
+		{"serialization failed", driverStatusSerializationFailed, -1, CodeSerializationFailed},
+		{"authentication failed", driverStatusAuthenticationFailed, -1, CodeAuthenticationFailed},
+		{"client operation timeout", driverStatusClientOperationTimeout, -1, CodeClientOperationTimeout},
+		{"cancelled", driverStatusOperationCancelled, -1, CodeOperationCancelled},
 
 		// Cosmos DB overloads 404 and 410 with sub-status 1002; classifying either of those on
 		// status alone would tell the caller something categorically wrong.
-		{"session token not satisfied is not a missing resource", http.StatusNotFound, 1002, CodeSessionUnavailable},
-		{"partition key range gone is not a bare gone", http.StatusGone, 1002, CodePartitionKeyRangeGone},
+		{"session token not satisfied is not a missing resource", driverStatusNotFound, 1002, CodeSessionUnavailable},
+		{"partition key range gone is not a bare gone", driverStatusGone, 1002, CodePartitionKeyRangeGone},
 
 		// An unrelated sub-status must not disturb the status-based classification.
-		{"not found with unrelated sub-status", http.StatusNotFound, 1003, CodeNotFound},
-		{"gone with unrelated sub-status", http.StatusGone, 1007, CodeGone},
+		{"not found with unrelated sub-status", driverStatusNotFound, 1003, CodeNotFound},
+		{"gone with unrelated sub-status", driverStatusGone, 1007, CodeGone},
 
 		// 1002 only means something on the statuses that overload it.
-		{"1002 on an unrelated status", http.StatusConflict, 1002, CodeConflict},
+		{"1002 on an unrelated status", driverStatusConflict, 1002, CodeConflict},
 
-		{"unmapped status", http.StatusInternalServerError, 0, CodeUnknown},
-		{"no status at all", 0, 0, CodeUnknown},
+		// Codes the driver adds later must still classify by band rather than falling to
+		// CodeUnknown, which is what the header requires of consumers.
+		{"argument validation is client-side", driverStatus(1), -1, CodeClientError},
+		{"invalid utf-8 is client-side", driverStatus(2), -1, CodeClientError},
+		{"reserved auth and conversion band", driverStatus(1001), -1, CodeClientError},
+		{"unmapped wire code is a service error", driverStatus(2451), -1, CodeServiceError},
+		{"unmapped plumbing code is client-side", driverStatus(3999), -1, CodeClientError},
+		{"invalid partition key", driverStatus(4004), -1, CodeClientError},
+		{"queue shutdown", driverStatus(4011), -1, CodeClientError},
+
+		// The warning band still delivers its result, so it must not be reported as a client
+		// failure. 5001 is options ignored on a cache hit, where the driver is still returned.
+		{"warning band is not a failure", driverStatus(5001), -1, CodeUnknown},
+
+		{"success is not a failure", driverStatusSuccess, -1, CodeUnknown},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			require.Equal(t, tt.want, codeForStatus(tt.statusCode, tt.subStatus))
+			require.Equal(t, tt.want, codeForDriverStatus(tt.status, tt.subStatus))
 		})
 	}
 }
 
 // Each mapped status must produce its own code and no other, which catches both a mis-mapping and
 // two constants having been given the same value.
-func TestCodeForStatusIsInjective(t *testing.T) {
-	statuses := []int{
-		http.StatusBadRequest, http.StatusUnauthorized, http.StatusForbidden, http.StatusNotFound,
-		http.StatusRequestTimeout, http.StatusConflict, http.StatusGone,
-		http.StatusPreconditionFailed, http.StatusTooManyRequests, http.StatusServiceUnavailable,
+func TestCodeForDriverStatusIsInjective(t *testing.T) {
+	statuses := []driverStatus{
+		driverStatusBadRequest, driverStatusUnauthorized, driverStatusForbidden,
+		driverStatusNotFound, driverStatusTimeout, driverStatusConflict, driverStatusGone,
+		driverStatusPreconditionFailed, driverStatusThrottled, driverStatusServiceUnavailable,
+		driverStatusServiceError, driverStatusClientError, driverStatusTransportFailure,
+		driverStatusSerializationFailed, driverStatusAuthenticationFailed,
+		driverStatusClientOperationTimeout, driverStatusOperationCancelled,
 	}
 
-	seen := make(map[Code]int, len(statuses))
+	seen := make(map[Code]driverStatus, len(statuses))
 	for _, status := range statuses {
-		code := codeForStatus(status, 0)
+		code := codeForDriverStatus(status, -1)
 		require.NotEqual(t, CodeUnknown, code, "status %d should be classified", status)
 
 		previous, duplicated := seen[code]
 		require.False(t, duplicated, "statuses %d and %d both classify as %q", previous, status, code)
 		seen[code] = status
 	}
+}
+
+// The driver reports an absent sub-status as -1, while the API documents zero, so the boundary has
+// to translate. A raw -1 would otherwise read as a real sub-status in Error.
+func TestNormalizeSubStatus(t *testing.T) {
+	for _, tt := range []struct {
+		name      string
+		subStatus int32
+		want      int
+	}{
+		{"absent", -1, 0},
+		{"any other negative sentinel", -42, 0},
+		{"already zero", 0, 0},
+		{"present", 1002, 1002},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, normalizeSubStatus(tt.subStatus))
+		})
+	}
+}
+
+// An absent sub-status must not reach the message, whether it was normalized or copied verbatim.
+func TestErrorOmitsAbsentSubStatus(t *testing.T) {
+	normalized := (&Error{Code: CodeClientError, SubStatus: normalizeSubStatus(-1)}).Error()
+	require.NotContains(t, normalized, "sub-status")
+
+	unnormalized := (&Error{Code: CodeClientError, SubStatus: -1}).Error()
+	require.NotContains(t, unnormalized, "sub-status")
+	require.NotContains(t, unnormalized, "-1")
+
+	withStatus := (&Error{Code: CodeNotFound, StatusCode: http.StatusNotFound, SubStatus: -1}).Error()
+	require.Contains(t, withStatus, "status 404")
+	require.NotContains(t, withStatus, "404/")
+}
+
+// A cancelled operation has to answer to the vocabulary Go callers already use, so that code
+// written against context cancellation works without knowing about Cosmos codes.
+func TestErrorUnwrapsCancellation(t *testing.T) {
+	cancelled := fmt.Errorf("reading item: %w", &Error{Code: CodeOperationCancelled})
+	require.ErrorIs(t, cancelled, context.Canceled)
+
+	var cosmosErr *Error
+	require.True(t, errors.As(cancelled, &cosmosErr))
+	require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
+
+	// Every other failure is a Cosmos failure and nothing else.
+	require.NotErrorIs(t, &Error{Code: CodeThrottled}, context.Canceled)
+	require.NoError(t, (&Error{Code: CodeThrottled}).Unwrap())
 }
 
 func TestErrorAsRetrievesFields(t *testing.T) {
@@ -101,7 +176,7 @@ func TestErrorAsRetrievesFields(t *testing.T) {
 
 	// A throttled request is still billed, so the charge has to survive onto the error: it is the
 	// only place a caller can account for the RUs a failed operation consumed.
-	require.Equal(t, float32(4.5), cosmosErr.RequestCharge)
+	require.Equal(t, float64(4.5), cosmosErr.RequestCharge)
 	require.Equal(t, []byte(`{"code":"TooManyRequests"}`), cosmosErr.Body)
 }
 

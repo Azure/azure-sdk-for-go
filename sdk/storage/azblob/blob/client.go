@@ -369,13 +369,18 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		}
 	}
 
-	if !haveLength {
+	// Only call GetProperties when the blob's length is still unknown, i.e. the caller didn't
+	// specify a count. When a count is specified there's nothing left to learn from it, so the
+	// extra round trip is skipped.
+	if !haveLength && count == CountToEnd {
 		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
 		if err != nil {
 			return 0, err
 		}
 		length = *gr.ContentLength
-		initialIfMatch = gr.ETag
+		// NOTE: the ETag is deliberately not captured here. Without layout aware routing the
+		// chunks are served by a single endpoint, so this is the legacy download path and it
+		// must keep sending exactly the access conditions the caller supplied.
 	}
 
 	if count == CountToEnd { // If size not specified, calculate it
@@ -396,19 +401,24 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, nil
 	}
 
-	// If unspecified by the user, eTag lock on the initial call to ensure consistency of the blob through the download.
-	if o.AccessConditions == nil {
-		o.AccessConditions = &AccessConditions{
-			ModifiedAccessConditions: &ModifiedAccessConditions{
+	// If unspecified by the user, eTag lock on the layout response to ensure consistency of the
+	// blob through the download. This only applies to layout aware routing, where the chunks are
+	// spread across endpoints; initialIfMatch is nil on every other path, which leaves the
+	// caller's access conditions untouched.
+	if initialIfMatch != nil {
+		if o.AccessConditions == nil {
+			o.AccessConditions = &AccessConditions{
+				ModifiedAccessConditions: &ModifiedAccessConditions{
+					IfMatch: initialIfMatch,
+				},
+			}
+		} else if o.AccessConditions.ModifiedAccessConditions == nil {
+			o.AccessConditions.ModifiedAccessConditions = &ModifiedAccessConditions{
 				IfMatch: initialIfMatch,
-			},
+			}
+		} else if o.AccessConditions.ModifiedAccessConditions.IfMatch == nil {
+			o.AccessConditions.ModifiedAccessConditions.IfMatch = initialIfMatch
 		}
-	} else if o.AccessConditions.ModifiedAccessConditions == nil {
-		o.AccessConditions.ModifiedAccessConditions = &ModifiedAccessConditions{
-			IfMatch: initialIfMatch,
-		}
-	} else if o.AccessConditions.ModifiedAccessConditions.IfMatch == nil {
-		o.AccessConditions.ModifiedAccessConditions.IfMatch = initialIfMatch
 	}
 
 	// Prepare and do parallel download.

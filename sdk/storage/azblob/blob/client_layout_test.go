@@ -126,12 +126,24 @@ func (f *fakeLayoutResponder) Do(req *http.Request) (*http.Response, error) {
 		f.downloadIfMatch = append(f.downloadIfMatch, req.Header.Get("If-Match"))
 		f.mu.Unlock()
 		// Download
+		header := http.Header{}
+		header.Set("Content-Length", strconv.FormatInt(rangeLength(req.Header.Get("x-ms-range")), 10))
 		return &http.Response{
 			StatusCode: http.StatusPartialContent,
 			Body:       io.NopCloser(bytes.NewReader([]byte{})),
+			Header:     header,
 		}, nil
 	}
 	return nil, fmt.Errorf("unexpected request: %s %s", req.Method, req.URL.Path)
+}
+
+// rangeLength returns the number of bytes covered by an "bytes=start-end" range header.
+func rangeLength(r string) int64 {
+	var start, end int64
+	if _, err := fmt.Sscanf(r, "bytes=%d-%d", &start, &end); err != nil {
+		return 0
+	}
+	return end - start + 1
 }
 
 func newMockLayoutResponse(contentLength int64, eTag string, layout generated.BlobLayout, statusCode int) *http.Response {
@@ -426,7 +438,7 @@ func TestDownloadBufferFallbackCachedAcrossChunks(t *testing.T) {
 }
 
 // TestDownloadBufferLayoutDisabled verifies the legacy path is untouched: no GetLayout request is
-// issued at all when layout-aware routing is explicitly disabled.
+// issued at all when layout-aware routing is explicitly disabled, and no If-Match is added.
 func TestDownloadBufferLayoutDisabled(t *testing.T) {
 	f := &fakeLayoutResponder{getPropertiesResponse: newMockGetPropertiesResponse(300, "etag")}
 	client := newFakeLayoutClient(t, f)
@@ -442,6 +454,31 @@ func TestDownloadBufferLayoutDisabled(t *testing.T) {
 	require.True(t, getPropsCalled)
 	require.Equal(t, 3, normalGets)
 	require.Zero(t, localityGets)
+	for _, v := range f.ifMatchHeaders() {
+		require.Empty(t, v, "the legacy path must not add an If-Match of its own")
+	}
+}
+
+// TestDownloadBufferFallbackNoETagLock verifies that when the service can't supply a layout and the
+// download falls back to GetProperties, no If-Match is added either.
+func TestDownloadBufferFallbackNoETagLock(t *testing.T) {
+	f := &fakeLayoutResponder{
+		layoutResponses:       map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)},
+		getPropertiesResponse: newMockGetPropertiesResponse(300, "etag"),
+	}
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, 300), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+	})
+	require.NoError(t, err)
+
+	_, _, _, getPropsCalled := f.counts()
+	require.True(t, getPropsCalled)
+	for _, v := range f.ifMatchHeaders() {
+		require.Empty(t, v, "the GetProperties fallback must not add an If-Match")
+	}
 }
 
 // TestDownloadBufferLayoutDefaultEnabled verifies that leaving LayoutAwareRouting unset (the zero
@@ -572,3 +609,57 @@ func TestClientLayoutFallbackCachedSingleRequest(t *testing.T) {
 	layoutCalls, _, _, _ := f.counts()
 	require.Equal(t, 1, layoutCalls, "the failure should be cached, not re-requested")
 }
+
+// TestDownloadBufferCountSkipsGetProperties verifies that no GetProperties request is issued when
+// the caller specifies a count: the blob's length is already known, so the extra round trip would
+// be wasted.
+func TestDownloadBufferCountSkipsGetProperties(t *testing.T) {
+	f := &fakeLayoutResponder{getPropertiesResponse: newMockGetPropertiesResponse(300, "etag")}
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, 200), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingDisabled,
+		Range:              HTTPRange{Offset: 0, Count: 200},
+		BlockSize:          100,
+	})
+	require.NoError(t, err)
+
+	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
+	require.Zero(t, layoutCalls, "no layout request should be made when routing is disabled")
+	require.False(t, getPropsCalled, "the caller supplied a count, so GetProperties is unnecessary")
+	require.Equal(t, 2, normalGets)
+	require.Zero(t, localityGets)
+
+	// Without an initial call there's no ETag to lock on, so no If-Match is sent.
+	for _, v := range f.ifMatchHeaders() {
+		require.Empty(t, v)
+	}
+}
+
+// TestDownloadBufferCountWithLayoutStillETagLocks verifies that specifying a count doesn't disable
+// the ETag lock when layout aware routing is on: the layout response supplies the ETag without an
+// extra GetProperties call.
+func TestDownloadBufferCountWithLayoutStillETagLocks(t *testing.T) {
+	etag := azcore.ETag("layout-etag")
+	l := buildLayout(3, 100, 2, &etag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, 200), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		Range:              HTTPRange{Offset: 0, Count: 200},
+		BlockSize:          100,
+	})
+	require.NoError(t, err)
+
+	_, _, _, getPropsCalled := f.counts()
+	require.False(t, getPropsCalled)
+
+	headers := f.ifMatchHeaders()
+	require.Len(t, headers, 2)
+	for _, v := range headers {
+		require.Equal(t, string(etag), v)
+	}
+}
+

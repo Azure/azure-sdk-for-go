@@ -1,5 +1,19 @@
 # Release History
 
+## 11.0.0-beta.2 (2026-07-27)
+### Features Added
+
+- New field `DNSServers`, `GroupDN`, `LdapPort`, `NetGroupDN`, `UserDN` in struct `LdapConfiguration`
+- New field `DNSServers`, `GroupDN`, `LdapPort`, `NetGroupDN`, `UserDN` in struct `LdapConfigurationPatch`
+
+
+## 10.2.0 (2026-07-21)
+### Features Added
+
+- New enum type `BreakthroughMode` with values `BreakthroughModeDisabled`, `BreakthroughModeEnabled`
+- New field `BreakthroughMode` in struct `VolumeProperties`
+
+
 ## 11.0.0-beta.1 (2026-06-30)
 ### Breaking Changes
 

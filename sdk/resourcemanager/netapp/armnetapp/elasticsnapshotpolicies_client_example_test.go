@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-15-preview/ElasticSnapshotPolicies_CreateOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/ElasticSnapshotPolicies_CreateOrUpdate.json
 func ExampleElasticSnapshotPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleElasticSnapshotPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticSnapshotPolicies_Delete.json
+// Generated from example definition: 2026-05-15-preview/ElasticSnapshotPolicies_Delete.json
 func ExampleElasticSnapshotPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleElasticSnapshotPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticSnapshotPolicies_Get.json
+// Generated from example definition: 2026-05-15-preview/ElasticSnapshotPolicies_Get.json
 func ExampleElasticSnapshotPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleElasticSnapshotPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticSnapshotPolicies_ListByElasticAccount.json
+// Generated from example definition: 2026-05-15-preview/ElasticSnapshotPolicies_ListByElasticAccount.json
 func ExampleElasticSnapshotPoliciesClient_NewListByElasticAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,7 +255,7 @@ func ExampleElasticSnapshotPoliciesClient_NewListByElasticAccountPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticSnapshotPolicies_ListElasticVolumes.json
+// Generated from example definition: 2026-05-15-preview/ElasticSnapshotPolicies_ListElasticVolumes.json
 func ExampleElasticSnapshotPoliciesClient_NewListElasticVolumesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +319,7 @@ func ExampleElasticSnapshotPoliciesClient_NewListElasticVolumesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/ElasticSnapshotPolicies_Update.json
+// Generated from example definition: 2026-05-15-preview/ElasticSnapshotPolicies_Update.json
 func ExampleElasticSnapshotPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

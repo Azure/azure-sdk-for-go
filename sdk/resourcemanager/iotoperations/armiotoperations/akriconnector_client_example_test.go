@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/AkriConnector_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnector_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAkriConnectorClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleAkriConnectorClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AkriConnector_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnector_Delete_MaximumSet_Gen.json
 func ExampleAkriConnectorClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleAkriConnectorClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AkriConnector_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnector_Get_MaximumSet_Gen.json
 func ExampleAkriConnectorClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleAkriConnectorClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AkriConnector_ListByTemplate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnector_ListByTemplate_MaximumSet_Gen.json
 func ExampleAkriConnectorClient_NewListByTemplatePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

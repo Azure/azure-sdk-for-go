@@ -5,7 +5,7 @@
 package armhybridcompute
 
 const (
-	version20250916Preview string = "2025-09-16-preview"
+	version20260616Preview string = "2026-06-16-preview"
 )
 
 // AccessMode - Property that impacts a resource's logging behavior and its connectivity with other resources and public networks.
@@ -523,6 +523,8 @@ const (
 	LicenseTargetWindowsServer2012 LicenseTarget = "Windows Server 2012"
 	// LicenseTargetWindowsServer2012R2 - Windows Server 2012 R2
 	LicenseTargetWindowsServer2012R2 LicenseTarget = "Windows Server 2012 R2"
+	// LicenseTargetWindowsServer2016 - Windows Server 2016 license target.
+	LicenseTargetWindowsServer2016 LicenseTarget = "Windows Server 2016"
 )
 
 // PossibleLicenseTargetValues returns the possible values for the LicenseTarget const type.
@@ -530,6 +532,7 @@ func PossibleLicenseTargetValues() []LicenseTarget {
 	return []LicenseTarget{
 		LicenseTargetWindowsServer2012,
 		LicenseTargetWindowsServer2012R2,
+		LicenseTargetWindowsServer2016,
 	}
 }
 
@@ -545,6 +548,45 @@ const (
 func PossibleLicenseTypeValues() []LicenseType {
 	return []LicenseType{
 		LicenseTypeESU,
+	}
+}
+
+// MachineStatusReason - The reason describing why the service set the machine status to a particular value.
+type MachineStatusReason string
+
+const (
+	// MachineStatusReasonCloned - Indicates the service has detected that this Arc machine is a clone of another onboarded machine.
+	MachineStatusReasonCloned MachineStatusReason = "Cloned"
+)
+
+// PossibleMachineStatusReasonValues returns the possible values for the MachineStatusReason const type.
+func PossibleMachineStatusReasonValues() []MachineStatusReason {
+	return []MachineStatusReason{
+		MachineStatusReasonCloned,
+	}
+}
+
+// ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+type ManagedServiceIdentityType string
+
+const (
+	// ManagedServiceIdentityTypeNone - No managed identity.
+	ManagedServiceIdentityTypeNone ManagedServiceIdentityType = "None"
+	// ManagedServiceIdentityTypeSystemAssigned - System assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssigned ManagedServiceIdentityType = "SystemAssigned"
+	// ManagedServiceIdentityTypeSystemAssignedUserAssigned - System and user assigned managed identity.
+	ManagedServiceIdentityTypeSystemAssignedUserAssigned ManagedServiceIdentityType = "SystemAssigned,UserAssigned"
+	// ManagedServiceIdentityTypeUserAssigned - User assigned managed identity.
+	ManagedServiceIdentityTypeUserAssigned ManagedServiceIdentityType = "UserAssigned"
+)
+
+// PossibleManagedServiceIdentityTypeValues returns the possible values for the ManagedServiceIdentityType const type.
+func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
+	return []ManagedServiceIdentityType{
+		ManagedServiceIdentityTypeNone,
+		ManagedServiceIdentityTypeSystemAssigned,
+		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
+		ManagedServiceIdentityTypeUserAssigned,
 	}
 }
 

@@ -5,7 +5,7 @@
 package armiotoperations
 
 const (
-	version20260301 string = "2026-03-01"
+	version20260701 string = "2026-07-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -754,6 +754,26 @@ const (
 func PossibleFilterTypeValues() []FilterType {
 	return []FilterType{
 		FilterTypeFilter,
+	}
+}
+
+// HighPriorityMessagesBackpressureHandling - Handling of high-priority messages during backpressure state.
+type HighPriorityMessagesBackpressureHandling string
+
+const (
+	// HighPriorityMessagesBackpressureHandlingAccept - When the broker rejects regular-priority messages due to backpressure,
+	// it continues to accept high-priority messages.
+	HighPriorityMessagesBackpressureHandlingAccept HighPriorityMessagesBackpressureHandling = "Accept"
+	// HighPriorityMessagesBackpressureHandlingReject - When the broker rejects regular-priority messages due to backpressure,
+	// it also rejects high-priority messages.
+	HighPriorityMessagesBackpressureHandlingReject HighPriorityMessagesBackpressureHandling = "Reject"
+)
+
+// PossibleHighPriorityMessagesBackpressureHandlingValues returns the possible values for the HighPriorityMessagesBackpressureHandling const type.
+func PossibleHighPriorityMessagesBackpressureHandlingValues() []HighPriorityMessagesBackpressureHandling {
+	return []HighPriorityMessagesBackpressureHandling{
+		HighPriorityMessagesBackpressureHandlingAccept,
+		HighPriorityMessagesBackpressureHandlingReject,
 	}
 }
 

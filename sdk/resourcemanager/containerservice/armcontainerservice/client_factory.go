@@ -40,6 +40,14 @@ func (c *ClientFactory) NewAgentPoolsClient() *AgentPoolsClient {
 	}
 }
 
+// NewAlertConfigurationsClient creates a new instance of AlertConfigurationsClient.
+func (c *ClientFactory) NewAlertConfigurationsClient() *AlertConfigurationsClient {
+	return &AlertConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewClient creates a new instance of Client.
 func (c *ClientFactory) NewClient() *Client {
 	return &Client{

@@ -19,7 +19,7 @@ import (
 // ExtensionPublisherClient contains the methods for the ExtensionPublisher group.
 // Don't use this type directly, use NewExtensionPublisherClient() instead.
 //
-// Generated from API version 2025-09-16-preview
+// Generated from API version 2026-06-16-preview
 type ExtensionPublisherClient struct {
 	internal *arm.Client
 }
@@ -77,7 +77,7 @@ func (client *ExtensionPublisherClient) listCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250916Preview)
+	reqQP.Set("api-version", version20260616Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

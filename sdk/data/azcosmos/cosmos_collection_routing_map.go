@@ -25,8 +25,8 @@ type collectionRoutingMap struct {
 }
 
 // newCollectionRoutingMap creates a new collectionRoutingMap from a set of ranges.
-// It filters out "gone" parent ranges (identified via the Parents field on child ranges)
-// and sorts the remaining ranges by MinInclusive.
+// It filters out "gone" parent ranges (identified via the Parents field on child ranges),
+// deduplicates the survivors by range ID, and sorts them by MinInclusive.
 func newCollectionRoutingMap(ranges []partitionKeyRange, changeFeedETag string) *collectionRoutingMap {
 	goneRanges := make(map[string]bool)
 	for _, r := range ranges {
@@ -35,16 +35,32 @@ func newCollectionRoutingMap(ranges []partitionKeyRange, changeFeedETag string) 
 		}
 	}
 
-	// Filter out gone ranges
+	// Filter out gone ranges and deduplicate by range ID, keeping the last
+	// revision seen. A change-feed drain accumulates every page, so a range that
+	// is updated while a split is in progress is re-delivered on a later page as
+	// a new revision of the same ID. Records arrive in change-feed order, so the
+	// later one is current. Deduplicating here — before sorting and before
+	// isCompleteSetOfRanges — matches the .NET, Java, Python and Rust SDKs, which
+	// all key by range ID prior to validating continuity. Without it, the two
+	// revisions sort adjacently and the map is rejected as overlapping itself.
+	indexByID := make(map[string]int, len(ranges))
 	filtered := make([]partitionKeyRange, 0, len(ranges))
 	for _, r := range ranges {
-		if !goneRanges[r.ID] {
-			filtered = append(filtered, r)
+		if goneRanges[r.ID] {
+			continue
 		}
+		if i, seen := indexByID[r.ID]; seen {
+			filtered[i] = r
+			continue
+		}
+		indexByID[r.ID] = len(filtered)
+		filtered = append(filtered, r)
 	}
 
-	// Sort by MinInclusive using length-aware comparison for HPK boundaries
-	sort.Slice(filtered, func(i, j int) bool {
+	// Sort by MinInclusive using length-aware comparison for HPK boundaries.
+	// The sort is stable so that ranges sharing a boundary keep change-feed order,
+	// keeping discontinuity diagnostics reproducible for invalid snapshots.
+	sort.SliceStable(filtered, func(i, j int) bool {
 		return epk.CompareEPK(filtered[i].MinInclusive, filtered[j].MinInclusive) < 0
 	})
 
@@ -90,12 +106,30 @@ func (crm *collectionRoutingMap) tryCombine(newRanges []partitionKeyRange, newET
 		}
 	}
 
-	// Build sorted slice
+	// Build the combined slice in a deterministic order: existing ranges first
+	// (already sorted), then any new range IDs in change-feed arrival order.
+	// Ranging over combinedByID would use Go's randomized map iteration order,
+	// which makes discontinuity diagnostics non-reproducible.
 	combined := make([]partitionKeyRange, 0, len(combinedByID))
-	for _, r := range combinedByID {
+	appended := make(map[string]bool, len(combinedByID))
+	appendOnce := func(id string) {
+		if appended[id] {
+			return
+		}
+		r, ok := combinedByID[id]
+		if !ok {
+			return
+		}
+		appended[id] = true
 		combined = append(combined, r)
 	}
-	sort.Slice(combined, func(i, j int) bool {
+	for _, r := range crm.orderedRanges {
+		appendOnce(r.ID)
+	}
+	for _, r := range newRanges {
+		appendOnce(r.ID)
+	}
+	sort.SliceStable(combined, func(i, j int) bool {
 		return epk.CompareEPK(combined[i].MinInclusive, combined[j].MinInclusive) < 0
 	})
 

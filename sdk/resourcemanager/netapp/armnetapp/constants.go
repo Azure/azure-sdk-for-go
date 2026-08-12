@@ -5,7 +5,7 @@
 package armnetapp
 
 const (
-	version20260415Preview string = "2026-04-15-preview"
+	version20260515Preview string = "2026-05-15-preview"
 )
 
 // AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
@@ -821,6 +821,7 @@ func PossibleElasticVolumeRestorationStateValues() []ElasticVolumeRestorationSta
 }
 
 // EnableSubvolumes - Flag indicating whether subvolume operations are enabled on the volume
+// Deprecated. This type will be removed in a future API version.
 type EnableSubvolumes string
 
 const (

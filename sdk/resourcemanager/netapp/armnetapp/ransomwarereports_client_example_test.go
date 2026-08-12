@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-15-preview/RansomwareReports_ClearSuspects.json
+// Generated from example definition: 2026-05-15-preview/RansomwareReports_ClearSuspects.json
 func ExampleRansomwareReportsClient_BeginClearSuspects() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleRansomwareReportsClient_BeginClearSuspects() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/RansomwareReports_Get.json
+// Generated from example definition: 2026-05-15-preview/RansomwareReports_Get.json
 func ExampleRansomwareReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleRansomwareReportsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/RansomwareReports_List.json
+// Generated from example definition: 2026-05-15-preview/RansomwareReports_List.json
 func ExampleRansomwareReportsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

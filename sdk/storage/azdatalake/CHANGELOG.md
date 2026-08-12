@@ -1,16 +1,23 @@
 # Release History
 
-## 1.6.1-beta.1 (Unreleased)
+## 1.6.1-beta.2 (Unreleased)
 
 ### Features Added
+* Added structured message (XSM/1.0) CRC64 content validation for `azdatalake` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed a panic in `GetProperties` (and `DownloadStream`) for file and directory clients created via `directory.NewFileClient`/`directory.NewSubdirectoryClient`. These clients did not capture the raw HTTP response, so reading the datalake-specific headers dereferenced a nil response. Fixes [#25490](https://github.com/Azure/azure-sdk-for-go/issues/25490).
+
+### Other Changes
+
+## 1.6.1-beta.1 (2026-07-24)
 
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.
 * Default upload/download concurrency is now based on CPU core count (clamped between 8 and 96) instead of the fixed value of 5. Set `AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true` to revert to previous defaults.
+* Updated `azidentity` version to `1.14.0`
 
 ## 1.6.0 (2026-06-15)
 

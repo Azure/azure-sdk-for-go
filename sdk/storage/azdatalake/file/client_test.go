@@ -6592,3 +6592,237 @@ func (s *UnrecordedTestSuite) TestFileGetSetTagsFileSystemIdentitySas() {
 	_require.Equal(tags["tagKey0"], tagMap["tagKey0"])
 	_require.Equal(tags["tagKey1"], tagMap["tagKey1"])
 }
+
+// ===== Content Validation (Structured Message CRC64) Tests =====
+
+func (s *UnrecordedTestSuite) TestAppendDataWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	contentSize := 8 * 1024
+	rsc, contentD := testcommon.GenerateData(contentSize)
+
+	_, err = fClient.AppendData(context.Background(), 0, rsc, &file.AppendDataOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	_, err = fClient.FlushData(context.Background(), int64(contentSize), nil)
+	_require.NoError(err)
+
+	resp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}
+
+func (s *UnrecordedTestSuite) TestAppendDataWithSMThenDownloadWithSMRoundTrip() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	contentSize := 4 * 1024
+	rsc, contentD := testcommon.GenerateData(contentSize)
+
+	_, err = fClient.AppendData(context.Background(), 0, rsc, &file.AppendDataOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	_, err = fClient.FlushData(context.Background(), int64(contentSize), nil)
+	_require.NoError(err)
+
+	downloadResp, err := fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}
+
+func (s *UnrecordedTestSuite) TestUploadBufferWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	contentSize := 8 * 1024
+	_, contentD := testcommon.GenerateData(contentSize)
+
+	err = fClient.UploadBuffer(context.Background(), contentD, &file.UploadBufferOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	resp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}
+
+func (s *UnrecordedTestSuite) TestUploadStreamWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	contentSize := 8 * 1024
+	_, contentD := testcommon.GenerateData(contentSize)
+
+	err = fClient.UploadStream(context.Background(), bytes.NewReader(contentD), &file.UploadStreamOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	resp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}
+
+func (s *UnrecordedTestSuite) TestAppendDataSingleByteWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	content := []byte{0x42}
+	_, err = fClient.AppendData(context.Background(), 0, streaming.NopCloser(bytes.NewReader(content)), &file.AppendDataOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	_, err = fClient.FlushData(context.Background(), 1, nil)
+	_require.NoError(err)
+
+	downloadResp, err := fClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(downloadResp.Body)
+	_require.NoError(err)
+	_require.EqualValues(content, downloadedData)
+}
+
+func (s *UnrecordedTestSuite) TestUploadFileWithStructuredMessageCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	filesystemName := testcommon.GenerateFileSystemName(testName)
+	fsClient, err := testcommon.GetFileSystemClient(filesystemName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+	defer testcommon.DeleteFileSystem(context.Background(), _require, fsClient)
+
+	_, err = fsClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	fileName := testcommon.GenerateFileName(testName)
+	fClient, err := testcommon.GetFileClient(filesystemName, fileName, s.T(), testcommon.TestAccountDatalake, nil)
+	_require.NoError(err)
+
+	_, err = fClient.Create(context.Background(), nil)
+	_require.NoError(err)
+
+	contentSize := 8 * 1024
+	_, contentD := testcommon.GenerateData(contentSize)
+
+	tmpFile, err := os.CreateTemp("", "datalake-upload-test")
+	_require.NoError(err)
+	defer func() { _ = os.Remove(tmpFile.Name()) }()
+
+	_, err = tmpFile.Write(contentD)
+	_require.NoError(err)
+	_, err = tmpFile.Seek(0, io.SeekStart)
+	_require.NoError(err)
+
+	err = fClient.UploadFile(context.Background(), tmpFile, &file.UploadFileOptions{
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(0),
+	})
+	_require.NoError(err)
+	err = tmpFile.Close()
+	_require.NoError(err)
+
+	resp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	downloadedData, err := io.ReadAll(resp.Body)
+	_require.NoError(err)
+	_require.EqualValues(contentD, downloadedData)
+}

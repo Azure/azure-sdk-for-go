@@ -24,10 +24,9 @@ type featureFlagPagerTransport struct {
 func (t *featureFlagPagerTransport) Do(req *http.Request) (*http.Response, error) {
 	t.headers = append(t.headers, req.Header.Clone())
 
-	header := http.Header{
-		"Content-Type": []string{"application/json"},
-		"ETag":         []string{`"response-page"`},
-	}
+	header := http.Header{}
+	header.Set("Content-Type", "application/json")
+	header.Set("ETag", `"response-page"`)
 	if len(t.headers) == 1 {
 		header.Set("Link", `</ff?After=next>; rel="next"`)
 	}

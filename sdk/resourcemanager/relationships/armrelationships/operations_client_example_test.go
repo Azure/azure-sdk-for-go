@@ -11,14 +11,14 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-09-01-preview/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -91,7 +91,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/nextLink"),
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}

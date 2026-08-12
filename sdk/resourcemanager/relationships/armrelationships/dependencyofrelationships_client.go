@@ -19,7 +19,7 @@ import (
 // DependencyOfRelationshipsClient contains the methods for the DependencyOfRelationships group.
 // Don't use this type directly, use NewDependencyOfRelationshipsClient() instead.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2026-03-01-preview
 type DependencyOfRelationshipsClient struct {
 	internal *arm.Client
 }
@@ -79,8 +79,7 @@ func (client *DependencyOfRelationshipsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -101,7 +100,7 @@ func (client *DependencyOfRelationshipsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230901Preview)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -151,8 +150,7 @@ func (client *DependencyOfRelationshipsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -173,7 +171,7 @@ func (client *DependencyOfRelationshipsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230901Preview)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -198,12 +196,7 @@ func (client *DependencyOfRelationshipsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return DependencyOfRelationshipsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DependencyOfRelationshipsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -222,17 +215,88 @@ func (client *DependencyOfRelationshipsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230901Preview)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DependencyOfRelationshipsClient) getHandleResponse(resp *http.Response) (DependencyOfRelationshipsClientGetResponse, error) {
+func (client *DependencyOfRelationshipsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DependencyOfRelationshipsClientGetResponse, error) {
 	result := DependencyOfRelationshipsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DependencyOfRelationship); err != nil {
 		return DependencyOfRelationshipsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByParentPager - List DependencyOfRelationship resources by parent
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - options - DependencyOfRelationshipsClientListByParentOptions contains the optional parameters for the DependencyOfRelationshipsClient.NewListByParentPager
+//     method.
+func (client *DependencyOfRelationshipsClient) NewListByParentPager(resourceURI string, options *DependencyOfRelationshipsClientListByParentOptions) *runtime.Pager[DependencyOfRelationshipsClientListByParentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DependencyOfRelationshipsClientListByParentResponse]{
+		More: func(page DependencyOfRelationshipsClientListByParentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DependencyOfRelationshipsClientListByParentResponse) (DependencyOfRelationshipsClientListByParentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DependencyOfRelationshipsClient.NewListByParentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByParentCreateRequest(ctx, resourceURI, nextLink, options)
+			if err != nil {
+				return DependencyOfRelationshipsClientListByParentResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DependencyOfRelationshipsClientListByParentResponse{}, err
+			}
+			return client.listByParentHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByParentCreateRequest creates the ListByParent request.
+func (client *DependencyOfRelationshipsClient) listByParentCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *DependencyOfRelationshipsClientListByParentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.Relationships/dependencyOf"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByParentHandleResponse handles the ListByParent response.
+func (client *DependencyOfRelationshipsClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (DependencyOfRelationshipsClientListByParentResponse, error) {
+	result := DependencyOfRelationshipsClientListByParentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DependencyOfRelationshipListResult); err != nil {
+		return DependencyOfRelationshipsClientListByParentResponse{}, err
 	}
 	return result, nil
 }

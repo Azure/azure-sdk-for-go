@@ -12,21 +12,21 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-09-01-preview/ServiceGroupMemberRelationships_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_CreateOrUpdate.json
 func ExampleServiceGroupMemberRelationshipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceGroupMemberRelationshipsClient().BeginCreateOrUpdate(ctx, "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account", "sg1", armrelationships.ServiceGroupMemberRelationship{
-		Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
-			TargetID:     to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
-			TargetTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+			SourceID:     to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
+			SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 		},
 	}, nil)
 	if err != nil {
@@ -41,35 +41,35 @@ func ExampleServiceGroupMemberRelationshipsClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelationships.ServiceGroupMemberRelationshipsClientCreateOrUpdateResponse{
 	// 	ServiceGroupMemberRelationship: armrelationships.ServiceGroupMemberRelationship{
-	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
-	// 			SourceID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
-	// 			TargetID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
-	// 			TargetTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+	// 			SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
+	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
+	// 			SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 	// 			OriginInformation: &armrelationships.RelationshipOriginInformation{
-	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOrigins("SystemExplicitlyCreated")),
+	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsUserExplicitlyCreated),
 	// 				DiscoveryEngine: to.Ptr("PEM"),
 	// 			},
 	// 			Metadata: &armrelationships.RelationshipMetadata{
-	// 				SourceType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
-	// 				TargetType: to.Ptr("Microsoft.Management/serviceGroups"),
+	// 				SourceType: to.Ptr("Microsoft.Management/serviceGroups"),
+	// 				TargetType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armrelationships.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/ServiceGroupMember/sg1"),
+	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/serviceGroupMember/sg1"),
 	// 		Name: to.Ptr("sg1"),
 	// 		Type: to.Ptr("Microsoft.Relationships/serviceGroupMember"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2023-09-01-preview/ServiceGroupMemberRelationships_Delete.json
+// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_Delete.json
 func ExampleServiceGroupMemberRelationshipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -83,14 +83,14 @@ func ExampleServiceGroupMemberRelationshipsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2023-09-01-preview/ServiceGroupMemberRelationships_Get.json
+// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_Get.json
 func ExampleServiceGroupMemberRelationshipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -103,23 +103,90 @@ func ExampleServiceGroupMemberRelationshipsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelationships.ServiceGroupMemberRelationshipsClientGetResponse{
 	// 	ServiceGroupMemberRelationship: armrelationships.ServiceGroupMemberRelationship{
-	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
-	// 			SourceID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
-	// 			TargetID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
-	// 			TargetTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+	// 			SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
+	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
+	// 			SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 	// 			OriginInformation: &armrelationships.RelationshipOriginInformation{
-	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOrigins("SystemExplicitlyCreated")),
+	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsUserExplicitlyCreated),
 	// 				DiscoveryEngine: to.Ptr("PEM"),
 	// 			},
 	// 			Metadata: &armrelationships.RelationshipMetadata{
-	// 				SourceType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
-	// 				TargetType: to.Ptr("Microsoft.Management/serviceGroups"),
+	// 				SourceType: to.Ptr("Microsoft.Management/serviceGroups"),
+	// 				TargetType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
 	// 			},
 	// 			ProvisioningState: to.Ptr(armrelationships.ProvisioningStateSucceeded),
 	// 		},
-	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/ServiceGroupMember/sg1"),
+	// 		ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/serviceGroupMember/sg1"),
 	// 		Name: to.Ptr("sg1"),
 	// 		Type: to.Ptr("Microsoft.Relationships/ServiceGroupMember"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_ListByParent.json
+func ExampleServiceGroupMemberRelationshipsClient_NewListByParentPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServiceGroupMemberRelationshipsClient().NewListByParentPager("subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrelationships.ServiceGroupMemberRelationshipsClientListByParentResponse{
+		// 	ServiceGroupMemberRelationshipListResult: armrelationships.ServiceGroupMemberRelationshipListResult{
+		// 		Value: []*armrelationships.ServiceGroupMemberRelationship{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/serviceGroupMember/sg1"),
+		// 				Name: to.Ptr("sg1"),
+		// 				Type: to.Ptr("Microsoft.Relationships/ServiceGroupMember"),
+		// 				Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+		// 					SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
+		// 					TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
+		// 					SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 					OriginInformation: &armrelationships.RelationshipOriginInformation{
+		// 						RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsUserExplicitlyCreated),
+		// 					},
+		// 					Metadata: &armrelationships.RelationshipMetadata{
+		// 						SourceType: to.Ptr("Microsoft.Management/serviceGroups"),
+		// 						TargetType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armrelationships.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/serviceGroupMember/sg2"),
+		// 				Name: to.Ptr("sg2"),
+		// 				Type: to.Ptr("Microsoft.Relationships/ServiceGroupMember"),
+		// 				Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+		// 					SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg2"),
+		// 					TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
+		// 					SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 					OriginInformation: &armrelationships.RelationshipOriginInformation{
+		// 						RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsServiceExplicitlyCreated),
+		// 					},
+		// 					Metadata: &armrelationships.RelationshipMetadata{
+		// 						SourceType: to.Ptr("Microsoft.Management/serviceGroups"),
+		// 						TargetType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armrelationships.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

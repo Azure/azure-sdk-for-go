@@ -5,7 +5,7 @@
 package armrelationships
 
 const (
-	version20230901Preview string = "2023-09-01-preview"
+	version20260301Preview string = "2026-03-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

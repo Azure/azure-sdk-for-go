@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armrelationships.ClientFactory type.
 type ServerFactory struct {
+	// ContainsRelationshipsServer contains the fakes for client ContainsRelationshipsClient
+	ContainsRelationshipsServer ContainsRelationshipsServer
+
 	// DependencyOfRelationshipsServer contains the fakes for client DependencyOfRelationshipsClient
 	DependencyOfRelationshipsServer DependencyOfRelationshipsServer
 
@@ -39,6 +42,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                     *ServerFactory
 	trMu                                    sync.Mutex
+	trContainsRelationshipsServer           *ContainsRelationshipsServerTransport
 	trDependencyOfRelationshipsServer       *DependencyOfRelationshipsServerTransport
 	trOperationsServer                      *OperationsServerTransport
 	trServiceGroupMemberRelationshipsServer *ServiceGroupMemberRelationshipsServerTransport
@@ -57,6 +61,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ContainsRelationshipsClient":
+		initServer(&s.trMu, &s.trContainsRelationshipsServer, func() *ContainsRelationshipsServerTransport {
+			return NewContainsRelationshipsServerTransport(&s.srv.ContainsRelationshipsServer)
+		})
+		resp, err = s.trContainsRelationshipsServer.Do(req)
 	case "DependencyOfRelationshipsClient":
 		initServer(&s.trMu, &s.trDependencyOfRelationshipsServer, func() *DependencyOfRelationshipsServerTransport {
 			return NewDependencyOfRelationshipsServerTransport(&s.srv.DependencyOfRelationshipsServer)

@@ -202,12 +202,19 @@ const ffAcceptHeader = "application/json;profile=\"https://azconfig.io/mime-prof
 // can also be discovered from the "Link" response header. Azure App Configuration returns
 // pagination information via the Link header rather than the JSON body for feature flag list
 // responses.
-func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagsPagerWithLinkHeader(options *AzureAppConfigurationFeatureFlagClientGetFeatureFlagsOptions) *runtime.Pager[AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse] {
+func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagsPagerWithLinkHeader(matchConditions []azcore.MatchConditions, options *AzureAppConfigurationFeatureFlagClientGetFeatureFlagsOptions) *runtime.Pager[AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse]{
 		More: func(page AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
 		Fetcher: func(ctx context.Context, page *AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse) (AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse, error) {
+			curCondition := azcore.MatchConditions{}
+			if len(matchConditions) > 0 {
+				curCondition = matchConditions[0]
+				matchConditions = matchConditions[1:]
+			}
+			options.IfMatch = (*string)(curCondition.IfMatch)
+			options.IfNoneMatch = (*string)(curCondition.IfNoneMatch)
 			nextLink := ""
 			if page != nil && page.NextLink != nil {
 				nextLink = *page.NextLink
@@ -216,8 +223,9 @@ func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagsPagerWit
 				return client.getFeatureFlagsCreateRequest(ctx, options)
 			}, &runtime.FetcherForNextLinkOptions{
 				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
-					return client.getFeatureFlagNextPageCreateRequest(ctx, encodedNextLink)
+					return client.getFeatureFlagNextPageCreateRequest(ctx, encodedNextLink, curCondition)
 				},
+				StatusCodes: []int{http.StatusNotModified},
 			})
 			if err != nil {
 				return AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse{}, err
@@ -243,7 +251,7 @@ func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagRevisions
 				return client.getFeatureFlagRevisionsCreateRequest(ctx, options)
 			}, &runtime.FetcherForNextLinkOptions{
 				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
-					return client.getFeatureFlagNextPageCreateRequest(ctx, encodedNextLink)
+					return client.getFeatureFlagNextPageCreateRequest(ctx, encodedNextLink, azcore.MatchConditions{})
 				},
 			})
 			if err != nil {
@@ -256,12 +264,18 @@ func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagRevisions
 
 // getFeatureFlagNextPageCreateRequest builds a request for a subsequent page of feature flags or
 // revisions from the encoded nextLink returned by the service.
-func (client *AzureAppConfigurationFeatureFlagClient) getFeatureFlagNextPageCreateRequest(ctx context.Context, nextLink string) (*policy.Request, error) {
+func (client *AzureAppConfigurationFeatureFlagClient) getFeatureFlagNextPageCreateRequest(ctx context.Context, nextLink string, matchConditions azcore.MatchConditions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, nextLink))
 	if err != nil {
 		return nil, err
 	}
 	req.Raw().Header["Accept"] = []string{ffAcceptHeader}
+	if matchConditions.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*(*string)(matchConditions.IfMatch)}
+	}
+	if matchConditions.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*(*string)(matchConditions.IfNoneMatch)}
+	}
 	return req, nil
 }
 

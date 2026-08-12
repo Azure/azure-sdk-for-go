@@ -10,6 +10,7 @@
 * Added a new `FeatureFlagClient` for interacting with the dedicated feature flag endpoint.
   * Added constructors `NewFeatureFlagClient`, `NewFeatureFlagClientFromConnectionString`, and factory method `Client.NewFeatureFlagClient`.
   * Added methods `AddFeatureFlag`, `SetFeatureFlag`, `GetFeatureFlag`, `DeleteFeatureFlag`, `NewListFeatureFlagsPager`, and `NewListFeatureFlagRevisionsPager`.
+  * Added support for per-page match conditions when listing feature flags.
   * Added types `FeatureFlag`, `FeatureFlagSelector`, `FeatureFlagAllocation`, `FeatureFlagConditions`, `FeatureFlagFilter`, `FeatureFlagTelemetryConfiguration`, `FeatureFlagVariantDefinition`, `GroupAllocation`, `PercentileAllocation`, and `UserAllocation`.
   * Added option and response types for each feature flag operation.
   * Added field selector constants `FeatureFlagFields*`, and the `RequirementType` and `StatusOverride` enums with corresponding constants.

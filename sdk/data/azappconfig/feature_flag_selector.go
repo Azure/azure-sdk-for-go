@@ -64,7 +64,13 @@ func (fs FeatureFlagSelector) toGeneratedGetFeatureFlags() *generated.AzureAppCo
 }
 
 func (fs FeatureFlagSelector) toGeneratedGetFeatureFlagRevisions() *generated.AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsOptions {
+	var dt *string
+	if fs.AcceptDateTime != nil {
+		str := fs.AcceptDateTime.Format(timeFormat)
+		dt = &str
+	}
 	return &generated.AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsOptions{
+		After:  dt,
 		Name:   fs.NameFilter,
 		Label:  fs.LabelFilter,
 		Select: fs.Fields,

@@ -240,8 +240,7 @@ func (c *FeatureFlagClient) NewListFeatureFlagsPager(selector FeatureFlagSelecto
 	if options == nil {
 		options = &ListFeatureFlagsOptions{}
 	}
-	_ = options // reserved for future match-conditions support
-	pagerInternal := c.ffClient.NewGetFeatureFlagsPagerWithLinkHeader(selector.toGeneratedGetFeatureFlags())
+	pagerInternal := c.ffClient.NewGetFeatureFlagsPagerWithLinkHeader(options.MatchConditions, selector.toGeneratedGetFeatureFlags())
 	return runtime.NewPager(runtime.PagingHandler[ListFeatureFlagsPageResponse]{
 		More: func(ListFeatureFlagsPageResponse) bool {
 			return pagerInternal.More()
@@ -257,7 +256,7 @@ func (c *FeatureFlagClient) NewListFeatureFlagsPager(selector FeatureFlagSelecto
 			}
 			return ListFeatureFlagsPageResponse{
 				FeatureFlags: flags,
-				ETag:         (*azcore.ETag)(page.Etag),
+				ETag:         (*azcore.ETag)(page.ETag),
 				SyncToken:    syncTokenValue(page.SyncToken),
 			}, nil
 		},

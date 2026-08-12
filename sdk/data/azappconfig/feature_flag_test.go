@@ -96,3 +96,17 @@ func TestAllFeatureFlagFields(t *testing.T) {
 	fields := AllFeatureFlagFields()
 	require.ElementsMatch(t, generated.PossibleFeatureFlagFieldsValues(), fields)
 }
+
+func TestFeatureFlagSelectorAcceptDateTime(t *testing.T) {
+	acceptDateTime := time.Date(2026, 5, 1, 12, 30, 0, 0, time.UTC)
+	selector := FeatureFlagSelector{AcceptDateTime: &acceptDateTime}
+	want := acceptDateTime.Format(timeFormat)
+
+	listOptions := selector.toGeneratedGetFeatureFlags()
+	require.NotNil(t, listOptions.AcceptDatetime)
+	require.Equal(t, want, *listOptions.AcceptDatetime)
+
+	revisionOptions := selector.toGeneratedGetFeatureFlagRevisions()
+	require.NotNil(t, revisionOptions.After)
+	require.Equal(t, want, *revisionOptions.After)
+}

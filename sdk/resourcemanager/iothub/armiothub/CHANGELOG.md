@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-07-21)
+## 2.0.0-beta.2 (2026-08-12)
 ### Breaking Changes
 
 - Type of `RoutingTwin.Tags` has been changed from `any` to `map[string]any`

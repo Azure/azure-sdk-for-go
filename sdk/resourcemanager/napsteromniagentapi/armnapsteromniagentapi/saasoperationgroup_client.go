@@ -19,7 +19,7 @@ import (
 // SaaSOperationGroupClient contains the methods for the SaaSOperationGroup group.
 // Don't use this type directly, use NewSaaSOperationGroupClient() instead.
 //
-// Generated from API version 2025-12-24-preview
+// Generated from API version 2026-08-11
 type SaaSOperationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -98,7 +98,7 @@ func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251224Preview)
+	reqQP.Set("api-version", version20260811)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -457,9 +457,7 @@ func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushData
 // multiple AppendData calls, so a single precomputed checksum for the whole payload cannot validate
 // every chunk. Computed CRC64 (a func type, hashed per chunk) and structured message CRC64 are allowed.
 func rejectPrecomputedValidation(tv TransferValidationType) error {
-	if tv != nil &&
-		reflect.TypeOf(tv).Kind() != reflect.Func &&
-		exported.GetStructuredBodyType(tv) == "" {
+	if tv != nil && !exported.SupportsMultiBlock(tv) {
 		return datalakeerror.UnsupportedChecksum
 	}
 	return nil

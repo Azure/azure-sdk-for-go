@@ -18,6 +18,12 @@ import (
 type TransferValidationType interface {
 	Apply(io.ReadSeekCloser, generated.TransactionalContentSetter) (io.ReadSeekCloser, error)
 	notPubliclyImplementable()
+	supportsMultiBlock() bool
+}
+
+// SupportsMultiBlock reports whether the validation type can be used with multi-block uploads.
+func SupportsMultiBlock(tv TransferValidationType) bool {
+	return tv.supportsMultiBlock()
 }
 
 // TransferValidationTypeCRC64 is a TransferValidationType used to provide a precomputed CRC64.
@@ -31,6 +37,7 @@ func (c TransferValidationTypeCRC64) Apply(rsc io.ReadSeekCloser, cfg generated.
 }
 
 func (TransferValidationTypeCRC64) notPubliclyImplementable() {}
+func (TransferValidationTypeCRC64) supportsMultiBlock() bool  { return false }
 
 // TransferValidationTypeComputeCRC64 is a TransferValidationType that indicates a CRC64 should be computed during transfer.
 func TransferValidationTypeComputeCRC64() TransferValidationType {
@@ -54,6 +61,7 @@ func (c TransferValidationTypeMD5) Apply(rsc io.ReadSeekCloser, cfg generated.Tr
 }
 
 func (TransferValidationTypeMD5) notPubliclyImplementable() {}
+func (TransferValidationTypeMD5) supportsMultiBlock() bool  { return false }
 
 // TransferValidationTypeComputeStructuredMessageCRC64 is a TransferValidationType that computes
 // per-segment CRC64 checksums using the structured message binary format.
@@ -79,6 +87,7 @@ func (t *transferValidationTypeSMCRC64) Apply(rsc io.ReadSeekCloser, cfg generat
 }
 
 func (*transferValidationTypeSMCRC64) notPubliclyImplementable() {}
+func (*transferValidationTypeSMCRC64) supportsMultiBlock() bool  { return true }
 
 func (t *transferValidationTypeSMCRC64) StructuredBodyHeaderValue() string {
 	return shared.SMHeaderValue
@@ -100,3 +109,4 @@ func (t transferValidationTypeFn) Apply(rsc io.ReadSeekCloser, cfg generated.Tra
 }
 
 func (transferValidationTypeFn) notPubliclyImplementable() {}
+func (transferValidationTypeFn) supportsMultiBlock() bool  { return true }

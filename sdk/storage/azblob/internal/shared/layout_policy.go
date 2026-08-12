@@ -6,7 +6,7 @@ package shared
 import (
 	"context"
 	"net/http"
-	"net/url"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 )
@@ -29,16 +29,24 @@ func (l LayoutPolicy) Do(req *policy.Request) (*http.Response, error) {
 		// Read the request endpoint (account) and set the Host header to the endpoint if not already set.
 		req.Raw().Host = req.Raw().URL.Host
 
-		// Parse the layout endpoint
-		parsedLayoutEndpoint, err := url.Parse(layoutEndpoint.(string))
-		if err != nil {
-			return nil, err
-		}
-
+		// The layout endpoint may be a full URL (e.g. https://layout.blob.core.windows.net)
+		// or just a host name (e.g. layout.blob.core.windows.net), so extract the host from it.
 		// Set the request URL to the layout endpoint
-		req.Raw().URL.Host = parsedLayoutEndpoint.Host
+		req.Raw().URL.Host = hostFromEndpoint(layoutEndpoint.(string))
 	}
 	return req.Next()
+}
+
+// hostFromEndpoint returns the host portion of endpoint, which may be a full URL or a bare host name.
+func hostFromEndpoint(endpoint string) string {
+	if i := strings.Index(endpoint, "://"); i >= 0 {
+		endpoint = endpoint[i+len("://"):]
+	}
+	// drop any path, query or fragment
+	if i := strings.IndexAny(endpoint, "/?#"); i >= 0 {
+		endpoint = endpoint[:i]
+	}
+	return endpoint
 }
 
 func NewLayoutPolicy() policy.Policy {

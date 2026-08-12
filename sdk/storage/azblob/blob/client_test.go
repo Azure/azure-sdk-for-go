@@ -2157,6 +2157,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferWithStructuredMessageCRC64() 
 	n, err := blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		BlockSize:               4 * 1024,
+		LayoutAwareRouting:      blob.LayoutAwareRoutingDisabled,
 	})
 	_require.NoError(err)
 	_require.Equal(int64(contentSize), n)
@@ -2271,6 +2272,7 @@ func (s *BlobRecordedTestsSuite) TestDownloadBufferSMCRC64ParallelChunks() {
 		TransactionalValidation: blob.TransferValidationTypeComputeStructuredMessageCRC64(0),
 		BlockSize:               4 * 1024, // 4 KB → 8 parallel chunks
 		Concurrency:             4,
+		LayoutAwareRouting:      blob.LayoutAwareRoutingDisabled,
 	})
 	_require.NoError(err)
 	_require.Equal(int64(contentSize), n)

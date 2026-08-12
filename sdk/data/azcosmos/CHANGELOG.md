@@ -2,51 +2,36 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.7 (Unreleased)
+## 2.0.0-beta.1 (Unreleased)
 
 ### Features Added
+
+* Added the v2 error and response model. `Error` reports a `Code` classifying the failure, along
+  with the status and sub-status codes, message, request charge, activity ID, session token, ETag,
+  retry-after and error document, and whether the service or the client produced it. Retrieve it
+  with `errors.As` and branch on `Code`, following the same shape as `azservicebus`. `Code` is
+  derived from the coarse status the driver reports on every completion rather than from the HTTP
+  status, so failures the client produced -- which carry no HTTP status -- stay classified:
+  transport failures, serialization failures, authentication failures and client-side operation
+  timeouts each have their own code, and a cancelled operation reports `CodeOperationCancelled` and
+  unwraps to `context.Canceled` so `errors.Is` works. Codes the driver adds later are classified by
+  band rather than collapsing to `CodeUnknown`. A failed operation returns the zero response value,
+  so `Error` is what carries the request charge for requests that are billed but do not succeed.
+  Request charges are `float64`, matching the driver, so no precision is lost. `Response` carries
+  the request charge and activity ID common to every operation, and `ItemResponse` adds the ETag,
+  session token and item content. Session tokens are carried as a named `SessionToken` type rather
+  than a bare string. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 
 ### Breaking Changes
 
+* This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
+  module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
+  so it is a full rewrite of the public surface rather than an incremental change. The complete
+  breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+
 ### Bugs Fixed
 
 ### Other Changes
-
-## 1.6.0-beta.6 (2026-11-12)
-
-### Features Added
-
-* Added optional resource-name validation. Set `ClientOptions.EnableResourceNameValidation` to `true` to validate database, container, and item IDs before requests. Validation rejects invalid UTF-8, empty IDs, exact dot segments, and names containing `/`, `\`, `?`, `#`, tab, line feed, or carriage return. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
-
-### Bugs Fixed
-
-* Fixed transactional batch item IDs being inserted into JSON without escaping. IDs now remain a single string value in Read, Replace, Patch, and Delete operations. Database and container IDs are also escaped when serializing their properties. This escaping applies regardless of `ClientOptions.EnableResourceNameValidation`. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
-* Reject malformed transactional batch item bodies before serialization so they cannot alter the surrounding operation. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
-* Fixed `ReadManyItems` requests for a shared logical partition key being rejected with HTTP 400 because both the partition key and partition key range ID headers were sent. The SDK now omits the range ID header when the partition key header is present. See [PR 28027](https://github.com/Azure/azure-sdk-for-go/pull/28027).
-
-## 1.6.0-beta.5 (2026-11-06)
-
-### Bugs Fixed
-
-* Fixed `ReadManyItems` silently omitting existing items from multi-partition containers using V1 partition key hashing, including containers whose partition key definition omits the version. V1 routing now uses the service-compatible binary EPK encoding and string truncation. See [PR 27867](https://github.com/Azure/azure-sdk-for-go/pull/27867).
-* Set `MaxConnsPerHost` to 1000 on the default HTTP transport (previously 0, unlimited). HTTP/1.1 requests can now wait for a connection when the limit is reached; this setting is not a strict HTTP/2 connection limit. See [PR 27925](https://github.com/Azure/azure-sdk-for-go/pull/27925).
-* Fixed `ChangeFeedOptions.StartFrom` being ignored by the service, which read the change feed from the beginning instead. The `If-Modified-Since` header is now an HTTP date ending in `GMT` rather than `UTC`. See [PR 27787](https://github.com/Azure/azure-sdk-for-go/pull/27787).
-
-### Other Changes
-
-* Migrated the default HTTP/2 transport configuration to `net/http`, preserving the 2-second idle health check interval and 1-second ping-response timeout. See [PR 27925](https://github.com/Azure/azure-sdk-for-go/pull/27925).
-
-## 1.6.0-beta.4 (2026-10-14)
-
-### Bugs Fixed
-
-* Fixed eligible read requests not retrying after `RetryOptions.TryTimeout` expires. The existing azcore retry policy continues to control caller cancellation, retry limits, and delays. Downstream non-retriable errors are preserved for all operations without enabling additional write retries. See [PR 27753](https://github.com/Azure/azure-sdk-for-go/pull/27753).
-
-## 1.6.0-beta.3 (2026-09-01)
-
-### Bugs Fixed
-
-* Fixed `ReadManyItems` requests that target a single logical partition key to include that key in service telemetry, allowing `CDBPartitionKeyRUConsumption` to attribute the request charge to the partition. See [PR 27491](https://github.com/Azure/azure-sdk-for-go/pull/27491).
 
 ## 1.6.0-beta.2 (2026-08-03)
 

@@ -2,11 +2,32 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.3 (Unreleased)
+## 2.0.0-beta.1 (Unreleased)
 
 ### Features Added
 
+* Added the v2 error and response model. `Error` reports a `Code` classifying the failure, along
+  with the status and sub-status codes, message, request charge, activity ID, session token, ETag,
+  retry-after and error document, and whether the service or the client produced it. Retrieve it
+  with `errors.As` and branch on `Code`, following the same shape as `azservicebus`. `Code` is
+  derived from the coarse status the driver reports on every completion rather than from the HTTP
+  status, so failures the client produced -- which carry no HTTP status -- stay classified:
+  transport failures, serialization failures, authentication failures and client-side operation
+  timeouts each have their own code, and a cancelled operation reports `CodeOperationCancelled` and
+  unwraps to `context.Canceled` so `errors.Is` works. Codes the driver adds later are classified by
+  band rather than collapsing to `CodeUnknown`. A failed operation returns the zero response value,
+  so `Error` is what carries the request charge for requests that are billed but do not succeed.
+  Request charges are `float64`, matching the driver, so no precision is lost. `Response` carries
+  the request charge and activity ID common to every operation, and `ItemResponse` adds the ETag,
+  session token and item content. Session tokens are carried as a named `SessionToken` type rather
+  than a bare string. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+
 ### Breaking Changes
+
+* This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
+  module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
+  so it is a full rewrite of the public surface rather than an incremental change. The complete
+  breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
 
 ### Bugs Fixed
 

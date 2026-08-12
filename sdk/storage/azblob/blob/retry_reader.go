@@ -146,7 +146,8 @@ func (s *RetryReader) Read(p []byte) (n int, err error) {
 		retriesExhausted := try >= s.retryReaderOptions.MaxRetries
 		var nre errorinfo.NonRetriable
 		isNonRetriable := errors.As(err, &nre)
-		willRetry := !isNonRetriable && !s.isNonRetriableEarlyClose(err) && !retriesExhausted
+		isContextDone := s.ctx.Err() != nil
+		willRetry := !isNonRetriable && !isContextDone && !s.isNonRetriableEarlyClose(err) && !retriesExhausted
 
 		// Notify, for logging purposes, of any failures
 		if s.retryReaderOptions.OnFailedRead != nil {

@@ -496,6 +496,41 @@ func TestRetryReaderGenericErrorIsRetried(t *testing.T) {
 	require.NoError(t, err)
 }
 
+// TestRetryReaderContextCanceledNotRetried verifies that errors are not retried when the
+// parent context has been canceled, matching azcore's retry policy behavior.
+func TestRetryReaderContextCanceledNotRetried(t *testing.T) {
+	byteCount := 1
+	body := newPerByteReader(byteCount)
+	body.doInjectError = true
+	body.doInjectErrorByteIndex = 0
+	body.doInjectTimes = 1
+	body.injectedError = context.Canceled
+
+	getter := func(ctx context.Context, info httpGetterInfo) (io.ReadCloser, error) {
+		r := http.Response{}
+		body.currentByteIndex = int(info.Range.Offset)
+		r.Body = body
+		return r.Body, nil
+	}
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	httpGetterInfo := httpGetterInfo{
+		Range: HTTPRange{
+			Count: int64(byteCount),
+		},
+	}
+	initResponse, err := getter(ctx, httpGetterInfo)
+	require.NoError(t, err)
+
+	retryReader := newRetryReader(ctx, initResponse, httpGetterInfo, getter, RetryReaderOptions{MaxRetries: 3})
+
+	dest := make([]byte, 1)
+	_, err = retryReader.Read(dest)
+	require.Error(t, err)
+}
+
 // TestRetryReaderWithRetryWrappedNetError verifies that a net.Error wrapped in an error chain via
 // fmt.Errorf("...: %w", err) — as the structured message decoder does for segment-read failures —
 // is still classified as retryable. The previous direct type assertion err.(net.Error) did not

@@ -13,7 +13,7 @@ type Response struct {
 	// RequestCharge is the number of request units the operation consumed
 	// (`x-ms-request-charge`). See
 	// https://learn.microsoft.com/azure/cosmos-db/request-units.
-	RequestCharge float32
+	RequestCharge float64
 
 	// ActivityID correlates the operation with server-side telemetry (`x-ms-activity-id`).
 	ActivityID string

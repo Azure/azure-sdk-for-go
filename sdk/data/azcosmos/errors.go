@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"context"
 	"fmt"
 	"strings"
 	"time"
@@ -69,6 +70,10 @@ const (
 	// CodeServiceUnavailable means the service was temporarily unable to serve the request.
 	CodeServiceUnavailable Code = "ServiceUnavailable"
 
+	// CodeServiceError means the service responded with a failure that this package does not
+	// classify further. [Error.StatusCode] carries what it reported.
+	CodeServiceError Code = "ServiceError"
+
 	// CodeSessionUnavailable means the replica that served the request had not caught up to the
 	// supplied session token. The resource itself may well exist, so this is deliberately not
 	// [CodeNotFound] even though the service reports it with the same status code.
@@ -80,6 +85,28 @@ const (
 
 	// CodeClientClosed means the operation was attempted on a [Client] that has been closed.
 	CodeClientClosed Code = "ClientClosed"
+
+	// CodeTransportFailure means the request could not be delivered to the service, for example
+	// because the connection failed or DNS could not be resolved.
+	CodeTransportFailure Code = "TransportFailure"
+
+	// CodeSerializationFailed means a payload could not be encoded or decoded.
+	CodeSerializationFailed Code = "SerializationFailed"
+
+	// CodeAuthenticationFailed means a token could not be acquired for the credential. It differs
+	// from [CodeUnauthorized], which is the service rejecting a token that was acquired.
+	CodeAuthenticationFailed Code = "AuthenticationFailed"
+
+	// CodeClientOperationTimeout means the operation exhausted its client-side budget before the
+	// service responded. It differs from [CodeRequestTimeout], which the service reports.
+	CodeClientOperationTimeout Code = "ClientOperationTimeout"
+
+	// CodeOperationCancelled means an operation already in flight was cancelled before it
+	// completed, because the caller's context was cancelled or because [Client.Close] shut the
+	// driver down underneath it. An [Error] carrying it unwraps to [context.Canceled], so
+	// errors.Is reports it the same way the rest of the standard library does. An operation
+	// started after the client was closed is [CodeClientClosed] instead, since it never ran.
+	CodeOperationCancelled Code = "OperationCancelled"
 )
 
 // Error describes a failed Cosmos DB operation.
@@ -122,7 +149,7 @@ type Error struct {
 	// RequestCharge is the number of request units the failed operation consumed
 	// (`x-ms-request-charge`). Failed requests are still billed, most notably when they are
 	// throttled. See https://learn.microsoft.com/azure/cosmos-db/request-units.
-	RequestCharge float32
+	RequestCharge float64
 
 	// ActivityID correlates the operation with server-side telemetry (`x-ms-activity-id`). It is
 	// empty when the failure occurred before the service responded.
@@ -164,11 +191,11 @@ func (e *Error) Error() string {
 		fmt.Fprintf(&b, ": %s", e.Code)
 	}
 	switch {
-	case e.StatusCode != 0 && e.SubStatus != 0:
+	case e.StatusCode != 0 && e.SubStatus > 0:
 		fmt.Fprintf(&b, ": status %d/%d", e.StatusCode, e.SubStatus)
 	case e.StatusCode != 0:
 		fmt.Fprintf(&b, ": status %d", e.StatusCode)
-	case e.SubStatus != 0:
+	case e.SubStatus > 0:
 		fmt.Fprintf(&b, ": sub-status %d", e.SubStatus)
 	}
 	if e.Message != "" {
@@ -183,50 +210,152 @@ func (e *Error) Error() string {
 	return b.String()
 }
 
+// Unwrap reports the standard library error a failure corresponds to, so that callers can use
+// errors.Is for the conditions Go already has a vocabulary for. A cancelled operation unwraps to
+// [context.Canceled], which is what callers of a context-aware API check for.
+func (e *Error) Unwrap() error {
+	if e.Code == CodeOperationCancelled {
+		return context.Canceled
+	}
+	return nil
+}
+
 // subStatusReadSessionNotAvailable is reported with 404 when the serving replica has not caught up
 // to the supplied session token, and with 410 when the addressed partition key range is gone.
 const subStatusReadSessionNotAvailable = 1002
 
-// codeForStatus classifies a status and sub-status pair reported by the service.
+// driverStatus mirrors cosmos_error_code_t, the coarse classification the driver reports on every
+// completion. The driver populates it whether or not the service responded, which is why it, and
+// not the HTTP status, is what [Code] is derived from: failures the client produced carry no HTTP
+// status at all.
+type driverStatus int32
+
+// The subset of cosmos_error_code_t that maps onto a distinct [Code]. Codes outside this set are
+// classified by the band they fall in; see codeForDriverStatus.
+const (
+	driverStatusSuccess                driverStatus = 0
+	driverStatusBadRequest             driverStatus = 2400
+	driverStatusUnauthorized           driverStatus = 2401
+	driverStatusForbidden              driverStatus = 2403
+	driverStatusNotFound               driverStatus = 2404
+	driverStatusTimeout                driverStatus = 2408
+	driverStatusConflict               driverStatus = 2409
+	driverStatusGone                   driverStatus = 2410
+	driverStatusPreconditionFailed     driverStatus = 2412
+	driverStatusThrottled              driverStatus = 2429
+	driverStatusServiceUnavailable     driverStatus = 2503
+	driverStatusServiceError           driverStatus = 2999
+	driverStatusClientError            driverStatus = 3001
+	driverStatusTransportFailure       driverStatus = 3002
+	driverStatusSerializationFailed    driverStatus = 3003
+	driverStatusAuthenticationFailed   driverStatus = 3004
+	driverStatusClientOperationTimeout driverStatus = 3005
+	driverStatusOperationCancelled     driverStatus = 4012
+)
+
+// The bands cosmos_error_code_t is laid out in. The header requires consumers to classify codes
+// they do not recognize by band rather than rejecting them, so that codes added later stay usable:
 //
-// Cosmos DB overloads some status codes with sub-status codes that mean something categorically
-// different from the status alone, so the sub-status is consulted first. Pairs that are not
-// recognized fall back to the status, and statuses that are not recognized yield [CodeUnknown]
-// rather than a guess.
+//	1..=999     FFI and argument validation
+//	1001..=1999 auth and conversion
+//	2001..=2999 mapped from a wire HTTP status
+//	3001..=3999 FFI plumbing
+//	4001..=4999 driver-wrapper fatal
+//	5001..=5999 non-fatal warnings, where the operation still delivered its result
+const (
+	driverStatusWireMin     driverStatus = 2001
+	driverStatusPlumbingMin driverStatus = 3001
+	driverStatusWarningMin  driverStatus = 5001
+)
+
+// normalizeSubStatus maps the driver's absent sentinel onto the zero value [Error.SubStatus]
+// documents. cosmos_completion_t reports -1 when the service sent no sub-status, which would
+// otherwise read as a real sub-status and surface in [Error.Error].
+//
+// Any negative value is treated as absent, not just -1, so a sentinel added later cannot leak.
 //
 //nolint:unused // consumed once operations translate driver errors.
-func codeForStatus(statusCode, subStatus int) Code {
+func normalizeSubStatus(subStatus int32) int {
+	if subStatus < 0 {
+		return 0
+	}
+	return int(subStatus)
+}
+
+// codeForDriverStatus classifies a completion from the coarse status the driver reports, refined
+// by the sub-status where the sub-status changes the meaning.
+//
+// Cosmos DB overloads sub-status 1002 across two statuses that mean something categorically
+// different from the status alone, and the driver does not model that distinction, so it is
+// applied here.
+//
+// A status the driver adds later still classifies, because codes that are not recognized fall back
+// to their band: a wire code becomes [CodeServiceError] and a client-side code [CodeClientError].
+// Only a status outside every band, or a success, yields [CodeUnknown].
+//
+//nolint:unused // consumed once operations translate driver errors.
+func codeForDriverStatus(status driverStatus, subStatus int) Code {
 	if subStatus == subStatusReadSessionNotAvailable {
-		switch statusCode {
-		case 404:
+		switch status {
+		case driverStatusNotFound:
 			return CodeSessionUnavailable
-		case 410:
+		case driverStatusGone:
 			return CodePartitionKeyRangeGone
 		}
 	}
 
-	switch statusCode {
-	case 400:
+	switch status {
+	case driverStatusBadRequest:
 		return CodeBadRequest
-	case 401:
+	case driverStatusUnauthorized:
 		return CodeUnauthorized
-	case 403:
+	case driverStatusForbidden:
 		return CodeForbidden
-	case 404:
+	case driverStatusNotFound:
 		return CodeNotFound
-	case 408:
+	case driverStatusTimeout:
 		return CodeRequestTimeout
-	case 409:
+	case driverStatusConflict:
 		return CodeConflict
-	case 410:
+	case driverStatusGone:
 		return CodeGone
-	case 412:
+	case driverStatusPreconditionFailed:
 		return CodePreconditionFailed
-	case 429:
+	case driverStatusThrottled:
 		return CodeThrottled
-	case 503:
+	case driverStatusServiceUnavailable:
 		return CodeServiceUnavailable
-	default:
+	case driverStatusServiceError:
+		return CodeServiceError
+	case driverStatusClientError:
+		return CodeClientError
+	case driverStatusTransportFailure:
+		return CodeTransportFailure
+	case driverStatusSerializationFailed:
+		return CodeSerializationFailed
+	case driverStatusAuthenticationFailed:
+		return CodeAuthenticationFailed
+	case driverStatusClientOperationTimeout:
+		return CodeClientOperationTimeout
+	case driverStatusOperationCancelled:
+		return CodeOperationCancelled
+	}
+
+	switch {
+	case status <= driverStatusSuccess:
+		// Success is not a failure, and a negative code is not one the ABI defines.
 		return CodeUnknown
+	case status >= driverStatusWarningMin:
+		// The warning band still delivers its result, so it is not a failure either and no
+		// operation should be building an Error from it.
+		return CodeUnknown
+	case status >= driverStatusWireMin && status < driverStatusPlumbingMin:
+		// The service responded, just not with something this package models.
+		return CodeServiceError
+	default:
+		// Everything else is produced locally: argument validation, auth and conversion, FFI
+		// plumbing, and the driver's own fatal codes. They are all caller-visible client
+		// failures, so they share one code rather than spending a public constant each.
+		return CodeClientError
 	}
 }

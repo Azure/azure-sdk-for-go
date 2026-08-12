@@ -557,10 +557,19 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 // chunk. A blob's layout can change over time; refresh the cached layout roughly every
 // 5 minutes, which is the interval Client.DownloadBuffer and Client.DownloadFile use internally.
 //
+// Unless the caller supplies an If-Match condition in options.AccessConditions, the ETag returned
+// by the first page is sent as If-Match on every subsequent page, so that a single enumeration
+// always describes one version of the blob.
+//
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-layout.
 func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLayoutResponse] {
 	opts, leaseAccessConditions, cpkInfo, modifiedAccessConditions := options.format()
-	// Use user's IfMatch if provided, otherwise we'll capture the ETag from the initial response
+	if opts == nil {
+		opts = &generated.BlobClientGetLayoutOptions{}
+	}
+	// Use the caller's IfMatch if provided, otherwise capture the ETag from the initial response so
+	// that every subsequent page is locked to the same version of the blob. The caller's
+	// ModifiedAccessConditions are never mutated; a copy is made when the lock is applied.
 	var initialIfMatch *azcore.ETag
 	if modifiedAccessConditions != nil {
 		initialIfMatch = modifiedAccessConditions.IfMatch
@@ -577,12 +586,12 @@ func (b *Client) GetLayoutPager(options *GetLayoutOptions) *runtime.Pager[GetLay
 			} else {
 				opts.Marker = page.NextMarker
 				// Use the ETag to ensure consistency across all pages
-				mac := modifiedAccessConditions
-				if mac == nil {
-					mac = &generated.ModifiedAccessConditions{}
+				mac := generated.ModifiedAccessConditions{}
+				if modifiedAccessConditions != nil {
+					mac = *modifiedAccessConditions
 				}
 				mac.IfMatch = initialIfMatch
-				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, mac, cpkInfo)
+				req, err = b.generated().GetLayoutCreateRequest(ctx, opts, leaseAccessConditions, &mac, cpkInfo)
 			}
 			if err != nil {
 				return GetLayoutResponse{}, err

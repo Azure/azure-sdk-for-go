@@ -42,6 +42,8 @@ type fakeLayoutResponder struct {
 	normalGets          int
 	// downloadIfMatch records the If-Match header of every chunk download request.
 	downloadIfMatch []string
+	// layoutIfMatch records the If-Match header of every get layout request.
+	layoutIfMatch []string
 	// layoutStatusOverride, when non-nil, is consulted on each layout call to override the
 	// canned response. It receives the 1-based call number.
 	layoutStatusOverride func(call int) *http.Response
@@ -55,6 +57,7 @@ func (f *fakeLayoutResponder) reset() {
 	f.localityGets = 0
 	f.normalGets = 0
 	f.downloadIfMatch = nil
+	f.layoutIfMatch = nil
 }
 
 // counts returns a consistent snapshot of the request counters.
@@ -69,6 +72,13 @@ func (f *fakeLayoutResponder) ifMatchHeaders() []string {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	return append([]string(nil), f.downloadIfMatch...)
+}
+
+// layoutIfMatchHeaders returns a copy of the If-Match header seen on each get layout request.
+func (f *fakeLayoutResponder) layoutIfMatchHeaders() []string {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return append([]string(nil), f.layoutIfMatch...)
 }
 
 func newFakeLayoutResponder(l layout, getPropsResponse *http.Response) *fakeLayoutResponder {
@@ -96,6 +106,7 @@ func (f *fakeLayoutResponder) Do(req *http.Request) (*http.Response, error) {
 		f.layoutCalls++
 		call := f.layoutCalls
 		override := f.layoutStatusOverride
+		f.layoutIfMatch = append(f.layoutIfMatch, req.Header.Get("If-Match"))
 		f.mu.Unlock()
 		if override != nil {
 			if resp := override(call); resp != nil {
@@ -663,3 +674,51 @@ func TestDownloadBufferCountWithLayoutStillETagLocks(t *testing.T) {
 	}
 }
 
+// TestGetLayoutPagerLocksETagAcrossPages verifies that, when the caller doesn't supply an If-Match
+// condition, the ETag returned by the first layout page is used to lock every subsequent page to
+// the same version of the blob.
+func TestGetLayoutPagerLocksETagAcrossPages(t *testing.T) {
+	etag := azcore.ETag("layout-etag")
+	f := newFakeLayoutResponder(buildLayout(5, 100, 2, &etag), nil)
+	client := newFakeLayoutClient(t, f)
+
+	// nil options must be supported: the pager has to synthesize its own options to carry the marker.
+	pager := client.GetLayoutPager(nil)
+	pages := 0
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		pages++
+	}
+	require.Equal(t, 2, pages, "the fake responder splits the layout into two pages")
+
+	headers := f.layoutIfMatchHeaders()
+	require.Len(t, headers, 2)
+	require.Empty(t, headers[0], "the initial page has no ETag to lock on yet")
+	require.Equal(t, string(etag), headers[1], "subsequent pages must be locked to the initial ETag")
+}
+
+// TestGetLayoutPagerUserIfMatchWins verifies that a caller supplied If-Match is honored on every
+// page and that the caller's access conditions are not mutated by the pager.
+func TestGetLayoutPagerUserIfMatchWins(t *testing.T) {
+	etag := azcore.ETag("layout-etag")
+	f := newFakeLayoutResponder(buildLayout(5, 100, 2, &etag), nil)
+	client := newFakeLayoutClient(t, f)
+
+	userETag := azcore.ETag("user-etag")
+	mac := &ModifiedAccessConditions{IfMatch: &userETag}
+	options := &GetLayoutOptions{AccessConditions: &AccessConditions{ModifiedAccessConditions: mac}}
+
+	pager := client.GetLayoutPager(options)
+	for pager.More() {
+		_, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+	}
+
+	headers := f.layoutIfMatchHeaders()
+	require.Len(t, headers, 2)
+	for _, v := range headers {
+		require.Equal(t, string(userETag), v, "the caller's If-Match must be used on every page")
+	}
+	require.Same(t, &userETag, mac.IfMatch, "the caller's access conditions must not be mutated")
+}

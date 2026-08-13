@@ -250,8 +250,19 @@ type BulkCreateCustomProperties struct {
 	// Extra parameters that control how the request is executed, including the retry policy.
 	ExecutionParameters *ExecutionParameters
 
+	// The minimum capacity, expressed in units specified by capacityType, that Azure must be able to allocate for the request
+	// to proceed. If Azure cannot allocate at least this capacity with high confidence, the request is rejected with 409 Conflict
+	// (InsufficientCapacity) and no VMs are created. Otherwise, Azure allocates as much capacity as possible, up to the requested
+	// capacity. Must be greater than 0, less than capacity, and requires partialFulfillmentPolicy.mode to be Enabled.
+	MinCapacity *int32
+
 	// Per-VM overrides and the shared name prefix, specified when the operation is created.
 	OverridesProfile *BulkCreateCustomOverridesProfile
+
+	// Controls how partial fulfillment is handled for a BulkCreateCustom request. When enabled, Azure creates only the VMs or
+	// vCPUs it has high confidence can be successfully allocated, instead of attempting the entire request and potentially returning
+	// allocation failures.
+	PartialFulfillmentPolicy *PartialFulfillmentPolicy
 
 	// List of VM sizes supported for BulkCreateCustom
 	VMSizesProfile []*BulkCreateCustomVMSizeProfile
@@ -264,6 +275,15 @@ type BulkCreateCustomProperties struct {
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; The virtual machine resources resolved for the operation.
+	Resources []*BulkCreateCustomResource
+}
+
+// BulkCreateCustomResource - A virtual machine resource resolved for a BulkCreateCustom operation.
+type BulkCreateCustomResource struct {
+	// Information about the resolved virtual machine.
+	VirtualMachineInfo *BulkCreateCustomVirtualMachineInfo
 }
 
 // BulkCreateCustomVMSizeProfile - A VM size profile entry that may additionally carry an optional per-VM-size profile override.
@@ -281,6 +301,18 @@ type BulkCreateCustomVMSizeProfile struct {
 	// virtualMachineName is not part of this shape. virtualMachineProfile is layered beneath any per-VM override; tags, identity,
 	// and plan are merged with the per-VM override, with the per-VM value winning.
 	Override *BulkCreateCustomOverrideBase
+}
+
+// BulkCreateCustomVirtualMachineInfo - Information about a virtual machine resolved for a BulkCreateCustom operation.
+type BulkCreateCustomVirtualMachineInfo struct {
+	// The resolved Azure virtual machine name.
+	Name *string
+
+	// The virtual machine size selected for the virtual machine.
+	VMSize *string
+
+	// The subscription-relative logical availability zone selected for the virtual machine.
+	Zone *string
 }
 
 // BulkCreateCustomZoneAllocationPolicy - The zone allocation policy for distributing VMs across availability zones in BulkCreateCustom.
@@ -386,6 +418,76 @@ type CancelOperationsContent struct {
 type CancelOperationsResponse struct {
 	// REQUIRED; An array of resource operations that were successfully cancelled
 	Results []*ResourceOperation
+}
+
+// CapacityRecommendation - The capacity/placement recommendation computed for a resource operation
+type CapacityRecommendation struct {
+	// REQUIRED; The lifecycle status of the capacity recommendation
+	Status *CapacityRecommendationStatus
+
+	// The details of the capacity recommendation
+	Details *CapacityRecommendationDetails
+
+	// The error message if the capacity recommendation failed
+	Error *string
+
+	// The detailed error information if the capacity recommendation failed
+	ErrorDetails *string
+}
+
+// CapacityRecommendationDetails - The details of a capacity recommendation
+type CapacityRecommendationDetails struct {
+	// Whether the response is split by availability zone
+	AvailabilityZones *bool
+
+	// The list of desired Azure regions from the request
+	DesiredLocations []*string
+
+	// The list of desired VM sizes from the request
+	DesiredSizes []*CapacityRecommendationSize
+
+	// The array of placement scores per SKU, region and zone
+	PlacementScores []*CapacityRecommendationPlacementScore
+
+	// The UTC timestamp of when the recommendation was requested
+	RecommendationRequestedAtUTC *time.Time
+}
+
+// CapacityRecommendationParameters - The parameters used to request capacity/placement recommendations for a start operation.
+// Placement recommendations are only computed if the VM fails to start due to an allocation failure.
+type CapacityRecommendationParameters struct {
+	// Whether the capacity recommendation should be computed per availability zone
+	AvailabilityZones *bool
+
+	// The list of desired Azure regions to be considered for the capacity recommendation
+	DesiredLocations []*string
+
+	// The list of desired VM sizes (SKUs) to be considered for the capacity recommendation
+	DesiredSizes []*string
+}
+
+// CapacityRecommendationPlacementScore - The placement score for a given SKU, region and optionally availability zone
+type CapacityRecommendationPlacementScore struct {
+	// The availability zone identifier, present only when availabilityZones was requested
+	AvailabilityZone *string
+
+	// Whether quota is available for the SKU, region and zone combination
+	IsQuotaAvailable *bool
+
+	// The Azure region
+	Region *string
+
+	// The VM size (SKU) name
+	SKU *string
+
+	// The placement score, eg High, Medium or Low
+	Score *string
+}
+
+// CapacityRecommendationSize - A desired VM size (SKU) considered for the capacity recommendation
+type CapacityRecommendationSize struct {
+	// The VM size (SKU) name
+	SKU *string
 }
 
 // CapacityReservationProfile - The parameters of a capacity reservation Profile.
@@ -704,6 +806,11 @@ type ExecuteVdiCreateRequest struct {
 
 // ExecutionParameters - Extra details needed to run the user's request
 type ExecutionParameters struct {
+	// Capacity recommendation parameters for the request. When provided on an executeStart request, the service computes placement
+	// recommendations only if the VM fails to start due to an allocation failure; the recommendations for the desired sizes and
+	// locations are then surfaced in the operation's capacityRecommendation response.
+	CapacityRecommendationParameters *CapacityRecommendationParameters
+
 	// Details that could optimize the user's request
 	OptimizationPreference *OptimizationPreference
 
@@ -1268,7 +1375,7 @@ type OccurrenceExtensionProperties struct {
 	ErrorDetails *Error
 
 	// READ-ONLY; The current state of the resource
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *OccurrenceResourceProvisioningState
 }
 
 // OccurrenceExtensionResource - The scheduled action extension
@@ -1341,7 +1448,7 @@ type OccurrenceResource struct {
 	ErrorDetails *Error
 
 	// READ-ONLY; The current state of the resource
-	ProvisioningState *ResourceProvisioningState
+	ProvisioningState *OccurrenceResourceProvisioningState
 
 	// READ-ONLY; The type of resource
 	Type *string
@@ -1446,6 +1553,25 @@ type OperationStatusResult struct {
 	ResourceID *string
 }
 
+// PartialFulfillmentPolicy - Controls how partial fulfillment is handled for a BulkCreateCustom request. When enabled, Azure
+// creates only the VMs or vCPUs it has high confidence can be successfully allocated, instead of attempting the entire request
+// and potentially returning allocation failures.
+type PartialFulfillmentPolicy struct {
+	// Specifies whether partial fulfillment is allowed. When Enabled, Azure creates as many VMs as it has high confidence can
+	// be successfully allocated. When Disabled, Azure attempts to create all requested VMs, which may result into allocation
+	// failures.
+	Mode *PartialFulfillmentMode
+
+	// READ-ONLY; The amount of capacity that was actually attempted, expressed in the units specified by capacityType. When partial
+	// fulfillment is enabled, this value can be less than the requested capacity.
+	FulfilledCapacity *int32
+
+	// READ-ONLY; Indicates why the fulfilled capacity is less than the requested capacity. Possible values include InsufficientCapacity
+	// and InsufficientQuota. Returned only in the create response when partial fulfillment is enabled and the request cannot
+	// be fully satisfied.
+	Reason *PartialFulfillmentReason
+}
+
 // PatchSettings - Specifies settings related to VM Guest Patching on Windows.
 type PatchSettings struct {
 	// Specifies the mode of VM Guest patch assessment for the IaaS virtual machine.<br /><br /> Possible values are:<br /><br
@@ -1539,27 +1665,6 @@ type PublicIPAddressSKU struct {
 	Tier *PublicIPAddressSKUTier
 }
 
-// RecurringScheduledActionsExecutionParameters - The execution parameters the scheduled action is supposed to follow
-type RecurringScheduledActionsExecutionParameters struct {
-	// Details that could optimize the user's request
-	OptimizationPreference *OptimizationPreference
-
-	// Retry policy the user can pass
-	RetryPolicy *RecurringScheduledActionsRetryPolicy
-}
-
-// RecurringScheduledActionsRetryPolicy - Retry policy the scheduled action can pass
-type RecurringScheduledActionsRetryPolicy struct {
-	// Action to take on failure
-	OnFailureAction *RecurringScheduledActionsResourceOperationType
-
-	// Retry count for the request
-	RetryCount *int32
-
-	// Retry window in minutes for the request
-	RetryWindowInMinutes *int32
-}
-
 // ReimagePayload - Reimage payload with common profile and per-resource overrides
 type ReimagePayload struct {
 	// Common reimage profile applied to all resources unless overridden
@@ -1642,6 +1747,9 @@ type ResourceOperation struct {
 type ResourceOperationDetails struct {
 	// REQUIRED; Operation identifier for the unique operation
 	OperationID *string
+
+	// The capacity/placement recommendation computed for the operation, if requested
+	CapacityRecommendation *CapacityRecommendation
 
 	// Time the operation was complete if errors are null
 	CompletedAt *time.Time
@@ -1871,7 +1979,7 @@ type ScheduledActionProperties struct {
 	EndTime *time.Time
 
 	// READ-ONLY; The status of the last provisioning operation performed on the resource.
-	ProvisioningState *RecurringScheduledActionsProvisioningState
+	ProvisioningState *ScheduledActionsProvisioningState
 }
 
 // ScheduledActionResource - Represents an scheduled action resource metadata.
@@ -1963,6 +2071,15 @@ type ScheduledActionUpdateProperties struct {
 	StartTime *time.Time
 }
 
+// ScheduledActionsExecutionParameters - The execution parameters the scheduled action is supposed to follow
+type ScheduledActionsExecutionParameters struct {
+	// Details that could optimize the user's request
+	OptimizationPreference *OptimizationPreference
+
+	// Retry policy the user can pass
+	RetryPolicy *ScheduledActionsRetryPolicy
+}
+
 // ScheduledActionsExtensionProperties - Scheduled action extension properties
 type ScheduledActionsExtensionProperties struct {
 	// REQUIRED; The action the scheduled action should perform in the resources
@@ -1987,11 +2104,23 @@ type ScheduledActionsExtensionProperties struct {
 	EndTime *time.Time
 
 	// READ-ONLY; The status of the last provisioning operation performed on the resource.
-	ProvisioningState *RecurringScheduledActionsProvisioningState
+	ProvisioningState *ScheduledActionsProvisioningState
 
 	// READ-ONLY; The notification settings for the scheduled action at a resource level. Resource level notification settings
 	// are scope to specific resources only and submitted through attach requests.
 	ResourceNotificationSettings []*NotificationProperties
+}
+
+// ScheduledActionsRetryPolicy - Retry policy the scheduled action can pass
+type ScheduledActionsRetryPolicy struct {
+	// Action to take on failure
+	OnFailureAction *ScheduledActionsResourceOperationType
+
+	// Retry count for the request
+	RetryCount *int32
+
+	// Retry window in minutes for the request
+	RetryWindowInMinutes *int32
 }
 
 // ScheduledActionsSchedule - Specify the schedule in which the scheduled action is supposed to follow
@@ -2004,10 +2133,10 @@ type ScheduledActionsSchedule struct {
 
 	// The type of deadline the scheduled action is supposed to follow for the schedule. If no value is passed, it will default
 	// to InitiateAt.
-	DeadlineType *RecurringScheduledActionsDeadlineType
+	DeadlineType *ScheduledActionsDeadlineType
 
 	// The execution parameters the scheduled action is supposed to follow
-	ExecutionParameters *RecurringScheduledActionsExecutionParameters
+	ExecutionParameters *ScheduledActionsExecutionParameters
 
 	// The days of the month the scheduled action is supposed to run on. If empty, it means it will run on every day of the month.
 	RequestedDaysOfTheMonth []*int32
@@ -2024,10 +2153,10 @@ type ScheduledActionsSchedule struct {
 type ScheduledActionsScheduleUpdate struct {
 	// The type of deadline the scheduled action is supposed to follow for the schedule. If no value is passed, it will default
 	// to InitiateAt.
-	DeadlineType *RecurringScheduledActionsDeadlineType
+	DeadlineType *ScheduledActionsDeadlineType
 
 	// The execution parameters the scheduled action is supposed to follow
-	ExecutionParameters *RecurringScheduledActionsExecutionParameters
+	ExecutionParameters *ScheduledActionsExecutionParameters
 
 	// The days of the month the scheduled action is supposed to run on. If empty, it means it will run on every day of the month.
 	RequestedDaysOfTheMonth []*int32

@@ -6,9 +6,14 @@
 package azeventgrid
 
 import (
+	"crypto/tls"
 	"errors"
+	"net"
 	"net/http"
 	"strings"
+	"time"
+
+	"golang.org/x/net/http2"
 )
 
 // maxDefaultRedirects mirrors net/http's default limit and is only applied to
@@ -64,12 +69,8 @@ func blockCrossHostRedirect(prior func(req *http.Request, via []*http.Request) e
 func applyRedirectCredentialProtection(options *ClientOptions) {
 	switch t := options.Transport.(type) {
 	case nil:
-		transport := http.DefaultTransport
-		if dt, ok := http.DefaultTransport.(*http.Transport); ok {
-			transport = dt.Clone()
-		}
 		options.Transport = &http.Client{
-			Transport:     transport,
+			Transport:     newDefaultTransport(),
 			CheckRedirect: blockCrossHostRedirect(nil),
 		}
 	case *http.Client:
@@ -77,4 +78,40 @@ func applyRedirectCredentialProtection(options *ClientOptions) {
 		clone.CheckRedirect = blockCrossHostRedirect(t.CheckRedirect)
 		options.Transport = &clone
 	}
+}
+
+// newDefaultTransport returns an *http.Transport configured identically to
+// azcore's default HTTP transport (see
+// github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/transport_default_http_client.go).
+//
+// When no transport is supplied we must install our own *http.Client to attach
+// the redirect protection. This transport is duplicated (rather than falling
+// back to the mutable process-global http.DefaultTransport) so that callers keep
+// azcore's TLS floor, connection-pool sizing and HTTP/2 idle health checks. Keep
+// this in sync with azcore's default if that ever changes.
+func newDefaultTransport() *http.Transport {
+	transport := &http.Transport{
+		Proxy: http.ProxyFromEnvironment,
+		DialContext: (&net.Dialer{
+			Timeout:   30 * time.Second,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+		ForceAttemptHTTP2:     true,
+		MaxIdleConns:          100,
+		MaxIdleConnsPerHost:   10,
+		IdleConnTimeout:       90 * time.Second,
+		TLSHandshakeTimeout:   10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+		TLSClientConfig: &tls.Config{
+			MinVersion:    tls.VersionTLS12,
+			Renegotiation: tls.RenegotiateFreelyAsClient,
+		},
+	}
+	if http2Transport, err := http2.ConfigureTransports(transport); err == nil {
+		// if the connection has been idle for 10 seconds, send a ping frame for a
+		// health check; close the connection if there's no response within 5s.
+		http2Transport.ReadIdleTimeout = 10 * time.Second
+		http2Transport.PingTimeout = 5 * time.Second
+	}
+	return transport
 }

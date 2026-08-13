@@ -229,6 +229,23 @@ func TestPublisher_AllowsSameHostRedirect(t *testing.T) {
 	require.True(t, sawCredentialAfterRedirect, "expected the credential to be retained on a same-host redirect")
 }
 
+// TestNewDefaultTransport verifies the installed default transport mirrors
+// azcore's tuned settings rather than falling back to http.DefaultTransport.
+func TestNewDefaultTransport(t *testing.T) {
+	tr := newDefaultTransport()
+	require.NotSame(t, http.DefaultTransport, tr, "must not reuse the process-global default transport")
+	require.True(t, tr.ForceAttemptHTTP2)
+	require.Equal(t, 100, tr.MaxIdleConns)
+	require.Equal(t, 10, tr.MaxIdleConnsPerHost)
+	require.Equal(t, 90*time.Second, tr.IdleConnTimeout)
+	require.Equal(t, 10*time.Second, tr.TLSHandshakeTimeout)
+	require.Equal(t, time.Second, tr.ExpectContinueTimeout)
+	require.NotNil(t, tr.TLSClientConfig)
+	require.Equal(t, uint16(tls.VersionTLS12), tr.TLSClientConfig.MinVersion)
+	require.NotNil(t, tr.Proxy)
+	require.NotNil(t, tr.DialContext)
+}
+
 // crossHostTestTransport returns an *http.Client whose transport resolves the
 // test hostnames to loopback and trusts the test CA. It intentionally sets no
 // CheckRedirect, mimicking a plain caller-supplied client; the fix under test

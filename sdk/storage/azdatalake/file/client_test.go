@@ -34,9 +34,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
-	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
+	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

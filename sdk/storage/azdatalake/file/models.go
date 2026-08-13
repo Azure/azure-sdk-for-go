@@ -9,11 +9,11 @@ import (
 	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
-	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 )
 
 const (

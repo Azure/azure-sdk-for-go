@@ -10,8 +10,8 @@ import (
 	"io"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 )
 
 // TransferValidationType abstracts the various mechanisms used to verify a transfer.

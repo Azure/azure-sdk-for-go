@@ -32,11 +32,11 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
-	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/lease"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
+	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )

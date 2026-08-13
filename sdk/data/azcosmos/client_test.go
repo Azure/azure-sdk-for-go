@@ -14,10 +14,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// testAccountKey is base64, as a real account key is. NewKeyCredential validates that, so a
+// placeholder like "key" would be rejected.
+const testAccountKey = "dGVzdC1hY2NvdW50LWtleQ=="
+
 func mustKeyCredential(t *testing.T) KeyCredential {
 	t.Helper()
 
-	cred, err := NewKeyCredential("key")
+	cred, err := NewKeyCredential(testAccountKey)
 	require.NoError(t, err)
 	return cred
 }
@@ -56,6 +60,53 @@ func TestNewClientWithKeyRejectsZeroCredential(t *testing.T) {
 func TestNewKeyCredentialRejectsEmptyKey(t *testing.T) {
 	_, err := NewKeyCredential("")
 	require.Error(t, err)
+}
+
+// The driver takes the key as an opaque string and decodes it once per signature, so a malformed
+// key that is accepted here would surface as an authentication failure on every operation rather
+// than as a configuration error at startup.
+func TestNewKeyCredentialRejectsMalformedKey(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		key  string
+	}{
+		{"not base64", "not-a-valid-key!"},
+		{"invalid character", "dGVzdC1hY2NvdW50*a2V5"},
+		{"whitespace only", " "},
+
+		// Go's decoder skips newlines while the driver rejects them, so a key wrapped across
+		// lines by a config file has to be caught here or it fails on every request instead.
+		{"embedded newline", "dGVzdC1hY2\nNvdW50LWtleQ=="},
+		{"newline only", "\n"},
+		{"trailing newline", testAccountKey + "\n"},
+		{"leading space", " " + testAccountKey},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := NewKeyCredential(tt.key)
+			require.Error(t, err, "key %q should be rejected", tt.key)
+		})
+	}
+}
+
+// The driver's decoder treats padding as optional, so rejecting an unpadded key here would refuse
+// one it would have signed with.
+func TestNewKeyCredentialAcceptsBase64Key(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		key  string
+	}{
+		{"padded", testAccountKey},
+		{"unpadded", strings.TrimRight(testAccountKey, "=")},
+		{"real key shape", strings.Repeat("A", 86) + "=="},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			cred, err := NewKeyCredential(tt.key)
+			require.NoError(t, err)
+
+			// The driver wants the key as it was given, not the decoded bytes.
+			require.Equal(t, tt.key, cred.key())
+		})
+	}
 }
 
 func TestNewClientRejectsNonAbsoluteEndpoint(t *testing.T) {

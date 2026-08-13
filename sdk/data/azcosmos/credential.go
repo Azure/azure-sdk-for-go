@@ -3,7 +3,12 @@
 
 package azcosmos
 
-import "errors"
+import (
+	"encoding/base64"
+	"errors"
+	"fmt"
+	"strings"
+)
 
 // KeyCredential is an account key used to authenticate with Cosmos DB.
 //
@@ -18,9 +23,31 @@ type KeyCredential struct {
 }
 
 // NewKeyCredential creates a credential from a Cosmos DB account key.
+//
+// The key is validated here rather than on first use. The driver takes it as an opaque string and
+// decodes it once per signature, so a malformed key would otherwise surface as an authentication
+// failure on every operation instead of as a configuration error at startup.
+//
+// Validation matches what the driver accepts, which is not quite what [base64.StdEncoding] does:
+// padding is optional there, and whitespace is rejected rather than skipped. A key that survives
+// this constructor is one the driver can sign with.
 func NewKeyCredential(accountKey string) (KeyCredential, error) {
 	if accountKey == "" {
 		return KeyCredential{}, errors.New("azcosmos: account key must not be empty")
+	}
+	if strings.ContainsAny(accountKey, " \t\r\n") {
+		// Go's decoder skips newlines, so a key wrapped by a config file would decode here and
+		// then fail on every request. The driver rejects them, so reject them too.
+		return KeyCredential{}, errors.New("azcosmos: account key must not contain whitespace")
+	}
+	// The driver's decoder treats padding as optional, so accept both forms rather than rejecting
+	// a key it would have signed with.
+	encoding := base64.StdEncoding
+	if len(accountKey)%4 != 0 {
+		encoding = base64.RawStdEncoding
+	}
+	if _, err := encoding.DecodeString(accountKey); err != nil {
+		return KeyCredential{}, fmt.Errorf("azcosmos: decoding account key: %w", err)
 	}
 	return KeyCredential{accountKey: accountKey}, nil
 }

@@ -6331,14 +6331,20 @@ func (f *fakeCommitInspector) Do(req *http.Request) (*http.Response, error) {
 		_, _ = io.Copy(io.Discard, req.Body)
 	}
 	if req.URL.Query().Get("comp") == "blocklist" {
+		const (
+			ifNoneMatchHeader = "If-None-Match"
+			leaseIDHeader     = "x-ms-lease-id"
+		)
+
 		f.sawCommit = true
-		// The generated commitBlockListCreateRequest writes these with literal
-		// (non-canonical) map keys, so index the map directly rather than using
-		// Header.Get, which would canonicalize "x-ms-lease-id" to "X-Ms-Lease-Id".
-		if vs := req.Header["If-None-Match"]; len(vs) > 0 {
+		// commitBlockListCreateRequest assigns these into the header map with literal
+		// keys, so read them the same way. http.Header.Get would canonicalize
+		// "x-ms-lease-id" to "X-Ms-Lease-Id" and miss it.
+		rawHeader := map[string][]string(req.Header)
+		if vs := rawHeader[ifNoneMatchHeader]; len(vs) > 0 {
 			f.commitIfNoneMatch = vs[0]
 		}
-		if vs := req.Header["x-ms-lease-id"]; len(vs) > 0 {
+		if vs := rawHeader[leaseIDHeader]; len(vs) > 0 {
 			f.commitLeaseID = vs[0]
 		}
 	}

@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/BackupDataMove/PrepareDataMove_Post.json
-func ExampleRecoveryServicesClient_BeginBMSPrepareDataMove() {
+// Generated from example definition: 2026-07-01/BackupDataMove/PrepareDataMove_Post.json
+func ExampleClient_BeginBMSPrepareDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleRecoveryServicesClient_BeginBMSPrepareDataMove() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryServicesClient().BeginBMSPrepareDataMove(ctx, "source-rsv", "sourceRG", armrecoveryservicesbackup.PrepareDataMoveRequest{
+	poller, err := clientFactory.NewClient().BeginBMSPrepareDataMove(ctx, "source-rsv", "sourceRG", armrecoveryservicesbackup.PrepareDataMoveRequest{
 		DataMoveLevel:    to.Ptr(armrecoveryservicesbackup.DataMoveLevelVault),
 		TargetRegion:     to.Ptr("USGov Virginia"),
 		TargetResourceID: to.Ptr("/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/targetRG/providers/Microsoft.RecoveryServices/vaults/target-rsv"),
@@ -38,12 +38,12 @@ func ExampleRecoveryServicesClient_BeginBMSPrepareDataMove() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.RecoveryServicesClientBMSPrepareDataMoveResponse{
+	// res = armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse{
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/BackupDataMove/TriggerDataMove_Post.json
-func ExampleRecoveryServicesClient_BeginBMSTriggerDataMove() {
+// Generated from example definition: 2026-07-01/BackupDataMove/TriggerDataMove_Post.json
+func ExampleClient_BeginBMSTriggerDataMove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -53,7 +53,7 @@ func ExampleRecoveryServicesClient_BeginBMSTriggerDataMove() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryServicesClient().BeginBMSTriggerDataMove(ctx, "target-rsv", "targetRG", armrecoveryservicesbackup.TriggerDataMoveRequest{
+	poller, err := clientFactory.NewClient().BeginBMSTriggerDataMove(ctx, "target-rsv", "targetRG", armrecoveryservicesbackup.TriggerDataMoveRequest{
 		CorrelationID:    to.Ptr("MTg2OTcyMzM4NzYyMjc1NDY3Nzs1YmUzYmVmNi04YjJiLTRhOTItOTllYi01NTM0MDllYjk2NjE="),
 		DataMoveLevel:    to.Ptr(armrecoveryservicesbackup.DataMoveLevelVault),
 		SourceRegion:     to.Ptr("USGov Iowa"),
@@ -69,12 +69,12 @@ func ExampleRecoveryServicesClient_BeginBMSTriggerDataMove() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.RecoveryServicesClientBMSTriggerDataMoveResponse{
+	// res = armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse{
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/BackupDataMove/BackupDataMoveOperationStatus_Get.json
-func ExampleRecoveryServicesClient_GetOperationStatus() {
+// Generated from example definition: 2026-07-01/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+func ExampleClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -84,26 +84,26 @@ func ExampleRecoveryServicesClient_GetOperationStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRecoveryServicesClient().GetOperationStatus(ctx, "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", nil)
+	res, err := clientFactory.NewClient().GetOperationStatus(ctx, "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.RecoveryServicesClientGetOperationStatusResponse{
+	// res = armrecoveryservicesbackup.ClientGetOperationStatusResponse{
 	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
 	// 		Name: to.Ptr("0f48183b-0a44-4dca-aec1-bba5daab888a"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T11:59:47.5901592Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2020, time.February, 27, 11, 59, 47, 590159200, time.UTC)),
 	// 		ID: to.Ptr("0f48183b-0a44-4dca-aec1-bba5daab888a"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T11:59:47.5901592Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2020, time.February, 27, 11, 59, 47, 590159200, time.UTC)),
 	// 		Status: to.Ptr(armrecoveryservicesbackup.OperationStatusValuesSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/TriggerRecoveryPointMove_Post.json
-func ExampleRecoveryServicesClient_BeginMoveRecoveryPoint() {
+// Generated from example definition: 2026-07-01/TriggerRecoveryPointMove_Post.json
+func ExampleClient_BeginMoveRecoveryPoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -113,7 +113,7 @@ func ExampleRecoveryServicesClient_BeginMoveRecoveryPoint() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRecoveryServicesClient().BeginMoveRecoveryPoint(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.MoveRPAcrossTiersRequest{
+	poller, err := clientFactory.NewClient().BeginMoveRecoveryPoint(ctx, "testVault", "netsdktestrg", "Azure", "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334", armrecoveryservicesbackup.MoveRPAcrossTiersRequest{
 		ObjectType:     to.Ptr("MoveRPAcrossTiersRequest"),
 		SourceTierType: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeHardenedRP),
 		TargetTierType: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeArchivedRP),

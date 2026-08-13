@@ -109,4 +109,8 @@ func (t transferValidationTypeFn) Apply(rsc io.ReadSeekCloser, cfg generated.Tra
 }
 
 func (transferValidationTypeFn) notPubliclyImplementable() {}
-func (transferValidationTypeFn) supportsMultiBlock() bool  { return false }
+
+// supportsMultiBlock returns false for azfile, unlike azblob and azdatalake where the equivalent
+// type returns true. Azure Files does not support per-range CRC64 headers (SetCRC64 is a no-op),
+// so a computed CRC64 cannot validate individual ranges in a multi-chunk upload.
+func (transferValidationTypeFn) supportsMultiBlock() bool { return false }

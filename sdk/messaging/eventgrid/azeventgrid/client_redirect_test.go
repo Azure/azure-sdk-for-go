@@ -27,7 +27,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestBlockCrossHostRedirect(t *testing.T) {
+func TestBlockUnsafeRedirect(t *testing.T) {
 	newReq := func(rawURL string) *http.Request {
 		u, _ := url.Parse(rawURL)
 		r := &http.Request{URL: u, Header: http.Header{}}
@@ -41,22 +41,42 @@ func TestBlockCrossHostRedirect(t *testing.T) {
 	t.Run("cross-host redirect is blocked", func(t *testing.T) {
 		req := newReq("https://attacker.example/collect")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockCrossHostRedirect(nil)(req, via)
-		require.ErrorIs(t, err, errCrossHostRedirect)
+		err := blockUnsafeRedirect(nil)(req, via)
+		require.ErrorIs(t, err, errUnsafeRedirect)
 	})
 
 	t.Run("cross-host to a sibling subdomain is blocked", func(t *testing.T) {
 		req := newReq("https://attacker.eventgrid.azure.net/collect")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockCrossHostRedirect(nil)(req, via)
-		require.ErrorIs(t, err, errCrossHostRedirect)
+		err := blockUnsafeRedirect(nil)(req, via)
+		require.ErrorIs(t, err, errUnsafeRedirect)
 	})
 
-	t.Run("same-host redirect is allowed and keeps credential headers", func(t *testing.T) {
+	t.Run("same-host different-port redirect is blocked", func(t *testing.T) {
+		req := newReq("https://topic.eventgrid.azure.net:8443/collect")
+		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
+		err := blockUnsafeRedirect(nil)(req, via)
+		require.ErrorIs(t, err, errUnsafeRedirect)
+	})
+
+	t.Run("https-to-http downgrade on same host is blocked", func(t *testing.T) {
+		req := newReq("http://topic.eventgrid.azure.net/api/events")
+		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
+		err := blockUnsafeRedirect(nil)(req, via)
+		require.ErrorIs(t, err, errUnsafeRedirect)
+	})
+
+	t.Run("http-to-https upgrade on same host is allowed", func(t *testing.T) {
+		req := newReq("https://topic.eventgrid.azure.net/api/events")
+		via := []*http.Request{newReq("http://topic.eventgrid.azure.net/api/events")}
+		require.NoError(t, blockUnsafeRedirect(nil)(req, via))
+	})
+
+	t.Run("same-origin redirect is allowed and keeps credential headers", func(t *testing.T) {
 		req := newReq("https://topic.eventgrid.azure.net/api/events?redirected=1")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		require.NoError(t, blockCrossHostRedirect(nil)(req, via))
-		// credential headers are untouched for a permitted same-host redirect
+		require.NoError(t, blockUnsafeRedirect(nil)(req, via))
+		// credential headers are untouched for a permitted same-origin redirect
 		require.Equal(t, "secret-key", req.Header.Get("aeg-sas-key"))
 		require.Equal(t, "secret-token", req.Header.Get("aeg-sas-token"))
 		require.Equal(t, "auth-secret", req.Header.Get("Authorization"))
@@ -65,38 +85,38 @@ func TestBlockCrossHostRedirect(t *testing.T) {
 	t.Run("same-host match is case-insensitive", func(t *testing.T) {
 		req := newReq("https://TOPIC.eventgrid.azure.net/api/events")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		require.NoError(t, blockCrossHostRedirect(nil)(req, via))
+		require.NoError(t, blockUnsafeRedirect(nil)(req, via))
 	})
 
-	t.Run("prior CheckRedirect is chained for same-host redirects", func(t *testing.T) {
+	t.Run("prior CheckRedirect is chained for same-origin redirects", func(t *testing.T) {
 		sentinel := errors.New("prior called")
 		req := newReq("https://topic.eventgrid.azure.net/api/events?redirected=1")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockCrossHostRedirect(func(*http.Request, []*http.Request) error {
+		err := blockUnsafeRedirect(func(*http.Request, []*http.Request) error {
 			return sentinel
 		})(req, via)
 		require.ErrorIs(t, err, sentinel)
 	})
 
-	t.Run("cross-host block takes precedence over prior CheckRedirect", func(t *testing.T) {
+	t.Run("unsafe-redirect block takes precedence over prior CheckRedirect", func(t *testing.T) {
 		req := newReq("https://attacker.example/collect")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
 		priorCalled := false
-		err := blockCrossHostRedirect(func(*http.Request, []*http.Request) error {
+		err := blockUnsafeRedirect(func(*http.Request, []*http.Request) error {
 			priorCalled = true
 			return nil
 		})(req, via)
-		require.ErrorIs(t, err, errCrossHostRedirect)
-		require.False(t, priorCalled, "prior CheckRedirect must not run for a blocked cross-host redirect")
+		require.ErrorIs(t, err, errUnsafeRedirect)
+		require.False(t, priorCalled, "prior CheckRedirect must not run for a blocked redirect")
 	})
 
-	t.Run("default redirect limit enforced for same-host redirects", func(t *testing.T) {
+	t.Run("default redirect limit enforced for same-origin redirects", func(t *testing.T) {
 		req := newReq("https://topic.eventgrid.azure.net/a")
 		via := make([]*http.Request, maxDefaultRedirects)
 		for i := range via {
 			via[i] = newReq("https://topic.eventgrid.azure.net/api/events")
 		}
-		require.Error(t, blockCrossHostRedirect(nil)(req, via))
+		require.Error(t, blockUnsafeRedirect(nil)(req, via))
 	})
 }
 

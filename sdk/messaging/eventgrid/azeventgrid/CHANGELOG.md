@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* Cross-host HTTP redirects are no longer followed by the publisher client, preventing the publishing credential (`aeg-sas-key`, `aeg-sas-token`, or `Authorization`) and the event payload from being sent to a host the caller did not configure. Same-host redirects continue to be followed.
+* HTTP redirects that leave the configured origin are no longer followed by the publisher client, preventing the publishing credential (`aeg-sas-key`, `aeg-sas-token`, or `Authorization`) and the event payload from being sent to a different host or port, or over an `https`-to-`http` downgrade. Same-origin redirects (and `http`-to-`https` upgrades of the same host) continue to be followed.
 
 ### Other Changes
 * Regenerated code with the latest emitter.

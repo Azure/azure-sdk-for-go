@@ -10,6 +10,7 @@ import (
 	"errors"
 	"net"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 
@@ -17,33 +18,35 @@ import (
 )
 
 // maxDefaultRedirects mirrors net/http's default limit and is only applied to
-// the same-host redirects that this policy permits when the caller has not
+// the same-origin redirects that this policy permits when the caller has not
 // supplied their own CheckRedirect.
 const maxDefaultRedirects = 10
 
-// errCrossHostRedirect is returned to stop an HTTP redirect that would cross to
-// a different host.
-var errCrossHostRedirect = errors.New("azeventgrid: refusing to follow a redirect to a different host to avoid leaking the publishing credential")
+// errUnsafeRedirect is returned to stop an HTTP redirect that would leave the
+// configured origin (a different host or port, or an https->http downgrade).
+var errUnsafeRedirect = errors.New("azeventgrid: refusing to follow a redirect to a different origin (host, port, or an https-to-http downgrade) to avoid leaking the publishing credential")
 
-// blockCrossHostRedirect returns an http.Client CheckRedirect function that
-// refuses to follow a redirect whenever it would cross to a different host,
-// then (for permitted same-host redirects) delegates to prior (the caller's
-// existing CheckRedirect, if any).
+// blockUnsafeRedirect returns an http.Client CheckRedirect function that refuses
+// to follow a redirect whenever it would leave the configured origin, then (for
+// permitted same-origin redirects) delegates to prior (the caller's existing
+// CheckRedirect, if any).
 //
 // The Event Grid basic publisher sends its credential in one of the
 // Authorization, aeg-sas-key or aeg-sas-token headers. azcore relies on
 // net/http to follow redirects; net/http strips only a small, fixed set of
 // headers (Authorization, WWW-Authenticate, Cookie, Cookie2) on a cross-host
-// redirect and always forwards the custom aeg-sas-* headers. Rather than
-// re-sending the request (and its body) to an unconfigured host at all, this
-// blocks the cross-host redirect outright, so neither the credential nor the
-// event payload is ever sent to a host the caller did not configure. Same-host
-// redirects (for example HTTPS enforcement or path normalization performed by a
-// gateway or custom domain in front of the topic) are still followed normally.
-func blockCrossHostRedirect(prior func(req *http.Request, via []*http.Request) error) func(req *http.Request, via []*http.Request) error {
+// redirect and always forwards the custom aeg-sas-* headers. Because the
+// credential (and the request body) have already been attached by the time
+// net/http follows a redirect, this refuses to follow any redirect that changes
+// the origin, so neither the credential nor the event payload is ever sent to a
+// host/port the caller did not configure, and an https->http downgrade can never
+// leak the credential in cleartext. Same-origin redirects (for example path
+// normalization, or an http->https upgrade performed by a gateway or custom
+// domain in front of the topic) are still followed normally.
+func blockUnsafeRedirect(prior func(req *http.Request, via []*http.Request) error) func(req *http.Request, via []*http.Request) error {
 	return func(req *http.Request, via []*http.Request) error {
-		if len(via) > 0 && !strings.EqualFold(req.URL.Hostname(), via[0].URL.Hostname()) {
-			return errCrossHostRedirect
+		if len(via) > 0 && !isSafeRedirect(via[0].URL, req.URL) {
+			return errUnsafeRedirect
 		}
 
 		if prior != nil {
@@ -55,6 +58,45 @@ func blockCrossHostRedirect(prior func(req *http.Request, via []*http.Request) e
 		}
 		return nil
 	}
+}
+
+// isSafeRedirect reports whether a redirect from original to target stays within
+// the caller-configured origin and therefore may be followed with the
+// credential still attached. A redirect is considered safe only when it targets
+// the same host and port, or performs a standard http->https upgrade of the same
+// host. Any host change, port change, or https->http downgrade is unsafe.
+func isSafeRedirect(original, target *url.URL) bool {
+	if !strings.EqualFold(target.Hostname(), original.Hostname()) {
+		return false // different host
+	}
+
+	origScheme := strings.ToLower(original.Scheme)
+	targetScheme := strings.ToLower(target.Scheme)
+
+	if origScheme == "https" && targetScheme == "http" {
+		return false // scheme downgrade would leak the credential in cleartext
+	}
+	if origScheme == "http" && targetScheme == "https" {
+		return true // standard upgrade to TLS on the same host
+	}
+
+	// Same scheme: require an identical effective port (full-authority match).
+	return effectivePort(original) == effectivePort(target)
+}
+
+// effectivePort returns the port for u, defaulting to the well-known port for
+// the URL's scheme when no explicit port is present.
+func effectivePort(u *url.URL) string {
+	if p := u.Port(); p != "" {
+		return p
+	}
+	switch strings.ToLower(u.Scheme) {
+	case "https":
+		return "443"
+	case "http":
+		return "80"
+	}
+	return ""
 }
 
 // applyRedirectCredentialProtection ensures the HTTP client used by the pipeline
@@ -71,11 +113,11 @@ func applyRedirectCredentialProtection(options *ClientOptions) {
 	case nil:
 		options.Transport = &http.Client{
 			Transport:     newDefaultTransport(),
-			CheckRedirect: blockCrossHostRedirect(nil),
+			CheckRedirect: blockUnsafeRedirect(nil),
 		}
 	case *http.Client:
 		clone := *t
-		clone.CheckRedirect = blockCrossHostRedirect(t.CheckRedirect)
+		clone.CheckRedirect = blockUnsafeRedirect(t.CheckRedirect)
 		options.Transport = &clone
 	}
 }

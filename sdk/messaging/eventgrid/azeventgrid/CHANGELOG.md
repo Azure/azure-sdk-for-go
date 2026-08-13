@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-* Credential headers (`aeg-sas-key`, `aeg-sas-token`, `Authorization`) are now stripped when an HTTP redirect crosses to a different host, preventing the publishing credential from being disclosed to a redirect target on another host.
+* Cross-host HTTP redirects are no longer followed by the publisher client, preventing the publishing credential (`aeg-sas-key`, `aeg-sas-token`, or `Authorization`) and the event payload from being sent to a host the caller did not configure. Same-host redirects continue to be followed.
 
 ### Other Changes
 * Regenerated code with the latest emitter.

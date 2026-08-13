@@ -11,38 +11,34 @@ import (
 	"strings"
 )
 
-// credentialRedirectHeaders are the authentication headers that must never be
-// forwarded to a different host when an HTTP redirect is followed.
-//
-// The Event Grid basic publisher sends its credential in one of these headers.
-// azcore relies on net/http to follow redirects, and net/http only strips a
-// small, fixed set of headers (Authorization, WWW-Authenticate, Cookie, Cookie2)
-// when a redirect crosses to a different host. The custom aeg-sas-key /
-// aeg-sas-token headers are NOT in that set, so without this cleanup they would
-// be leaked in full to a redirect target on a different host.
-var credentialRedirectHeaders = []string{
-	"Authorization",
-	"aeg-sas-key",
-	"aeg-sas-token",
-}
-
-// maxDefaultRedirects mirrors net/http's default limit and is only used when the
-// caller has not supplied their own CheckRedirect.
+// maxDefaultRedirects mirrors net/http's default limit and is only applied to
+// the same-host redirects that this policy permits when the caller has not
+// supplied their own CheckRedirect.
 const maxDefaultRedirects = 10
 
-// stripCredentialsOnCrossHostRedirect returns an http.Client CheckRedirect
-// function that removes credential headers whenever a redirect crosses to a
-// different host, then delegates to prior (the caller's existing CheckRedirect,
-// if any).
-func stripCredentialsOnCrossHostRedirect(prior func(req *http.Request, via []*http.Request) error) func(req *http.Request, via []*http.Request) error {
+// errCrossHostRedirect is returned to stop an HTTP redirect that would cross to
+// a different host.
+var errCrossHostRedirect = errors.New("azeventgrid: refusing to follow a redirect to a different host to avoid leaking the publishing credential")
+
+// blockCrossHostRedirect returns an http.Client CheckRedirect function that
+// refuses to follow a redirect whenever it would cross to a different host,
+// then (for permitted same-host redirects) delegates to prior (the caller's
+// existing CheckRedirect, if any).
+//
+// The Event Grid basic publisher sends its credential in one of the
+// Authorization, aeg-sas-key or aeg-sas-token headers. azcore relies on
+// net/http to follow redirects; net/http strips only a small, fixed set of
+// headers (Authorization, WWW-Authenticate, Cookie, Cookie2) on a cross-host
+// redirect and always forwards the custom aeg-sas-* headers. Rather than
+// re-sending the request (and its body) to an unconfigured host at all, this
+// blocks the cross-host redirect outright, so neither the credential nor the
+// event payload is ever sent to a host the caller did not configure. Same-host
+// redirects (for example HTTPS enforcement or path normalization performed by a
+// gateway or custom domain in front of the topic) are still followed normally.
+func blockCrossHostRedirect(prior func(req *http.Request, via []*http.Request) error) func(req *http.Request, via []*http.Request) error {
 	return func(req *http.Request, via []*http.Request) error {
-		if len(via) > 0 {
-			originalHost := via[0].URL.Hostname()
-			if !strings.EqualFold(req.URL.Hostname(), originalHost) {
-				for _, h := range credentialRedirectHeaders {
-					req.Header.Del(h)
-				}
-			}
+		if len(via) > 0 && !strings.EqualFold(req.URL.Hostname(), via[0].URL.Hostname()) {
+			return errCrossHostRedirect
 		}
 
 		if prior != nil {
@@ -57,9 +53,8 @@ func stripCredentialsOnCrossHostRedirect(prior func(req *http.Request, via []*ht
 }
 
 // applyRedirectCredentialProtection ensures the HTTP client used by the pipeline
-// strips Event Grid credential headers on cross-host redirects, closing a
-// credential-leak vector. It preserves a caller-supplied transport where
-// possible:
+// refuses cross-host redirects, closing a credential-leak vector. It preserves a
+// caller-supplied transport where possible:
 //
 //   - no transport supplied: a default client is installed with the protection.
 //   - an *http.Client supplied: it is cloned and the protection is chained onto
@@ -75,11 +70,11 @@ func applyRedirectCredentialProtection(options *ClientOptions) {
 		}
 		options.Transport = &http.Client{
 			Transport:     transport,
-			CheckRedirect: stripCredentialsOnCrossHostRedirect(nil),
+			CheckRedirect: blockCrossHostRedirect(nil),
 		}
 	case *http.Client:
 		clone := *t
-		clone.CheckRedirect = stripCredentialsOnCrossHostRedirect(t.CheckRedirect)
+		clone.CheckRedirect = blockCrossHostRedirect(t.CheckRedirect)
 		options.Transport = &clone
 	}
 }

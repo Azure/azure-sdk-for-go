@@ -18,7 +18,7 @@ func ExampleOperationsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

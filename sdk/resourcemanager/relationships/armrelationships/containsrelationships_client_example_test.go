@@ -18,11 +18,11 @@ func ExampleContainsRelationshipsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory("a925f2f7-5c63-4b7b-8799-25a5f97bc3b2", cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewContainsRelationshipsClient().NewListByResourceGroupPager("testrg", nil)
+	pager := clientFactory.NewContainsRelationshipsClient("a925f2f7-5c63-4b7b-8799-25a5f97bc3b2").NewListByResourceGroupPager("testrg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -78,11 +78,11 @@ func ExampleContainsRelationshipsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory("a925f2f7-5c63-4b7b-8799-25a5f97bc3b2", cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewContainsRelationshipsClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewContainsRelationshipsClient("a925f2f7-5c63-4b7b-8799-25a5f97bc3b2").NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

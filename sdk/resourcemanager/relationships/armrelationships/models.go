@@ -174,7 +174,7 @@ type RelationshipOriginInformation struct {
 // ServiceGroupMemberRelationship - Defines a ServiceGroupMember relationship resource.
 type ServiceGroupMemberRelationship struct {
 	// The resource-specific properties for this resource.
-	Properties *ServiceGroupMemberRelationshipPropertiesV2
+	Properties *ServiceGroupMemberRelationshipProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -198,8 +198,8 @@ type ServiceGroupMemberRelationshipListResult struct {
 	NextLink *string
 }
 
-// ServiceGroupMemberRelationshipPropertiesV2 - ServiceGroupMember relationship properties.
-type ServiceGroupMemberRelationshipPropertiesV2 struct {
+// ServiceGroupMemberRelationshipProperties - ServiceGroupMember relationship properties.
+type ServiceGroupMemberRelationshipProperties struct {
 	// REQUIRED; The relationship source resource id. Must be a service group.
 	SourceID *string
 

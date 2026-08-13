@@ -1,15 +1,13 @@
 # Release History
 
-## 0.2.0 (2026-08-12)
+## 0.2.0 (2026-08-13)
 ### Breaking Changes
 
-- Function `NewClientFactory` parameter(s) have been changed from `(credential azcore.TokenCredential, options *arm.ClientOptions)` to `(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions)`
-- Type of `ServiceGroupMemberRelationship.Properties` has been changed from `*ServiceGroupMemberRelationshipProperties` to `*ServiceGroupMemberRelationshipPropertiesV2`
-- Struct `ServiceGroupMemberRelationshipProperties` has been removed
+- Field `TargetTenant` of struct `ServiceGroupMemberRelationshipProperties` has been removed
 
 ### Features Added
 
-- New function `*ClientFactory.NewContainsRelationshipsClient() *ContainsRelationshipsClient`
+- New function `*ClientFactory.NewContainsRelationshipsClient(subscriptionID string) *ContainsRelationshipsClient`
 - New function `NewContainsRelationshipsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainsRelationshipsClient, error)`
 - New function `*ContainsRelationshipsClient.NewListByResourceGroupPager(resourceGroupName string, options *ContainsRelationshipsClientListByResourceGroupOptions) *runtime.Pager[ContainsRelationshipsClientListByResourceGroupResponse]`
 - New function `*ContainsRelationshipsClient.NewListBySubscriptionPager(options *ContainsRelationshipsClientListBySubscriptionOptions) *runtime.Pager[ContainsRelationshipsClientListBySubscriptionResponse]`
@@ -20,7 +18,7 @@
 - New struct `ContainsRelationshipProperties`
 - New struct `DependencyOfRelationshipListResult`
 - New struct `ServiceGroupMemberRelationshipListResult`
-- New struct `ServiceGroupMemberRelationshipPropertiesV2`
+- New field `SourceTenant` in struct `ServiceGroupMemberRelationshipProperties`
 
 
 ## 0.1.0 (2026-04-07)

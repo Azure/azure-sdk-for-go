@@ -19,12 +19,12 @@ func ExampleServiceGroupMemberRelationshipsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewServiceGroupMemberRelationshipsClient().BeginCreateOrUpdate(ctx, "subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account", "sg1", armrelationships.ServiceGroupMemberRelationship{
-		Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+		Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
 			SourceID:     to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
 			SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 		},
@@ -41,7 +41,7 @@ func ExampleServiceGroupMemberRelationshipsClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelationships.ServiceGroupMemberRelationshipsClientCreateOrUpdateResponse{
 	// 	ServiceGroupMemberRelationship: armrelationships.ServiceGroupMemberRelationship{
-	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
 	// 			SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
 	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
 	// 			SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -69,7 +69,7 @@ func ExampleServiceGroupMemberRelationshipsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -90,7 +90,7 @@ func ExampleServiceGroupMemberRelationshipsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -103,7 +103,7 @@ func ExampleServiceGroupMemberRelationshipsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelationships.ServiceGroupMemberRelationshipsClientGetResponse{
 	// 	ServiceGroupMemberRelationship: armrelationships.ServiceGroupMemberRelationship{
-	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+	// 		Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
 	// 			SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
 	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
 	// 			SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -131,7 +131,7 @@ func ExampleServiceGroupMemberRelationshipsClient_NewListByParentPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armrelationships.NewClientFactory("<subscriptionID>", cred, nil)
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -153,7 +153,7 @@ func ExampleServiceGroupMemberRelationshipsClient_NewListByParentPager() {
 		// 				ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/serviceGroupMember/sg1"),
 		// 				Name: to.Ptr("sg1"),
 		// 				Type: to.Ptr("Microsoft.Relationships/ServiceGroupMember"),
-		// 				Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+		// 				Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
 		// 					SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg1"),
 		// 					TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
 		// 					SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
@@ -171,7 +171,7 @@ func ExampleServiceGroupMemberRelationshipsClient_NewListByParentPager() {
 		// 				ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/serviceGroupMember/sg2"),
 		// 				Name: to.Ptr("sg2"),
 		// 				Type: to.Ptr("Microsoft.Relationships/ServiceGroupMember"),
-		// 				Properties: &armrelationships.ServiceGroupMemberRelationshipPropertiesV2{
+		// 				Properties: &armrelationships.ServiceGroupMemberRelationshipProperties{
 		// 					SourceID: to.Ptr("/providers/Microsoft.Management/serviceGroups/sg2"),
 		// 					TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
 		// 					SourceTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),

@@ -504,8 +504,8 @@ func (s *ServiceGroupMemberRelationshipListResult) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ServiceGroupMemberRelationshipPropertiesV2.
-func (s ServiceGroupMemberRelationshipPropertiesV2) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ServiceGroupMemberRelationshipProperties.
+func (s ServiceGroupMemberRelationshipProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "metadata", s.Metadata)
 	populate(objectMap, "originInformation", s.OriginInformation)
@@ -516,8 +516,8 @@ func (s ServiceGroupMemberRelationshipPropertiesV2) MarshalJSON() ([]byte, error
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceGroupMemberRelationshipPropertiesV2.
-func (s *ServiceGroupMemberRelationshipPropertiesV2) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ServiceGroupMemberRelationshipProperties.
+func (s *ServiceGroupMemberRelationshipProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())

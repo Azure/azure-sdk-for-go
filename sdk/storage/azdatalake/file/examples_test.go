@@ -16,7 +16,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
+	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"hash/crc64"
 	"io"
 	"log"
@@ -366,7 +366,7 @@ func Example_file_AppendAndFlushDataWithValidation() {
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := streaming.NopCloser(body)
-	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+	contentCRC64 := crc64.Checksum(content, storageinternal.CRC64Table)
 
 	// validate data using crc64
 	opts := &file.AppendDataOptions{

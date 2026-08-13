@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package shared
+package internal
 
 import (
 	"bytes"
@@ -12,6 +12,10 @@ import (
 	"io"
 	"math"
 )
+
+const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5
+
+var CRC64Table = crc64.MakeTable(crc64Polynomial)
 
 // Structured Message (XSM/1.0) constants
 const (
@@ -51,14 +55,6 @@ func SMEncode(data []byte, segmentSize int) SMEncodeResult {
 	}
 	if numSegments == 0 {
 		numSegments = 1
-	}
-
-	if numSegments > math.MaxUint16 {
-		segmentSize = int(math.Ceil(float64(totalDataLen) / float64(math.MaxUint16)))
-		numSegments = totalDataLen / segmentSize
-		if totalDataLen%segmentSize != 0 {
-			numSegments++
-		}
 	}
 
 	// Calculate total message length
@@ -215,8 +211,8 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 		msgHasher = crc64.New(CRC64Table)
 	}
 
-	for i := uint32(1); i <= uint32(numSegments); i++ {
-		segment, err := decodeSMSegment(smData, offset, uint16(i), hasCRC)
+	for i := uint16(1); i <= numSegments; i++ {
+		segment, err := decodeSMSegment(smData, offset, i, hasCRC)
 		if err != nil {
 			return SMDecodeResult{}, err
 		}
@@ -251,8 +247,7 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 
 	// The parsed message must consume the entire input. Declaring fewer segments and appending
 	// arbitrary trailing bytes would otherwise pass the header length check yet leave those bytes
-	// unvalidated, so reject any leftover data. (The streaming decoder enforces the equivalent via
-	// its consumed-length check in validateTrailerCRC.)
+	// unvalidated, so reject any leftover data.
 	if offset != len(smData) {
 		return SMDecodeResult{}, fmt.Errorf("structured message has %d unexpected trailing bytes after offset %d", len(smData)-offset, offset)
 	}
@@ -662,6 +657,16 @@ func (d *SMDecoder) Read(p []byte) (int, error) {
 					d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
 					return totalOut, d.err
 				}
+				if err != nil && d.segRemain == 0 {
+					// The source returned bytes that exactly completed the segment together with
+					// an error. Footer/trailer framing must still follow, so even io.EOF is
+					// premature here; convert it to io.ErrUnexpectedEOF so RetryReader can retry.
+					if errors.Is(err, io.EOF) {
+						err = io.ErrUnexpectedEOF
+					}
+					d.setError(fmt.Errorf("segment %d: %w", d.segIndex, err))
+					return totalOut, d.err
+				}
 			}
 			if d.segRemain == 0 {
 				// Segment data is fully consumed. Advance to the footer/next segment even when the
@@ -795,6 +800,8 @@ func (d *SMDecoder) validateTrailerCRC() error {
 	if expected != actual {
 		return fmt.Errorf("message trailer CRC64 mismatch (expected 0x%016x, got 0x%016x)", expected, actual)
 	}
+	// The consumed byte count must match the declared message length, so a stream that declares
+	// fewer segments (leaving trailing bytes unvalidated) is rejected rather than silently accepted.
 	if d.msgLen > 0 && d.bytesRead != int64(d.msgLen) {
 		return fmt.Errorf("structured message length mismatch: header says %d, consumed %d bytes", d.msgLen, d.bytesRead)
 	}
@@ -814,7 +821,7 @@ func (d *SMDecoder) fillFrame() (bool, error) {
 		}
 		if err != nil {
 			if errors.Is(err, io.EOF) {
-				return false, fmt.Errorf("unexpected EOF reading structured message framing (have %d of %d bytes)", d.frameHave, d.frameNeed)
+				return false, fmt.Errorf("reading structured message framing (have %d of %d bytes): %w", d.frameHave, d.frameNeed, io.ErrUnexpectedEOF)
 			}
 			return false, err
 		}

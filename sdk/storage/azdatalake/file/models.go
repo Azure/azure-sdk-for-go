@@ -9,6 +9,7 @@ import (
 	"reflect"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
+	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/path"
@@ -283,7 +284,7 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (io.Rea
 		return nil, nil, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
 	}
 
-	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
+	count, err := storageinternal.ValidateSeekableStreamAt0AndGetCount(body)
 	if err != nil {
 		return nil, nil, nil, nil, err
 	}
@@ -324,7 +325,7 @@ func (o *AppendDataOptions) format(offset int64, body io.ReadSeekCloser) (io.Rea
 			if err != nil {
 				return nil, nil, nil, nil, err
 			}
-			count, err = shared.ValidateSeekableStreamAt0AndGetCount(body)
+			count, err = storageinternal.ValidateSeekableStreamAt0AndGetCount(body)
 			if err != nil {
 				return nil, nil, nil, nil, err
 			}

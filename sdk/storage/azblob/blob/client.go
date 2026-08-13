@@ -22,6 +22,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -434,7 +435,7 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 	// If the response contains a structured message body, wrap it with SMDecoder
 	// to validate CRC64 checksums and extract the raw data.
 	if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" {
-		dr.Body = shared.NewSMDecoder(dr.Body)
+		dr.Body = storageinternal.NewSMDecoder(dr.Body)
 	}
 
 	return DownloadStreamResponse{

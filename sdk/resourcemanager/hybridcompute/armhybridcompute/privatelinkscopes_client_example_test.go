@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Create.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Create.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Update.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Update.json
 func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExamplePrivateLinkScopesClient_CreateOrUpdate_privateLinkScopeUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Delete.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Delete.json
 func ExamplePrivateLinkScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExamplePrivateLinkScopesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_Get.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_Get.json
 func ExamplePrivateLinkScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExamplePrivateLinkScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_GetValidation.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_GetValidation.json
 func ExamplePrivateLinkScopesClient_GetValidationDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExamplePrivateLinkScopesClient_GetValidationDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_GetValidationForMachine.json
 func ExamplePrivateLinkScopesClient_GetValidationDetailsForMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExamplePrivateLinkScopesClient_GetValidationDetailsForMachine() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_List.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_List.json
 func ExamplePrivateLinkScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +380,7 @@ func ExamplePrivateLinkScopesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_ListByResourceGroup.json
 func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -485,14 +485,14 @@ func ExamplePrivateLinkScopesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
+// Generated from example definition: 2026-06-16-preview/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
 func ExamplePrivateLinkScopesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("subid", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -512,7 +512,7 @@ func ExamplePrivateLinkScopesClient_UpdateTags() {
 	// 	PrivateLinkScope: armhybridcompute.PrivateLinkScope{
 	// 		Name: to.Ptr("my-privatelinkscope"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/privateLinkScopes"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/my-resource-group/providers/microsoft.hybridcompute/privateLinkScopes/my-privatelinkscope"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-resource-group/providers/microsoft.hybridcompute/privateLinkScopes/my-privatelinkscope"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armhybridcompute.PrivateLinkScopeProperties{
 	// 			PrivateEndpointConnections: []*armhybridcompute.PrivateEndpointConnectionDataModel{

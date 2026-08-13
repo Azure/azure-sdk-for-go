@@ -78,12 +78,12 @@ func (c CertificateProperties) MarshalJSON() ([]byte, error) {
 	populateByteArray(objectMap, "certificate", c.Certificate, func() any {
 		return runtime.EncodeByteArray(c.Certificate, runtime.Base64StdFormat)
 	})
-	populateTime[datetime.RFC1123](objectMap, "created", c.Created)
-	populateTime[datetime.RFC1123](objectMap, "expiry", c.Expiry)
+	populateTime[datetime.RFC7231](objectMap, "created", c.Created)
+	populateTime[datetime.RFC7231](objectMap, "expiry", c.Expiry)
 	populate(objectMap, "isVerified", c.IsVerified)
 	populate(objectMap, "subject", c.Subject)
 	populate(objectMap, "thumbprint", c.Thumbprint)
-	populateTime[datetime.RFC1123](objectMap, "updated", c.Updated)
+	populateTime[datetime.RFC7231](objectMap, "updated", c.Updated)
 	return json.Marshal(objectMap)
 }
 
@@ -102,10 +102,10 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			}
 			delete(rawMsg, key)
 		case "created":
-			err = unpopulateTime[datetime.RFC1123](val, "Created", &c.Created)
+			err = unpopulateTime[datetime.RFC7231](val, "Created", &c.Created)
 			delete(rawMsg, key)
 		case "expiry":
-			err = unpopulateTime[datetime.RFC1123](val, "Expiry", &c.Expiry)
+			err = unpopulateTime[datetime.RFC7231](val, "Expiry", &c.Expiry)
 			delete(rawMsg, key)
 		case "isVerified":
 			err = unpopulate(val, "IsVerified", &c.IsVerified)
@@ -117,7 +117,7 @@ func (c *CertificateProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Thumbprint", &c.Thumbprint)
 			delete(rawMsg, key)
 		case "updated":
-			err = unpopulateTime[datetime.RFC1123](val, "Updated", &c.Updated)
+			err = unpopulateTime[datetime.RFC7231](val, "Updated", &c.Updated)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1398,5 +1398,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

@@ -4473,9 +4473,9 @@ func (f FileShareProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "leaseStatus", f.LeaseStatus)
 	populate(objectMap, "maxBurstCreditsForIops", f.MaxBurstCreditsForIops)
 	populate(objectMap, "metadata", f.Metadata)
-	populateTime[datetime.RFC1123](objectMap, "nextAllowedProvisionedBandwidthDowngradeTime", f.NextAllowedProvisionedBandwidthDowngradeTime)
-	populateTime[datetime.RFC1123](objectMap, "nextAllowedProvisionedIopsDowngradeTime", f.NextAllowedProvisionedIopsDowngradeTime)
-	populateTime[datetime.RFC1123](objectMap, "nextAllowedQuotaDowngradeTime", f.NextAllowedQuotaDowngradeTime)
+	populateTime[datetime.RFC7231](objectMap, "nextAllowedProvisionedBandwidthDowngradeTime", f.NextAllowedProvisionedBandwidthDowngradeTime)
+	populateTime[datetime.RFC7231](objectMap, "nextAllowedProvisionedIopsDowngradeTime", f.NextAllowedProvisionedIopsDowngradeTime)
+	populateTime[datetime.RFC7231](objectMap, "nextAllowedQuotaDowngradeTime", f.NextAllowedQuotaDowngradeTime)
 	populate(objectMap, "provisionedBandwidthMibps", f.ProvisionedBandwidthMibps)
 	populate(objectMap, "provisionedIops", f.ProvisionedIops)
 	populate(objectMap, "remainingRetentionDays", f.RemainingRetentionDays)
@@ -4540,13 +4540,13 @@ func (f *FileShareProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "Metadata", &f.Metadata)
 			delete(rawMsg, key)
 		case "nextAllowedProvisionedBandwidthDowngradeTime":
-			err = unpopulateTime[datetime.RFC1123](val, "NextAllowedProvisionedBandwidthDowngradeTime", &f.NextAllowedProvisionedBandwidthDowngradeTime)
+			err = unpopulateTime[datetime.RFC7231](val, "NextAllowedProvisionedBandwidthDowngradeTime", &f.NextAllowedProvisionedBandwidthDowngradeTime)
 			delete(rawMsg, key)
 		case "nextAllowedProvisionedIopsDowngradeTime":
-			err = unpopulateTime[datetime.RFC1123](val, "NextAllowedProvisionedIopsDowngradeTime", &f.NextAllowedProvisionedIopsDowngradeTime)
+			err = unpopulateTime[datetime.RFC7231](val, "NextAllowedProvisionedIopsDowngradeTime", &f.NextAllowedProvisionedIopsDowngradeTime)
 			delete(rawMsg, key)
 		case "nextAllowedQuotaDowngradeTime":
-			err = unpopulateTime[datetime.RFC1123](val, "NextAllowedQuotaDowngradeTime", &f.NextAllowedQuotaDowngradeTime)
+			err = unpopulateTime[datetime.RFC7231](val, "NextAllowedQuotaDowngradeTime", &f.NextAllowedQuotaDowngradeTime)
 			delete(rawMsg, key)
 		case "provisionedBandwidthMibps":
 			err = unpopulate(val, "ProvisionedBandwidthMibps", &f.ProvisionedBandwidthMibps)
@@ -9751,5 +9751,5 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 }
 
 type dateTimeConstraints interface {
-	datetime.PlainDate | datetime.PlainTime | datetime.RFC1123 | datetime.RFC3339 | datetime.Unix
+	datetime.PlainDate | datetime.PlainTime | datetime.RFC3339 | datetime.RFC7231 | datetime.Unix
 }

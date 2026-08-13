@@ -119,7 +119,7 @@ func TestReportFileFlag_NewPackageOutput(t *testing.T) {
 	assert.Equal(t, packagePath, result.PackagePath)
 	assert.Equal(t, "New Package", result.PackageStatus)
 	assert.False(t, result.HasBreakingChange, "a new package has no breaking changes")
-	assert.NotEmpty(t, result.ChangelogMD, "ChangelogMD should be populated in the report")
+	assert.NotEmpty(t, result.Changes, "Changes should be populated in the report")
 	assert.NotEmpty(t, result.ReleaseDate, "ReleaseDate should be populated")
 
 	// Verify CHANGELOG.md was NOT created (report-only mode must not mutate the package).

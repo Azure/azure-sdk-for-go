@@ -12,34 +12,26 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterCreate.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterCreate.json
 func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCassandraClustersClient().BeginCreateUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.ClusterResourceProperties{
-			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
-			CassandraVersion:     to.Ptr("3.11"),
-			ClientCertificates: []*armcosmos.Certificate{
-				{
-					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-				},
-			},
-			ClusterNameOverride:         to.Ptr("ClusterNameIllegalForAzureResource"),
-			DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-			ExternalGossipCertificates: []*armcosmos.Certificate{
-				{
-					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-				},
-			},
+			DelegatedManagementSubnetID:   to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
+			CassandraVersion:              to.Ptr("3.11"),
+			HoursBetweenBackups:           to.Ptr[int32](24),
+			AuthenticationMethod:          to.Ptr(armcosmos.AuthenticationMethodCassandra),
+			InitialCassandraAdminPassword: to.Ptr("mypassword"),
 			ExternalSeedNodes: []*armcosmos.SeedNode{
 				{
 					IPAddress: to.Ptr("10.52.221.2"),
@@ -51,42 +43,43 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 					IPAddress: to.Ptr("10.52.221.4"),
 				},
 			},
-			HoursBetweenBackups:           to.Ptr[int32](24),
-			InitialCassandraAdminPassword: to.Ptr("mypassword"),
+			ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
+			ClientCertificates: []*armcosmos.Certificate{
+				{
+					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+				},
+			},
+			ExternalGossipCertificates: []*armcosmos.Certificate{
+				{
+					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+				},
+			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientCreateUpdateResponse{
-	// 	ClusterResource: &armcosmos.ClusterResource{
+	// 	ClusterResource: armcosmos.ClusterResource{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ClusterResourceProperties{
-	// 			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
-	// 			CassandraVersion: to.Ptr("3.11"),
-	// 			ClientCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
-	// 			ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
+	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 	// 			DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-	// 			ExternalGossipCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
+	// 			CassandraVersion: to.Ptr("3.11"),
+	// 			HoursBetweenBackups: to.Ptr[int32](24),
+	// 			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
 	// 			ExternalSeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("10.52.221.2"),
@@ -98,13 +91,7 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	// 					IPAddress: to.Ptr("10.52.221.4"),
 	// 				},
 	// 			},
-	// 			GossipCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
-	// 			HoursBetweenBackups: to.Ptr[int32](24),
-	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+	// 			ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
 	// 			SeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("10.52.221.2"),
@@ -125,21 +112,34 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 	// 					IPAddress: to.Ptr("192.168.12.4"),
 	// 				},
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
+	// 			ClientCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
+	// 			ExternalGossipCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
+	// 			GossipCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterDeallocate.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterDeallocate.json
 func ExampleCassandraClustersClient_BeginDeallocate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -149,11 +149,11 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterDelete.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterDelete.json
 func ExampleCassandraClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,11 +170,11 @@ func ExampleCassandraClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterGet.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterGet.json
 func ExampleCassandraClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,26 +193,19 @@ func ExampleCassandraClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientGetResponse{
-	// 	ClusterResource: &armcosmos.ClusterResource{
+	// 	ClusterResource: armcosmos.ClusterResource{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ClusterResourceProperties{
-	// 			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
-	// 			CassandraVersion: to.Ptr("3.11"),
-	// 			ClientCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
-	// 			ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
+	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 	// 			DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-	// 			ExternalGossipCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
+	// 			CassandraVersion: to.Ptr("3.11"),
+	// 			HoursBetweenBackups: to.Ptr[int32](24),
+	// 			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
 	// 			ExternalSeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("10.52.221.2"),
@@ -224,13 +217,7 @@ func ExampleCassandraClustersClient_Get() {
 	// 					IPAddress: to.Ptr("10.52.221.4"),
 	// 				},
 	// 			},
-	// 			GossipCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
-	// 			HoursBetweenBackups: to.Ptr[int32](24),
-	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+	// 			ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
 	// 			SeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("10.52.221.2"),
@@ -251,92 +238,39 @@ func ExampleCassandraClustersClient_Get() {
 	// 					IPAddress: to.Ptr("192.168.12.4"),
 	// 				},
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
+	// 			ClientCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
+	// 			ExternalGossipCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
+	// 			GossipCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraBackup.json
-func ExampleCassandraClustersClient_GetBackup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraClustersClient().GetBackup(ctx, "cassandra-prod-rg", "cassandra-prod", "1611250348", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraClustersClientGetBackupResponse{
-	// 	BackupResource: &armcosmos.BackupResource{
-	// 		BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.3841617+00:00"); return t}()),
-	// 		BackupID: to.Ptr("2517222704776158383"),
-	// 		BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
-	// 		BackupState: to.Ptr(armcosmos.BackupStateSucceeded),
-	// 		BackupStopTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraCommandResult.json
-func ExampleCassandraClustersClient_GetCommandAsync() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewCassandraClustersClient().GetCommandAsync(ctx, "cassandra-prod-rg", "cassandra-prod", "318653d0-3da5-4814-b8f6-429f2af0b2a4", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraClustersClientGetCommandAsyncResponse{
-	// 	CommandPublicResource: &armcosmos.CommandPublicResource{
-	// 		Arguments: map[string]any{
-	// 			"status": "",
-	// 		},
-	// 		CassandraStopStart: to.Ptr(false),
-	// 		Command: to.Ptr("nodetool"),
-	// 		Host: to.Ptr("10.0.1.12"),
-	// 		IsAdmin: to.Ptr(false),
-	// 		OutputFile: to.Ptr("318653d0-3da5-4814-b8f6-429f2af0b2a4"),
-	// 		ReadWrite: to.Ptr(false),
-	// 		Result: to.Ptr("{\"exitCode\":0, \"CommandOutput\":\"RESULT\"}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraCommand.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraCommand.json
 func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCassandraClustersClient().BeginInvokeCommand(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.CommandPostBody{
-		Arguments: map[string]*string{
-			"status": to.Ptr(""),
-		},
-		Command: to.Ptr("nodetool"),
+		Command: to.Ptr("nodetool status"),
 		Host:    to.Ptr("10.0.1.12"),
 	}, nil)
 	if err != nil {
@@ -344,111 +278,11 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraCommandAsync.json
-func ExampleCassandraClustersClient_BeginInvokeCommandAsync() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCassandraClustersClient().BeginInvokeCommandAsync(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.CommandAsyncPostBody{
-		Arguments: map[string]any{
-			"status": "",
-		},
-		Command: to.Ptr("nodetool"),
-		Host:    to.Ptr("10.0.1.12"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcosmos.CassandraClustersClientInvokeCommandAsyncResponse{
-	// 	CommandPublicResource: &armcosmos.CommandPublicResource{
-	// 		Arguments: map[string]any{
-	// 			"status": "",
-	// 		},
-	// 		CassandraStopStart: to.Ptr(false),
-	// 		Command: to.Ptr("nodetool"),
-	// 		Host: to.Ptr("10.0.1.12"),
-	// 		IsAdmin: to.Ptr(false),
-	// 		OutputFile: to.Ptr("301fc7c1-397f-4e4a-89db-478f61f89d67"),
-	// 		ReadWrite: to.Ptr(false),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraBackupsList.json
-func ExampleCassandraClustersClient_NewListBackupsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCassandraClustersClient().NewListBackupsPager("cassandra-prod-rg", "cassandra-prod", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.CassandraClustersClientListBackupsResponse{
-		// 	ListBackups: armcosmos.ListBackups{
-		// 		Value: []*armcosmos.BackupResource{
-		// 			{
-		// 				BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:10:17.2962429+00:00"); return t}()),
-		// 				BackupID: to.Ptr("2517222701827037570"),
-		// 				BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:10:17.2962429+00:00"); return t}()),
-		// 				BackupState: to.Ptr(armcosmos.BackupStateInitiated),
-		// 			},
-		// 			{
-		// 				BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.3841617+00:00"); return t}()),
-		// 				BackupID: to.Ptr("2517222704776158382"),
-		// 				BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
-		// 				BackupState: to.Ptr(armcosmos.BackupStateInProgress),
-		// 			},
-		// 			{
-		// 				BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.3841617+00:00"); return t}()),
-		// 				BackupID: to.Ptr("2517222704776158383"),
-		// 				BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
-		// 				BackupState: to.Ptr(armcosmos.BackupStateSucceeded),
-		// 				BackupStopTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
-		// 			},
-		// 			{
-		// 				BackupExpiryTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T20:05:22.3841617+00:00"); return t}()),
-		// 				BackupID: to.Ptr("2517222704776158384"),
-		// 				BackupStartTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
-		// 				BackupState: to.Ptr(armcosmos.BackupStateFailed),
-		// 				BackupStopTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-28T19:05:22.3841617+00:00"); return t}()),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterListByResourceGroup.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterListByResourceGroup.json
 func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -474,25 +308,18 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 		// 	ListClusters: armcosmos.ListClusters{
 		// 		Value: []*armcosmos.ClusterResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 		// 				Name: to.Ptr("cassandra-prod"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 		// 				Location: to.Ptr("West US"),
+		// 				Tags: map[string]*string{
+		// 				},
 		// 				Properties: &armcosmos.ClusterResourceProperties{
-		// 					AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
-		// 					CassandraVersion: to.Ptr("3.11"),
-		// 					ClientCertificates: []*armcosmos.Certificate{
-		// 						{
-		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-		// 						},
-		// 					},
-		// 					ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
+		// 					ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 		// 					DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-		// 					ExternalGossipCertificates: []*armcosmos.Certificate{
-		// 						{
-		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-		// 						},
-		// 					},
+		// 					CassandraVersion: to.Ptr("3.11"),
+		// 					HoursBetweenBackups: to.Ptr[int32](24),
+		// 					AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
 		// 					ExternalSeedNodes: []*armcosmos.SeedNode{
 		// 						{
 		// 							IPAddress: to.Ptr("10.52.221.2"),
@@ -504,13 +331,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 		// 							IPAddress: to.Ptr("10.52.221.4"),
 		// 						},
 		// 					},
-		// 					GossipCertificates: []*armcosmos.Certificate{
-		// 						{
-		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-		// 						},
-		// 					},
-		// 					HoursBetweenBackups: to.Ptr[int32](24),
-		// 					ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+		// 					ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
 		// 					SeedNodes: []*armcosmos.SeedNode{
 		// 						{
 		// 							IPAddress: to.Ptr("10.52.221.2"),
@@ -531,8 +352,21 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 		// 							IPAddress: to.Ptr("192.168.12.4"),
 		// 						},
 		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
+		// 					ClientCertificates: []*armcosmos.Certificate{
+		// 						{
+		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+		// 						},
+		// 					},
+		// 					ExternalGossipCertificates: []*armcosmos.Certificate{
+		// 						{
+		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+		// 						},
+		// 					},
+		// 					GossipCertificates: []*armcosmos.Certificate{
+		// 						{
+		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+		// 						},
+		// 					},
 		// 				},
 		// 			},
 		// 		},
@@ -541,7 +375,7 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterListBySubscription.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterListBySubscription.json
 func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -567,25 +401,18 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 		// 	ListClusters: armcosmos.ListClusters{
 		// 		Value: []*armcosmos.ClusterResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 		// 				Name: to.Ptr("cassandra-prod"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 		// 				Location: to.Ptr("West US"),
+		// 				Tags: map[string]*string{
+		// 				},
 		// 				Properties: &armcosmos.ClusterResourceProperties{
-		// 					AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
-		// 					CassandraVersion: to.Ptr("3.11"),
-		// 					ClientCertificates: []*armcosmos.Certificate{
-		// 						{
-		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-		// 						},
-		// 					},
-		// 					ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
+		// 					ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
 		// 					DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-		// 					ExternalGossipCertificates: []*armcosmos.Certificate{
-		// 						{
-		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-		// 						},
-		// 					},
+		// 					CassandraVersion: to.Ptr("3.11"),
+		// 					HoursBetweenBackups: to.Ptr[int32](24),
+		// 					AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
 		// 					ExternalSeedNodes: []*armcosmos.SeedNode{
 		// 						{
 		// 							IPAddress: to.Ptr("10.52.221.2"),
@@ -597,13 +424,7 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 		// 							IPAddress: to.Ptr("10.52.221.4"),
 		// 						},
 		// 					},
-		// 					GossipCertificates: []*armcosmos.Certificate{
-		// 						{
-		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-		// 						},
-		// 					},
-		// 					HoursBetweenBackups: to.Ptr[int32](24),
-		// 					ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+		// 					ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
 		// 					SeedNodes: []*armcosmos.SeedNode{
 		// 						{
 		// 							IPAddress: to.Ptr("10.52.221.2"),
@@ -624,8 +445,21 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 		// 							IPAddress: to.Ptr("192.168.12.4"),
 		// 						},
 		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
+		// 					ClientCertificates: []*armcosmos.Certificate{
+		// 						{
+		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+		// 						},
+		// 					},
+		// 					ExternalGossipCertificates: []*armcosmos.Certificate{
+		// 						{
+		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+		// 						},
+		// 					},
+		// 					GossipCertificates: []*armcosmos.Certificate{
+		// 						{
+		// 							Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+		// 						},
+		// 					},
 		// 				},
 		// 			},
 		// 		},
@@ -634,56 +468,14 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraListCommand.json
-func ExampleCassandraClustersClient_NewListCommandPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewCassandraClustersClient().NewListCommandPager("cassandra-prod-rg", "cassandra-prod", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.CassandraClustersClientListCommandResponse{
-		// 	ListCommands: armcosmos.ListCommands{
-		// 		Value: []*armcosmos.CommandPublicResource{
-		// 			{
-		// 				Arguments: map[string]any{
-		// 					"status": "",
-		// 				},
-		// 				CassandraStopStart: to.Ptr(false),
-		// 				Command: to.Ptr("nodetool"),
-		// 				CommandID: to.Ptr("1234"),
-		// 				Host: to.Ptr("10.0.1.12"),
-		// 				ReadWrite: to.Ptr(true),
-		// 				Status: to.Ptr(armcosmos.CommandStatus("Enqueued")),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterStart.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterStart.json
 func ExampleCassandraClustersClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -693,18 +485,18 @@ func ExampleCassandraClustersClient_BeginStart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraStatus.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraStatus.json
 func ExampleCassandraClustersClient_Status() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -716,30 +508,33 @@ func ExampleCassandraClustersClient_Status() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientStatusResponse{
-	// 	CassandraClusterPublicStatus: &armcosmos.CassandraClusterPublicStatus{
+	// 	CassandraClusterPublicStatus: armcosmos.CassandraClusterPublicStatus{
+	// 		ETag: to.Ptr("A350A2CE7E91B6D5A102A5E5EC222B882D981092"),
+	// 		ReaperStatus: &armcosmos.ManagedCassandraReaperStatus{
+	// 			Healthy: to.Ptr(true),
+	// 			RepairRunIDs: map[string]*string{
+	// 			},
+	// 			RepairSchedules: map[string]*string{
+	// 				"00000000-0000-0001-0000-000000000000": to.Ptr("ACTIVE"),
+	// 			},
+	// 		},
 	// 		ConnectionErrors: []*armcosmos.ConnectionError{
 	// 		},
 	// 		DataCenters: []*armcosmos.CassandraClusterPublicStatusDataCentersItem{
 	// 			{
 	// 				Name: to.Ptr("cassandra-westus2-vmss"),
+	// 				SeedNodes: []*string{
+	// 					to.Ptr("10.0.8.10"),
+	// 					to.Ptr("10.0.8.11"),
+	// 					to.Ptr("10.0.8.12"),
+	// 				},
 	// 				Nodes: []*armcosmos.ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems{
 	// 					{
 	// 						Address: to.Ptr("10.0.8.10"),
-	// 						CassandraProcessStatus: to.Ptr("Running"),
-	// 						CPUUsage: to.Ptr[float64](0.9),
-	// 						DiskFreeKB: to.Ptr[int64](1001260056),
-	// 						DiskUsedKB: to.Ptr[int64](749836),
-	// 						HostID: to.Ptr("8ccc00a7-9e22-4ac2-aa63-e5327aa0dc51"),
-	// 						Load: to.Ptr("84.61 MiB"),
-	// 						MemoryBuffersAndCachedKB: to.Ptr[int64](10817580),
-	// 						MemoryFreeKB: to.Ptr[int64](35731832),
-	// 						MemoryTotalKB: to.Ptr[int64](57610444),
-	// 						MemoryUsedKB: to.Ptr[int64](11061032),
-	// 						Rack: to.Ptr("rack1"),
-	// 						Size: to.Ptr[int32](16),
 	// 						State: to.Ptr(armcosmos.NodeStateNormal),
 	// 						Status: to.Ptr("Up"),
-	// 						Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
+	// 						CassandraProcessStatus: to.Ptr("Running"),
+	// 						Load: to.Ptr("84.61 MiB"),
 	// 						Tokens: []*string{
 	// 							to.Ptr("-7785254003841681178"),
 	// 							to.Ptr("-6756518164561476165"),
@@ -758,24 +553,24 @@ func ExampleCassandraClustersClient_Status() {
 	// 							to.Ptr("6250058817756969464"),
 	// 							to.Ptr("7991328665766267709"),
 	// 						},
+	// 						Size: to.Ptr[int32](16),
+	// 						HostID: to.Ptr("8ccc00a7-9e22-4ac2-aa63-e5327aa0dc51"),
+	// 						Rack: to.Ptr("rack1"),
+	// 						Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
+	// 						DiskUsedKB: to.Ptr[int64](749836),
+	// 						DiskFreeKB: to.Ptr[int64](1001260056),
+	// 						MemoryUsedKB: to.Ptr[int64](11061032),
+	// 						MemoryBuffersAndCachedKB: to.Ptr[int64](10817580),
+	// 						MemoryFreeKB: to.Ptr[int64](35731832),
+	// 						MemoryTotalKB: to.Ptr[int64](57610444),
+	// 						CPUUsage: to.Ptr[float64](0.9),
 	// 					},
 	// 					{
 	// 						Address: to.Ptr("10.0.8.11"),
-	// 						CassandraProcessStatus: to.Ptr("Running"),
-	// 						CPUUsage: to.Ptr[float64](1.2),
-	// 						DiskFreeKB: to.Ptr[int64](1001283028),
-	// 						DiskUsedKB: to.Ptr[int64](726864),
-	// 						HostID: to.Ptr("14092117-4f77-4ec0-8984-c5b860b88a47"),
-	// 						Load: to.Ptr("59.67 MiB"),
-	// 						MemoryBuffersAndCachedKB: to.Ptr[int64](10691520),
-	// 						MemoryFreeKB: to.Ptr[int64](35863248),
-	// 						MemoryTotalKB: to.Ptr[int64](57610444),
-	// 						MemoryUsedKB: to.Ptr[int64](11055676),
-	// 						Rack: to.Ptr("rack2"),
-	// 						Size: to.Ptr[int32](16),
 	// 						State: to.Ptr(armcosmos.NodeStateNormal),
 	// 						Status: to.Ptr("Up"),
-	// 						Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
+	// 						CassandraProcessStatus: to.Ptr("Running"),
+	// 						Load: to.Ptr("59.67 MiB"),
 	// 						Tokens: []*string{
 	// 							to.Ptr("-8726238055665903210"),
 	// 							to.Ptr("-6687985003871487470"),
@@ -794,25 +589,24 @@ func ExampleCassandraClustersClient_Status() {
 	// 							to.Ptr("4412314431151736777"),
 	// 							to.Ptr("8232565668795426078"),
 	// 						},
+	// 						Size: to.Ptr[int32](16),
+	// 						HostID: to.Ptr("14092117-4f77-4ec0-8984-c5b860b88a47"),
+	// 						Rack: to.Ptr("rack2"),
+	// 						Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
+	// 						DiskUsedKB: to.Ptr[int64](726864),
+	// 						DiskFreeKB: to.Ptr[int64](1001283028),
+	// 						MemoryUsedKB: to.Ptr[int64](11055676),
+	// 						MemoryBuffersAndCachedKB: to.Ptr[int64](10691520),
+	// 						MemoryFreeKB: to.Ptr[int64](35863248),
+	// 						MemoryTotalKB: to.Ptr[int64](57610444),
+	// 						CPUUsage: to.Ptr[float64](1.2),
 	// 					},
 	// 					{
 	// 						Address: to.Ptr("10.0.8.12"),
-	// 						CassandraProcessStatus: to.Ptr("Running"),
-	// 						CPUUsage: to.Ptr[float64](0.4),
-	// 						DiskFreeKB: to.Ptr[int64](1001252352),
-	// 						DiskUsedKB: to.Ptr[int64](757540),
-	// 						HostID: to.Ptr("e16ada14-39db-462b-9f9e-5b5f6beb8bbd"),
-	// 						IsLatestModel: to.Ptr(true),
-	// 						Load: to.Ptr("93.2 MiB"),
-	// 						MemoryBuffersAndCachedKB: to.Ptr[int64](10453856),
-	// 						MemoryFreeKB: to.Ptr[int64](36104980),
-	// 						MemoryTotalKB: to.Ptr[int64](57610444),
-	// 						MemoryUsedKB: to.Ptr[int64](11051608),
-	// 						Rack: to.Ptr("rack3"),
-	// 						Size: to.Ptr[int32](16),
 	// 						State: to.Ptr(armcosmos.NodeStateNormal),
 	// 						Status: to.Ptr("Up"),
-	// 						Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
+	// 						CassandraProcessStatus: to.Ptr("Running"),
+	// 						Load: to.Ptr("93.2 MiB"),
 	// 						Tokens: []*string{
 	// 							to.Ptr("-5679481051867296621"),
 	// 							to.Ptr("-4574115287969297989"),
@@ -831,29 +625,26 @@ func ExampleCassandraClustersClient_Status() {
 	// 							to.Ptr("7631994478195429959"),
 	// 							to.Ptr("8139769477321226157"),
 	// 						},
+	// 						Size: to.Ptr[int32](16),
+	// 						HostID: to.Ptr("e16ada14-39db-462b-9f9e-5b5f6beb8bbd"),
+	// 						Rack: to.Ptr("rack3"),
+	// 						Timestamp: to.Ptr("10/05/2021, 14:35:20.028"),
+	// 						DiskUsedKB: to.Ptr[int64](757540),
+	// 						DiskFreeKB: to.Ptr[int64](1001252352),
+	// 						MemoryUsedKB: to.Ptr[int64](11051608),
+	// 						MemoryBuffersAndCachedKB: to.Ptr[int64](10453856),
+	// 						MemoryFreeKB: to.Ptr[int64](36104980),
+	// 						MemoryTotalKB: to.Ptr[int64](57610444),
+	// 						CPUUsage: to.Ptr[float64](0.4),
 	// 					},
 	// 				},
-	// 				SeedNodes: []*string{
-	// 					to.Ptr("10.0.8.10"),
-	// 					to.Ptr("10.0.8.11"),
-	// 					to.Ptr("10.0.8.12"),
-	// 				},
-	// 			},
-	// 		},
-	// 		ETag: to.Ptr("A350A2CE7E91B6D5A102A5E5EC222B882D981092"),
-	// 		ReaperStatus: &armcosmos.ManagedCassandraReaperStatus{
-	// 			Healthy: to.Ptr(true),
-	// 			RepairRunIDs: map[string]*string{
-	// 			},
-	// 			RepairSchedules: map[string]*string{
-	// 				"00000000-0000-0001-0000-000000000000": to.Ptr("ACTIVE"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/CosmosDBManagedCassandraClusterPatch.json
+// Generated from example definition: 2026-03-15/CosmosDBManagedCassandraClusterPatch.json
 func ExampleCassandraClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -865,13 +656,10 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewCassandraClustersClient().BeginUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
+		Tags: map[string]*string{
+			"owner": to.Ptr("mike"),
+		},
 		Properties: &armcosmos.ClusterResourceProperties{
-			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodNone),
-			ExternalGossipCertificates: []*armcosmos.Certificate{
-				{
-					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-				},
-			},
 			ExternalSeedNodes: []*armcosmos.SeedNode{
 				{
 					IPAddress: to.Ptr("10.52.221.2"),
@@ -883,10 +671,13 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 					IPAddress: to.Ptr("10.52.221.4"),
 				},
 			},
-			HoursBetweenBackups: to.Ptr[int32](12),
-		},
-		Tags: map[string]*string{
-			"owner": to.Ptr("mike"),
+			ExternalGossipCertificates: []*armcosmos.Certificate{
+				{
+					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+				},
+			},
+			HoursBetweenBackups:  to.Ptr[int32](12),
+			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodNone),
 		},
 	}, nil)
 	if err != nil {
@@ -894,32 +685,25 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.CassandraClustersClientUpdateResponse{
-	// 	ClusterResource: &armcosmos.ClusterResource{
+	// 	ClusterResource: armcosmos.ClusterResource{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 		Name: to.Ptr("cassandra-prod"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/cassandraClusters"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/cassandra-prod-rg/providers/Microsoft.DocumentDB/cassandraClusters/cassandra-prod"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ClusterResourceProperties{
-	// 			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
+	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+	// 			DelegatedManagementSubnetID: to.Ptr("/subscriptions/536e130b-d7d6-4ac7-98a5-de20d69588d2/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
 	// 			CassandraVersion: to.Ptr("3.11"),
-	// 			ClientCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
-	// 			ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
-	// 			DelegatedManagementSubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/customer-vnet-rg/providers/Microsoft.Network/virtualNetworks/customer-vnet/subnets/management"),
-	// 			ExternalGossipCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
+	// 			HoursBetweenBackups: to.Ptr[int32](24),
+	// 			AuthenticationMethod: to.Ptr(armcosmos.AuthenticationMethodCassandra),
 	// 			ExternalSeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("10.52.221.2"),
@@ -931,13 +715,7 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	// 					IPAddress: to.Ptr("10.52.221.4"),
 	// 				},
 	// 			},
-	// 			GossipCertificates: []*armcosmos.Certificate{
-	// 				{
-	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
-	// 				},
-	// 			},
-	// 			HoursBetweenBackups: to.Ptr[int32](24),
-	// 			ProvisioningState: to.Ptr(armcosmos.ManagedCassandraProvisioningStateSucceeded),
+	// 			ClusterNameOverride: to.Ptr("ClusterNameIllegalForAzureResource"),
 	// 			SeedNodes: []*armcosmos.SeedNode{
 	// 				{
 	// 					IPAddress: to.Ptr("10.52.221.2"),
@@ -958,8 +736,21 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 	// 					IPAddress: to.Ptr("192.168.12.4"),
 	// 				},
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
+	// 			ClientCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
+	// 			ExternalGossipCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
+	// 			GossipCertificates: []*armcosmos.Certificate{
+	// 				{
+	// 					Pem: to.Ptr("-----BEGIN CERTIFICATE-----\n...Base64 encoded certificate...\n-----END CERTIFICATE-----"),
+	// 				},
+	// 			},
 	// 		},
 	// 	},
 	// }

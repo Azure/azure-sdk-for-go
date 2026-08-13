@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/RegistryEndpoint_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleRegistryEndpointClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleRegistryEndpointClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/RegistryEndpoint_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/RegistryEndpoint_Delete_MaximumSet_Gen.json
 func ExampleRegistryEndpointClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +117,7 @@ func ExampleRegistryEndpointClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/RegistryEndpoint_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/RegistryEndpoint_Get_MaximumSet_Gen.json
 func ExampleRegistryEndpointClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleRegistryEndpointClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/RegistryEndpoint_ListByInstanceResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/RegistryEndpoint_ListByInstanceResource_MaximumSet_Gen.json
 func ExampleRegistryEndpointClient_NewListByInstanceResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

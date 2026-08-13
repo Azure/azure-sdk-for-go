@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_CreateOrUpdate.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingDedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,13 +51,13 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingD
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientCreateOrUpdateResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
@@ -89,7 +89,7 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingD
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_CreateOrUpdate.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,13 +128,13 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientCreateOrUpdateResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
@@ -185,7 +185,7 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingPaymentHsmWithManagementProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -234,13 +234,13 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientCreateOrUpdateResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
@@ -291,7 +291,7 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// }
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_Delete.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_Delete.json
 func ExampleDedicatedHsmClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,11 +308,11 @@ func ExampleDedicatedHsmClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_Get.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_Get.json
 func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +331,7 @@ func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientGetResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
@@ -364,7 +364,7 @@ func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_Get.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_Get.json
 func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientGetResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
@@ -435,7 +435,7 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_Get_With_2018-10-31Preview_Version.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_Get_With_2018-10-31Preview_Version.json
 func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +454,7 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion()
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientGetResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
@@ -487,7 +487,7 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion()
 	// }
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_ListByResourceGroup.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_ListByResourceGroup.json
 func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevicesInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -579,7 +579,7 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 	}
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_ListByResourceGroup.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_ListByResourceGroup.json
 func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevicesInAResourceGroupIncludingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -709,7 +709,7 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 	}
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_ListBySubscription.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_ListBySubscription.json
 func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevicesInASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -801,7 +801,7 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 	}
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_ListBySubscription.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_ListBySubscription.json
 func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevicesInASubscriptionIncludingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -931,7 +931,7 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 	}
 }
 
-// Generated from example definition: 2025-03-31/GetOutboundNetworkDependenciesEndpointsList.json
+// Generated from example definition: 2025-12-01-preview/GetOutboundNetworkDependenciesEndpointsList.json
 func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -962,7 +962,7 @@ func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager(
 	}
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_Update.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_Update.json
 func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -985,13 +985,13 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientUpdateResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),
@@ -1024,7 +1024,7 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_Update.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_Update.json
 func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1047,13 +1047,13 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingPaymentHsm() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.DedicatedHsmClientUpdateResponse{
-	// 	DedicatedHsm: &armhardwaresecuritymodules.DedicatedHsm{
+	// 	DedicatedHsm: armhardwaresecuritymodules.DedicatedHsm{
 	// 		Name: to.Ptr("hsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/dedicatedHSMs"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hsm-group/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/hsm1"),

@@ -47,7 +47,7 @@ func ExampleFileWorkspacesNoSubscriptionClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.FileWorkspacesNoSubscriptionClientGetResponse{
-	// 	FileWorkspaceDetails: &armsupport.FileWorkspaceDetails{
+	// 	FileWorkspaceDetails: armsupport.FileWorkspaceDetails{
 	// 		Name: to.Ptr("testworkspace"),
 	// 		Type: to.Ptr("Microsoft.Support/fileWorkspaces"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace"),

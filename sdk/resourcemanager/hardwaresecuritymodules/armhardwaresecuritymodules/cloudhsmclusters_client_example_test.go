@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_CreateOrValidate_Backup_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_CreateOrValidate_Backup_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,13 +33,13 @@ func ExampleCloudHsmClustersClient_BeginBackup() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientBackupResponse{
-	// 	BackupResult: &armhardwaresecuritymodules.BackupResult{
+	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
 	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
@@ -52,7 +52,7 @@ func ExampleCloudHsmClustersClient_BeginBackup() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,13 +88,13 @@ func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientCreateOrUpdateResponse{
-	// 	CloudHsmCluster: &armhardwaresecuritymodules.CloudHsmCluster{
+	// 	CloudHsmCluster: armhardwaresecuritymodules.CloudHsmCluster{
 	// 		Name: to.Ptr("chsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/cloudHsmClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcloudhsm/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/chsm1"),
@@ -135,7 +135,7 @@ func ExampleCloudHsmClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Delete_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,11 +152,11 @@ func ExampleCloudHsmClustersClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Get_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Get_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleCloudHsmClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientGetResponse{
-	// 	CloudHsmCluster: &armhardwaresecuritymodules.CloudHsmCluster{
+	// 	CloudHsmCluster: armhardwaresecuritymodules.CloudHsmCluster{
 	// 		Name: to.Ptr("chsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/cloudHsmClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcloudhsm/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/chsm1"),
@@ -216,7 +216,7 @@ func ExampleCloudHsmClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleCloudHsmClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_ListBySubscription_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +429,7 @@ func ExampleCloudHsmClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -449,13 +449,13 @@ func ExampleCloudHsmClustersClient_BeginRestore() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientRestoreResponse{
-	// 	RestoreResult: &armhardwaresecuritymodules.RestoreResult{
+	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
@@ -467,7 +467,7 @@ func ExampleCloudHsmClustersClient_BeginRestore() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Update_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Update_MaximumSet_Gen.json
 func ExampleCloudHsmClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,13 +496,13 @@ func ExampleCloudHsmClustersClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientUpdateResponse{
-	// 	CloudHsmCluster: &armhardwaresecuritymodules.CloudHsmCluster{
+	// 	CloudHsmCluster: armhardwaresecuritymodules.CloudHsmCluster{
 	// 		Name: to.Ptr("chsm1"),
 	// 		Type: to.Ptr("Microsoft.HardwareSecurityModules/cloudHsmClusters"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgcloudhsm/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/chsm1"),
@@ -544,7 +544,7 @@ func ExampleCloudHsmClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Create_Backup_MaximumSet_Gen_ValidateBackupProperties.json
 func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -565,13 +565,13 @@ func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientValidateBackupPropertiesResponse{
-	// 	BackupResult: &armhardwaresecuritymodules.BackupResult{
+	// 	BackupResult: armhardwaresecuritymodules.BackupResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupResultProperties{
 	// 			AzureStorageBlobContainerURI: to.Ptr("https://myaccount.blob.core.windows.net/sascontainer/sasContainer"),
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
@@ -584,7 +584,7 @@ func ExampleCloudHsmClustersClient_BeginValidateBackupProperties() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_RequestOrValidate_Restore_MaximumSet_Gen_ValidateRestoreProperties.json
 func ExampleCloudHsmClustersClient_BeginValidateRestoreProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -605,13 +605,13 @@ func ExampleCloudHsmClustersClient_BeginValidateRestoreProperties() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhardwaresecuritymodules.CloudHsmClustersClientValidateRestorePropertiesResponse{
-	// 	RestoreResult: &armhardwaresecuritymodules.RestoreResult{
+	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
 	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),

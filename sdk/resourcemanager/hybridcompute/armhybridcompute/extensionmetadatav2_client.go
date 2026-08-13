@@ -19,7 +19,7 @@ import (
 // ExtensionMetadataV2Client contains the methods for the ExtensionMetadataV2 group.
 // Don't use this type directly, use NewExtensionMetadataV2Client() instead.
 //
-// Generated from API version 2025-09-16-preview
+// Generated from API version 2026-06-16-preview
 type ExtensionMetadataV2Client struct {
 	internal *arm.Client
 }
@@ -91,7 +91,7 @@ func (client *ExtensionMetadataV2Client) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250916Preview)
+	reqQP.Set("api-version", version20260616Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,7 +155,7 @@ func (client *ExtensionMetadataV2Client) listCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250916Preview)
+	reqQP.Set("api-version", version20260616Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

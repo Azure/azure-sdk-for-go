@@ -1,5 +1,17 @@
 # Release History
 
+## 0.4.17 (2026-07-28)
+
+### Bugs Fixed
+
+- Pinned `github.com/go-git/go-git/v5` to `v5.16.5`. Newer `v5` releases reject repositories that enable the `worktreeConfig` extension, which is how the SDK automation pipelines check out `azure-sdk-for-go` (`git sparse-checkout init`), causing generation to fail with `core.repositoryformatversion does not support extension: worktreeconfig`.
+
+## 0.4.16 (2026-06-29)
+
+### Features Added
+
+- Added `--filter-test` flag to the `build` command. When provided, hand-written test files (those without the generated-code marker) are excluded from `go build` and `go vet`.
+
 ## 0.4.15 (2026-06-12)
 
 ### Bugs Fixed

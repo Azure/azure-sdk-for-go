@@ -18,7 +18,9 @@ on:
   roles: all
   reaction: eyes
 
-permissions: read-all
+permissions:
+  issues: read
+  copilot-requests: write
 
 network:
   allowed:

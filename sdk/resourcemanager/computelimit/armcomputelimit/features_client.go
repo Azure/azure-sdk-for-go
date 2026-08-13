@@ -19,7 +19,7 @@ import (
 // FeaturesClient - Location-scoped operations for compute limit features.
 // Don't use this type directly, use NewFeaturesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-07-31
 type FeaturesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,7 +41,8 @@ func NewFeaturesClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// BeginDisable - Disables a compute limit feature for the subscription at the specified location.
+// BeginDisable - Disables a compute limit feature for the subscription at the specified location. Requires the Contributor
+// role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The name of the Azure region.
 //   - featureName - The name of the Feature
@@ -63,7 +64,7 @@ func (client *FeaturesClient) BeginDisable(ctx context.Context, location string,
 	}
 }
 
-// Disable - Disables a compute limit feature for the subscription at the specified location.
+// Disable - Disables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FeaturesClient) disable(ctx context.Context, location string, featureName string, options *FeaturesClientBeginDisableOptions) (*http.Response, error) {
 	var err error
@@ -106,13 +107,14 @@ func (client *FeaturesClient) disableCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginEnable - Enables a compute limit feature for the subscription at the specified location.
+// BeginEnable - Enables a compute limit feature for the subscription at the specified location. Requires the Contributor
+// role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The name of the Azure region.
 //   - featureName - The name of the Feature
@@ -134,7 +136,7 @@ func (client *FeaturesClient) BeginEnable(ctx context.Context, location string, 
 	}
 }
 
-// Enable - Enables a compute limit feature for the subscription at the specified location.
+// Enable - Enables a compute limit feature for the subscription at the specified location. Requires the Contributor role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FeaturesClient) enable(ctx context.Context, location string, featureName string, options *FeaturesClientBeginEnableOptions) (*http.Response, error) {
 	var err error
@@ -177,7 +179,7 @@ func (client *FeaturesClient) enableCreateRequest(ctx context.Context, location 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -237,7 +239,7 @@ func (client *FeaturesClient) getCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -295,7 +297,7 @@ func (client *FeaturesClient) listBySubscriptionLocationResourceCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

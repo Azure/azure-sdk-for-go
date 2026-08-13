@@ -18,6 +18,8 @@ import (
 
 // MetricsContainersClient contains the methods for the MetricsContainers group.
 // Don't use this type directly, use NewMetricsContainersClient() instead.
+//
+// Generated from API version 2025-10-03
 type MetricsContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewMetricsContainersClient(subscriptionID string, credential azcore.TokenCr
 
 // CreateOrUpdate - Creates or updates metrics container settings for a monitoring account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - metricsContainerName - The name of the MetricsContainer
@@ -95,8 +95,8 @@ func (client *MetricsContainersClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -116,8 +116,6 @@ func (client *MetricsContainersClient) createOrUpdateHandleResponse(resp *http.R
 
 // Get - Gets metrics container settings for a monitoring account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - metricsContainerName - The name of the MetricsContainer
@@ -168,8 +166,8 @@ func (client *MetricsContainersClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -184,8 +182,6 @@ func (client *MetricsContainersClient) getHandleResponse(resp *http.Response) (M
 }
 
 // NewListByAzureMonitorWorkspacePager - Lists metrics containers for a monitoring account.
-//
-// Generated from API version 2025-10-03
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - azureMonitorWorkspaceName - The name of the Azure Monitor Workspace. The name is case insensitive
 //   - options - MetricsContainersClientListByAzureMonitorWorkspaceOptions contains the optional parameters for the MetricsContainersClient.NewListByAzureMonitorWorkspacePager
@@ -233,8 +229,8 @@ func (client *MetricsContainersClient) listByAzureMonitorWorkspaceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-03")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251003)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

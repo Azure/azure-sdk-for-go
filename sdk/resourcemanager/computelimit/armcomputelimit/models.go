@@ -375,6 +375,33 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TrustedHostSubscription - A host subscription that a guest subscription trusts for sharing compute limits.
+// A guest subscription can trust multiple host subscriptions; establishing trust does
+// not by itself associate the guest with a host. Guest-to-host association happens at
+// check-in time, where a subscription can be a guest of at most one host per region.
+type TrustedHostSubscription struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TrustedHostSubscriptionListResult - The response of a TrustedHostSubscription list operation.
+type TrustedHostSubscriptionListResult struct {
+	// REQUIRED; The TrustedHostSubscription items on this page
+	Value []*TrustedHostSubscription
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // VMFamily - VM family resource representing a virtual machine family and its category.
 type VMFamily struct {
 	// The resource-specific properties for this resource.

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/deleteManagedNetworkV2.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/deleteManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleManagedNetworkSettingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/getManagedNetworkV2.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/getManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleManagedNetworkSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/listManagedNetworkV2.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/listManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleManagedNetworkSettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/patchManagedNetworkV2.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/patchManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_BeginPatch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleManagedNetworkSettingsClient_BeginPatch() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/createOrUpdateManagedNetworkV2.json
 func ExampleManagedNetworkSettingsClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

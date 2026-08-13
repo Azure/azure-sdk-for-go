@@ -29,7 +29,7 @@ func ExampleMigrationClient_BeginCancel() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -52,7 +52,7 @@ func ExampleMigrationClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.MigrationClientGetResponse{
-	// 	Migration: &armredisenterprise.Migration{
+	// 	Migration: armredisenterprise.Migration{
 	// 		Name: to.Ptr("cache1/default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
@@ -134,6 +134,7 @@ func ExampleMigrationClient_BeginStart() {
 			SkipDataMigration: to.Ptr(true),
 			SourceResourceID:  to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
 			SourceType:        to.Ptr(armredisenterprise.SourceTypeAzureCacheForRedis),
+			ForceMigrate:      to.Ptr(true),
 			SwitchDNS:         to.Ptr(true),
 		},
 	}, nil)
@@ -142,13 +143,13 @@ func ExampleMigrationClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredisenterprise.MigrationClientStartResponse{
-	// 	Migration: &armredisenterprise.Migration{
+	// 	Migration: armredisenterprise.Migration{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),

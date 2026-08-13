@@ -54,6 +54,7 @@ func ExampleAlertsClient_Dismiss_patchResourceGroupAlerts() {
 	// 			Status: to.Ptr(armcostmanagement.AlertStatusDismissed),
 	// 			StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 			Details: &armcostmanagement.AlertPropertiesDetails{
+	// 				Amount: to.Ptr[float64](200000),
 	// 				ContactEmails: []*string{
 	// 					to.Ptr("1234@contoso.com"),
 	// 				},
@@ -61,6 +62,7 @@ func ExampleAlertsClient_Dismiss_patchResourceGroupAlerts() {
 	// 				},
 	// 				ContactRoles: []*string{
 	// 				},
+	// 				CurrentSpend: to.Ptr[float64](161000.12),
 	// 				MeterFilter: []any{
 	// 				},
 	// 				Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -71,6 +73,7 @@ func ExampleAlertsClient_Dismiss_patchResourceGroupAlerts() {
 	// 				},
 	// 				TagFilter: map[string]any{
 	// 				},
+	// 				Threshold: to.Ptr[float64](0.8),
 	// 				TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 				TriggeredBy: to.Ptr("22222222-2222-2222-2222-222222222222_1_01"),
 	// 				Unit: to.Ptr("USD"),
@@ -122,6 +125,7 @@ func ExampleAlertsClient_Dismiss_patchSubscriptionAlerts() {
 	// 			Status: to.Ptr(armcostmanagement.AlertStatusDismissed),
 	// 			StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 			Details: &armcostmanagement.AlertPropertiesDetails{
+	// 				Amount: to.Ptr[float64](200000),
 	// 				ContactEmails: []*string{
 	// 					to.Ptr("1234@contoso.com"),
 	// 				},
@@ -129,6 +133,7 @@ func ExampleAlertsClient_Dismiss_patchSubscriptionAlerts() {
 	// 				},
 	// 				ContactRoles: []*string{
 	// 				},
+	// 				CurrentSpend: to.Ptr[float64](161000.12),
 	// 				MeterFilter: []any{
 	// 				},
 	// 				Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -139,6 +144,7 @@ func ExampleAlertsClient_Dismiss_patchSubscriptionAlerts() {
 	// 				},
 	// 				TagFilter: map[string]any{
 	// 				},
+	// 				Threshold: to.Ptr[float64](0.8),
 	// 				TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 				TriggeredBy: to.Ptr("22222222-2222-2222-2222-222222222222_1_01"),
 	// 				Unit: to.Ptr("USD"),
@@ -186,6 +192,7 @@ func ExampleAlertsClient_Get_singleResourceGroupAlerts() {
 	// 			Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 			StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 			Details: &armcostmanagement.AlertPropertiesDetails{
+	// 				Amount: to.Ptr[float64](200000),
 	// 				ContactEmails: []*string{
 	// 					to.Ptr("1234@contoso.com"),
 	// 				},
@@ -193,6 +200,7 @@ func ExampleAlertsClient_Get_singleResourceGroupAlerts() {
 	// 				},
 	// 				ContactRoles: []*string{
 	// 				},
+	// 				CurrentSpend: to.Ptr[float64](161000.12),
 	// 				MeterFilter: []any{
 	// 				},
 	// 				Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -203,6 +211,7 @@ func ExampleAlertsClient_Get_singleResourceGroupAlerts() {
 	// 				},
 	// 				TagFilter: map[string]any{
 	// 				},
+	// 				Threshold: to.Ptr[float64](0.8),
 	// 				TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 				TriggeredBy: to.Ptr("22222222-2222-2222-2222-222222222222_1_01"),
 	// 				Unit: to.Ptr("USD"),
@@ -250,6 +259,7 @@ func ExampleAlertsClient_Get_singleSubscriptionAlerts() {
 	// 			Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 			StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 			Details: &armcostmanagement.AlertPropertiesDetails{
+	// 				Amount: to.Ptr[float64](200000),
 	// 				ContactEmails: []*string{
 	// 					to.Ptr("1234@contoso.com"),
 	// 				},
@@ -257,6 +267,7 @@ func ExampleAlertsClient_Get_singleSubscriptionAlerts() {
 	// 				},
 	// 				ContactRoles: []*string{
 	// 				},
+	// 				CurrentSpend: to.Ptr[float64](161000.12),
 	// 				MeterFilter: []any{
 	// 				},
 	// 				Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -267,6 +278,7 @@ func ExampleAlertsClient_Get_singleSubscriptionAlerts() {
 	// 				},
 	// 				TagFilter: map[string]any{
 	// 				},
+	// 				Threshold: to.Ptr[float64](0.8),
 	// 				TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 				TriggeredBy: to.Ptr("22222222-2222-2222-2222-222222222222_1_01"),
 	// 				Unit: to.Ptr("USD"),
@@ -316,6 +328,7 @@ func ExampleAlertsClient_List_billingAccountAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -323,6 +336,7 @@ func ExampleAlertsClient_List_billingAccountAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -333,6 +347,7 @@ func ExampleAlertsClient_List_billingAccountAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -358,6 +373,7 @@ func ExampleAlertsClient_List_billingAccountAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -365,6 +381,7 @@ func ExampleAlertsClient_List_billingAccountAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -375,6 +392,7 @@ func ExampleAlertsClient_List_billingAccountAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -426,6 +444,7 @@ func ExampleAlertsClient_List_billingProfileAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -433,6 +452,7 @@ func ExampleAlertsClient_List_billingProfileAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -443,6 +463,7 @@ func ExampleAlertsClient_List_billingProfileAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -468,6 +489,7 @@ func ExampleAlertsClient_List_billingProfileAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -475,6 +497,7 @@ func ExampleAlertsClient_List_billingProfileAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -485,6 +508,7 @@ func ExampleAlertsClient_List_billingProfileAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -536,6 +560,7 @@ func ExampleAlertsClient_List_departmentAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -543,6 +568,7 @@ func ExampleAlertsClient_List_departmentAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -553,6 +579,7 @@ func ExampleAlertsClient_List_departmentAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -578,6 +605,7 @@ func ExampleAlertsClient_List_departmentAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -585,6 +613,7 @@ func ExampleAlertsClient_List_departmentAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -595,6 +624,7 @@ func ExampleAlertsClient_List_departmentAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -646,6 +676,7 @@ func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -653,6 +684,7 @@ func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -663,6 +695,7 @@ func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -688,6 +721,7 @@ func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -695,6 +729,7 @@ func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -705,6 +740,7 @@ func ExampleAlertsClient_List_enrollmentAccountAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -756,6 +792,7 @@ func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -763,6 +800,7 @@ func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -773,6 +811,7 @@ func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -798,6 +837,7 @@ func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -805,6 +845,7 @@ func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -815,6 +856,7 @@ func ExampleAlertsClient_List_invoiceSectionAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -866,6 +908,7 @@ func ExampleAlertsClient_List_resourceGroupAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -873,6 +916,7 @@ func ExampleAlertsClient_List_resourceGroupAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -883,6 +927,7 @@ func ExampleAlertsClient_List_resourceGroupAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -908,6 +953,7 @@ func ExampleAlertsClient_List_resourceGroupAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -915,6 +961,7 @@ func ExampleAlertsClient_List_resourceGroupAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -925,6 +972,7 @@ func ExampleAlertsClient_List_resourceGroupAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -976,6 +1024,7 @@ func ExampleAlertsClient_List_subscriptionAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -983,6 +1032,7 @@ func ExampleAlertsClient_List_subscriptionAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -993,6 +1043,7 @@ func ExampleAlertsClient_List_subscriptionAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -1018,6 +1069,7 @@ func ExampleAlertsClient_List_subscriptionAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -1025,6 +1077,7 @@ func ExampleAlertsClient_List_subscriptionAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -1035,6 +1088,7 @@ func ExampleAlertsClient_List_subscriptionAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -1086,6 +1140,7 @@ func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -1093,6 +1148,7 @@ func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -1103,6 +1159,7 @@ func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -1128,6 +1185,7 @@ func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -1135,6 +1193,7 @@ func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -1145,6 +1204,7 @@ func ExampleAlertsClient_ListExternal_externalBillingAccountAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -1196,6 +1256,7 @@ func ExampleAlertsClient_ListExternal_externalSubscriptionAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -1203,6 +1264,7 @@ func ExampleAlertsClient_ListExternal_externalSubscriptionAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](161000.12),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -1213,6 +1275,7 @@ func ExampleAlertsClient_ListExternal_externalSubscriptionAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("00000000-0000-0000-0000-000000000000_1_01"),
 	// 						Unit: to.Ptr("USD"),
@@ -1238,6 +1301,7 @@ func ExampleAlertsClient_ListExternal_externalSubscriptionAlerts() {
 	// 					Status: to.Ptr(armcostmanagement.AlertStatusActive),
 	// 					StatusModificationTime: to.Ptr("0001-01-01T00:00:00"),
 	// 					Details: &armcostmanagement.AlertPropertiesDetails{
+	// 						Amount: to.Ptr[float64](200000),
 	// 						ContactEmails: []*string{
 	// 							to.Ptr("1234@contoso.com"),
 	// 						},
@@ -1245,6 +1309,7 @@ func ExampleAlertsClient_ListExternal_externalSubscriptionAlerts() {
 	// 						},
 	// 						ContactRoles: []*string{
 	// 						},
+	// 						CurrentSpend: to.Ptr[float64](171000.32),
 	// 						MeterFilter: []any{
 	// 						},
 	// 						Operator: to.Ptr(armcostmanagement.AlertOperatorGreaterThan),
@@ -1255,6 +1320,7 @@ func ExampleAlertsClient_ListExternal_externalSubscriptionAlerts() {
 	// 						},
 	// 						TagFilter: map[string]any{
 	// 						},
+	// 						Threshold: to.Ptr[float64](0.8),
 	// 						TimeGrainType: to.Ptr(armcostmanagement.AlertTimeGrainTypeQuarterly),
 	// 						TriggeredBy: to.Ptr("11111111-1111-1111-111111111111_1_01"),
 	// 						Unit: to.Ptr("USD"),

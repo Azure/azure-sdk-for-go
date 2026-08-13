@@ -35,7 +35,7 @@ func ExampleClustersClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCheckNameAvailabilityResponse{
-	// 	NameAvailability: &armpostgresqlhsc.NameAvailability{
+	// 	NameAvailability: armpostgresqlhsc.NameAvailability{
 	// 		Name: to.Ptr("name1"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		Message: to.Ptr(""),
@@ -79,13 +79,13 @@ func ExampleClustersClient_BeginCreate_createANewSingleNodeBurstable1VCoreCluste
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster-burstablev1"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-burstablev1"),
@@ -181,13 +181,13 @@ func ExampleClustersClient_BeginCreate_createANewSingleNodeBurstable2VCoresClust
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster-burstablev2"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-burstablev2"),
@@ -284,13 +284,13 @@ func ExampleClustersClient_BeginCreate_createANewClusterWithCustomDatabaseName()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster-custom-db-name"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-custom-db-name"),
@@ -388,13 +388,13 @@ func ExampleClustersClient_BeginCreate_createANewMultiNodeCluster() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster-multinode"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-multinode"),
@@ -490,13 +490,13 @@ func ExampleClustersClient_BeginCreate_createANewClusterAsAPointInTimeRestore() 
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
@@ -582,13 +582,13 @@ func ExampleClustersClient_BeginCreate_createANewClusterAsAReadReplica() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
@@ -686,13 +686,13 @@ func ExampleClustersClient_BeginCreate_createANewSingleNodeCluster() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster-singlenode"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-singlenode"),
@@ -802,13 +802,13 @@ func ExampleClustersClient_BeginCreate_createANewClusterWithAzureActiveDirectory
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster-multinode"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-multinode"),
@@ -942,13 +942,13 @@ func ExampleClustersClient_BeginCreate_createANewClusterWithCustomerManagedKeyCm
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientCreateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster-multinode"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster-multinode"),
@@ -1052,7 +1052,7 @@ func ExampleClustersClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1080,7 +1080,7 @@ func ExampleClustersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientGetResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster1"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster1"),
@@ -1505,7 +1505,7 @@ func ExampleClustersClient_BeginPromoteReadReplica() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1526,7 +1526,7 @@ func ExampleClustersClient_BeginRestart() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -1547,7 +1547,7 @@ func ExampleClustersClient_BeginStart() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1573,7 +1573,7 @@ func ExampleClustersClient_BeginStop() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -1603,13 +1603,13 @@ func ExampleClustersClient_BeginUpdate_scaleOutAddNewWorkerNodes() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientUpdateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
@@ -1696,13 +1696,13 @@ func ExampleClustersClient_BeginUpdate_scaleComputeUpOrDown() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientUpdateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
@@ -1794,13 +1794,13 @@ func ExampleClustersClient_BeginUpdate_scaleUpStorage() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientUpdateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),
@@ -1895,13 +1895,13 @@ func ExampleClustersClient_BeginUpdate_updateMultipleConfigurationSettingsOfTheC
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientUpdateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster1"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster1"),
@@ -2009,13 +2009,13 @@ func ExampleClustersClient_BeginUpdate_updateOrDefineMaintenanceWindow() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ClustersClientUpdateResponse{
-	// 	Cluster: &armpostgresqlhsc.Cluster{
+	// 	Cluster: armpostgresqlhsc.Cluster{
 	// 		Name: to.Ptr("testcluster"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster"),

@@ -101,11 +101,11 @@ func createChangeFeedTestClient(t *testing.T, srv *mock.Server, policies []polic
 	return client
 }
 
-// TestGetChangeFeed_410Gone_TriggersCacheRefreshAndRetry — Phase 1's headline win:
+// TestReadChangeFeed_410Gone_TriggersCacheRefreshAndRetry — Phase 1's headline win:
 // when the gateway returns 410/Gone with a PK-range substatus, the change-feed
 // request must (a) refresh the PK-range cache, (b) retry on the freshly-resolved
 // range, (c) succeed transparently to the caller without losing the response.
-func TestGetChangeFeed_410Gone_TriggersCacheRefreshAndRetry(t *testing.T) {
+func TestReadChangeFeed_410Gone_TriggersCacheRefreshAndRetry(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -140,7 +140,7 @@ func TestGetChangeFeed_410Gone_TriggersCacheRefreshAndRetry(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	resp, err := container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	resp, err := container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		FeedRange: &FeedRange{MinInclusive: "00", MaxExclusive: "FF"},
 	})
 	require.NoError(t, err)
@@ -149,10 +149,10 @@ func TestGetChangeFeed_410Gone_TriggersCacheRefreshAndRetry(t *testing.T) {
 	require.NotEmpty(t, resp.ContinuationToken, "response must carry a continuation token after a successful retry")
 }
 
-// TestGetChangeFeed_RetryCapAt3_ReturnsLastErrorOnRepeated410 — when the cache
+// TestReadChangeFeed_RetryCapAt3_ReturnsLastErrorOnRepeated410 — when the cache
 // keeps returning the same range and 410s keep coming, the loop must surface the
 // final 410 to the caller after exactly maxPKRangeGoneRetries attempts.
-func TestGetChangeFeed_RetryCapAt3_ReturnsLastErrorOnRepeated410(t *testing.T) {
+func TestReadChangeFeed_RetryCapAt3_ReturnsLastErrorOnRepeated410(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -185,7 +185,7 @@ func TestGetChangeFeed_RetryCapAt3_ReturnsLastErrorOnRepeated410(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	_, err := container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	_, err := container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		FeedRange: &FeedRange{MinInclusive: "00", MaxExclusive: "FF"},
 	})
 	require.Error(t, err)
@@ -196,11 +196,11 @@ func TestGetChangeFeed_RetryCapAt3_ReturnsLastErrorOnRepeated410(t *testing.T) {
 		"expected initial attempt + maxPKRangeGoneRetries retries")
 }
 
-// TestGetChangeFeed_TokenResourceIDMismatch_Rejected — the cross-container token
+// TestReadChangeFeed_TokenResourceIDMismatch_Rejected — the cross-container token
 // reuse guard. A token whose ResourceID doesn't match the current container's
 // must be rejected loudly; otherwise the EPK boundaries in the token would be
 // misinterpreted against the wrong routing map and silent wrong data could leak.
-func TestGetChangeFeed_TokenResourceIDMismatch_Rejected(t *testing.T) {
+func TestReadChangeFeed_TokenResourceIDMismatch_Rejected(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -221,7 +221,7 @@ func TestGetChangeFeed_TokenResourceIDMismatch_Rejected(t *testing.T) {
 	require.NoError(t, err)
 	tokenStr := string(tokenJSON)
 
-	_, err = container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	_, err = container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		Continuation: &tokenStr,
 	})
 	require.Error(t, err)
@@ -231,13 +231,13 @@ func TestGetChangeFeed_TokenResourceIDMismatch_Rejected(t *testing.T) {
 	require.Contains(t, err.Error(), "testRID")
 }
 
-// TestGetChangeFeed_NoOverlapAfterRefresh_ReturnsErrFeedRangeUnresolved — when
+// TestReadChangeFeed_NoOverlapAfterRefresh_ReturnsErrFeedRangeUnresolved — when
 // the customer's FeedRange genuinely doesn't overlap any current physical range
 // (e.g., wrong container, malformed range, container recreated under same name
 // with different boundaries), even a forced cache refresh can't help. The error
 // MUST be wrapped as ErrFeedRangeUnresolved so callers can detect-and-recover
 // rather than seeing a generic opaque failure.
-func TestGetChangeFeed_NoOverlapAfterRefresh_ReturnsErrFeedRangeUnresolved(t *testing.T) {
+func TestReadChangeFeed_NoOverlapAfterRefresh_ReturnsErrFeedRangeUnresolved(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -268,7 +268,7 @@ func TestGetChangeFeed_NoOverlapAfterRefresh_ReturnsErrFeedRangeUnresolved(t *te
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	_, err := container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	_, err := container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		FeedRange: &FeedRange{MinInclusive: "GG", MaxExclusive: "HH"},
 	})
 	require.Error(t, err)
@@ -276,12 +276,12 @@ func TestGetChangeFeed_NoOverlapAfterRefresh_ReturnsErrFeedRangeUnresolved(t *te
 		"unresolvable FeedRange MUST be wrapped as ErrFeedRangeUnresolved; got %T: %v", err, err)
 }
 
-// TestGetChangeFeed_SplitExpansion_RoutesToFirstChild — when the customer's
+// TestReadChangeFeed_SplitExpansion_RoutesToFirstChild — when the customer's
 // FeedRange overlaps multiple physical ranges (the post-split case), the loop
 // must replace the head with one queue entry per child and route the actual
 // HTTP call against the first child. The returned token must encode the full
 // child queue so the next call drains the remaining children.
-func TestGetChangeFeed_SplitExpansion_RoutesToFirstChild(t *testing.T) {
+func TestReadChangeFeed_SplitExpansion_RoutesToFirstChild(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -299,7 +299,7 @@ func TestGetChangeFeed_SplitExpansion_RoutesToFirstChild(t *testing.T) {
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	resp, err := container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	resp, err := container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		FeedRange: &FeedRange{MinInclusive: "00", MaxExclusive: "FF"},
 	})
 	require.NoError(t, err)
@@ -320,10 +320,10 @@ func TestGetChangeFeed_SplitExpansion_RoutesToFirstChild(t *testing.T) {
 	require.Equal(t, azcore.ETag("\"etag-1a\""), *token.Continuation[1].ContinuationToken)
 }
 
-// TestGetChangeFeed_MultiRangeContinuation_RoundTrips — a token issued by an
+// TestReadChangeFeed_MultiRangeContinuation_RoundTrips — a token issued by an
 // earlier call (multi-element queue) drives the next call against the queue's
 // head, not against options.FeedRange. This is the resume-after-split pattern.
-func TestGetChangeFeed_MultiRangeContinuation_RoundTrips(t *testing.T) {
+func TestReadChangeFeed_MultiRangeContinuation_RoundTrips(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -355,7 +355,7 @@ func TestGetChangeFeed_MultiRangeContinuation_RoundTrips(t *testing.T) {
 	require.NoError(t, err)
 	tokenStr := string(tokenJSON)
 
-	resp, err := container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	resp, err := container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		Continuation: &tokenStr,
 	})
 	require.NoError(t, err)
@@ -372,10 +372,10 @@ func TestGetChangeFeed_MultiRangeContinuation_RoundTrips(t *testing.T) {
 		"tail entry must carry the freshly-issued ETag from this call's response")
 }
 
-// TestGetChangeFeed_SplitDuringDrain_QueriesEveryNewlyInsertedChild — regression
+// TestReadChangeFeed_SplitDuringDrain_QueriesEveryNewlyInsertedChild — regression
 // guard for a subtle accounting bug: when one of the queued sub-ranges splits
 // MID-drain (i.e., the cache learns about new children in the middle of a single
-// GetChangeFeed call's drain rotation), the rotation budget must be expanded to
+// ReadChangeFeed call's drain rotation), the rotation budget must be expanded to
 // account for the inserted siblings. Otherwise the loop bails early and silently
 // skips queryable ranges this call.
 //
@@ -391,7 +391,7 @@ func TestGetChangeFeed_MultiRangeContinuation_RoundTrips(t *testing.T) {
 // originalQueueLen==2) and never query B2 in this call. The test therefore
 // asserts that THREE distinct CF reads happened (one for A, one for B1,
 // one for B2), not two.
-func TestGetChangeFeed_SplitDuringDrain_QueriesEveryNewlyInsertedChild(t *testing.T) {
+func TestReadChangeFeed_SplitDuringDrain_QueriesEveryNewlyInsertedChild(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -443,7 +443,7 @@ func TestGetChangeFeed_SplitDuringDrain_QueriesEveryNewlyInsertedChild(t *testin
 	require.NoError(t, err)
 	tokenStr := string(tokenJSON)
 
-	_, err = container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	_, err = container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		Continuation: &tokenStr,
 	})
 	require.NoError(t, err)
@@ -487,10 +487,10 @@ func TestClampChildrenToParent(t *testing.T) {
 	require.Equal(t, "60", clamped[1].MaxExclusive, "child Max must be lowered to parent.Max")
 }
 
-// TestGetChangeFeed_ContextCancelled_HonoredBetweenSubRequests verifies that
+// TestReadChangeFeed_ContextCancelled_HonoredBetweenSubRequests verifies that
 // a context cancelled mid-drain causes the loop to exit immediately on the
 // next iteration boundary rather than continuing to issue requests.
-func TestGetChangeFeed_ContextCancelled_HonoredBetweenSubRequests(t *testing.T) {
+func TestReadChangeFeed_ContextCancelled_HonoredBetweenSubRequests(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -522,7 +522,7 @@ func TestGetChangeFeed_ContextCancelled_HonoredBetweenSubRequests(t *testing.T) 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel() // cancel immediately
 
-	_, err := container.GetChangeFeed(ctx, &ChangeFeedOptions{
+	_, err := container.ReadChangeFeed(ctx, &ChangeFeedOptions{
 		FeedRange: &FeedRange{MinInclusive: "", MaxExclusive: "FF"},
 	})
 	require.Error(t, err)
@@ -530,11 +530,11 @@ func TestGetChangeFeed_ContextCancelled_HonoredBetweenSubRequests(t *testing.T) 
 	require.Equal(t, int32(0), requestCount.Load(), "no change-feed requests should issue once context is cancelled")
 }
 
-// TestGetChangeFeed_410BudgetExhaustedMidDrain_SurfacesPartialState verifies
+// TestReadChangeFeed_410BudgetExhaustedMidDrain_SurfacesPartialState verifies
 // the partial-state contract on 410-budget exhaustion: heads that successfully
 // 304'd before the failure are kept rotated in the returned token so the
 // caller can resume from the failed head instead of re-querying drained ones.
-func TestGetChangeFeed_410BudgetExhaustedMidDrain_SurfacesPartialState(t *testing.T) {
+func TestReadChangeFeed_410BudgetExhaustedMidDrain_SurfacesPartialState(t *testing.T) {
 	srv, closeSrv := mock.NewTLSServer()
 	defer closeSrv()
 
@@ -604,7 +604,7 @@ func TestGetChangeFeed_410BudgetExhaustedMidDrain_SurfacesPartialState(t *testin
 	database, _ := newDatabase("databaseId", client)
 	container, _ := newContainer("containerId", database)
 
-	resp, err := container.GetChangeFeed(context.Background(), &ChangeFeedOptions{
+	resp, err := container.ReadChangeFeed(context.Background(), &ChangeFeedOptions{
 		FeedRange: &FeedRange{MinInclusive: "", MaxExclusive: "FF"},
 	})
 	require.Error(t, err, "persistent 410 must surface to caller")

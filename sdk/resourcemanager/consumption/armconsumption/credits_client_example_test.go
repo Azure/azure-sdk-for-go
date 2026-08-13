@@ -38,22 +38,27 @@ func ExampleCreditsClient_Get() {
 	// 			BalanceSummary: &armconsumption.CreditBalanceSummary{
 	// 				CurrentBalance: &armconsumption.Amount{
 	// 					Currency: to.Ptr("USD"),
+	// 					Value: to.Ptr[float64](100),
 	// 				},
 	// 				EstimatedBalance: &armconsumption.Amount{
 	// 					Currency: to.Ptr("USD"),
+	// 					Value: to.Ptr[float64](600),
 	// 				},
 	// 			},
 	// 			BillingCurrency: to.Ptr("USD"),
 	// 			CreditCurrency: to.Ptr("USD"),
 	// 			ExpiredCredit: &armconsumption.Amount{
 	// 				Currency: to.Ptr("USD"),
+	// 				Value: to.Ptr[float64](0),
 	// 			},
 	// 			IsEstimatedBalance: to.Ptr(false),
 	// 			PendingCreditAdjustments: &armconsumption.Amount{
 	// 				Currency: to.Ptr("USD"),
+	// 				Value: to.Ptr[float64](500),
 	// 			},
 	// 			PendingEligibleCharges: &armconsumption.Amount{
 	// 				Currency: to.Ptr("USD"),
+	// 				Value: to.Ptr[float64](0),
 	// 			},
 	// 			Reseller: &armconsumption.Reseller{
 	// 				ResellerDescription: to.Ptr("Reseller information."),

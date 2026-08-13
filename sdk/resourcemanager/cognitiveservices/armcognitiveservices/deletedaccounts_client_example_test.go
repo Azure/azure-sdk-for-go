@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/GetDeletedAccount.json
+// Generated from example definition: 2026-05-15-preview/GetDeletedAccount.json
 func ExampleDeletedAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleDeletedAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListDeletedAccountsBySubscription.json
+// Generated from example definition: 2026-05-15-preview/ListDeletedAccountsBySubscription.json
 func ExampleDeletedAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleDeletedAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/PurgeDeletedAccount.json
+// Generated from example definition: 2026-05-15-preview/PurgeDeletedAccount.json
 func ExampleDeletedAccountsClient_BeginPurge() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

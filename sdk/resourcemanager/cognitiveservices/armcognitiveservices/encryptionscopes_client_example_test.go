@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutEncryptionScope.json
+// Generated from example definition: 2026-05-15-preview/PutEncryptionScope.json
 func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleEncryptionScopesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteEncryptionScope.json
+// Generated from example definition: 2026-05-15-preview/DeleteEncryptionScope.json
 func ExampleEncryptionScopesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleEncryptionScopesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetEncryptionScope.json
+// Generated from example definition: 2026-05-15-preview/GetEncryptionScope.json
 func ExampleEncryptionScopesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleEncryptionScopesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListEncryptionScopes.json
+// Generated from example definition: 2026-05-15-preview/ListEncryptionScopes.json
 func ExampleEncryptionScopesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

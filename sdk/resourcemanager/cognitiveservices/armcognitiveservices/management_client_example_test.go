@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CalculateModelCapacity.json
+// Generated from example definition: 2026-05-15-preview/CalculateModelCapacity.json
 func ExampleManagementClient_CalculateModelCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

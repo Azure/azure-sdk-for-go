@@ -20,7 +20,7 @@ import (
 // EntitiesClient contains the methods for the Entities group.
 // Don't use this type directly, use NewEntitiesClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-05-01-preview
 type EntitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,6 +40,79 @@ func NewEntitiesClient(subscriptionID string, credential azcore.TokenCredential,
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// AddDataAnnotation - Add a data annotation to an entity
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - entityName - Name of the entity. Must be unique within a health model.
+//   - body - The content of the action request
+//   - options - EntitiesClientAddDataAnnotationOptions contains the optional parameters for the EntitiesClient.AddDataAnnotation
+//     method.
+func (client *EntitiesClient) AddDataAnnotation(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body AddDataAnnotationRequest, options *EntitiesClientAddDataAnnotationOptions) (EntitiesClientAddDataAnnotationResponse, error) {
+	var err error
+	const operationName = "EntitiesClient.AddDataAnnotation"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.addDataAnnotationCreateRequest(ctx, resourceGroupName, healthModelName, entityName, body, options)
+	if err != nil {
+		return EntitiesClientAddDataAnnotationResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EntitiesClientAddDataAnnotationResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientAddDataAnnotationResponse{}, err
+	}
+	resp, err := client.addDataAnnotationHandleResponse(httpResp)
+	return resp, err
+}
+
+// addDataAnnotationCreateRequest creates the AddDataAnnotation request.
+func (client *EntitiesClient) addDataAnnotationCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body AddDataAnnotationRequest, _ *EntitiesClientAddDataAnnotationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/addDataAnnotation"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if healthModelName == "" {
+		return nil, errors.New("parameter healthModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+	if entityName == "" {
+		return nil, errors.New("parameter entityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{entityName}", url.PathEscape(entityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// addDataAnnotationHandleResponse handles the AddDataAnnotation response.
+func (client *EntitiesClient) addDataAnnotationHandleResponse(resp *http.Response) (EntitiesClientAddDataAnnotationResponse, error) {
+	result := EntitiesClientAddDataAnnotationResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DataAnnotation); err != nil {
+		return EntitiesClientAddDataAnnotationResponse{}, err
+	}
+	return result, nil
 }
 
 // BeginCreateOrUpdate - Create a Entity
@@ -114,7 +187,7 @@ func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -194,7 +267,7 @@ func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -251,7 +324,7 @@ func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,6 +335,79 @@ func (client *EntitiesClient) getHandleResponse(resp *http.Response) (EntitiesCl
 	result := EntitiesClientGetResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Entity); err != nil {
 		return EntitiesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDataAnnotations - Retrieve data annotations for an entity
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - entityName - Name of the entity. Must be unique within a health model.
+//   - body - The content of the action request
+//   - options - EntitiesClientGetDataAnnotationsOptions contains the optional parameters for the EntitiesClient.GetDataAnnotations
+//     method.
+func (client *EntitiesClient) GetDataAnnotations(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body GetDataAnnotationsRequest, options *EntitiesClientGetDataAnnotationsOptions) (EntitiesClientGetDataAnnotationsResponse, error) {
+	var err error
+	const operationName = "EntitiesClient.GetDataAnnotations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDataAnnotationsCreateRequest(ctx, resourceGroupName, healthModelName, entityName, body, options)
+	if err != nil {
+		return EntitiesClientGetDataAnnotationsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EntitiesClientGetDataAnnotationsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientGetDataAnnotationsResponse{}, err
+	}
+	resp, err := client.getDataAnnotationsHandleResponse(httpResp)
+	return resp, err
+}
+
+// getDataAnnotationsCreateRequest creates the GetDataAnnotations request.
+func (client *EntitiesClient) getDataAnnotationsCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body GetDataAnnotationsRequest, _ *EntitiesClientGetDataAnnotationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getDataAnnotations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if healthModelName == "" {
+		return nil, errors.New("parameter healthModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+	if entityName == "" {
+		return nil, errors.New("parameter entityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{entityName}", url.PathEscape(entityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// getDataAnnotationsHandleResponse handles the GetDataAnnotations response.
+func (client *EntitiesClient) getDataAnnotationsHandleResponse(resp *http.Response) (EntitiesClientGetDataAnnotationsResponse, error) {
+	result := EntitiesClientGetDataAnnotationsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GetDataAnnotationsResponse); err != nil {
+		return EntitiesClientGetDataAnnotationsResponse{}, err
 	}
 	return result, nil
 }
@@ -319,7 +465,7 @@ func (client *EntitiesClient) getHistoryCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -392,7 +538,7 @@ func (client *EntitiesClient) getSignalHistoryCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -407,6 +553,75 @@ func (client *EntitiesClient) getSignalHistoryHandleResponse(resp *http.Response
 	result := EntitiesClientGetSignalHistoryResponse{}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignalHistoryResponse); err != nil {
 		return EntitiesClientGetSignalHistoryResponse{}, err
+	}
+	return result, nil
+}
+
+// GetSignalRecommendations - Get recommended signal configurations for a given Entity (only applicable for Entities representing
+// Azure resources)
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - healthModelName - Name of health model resource
+//   - entityName - Name of the entity. Must be unique within a health model.
+//   - options - EntitiesClientGetSignalRecommendationsOptions contains the optional parameters for the EntitiesClient.GetSignalRecommendations
+//     method.
+func (client *EntitiesClient) GetSignalRecommendations(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, options *EntitiesClientGetSignalRecommendationsOptions) (EntitiesClientGetSignalRecommendationsResponse, error) {
+	var err error
+	const operationName = "EntitiesClient.GetSignalRecommendations"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getSignalRecommendationsCreateRequest(ctx, resourceGroupName, healthModelName, entityName, options)
+	if err != nil {
+		return EntitiesClientGetSignalRecommendationsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EntitiesClientGetSignalRecommendationsResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientGetSignalRecommendationsResponse{}, err
+	}
+	resp, err := client.getSignalRecommendationsHandleResponse(httpResp)
+	return resp, err
+}
+
+// getSignalRecommendationsCreateRequest creates the GetSignalRecommendations request.
+func (client *EntitiesClient) getSignalRecommendationsCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, _ *EntitiesClientGetSignalRecommendationsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalRecommendations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if healthModelName == "" {
+		return nil, errors.New("parameter healthModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+	if entityName == "" {
+		return nil, errors.New("parameter entityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{entityName}", url.PathEscape(entityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getSignalRecommendationsHandleResponse handles the GetSignalRecommendations response.
+func (client *EntitiesClient) getSignalRecommendationsHandleResponse(resp *http.Response) (EntitiesClientGetSignalRecommendationsResponse, error) {
+	result := EntitiesClientGetSignalRecommendationsResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GetSignalRecommendationsResponse); err != nil {
+		return EntitiesClientGetSignalRecommendationsResponse{}, err
 	}
 	return result, nil
 }
@@ -464,7 +679,7 @@ func (client *EntitiesClient) ingestHealthReportCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -521,7 +736,7 @@ func (client *EntitiesClient) listByHealthModelCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Timestamp != nil {
 		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
 	}

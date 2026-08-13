@@ -162,6 +162,12 @@ type MigrationClientStartResponse struct {
 	Migration
 }
 
+// MigrationsClientValidateResponse contains the response from method MigrationsClient.Validate.
+type MigrationsClientValidateResponse struct {
+	// Response for migration validation operation.
+	MigrationValidationResponse
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

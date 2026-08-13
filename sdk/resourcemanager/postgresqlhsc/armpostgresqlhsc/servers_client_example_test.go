@@ -30,7 +30,7 @@ func ExampleServersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpostgresqlhsc.ServersClientGetResponse{
-	// 	ClusterServer: &armpostgresqlhsc.ClusterServer{
+	// 	ClusterServer: armpostgresqlhsc.ClusterServer{
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/testcluster1/servers/testcluster1-c"),
 	// 		Name: to.Ptr("testcluster1-c"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/serverGroupsv2/servers"),

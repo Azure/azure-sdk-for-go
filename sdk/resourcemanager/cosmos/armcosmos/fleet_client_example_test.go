@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetCreate.json
+// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetCreate.json
 func ExampleFleetClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,23 +37,23 @@ func ExampleFleetClient_Create() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetClientCreateResponse{
-	// 	FleetResource: &armcosmos.FleetResource{
+	// 	FleetResource: armcosmos.FleetResource{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 	// 		Name: to.Ptr("fleet1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armcosmos.FleetResourceProperties{
-	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
-	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Dept": to.Ptr("Finance"),
 	// 			"Environment": to.Ptr("Production"),
+	// 		},
+	// 		Properties: &armcosmos.FleetResourceProperties{
+	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetDelete.json
+// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetDelete.json
 func ExampleFleetClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,11 +70,11 @@ func ExampleFleetClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetGet.json
+// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetGet.json
 func ExampleFleetClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,23 +93,23 @@ func ExampleFleetClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetClientGetResponse{
-	// 	FleetResource: &armcosmos.FleetResource{
+	// 	FleetResource: armcosmos.FleetResource{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 	// 		Name: to.Ptr("fleet1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armcosmos.FleetResourceProperties{
-	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
-	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Dept": to.Ptr("Finance"),
 	// 			"Environment": to.Ptr("Production"),
+	// 		},
+	// 		Properties: &armcosmos.FleetResourceProperties{
+	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetList.json
+// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetList.json
 func ExampleFleetClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,29 +135,29 @@ func ExampleFleetClient_NewListPager() {
 		// 	FleetListResult: armcosmos.FleetListResult{
 		// 		Value: []*armcosmos.FleetResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 		// 				Name: to.Ptr("fleet1"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/fleets"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armcosmos.FleetResourceProperties{
-		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
-		// 				},
 		// 				Tags: map[string]*string{
 		// 					"Dept": to.Ptr("Finance"),
 		// 					"Environment": to.Ptr("Production"),
 		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("fleet2"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/fleets"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg2/providers/Microsoft.DocumentDB/fleets/fleet2"),
-		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armcosmos.FleetResourceProperties{
 		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg2/providers/Microsoft.DocumentDB/fleets/fleet2"),
+		// 				Name: to.Ptr("fleet2"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/fleets"),
+		// 				Location: to.Ptr("East US"),
 		// 				Tags: map[string]*string{
 		// 					"Dept": to.Ptr("IT"),
 		// 					"Environment": to.Ptr("Development"),
+		// 				},
+		// 				Properties: &armcosmos.FleetResourceProperties{
+		// 					ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 		// 				},
 		// 			},
 		// 		},
@@ -166,7 +166,7 @@ func ExampleFleetClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetList_ListByResourceGroup.json
+// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetList_ListByResourceGroup.json
 func ExampleFleetClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleFleetClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01-preview/fleet/CosmosDBFleetUpdate.json
+// Generated from example definition: 2026-03-15/fleet/CosmosDBFleetUpdate.json
 func ExampleFleetClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,17 +244,17 @@ func ExampleFleetClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.FleetClientUpdateResponse{
-	// 	FleetResource: &armcosmos.FleetResource{
+	// 	FleetResource: armcosmos.FleetResource{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 	// 		Name: to.Ptr("fleet1"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/fleets"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/rg1/providers/Microsoft.DocumentDB/fleets/fleet1"),
 	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armcosmos.FleetResourceProperties{
-	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
-	// 		},
 	// 		Tags: map[string]*string{
 	// 			"Dept": to.Ptr("Finance"),
 	// 			"Environment": to.Ptr("Production"),
+	// 		},
+	// 		Properties: &armcosmos.FleetResourceProperties{
+	// 			ProvisioningState: to.Ptr(armcosmos.StatusSucceeded),
 	// 		},
 	// 	},
 	// }

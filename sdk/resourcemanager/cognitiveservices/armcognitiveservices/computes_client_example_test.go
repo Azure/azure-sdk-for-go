@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/PutCompute.json
+// Generated from example definition: 2026-05-15-preview/PutCompute.json
 func ExampleComputesClient_BeginCreateOrUpdate_putCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleComputesClient_BeginCreateOrUpdate_putCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/PutContainerInstanceCompute.json
+// Generated from example definition: 2026-05-15-preview/PutContainerInstanceCompute.json
 func ExampleComputesClient_BeginCreateOrUpdate_putContainerInstanceCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleComputesClient_BeginCreateOrUpdate_putContainerInstanceCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/DeleteCompute.json
+// Generated from example definition: 2026-05-15-preview/DeleteCompute.json
 func ExampleComputesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleComputesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/GetCompute.json
+// Generated from example definition: 2026-05-15-preview/GetCompute.json
 func ExampleComputesClient_Get_getCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleComputesClient_Get_getCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/GetContainerInstanceCompute.json
+// Generated from example definition: 2026-05-15-preview/GetContainerInstanceCompute.json
 func ExampleComputesClient_Get_getContainerInstanceCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +325,7 @@ func ExampleComputesClient_Get_getContainerInstanceCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/ListComputes.json
+// Generated from example definition: 2026-05-15-preview/ListComputes.json
 func ExampleComputesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +385,7 @@ func ExampleComputesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/RestartContainerInstanceCompute.json
+// Generated from example definition: 2026-05-15-preview/RestartContainerInstanceCompute.json
 func ExampleComputesClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExampleComputesClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/StartContainerInstanceCompute.json
+// Generated from example definition: 2026-05-15-preview/StartContainerInstanceCompute.json
 func ExampleComputesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleComputesClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/StopContainerInstanceCompute.json
+// Generated from example definition: 2026-05-15-preview/StopContainerInstanceCompute.json
 func ExampleComputesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,7 +448,7 @@ func ExampleComputesClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/UpdateCompute.json
+// Generated from example definition: 2026-05-15-preview/UpdateCompute.json
 func ExampleComputesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

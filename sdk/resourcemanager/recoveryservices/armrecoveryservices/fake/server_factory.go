@@ -18,6 +18,9 @@ type ServerFactory struct {
 	// Server contains the fakes for client Client
 	Server Server
 
+	// DeletedVaultsServer contains the fakes for client DeletedVaultsClient
+	DeletedVaultsServer DeletedVaultsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -58,6 +61,7 @@ type ServerFactoryTransport struct {
 	srv                          *ServerFactory
 	trMu                         sync.Mutex
 	trServer                     *ServerTransport
+	trDeletedVaultsServer        *DeletedVaultsServerTransport
 	trOperationsServer           *OperationsServerTransport
 	trPrivateLinkResourcesServer *PrivateLinkResourcesServerTransport
 	trRegisteredIdentitiesServer *RegisteredIdentitiesServerTransport
@@ -84,6 +88,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "DeletedVaultsClient":
+		initServer(&s.trMu, &s.trDeletedVaultsServer, func() *DeletedVaultsServerTransport {
+			return NewDeletedVaultsServerTransport(&s.srv.DeletedVaultsServer)
+		})
+		resp, err = s.trDeletedVaultsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

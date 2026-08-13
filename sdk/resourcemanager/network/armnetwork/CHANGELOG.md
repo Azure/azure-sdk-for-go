@@ -1,6 +1,6 @@
 # Release History
 
-## 10.0.0-beta.1 (2026-06-10)
+## 10.0.0 (2026-06-29)
 ### Breaking Changes
 
 - Function `*IpamPoolsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, body IpamPoolUpdate, options *IpamPoolsClientUpdateOptions)`

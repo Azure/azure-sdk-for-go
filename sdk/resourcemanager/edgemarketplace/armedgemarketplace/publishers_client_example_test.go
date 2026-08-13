@@ -30,7 +30,7 @@ func ExamplePublishersClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgemarketplace.PublishersClientGetResponse{
-	// 	Publisher: &armedgemarketplace.Publisher{
+	// 	Publisher: armedgemarketplace.Publisher{
 	// 		ID: to.Ptr("/subscriptions/4bed37fd-19a1-4d31-8b44-40267555bec5/resourceGroups/edgemarketplace-rg/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/edgemarketplace-demo/providers/Microsoft.EdgeMarketplace/publishers/canonical"),
 	// 		Name: to.Ptr("canonical"),
 	// 		Type: to.Ptr("Microsoft.EdgeMarketplace/publishers"),

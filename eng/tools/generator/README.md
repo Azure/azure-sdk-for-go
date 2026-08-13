@@ -44,6 +44,7 @@ generator build <folder-path>
 
 - `-v, --verbose`: Enable verbose output showing build details
 - `-o, --output`: Output format, either "text" or "json" (default: "text")
+- `--filter-test`: Exclude hand-written test files (those without the generated-code marker) from build and vet
 
 **What it does:**
 
@@ -62,6 +63,9 @@ generator build /path/to/package --verbose
 
 # Build with JSON output
 generator build /path/to/package --output json
+
+# Build excluding hand-written test files
+generator build /path/to/package --filter-test
 ```
 
 #### The `changelog` command

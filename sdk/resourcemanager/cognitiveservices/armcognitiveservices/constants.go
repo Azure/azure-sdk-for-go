@@ -5,7 +5,7 @@
 package armcognitiveservices
 
 const (
-	version20260315Preview string = "2026-03-15-preview"
+	version20260515Preview string = "2026-05-15-preview"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -1425,6 +1425,125 @@ func PossibleRaiActionTypeValues() []RaiActionType {
 		RaiActionTypeHITL,
 		RaiActionTypeNone,
 		RaiActionTypeRETRY,
+	}
+}
+
+// RaiEgressDefaultAction - The default action when no user-defined egress rules match.
+type RaiEgressDefaultAction string
+
+const (
+	// RaiEgressDefaultActionAllow - Allow traffic by default when no rules match.
+	RaiEgressDefaultActionAllow RaiEgressDefaultAction = "Allow"
+	// RaiEgressDefaultActionDeny - Deny traffic by default when no rules match.
+	RaiEgressDefaultActionDeny RaiEgressDefaultAction = "Deny"
+)
+
+// PossibleRaiEgressDefaultActionValues returns the possible values for the RaiEgressDefaultAction const type.
+func PossibleRaiEgressDefaultActionValues() []RaiEgressDefaultAction {
+	return []RaiEgressDefaultAction{
+		RaiEgressDefaultActionAllow,
+		RaiEgressDefaultActionDeny,
+	}
+}
+
+// RaiEgressHeaderOperation - The operation to apply to a header in a Transform or Rewrite action.
+type RaiEgressHeaderOperation string
+
+const (
+	// RaiEgressHeaderOperationInsert - Add the header only if it is not already present.
+	RaiEgressHeaderOperationInsert RaiEgressHeaderOperation = "Insert"
+	// RaiEgressHeaderOperationRemove - Remove the header if present.
+	RaiEgressHeaderOperationRemove RaiEgressHeaderOperation = "Remove"
+	// RaiEgressHeaderOperationSet - Set or overwrite the header value, creating it if it does not exist.
+	RaiEgressHeaderOperationSet RaiEgressHeaderOperation = "Set"
+)
+
+// PossibleRaiEgressHeaderOperationValues returns the possible values for the RaiEgressHeaderOperation const type.
+func PossibleRaiEgressHeaderOperationValues() []RaiEgressHeaderOperation {
+	return []RaiEgressHeaderOperation{
+		RaiEgressHeaderOperationInsert,
+		RaiEgressHeaderOperationRemove,
+		RaiEgressHeaderOperationSet,
+	}
+}
+
+// RaiEgressMode - The enforcement mode for egress rules.
+// If omitted on create, the server defaults to Enforced.
+type RaiEgressMode string
+
+const (
+	// RaiEgressModeAudit - Rules are evaluated and logged but not enforced. Traffic is always forwarded regardless of
+	// rule action. A would-be Deny is logged but not applied. Transform and Rewrite actions are
+	// still applied to matching traffic (only Deny enforcement is suppressed).
+	RaiEgressModeAudit RaiEgressMode = "Audit"
+	// RaiEgressModeEnforced - Rules are enforced. Matching traffic is allowed or denied per rule actions.
+	RaiEgressModeEnforced RaiEgressMode = "Enforced"
+)
+
+// PossibleRaiEgressModeValues returns the possible values for the RaiEgressMode const type.
+func PossibleRaiEgressModeValues() []RaiEgressMode {
+	return []RaiEgressMode{
+		RaiEgressModeAudit,
+		RaiEgressModeEnforced,
+	}
+}
+
+// RaiEgressRuleActionType - The kind of action an egress rule takes when it matches.
+type RaiEgressRuleActionType string
+
+const (
+	// RaiEgressRuleActionTypeAllow - Allow the matched traffic.
+	RaiEgressRuleActionTypeAllow RaiEgressRuleActionType = "Allow"
+	// RaiEgressRuleActionTypeDeny - Deny the matched traffic.
+	RaiEgressRuleActionTypeDeny RaiEgressRuleActionType = "Deny"
+	// RaiEgressRuleActionTypeRewrite - Redirect the matched traffic to a new destination, optionally applying header transforms.
+	// Requires a rewrite target.
+	RaiEgressRuleActionTypeRewrite RaiEgressRuleActionType = "Rewrite"
+	// RaiEgressRuleActionTypeTransform - Forward the matched traffic after applying header transforms. Requires at least one
+	// header.
+	RaiEgressRuleActionTypeTransform RaiEgressRuleActionType = "Transform"
+)
+
+// PossibleRaiEgressRuleActionTypeValues returns the possible values for the RaiEgressRuleActionType const type.
+func PossibleRaiEgressRuleActionTypeValues() []RaiEgressRuleActionType {
+	return []RaiEgressRuleActionType{
+		RaiEgressRuleActionTypeAllow,
+		RaiEgressRuleActionTypeDeny,
+		RaiEgressRuleActionTypeRewrite,
+		RaiEgressRuleActionTypeTransform,
+	}
+}
+
+// RaiEgressRuleType - The type of an egress rule, determining what kind of traffic matching it performs.
+type RaiEgressRuleType string
+
+const (
+	// RaiEgressRuleTypeFqdn - Fully qualified domain name (FQDN) based rule matching on host and path patterns.
+	RaiEgressRuleTypeFqdn RaiEgressRuleType = "Fqdn"
+)
+
+// PossibleRaiEgressRuleTypeValues returns the possible values for the RaiEgressRuleType const type.
+func PossibleRaiEgressRuleTypeValues() []RaiEgressRuleType {
+	return []RaiEgressRuleType{
+		RaiEgressRuleTypeFqdn,
+	}
+}
+
+// RaiEgressScheme - URL scheme for rewrite targets. Only HTTP and HTTPS are supported.
+type RaiEgressScheme string
+
+const (
+	// RaiEgressSchemeHTTP - HTTP scheme.
+	RaiEgressSchemeHTTP RaiEgressScheme = "http"
+	// RaiEgressSchemeHTTPS - HTTPS scheme.
+	RaiEgressSchemeHTTPS RaiEgressScheme = "https"
+)
+
+// PossibleRaiEgressSchemeValues returns the possible values for the RaiEgressScheme const type.
+func PossibleRaiEgressSchemeValues() []RaiEgressScheme {
+	return []RaiEgressScheme{
+		RaiEgressSchemeHTTP,
+		RaiEgressSchemeHTTPS,
 	}
 }
 

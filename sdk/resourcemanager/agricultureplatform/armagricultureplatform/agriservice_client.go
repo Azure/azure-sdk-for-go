@@ -18,6 +18,8 @@ import (
 
 // AgriServiceClient contains the methods for the AgriService group.
 // Don't use this type directly, use NewAgriServiceClient() instead.
+//
+// Generated from API version 2024-06-01-preview
 type AgriServiceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAgriServiceClient(subscriptionID string, credential azcore.TokenCredenti
 
 // BeginCreateOrUpdate - Create a AgriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - agriServiceResourceName - The name of the AgriService resource.
 //   - resource - Resource create parameters.
@@ -67,8 +67,6 @@ func (client *AgriServiceClient) BeginCreateOrUpdate(ctx context.Context, resour
 
 // CreateOrUpdate - Create a AgriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 func (client *AgriServiceClient) createOrUpdate(ctx context.Context, resourceGroupName string, agriServiceResourceName string, resource AgriServiceResource, options *AgriServiceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgriServiceClient.BeginCreateOrUpdate"
@@ -110,8 +108,8 @@ func (client *AgriServiceClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240601Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -122,8 +120,6 @@ func (client *AgriServiceClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Delete a AgriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - agriServiceResourceName - The name of the AgriService resource.
 //   - options - AgriServiceClientBeginDeleteOptions contains the optional parameters for the AgriServiceClient.BeginDelete method.
@@ -146,8 +142,6 @@ func (client *AgriServiceClient) BeginDelete(ctx context.Context, resourceGroupN
 
 // Delete - Delete a AgriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 func (client *AgriServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, agriServiceResourceName string, options *AgriServiceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgriServiceClient.BeginDelete"
@@ -189,15 +183,13 @@ func (client *AgriServiceClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240601Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get a AgriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - agriServiceResourceName - The name of the AgriService resource.
 //   - options - AgriServiceClientGetOptions contains the optional parameters for the AgriServiceClient.Get method.
@@ -243,8 +235,8 @@ func (client *AgriServiceClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240601Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -260,8 +252,6 @@ func (client *AgriServiceClient) getHandleResponse(resp *http.Response) (AgriSer
 
 // ListAvailableSolutions - Returns the list of available agri solutions.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - agriServiceResourceName - The name of the AgriService resource.
 //   - options - AgriServiceClientListAvailableSolutionsOptions contains the optional parameters for the AgriServiceClient.ListAvailableSolutions
@@ -308,8 +298,8 @@ func (client *AgriServiceClient) listAvailableSolutionsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240601Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -324,8 +314,6 @@ func (client *AgriServiceClient) listAvailableSolutionsHandleResponse(resp *http
 }
 
 // NewListByResourceGroupPager - List AgriServiceResource resources by resource group
-//
-// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AgriServiceClientListByResourceGroupOptions contains the optional parameters for the AgriServiceClient.NewListByResourceGroupPager
 //     method.
@@ -368,8 +356,8 @@ func (client *AgriServiceClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240601Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -384,8 +372,6 @@ func (client *AgriServiceClient) listByResourceGroupHandleResponse(resp *http.Re
 }
 
 // NewListBySubscriptionPager - List AgriServiceResource resources by subscription ID
-//
-// Generated from API version 2024-06-01-preview
 //   - options - AgriServiceClientListBySubscriptionOptions contains the optional parameters for the AgriServiceClient.NewListBySubscriptionPager
 //     method.
 func (client *AgriServiceClient) NewListBySubscriptionPager(options *AgriServiceClientListBySubscriptionOptions) *runtime.Pager[AgriServiceClientListBySubscriptionResponse] {
@@ -423,8 +409,8 @@ func (client *AgriServiceClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240601Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -440,8 +426,6 @@ func (client *AgriServiceClient) listBySubscriptionHandleResponse(resp *http.Res
 
 // BeginUpdate - Update a AgriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - agriServiceResourceName - The name of the AgriService resource.
 //   - properties - The resource properties to be updated.
@@ -465,8 +449,6 @@ func (client *AgriServiceClient) BeginUpdate(ctx context.Context, resourceGroupN
 
 // Update - Update a AgriServiceResource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-06-01-preview
 func (client *AgriServiceClient) update(ctx context.Context, resourceGroupName string, agriServiceResourceName string, properties AgriServiceResourceUpdate, options *AgriServiceClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgriServiceClient.BeginUpdate"
@@ -508,8 +490,8 @@ func (client *AgriServiceClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-06-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240601Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

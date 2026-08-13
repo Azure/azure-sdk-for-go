@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromADifferentSubscription.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromADifferentSubscription.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotByImportingAnUnmanagedBlobFromADifferentSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotByImportingAnUnma
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromTheSameSubscription.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Create_ByImportingAnUnmanagedBlobFromTheSameSubscription.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotByImportingAnUnmanagedBlobFromTheSameSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotByImportingAnUnma
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Create_EnhancedProvisionedBandwidthCopySpeed.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Create_EnhancedProvisionedBandwidthCopySpeed.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSnapshotInTheSameOrADifferentSubscriptionInADifferentRegionWithQuickerCopySpeed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSna
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Create_FromAnElasticSanVolumeSnapshot.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Create_FromAnElasticSanVolumeSnapshot.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnElasticSanVolumeSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnElasticSanV
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshot.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshot.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSnapshotInTheSameOrADifferentSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSna
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshotInDifferentRegion.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Create_FromAnExistingSnapshotInDifferentRegion.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSnapshotInTheSameOrADifferentSubscriptionInADifferentRegion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotFromAnExistingSna
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Create_InstantAccessSnapshot.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Create_InstantAccessSnapshot.json
 func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotWhichCanBeInstantlyAccessable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleSnapshotsClient_BeginCreateOrUpdate_createASnapshotWhichCanBeInstant
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Delete.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Delete.json
 func ExampleSnapshotsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleSnapshotsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Get.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Get.json
 func ExampleSnapshotsClient_Get_getInformationAboutASnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,7 +441,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutASnapshot() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_GetIncrementalSnapshot.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_GetIncrementalSnapshot.json
 func ExampleSnapshotsClient_Get_getInformationAboutAnIncrementalSnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,7 +524,67 @@ func ExampleSnapshotsClient_Get_getInformationAboutAnIncrementalSnapshot() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_BeginGetAccess.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Get_WithConfidentialVMVersion.json
+func ExampleSnapshotsClient_Get_getInformationAboutAConfidentialVMSnapshotWithConfidentialVMVersion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSnapshotsClient().Get(ctx, "myResourceGroup", "myConfidentialSnapshot", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.SnapshotsClientGetResponse{
+	// 	Snapshot: armcompute.Snapshot{
+	// 		Properties: &armcompute.SnapshotProperties{
+	// 			OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 			SecurityProfile: &armcompute.DiskSecurityProfile{
+	// 				SecurityType: to.Ptr(armcompute.DiskSecurityTypesConfidentialVMDiskEncryptedWithPlatformKey),
+	// 				ConfidentialVMVersion: to.Ptr(armcompute.ConfidentialVMVersionV2),
+	// 			},
+	// 			HyperVGeneration: to.Ptr(armcompute.HyperVGenerationV2),
+	// 			PurchasePlan: &armcompute.DiskPurchasePlan{
+	// 				Name: to.Ptr("test_sku"),
+	// 				Publisher: to.Ptr("test_test_pmc2pc1"),
+	// 				Product: to.Ptr("marketplace_vm_test"),
+	// 			},
+	// 			SupportedCapabilities: &armcompute.SupportedCapabilities{
+	// 				AcceleratedNetwork: to.Ptr(true),
+	// 			},
+	// 			SupportsHibernation: to.Ptr(true),
+	// 			CreationData: &armcompute.CreationData{
+	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionCopy),
+	// 				SourceResourceID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myConfidentialDisk"),
+	// 				SourceUniqueID: to.Ptr("d633885d-d102-4481-901e-5b2413d1a7be"),
+	// 			},
+	// 			DiskSizeGB: to.Ptr[int32](10),
+	// 			Encryption: &armcompute.Encryption{
+	// 				Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
+	// 			},
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-20T04:41:35.079872+00:00"); return t}()),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Compute/snapshots"),
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"department": to.Ptr("Development"),
+	// 			"project": to.Ptr("Snapshots"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/myConfidentialSnapshot"),
+	// 		Name: to.Ptr("myConfidentialSnapshot"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_BeginGetAccess.json
 func ExampleSnapshotsClient_BeginGrantAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -557,7 +617,7 @@ func ExampleSnapshotsClient_BeginGrantAccess() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_ListBySubscription.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_ListBySubscription.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +733,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_ListByResourceGroup.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_ListByResourceGroup.json
 func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +806,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_EndGetAccess.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_EndGetAccess.json
 func ExampleSnapshotsClient_BeginRevokeAccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +832,7 @@ func ExampleSnapshotsClient_BeginRevokeAccess() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Update.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Update.json
 func ExampleSnapshotsClient_BeginUpdate_updateASnapshot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -822,7 +882,7 @@ func ExampleSnapshotsClient_BeginUpdate_updateASnapshot() {
 	// }
 }
 
-// Generated from example definition: 2025-01-02/snapshotExamples/Snapshot_Update_WithAcceleratedNetwork.json
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_Update_WithAcceleratedNetwork.json
 func ExampleSnapshotsClient_BeginUpdate_updateASnapshotWithAcceleratedNetworking() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,6 +931,102 @@ func ExampleSnapshotsClient_BeginUpdate_updateASnapshotWithAcceleratedNetworking
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("Development"),
 	// 			"project": to.Ptr("UpdateSnapshots"),
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		Name: to.Ptr("mySnapshot"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_UpdateImmutabilityPolicy.json
+func ExampleSnapshotsClient_BeginUpdateImmutabilityPolicy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSnapshotsClient().BeginUpdateImmutabilityPolicy(ctx, "myResourceGroup", "mySnapshot", armcompute.ImmutabilityPolicyData{
+		ImmutabilityDurationDays: to.Ptr[int32](30),
+		Type:                     to.Ptr(armcompute.ImmutabilityPolicyTypeUnlocked),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.SnapshotsClientUpdateImmutabilityPolicyResponse{
+	// 	Snapshot: armcompute.Snapshot{
+	// 		Properties: &armcompute.SnapshotProperties{
+	// 			CreationData: &armcompute.CreationData{
+	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionCopy),
+	// 				SourceResourceID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
+	// 			},
+	// 			DiskSizeGB: to.Ptr[int32](20),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			ImmutabilityPolicy: &armcompute.ImmutabilityPolicy{
+	// 				ImmutabilityDurationDays: to.Ptr[int32](30),
+	// 				Type: to.Ptr(armcompute.ImmutabilityPolicyTypeUnlocked),
+	// 				PolicyStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-21T12:00:00.0000000+00:00"); return t}()),
+	// 				PolicyExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-20T12:00:00.0000000+00:00"); return t}()),
+	// 				IsPolicyExpired: to.Ptr(false),
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		Name: to.Ptr("mySnapshot"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-03-02/snapshotExamples/Snapshot_UpdateImmutabilityPolicyLock.json
+func ExampleSnapshotsClient_BeginUpdateImmutabilityPolicyLock() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSnapshotsClient().BeginUpdateImmutabilityPolicyLock(ctx, "myResourceGroup", "mySnapshot", armcompute.ImmutabilityPolicyLockData{
+		ImmutabilityDurationDays: to.Ptr[int32](30),
+		Type:                     to.Ptr(armcompute.ImmutabilityPolicyTypeLocked),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.SnapshotsClientUpdateImmutabilityPolicyLockResponse{
+	// 	Snapshot: armcompute.Snapshot{
+	// 		Properties: &armcompute.SnapshotProperties{
+	// 			CreationData: &armcompute.CreationData{
+	// 				CreateOption: to.Ptr(armcompute.DiskCreateOptionCopy),
+	// 				SourceResourceID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/mySnapshot1"),
+	// 			},
+	// 			DiskSizeGB: to.Ptr[int32](20),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			ImmutabilityPolicy: &armcompute.ImmutabilityPolicy{
+	// 				ImmutabilityDurationDays: to.Ptr[int32](30),
+	// 				Type: to.Ptr(armcompute.ImmutabilityPolicyTypeLocked),
+	// 				PolicyStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-21T12:00:00.0000000+00:00"); return t}()),
+	// 				PolicyExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-20T12:00:00.0000000+00:00"); return t}()),
+	// 				IsPolicyExpired: to.Ptr(false),
+	// 			},
 	// 		},
 	// 		Location: to.Ptr("West US"),
 	// 		Name: to.Ptr("mySnapshot"),

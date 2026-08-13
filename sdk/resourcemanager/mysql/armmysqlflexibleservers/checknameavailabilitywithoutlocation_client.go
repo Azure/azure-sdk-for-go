@@ -18,6 +18,8 @@ import (
 
 // CheckNameAvailabilityWithoutLocationClient contains the methods for the CheckNameAvailabilityWithoutLocation group.
 // Don't use this type directly, use NewCheckNameAvailabilityWithoutLocationClient() instead.
+//
+// Generated from API version 2024-12-30
 type CheckNameAvailabilityWithoutLocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewCheckNameAvailabilityWithoutLocationClient(subscriptionID string, creden
 
 // Execute - Check the availability of name for server
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-12-01-preview
 //   - nameAvailabilityRequest - The request body
 //   - options - CheckNameAvailabilityWithoutLocationClientExecuteOptions contains the optional parameters for the CheckNameAvailabilityWithoutLocationClient.Execute
 //     method.
@@ -80,8 +80,8 @@ func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-12-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241230)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, nameAvailabilityRequest); err != nil {

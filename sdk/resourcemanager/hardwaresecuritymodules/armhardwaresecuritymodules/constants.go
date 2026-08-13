@@ -4,6 +4,10 @@
 
 package armhardwaresecuritymodules
 
+const (
+	version20251201Preview string = "2025-12-01-preview"
+)
+
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
 type ActionType string
 
@@ -99,8 +103,20 @@ func PossibleCloudHsmClusterSKUFamilyValues() []CloudHsmClusterSKUFamily {
 type CloudHsmClusterSKUName string
 
 const (
-	CloudHsmClusterSKUNameStandardB1  CloudHsmClusterSKUName = "Standard_B1"
+	// CloudHsmClusterSKUNameStandardB1 - Standard_B1 SKU
+	CloudHsmClusterSKUNameStandardB1 CloudHsmClusterSKUName = "Standard_B1"
+	// CloudHsmClusterSKUNameStandardB10 - Standard B10 SKU
 	CloudHsmClusterSKUNameStandardB10 CloudHsmClusterSKUName = "Standard B10"
+	// CloudHsmClusterSKUNameStandardB10V2 - Standard_B10v2 SKU
+	CloudHsmClusterSKUNameStandardB10V2 CloudHsmClusterSKUName = "Standard_B10v2"
+	// CloudHsmClusterSKUNameStandardB15V2 - Standard_B15v2 SKU
+	CloudHsmClusterSKUNameStandardB15V2 CloudHsmClusterSKUName = "Standard_B15v2"
+	// CloudHsmClusterSKUNameStandardB1V2 - Standard_B1v2 SKU
+	CloudHsmClusterSKUNameStandardB1V2 CloudHsmClusterSKUName = "Standard_B1v2"
+	// CloudHsmClusterSKUNameStandardB20V2 - Standard_B20v2 SKU
+	CloudHsmClusterSKUNameStandardB20V2 CloudHsmClusterSKUName = "Standard_B20v2"
+	// CloudHsmClusterSKUNameStandardB5V2 - Standard_B5v2 SKU
+	CloudHsmClusterSKUNameStandardB5V2 CloudHsmClusterSKUName = "Standard_B5v2"
 )
 
 // PossibleCloudHsmClusterSKUNameValues returns the possible values for the CloudHsmClusterSKUName const type.
@@ -108,6 +124,11 @@ func PossibleCloudHsmClusterSKUNameValues() []CloudHsmClusterSKUName {
 	return []CloudHsmClusterSKUName{
 		CloudHsmClusterSKUNameStandardB1,
 		CloudHsmClusterSKUNameStandardB10,
+		CloudHsmClusterSKUNameStandardB10V2,
+		CloudHsmClusterSKUNameStandardB15V2,
+		CloudHsmClusterSKUNameStandardB1V2,
+		CloudHsmClusterSKUNameStandardB20V2,
+		CloudHsmClusterSKUNameStandardB5V2,
 	}
 }
 
@@ -132,6 +153,57 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// HsmState - The state of an HSM resource.
+type HsmState string
+
+const (
+	// HsmStateConfiguringSlb - The HSM's software load balancer (SLB) is being configured.
+	HsmStateConfiguringSlb HsmState = "ConfiguringSlb"
+	// HsmStateDegraded - The HSM is running in a degraded state.
+	HsmStateDegraded HsmState = "Degraded"
+	// HsmStateDelayedDeletion - The HSM deletion has been delayed.
+	HsmStateDelayedDeletion HsmState = "DelayedDeletion"
+	// HsmStateDeleting - The HSM is being deleted.
+	HsmStateDeleting HsmState = "Deleting"
+	// HsmStateDeletingSlbEntry - The HSM's software load balancer (SLB) entry is being deleted.
+	HsmStateDeletingSlbEntry HsmState = "DeletingSlbEntry"
+	// HsmStateDeploying - The HSM is being deployed.
+	HsmStateDeploying HsmState = "Deploying"
+	// HsmStateFailed - The HSM has failed.
+	HsmStateFailed HsmState = "Failed"
+	// HsmStateInitialProvisioning - The HSM is being provisioned for the first time.
+	HsmStateInitialProvisioning HsmState = "InitialProvisioning"
+	// HsmStateRelocating - The HSM is being relocated.
+	HsmStateRelocating HsmState = "Relocating"
+	// HsmStateStarted - The HSM has started and is running.
+	HsmStateStarted HsmState = "Started"
+	// HsmStateStarting - The HSM is starting.
+	HsmStateStarting HsmState = "Starting"
+	// HsmStateUnknown - The HSM state is unknown.
+	HsmStateUnknown HsmState = "Unknown"
+	// HsmStateUpdating - The HSM is being updated.
+	HsmStateUpdating HsmState = "Updating"
+)
+
+// PossibleHsmStateValues returns the possible values for the HsmState const type.
+func PossibleHsmStateValues() []HsmState {
+	return []HsmState{
+		HsmStateConfiguringSlb,
+		HsmStateDegraded,
+		HsmStateDelayedDeletion,
+		HsmStateDeleting,
+		HsmStateDeletingSlbEntry,
+		HsmStateDeploying,
+		HsmStateFailed,
+		HsmStateInitialProvisioning,
+		HsmStateRelocating,
+		HsmStateStarted,
+		HsmStateStarting,
+		HsmStateUnknown,
+		HsmStateUpdating,
 	}
 }
 
@@ -211,6 +283,36 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// PaymentHsmClusterSKUFamily - Sku family of the Payment HSM Cluster
+type PaymentHsmClusterSKUFamily string
+
+const (
+	// PaymentHsmClusterSKUFamilyB - B family SKU
+	PaymentHsmClusterSKUFamilyB PaymentHsmClusterSKUFamily = "B"
+)
+
+// PossiblePaymentHsmClusterSKUFamilyValues returns the possible values for the PaymentHsmClusterSKUFamily const type.
+func PossiblePaymentHsmClusterSKUFamilyValues() []PaymentHsmClusterSKUFamily {
+	return []PaymentHsmClusterSKUFamily{
+		PaymentHsmClusterSKUFamilyB,
+	}
+}
+
+// PaymentHsmClusterSKUName - Sku name of the Payment HSM Cluster
+type PaymentHsmClusterSKUName string
+
+const (
+	// PaymentHsmClusterSKUNamePaymentsV2 - Payments_v2 SKU
+	PaymentHsmClusterSKUNamePaymentsV2 PaymentHsmClusterSKUName = "Payments_v2"
+)
+
+// PossiblePaymentHsmClusterSKUNameValues returns the possible values for the PaymentHsmClusterSKUName const type.
+func PossiblePaymentHsmClusterSKUNameValues() []PaymentHsmClusterSKUName {
+	return []PaymentHsmClusterSKUName{
+		PaymentHsmClusterSKUNamePaymentsV2,
 	}
 }
 

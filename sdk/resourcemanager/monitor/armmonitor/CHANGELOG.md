@@ -1,8 +1,62 @@
 # Release History
 
+## 0.13.0 (2026-07-15)
+### Features Added
+
+- New enum type `CategoryType` with values `CategoryTypeLogs`, `CategoryTypeMetrics`
+- New enum type `DataStatus` with values `DataStatusNotPresent`, `DataStatusPresent`
+- New enum type `OnboardingStatus` with values `OnboardingStatusNotOnboarded`, `OnboardingStatusOnboarded`, `OnboardingStatusUnknown`
+- New function `*ClientFactory.NewCombineClient() *CombineClient`
+- New function `*ClientFactory.NewDiagnosticSettingsCategoryClient() *DiagnosticSettingsCategoryClient`
+- New function `*ClientFactory.NewDiagnosticSettingsClient() *DiagnosticSettingsClient`
+- New function `*ClientFactory.NewTenantActionGroupsClient() *TenantActionGroupsClient`
+- New function `*ClientFactory.NewVMInsightsClient() *VMInsightsClient`
+- New function `NewCombineClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*CombineClient, error)`
+- New function `*CombineClient.BeginCreateNotificationsAtTenantActionGroupResourceLevel(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, notificationRequest TenantNotificationRequestBody, options *CombineClientBeginCreateNotificationsAtTenantActionGroupResourceLevelOptions) (*runtime.Poller[CombineClientCreateNotificationsAtTenantActionGroupResourceLevelResponse], error)`
+- New function `*CombineClient.GetTestNotificationsAtTenantActionGroupResourceLevel(ctx context.Context, managementGroupID string, tenantActionGroupName string, notificationID string, xmsClientTenantID string, options *CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelOptions) (CombineClientGetTestNotificationsAtTenantActionGroupResourceLevelResponse, error)`
+- New function `NewDiagnosticSettingsCategoryClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsCategoryClient, error)`
+- New function `*DiagnosticSettingsCategoryClient.Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsCategoryClientGetOptions) (DiagnosticSettingsCategoryClientGetResponse, error)`
+- New function `*DiagnosticSettingsCategoryClient.NewListPager(resourceURI string, options *DiagnosticSettingsCategoryClientListOptions) *runtime.Pager[DiagnosticSettingsCategoryClientListResponse]`
+- New function `NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsClient, error)`
+- New function `*DiagnosticSettingsClient.CreateOrUpdate(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsClientCreateOrUpdateOptions) (DiagnosticSettingsClientCreateOrUpdateResponse, error)`
+- New function `*DiagnosticSettingsClient.Delete(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsClientDeleteOptions) (DiagnosticSettingsClientDeleteResponse, error)`
+- New function `*DiagnosticSettingsClient.Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsClientGetOptions) (DiagnosticSettingsClientGetResponse, error)`
+- New function `*DiagnosticSettingsClient.NewListPager(resourceURI string, options *DiagnosticSettingsClientListOptions) *runtime.Pager[DiagnosticSettingsClientListResponse]`
+- New function `NewTenantActionGroupsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*TenantActionGroupsClient, error)`
+- New function `*TenantActionGroupsClient.CreateOrUpdate(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, actionGroup TenantActionGroupResource, options *TenantActionGroupsClientCreateOrUpdateOptions) (TenantActionGroupsClientCreateOrUpdateResponse, error)`
+- New function `*TenantActionGroupsClient.Delete(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, options *TenantActionGroupsClientDeleteOptions) (TenantActionGroupsClientDeleteResponse, error)`
+- New function `*TenantActionGroupsClient.Get(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, options *TenantActionGroupsClientGetOptions) (TenantActionGroupsClientGetResponse, error)`
+- New function `*TenantActionGroupsClient.NewListByManagementGroupIDPager(managementGroupID string, xmsClientTenantID string, options *TenantActionGroupsClientListByManagementGroupIDOptions) *runtime.Pager[TenantActionGroupsClientListByManagementGroupIDResponse]`
+- New function `*TenantActionGroupsClient.Update(ctx context.Context, managementGroupID string, tenantActionGroupName string, xmsClientTenantID string, tenantActionGroupPatch TenantActionGroupPatchBody, options *TenantActionGroupsClientUpdateOptions) (TenantActionGroupsClientUpdateResponse, error)`
+- New function `NewVMInsightsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*VMInsightsClient, error)`
+- New function `*VMInsightsClient.GetOnboardingStatus(ctx context.Context, resourceURI string, options *VMInsightsClientGetOnboardingStatusOptions) (VMInsightsClientGetOnboardingStatusResponse, error)`
+- New struct `DataContainer`
+- New struct `DiagnosticSettings`
+- New struct `DiagnosticSettingsCategory`
+- New struct `DiagnosticSettingsCategoryResource`
+- New struct `DiagnosticSettingsCategoryResourceCollection`
+- New struct `DiagnosticSettingsResource`
+- New struct `DiagnosticSettingsResourceCollection`
+- New struct `TenantActionGroup`
+- New struct `TenantActionGroupActionDetail`
+- New struct `TenantActionGroupList`
+- New struct `TenantActionGroupPatchBody`
+- New struct `TenantActionGroupResource`
+- New struct `TenantActionGroupTestNotificationDetailsResponse`
+- New struct `TenantActionGroupWebhookReceiver`
+- New struct `TenantNotificationRequestBody`
+- New struct `VMInsightsOnboardingStatus`
+- New struct `VMInsightsOnboardingStatusProperties`
+- New struct `WorkspaceInfo`
+- New struct `WorkspaceInfoProperties`
+- New field `CategoryGroup` in struct `LogSettings`
+- New field `Category` in struct `MetricSettings`
+
+
 ## 0.12.0 (2026-05-20)
 ### Breaking Changes
 
+- The Azure Monitor workspace APIs (`AzureMonitorWorkspacesClient`, `OperationsClient`, and their associated types such as `AzureMonitorWorkspace*`, `IngestionSettings`, `Metrics`, `MetricsIngestionEndpointSpec`, `Operation`, `OperationDisplay`, `OperationListResult`, etc.) have been moved to the new [`github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitorworkspaces`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/monitor/armmonitorworkspaces) module. Update your imports to migrate.
 - Function `*DataCollectionEndpointsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, body DataCollectionEndpointResource, options *DataCollectionEndpointsClientCreateOptions)`
 - Function `*DataCollectionEndpointsClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, options *DataCollectionEndpointsClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, body ResourceForUpdate, options *DataCollectionEndpointsClientUpdateOptions)`
 - Function `*DataCollectionRuleAssociationsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceURI string, associationName string, options *DataCollectionRuleAssociationsClientCreateOptions)` to `(ctx context.Context, resourceURI string, associationName string, body DataCollectionRuleAssociationProxyOnlyResource, options *DataCollectionRuleAssociationsClientCreateOptions)`
@@ -33,19 +87,9 @@
 - Function `*AlertRulesClient.NewListByResourceGroupPager` has been removed
 - Function `*AlertRulesClient.NewListBySubscriptionPager` has been removed
 - Function `*AlertRulesClient.Update` has been removed
-- Function `NewAzureMonitorWorkspacesClient` has been removed
-- Function `*AzureMonitorWorkspacesClient.Create` has been removed
-- Function `*AzureMonitorWorkspacesClient.Delete` has been removed
-- Function `*AzureMonitorWorkspacesClient.Get` has been removed
-- Function `*AzureMonitorWorkspacesClient.NewListByResourceGroupPager` has been removed
-- Function `*AzureMonitorWorkspacesClient.NewListBySubscriptionPager` has been removed
-- Function `*AzureMonitorWorkspacesClient.Update` has been removed
 - Function `*ClientFactory.NewAlertRulesClient` has been removed
-- Function `*ClientFactory.NewAzureMonitorWorkspacesClient` has been removed
 - Function `*ClientFactory.NewDiagnosticSettingsCategoryClient` has been removed
 - Function `*ClientFactory.NewDiagnosticSettingsClient` has been removed
-- Function `*ClientFactory.NewOperationsClient` has been removed
-- Function `*ClientFactory.NewOperationsForMonitorClient` has been removed
 - Function `*ClientFactory.NewTenantActionGroupsClient` has been removed
 - Function `*ClientFactory.NewVMInsightsClient` has been removed
 - Function `NewDiagnosticSettingsCategoryClient` has been removed
@@ -58,10 +102,6 @@
 - Function `*DiagnosticSettingsClient.NewListPager` has been removed
 - Function `*LocationThresholdRuleCondition.GetRuleCondition` has been removed
 - Function `*ManagementEventRuleCondition.GetRuleCondition` has been removed
-- Function `NewOperationsClient` has been removed
-- Function `*OperationsClient.List` has been removed
-- Function `NewOperationsForMonitorClient` has been removed
-- Function `*OperationsForMonitorClient.NewListPager` has been removed
 - Function `*RuleAction.GetRuleAction` has been removed
 - Function `*RuleCondition.GetRuleCondition` has been removed
 - Function `*RuleDataSource.GetRuleDataSource` has been removed
@@ -89,13 +129,6 @@
 - Struct `AutoscaleErrorResponseError` has been removed
 - Struct `AzureAppPushReceiverAutoGenerated` has been removed
 - Struct `AzureMonitorMetricsDestination` has been removed
-- Struct `AzureMonitorWorkspace` has been removed
-- Struct `AzureMonitorWorkspaceDefaultIngestionSettings` has been removed
-- Struct `AzureMonitorWorkspaceMetrics` has been removed
-- Struct `AzureMonitorWorkspaceResource` has been removed
-- Struct `AzureMonitorWorkspaceResourceForUpdate` has been removed
-- Struct `AzureMonitorWorkspaceResourceListResult` has been removed
-- Struct `AzureMonitorWorkspaceResourceProperties` has been removed
 - Struct `AzureResource` has been removed
 - Struct `AzureResourceAutoGenerated` has been removed
 - Struct `ConfigurationAccessEndpointSpec` has been removed
@@ -129,7 +162,6 @@
 - Struct `ErrorResponseDetails` has been removed
 - Struct `EventHubDataSource` has been removed
 - Struct `FailoverConfigurationSpec` has been removed
-- Struct `IngestionSettings` has been removed
 - Struct `LocationThresholdRuleCondition` has been removed
 - Struct `LogFileSettings` has been removed
 - Struct `LogFileTextSettings` has been removed
@@ -137,15 +169,7 @@
 - Struct `ManagementEventAggregationCondition` has been removed
 - Struct `ManagementEventRuleCondition` has been removed
 - Struct `Metadata` has been removed
-- Struct `Metrics` has been removed
-- Struct `MetricsIngestionEndpointSpec` has been removed
 - Struct `NetworkRuleSet` has been removed
-- Struct `Operation` has been removed
-- Struct `OperationAutoGenerated` has been removed
-- Struct `OperationDisplay` has been removed
-- Struct `OperationDisplayAutoGenerated` has been removed
-- Struct `OperationListResult` has been removed
-- Struct `OperationListResultAutoGenerated` has been removed
 - Struct `ProxyResource` has been removed
 - Struct `ProxyResourceAutoGenerated` has been removed
 - Struct `Resource` has been removed

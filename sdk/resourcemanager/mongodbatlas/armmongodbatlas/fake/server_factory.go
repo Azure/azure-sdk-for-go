@@ -15,11 +15,17 @@ import (
 
 // ServerFactory is a fake server for instances of the armmongodbatlas.ClientFactory type.
 type ServerFactory struct {
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
 	// OrganizationsServer contains the fakes for client OrganizationsClient
 	OrganizationsServer OrganizationsServer
+
+	// ProjectsServer contains the fakes for client ProjectsClient
+	ProjectsServer ProjectsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -36,8 +42,10 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                   *ServerFactory
 	trMu                  sync.Mutex
+	trClustersServer      *ClustersServerTransport
 	trOperationsServer    *OperationsServerTransport
 	trOrganizationsServer *OrganizationsServerTransport
+	trProjectsServer      *ProjectsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -53,6 +61,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ClustersClient":
+		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
+		resp, err = s.trClustersServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -61,6 +72,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewOrganizationsServerTransport(&s.srv.OrganizationsServer)
 		})
 		resp, err = s.trOrganizationsServer.Do(req)
+	case "ProjectsClient":
+		initServer(&s.trMu, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
+		resp, err = s.trProjectsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

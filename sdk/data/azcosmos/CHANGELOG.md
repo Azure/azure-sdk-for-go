@@ -2,7 +2,7 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.5.0-beta.8 (Unreleased)
+## 1.6.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -11,6 +11,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.2 (2026-08-03)
+
+### Bugs Fixed
+
+* Fixed partition key range cache refreshes failing against containers undergoing physical partition splits. A change-feed drain accumulates every page, so a range that is updated mid-split is re-delivered as a second revision of the same range ID; the routing map now deduplicates by range ID (keeping the latest revision) before validating range continuity, instead of rejecting the set with a "service returned an incomplete set of ranges" error reporting that the range overlaps itself. A full refresh that still observes an incomplete set is now retried up to three times with bounded jittered backoff before failing. See [PR 27282](https://github.com/Azure/azure-sdk-for-go/pull/27282).
+
+## 1.6.0-beta.1 (2026-07-16)
+
+### Features Added
+
+* Restored the query engine feature originally present in 1.5.0-beta releases (but removed for the 1.5.0 GA release).
+
+## 1.5.0 (2026-07-13)
+
+### Breaking Changes
+
+* Removed the external query engine integration from `QueryOptions` and deleted the `sdk/data/azcosmos/queryengine` package for the 1.5.0 GA release. This feature will return in the upcoming 1.6.0 preview release. See [PR 27134](https://github.com/Azure/azure-sdk-for-go/pull/27134).
+* Renamed `ChangeFeedResponse.GetContRanges()` to `ChangeFeedResponse.GetContinuationRange()`. This API was previously only present in a beta release. See [PR 27148](https://github.com/Azure/azure-sdk-for-go/pull/27148).
+* Renamed `ChangeFeedResponse.Documents` to `ChangeFeedResponse.Items` and changed its type from `[]json.RawMessage` to `[][]byte`. This API was previously only present in a beta release. See [PR 27175](https://github.com/Azure/azure-sdk-for-go/pull/27175).
+* Renamed `ContainerClient.GetFeedRanges` and `ContainerClient.GetChangeFeed` to `ContainerClient.ReadFeedRanges` and `ContainerClient.ReadChangeFeed`, respectively. This API was previously only present in a beta release. See [PR 27183](https://github.com/Azure/azure-sdk-for-go/pull/27183).
+* Renamed the `ReadManyOptions` type to `ReadManyItemsOptions` to align with the `ReadManyItems` method. This API was previously only present in a beta release. See [PR 27183](https://github.com/Azure/azure-sdk-for-go/pull/27183).
+* Added a `*FeedRangesOptions` parameter to `ContainerClient.ReadFeedRanges`. This API was previously only present in a beta release. See [PR 27175](https://github.com/Azure/azure-sdk-for-go/pull/27175).
+* Renamed `ChangeFeedRangeOptions.EpkMinHeader` and `ChangeFeedRangeOptions.EpkMaxHeader` to `EPKMinHeader` and `EPKMaxHeader`. These fields were previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+* `Diagnostics.StartTimeUTC()` now returns a `time.Time` (zero value when no diagnostics are present) instead of a `*time.Time`. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+* Removed the `NewFeedRange` constructor. Construct a `FeedRange` directly using a struct initializer instead. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+* Removed the `PriorityLevel.ToPtr` method. Use [`to.Ptr`](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore/to#Ptr) from `azcore` instead. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
+
+### Other Changes
+
+* The per-account metadata caches (the shared container-properties and partition-key-range caches, see [PR 26723](https://github.com/Azure/azure-sdk-for-go/pull/26723)) are now held in the process-wide registry via weak references. This lets the garbage collector reclaim a `Client`'s caches once the client is discarded, greatly reducing the memory retained when a `Client` is dropped without calling `Close`. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
 
 ## 1.5.0-beta.7 (2026-06-02)
 
@@ -65,6 +96,12 @@
 ### Other Changes
 
 * Small performance optimizations to API's using query engine. See [PR 25669](https://github.com/Azure/azure-sdk-for-go/pull/25669)
+
+## 1.4.2 (2025-12-10)
+
+### Bugs Fixed
+
+* Fixed issue with read endpoint selection causing most-preferred region to be skipped when selecting read region. See [PR 25738](https://github.com/Azure/azure-sdk-for-go/pull/25738)
 
 ## 1.5.0-beta.4 (2025-11-24)
 

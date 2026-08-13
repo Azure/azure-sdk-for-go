@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/AkriService_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriService_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAkriServiceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleAkriServiceClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AkriService_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriService_Delete_MaximumSet_Gen.json
 func ExampleAkriServiceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleAkriServiceClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AkriService_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriService_Get_MaximumSet_Gen.json
 func ExampleAkriServiceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleAkriServiceClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AkriService_ListByInstanceResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriService_ListByInstanceResource_MaximumSet_Gen.json
 func ExampleAkriServiceClient_NewListByInstanceResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

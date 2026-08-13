@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_CancelMigrationToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func ExampleAvailabilitySetsClient_CancelMigrationToVirtualMachineScaleSet() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_ConvertToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleAvailabilitySetsClient_BeginConvertToVirtualMachineScaleSet() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Create.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Create.json
 func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySet() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Create_WithScheduledEventProfile.json
 func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySetWithScheduledEventPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleAvailabilitySetsClient_CreateOrUpdate_createAnAvailabilitySetWithSch
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Delete_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Delete_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleAvailabilitySetsClient_Delete_availabilitySetDeleteMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Get_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_Get_availabilitySetGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,7 +293,7 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetGetMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Get_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +319,7 @@ func ExampleAvailabilitySetsClient_Get_availabilitySetGetMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_List_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -483,7 +483,7 @@ func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMaximumSetGen
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_List_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -530,7 +530,7 @@ func ExampleAvailabilitySetsClient_NewListPager_availabilitySetListMinimumSetGen
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -577,7 +577,7 @@ func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetLis
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_ListAvailableSizes_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetListAvailableSizesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -606,7 +606,7 @@ func ExampleAvailabilitySetsClient_NewListAvailableSizesPager_availabilitySetLis
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_ListBySubscription.json
 func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -710,7 +710,7 @@ func ExampleAvailabilitySetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_StartMigrationToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_StartMigrationToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -731,7 +731,7 @@ func ExampleAvailabilitySetsClient_StartMigrationToVirtualMachineScaleSet() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Update_MaximumSet_Gen.json
 func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -810,7 +810,7 @@ func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMaximumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_Update_MinimumSet_Gen.json
 func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -835,7 +835,7 @@ func ExampleAvailabilitySetsClient_Update_availabilitySetUpdateMinimumSetGen() {
 	// }
 }
 
-// Generated from example definition: 2025-11-01/availabilitySetExamples/AvailabilitySet_ValidateMigrationToVirtualMachineScaleSet.json
+// Generated from example definition: 2026-03-01/availabilitySetExamples/AvailabilitySet_ValidateMigrationToVirtualMachineScaleSet.json
 func ExampleAvailabilitySetsClient_ValidateMigrationToVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

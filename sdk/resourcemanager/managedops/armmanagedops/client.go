@@ -18,6 +18,8 @@ import (
 
 // Client - The operations that can be performed on our resource
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2025-07-28-preview
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 
 // BeginCreateOrUpdate - Creates or updates the ManagedOps instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-28-preview
 //   - managedOpsName - Name of the resource.
 //   - resource - Resource create parameters.
 //   - options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
@@ -65,8 +65,6 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, managedOpsName st
 
 // CreateOrUpdate - Creates or updates the ManagedOps instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-28-preview
 func (client *Client) createOrUpdate(ctx context.Context, managedOpsName string, resource ManagedOp, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
@@ -104,8 +102,8 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, managedOp
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-28-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250728Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
@@ -116,8 +114,6 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, managedOp
 
 // BeginDelete - Deletes the ManagedOps instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-28-preview
 //   - managedOpsName - Name of the resource.
 //   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 func (client *Client) BeginDelete(ctx context.Context, managedOpsName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
@@ -139,8 +135,6 @@ func (client *Client) BeginDelete(ctx context.Context, managedOpsName string, op
 
 // Delete - Deletes the ManagedOps instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-28-preview
 func (client *Client) deleteOperation(ctx context.Context, managedOpsName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
@@ -178,15 +172,13 @@ func (client *Client) deleteCreateRequest(ctx context.Context, managedOpsName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-28-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250728Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the information of the ManagedOps instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-28-preview
 //   - managedOpsName - Name of the resource.
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, managedOpsName string, options *ClientGetOptions) (ClientGetResponse, error) {
@@ -227,8 +219,8 @@ func (client *Client) getCreateRequest(ctx context.Context, managedOpsName strin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-28-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250728Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -243,8 +235,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 }
 
 // NewListPager - List all ManagedOps instances in the subscription.
-//
-// Generated from API version 2025-07-28-preview
 //   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
 func (client *Client) NewListPager(options *ClientListOptions) *runtime.Pager[ClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListResponse]{
@@ -281,8 +271,8 @@ func (client *Client) listCreateRequest(ctx context.Context, _ *ClientListOption
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-28-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250728Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -298,8 +288,6 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 
 // BeginUpdate - Updates the ManagedOps instance with the supplied fields.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-28-preview
 //   - managedOpsName - Name of the resource.
 //   - properties - The resource properties to be updated.
 //   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
@@ -322,8 +310,6 @@ func (client *Client) BeginUpdate(ctx context.Context, managedOpsName string, pr
 
 // Update - Updates the ManagedOps instance with the supplied fields.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-28-preview
 func (client *Client) update(ctx context.Context, managedOpsName string, properties ManagedOpUpdate, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
@@ -361,8 +347,8 @@ func (client *Client) updateCreateRequest(ctx context.Context, managedOpsName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-28-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250728Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {

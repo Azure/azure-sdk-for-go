@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.1 (2026-03-16)
+## 4.0.0 (2026-06-24)
 ### Breaking Changes
 
 - Type of `OperationStatus.PercentComplete` has been changed from `*float32` to `*float64`

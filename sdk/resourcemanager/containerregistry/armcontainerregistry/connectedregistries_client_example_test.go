@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryCreate.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryCreate.json
 func ExampleConnectedRegistriesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleConnectedRegistriesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryDeactivate.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryDeactivate.json
 func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryDelete.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryDelete.json
 func ExampleConnectedRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleConnectedRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryGet.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryGet.json
 func ExampleConnectedRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleConnectedRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryList.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryList.json
 func ExampleConnectedRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleConnectedRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryResync.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryResync.json
 func ExampleConnectedRegistriesClient_Resync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +343,7 @@ func ExampleConnectedRegistriesClient_Resync() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/ConnectedRegistryUpdate.json
+// Generated from example definition: 2026-03-01-preview/ConnectedRegistryUpdate.json
 func ExampleConnectedRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

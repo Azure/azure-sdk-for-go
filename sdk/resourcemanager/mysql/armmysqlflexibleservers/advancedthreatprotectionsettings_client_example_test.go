@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/AdvancedThreatProtectionSettingsGet.json
+// Generated from example definition: 2024-12-30/AdvancedThreatProtectionSettingsGet.json
 func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,7 +31,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientGetResponse{
-	// 	AdvancedThreatProtection: &armmysqlflexibleservers.AdvancedThreatProtection{
+	// 	AdvancedThreatProtection: armmysqlflexibleservers.AdvancedThreatProtection{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.DBforMySQL/flexibleServers/threatprotection-6440/advancedThreatProtectionSettings/Default"),
@@ -52,7 +52,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/AdvancedThreatProtectionSettingsList.json
+// Generated from example definition: 2024-12-30/AdvancedThreatProtectionSettingsList.json
 func ExampleAdvancedThreatProtectionSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-12-01-preview/AdvancedThreatProtectionSettingsPatchDisabled.json
+// Generated from example definition: 2024-12-30/AdvancedThreatProtectionSettingsPatchDisabled.json
 func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdate_disableAServerSAdvancedThreatProtectionSettingsWithAllParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,13 +122,13 @@ func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdate_disableAServerSAd
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdateResponse{
-	// 	AdvancedThreatProtection: &armmysqlflexibleservers.AdvancedThreatProtection{
+	// 	AdvancedThreatProtection: armmysqlflexibleservers.AdvancedThreatProtection{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.DBforMySQL/flexibleServers/threatprotection-6440/advancedThreatProtectionSettings/Default"),
@@ -149,7 +149,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdate_disableAServerSAd
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/AdvancedThreatProtectionSettingsPatchEnabled.json
+// Generated from example definition: 2024-12-30/AdvancedThreatProtectionSettingsPatchEnabled.json
 func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdate_enableAServerSAdvancedThreatProtectionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,13 +170,13 @@ func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdate_enableAServerSAdv
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdateResponse{
-	// 	AdvancedThreatProtection: &armmysqlflexibleservers.AdvancedThreatProtection{
+	// 	AdvancedThreatProtection: armmysqlflexibleservers.AdvancedThreatProtection{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.DBforMySQL/flexibleServers/threatprotection-6440/advancedThreatProtectionSettings/Default"),
@@ -197,7 +197,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdate_enableAServerSAdv
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/AdvancedThreatProtectionSettingsPutDisabled.json
+// Generated from example definition: 2024-12-30/AdvancedThreatProtectionSettingsPutDisabled.json
 func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdatePut_disableAServerSAdvancedThreatProtectionSettingsWithAllParametersUsingPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,13 +218,13 @@ func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdatePut_disableAServer
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdatePutResponse{
-	// 	AdvancedThreatProtection: &armmysqlflexibleservers.AdvancedThreatProtection{
+	// 	AdvancedThreatProtection: armmysqlflexibleservers.AdvancedThreatProtection{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.DBforMySQL/flexibleServers/threatprotection-6440/advancedThreatProtectionSettings/Default"),
@@ -245,7 +245,7 @@ func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdatePut_disableAServer
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/AdvancedThreatProtectionSettingsPutEnabled.json
+// Generated from example definition: 2024-12-30/AdvancedThreatProtectionSettingsPutEnabled.json
 func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdatePut_enableAServerSAdvancedThreatProtectionSettingsUsingPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,13 +266,13 @@ func ExampleAdvancedThreatProtectionSettingsClient_BeginUpdatePut_enableAServerS
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.AdvancedThreatProtectionSettingsClientUpdatePutResponse{
-	// 	AdvancedThreatProtection: &armmysqlflexibleservers.AdvancedThreatProtection{
+	// 	AdvancedThreatProtection: armmysqlflexibleservers.AdvancedThreatProtection{
 	// 		Name: to.Ptr("Default"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers/advancedThreatProtectionSettings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/threatprotection-4799/providers/Microsoft.DBforMySQL/flexibleServers/threatprotection-6440/advancedThreatProtectionSettings/Default"),

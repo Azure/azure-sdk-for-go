@@ -31,11 +31,12 @@
   "packageOptions": {
     "breakingChangeLabel": "CI-BreakingChange-Go",
     "breakingChangesLabel": "BreakingChange-Go-Sdk",
+    "sdkBreakingChangePatternFile": "documentation/development/breaking-changes/sdk-breaking-changes-guide-migration.md",
     "buildScript": {
-      "command": "generator build {packagePath}",
+      "command": "generator build {packagePath} --filter-test",
       "path": ""
     },
-    "getSDKChangesScript":{
+    "getSdkChangesScript":{
       "command": "generator changelog {packagePath} --report-file {outputJsonFile}",
       "path": ""
     },

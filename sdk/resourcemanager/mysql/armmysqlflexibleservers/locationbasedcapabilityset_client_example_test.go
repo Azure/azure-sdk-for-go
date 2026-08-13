@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-12-01-preview/CapabilitySetByLocation.json
+// Generated from example definition: 2024-12-30/CapabilitySetByLocation.json
 func ExampleLocationBasedCapabilitySetClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleLocationBasedCapabilitySetClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmysqlflexibleservers.LocationBasedCapabilitySetClientGetResponse{
-	// 	Capability: &armmysqlflexibleservers.Capability{
+	// 	Capability: armmysqlflexibleservers.Capability{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DBforMySQL/capabilities"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.DBforMySQL/locations/WestUS/capabilitySets/default"),
@@ -1145,7 +1145,7 @@ func ExampleLocationBasedCapabilitySetClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-12-01-preview/CapabilitySetListByLocation.json
+// Generated from example definition: 2024-12-30/CapabilitySetListByLocation.json
 func ExampleLocationBasedCapabilitySetClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

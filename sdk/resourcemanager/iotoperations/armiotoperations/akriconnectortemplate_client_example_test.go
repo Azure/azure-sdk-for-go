@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,6 +44,19 @@ func ExampleAkriConnectorTemplateClient_BeginCreateOrUpdate() {
 						TagDigestSettings: &armiotoperations.AkriConnectorsTag{
 							TagDigestType: to.Ptr(armiotoperations.AkriConnectorsTagDigestTypeTag),
 							Tag:           to.Ptr("0.5.0-20250825.4"),
+						},
+						ReadinessProbe: &armiotoperations.AkriConnectorTemplateReadinessProbe{
+							Exec: &armiotoperations.AkriConnectorTemplateExecAction{
+								Command: []*string{
+									to.Ptr("cat"),
+									to.Ptr("/tmp/ready"),
+								},
+							},
+							FailureThreshold:    to.Ptr[int32](3),
+							InitialDelaySeconds: to.Ptr[int32](5),
+							PeriodSeconds:       to.Ptr[int32](10),
+							SuccessThreshold:    to.Ptr[int32](1),
+							TimeoutSeconds:      to.Ptr[int32](2),
 						},
 					},
 				},
@@ -116,6 +129,19 @@ func ExampleAkriConnectorTemplateClient_BeginCreateOrUpdate() {
 	// 							TagDigestType: to.Ptr(armiotoperations.AkriConnectorsTagDigestTypeTag),
 	// 							Tag: to.Ptr("0.5.0-20250825.4"),
 	// 						},
+	// 						ReadinessProbe: &armiotoperations.AkriConnectorTemplateReadinessProbe{
+	// 							Exec: &armiotoperations.AkriConnectorTemplateExecAction{
+	// 								Command: []*string{
+	// 									to.Ptr("cat"),
+	// 									to.Ptr("/tmp/ready"),
+	// 								},
+	// 							},
+	// 							FailureThreshold: to.Ptr[int32](3),
+	// 							InitialDelaySeconds: to.Ptr[int32](5),
+	// 							PeriodSeconds: to.Ptr[int32](10),
+	// 							SuccessThreshold: to.Ptr[int32](1),
+	// 							TimeoutSeconds: to.Ptr[int32](2),
+	// 						},
 	// 					},
 	// 				},
 	// 			},
@@ -167,7 +193,7 @@ func ExampleAkriConnectorTemplateClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AkriConnectorTemplate_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnectorTemplate_Delete_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +214,7 @@ func ExampleAkriConnectorTemplateClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/AkriConnectorTemplate_Get_Managed_Rest.json
+// Generated from example definition: 2026-07-01/AkriConnectorTemplate_Get_Managed_Rest.json
 func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetManagedRest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +303,7 @@ func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetManagedRest(
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -318,6 +344,19 @@ func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetMaximumSet()
 	// 						TagDigestSettings: &armiotoperations.AkriConnectorsTag{
 	// 							TagDigestType: to.Ptr(armiotoperations.AkriConnectorsTagDigestTypeTag),
 	// 							Tag: to.Ptr("0.5.0-20250825.4"),
+	// 						},
+	// 						ReadinessProbe: &armiotoperations.AkriConnectorTemplateReadinessProbe{
+	// 							Exec: &armiotoperations.AkriConnectorTemplateExecAction{
+	// 								Command: []*string{
+	// 									to.Ptr("cat"),
+	// 									to.Ptr("/tmp/ready"),
+	// 								},
+	// 							},
+	// 							FailureThreshold: to.Ptr[int32](3),
+	// 							InitialDelaySeconds: to.Ptr[int32](5),
+	// 							PeriodSeconds: to.Ptr[int32](10),
+	// 							SuccessThreshold: to.Ptr[int32](1),
+	// 							TimeoutSeconds: to.Ptr[int32](2),
 	// 						},
 	// 					},
 	// 				},
@@ -370,7 +409,7 @@ func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetMaximumSet()
 	// }
 }
 
-// Generated from example definition: 2026-03-01/AkriConnectorTemplate_ListByInstanceResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-07-01/AkriConnectorTemplate_ListByInstanceResource_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_NewListByInstanceResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,6 +456,19 @@ func ExampleAkriConnectorTemplateClient_NewListByInstanceResourcePager() {
 		// 								TagDigestSettings: &armiotoperations.AkriConnectorsTag{
 		// 									TagDigestType: to.Ptr(armiotoperations.AkriConnectorsTagDigestTypeTag),
 		// 									Tag: to.Ptr("0.5.0-20250825.4"),
+		// 								},
+		// 								ReadinessProbe: &armiotoperations.AkriConnectorTemplateReadinessProbe{
+		// 									Exec: &armiotoperations.AkriConnectorTemplateExecAction{
+		// 										Command: []*string{
+		// 											to.Ptr("cat"),
+		// 											to.Ptr("/tmp/ready"),
+		// 										},
+		// 									},
+		// 									FailureThreshold: to.Ptr[int32](3),
+		// 									InitialDelaySeconds: to.Ptr[int32](5),
+		// 									PeriodSeconds: to.Ptr[int32](10),
+		// 									SuccessThreshold: to.Ptr[int32](1),
+		// 									TimeoutSeconds: to.Ptr[int32](2),
 		// 								},
 		// 							},
 		// 						},

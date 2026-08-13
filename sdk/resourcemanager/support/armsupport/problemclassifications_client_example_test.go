@@ -30,7 +30,7 @@ func ExampleProblemClassificationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsupport.ProblemClassificationsClientGetResponse{
-	// 	ProblemClassification: &armsupport.ProblemClassification{
+	// 	ProblemClassification: armsupport.ProblemClassification{
 	// 		Name: to.Ptr("problemClassification_guid"),
 	// 		Type: to.Ptr("Microsoft.Support/problemClassifications"),
 	// 		ID: to.Ptr("/providers/Microsoft.Support/services/service_guid/problemClassifications/problemClassification_guid"),

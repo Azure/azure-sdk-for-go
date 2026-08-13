@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/AccountCapabilityHost/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/AccountCapabilityHost/createOrUpdate.json
 func ExampleAccountCapabilityHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleAccountCapabilityHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/AccountCapabilityHost/delete.json
+// Generated from example definition: 2026-05-15-preview/AccountCapabilityHost/delete.json
 func ExampleAccountCapabilityHostsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleAccountCapabilityHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/AccountCapabilityHost/get.json
+// Generated from example definition: 2026-05-15-preview/AccountCapabilityHost/get.json
 func ExampleAccountCapabilityHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleAccountCapabilityHostsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/AccountCapabilityHost/list.json
+// Generated from example definition: 2026-05-15-preview/AccountCapabilityHost/list.json
 func ExampleAccountCapabilityHostsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

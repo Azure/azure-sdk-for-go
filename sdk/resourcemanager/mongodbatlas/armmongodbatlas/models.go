@@ -6,6 +6,57 @@ package armmongodbatlas
 
 import "time"
 
+// Cluster - The MongoDB Atlas Cluster resource type. A cluster is a managed database deployment within a project.
+type Cluster struct {
+	// The resource-specific properties for this resource.
+	Properties *ClusterProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ClusterListResult - The response of a Cluster list operation.
+type ClusterListResult struct {
+	// REQUIRED; The Cluster items on this page
+	Value []*Cluster
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ClusterProperties - Properties specific to a MongoDB Atlas Cluster.
+type ClusterProperties struct {
+	// REQUIRED; Cluster tier (FREE, FLEX, M10, M30).
+	ClusterTier *ClusterTier
+
+	// REQUIRED; Azure region where the cluster is deployed.
+	RegionName *string
+
+	// READ-ONLY; Whether backups are active for the cluster; null if undetermined.
+	Backups *bool
+
+	// READ-ONLY; Name of the MongoDB Atlas Cluster.
+	ClusterName *string
+
+	// READ-ONLY; MongoDB version running on the cluster.
+	MongoDbVersion *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+
+	// READ-ONLY; Current state of the cluster.
+	State *string
+}
+
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
@@ -190,6 +241,78 @@ type PartnerProperties struct {
 	RedirectURL *string
 }
 
+// Project - The MongoDB Atlas Project resource type. A project is a logical grouping of clusters within an organization.
+type Project struct {
+	// The resource-specific properties for this resource.
+	Properties *ProjectProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ProjectLimitStatus - Usage and limit status for a resource quota in a MongoDB Atlas project.
+type ProjectLimitStatus struct {
+	// REQUIRED; Current value.
+	Current *int32
+
+	// REQUIRED; Whether the limit has been reached.
+	IsReached *bool
+
+	// REQUIRED; Maximum allowed value.
+	Maximum *int32
+
+	// REQUIRED; Type of the limit.
+	Type *ClusterTier
+}
+
+// ProjectListResult - The response of a Project list operation.
+type ProjectListResult struct {
+	// REQUIRED; The Project items on this page
+	Value []*Project
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ProjectProperties - Properties specific to a MongoDB Atlas Project.
+type ProjectProperties struct {
+	// READ-ONLY; Number of clusters in the project.
+	ClusterCount *int64
+
+	// READ-ONLY; Atlas organization id.
+	OrganizationID *string
+
+	// READ-ONLY; Atlas project id.
+	ProjectID *string
+
+	// READ-ONLY; Atlas project name.
+	ProjectName *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ResourceProvisioningState
+}
+
+// RegionsByTierResponse - Response for regions by cluster tier.
+type RegionsByTierResponse struct {
+	// READ-ONLY; Atlas organization id.
+	OrganizationID *string
+
+	// READ-ONLY; Atlas project id.
+	ProjectID *string
+
+	// READ-ONLY; List of cluster tiers and their supported regions.
+	RegionsByTier []*TierRegions
+}
+
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
@@ -209,6 +332,21 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
+}
+
+// TierLimitReachedResponse - Response for tier limit check.
+type TierLimitReachedResponse struct {
+	// READ-ONLY; List of project limit statuses.
+	Limits []*ProjectLimitStatus
+}
+
+// TierRegions - Cluster tier and its supported regions.
+type TierRegions struct {
+	// REQUIRED; Supported region names.
+	Regions []*string
+
+	// REQUIRED; Cluster tier name.
+	Tier *ClusterTier
 }
 
 // UserAssignedIdentity - User assigned identity properties

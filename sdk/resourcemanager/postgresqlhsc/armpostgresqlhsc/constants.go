@@ -4,6 +4,10 @@
 
 package armpostgresqlhsc
 
+const (
+	version20230302Preview string = "2023-03-02-preview"
+)
+
 // AADEnabledEnum - Indicates whether the cluster was created using AAD authentication.
 type AADEnabledEnum string
 

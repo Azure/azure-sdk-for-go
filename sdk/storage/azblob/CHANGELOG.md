@@ -8,6 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed an issue where `AccessConditions` passed to `Client.UploadBuffer` and `Client.UploadFile` were dropped from the `Put Block List` commit for payloads larger than `MaxUploadBlobBytes`. Fixes [#27031](https://github.com/Azure/azure-sdk-for-go/issues/27031).
 
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.

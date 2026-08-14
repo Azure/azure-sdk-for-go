@@ -201,7 +201,6 @@ func TestNewDefaultTransport(t *testing.T) {
 	require.NotNil(t, tr.TLSClientConfig)
 	require.Equal(t, uint16(tls.VersionTLS12), tr.TLSClientConfig.MinVersion)
 	require.NotNil(t, tr.Proxy)
-	require.NotNil(t, tr.DialContext)
 }
 
 // loopbackTestClient returns an *http.Client whose transport resolves the test

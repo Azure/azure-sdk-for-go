@@ -39,6 +39,16 @@ func noFollowRedirect(_ *http.Request, _ []*http.Request) error {
 // following, without mutating the caller-supplied options. azcore.ClientOptions
 // instances may be shared across client constructors, so we apply the redirect
 // protection to a shallow copy and leave the caller's options untouched.
+//
+// Redirect following in Go happens inside the http.Client (the transport),
+// below the azcore pipeline, so it can only be controlled where we recognize
+// the transport: the default (nil) transport and a caller-supplied *http.Client
+// both get redirect following disabled. A caller that supplies some other
+// policy.Transporter implementation owns that transport's redirect behavior and
+// is responsible for ensuring it does not forward the credential across a
+// redirect (we cannot control an opaque Do). See the redirect-policy feature
+// request tracked for azcore, which would let this be handled uniformly in the
+// pipeline regardless of transport.
 func withRedirectProtection(options *ClientOptions) *ClientOptions {
 	local := ClientOptions{}
 	if options != nil {
@@ -54,6 +64,11 @@ func withRedirectProtection(options *ClientOptions) *ClientOptions {
 		clone := *t
 		clone.CheckRedirect = noFollowRedirect
 		local.Transport = &clone
+	default:
+		// A custom, opaque policy.Transporter: its redirect handling cannot be
+		// controlled from here, so it is left as-is and remains the caller's
+		// responsibility.
+		_ = t
 	}
 	return &local
 }

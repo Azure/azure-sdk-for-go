@@ -19,7 +19,7 @@ import (
 // ElasticSnapshotPoliciesClient contains the methods for the ElasticSnapshotPolicies group.
 // Don't use this type directly, use NewElasticSnapshotPoliciesClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-06-15-preview
 type ElasticSnapshotPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,8 +83,7 @@ func (client *ElasticSnapshotPoliciesClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -113,7 +112,7 @@ func (client *ElasticSnapshotPoliciesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -164,8 +163,7 @@ func (client *ElasticSnapshotPoliciesClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -194,7 +192,7 @@ func (client *ElasticSnapshotPoliciesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -220,12 +218,7 @@ func (client *ElasticSnapshotPoliciesClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ElasticSnapshotPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ElasticSnapshotPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -252,15 +245,18 @@ func (client *ElasticSnapshotPoliciesClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ElasticSnapshotPoliciesClient) getHandleResponse(resp *http.Response) (ElasticSnapshotPoliciesClientGetResponse, error) {
+func (client *ElasticSnapshotPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ElasticSnapshotPoliciesClientGetResponse, error) {
 	result := ElasticSnapshotPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticSnapshotPolicy); err != nil {
 		return ElasticSnapshotPoliciesClientGetResponse{}, err
 	}
@@ -283,47 +279,61 @@ func (client *ElasticSnapshotPoliciesClient) NewListByElasticAccountPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByElasticAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listByElasticAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return ElasticSnapshotPoliciesClientListByElasticAccountResponse{}, err
 			}
-			return client.listByElasticAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ElasticSnapshotPoliciesClientListByElasticAccountResponse{}, err
+			}
+			return client.listByElasticAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByElasticAccountCreateRequest creates the ListByElasticAccount request.
-func (client *ElasticSnapshotPoliciesClient) listByElasticAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *ElasticSnapshotPoliciesClientListByElasticAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticSnapshotPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ElasticSnapshotPoliciesClient) listByElasticAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ElasticSnapshotPoliciesClientListByElasticAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticSnapshotPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260615Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByElasticAccountHandleResponse handles the ListByElasticAccount response.
-func (client *ElasticSnapshotPoliciesClient) listByElasticAccountHandleResponse(resp *http.Response) (ElasticSnapshotPoliciesClientListByElasticAccountResponse, error) {
+func (client *ElasticSnapshotPoliciesClient) listByElasticAccountHandleResponse(resp *http.Response, successCodes ...int) (ElasticSnapshotPoliciesClientListByElasticAccountResponse, error) {
 	result := ElasticSnapshotPoliciesClientListByElasticAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticSnapshotPolicyListResult); err != nil {
 		return ElasticSnapshotPoliciesClientListByElasticAccountResponse{}, err
 	}
@@ -347,51 +357,65 @@ func (client *ElasticSnapshotPoliciesClient) NewListElasticVolumesPager(resource
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listElasticVolumesCreateRequest(ctx, resourceGroupName, accountName, snapshotPolicyName, options)
-			}, nil)
+			req, err := client.listElasticVolumesCreateRequest(ctx, resourceGroupName, accountName, snapshotPolicyName, nextLink, options)
 			if err != nil {
 				return ElasticSnapshotPoliciesClientListElasticVolumesResponse{}, err
 			}
-			return client.listElasticVolumesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ElasticSnapshotPoliciesClientListElasticVolumesResponse{}, err
+			}
+			return client.listElasticVolumesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listElasticVolumesCreateRequest creates the ListElasticVolumes request.
-func (client *ElasticSnapshotPoliciesClient) listElasticVolumesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, _ *ElasticSnapshotPoliciesClientListElasticVolumesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticSnapshotPolicies/{snapshotPolicyName}/elasticvolumes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ElasticSnapshotPoliciesClient) listElasticVolumesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, snapshotPolicyName string, nextLink string, _ *ElasticSnapshotPoliciesClientListElasticVolumesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticSnapshotPolicies/{snapshotPolicyName}/elasticvolumes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if snapshotPolicyName == "" {
+			return nil, errors.New("parameter snapshotPolicyName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{snapshotPolicyName}", url.PathEscape(snapshotPolicyName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if snapshotPolicyName == "" {
-		return nil, errors.New("parameter snapshotPolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{snapshotPolicyName}", url.PathEscape(snapshotPolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260615Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listElasticVolumesHandleResponse handles the ListElasticVolumes response.
-func (client *ElasticSnapshotPoliciesClient) listElasticVolumesHandleResponse(resp *http.Response) (ElasticSnapshotPoliciesClientListElasticVolumesResponse, error) {
+func (client *ElasticSnapshotPoliciesClient) listElasticVolumesHandleResponse(resp *http.Response, successCodes ...int) (ElasticSnapshotPoliciesClientListElasticVolumesResponse, error) {
 	result := ElasticSnapshotPoliciesClientListElasticVolumesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticSnapshotPolicyVolumeList); err != nil {
 		return ElasticSnapshotPoliciesClientListElasticVolumesResponse{}, err
 	}
@@ -440,8 +464,7 @@ func (client *ElasticSnapshotPoliciesClient) update(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -470,7 +493,7 @@ func (client *ElasticSnapshotPoliciesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

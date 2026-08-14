@@ -19,7 +19,7 @@ import (
 // BackupsUnderAccountClient contains the methods for the BackupsUnderAccount group.
 // Don't use this type directly, use NewBackupsUnderAccountClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-06-15-preview
 type BackupsUnderAccountClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,8 +82,7 @@ func (client *BackupsUnderAccountClient) migrateBackups(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -108,7 +107,7 @@ func (client *BackupsUnderAccountClient) migrateBackupsCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

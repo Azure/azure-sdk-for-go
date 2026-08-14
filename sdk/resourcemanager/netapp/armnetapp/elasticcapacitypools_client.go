@@ -19,7 +19,7 @@ import (
 // ElasticCapacityPoolsClient contains the methods for the ElasticCapacityPools group.
 // Don't use this type directly, use NewElasticCapacityPoolsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-06-15-preview
 type ElasticCapacityPoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,8 +83,7 @@ func (client *ElasticCapacityPoolsClient) changeZone(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -113,7 +112,7 @@ func (client *ElasticCapacityPoolsClient) changeZoneCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -145,12 +144,7 @@ func (client *ElasticCapacityPoolsClient) CheckVolumeFilePathAvailability(ctx co
 	if err != nil {
 		return ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse{}, err
-	}
-	resp, err := client.checkVolumeFilePathAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkVolumeFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkVolumeFilePathAvailabilityCreateRequest creates the CheckVolumeFilePathAvailability request.
@@ -177,7 +171,7 @@ func (client *ElasticCapacityPoolsClient) checkVolumeFilePathAvailabilityCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -188,8 +182,11 @@ func (client *ElasticCapacityPoolsClient) checkVolumeFilePathAvailabilityCreateR
 }
 
 // checkVolumeFilePathAvailabilityHandleResponse handles the CheckVolumeFilePathAvailability response.
-func (client *ElasticCapacityPoolsClient) checkVolumeFilePathAvailabilityHandleResponse(resp *http.Response) (ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse, error) {
+func (client *ElasticCapacityPoolsClient) checkVolumeFilePathAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse, error) {
 	result := ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckElasticResourceAvailabilityResponse); err != nil {
 		return ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse{}, err
 	}
@@ -240,8 +237,7 @@ func (client *ElasticCapacityPoolsClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -270,7 +266,7 @@ func (client *ElasticCapacityPoolsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -321,8 +317,7 @@ func (client *ElasticCapacityPoolsClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -351,7 +346,7 @@ func (client *ElasticCapacityPoolsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -377,12 +372,7 @@ func (client *ElasticCapacityPoolsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ElasticCapacityPoolsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ElasticCapacityPoolsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -409,15 +399,18 @@ func (client *ElasticCapacityPoolsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ElasticCapacityPoolsClient) getHandleResponse(resp *http.Response) (ElasticCapacityPoolsClientGetResponse, error) {
+func (client *ElasticCapacityPoolsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ElasticCapacityPoolsClientGetResponse, error) {
 	result := ElasticCapacityPoolsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticCapacityPool); err != nil {
 		return ElasticCapacityPoolsClientGetResponse{}, err
 	}
@@ -440,47 +433,61 @@ func (client *ElasticCapacityPoolsClient) NewListByElasticAccountPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByElasticAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listByElasticAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return ElasticCapacityPoolsClientListByElasticAccountResponse{}, err
 			}
-			return client.listByElasticAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ElasticCapacityPoolsClientListByElasticAccountResponse{}, err
+			}
+			return client.listByElasticAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByElasticAccountCreateRequest creates the ListByElasticAccount request.
-func (client *ElasticCapacityPoolsClient) listByElasticAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *ElasticCapacityPoolsClientListByElasticAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ElasticCapacityPoolsClient) listByElasticAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ElasticCapacityPoolsClientListByElasticAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260615Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByElasticAccountHandleResponse handles the ListByElasticAccount response.
-func (client *ElasticCapacityPoolsClient) listByElasticAccountHandleResponse(resp *http.Response) (ElasticCapacityPoolsClientListByElasticAccountResponse, error) {
+func (client *ElasticCapacityPoolsClient) listByElasticAccountHandleResponse(resp *http.Response, successCodes ...int) (ElasticCapacityPoolsClientListByElasticAccountResponse, error) {
 	result := ElasticCapacityPoolsClientListByElasticAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticCapacityPoolListResult); err != nil {
 		return ElasticCapacityPoolsClientListByElasticAccountResponse{}, err
 	}
@@ -529,8 +536,7 @@ func (client *ElasticCapacityPoolsClient) update(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -559,7 +565,7 @@ func (client *ElasticCapacityPoolsClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

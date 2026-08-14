@@ -994,14 +994,14 @@ func (b BackupProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "backupId", b.BackupID)
 	populate(objectMap, "backupPolicyResourceId", b.BackupPolicyResourceID)
 	populate(objectMap, "backupType", b.BackupType)
-	populateTime[datetime.RFC3339](objectMap, "completionDate", b.CompletionDate)
-	populateTime[datetime.RFC3339](objectMap, "creationDate", b.CreationDate)
+	populateTime[datetime.RFC3339](objectMap, "completionDate", b.CompletionDate, true)
+	populateTime[datetime.RFC3339](objectMap, "creationDate", b.CreationDate, true)
 	populate(objectMap, "failureReason", b.FailureReason)
 	populate(objectMap, "isLargeVolume", b.IsLargeVolume)
 	populate(objectMap, "label", b.Label)
 	populate(objectMap, "provisioningState", b.ProvisioningState)
 	populate(objectMap, "size", b.Size)
-	populateTime[datetime.RFC3339](objectMap, "snapshotCreationDate", b.SnapshotCreationDate)
+	populateTime[datetime.RFC3339](objectMap, "snapshotCreationDate", b.SnapshotCreationDate, true)
 	populate(objectMap, "snapshotName", b.SnapshotName)
 	populate(objectMap, "useExistingSnapshot", b.UseExistingSnapshot)
 	populate(objectMap, "volumeResourceId", b.VolumeResourceID)
@@ -1557,7 +1557,7 @@ func (b *BucketCredentialsExpiry) UnmarshalJSON(data []byte) error {
 func (b BucketGenerateCredentials) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessKey", b.AccessKey)
-	populateTime[datetime.RFC3339](objectMap, "keyPairExpiry", b.KeyPairExpiry)
+	populateTime[datetime.RFC3339](objectMap, "keyPairExpiry", b.KeyPairExpiry, true)
 	populate(objectMap, "secretKey", b.SecretKey)
 	return json.Marshal(objectMap)
 }
@@ -1795,7 +1795,7 @@ func (b *BucketServerPatchProperties) UnmarshalJSON(data []byte) error {
 func (b BucketServerProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificateCommonName", b.CertificateCommonName)
-	populateTime[datetime.RFC3339](objectMap, "certificateExpiryDate", b.CertificateExpiryDate)
+	populateTime[datetime.RFC3339](objectMap, "certificateExpiryDate", b.CertificateExpiryDate, true)
 	populate(objectMap, "certificateObject", b.CertificateObject)
 	populate(objectMap, "fqdn", b.Fqdn)
 	populate(objectMap, "ipAddress", b.IPAddress)
@@ -3223,8 +3223,8 @@ func (e *ElasticBackupPolicyUpdateProperties) UnmarshalJSON(data []byte) error {
 func (e ElasticBackupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "backupType", e.BackupType)
-	populateTime[datetime.RFC3339](objectMap, "completionDate", e.CompletionDate)
-	populateTime[datetime.RFC3339](objectMap, "creationDate", e.CreationDate)
+	populateTime[datetime.RFC3339](objectMap, "completionDate", e.CompletionDate, true)
+	populateTime[datetime.RFC3339](objectMap, "creationDate", e.CreationDate, true)
 	populate(objectMap, "elasticBackupPolicyResourceId", e.ElasticBackupPolicyResourceID)
 	populate(objectMap, "elasticSnapshotResourceId", e.ElasticSnapshotResourceID)
 	populate(objectMap, "elasticVolumeResourceId", e.ElasticVolumeResourceID)
@@ -3232,7 +3232,7 @@ func (e ElasticBackupProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "label", e.Label)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
 	populate(objectMap, "size", e.Size)
-	populateTime[datetime.RFC3339](objectMap, "snapshotCreationDate", e.SnapshotCreationDate)
+	populateTime[datetime.RFC3339](objectMap, "snapshotCreationDate", e.SnapshotCreationDate, true)
 	populate(objectMap, "snapshotUsage", e.SnapshotUsage)
 	populate(objectMap, "volumeSize", e.VolumeSize)
 	return json.Marshal(objectMap)
@@ -5423,10 +5423,10 @@ func (l LdapConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dnsServers", l.DNSServers)
 	populate(objectMap, "domain", l.Domain)
 	populate(objectMap, "groupDN", l.GroupDN)
-	populate(objectMap, "ldapOverTLS", l.LdapOverTLS)
 	populate(objectMap, "ldapPort", l.LdapPort)
 	populate(objectMap, "ldapServers", l.LdapServers)
 	populate(objectMap, "netGroupDN", l.NetGroupDN)
+	populate(objectMap, "secureLdapType", l.SecureLdapType)
 	populate(objectMap, "serverCACertificate", l.ServerCACertificate)
 	populate(objectMap, "userDN", l.UserDN)
 	return json.Marshal(objectMap)
@@ -5462,9 +5462,6 @@ func (l *LdapConfiguration) UnmarshalJSON(data []byte) error {
 		case "groupDN":
 			err = unpopulate(val, "GroupDN", &l.GroupDN)
 			delete(rawMsg, key)
-		case "ldapOverTLS":
-			err = unpopulate(val, "LdapOverTLS", &l.LdapOverTLS)
-			delete(rawMsg, key)
 		case "ldapPort":
 			err = unpopulate(val, "LdapPort", &l.LdapPort)
 			delete(rawMsg, key)
@@ -5473,6 +5470,9 @@ func (l *LdapConfiguration) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "netGroupDN":
 			err = unpopulate(val, "NetGroupDN", &l.NetGroupDN)
+			delete(rawMsg, key)
+		case "secureLdapType":
+			err = unpopulate(val, "SecureLdapType", &l.SecureLdapType)
 			delete(rawMsg, key)
 		case "serverCACertificate":
 			err = unpopulate(val, "ServerCACertificate", &l.ServerCACertificate)
@@ -5498,10 +5498,10 @@ func (l LdapConfigurationPatch) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dnsServers", l.DNSServers)
 	populate(objectMap, "domain", l.Domain)
 	populate(objectMap, "groupDN", l.GroupDN)
-	populate(objectMap, "ldapOverTLS", l.LdapOverTLS)
 	populate(objectMap, "ldapPort", l.LdapPort)
 	populate(objectMap, "ldapServers", l.LdapServers)
 	populate(objectMap, "netGroupDN", l.NetGroupDN)
+	populate(objectMap, "secureLdapType", l.SecureLdapType)
 	populate(objectMap, "serverCACertificate", l.ServerCACertificate)
 	populate(objectMap, "userDN", l.UserDN)
 	return json.Marshal(objectMap)
@@ -5537,9 +5537,6 @@ func (l *LdapConfigurationPatch) UnmarshalJSON(data []byte) error {
 		case "groupDN":
 			err = unpopulate(val, "GroupDN", &l.GroupDN)
 			delete(rawMsg, key)
-		case "ldapOverTLS":
-			err = unpopulate(val, "LdapOverTLS", &l.LdapOverTLS)
-			delete(rawMsg, key)
 		case "ldapPort":
 			err = unpopulate(val, "LdapPort", &l.LdapPort)
 			delete(rawMsg, key)
@@ -5548,6 +5545,9 @@ func (l *LdapConfigurationPatch) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "netGroupDN":
 			err = unpopulate(val, "NetGroupDN", &l.NetGroupDN)
+			delete(rawMsg, key)
+		case "secureLdapType":
+			err = unpopulate(val, "SecureLdapType", &l.SecureLdapType)
 			delete(rawMsg, key)
 		case "serverCACertificate":
 			err = unpopulate(val, "ServerCACertificate", &l.ServerCACertificate)
@@ -6712,7 +6712,7 @@ func (r *RansomwareReport) UnmarshalJSON(data []byte) error {
 func (r RansomwareReportProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "clearedCount", r.ClearedCount)
-	populateTime[datetime.RFC3339](objectMap, "eventTime", r.EventTime)
+	populateTime[datetime.RFC3339](objectMap, "eventTime", r.EventTime, true)
 	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "reportedCount", r.ReportedCount)
 	populate(objectMap, "severity", r.Severity)
@@ -7092,8 +7092,8 @@ func (r Replication) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "mirrorState", r.MirrorState)
 	populate(objectMap, "remoteVolumeRegion", r.RemoteVolumeRegion)
 	populate(objectMap, "remoteVolumeResourceId", r.RemoteVolumeResourceID)
-	populateTime[datetime.RFC3339](objectMap, "replicationCreationTime", r.ReplicationCreationTime)
-	populateTime[datetime.RFC3339](objectMap, "replicationDeletionTime", r.ReplicationDeletionTime)
+	populateTime[datetime.RFC3339](objectMap, "replicationCreationTime", r.ReplicationCreationTime, true)
+	populateTime[datetime.RFC3339](objectMap, "replicationDeletionTime", r.ReplicationDeletionTime, true)
 	populate(objectMap, "replicationId", r.ReplicationID)
 	populate(objectMap, "replicationSchedule", r.ReplicationSchedule)
 	return json.Marshal(objectMap)
@@ -7752,7 +7752,7 @@ func (s *SnapshotPolicyVolumeList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SnapshotProperties.
 func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "created", s.Created)
+	populateTime[datetime.RFC3339](objectMap, "created", s.Created, true)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "snapshotId", s.SnapshotID)
 	return json.Marshal(objectMap)
@@ -8040,11 +8040,11 @@ func (s *SubvolumeModel) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SubvolumeModelProperties.
 func (s SubvolumeModelProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "accessedTimeStamp", s.AccessedTimeStamp)
+	populateTime[datetime.RFC3339](objectMap, "accessedTimeStamp", s.AccessedTimeStamp, true)
 	populate(objectMap, "bytesUsed", s.BytesUsed)
-	populateTime[datetime.RFC3339](objectMap, "changedTimeStamp", s.ChangedTimeStamp)
-	populateTime[datetime.RFC3339](objectMap, "creationTimeStamp", s.CreationTimeStamp)
-	populateTime[datetime.RFC3339](objectMap, "modifiedTimeStamp", s.ModifiedTimeStamp)
+	populateTime[datetime.RFC3339](objectMap, "changedTimeStamp", s.ChangedTimeStamp, true)
+	populateTime[datetime.RFC3339](objectMap, "creationTimeStamp", s.CreationTimeStamp, true)
+	populateTime[datetime.RFC3339](objectMap, "modifiedTimeStamp", s.ModifiedTimeStamp, true)
 	populate(objectMap, "parentPath", s.ParentPath)
 	populate(objectMap, "path", s.Path)
 	populate(objectMap, "permissions", s.Permissions)
@@ -8231,7 +8231,7 @@ func (s *SubvolumesList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SuspectFile.
 func (s SuspectFile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "fileTimestamp", s.FileTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "fileTimestamp", s.FileTimestamp, true)
 	populate(objectMap, "suspectFileName", s.SuspectFileName)
 	return json.Marshal(objectMap)
 }
@@ -8316,10 +8316,10 @@ func (s *SvmPeerCommandResponseProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -9834,13 +9834,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -9850,7 +9854,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -9861,7 +9865,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

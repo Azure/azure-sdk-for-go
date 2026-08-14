@@ -25,6 +25,14 @@
   methods. Null and undefined components are now distinct: `AppendNull` produces an explicitly
   JSON null component and `AppendUndefined` produces one whose value is missing from the item,
   which route differently. See [PR 27333](https://github.com/Azure/azure-sdk-for-go/pull/27333).
+* Added `Client`, `DatabaseClient` and `ContainerClient`, along with `ClientOptions` and the
+  `NewClient` and `NewClientWithKey` constructors. Region preference is expressed as a
+  `RoutingStrategy`, built with either `ProximityTo` for the SDK to order regions by proximity to
+  where the application runs, or `PreferredRegions` for an explicit order; both take a typed
+  `Region`. Account keys are supplied through `NewKeyCredential`, which validates the key so a
+  malformed one is reported at construction rather than as an authentication failure on every
+  operation. Operations on these clients are not implemented yet.
+  See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
 
 ### Breaking Changes
 

@@ -19,7 +19,7 @@ import (
 // BackupInstancesClient contains the methods for the BackupInstances group.
 // Don't use this type directly, use NewBackupInstancesClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-06-01
 type BackupInstancesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,8 +83,7 @@ func (client *BackupInstancesClient) adhocBackup(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -113,7 +112,7 @@ func (client *BackupInstancesClient) adhocBackupCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -165,8 +164,7 @@ func (client *BackupInstancesClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -195,7 +193,7 @@ func (client *BackupInstancesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
@@ -249,8 +247,7 @@ func (client *BackupInstancesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -279,7 +276,7 @@ func (client *BackupInstancesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -307,12 +304,7 @@ func (client *BackupInstancesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupInstancesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -339,15 +331,18 @@ func (client *BackupInstancesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupInstancesClient) getHandleResponse(resp *http.Response) (BackupInstancesClientGetResponse, error) {
+func (client *BackupInstancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesClientGetResponse, error) {
 	result := BackupInstancesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResource); err != nil {
 		return BackupInstancesClientGetResponse{}, err
 	}
@@ -376,12 +371,7 @@ func (client *BackupInstancesClient) GetBackupInstanceOperationResult(ctx contex
 	if err != nil {
 		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
-	}
-	resp, err := client.getBackupInstanceOperationResultHandleResponse(httpResp)
-	return resp, err
+	return client.getBackupInstanceOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getBackupInstanceOperationResultCreateRequest creates the GetBackupInstanceOperationResult request.
@@ -412,15 +402,18 @@ func (client *BackupInstancesClient) getBackupInstanceOperationResultCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getBackupInstanceOperationResultHandleResponse handles the GetBackupInstanceOperationResult response.
-func (client *BackupInstancesClient) getBackupInstanceOperationResultHandleResponse(resp *http.Response) (BackupInstancesClientGetBackupInstanceOperationResultResponse, error) {
+func (client *BackupInstancesClient) getBackupInstanceOperationResultHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesClientGetBackupInstanceOperationResultResponse, error) {
 	result := BackupInstancesClientGetBackupInstanceOperationResultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResource); err != nil {
 		return BackupInstancesClientGetBackupInstanceOperationResultResponse{}, err
 	}
@@ -443,47 +436,61 @@ func (client *BackupInstancesClient) NewListPager(resourceGroupName string, vaul
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, nextLink, options)
 			if err != nil {
 				return BackupInstancesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BackupInstancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *BackupInstancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BackupInstancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, nextLink string, _ *BackupInstancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vaultName == "" {
+			return nil, errors.New("parameter vaultName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupInstancesClient) listHandleResponse(resp *http.Response) (BackupInstancesClientListResponse, error) {
+func (client *BackupInstancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesClientListResponse, error) {
 	result := BackupInstancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupInstanceResourceList); err != nil {
 		return BackupInstancesClientListResponse{}, err
 	}
@@ -531,8 +538,7 @@ func (client *BackupInstancesClient) resumeBackups(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -561,7 +567,7 @@ func (client *BackupInstancesClient) resumeBackupsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -607,8 +613,7 @@ func (client *BackupInstancesClient) resumeProtection(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -637,7 +642,7 @@ func (client *BackupInstancesClient) resumeProtectionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -683,8 +688,7 @@ func (client *BackupInstancesClient) stopProtection(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -713,7 +717,7 @@ func (client *BackupInstancesClient) stopProtectionCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -771,8 +775,7 @@ func (client *BackupInstancesClient) suspendBackups(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -801,7 +804,7 @@ func (client *BackupInstancesClient) suspendBackupsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -860,8 +863,7 @@ func (client *BackupInstancesClient) syncBackupInstance(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -890,7 +892,7 @@ func (client *BackupInstancesClient) syncBackupInstanceCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -940,8 +942,7 @@ func (client *BackupInstancesClient) triggerCrossRegionRestore(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -966,7 +967,7 @@ func (client *BackupInstancesClient) triggerCrossRegionRestoreCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1018,8 +1019,7 @@ func (client *BackupInstancesClient) triggerRehydrate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1048,7 +1048,7 @@ func (client *BackupInstancesClient) triggerRehydrateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1099,8 +1099,7 @@ func (client *BackupInstancesClient) triggerRestore(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1129,7 +1128,7 @@ func (client *BackupInstancesClient) triggerRestoreCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
@@ -1183,8 +1182,7 @@ func (client *BackupInstancesClient) validateCrossRegionRestore(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1209,7 +1207,7 @@ func (client *BackupInstancesClient) validateCrossRegionRestoreCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1260,8 +1258,7 @@ func (client *BackupInstancesClient) validateForBackup(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1286,7 +1283,7 @@ func (client *BackupInstancesClient) validateForBackupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1338,8 +1335,7 @@ func (client *BackupInstancesClient) validateForModifyBackup(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1368,7 +1364,7 @@ func (client *BackupInstancesClient) validateForModifyBackupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1419,8 +1415,7 @@ func (client *BackupInstancesClient) validateForRestore(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1449,7 +1444,7 @@ func (client *BackupInstancesClient) validateForRestoreCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

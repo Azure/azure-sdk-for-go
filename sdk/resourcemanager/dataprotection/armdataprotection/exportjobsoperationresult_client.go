@@ -19,7 +19,7 @@ import (
 // ExportJobsOperationResultClient contains the methods for the ExportJobsOperationResult group.
 // Don't use this type directly, use NewExportJobsOperationResultClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-06-01
 type ExportJobsOperationResultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *ExportJobsOperationResultClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ExportJobsOperationResultClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportJobsOperationResultClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,15 +90,18 @@ func (client *ExportJobsOperationResultClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportJobsOperationResultClient) getHandleResponse(resp *http.Response) (ExportJobsOperationResultClientGetResponse, error) {
+func (client *ExportJobsOperationResultClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExportJobsOperationResultClientGetResponse, error) {
 	result := ExportJobsOperationResultClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportJobsResult); err != nil {
 		return ExportJobsOperationResultClientGetResponse{}, err
 	}

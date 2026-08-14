@@ -1,5 +1,20 @@
 # Release History
 
+## 4.2.0 (2026-08-14)
+### Features Added
+
+- New enum type `GranularityLevel` with values `GranularityLevelProtectedItemLevel`, `GranularityLevelProtectedItemWithParentTag`, `GranularityLevelVaultLevel`
+- New function `*GenericBackupDatasourceParameters.GetBackupDatasourceParameters() *BackupDatasourceParameters`
+- New function `*GenericRestoreDatasourceCriteria.GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria`
+- New struct `CostManagementSettings`
+- New struct `GenericBackupDatasourceParameters`
+- New struct `GenericRestoreDatasourceCriteria`
+- New struct `ResourceListSelectionCriteria`
+- New field `CostManagementSettings` in struct `BackupVault`
+- New field `CostManagementSettings` in struct `DeletedBackupVault`
+- New field `CostManagementSettings` in struct `PatchBackupVaultInput`
+
+
 ## 4.1.0 (2026-06-24)
 ### Features Added
 

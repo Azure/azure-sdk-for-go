@@ -730,32 +730,41 @@ type BackupSchedule struct {
 	// Each value must follow the format: `R/YYYY-MM-DDThh:mm:ss[.fff][Z|(+/-)hh:mm]/Duration`
 	// Only the exact formats listed below are supported. Other ISO 8601 variations are not accepted.
 	// Supported time formats:
-	// - `Thh:mm:ss.fff` (with milliseconds)
-	// - `Thh:mm:ss` (with seconds)
-	// - `Thh:mm` (hours and minutes only)
+	//
+	//   - `Thh:mm:ss.fff` (with milliseconds)
+	//   - `Thh:mm:ss` (with seconds)
+	//   - `Thh:mm` (hours and minutes only)
+	//
 	// A timezone indicator (`Z`, `+hh:mm`, or `-hh:mm`) may be appended to any of the above.
 	// Unsupported formats include compact notation such as `T1430`, `T143045`, or `T14.5`.
 	// Examples:
-	// - `R/2023-10-15T14:30:00Z/P1W`
-	// - `R/2023-10-15T14:30:45.123+05:30/P1D`
-	// - `R/2023-10-15T14:30Z/P1D`
+	//
+	//   - `R/2023-10-15T14:30:00Z/P1W`
+	//   - `R/2023-10-15T14:30:45.123+05:30/P1D`
+	//   - `R/2023-10-15T14:30Z/P1D`
 	RepeatingTimeIntervals []*string
 
 	// Time Zone for a schedule.
 	// Supported timezone indicators include:
-	// - 'Z' for UTC
-	// - '+00:00'
-	// - '+05:30'
-	// - '-08:00'
+	//
+	//   - 'Z' for UTC
+	//   - '+00:00'
+	//   - '+05:30'
+	//   - '-08:00'
+	//
 	// Examples:
-	// - 2023-10-15T14:30:45Z
-	// - 2023-10-15T14:30:45.123+05:30
-	// - 2023-10-15T14:30-08:00
+	//
+	//   - 2023-10-15T14:30:45Z
+	//   - 2023-10-15T14:30:45.123+05:30
+	//   - 2023-10-15T14:30-08:00
 	TimeZone *string
 }
 
 // BackupVault - Backup Vault
 type BackupVault struct {
+	// Cost Management Settings of the vault
+	CostManagementSettings *CostManagementSettings
+
 	// Feature Settings
 	FeatureSettings *FeatureSettings
 
@@ -1044,6 +1053,12 @@ type CopyOption struct {
 // GetCopyOption implements the CopyOptionClassification interface for type CopyOption.
 func (c *CopyOption) GetCopyOption() *CopyOption { return c }
 
+// CostManagementSettings - Cost Management Settings of the vault
+type CostManagementSettings struct {
+	// Settings for granularity level
+	GranularityLevel *GranularityLevel
+}
+
 // CrossRegionRestoreDetails - Cross Region Restore details
 type CrossRegionRestoreDetails struct {
 	// REQUIRED
@@ -1310,6 +1325,9 @@ type DeletedBackupVault struct {
 	// READ-ONLY; Deletion info for the tracked resource (Backup Vault)
 	ResourceDeletionInfo *ResourceDeletionInfo
 
+	// Cost Management Settings of the vault
+	CostManagementSettings *CostManagementSettings
+
 	// Feature Settings
 	FeatureSettings *FeatureSettings
 
@@ -1564,6 +1582,40 @@ type FetchSecondaryRPsRequestParameters struct {
 
 	// Source region in which BackupInstance is located
 	SourceRegion *string
+}
+
+// GenericBackupDatasourceParameters - Generic parameters to be used during configuration of backup
+type GenericBackupDatasourceParameters struct {
+	// CONSTANT; Type of the specific object - used for deserializing
+	// Field has constant value "GenericBackupDatasourceParameters", any specified value is ignored.
+	ObjectType *string
+
+	// REQUIRED; List of resource selectors to be backed up during configuration of backup
+	ResourceSelectors []*string
+}
+
+// GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type GenericBackupDatasourceParameters.
+func (g *GenericBackupDatasourceParameters) GetBackupDatasourceParameters() *BackupDatasourceParameters {
+	return &BackupDatasourceParameters{
+		ObjectType: g.ObjectType,
+	}
+}
+
+// GenericRestoreDatasourceCriteria - Generic criteria to be used during restore
+type GenericRestoreDatasourceCriteria struct {
+	// CONSTANT; Type of the specific object - used for deserializing
+	// Field has constant value "GenericRestoreDatasourceCriteria", any specified value is ignored.
+	ObjectType *string
+
+	// REQUIRED; List of resource identifiers that need to be restored
+	ResourceSelectors *ResourceListSelectionCriteria
+}
+
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type GenericRestoreDatasourceCriteria.
+func (g *GenericRestoreDatasourceCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: g.ObjectType,
+	}
 }
 
 type IdentityDetails struct {
@@ -2029,6 +2081,9 @@ type OperationResource struct {
 
 // PatchBackupVaultInput - Backup Vault Contract for Patch Backup Vault API.
 type PatchBackupVaultInput struct {
+	// Cost Management Settings of the vault
+	CostManagementSettings *CostManagementSettings
+
 	// Feature Settings
 	FeatureSettings *FeatureSettings
 
@@ -2241,6 +2296,19 @@ type ResourceGuardResourceList struct {
 
 	// List of resources.
 	Value []*ResourceGuardResource
+}
+
+// ResourceListSelectionCriteria - Specifies the list of resources to be restored
+type ResourceListSelectionCriteria struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string
+
+	// REQUIRED; List of resource identifiers to restore from
+	ResourceIdentifiers []*string
+
+	// This is a map of source resource names to target resources names to restore into. Any source name not included in the map
+	// will be restored with a default naming format
+	ResourceNameOverrides map[string]*string
 }
 
 // ResourceMoveDetails will be returned in response to GetResource call from ARM

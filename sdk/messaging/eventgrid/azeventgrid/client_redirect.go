@@ -35,27 +35,27 @@ func noFollowRedirect(_ *http.Request, _ []*http.Request) error {
 	return http.ErrUseLastResponse
 }
 
-// applyRedirectCredentialProtection ensures the HTTP client used by the pipeline
-// does not follow redirects, closing a credential-leak vector. It preserves a
-// caller-supplied transport where possible:
-//
-//   - no transport supplied: a default client (mirroring azcore's tuned
-//     transport) is installed with redirect following disabled.
-//   - an *http.Client supplied: it is cloned with redirect following disabled.
-//   - any other custom transport: left untouched (such a transport is
-//     responsible for its own redirect handling).
-func applyRedirectCredentialProtection(options *ClientOptions) {
-	switch t := options.Transport.(type) {
+// withRedirectProtection returns a *ClientOptions that disables redirect
+// following, without mutating the caller-supplied options. azcore.ClientOptions
+// instances may be shared across client constructors, so we apply the redirect
+// protection to a shallow copy and leave the caller's options untouched.
+func withRedirectProtection(options *ClientOptions) *ClientOptions {
+	local := ClientOptions{}
+	if options != nil {
+		local = *options
+	}
+	switch t := local.Transport.(type) {
 	case nil:
-		options.Transport = &http.Client{
+		local.Transport = &http.Client{
 			Transport:     newDefaultTransport(),
 			CheckRedirect: noFollowRedirect,
 		}
 	case *http.Client:
 		clone := *t
 		clone.CheckRedirect = noFollowRedirect
-		options.Transport = &clone
+		local.Transport = &clone
 	}
+	return &local
 }
 
 // newDefaultTransport returns an *http.Transport configured identically to
@@ -70,10 +70,10 @@ func applyRedirectCredentialProtection(options *ClientOptions) {
 func newDefaultTransport() *http.Transport {
 	transport := &http.Transport{
 		Proxy: http.ProxyFromEnvironment,
-		DialContext: (&net.Dialer{
+		DialContext: defaultTransportDialContext(&net.Dialer{
 			Timeout:   30 * time.Second,
 			KeepAlive: 30 * time.Second,
-		}).DialContext,
+		}),
 		ForceAttemptHTTP2:     true,
 		MaxIdleConns:          100,
 		MaxIdleConnsPerHost:   10,

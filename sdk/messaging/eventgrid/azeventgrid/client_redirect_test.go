@@ -168,6 +168,25 @@ func TestPublisher_DoesNotFollowSameHostRedirect(t *testing.T) {
 	require.False(t, redirectTargetReached, "the redirect target must not be reached")
 }
 
+// TestWithRedirectProtection_DoesNotMutateSharedOptions verifies the caller's
+// ClientOptions (which azcore permits sharing across constructors) is not
+// mutated, and that each call produces an independent transport.
+func TestWithRedirectProtection_DoesNotMutateSharedOptions(t *testing.T) {
+	shared := &ClientOptions{}
+
+	first := withRedirectProtection(shared)
+	require.Nil(t, shared.Transport, "caller's options must not be mutated")
+	require.NotNil(t, first.Transport, "returned options must have the protective transport")
+
+	second := withRedirectProtection(shared)
+	require.Nil(t, shared.Transport, "caller's options must still not be mutated")
+	require.NotSame(t, first, second, "each call returns an independent options copy")
+	require.NotSame(t, first.Transport, second.Transport, "each call installs an independent client")
+
+	// nil options is handled without panicking.
+	require.NotNil(t, withRedirectProtection(nil).Transport)
+}
+
 // TestNewDefaultTransport verifies the installed default transport mirrors
 // azcore's tuned settings rather than falling back to http.DefaultTransport.
 func TestNewDefaultTransport(t *testing.T) {

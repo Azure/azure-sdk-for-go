@@ -12,7 +12,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"crypto/x509/pkix"
-	"errors"
 	"fmt"
 	"math/big"
 	"net"
@@ -27,104 +26,30 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestBlockUnsafeRedirect(t *testing.T) {
+func TestNoFollowRedirect(t *testing.T) {
 	newReq := func(rawURL string) *http.Request {
 		u, _ := url.Parse(rawURL)
-		r := &http.Request{URL: u, Header: http.Header{}}
-		r.Header.Set("Authorization", "auth-secret")
-		r.Header.Set("aeg-sas-key", "secret-key")
-		r.Header.Set("aeg-sas-token", "secret-token")
-		r.Header.Set("Content-Type", "application/json")
-		return r
+		return &http.Request{URL: u, Header: http.Header{}}
 	}
 
-	t.Run("cross-host redirect is blocked", func(t *testing.T) {
+	t.Run("cross-host redirect is not followed", func(t *testing.T) {
 		req := newReq("https://attacker.example/collect")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockUnsafeRedirect(nil)(req, via)
-		require.ErrorIs(t, err, errUnsafeRedirect)
+		require.ErrorIs(t, noFollowRedirect(req, via), http.ErrUseLastResponse)
 	})
 
-	t.Run("cross-host to a sibling subdomain is blocked", func(t *testing.T) {
-		req := newReq("https://attacker.eventgrid.azure.net/collect")
-		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockUnsafeRedirect(nil)(req, via)
-		require.ErrorIs(t, err, errUnsafeRedirect)
-	})
-
-	t.Run("same-host different-port redirect is blocked", func(t *testing.T) {
-		req := newReq("https://topic.eventgrid.azure.net:8443/collect")
-		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockUnsafeRedirect(nil)(req, via)
-		require.ErrorIs(t, err, errUnsafeRedirect)
-	})
-
-	t.Run("https-to-http downgrade on same host is blocked", func(t *testing.T) {
-		req := newReq("http://topic.eventgrid.azure.net/api/events")
-		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockUnsafeRedirect(nil)(req, via)
-		require.ErrorIs(t, err, errUnsafeRedirect)
-	})
-
-	t.Run("http-to-https upgrade on same host is allowed", func(t *testing.T) {
-		req := newReq("https://topic.eventgrid.azure.net/api/events")
-		via := []*http.Request{newReq("http://topic.eventgrid.azure.net/api/events")}
-		require.NoError(t, blockUnsafeRedirect(nil)(req, via))
-	})
-
-	t.Run("same-origin redirect is allowed and keeps credential headers", func(t *testing.T) {
+	t.Run("same-host redirect is not followed", func(t *testing.T) {
 		req := newReq("https://topic.eventgrid.azure.net/api/events?redirected=1")
 		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		require.NoError(t, blockUnsafeRedirect(nil)(req, via))
-		// credential headers are untouched for a permitted same-origin redirect
-		require.Equal(t, "secret-key", req.Header.Get("aeg-sas-key"))
-		require.Equal(t, "secret-token", req.Header.Get("aeg-sas-token"))
-		require.Equal(t, "auth-secret", req.Header.Get("Authorization"))
-	})
-
-	t.Run("same-host match is case-insensitive", func(t *testing.T) {
-		req := newReq("https://TOPIC.eventgrid.azure.net/api/events")
-		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		require.NoError(t, blockUnsafeRedirect(nil)(req, via))
-	})
-
-	t.Run("prior CheckRedirect is chained for same-origin redirects", func(t *testing.T) {
-		sentinel := errors.New("prior called")
-		req := newReq("https://topic.eventgrid.azure.net/api/events?redirected=1")
-		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		err := blockUnsafeRedirect(func(*http.Request, []*http.Request) error {
-			return sentinel
-		})(req, via)
-		require.ErrorIs(t, err, sentinel)
-	})
-
-	t.Run("unsafe-redirect block takes precedence over prior CheckRedirect", func(t *testing.T) {
-		req := newReq("https://attacker.example/collect")
-		via := []*http.Request{newReq("https://topic.eventgrid.azure.net/api/events")}
-		priorCalled := false
-		err := blockUnsafeRedirect(func(*http.Request, []*http.Request) error {
-			priorCalled = true
-			return nil
-		})(req, via)
-		require.ErrorIs(t, err, errUnsafeRedirect)
-		require.False(t, priorCalled, "prior CheckRedirect must not run for a blocked redirect")
-	})
-
-	t.Run("default redirect limit enforced for same-origin redirects", func(t *testing.T) {
-		req := newReq("https://topic.eventgrid.azure.net/a")
-		via := make([]*http.Request, maxDefaultRedirects)
-		for i := range via {
-			via[i] = newReq("https://topic.eventgrid.azure.net/api/events")
-		}
-		require.Error(t, blockUnsafeRedirect(nil)(req, via))
+		require.ErrorIs(t, noFollowRedirect(req, via), http.ErrUseLastResponse)
 	})
 }
 
-// TestPublisher_BlocksCrossHostRedirect exercises the full client: a "trusted"
-// topic host answers the publish with a 307 redirect to a different "attacker"
-// host, and we assert the attacker host is never contacted at all (so neither
-// the credential nor the event payload leaks).
-func TestPublisher_BlocksCrossHostRedirect(t *testing.T) {
+// TestPublisher_DoesNotFollowCrossHostRedirect exercises the full client: a
+// "trusted" topic host answers the publish with a 307 redirect to a different
+// "attacker" host, and we assert the attacker host is never contacted at all
+// (so neither the credential nor the event payload leaks).
+func TestPublisher_DoesNotFollowCrossHostRedirect(t *testing.T) {
 	const trustedHost = "trusted-topic.eventgrid.example"
 	const attackerHost = "attacker-collector.example"
 
@@ -158,8 +83,7 @@ func TestPublisher_BlocksCrossHostRedirect(t *testing.T) {
 	attackerURL = fmt.Sprintf("https://%s:%s/collect", attackerHost, portOf(attacker))
 	endpoint := fmt.Sprintf("https://%s:%s", trustedHost, portOf(trusted))
 
-	transport := crossHostTestTransport(pool)
-	opts := &ClientOptions{ClientOptions: azcore.ClientOptions{Transport: transport}}
+	opts := &ClientOptions{ClientOptions: azcore.ClientOptions{Transport: loopbackTestClient(pool)}}
 
 	evt, err := messaging.NewCloudEvent("src", "Test.Event", map[string]string{"hello": "world"}, nil)
 	require.NoError(t, err)
@@ -187,7 +111,7 @@ func TestPublisher_BlocksCrossHostRedirect(t *testing.T) {
 			require.NoError(t, err)
 
 			_, err = client.PublishCloudEvents(context.Background(), events, nil)
-			// The publish must fail rather than follow the cross-host redirect.
+			// The publish must fail rather than follow the redirect.
 			require.Error(t, err)
 
 			// The credential was sent to the trusted (configured) host on the first request...
@@ -200,33 +124,29 @@ func TestPublisher_BlocksCrossHostRedirect(t *testing.T) {
 			require.True(t, sentToTrusted, "expected credential to be sent to the trusted host")
 
 			// ...but the attacker host must NEVER be contacted at all.
-			require.Empty(t, captured["attacker"], "attacker host must not be contacted on a cross-host redirect")
+			require.Empty(t, captured["attacker"], "attacker host must not be contacted on a redirect")
 		})
 	}
 }
 
-// TestPublisher_AllowsSameHostRedirect verifies that a same-host redirect is
-// still followed (with the credential) and the publish succeeds.
-func TestPublisher_AllowsSameHostRedirect(t *testing.T) {
+// TestPublisher_DoesNotFollowSameHostRedirect verifies that even a same-host
+// redirect is not followed (matching the .NET no-auto-redirect posture); the
+// publish surfaces the 3xx as an error.
+func TestPublisher_DoesNotFollowSameHostRedirect(t *testing.T) {
 	const host = "trusted-topic.eventgrid.example"
 
 	cert := selfSignedCert(t, host)
 	pool := x509.NewCertPool()
 	pool.AddCert(cert.Leaf)
 
-	var sawCredentialAfterRedirect bool
-	var redirected bool
+	var redirectTargetReached bool
 
 	srv := httptest.NewUnstartedServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Query().Get("redirected") == "" {
-			// Same-host redirect (e.g. path normalization / query addition).
 			http.Redirect(w, r, r.URL.Path+"?redirected=1", http.StatusTemporaryRedirect)
 			return
 		}
-		redirected = true
-		if r.Header.Get("aeg-sas-key") != "" {
-			sawCredentialAfterRedirect = true
-		}
+		redirectTargetReached = true
 		w.WriteHeader(http.StatusOK)
 	}))
 	srv.TLS = &tls.Config{Certificates: []tls.Certificate{cert}}
@@ -236,7 +156,7 @@ func TestPublisher_AllowsSameHostRedirect(t *testing.T) {
 	u, _ := url.Parse(srv.URL)
 	endpoint := fmt.Sprintf("https://%s:%s", host, u.Port())
 
-	opts := &ClientOptions{ClientOptions: azcore.ClientOptions{Transport: crossHostTestTransport(pool)}}
+	opts := &ClientOptions{ClientOptions: azcore.ClientOptions{Transport: loopbackTestClient(pool)}}
 	client, err := NewClientWithSharedKeyCredential(endpoint, azcore.NewKeyCredential("supersecret-key"), opts)
 	require.NoError(t, err)
 
@@ -244,9 +164,8 @@ func TestPublisher_AllowsSameHostRedirect(t *testing.T) {
 	require.NoError(t, err)
 
 	_, err = client.PublishCloudEvents(context.Background(), []messaging.CloudEvent{evt}, nil)
-	require.NoError(t, err)
-	require.True(t, redirected, "expected the same-host redirect to be followed")
-	require.True(t, sawCredentialAfterRedirect, "expected the credential to be retained on a same-host redirect")
+	require.Error(t, err)
+	require.False(t, redirectTargetReached, "the redirect target must not be reached")
 }
 
 // TestNewDefaultTransport verifies the installed default transport mirrors
@@ -266,11 +185,11 @@ func TestNewDefaultTransport(t *testing.T) {
 	require.NotNil(t, tr.DialContext)
 }
 
-// crossHostTestTransport returns an *http.Client whose transport resolves the
-// test hostnames to loopback and trusts the test CA. It intentionally sets no
+// loopbackTestClient returns an *http.Client whose transport resolves the test
+// hostnames to loopback and trusts the test CA. It intentionally sets no
 // CheckRedirect, mimicking a plain caller-supplied client; the fix under test
-// must add the cross-host protection.
-func crossHostTestTransport(pool *x509.CertPool) *http.Client {
+// must disable redirect following.
+func loopbackTestClient(pool *x509.CertPool) *http.Client {
 	return &http.Client{
 		Transport: &http.Transport{
 			DialContext: func(ctx context.Context, network, addr string) (net.Conn, error) {

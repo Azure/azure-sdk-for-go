@@ -40,16 +40,24 @@ func resetCredentialState(t *testing.T) {
 	})
 }
 
+// setCredentialFactory installs a test credential factory under credentialMu,
+// matching the lock held by newContainerClient when it reads the factory.
+func setCredentialFactory(f func() (azcore.TokenCredential, error)) {
+	credentialMu.Lock()
+	credentialFactory = f
+	credentialMu.Unlock()
+}
+
 func TestNewContainerClientReusesOAuthCredential(t *testing.T) {
 	resetCredentialState(t)
 	t.Setenv("AZURE_STORAGE_ACCOUNT_URL", "https://account.example.test/")
 	t.Setenv("AZURE_STORAGE_ACCOUNT_NAME", "")
 	t.Setenv("AZURE_STORAGE_CONNECTION_STRING", "")
 	var calls atomic.Int32
-	credentialFactory = func() (azcore.TokenCredential, error) {
+	setCredentialFactory(func() (azcore.TokenCredential, error) {
 		calls.Add(1)
 		return staticTokenCredential{}, nil
-	}
+	})
 
 	first, err := newContainerClient("first", nil)
 	require.NoError(t, err)
@@ -66,7 +74,7 @@ func TestNewContainerClientBuildsPublicCloudURLFromAccountName(t *testing.T) {
 	t.Setenv("AZURE_STORAGE_ACCOUNT_URL", "")
 	t.Setenv("AZURE_STORAGE_ACCOUNT_NAME", "account")
 	t.Setenv("AZURE_STORAGE_CONNECTION_STRING", "")
-	credentialFactory = func() (azcore.TokenCredential, error) { return staticTokenCredential{}, nil }
+	setCredentialFactory(func() (azcore.TokenCredential, error) { return staticTokenCredential{}, nil })
 
 	client, err := newContainerClient("container", nil)
 
@@ -78,7 +86,7 @@ func TestNewContainerClientReturnsCredentialFactoryError(t *testing.T) {
 	resetCredentialState(t)
 	t.Setenv("AZURE_STORAGE_ACCOUNT_URL", "https://account.example.test")
 	credentialErr := errors.New("credential unavailable")
-	credentialFactory = func() (azcore.TokenCredential, error) { return nil, credentialErr }
+	setCredentialFactory(func() (azcore.TokenCredential, error) { return nil, credentialErr })
 
 	_, err := newContainerClient("container", nil)
 

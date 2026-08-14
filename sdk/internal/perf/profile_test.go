@@ -27,6 +27,14 @@ func TestStartCPUProfileRequiresPath(t *testing.T) {
 	require.Nil(t, stop)
 }
 
+func TestStartCPUProfileReturnsFileCreateError(t *testing.T) {
+	// A directory path makes os.Create fail after the parent MkdirAll succeeds.
+	stop, err := startCPUProfile(true, t.TempDir())
+	require.Error(t, err)
+	require.ErrorContains(t, err, "creating CPU profile")
+	require.Nil(t, stop)
+}
+
 func TestStartCPUProfileWritesFile(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "profiles", "cpu.pprof")
 	stop, err := startCPUProfile(true, path)

@@ -261,9 +261,20 @@ func (r *perfRunner) runPhase(warmup bool, rateCh <-chan struct{}) error {
 	}
 	phaseWG.Wait()
 	close(errs)
+	// Once a worker fails, cancel() tears down the shared context so in-flight
+	// siblings return context.Canceled. Those are noise in front of the real
+	// cause, so keep them only if no genuine error was recorded.
 	var phaseErr error
+	var canceledErr error
 	for err := range errs {
+		if errors.Is(err, context.Canceled) {
+			canceledErr = err
+			continue
+		}
 		phaseErr = errors.Join(phaseErr, err)
+	}
+	if phaseErr == nil {
+		phaseErr = canceledErr
 	}
 	return phaseErr
 }
@@ -379,6 +390,7 @@ func (r *perfRunner) stopProxyPlaybacks() error {
 }
 
 func (r *perfRunner) stopBackground() error {
+	var err error
 	r.backgroundStopOnce.Do(func() {
 		if r.ticker != nil {
 			r.ticker.Stop()
@@ -392,8 +404,11 @@ func (r *perfRunner) stopBackground() error {
 		case r.backgroundErr = <-r.statusErr:
 		default:
 		}
+		// Return the error only from the first call so it is not joined twice
+		// (explicit call plus the deferred call in run()).
+		err = r.backgroundErr
 	})
-	return r.backgroundErr
+	return err
 }
 
 // newRateLimiter starts a producer goroutine that emits one token every

@@ -52,11 +52,13 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.Glob
 	if err != nil {
 		return nil, err
 	}
-	defer cleanupContainerOnError(&retErr, containerClient)
 	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
+	// Registered only after Create succeeds so a Create failure does not issue
+	// a Delete against a container that was never created.
+	defer cleanupContainerOnError(&retErr, containerClient)
 
 	// Seed the container with the requested number of empty blobs. The earlier
 	// implementation hard-coded 100 here, which meant matrix entries asking

@@ -53,11 +53,13 @@ func NewDownloadTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.
 	if err != nil {
 		return nil, err
 	}
-	defer cleanupContainerOnError(&retErr, containerClient)
 	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
+	// Registered only after Create succeeds so a Create failure does not issue
+	// a Delete against a container that was never created.
+	defer cleanupContainerOnError(&retErr, containerClient)
 
 	blobClient := containerClient.NewBlockBlobClient(d.blobName)
 

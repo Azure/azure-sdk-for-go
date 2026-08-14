@@ -35,19 +35,26 @@ var (
 // either Azure AD token credentials or a shared key connection string,
 // depending on which environment variables are configured.
 //
-// Token auth is preferred and is selected when AZURE_STORAGE_ACCOUNT_NAME is
-// set, since some test environments disable shared key access. When only
+// Token auth is preferred and is selected when AZURE_STORAGE_ACCOUNT_URL or
+// AZURE_STORAGE_ACCOUNT_NAME is set, since some test environments disable shared
+// key access. This takes precedence over AZURE_STORAGE_CONNECTION_STRING, so a
+// pipeline that sets both switches to token auth and requires the identity to
+// have the Storage Blob Data Contributor role. When only
 // AZURE_STORAGE_CONNECTION_STRING is set, shared key auth is used.
 func newContainerClient(containerName string, options *container.ClientOptions) (*container.Client, error) {
 	accountURL := strings.TrimSpace(os.Getenv("AZURE_STORAGE_ACCOUNT_URL"))
 	accountName := strings.TrimSpace(os.Getenv("AZURE_STORAGE_ACCOUNT_NAME"))
 	if accountURL != "" || accountName != "" {
+		// The source env var is named in the error so the user knows which to fix
+		// when only AZURE_STORAGE_ACCOUNT_NAME was provided and the URL is synthesized.
+		urlSource := "AZURE_STORAGE_ACCOUNT_URL"
 		if accountURL == "" {
 			accountURL = fmt.Sprintf("https://%s.blob.core.windows.net", accountName)
+			urlSource = "AZURE_STORAGE_ACCOUNT_NAME"
 		}
 		parsed, err := url.Parse(accountURL)
 		if err != nil || parsed.Scheme == "" || parsed.Host == "" {
-			return nil, fmt.Errorf("invalid AZURE_STORAGE_ACCOUNT_URL %q", accountURL)
+			return nil, fmt.Errorf("invalid %s: derived account URL %q is not valid", urlSource, accountURL)
 		}
 		credentialMu.Lock()
 		cred := sharedCredential

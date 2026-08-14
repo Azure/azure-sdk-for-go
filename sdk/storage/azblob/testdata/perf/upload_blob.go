@@ -28,9 +28,8 @@ func uploadTestRegister() {
 
 type uploadTestGlobal struct {
 	perf.PerfTestOptions
-	containerName         string
-	blobPrefix            string
-	globalContainerClient *container.Client
+	containerName string
+	blobPrefix    string
 
 	// size is the per-iteration upload size in bytes.
 	size int64
@@ -72,11 +71,12 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.Gl
 	if err != nil {
 		return nil, err
 	}
-	u.globalContainerClient = containerClient
-	_, err = u.globalContainerClient.Create(ctx, nil)
+	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
+	// Registered only after Create succeeds so a Create failure does not issue
+	// a Delete against a container that was never created.
 	defer cleanupContainerOnError(&retErr, containerClient)
 
 	// Only the buffer method requires the full payload to be materialized in
@@ -101,7 +101,11 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.Gl
 }
 
 func (u *uploadTestGlobal) GlobalCleanup(ctx context.Context) error {
-	_, err := u.globalContainerClient.Delete(ctx, nil)
+	containerClient, err := containerClientFactory(u.containerName, nil)
+	if err != nil {
+		return err
+	}
+	_, err = containerClient.Delete(ctx, nil)
 	return err
 }
 

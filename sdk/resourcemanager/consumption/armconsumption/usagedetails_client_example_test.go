@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/UsageDetailsExpand.json
+// Generated from example definition: 2026-06-01/UsageDetailsExpand.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsExpandLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,15 +53,15 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsExpandLegacy() {
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010464556322455),
 		// 					Frequency: to.Ptr("UsageBased"),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
@@ -97,7 +97,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsExpandLegacy() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsList.json
+// Generated from example definition: 2026-06-01/UsageDetailsList.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,15 +134,15 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListLegacy() {
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Customer Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-30T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.April, 30, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.April, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Customer Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.ClassicStorage"),
 		// 					Cost: to.Ptr[float64](0.000001980949998),
 		// 					CostCenter: to.Ptr("BAS"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-09T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.April, 9, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.054693034210767),
 		// 					Frequency: to.Ptr("UsageBased"),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
@@ -171,7 +171,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListLegacy() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByBillingAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByBillingAccount.json
 func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,15 +208,15 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListLegacy
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000295194820065),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.000402776395232),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -244,7 +244,7 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListLegacy
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByDepartment.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByDepartment.json
 func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,15 +281,15 @@ func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListLegacy() {
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000295194820065),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.000402776395232),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -317,7 +317,7 @@ func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListLegacy() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByEnrollmentAccount.json
 func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,15 +354,15 @@ func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListLeg
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000295194820065),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.000402776395232),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -390,7 +390,7 @@ func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListLeg
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCABillingAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCABillingAccount.json
 func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,8 +427,8 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListModern
 		// 					BillingAccountID: to.Ptr("1234:56789"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrencyCode: to.Ptr("USD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.October, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("2468"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
@@ -439,9 +439,9 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListModern
 		// 					CostInUSD: to.Ptr[float64](1.84763819095477),
 		// 					CustomerName: to.Ptr("Modern Azure Customer 1"),
 		// 					CustomerTenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.October, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRate: to.Ptr("1"),
-		// 					ExchangeRateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-30T00:00:00Z"); return t}()),
+		// 					ExchangeRateDate: to.Ptr(time.Date(2019, time.September, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRatePricingToBilling: to.Ptr[float64](0.077),
 		// 					Frequency: to.Ptr("UsageBased"),
 		// 					InstanceName: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Resource Group 1/providers/Microsoft.Storage/storageAccounts/Resource Name 1"),
@@ -476,8 +476,8 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListModern
 		// 					ResourceLocationNormalized: to.Ptr("US East"),
 		// 					ServiceInfo1: to.Ptr(""),
 		// 					ServiceInfo2: to.Ptr("Windows Client BYOL"),
-		// 					ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
-		// 					ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					ServicePeriodEndDate: to.Ptr(time.Date(2019, time.December, 1, 0, 0, 0, 0, time.UTC)),
+		// 					ServicePeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					SubscriptionGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					SubscriptionName: to.Ptr("Subscription Name 1"),
 		// 					Term: to.Ptr(""),
@@ -494,7 +494,7 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListModern
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCABillingProfile.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCABillingProfile.json
 func ExampleUsageDetailsClient_NewListPager_billingProfileUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,8 +531,8 @@ func ExampleUsageDetailsClient_NewListPager_billingProfileUsageDetailsListModern
 		// 					BillingAccountID: to.Ptr("1234:56789"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrencyCode: to.Ptr("USD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.October, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("2468"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
@@ -543,9 +543,9 @@ func ExampleUsageDetailsClient_NewListPager_billingProfileUsageDetailsListModern
 		// 					CostInUSD: to.Ptr[float64](1.84763819095477),
 		// 					CustomerName: to.Ptr("Modern Azure Customer 1"),
 		// 					CustomerTenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.October, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRate: to.Ptr("1"),
-		// 					ExchangeRateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-30T00:00:00Z"); return t}()),
+		// 					ExchangeRateDate: to.Ptr(time.Date(2019, time.September, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRatePricingToBilling: to.Ptr[float64](0.077),
 		// 					Frequency: to.Ptr("UsageBased"),
 		// 					InstanceName: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Resource Group 1/providers/Microsoft.Storage/storageAccounts/Resource Name 1"),
@@ -580,8 +580,8 @@ func ExampleUsageDetailsClient_NewListPager_billingProfileUsageDetailsListModern
 		// 					ResourceLocationNormalized: to.Ptr("US East"),
 		// 					ServiceInfo1: to.Ptr(""),
 		// 					ServiceInfo2: to.Ptr("Windows Client BYOL"),
-		// 					ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
-		// 					ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					ServicePeriodEndDate: to.Ptr(time.Date(2019, time.December, 1, 0, 0, 0, 0, time.UTC)),
+		// 					ServicePeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					SubscriptionGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					SubscriptionName: to.Ptr("Subscription Name 1"),
 		// 					Term: to.Ptr(""),
@@ -598,7 +598,7 @@ func ExampleUsageDetailsClient_NewListPager_billingProfileUsageDetailsListModern
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCACustomer.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCACustomer.json
 func ExampleUsageDetailsClient_NewListPager_customerUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -635,8 +635,8 @@ func ExampleUsageDetailsClient_NewListPager_customerUsageDetailsListModern() {
 		// 					BillingAccountID: to.Ptr("1234:56789"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrencyCode: to.Ptr("USD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.October, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("2468"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
@@ -647,9 +647,9 @@ func ExampleUsageDetailsClient_NewListPager_customerUsageDetailsListModern() {
 		// 					CostInUSD: to.Ptr[float64](1.84763819095477),
 		// 					CustomerName: to.Ptr("Modern Azure Customer 1"),
 		// 					CustomerTenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.October, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRate: to.Ptr("1"),
-		// 					ExchangeRateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-30T00:00:00Z"); return t}()),
+		// 					ExchangeRateDate: to.Ptr(time.Date(2019, time.September, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRatePricingToBilling: to.Ptr[float64](0.077),
 		// 					Frequency: to.Ptr("UsageBased"),
 		// 					InstanceName: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Resource Group 1/providers/Microsoft.Storage/storageAccounts/Resource Name 1"),
@@ -684,8 +684,8 @@ func ExampleUsageDetailsClient_NewListPager_customerUsageDetailsListModern() {
 		// 					ResourceLocationNormalized: to.Ptr("US East"),
 		// 					ServiceInfo1: to.Ptr(""),
 		// 					ServiceInfo2: to.Ptr("Windows Client BYOL"),
-		// 					ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
-		// 					ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					ServicePeriodEndDate: to.Ptr(time.Date(2019, time.December, 1, 0, 0, 0, 0, time.UTC)),
+		// 					ServicePeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					SubscriptionGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					SubscriptionName: to.Ptr("Subscription Name 1"),
 		// 					Term: to.Ptr(""),
@@ -702,7 +702,7 @@ func ExampleUsageDetailsClient_NewListPager_customerUsageDetailsListModern() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMCAInvoiceSection.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMCAInvoiceSection.json
 func ExampleUsageDetailsClient_NewListPager_invoiceSectionUsageDetailsListModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -739,8 +739,8 @@ func ExampleUsageDetailsClient_NewListPager_invoiceSectionUsageDetailsListModern
 		// 					BillingAccountID: to.Ptr("1234:56789"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrencyCode: to.Ptr("USD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.October, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("2468"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
@@ -751,9 +751,9 @@ func ExampleUsageDetailsClient_NewListPager_invoiceSectionUsageDetailsListModern
 		// 					CostInUSD: to.Ptr[float64](1.84763819095477),
 		// 					CustomerName: to.Ptr("Modern Azure Customer 1"),
 		// 					CustomerTenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.October, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRate: to.Ptr("1"),
-		// 					ExchangeRateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-30T00:00:00Z"); return t}()),
+		// 					ExchangeRateDate: to.Ptr(time.Date(2019, time.September, 30, 0, 0, 0, 0, time.UTC)),
 		// 					ExchangeRatePricingToBilling: to.Ptr[float64](0.077),
 		// 					Frequency: to.Ptr("UsageBased"),
 		// 					InstanceName: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/Resource Group 1/providers/Microsoft.Storage/storageAccounts/Resource Name 1"),
@@ -788,8 +788,8 @@ func ExampleUsageDetailsClient_NewListPager_invoiceSectionUsageDetailsListModern
 		// 					ResourceLocationNormalized: to.Ptr("US East"),
 		// 					ServiceInfo1: to.Ptr(""),
 		// 					ServiceInfo2: to.Ptr("Windows Client BYOL"),
-		// 					ServicePeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-01T00:00:00Z"); return t}()),
-		// 					ServicePeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					ServicePeriodEndDate: to.Ptr(time.Date(2019, time.December, 1, 0, 0, 0, 0, time.UTC)),
+		// 					ServicePeriodStartDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					SubscriptionGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					SubscriptionName: to.Ptr("Subscription Name 1"),
 		// 					Term: to.Ptr(""),
@@ -806,7 +806,7 @@ func ExampleUsageDetailsClient_NewListPager_invoiceSectionUsageDetailsListModern
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByManagementGroup.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByManagementGroup.json
 func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -843,15 +843,15 @@ func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListLegac
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010534556373432),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -885,15 +885,15 @@ func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListLegac
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 2"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 2"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000295194820065),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.000402776395232),
 		// 					InvoiceSection: to.Ptr("Invoice Section 2"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -921,7 +921,7 @@ func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListLegac
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMetricActualCost.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMetricActualCost.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricActualCostLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -959,15 +959,15 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricActualCostLe
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Customer Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-30T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.April, 30, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.April, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Customer Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.ClassicStorage"),
 		// 					Cost: to.Ptr[float64](0.000001968949998),
 		// 					CostCenter: to.Ptr("BAS"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-09T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.April, 9, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.054693055510767),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -995,7 +995,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricActualCostLe
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMetricAmortizedCost.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMetricAmortizedCost.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricAmortizedCostLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1033,15 +1033,15 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricAmortizedCos
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Customer Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-30T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.April, 30, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.April, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Customer Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.ClassicStorage"),
 		// 					Cost: to.Ptr[float64](0.000001968949998),
 		// 					CostCenter: to.Ptr("BAS"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-09T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.April, 9, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.054693055510767),
 		// 					Frequency: to.Ptr("UsageBased"),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
@@ -1070,7 +1070,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricAmortizedCos
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListByMetricUsage.json
+// Generated from example definition: 2026-06-01/UsageDetailsListByMetricUsage.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricUsageLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1108,15 +1108,15 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricUsageLegacy(
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Customer Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-30T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.April, 30, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.April, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Customer Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.ClassicStorage"),
 		// 					Cost: to.Ptr[float64](0.000001968949998),
 		// 					CostCenter: to.Ptr("BAS"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-09T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.April, 9, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.054693055510767),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -1144,7 +1144,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListByMetricUsageLegacy(
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListFilterByTag.json
+// Generated from example definition: 2026-06-01/UsageDetailsListFilterByTag.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListFilterByTagLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1182,15 +1182,15 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListFilterByTagLegacy() 
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010534556373432),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -1217,7 +1217,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListFilterByTagLegacy() 
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriod.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriod.json
 func ExampleUsageDetailsClient_NewListPager_usageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1254,15 +1254,15 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListForBillingPeriodLega
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010534556373432),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -1290,7 +1290,7 @@ func ExampleUsageDetailsClient_NewListPager_usageDetailsListForBillingPeriodLega
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByBillingAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByBillingAccount.json
 func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1327,15 +1327,15 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListForBil
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010534556373432),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -1363,7 +1363,7 @@ func ExampleUsageDetailsClient_NewListPager_billingAccountUsageDetailsListForBil
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByDepartment.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByDepartment.json
 func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1400,15 +1400,15 @@ func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListForBilling
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010534556373432),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -1436,7 +1436,7 @@ func ExampleUsageDetailsClient_NewListPager_departmentUsageDetailsListForBilling
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByEnrollmentAccount.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByEnrollmentAccount.json
 func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1473,15 +1473,15 @@ func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListFor
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010534556373432),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -1509,7 +1509,7 @@ func ExampleUsageDetailsClient_NewListPager_enrollmentAccountUsageDetailsListFor
 	}
 }
 
-// Generated from example definition: 2024-08-01/UsageDetailsListForBillingPeriodByManagementGroup.json
+// Generated from example definition: 2026-06-01/UsageDetailsListForBillingPeriodByManagementGroup.json
 func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListForBillingPeriodLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1546,15 +1546,15 @@ func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListForBi
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 1"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 1"),
 		// 					ChargeType: to.Ptr("Usage"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000342194841184),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.010534556373432),
 		// 					InvoiceSection: to.Ptr("Invoice Section 1"),
 		// 					IsAzureCreditEligible: to.Ptr(false),
@@ -1588,15 +1588,15 @@ func ExampleUsageDetailsClient_NewListPager_managementGroupUsageDetailsListForBi
 		// 					BillingAccountID: to.Ptr("xxxxxxxx"),
 		// 					BillingAccountName: to.Ptr("Account Name 2"),
 		// 					BillingCurrency: to.Ptr("CAD"),
-		// 					BillingPeriodEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-31T00:00:00.0000000Z"); return t}()),
-		// 					BillingPeriodStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+		// 					BillingPeriodEndDate: to.Ptr(time.Date(2019, time.March, 31, 0, 0, 0, 0, time.UTC)),
+		// 					BillingPeriodStartDate: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 					BillingProfileID: to.Ptr("xxxxxxxx"),
 		// 					BillingProfileName: to.Ptr("Account Name 2"),
 		// 					ChargeType: to.Ptr("UnusedReservation"),
 		// 					ConsumedService: to.Ptr("Microsoft.Storage"),
 		// 					Cost: to.Ptr[float64](0.000821821271948),
 		// 					CostCenter: to.Ptr("DEV"),
-		// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-30T00:00:00.0000000Z"); return t}()),
+		// 					Date: to.Ptr(time.Date(2019, time.March, 30, 0, 0, 0, 0, time.UTC)),
 		// 					EffectivePrice: to.Ptr[float64](0.073488920944598),
 		// 					InvoiceSection: to.Ptr("Invoice Section 2"),
 		// 					IsAzureCreditEligible: to.Ptr(false),

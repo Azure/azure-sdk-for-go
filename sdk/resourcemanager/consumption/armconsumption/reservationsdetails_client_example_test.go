@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationDetailsByBillingAccountId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsByBillingAccountId.json
 func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingAc
 		// 					ReservedHours: to.Ptr[float64](48),
 		// 					SKUName: to.Ptr("Standard_D2s_v3"),
 		// 					TotalReservedQuantity: to.Ptr[float64](0),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-30T00:00:00-08:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.November, 30, 8, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0.6),
 		// 				},
 		// 			},
@@ -61,7 +61,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingAc
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetailsByBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsByBillingProfileId.json
 func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingProfileId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingPr
 		// 					ReservedHours: to.Ptr[float64](48),
 		// 					SKUName: to.Ptr("Standard_D2s_v3"),
 		// 					TotalReservedQuantity: to.Ptr[float64](0),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-30T00:00:00-08:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2019, time.September, 30, 8, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0.6),
 		// 				},
 		// 			},
@@ -111,7 +111,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingPr
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetailsByBillingProfileIdReservationId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsByBillingProfileIdReservationId.json
 func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingProfileIdReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingPr
 		// 					ReservedHours: to.Ptr[float64](48),
 		// 					SKUName: to.Ptr("Standard_D2s_v3"),
 		// 					TotalReservedQuantity: to.Ptr[float64](0),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-30T00:00:00-08:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2019, time.September, 30, 8, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0.6),
 		// 				},
 		// 			},
@@ -163,7 +163,7 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingPr
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetails.json
+// Generated from example definition: 2026-06-01/ReservationDetails.json
 func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -201,7 +201,7 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
 		// 					ReservedHours: to.Ptr[float64](24),
 		// 					SKUName: to.Ptr("Standard_D2_v2"),
 		// 					TotalReservedQuantity: to.Ptr[float64](1),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-29T00:00:00Z"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.November, 29, 0, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](24),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -215,7 +215,7 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationDetailsWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationDetailsWithReservationId.json
 func ExampleReservationsDetailsClient_NewListByReservationOrderAndReservationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleReservationsDetailsClient_NewListByReservationOrderAndReservationPag
 		// 					ReservedHours: to.Ptr[float64](24),
 		// 					SKUName: to.Ptr("Standard_D2_v2"),
 		// 					TotalReservedQuantity: to.Ptr[float64](1),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-29T00:00:00Z"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.November, 29, 0, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](24),
 		// 				},
 		// 				Tags: map[string]*string{

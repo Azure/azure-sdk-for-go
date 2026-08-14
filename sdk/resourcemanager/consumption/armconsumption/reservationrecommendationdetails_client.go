@@ -18,7 +18,7 @@ import (
 // ReservationRecommendationDetailsClient contains the methods for the ReservationRecommendationDetails group.
 // Don't use this type directly, use NewReservationRecommendationDetailsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationRecommendationDetailsClient struct {
 	internal *arm.Client
 }
@@ -65,12 +65,7 @@ func (client *ReservationRecommendationDetailsClient) Get(ctx context.Context, r
 	if err != nil {
 		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ReservationRecommendationDetailsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,8 +83,11 @@ func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	reqQP.Set("lookBackPeriod", string(lookBackPeriod))
+	if options != nil && options.ManagementGroupID != nil {
+		reqQP.Set("managementGroupId", *options.ManagementGroupID)
+	}
 	reqQP.Set("product", product)
 	reqQP.Set("region", region)
 	reqQP.Set("scope", string(scope))
@@ -100,8 +98,11 @@ func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReservationRecommendationDetailsClient) getHandleResponse(resp *http.Response) (ReservationRecommendationDetailsClientGetResponse, error) {
+func (client *ReservationRecommendationDetailsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReservationRecommendationDetailsClientGetResponse, error) {
 	result := ReservationRecommendationDetailsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationRecommendationDetailsModel); err != nil {
 		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}

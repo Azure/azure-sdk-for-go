@@ -19,7 +19,7 @@ import (
 // BudgetsClient contains the methods for the Budgets group.
 // Don't use this type directly, use NewBudgetsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type BudgetsClient struct {
 	internal *arm.Client
 }
@@ -59,12 +59,7 @@ func (client *BudgetsClient) CreateOrUpdate(ctx context.Context, scope string, b
 	if err != nil {
 		return BudgetsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return BudgetsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -83,7 +78,7 @@ func (client *BudgetsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -94,8 +89,11 @@ func (client *BudgetsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BudgetsClient) createOrUpdateHandleResponse(resp *http.Response) (BudgetsClientCreateOrUpdateResponse, error) {
+func (client *BudgetsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (BudgetsClientCreateOrUpdateResponse, error) {
 	result := BudgetsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Budget); err != nil {
 		return BudgetsClientCreateOrUpdateResponse{}, err
 	}
@@ -122,8 +120,7 @@ func (client *BudgetsClient) Delete(ctx context.Context, scope string, budgetNam
 		return BudgetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BudgetsClientDeleteResponse{}, err
+		return BudgetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return BudgetsClientDeleteResponse{}, nil
 }
@@ -144,7 +141,7 @@ func (client *BudgetsClient) deleteCreateRequest(ctx context.Context, scope stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -168,12 +165,7 @@ func (client *BudgetsClient) Get(ctx context.Context, scope string, budgetName s
 	if err != nil {
 		return BudgetsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BudgetsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -192,15 +184,18 @@ func (client *BudgetsClient) getCreateRequest(ctx context.Context, scope string,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BudgetsClient) getHandleResponse(resp *http.Response) (BudgetsClientGetResponse, error) {
+func (client *BudgetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BudgetsClientGetResponse, error) {
 	result := BudgetsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Budget); err != nil {
 		return BudgetsClientGetResponse{}, err
 	}
@@ -221,39 +216,53 @@ func (client *BudgetsClient) NewListPager(scope string, options *BudgetsClientLi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return BudgetsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BudgetsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BudgetsClient) listCreateRequest(ctx context.Context, scope string, _ *BudgetsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Consumption/budgets"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *BudgetsClient) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *BudgetsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Consumption/budgets"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BudgetsClient) listHandleResponse(resp *http.Response) (BudgetsClientListResponse, error) {
+func (client *BudgetsClient) listHandleResponse(resp *http.Response, successCodes ...int) (BudgetsClientListResponse, error) {
 	result := BudgetsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BudgetsListResult); err != nil {
 		return BudgetsClientListResponse{}, err
 	}

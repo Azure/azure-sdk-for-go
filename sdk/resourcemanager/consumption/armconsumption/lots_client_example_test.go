@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccount-Contributor.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccount-Contributor.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountContributor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,10 +43,10 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountCont
 		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:5678/billingProfiles/2468/providers/Microsoft.Consumption/lots/lot1"),
 		// 				Properties: &armconsumption.LotProperties{
 		// 					OrganizationType: to.Ptr(armconsumption.OrganizationTypeContributorOrganizationType),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
-		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 					PurchasedDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2019, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -60,7 +60,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountCont
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccount-Primary.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccount-Primary.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountPrimary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,14 +95,14 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountPrim
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](60.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](5000),
 		// 					},
-		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					PurchasedDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2019, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -116,7 +116,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountPrim
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccount.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccount.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,14 +150,14 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](60.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](5000),
 		// 					},
-		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					PurchasedDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2019, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 				},
 		// 			},
@@ -170,14 +170,14 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](80.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.December, 31, 0, 0, 0, 0, time.UTC)),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](6000),
 		// 					},
-		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					PurchasedDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2019, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armconsumption.StatusExpired),
 		// 				},
 		// 			},
@@ -187,7 +187,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccount() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccountWithFilters-Contributor.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccountWithFilters-Contributor.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWithStatusFilterContributor() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,10 +219,10 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:5678/billingProfiles/2468/providers/Microsoft.Consumption/lots/lot1"),
 		// 				Properties: &armconsumption.LotProperties{
 		// 					OrganizationType: to.Ptr(armconsumption.OrganizationTypeContributorOrganizationType),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
-		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.November, 1, 0, 0, 0, 0, time.UTC)),
+		// 					PurchasedDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2019, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -236,7 +236,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccountWithFilters-Primary.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccountWithFilters-Primary.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWithStatusFilterPrimary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,14 +272,14 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](60.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](5000),
 		// 					},
-		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					PurchasedDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2019, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 					UsedAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -293,7 +293,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingAccountWithFilters.json
+// Generated from example definition: 2026-06-01/LotsListByBillingAccountWithFilters.json
 func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWithStatusFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,14 +328,14 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](60.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](5000),
 		// 					},
-		// 					PurchasedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-01T00:00:00Z"); return t}()),
+		// 					PurchasedDate: to.Ptr(time.Date(2019, time.September, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Source: to.Ptr(armconsumption.LotSourceConsumptionCommitment),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2019, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armconsumption.StatusActive),
 		// 				},
 		// 			},
@@ -345,7 +345,7 @@ func ExampleLotsClient_NewListByBillingAccountPager_lotsListByBillingAccountWith
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByBillingProfile.json
+// Generated from example definition: 2026-06-01/LotsListByBillingProfile.json
 func ExampleLotsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +385,7 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 						ExchangeRateMonth: to.Ptr[int32](1),
 		// 					},
 		// 					CreditCurrency: to.Ptr("USD"),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2024, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -401,7 +401,7 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 						ResellerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:5678/billingProfiles/2468/providers/Microsoft.Consumption/reseller/reseller1"),
 		// 					},
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2024, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -419,7 +419,7 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 						ExchangeRateMonth: to.Ptr[int32](1),
 		// 					},
 		// 					CreditCurrency: to.Ptr("USD"),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-31T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2023, time.May, 31, 0, 0, 0, 0, time.UTC)),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -435,7 +435,7 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 		// 						ResellerID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234:5678/billingProfiles/2468/providers/Microsoft.Consumption/reseller/reseller2"),
 		// 					},
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2024, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -444,7 +444,7 @@ func ExampleLotsClient_NewListByBillingProfilePager() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByCustomer.json
+// Generated from example definition: 2026-06-01/LotsListByCustomer.json
 func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,7 +478,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](60.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.May, 1, 0, 0, 0, 0, time.UTC)),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -486,7 +486,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 		// 					},
 		// 					PoNumber: to.Ptr("3524"),
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2021, time.May, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -498,7 +498,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](80.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-12-31T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2019, time.December, 31, 0, 0, 0, 0, time.UTC)),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -506,7 +506,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 		// 					},
 		// 					PoNumber: to.Ptr("31224"),
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2021, time.May, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -515,7 +515,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomer() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/LotsListByCustomerWithFilters.json
+// Generated from example definition: 2026-06-01/LotsListByCustomerWithFilters.json
 func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomerWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -550,7 +550,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomerWithFilter() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float64](60.9),
 		// 					},
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T00:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.May, 1, 0, 0, 0, 0, time.UTC)),
 		// 					IsEstimatedBalance: to.Ptr(false),
 		// 					OriginalAmount: &armconsumption.Amount{
 		// 						Currency: to.Ptr("USD"),
@@ -558,7 +558,7 @@ func ExampleLotsClient_NewListByCustomerPager_lotsListByCustomerWithFilter() {
 		// 					},
 		// 					PoNumber: to.Ptr("3524"),
 		// 					Source: to.Ptr(armconsumption.LotSourcePurchasedCredit),
-		// 					StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-05-01T00:00:00Z"); return t}()),
+		// 					StartDate: to.Ptr(time.Date(2021, time.May, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

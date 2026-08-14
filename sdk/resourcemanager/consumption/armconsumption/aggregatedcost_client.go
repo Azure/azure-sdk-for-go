@@ -19,7 +19,7 @@ import (
 // AggregatedCostClient contains the methods for the AggregatedCost group.
 // Don't use this type directly, use NewAggregatedCostClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type AggregatedCostClient struct {
 	internal *arm.Client
 }
@@ -58,12 +58,7 @@ func (client *AggregatedCostClient) GetByManagementGroup(ctx context.Context, ma
 	if err != nil {
 		return AggregatedCostClientGetByManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AggregatedCostClientGetByManagementGroupResponse{}, err
-	}
-	resp, err := client.getByManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getByManagementGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByManagementGroupCreateRequest creates the GetByManagementGroup request.
@@ -81,15 +76,18 @@ func (client *AggregatedCostClient) getByManagementGroupCreateRequest(ctx contex
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getByManagementGroupHandleResponse handles the GetByManagementGroup response.
-func (client *AggregatedCostClient) getByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostClientGetByManagementGroupResponse, error) {
+func (client *AggregatedCostClient) getByManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (AggregatedCostClientGetByManagementGroupResponse, error) {
 	result := AggregatedCostClientGetByManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroupAggregatedCostResult); err != nil {
 		return AggregatedCostClientGetByManagementGroupResponse{}, err
 	}
@@ -117,12 +115,7 @@ func (client *AggregatedCostClient) GetForBillingPeriodByManagementGroup(ctx con
 	if err != nil {
 		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, err
-	}
-	resp, err := client.getForBillingPeriodByManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getForBillingPeriodByManagementGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getForBillingPeriodByManagementGroupCreateRequest creates the GetForBillingPeriodByManagementGroup request.
@@ -141,15 +134,18 @@ func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getForBillingPeriodByManagementGroupHandleResponse handles the GetForBillingPeriodByManagementGroup response.
-func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupHandleResponse(resp *http.Response) (AggregatedCostClientGetForBillingPeriodByManagementGroupResponse, error) {
+func (client *AggregatedCostClient) getForBillingPeriodByManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (AggregatedCostClientGetForBillingPeriodByManagementGroupResponse, error) {
 	result := AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagementGroupAggregatedCostResult); err != nil {
 		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, err
 	}

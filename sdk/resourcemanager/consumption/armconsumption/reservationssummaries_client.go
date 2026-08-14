@@ -19,7 +19,7 @@ import (
 // ReservationsSummariesClient contains the methods for the ReservationsSummaries group.
 // Don't use this type directly, use NewReservationsSummariesClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationsSummariesClient struct {
 	internal *arm.Client
 }
@@ -56,55 +56,69 @@ func (client *ReservationsSummariesClient) NewListPager(resourceScope string, gr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceScope, grain, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceScope, grain, nextLink, options)
 			if err != nil {
 				return ReservationsSummariesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, resourceScope string, grain Datagrain, options *ReservationsSummariesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries"
-	if resourceScope == "" {
-		return nil, errors.New("parameter resourceScope cannot be empty")
+func (client *ReservationsSummariesClient) listCreateRequest(ctx context.Context, resourceScope string, grain Datagrain, nextLink string, options *ReservationsSummariesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceScope}/providers/Microsoft.Consumption/reservationSummaries"
+		if resourceScope == "" {
+			return nil, errors.New("parameter resourceScope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceScope}", resourceScope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260601)
+		if options != nil && options.EndDate != nil {
+			reqQP.Set("endDate", *options.EndDate)
+		}
+		reqQP.Set("grain", string(grain))
+		if options != nil && options.ReservationID != nil {
+			reqQP.Set("reservationId", *options.ReservationID)
+		}
+		if options != nil && options.ReservationOrderID != nil {
+			reqQP.Set("reservationOrderId", *options.ReservationOrderID)
+		}
+		if options != nil && options.StartDate != nil {
+			reqQP.Set("startDate", *options.StartDate)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20240801)
-	if options != nil && options.EndDate != nil {
-		reqQP.Set("endDate", *options.EndDate)
-	}
-	reqQP.Set("grain", string(grain))
-	if options != nil && options.ReservationID != nil {
-		reqQP.Set("reservationId", *options.ReservationID)
-	}
-	if options != nil && options.ReservationOrderID != nil {
-		reqQP.Set("reservationOrderId", *options.ReservationOrderID)
-	}
-	if options != nil && options.StartDate != nil {
-		reqQP.Set("startDate", *options.StartDate)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Response) (ReservationsSummariesClientListResponse, error) {
+func (client *ReservationsSummariesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReservationsSummariesClientListResponse, error) {
 	result := ReservationsSummariesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
 		return ReservationsSummariesClientListResponse{}, err
 	}
@@ -129,43 +143,57 @@ func (client *ReservationsSummariesClient) NewListByReservationOrderPager(reserv
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByReservationOrderCreateRequest(ctx, reservationOrderID, grain, options)
-			}, nil)
+			req, err := client.listByReservationOrderCreateRequest(ctx, reservationOrderID, grain, nextLink, options)
 			if err != nil {
 				return ReservationsSummariesClientListByReservationOrderResponse{}, err
 			}
-			return client.listByReservationOrderHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderResponse{}, err
+			}
+			return client.listByReservationOrderHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByReservationOrderCreateRequest creates the ListByReservationOrder request.
-func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationSummaries"
-	if reservationOrderID == "" {
-		return nil, errors.New("parameter reservationOrderID cannot be empty")
+func (client *ReservationsSummariesClient) listByReservationOrderCreateRequest(ctx context.Context, reservationOrderID string, grain Datagrain, nextLink string, options *ReservationsSummariesClientListByReservationOrderOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/providers/Microsoft.Consumption/reservationSummaries"
+		if reservationOrderID == "" {
+			return nil, errors.New("parameter reservationOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260601)
+		reqQP.Set("grain", string(grain))
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20240801)
-	reqQP.Set("grain", string(grain))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByReservationOrderHandleResponse handles the ListByReservationOrder response.
-func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(resp *http.Response) (ReservationsSummariesClientListByReservationOrderResponse, error) {
+func (client *ReservationsSummariesClient) listByReservationOrderHandleResponse(resp *http.Response, successCodes ...int) (ReservationsSummariesClientListByReservationOrderResponse, error) {
 	result := ReservationsSummariesClientListByReservationOrderResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
 		return ReservationsSummariesClientListByReservationOrderResponse{}, err
 	}
@@ -191,47 +219,61 @@ func (client *ReservationsSummariesClient) NewListByReservationOrderAndReservati
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, grain, options)
-			}, nil)
+			req, err := client.listByReservationOrderAndReservationCreateRequest(ctx, reservationOrderID, reservationID, grain, nextLink, options)
 			if err != nil {
 				return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, err
 			}
-			return client.listByReservationOrderAndReservationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, err
+			}
+			return client.listByReservationOrderAndReservationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByReservationOrderAndReservationCreateRequest creates the ListByReservationOrderAndReservation request.
-func (client *ReservationsSummariesClient) listByReservationOrderAndReservationCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, options *ReservationsSummariesClientListByReservationOrderAndReservationOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}/providers/Microsoft.Consumption/reservationSummaries"
-	if reservationOrderID == "" {
-		return nil, errors.New("parameter reservationOrderID cannot be empty")
+func (client *ReservationsSummariesClient) listByReservationOrderAndReservationCreateRequest(ctx context.Context, reservationOrderID string, reservationID string, grain Datagrain, nextLink string, options *ReservationsSummariesClientListByReservationOrderAndReservationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Capacity/reservationorders/{reservationOrderId}/reservations/{reservationId}/providers/Microsoft.Consumption/reservationSummaries"
+		if reservationOrderID == "" {
+			return nil, errors.New("parameter reservationOrderID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
+		if reservationID == "" {
+			return nil, errors.New("parameter reservationID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationOrderId}", url.PathEscape(reservationOrderID))
-	if reservationID == "" {
-		return nil, errors.New("parameter reservationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationId}", url.PathEscape(reservationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260601)
+		reqQP.Set("grain", string(grain))
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20240801)
-	reqQP.Set("grain", string(grain))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByReservationOrderAndReservationHandleResponse handles the ListByReservationOrderAndReservation response.
-func (client *ReservationsSummariesClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response) (ReservationsSummariesClientListByReservationOrderAndReservationResponse, error) {
+func (client *ReservationsSummariesClient) listByReservationOrderAndReservationHandleResponse(resp *http.Response, successCodes ...int) (ReservationsSummariesClientListByReservationOrderAndReservationResponse, error) {
 	result := ReservationsSummariesClientListByReservationOrderAndReservationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationSummariesListResult); err != nil {
 		return ReservationsSummariesClientListByReservationOrderAndReservationResponse{}, err
 	}

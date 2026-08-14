@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationTransactionsListByEnrollmentNumber.json
+// Generated from example definition: 2026-06-01/ReservationTransactionsListByEnrollmentNumber.json
 func ExampleReservationTransactionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleReservationTransactionsClient_NewListPager() {
 		// 					Currency: to.Ptr("USD"),
 		// 					CurrentEnrollment: to.Ptr("123456"),
 		// 					DepartmentName: to.Ptr("Unassigned"),
-		// 					EventDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-09T19:19:04Z"); return t}()),
+		// 					EventDate: to.Ptr(time.Date(2019, time.September, 9, 19, 19, 4, 0, time.UTC)),
 		// 					EventType: to.Ptr("Refund"),
 		// 					MonetaryCommitment: to.Ptr[float64](523123.9),
 		// 					Overage: to.Ptr[float64](23234.49),
@@ -88,7 +88,7 @@ func ExampleReservationTransactionsClient_NewListPager() {
 		// 					Currency: to.Ptr("USD"),
 		// 					CurrentEnrollment: to.Ptr("123456"),
 		// 					DepartmentName: to.Ptr("Unassigned"),
-		// 					EventDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-09T19:19:04Z"); return t}()),
+		// 					EventDate: to.Ptr(time.Date(2019, time.September, 9, 19, 19, 4, 0, time.UTC)),
 		// 					EventType: to.Ptr("Purchase"),
 		// 					MonetaryCommitment: to.Ptr[float64](523123.9),
 		// 					Overage: to.Ptr[float64](23234.49),
@@ -110,7 +110,7 @@ func ExampleReservationTransactionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationTransactionsListByBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationTransactionsListByBillingProfileId.json
 func ExampleReservationTransactionsClient_NewListByBillingProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleReservationTransactionsClient_NewListByBillingProfilePager() {
 		// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/fcebaabc-fced-4284-a83d-79f83dee183c:45796ba8-988f-45ad-bea9-7b71fc6c7513_2018-09-30/billingProfiles/Z76D-SGAF-BG7-TGB"),
 		// 					BillingProfileName: to.Ptr("IT Department*"),
 		// 					Currency: to.Ptr("USD"),
-		// 					EventDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-25T21:21:38Z"); return t}()),
+		// 					EventDate: to.Ptr(time.Date(2020, time.April, 25, 21, 21, 38, 0, time.UTC)),
 		// 					EventType: to.Ptr("Purchase"),
 		// 					Invoice: to.Ptr("T000456437"),
 		// 					InvoiceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/fcebaabc-fced-4284-a83d-79f83dee183c:45796ba8-988f-45ad-bea9-7b71fc6c7513_2018-09-30/billingProfiles/Z76D-SGAF-BG7-TGB/invoices/T000456437"),

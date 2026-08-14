@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2024-08-01/CreateOrUpdateBudget.json
+// Generated from example definition: 2026-06-01/CreateOrUpdateBudget.json
 func ExampleBudgetsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,8 +85,8 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 			},
 			TimeGrain: to.Ptr(armconsumption.TimeGrainTypeMonthly),
 			TimePeriod: &armconsumption.BudgetTimePeriod{
-				EndDate:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-31T00:00:00Z"); return t }()),
-				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t }()),
+				EndDate:   to.Ptr(time.Date(2018, time.October, 31, 0, 0, 0, 0, time.UTC)),
+				StartDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 			},
 		},
 	}, nil)
@@ -165,15 +165,15 @@ func ExampleBudgetsClient_CreateOrUpdate() {
 	// 			},
 	// 			TimeGrain: to.Ptr(armconsumption.TimeGrainTypeMonthly),
 	// 			TimePeriod: &armconsumption.BudgetTimePeriod{
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-31T00:00:00Z"); return t}()),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2018, time.October, 31, 0, 0, 0, 0, time.UTC)),
+	// 				StartDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-08-01/DeleteBudget.json
+// Generated from example definition: 2026-06-01/DeleteBudget.json
 func ExampleBudgetsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleBudgetsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/Budget.json
+// Generated from example definition: 2026-06-01/Budget.json
 func ExampleBudgetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,15 +281,15 @@ func ExampleBudgetsClient_Get() {
 	// 			},
 	// 			TimeGrain: to.Ptr(armconsumption.TimeGrainTypeMonthly),
 	// 			TimePeriod: &armconsumption.BudgetTimePeriod{
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-31T00:00:00Z"); return t}()),
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2018, time.October, 31, 0, 0, 0, 0, time.UTC)),
+	// 				StartDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-08-01/BudgetsList.json
+// Generated from example definition: 2026-06-01/BudgetsList.json
 func ExampleBudgetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,8 +395,8 @@ func ExampleBudgetsClient_NewListPager() {
 		// 					},
 		// 					TimeGrain: to.Ptr(armconsumption.TimeGrainTypeMonthly),
 		// 					TimePeriod: &armconsumption.BudgetTimePeriod{
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-31T00:00:00Z"); return t}()),
-		// 						StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2018, time.October, 31, 0, 0, 0, 0, time.UTC)),
+		// 						StartDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					},
 		// 				},
 		// 			},
@@ -481,8 +481,8 @@ func ExampleBudgetsClient_NewListPager() {
 		// 					},
 		// 					TimeGrain: to.Ptr(armconsumption.TimeGrainTypeMonthly),
 		// 					TimePeriod: &armconsumption.BudgetTimePeriod{
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-10-31T00:00:00Z"); return t}()),
-		// 						StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2018, time.October, 31, 0, 0, 0, 0, time.UTC)),
+		// 						StartDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					},
 		// 				},
 		// 			},

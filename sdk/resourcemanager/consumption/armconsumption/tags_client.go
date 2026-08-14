@@ -18,7 +18,7 @@ import (
 // TagsClient contains the methods for the Tags group.
 // Don't use this type directly, use NewTagsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type TagsClient struct {
 	internal *arm.Client
 }
@@ -55,12 +55,7 @@ func (client *TagsClient) Get(ctx context.Context, scope string, options *TagsCl
 	if err != nil {
 		return TagsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TagsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getCreateRequest creates the Get request.
@@ -75,15 +70,18 @@ func (client *TagsClient) getCreateRequest(ctx context.Context, scope string, _ 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TagsClient) getHandleResponse(resp *http.Response) (TagsClientGetResponse, error) {
+func (client *TagsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TagsClientGetResponse, error) {
 	result := TagsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TagsResult); err != nil {
 		return TagsClientGetResponse{}, err
 	}

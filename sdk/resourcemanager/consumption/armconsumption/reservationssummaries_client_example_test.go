@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithBillingAccountId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithBillingAccountId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWi
 		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					ReservedHours: to.Ptr[float64](720),
 		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-01T00:00:00-07:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 				},
 		// 			},
@@ -60,7 +60,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWi
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithBillingProfileId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWithBillingProfileId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWi
 		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					ReservedHours: to.Ptr[float64](720),
 		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-01T00:00:00-07:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 				},
 		// 			},
@@ -109,7 +109,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesDailyWi
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingAccountId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingAccountId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					ReservedHours: to.Ptr[float64](720),
 		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-01T00:00:00-07:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 				},
 		// 			},
@@ -156,7 +156,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingProfileId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingProfileId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					ReservedHours: to.Ptr[float64](720),
 		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-01T00:00:00-07:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 				},
 		// 			},
@@ -203,7 +203,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithBillingProfileIdReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithBillingProfileIdReservationId.json
 func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthlyWithBillingProfileIdReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +242,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 		// 					ReservationOrderID: to.Ptr("9f39ba10-794f-4dcb-8f4b-8d0cb47c27dc"),
 		// 					ReservedHours: to.Ptr[float64](720),
 		// 					SKUName: to.Ptr("Standard_B1s"),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-09-01T00:00:00-07:00"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2018, time.September, 1, 7, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 				},
 		// 			},
@@ -252,7 +252,7 @@ func ExampleReservationsSummariesClient_NewListPager_reservationSummariesMonthly
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDaily.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDaily.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesDaily() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +294,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservati
 		// 					ReservedHours: to.Ptr[float64](0),
 		// 					SKUName: to.Ptr("Standard_D8s_v3"),
 		// 					TotalReservedQuantity: to.Ptr[float64](155),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 					UsedQuantity: to.Ptr[float64](0),
 		// 					UtilizedPercentage: to.Ptr[float64](0),
@@ -310,7 +310,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservati
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthly.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthly.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservationSummariesMonthly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -351,7 +351,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservati
 		// 					ReservedHours: to.Ptr[float64](0),
 		// 					SKUName: to.Ptr("Standard_D8s_v3"),
 		// 					TotalReservedQuantity: to.Ptr[float64](155),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 					UsedQuantity: to.Ptr[float64](0),
 		// 					UtilizedPercentage: to.Ptr[float64](0),
@@ -367,7 +367,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderPager_reservati
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesDailyWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesDailyWithReservationId.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationPager_reservationSummariesDailyWithReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationP
 		// 					ReservedHours: to.Ptr[float64](0),
 		// 					SKUName: to.Ptr("Standard_D8s_v3"),
 		// 					TotalReservedQuantity: to.Ptr[float64](155),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 					UsedQuantity: to.Ptr[float64](0),
 		// 					UtilizedPercentage: to.Ptr[float64](0),
@@ -425,7 +425,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationP
 	}
 }
 
-// Generated from example definition: 2024-08-01/ReservationSummariesMonthlyWithReservationId.json
+// Generated from example definition: 2026-06-01/ReservationSummariesMonthlyWithReservationId.json
 func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationPager_reservationSummariesMonthlyWithReservationId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -466,7 +466,7 @@ func ExampleReservationsSummariesClient_NewListByReservationOrderAndReservationP
 		// 					ReservedHours: to.Ptr[float64](0),
 		// 					SKUName: to.Ptr("Standard_D8s_v3"),
 		// 					TotalReservedQuantity: to.Ptr[float64](155),
-		// 					UsageDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-01T00:00:00Z"); return t}()),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0),
 		// 					UsedQuantity: to.Ptr[float64](0),
 		// 					UtilizedPercentage: to.Ptr[float64](0),

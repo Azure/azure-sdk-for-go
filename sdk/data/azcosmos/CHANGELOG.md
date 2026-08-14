@@ -39,6 +39,15 @@
   end-to-end timeout. Each options type adds only what is specific to it. These operations are not
   implemented yet.
   See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
+* Added the driver binding behind the `azcosmos_driver` build tag, covering the runtime, account
+  reference and driver handles and their release through `Client.Close`. The tag is off by default,
+  so the default build needs no C toolchain and works with `CGO_ENABLED=0`. Creating the driver
+  fetches the account's properties, so it is deferred to first use rather than done in the
+  constructor: client construction stays local and an unreachable account is an operation failure.
+  Failures the client produced are classified by their sub-status rather than the synthetic HTTP
+  status the driver pairs them with, so a failed connection reports `CodeTransportFailure` instead
+  of `CodeServiceUnavailable`. Token credentials are not supported by the driver binding yet,
+  because the C ABI exposes no constructor for one.
 
 ### Breaking Changes
 

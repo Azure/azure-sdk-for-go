@@ -42,8 +42,18 @@ func (fakeTokenCredential) GetToken(context.Context, policy.TokenRequestOptions)
 	return azcore.AccessToken{}, nil
 }
 
+// Token credentials are accepted by the API but cannot reach the driver: the C ABI exposes no
+// constructor for one, so a driver-backed build has to refuse rather than fail later.
 func TestNewClientAcceptsTokenCredential(t *testing.T) {
 	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+	if driverAvailable {
+		require.Error(t, err)
+		var cosmosErr *Error
+		require.ErrorAs(t, err, &cosmosErr)
+		require.Equal(t, CodeClientError, cosmosErr.Code)
+		require.Contains(t, cosmosErr.Message, "token credentials are not supported")
+		return
+	}
 	require.NoError(t, err)
 	require.Equal(t, "https://myaccount.documents.azure.com", client.Endpoint())
 }

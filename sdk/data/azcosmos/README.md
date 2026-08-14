@@ -9,22 +9,45 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
 response model, partition keys, client construction, and reading and creating single items; the
-operations are not wired to the driver yet and report that they are not implemented.
+item operations are not wired to the driver yet and report that they are not implemented.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
 Cosmos DB SDKs. The decision record is
 [`docs/adr/0001-go-v2-uses-ffi.md`](docs/adr/0001-go-v2-uses-ffi.md).
 
-Because v2 binds to a native driver, it requires cgo (`CGO_ENABLED=1`). v1's WebAssembly support
-does not carry over.
+### Building against the driver
+
+The driver binding is behind the `azcosmos_driver` build tag and is **off by default**, so the
+default build needs no C toolchain and works with `CGO_ENABLED=0`. In that build the client can be
+constructed and the API compiled against, and operations report that they are not implemented.
+
+Selecting the binding needs cgo, the `azcosmos_driver` tag, and `libazurecosmosdriver` on the
+linker path:
+
+```sh
+CGO_ENABLED=1 CGO_LDFLAGS="-L/path/to/driver" go build -tags azcosmos_driver ./...
+```
+
+The library is built from
+[`azure_data_cosmos_driver_native`](https://github.com/Azure/azure-sdk-for-rust/tree/main/sdk/cosmos/azure_data_cosmos_driver_native)
+with `cargo build --release`, and `internal/native/azurecosmosdriver.h` is the header it generates,
+vendored here and pinned to the version in `driver.go`. There is no published binary to depend on
+yet, so obtaining the library is currently a manual step.
+
+Two limits apply to the driver-backed build today, both of which are upstream gaps rather than
+choices this module makes:
+
+* Only account keys work. The C ABI has no constructor for a token credential, so [`NewClient`]
+  reports that it is unsupported and [`NewClientWithKey`] is the working path.
+* v1's WebAssembly support does not carry over.
 
 ## Getting Started
 
 ### Prerequisites
 
 * An Azure subscription or free Azure Cosmos DB trial account
-* A C toolchain, because v2 requires cgo
+* A C toolchain, but only to build with the `azcosmos_driver` tag
 
 Note: If you don't have an Azure subscription, create a free account before you begin.
 You can Try Azure Cosmos DB for free without an Azure subscription, free of charge and commitments, or create an Azure Cosmos DB free tier account, with the first 400 RU/s and 5 GB of storage for free. You can also use the Azure Cosmos DB Emulator with a URI of https://localhost:8081. For the key to use with the emulator, see [how to develop with the emulator](https://learn.microsoft.com/azure/cosmos-db/how-to-develop-emulator).

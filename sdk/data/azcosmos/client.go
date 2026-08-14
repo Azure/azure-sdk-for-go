@@ -53,6 +53,10 @@ type Client struct {
 	closed    bool
 	closeOnce sync.Once
 	closeErr  error
+
+	// driver holds the resources the client owns in the driver. It is nil in builds that are not
+	// bound to the driver, where operations report that they are not implemented.
+	driver *nativeDriver
 }
 
 // NewClient creates a client that authenticates with Microsoft Entra ID.
@@ -63,7 +67,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
 	}
-	return newClient(endpoint, options)
+	return newClient(endpoint, "", options)
 }
 
 // NewClientWithKey creates a client that authenticates with an account key.
@@ -74,15 +78,15 @@ func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOption
 	if cred.accountKey == "" {
 		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
 	}
-	return newClient(endpoint, options)
+	return newClient(endpoint, cred.accountKey, options)
 }
 
-// newClient validates the inputs shared by every constructor and returns a client handle.
+// newClient validates the inputs shared by every constructor and opens the client's driver
+// resources.
 //
-// The handle is not yet backed by the driver: operations on it report that they are not
-// implemented. Construction still succeeds so that the surface can be compiled and explored
-// against during the preview.
-func newClient(endpoint string, options *ClientOptions) (*Client, error) {
+// accountKey is empty when the caller supplied a token credential. In builds that are not bound to
+// the driver no resources are acquired, and operations report that they are not implemented.
+func newClient(endpoint string, accountKey string, options *ClientOptions) (*Client, error) {
 	parsed, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("azcosmos: parsing endpoint: %w", err)
@@ -106,6 +110,16 @@ func newClient(endpoint string, options *ClientOptions) (*Client, error) {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
 	}
+
+	driver, err := openDriver(driverConfig{
+		endpoint:   endpoint,
+		accountKey: accountKey,
+		options:    client.options,
+	})
+	if err != nil {
+		return nil, err
+	}
+	client.driver = driver
 	return client, nil
 }
 
@@ -128,9 +142,10 @@ func (c *Client) Close() error {
 		c.mu.Lock()
 		defer c.mu.Unlock()
 		c.closed = true
-		// Driver resources are released here once the binding lands, recording a teardown that
-		// did not complete cleanly in c.closeErr. The error is stored on the client rather than
-		// in a local so that the second and subsequent callers see it too.
+		// The error is stored on the client rather than in a local so that the second and
+		// subsequent callers see it too.
+		c.closeErr = c.driver.close()
+		c.driver = nil
 	})
 	return c.closeErr
 }

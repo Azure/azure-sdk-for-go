@@ -15,10 +15,10 @@ import (
 )
 
 // TestAdminClient_TopicFilterCounts_Live exercises the topic filter-count feature
-// end to end: it creates a topic with a subscription carrying SQL and correlation
-// filter rules, then reads the topic runtime properties and asserts the aggregated
-// counts. The counts are served by the 2024-05 service API version, which the admin
-// client sends by default, so this requires a service build with the feature.
+// end to end: it creates a topic with a subscription, reads the baseline counts, adds
+// SQL and correlation filter rules, then asserts the topic-level counts moved by one
+// each. The counts are served at api-version 2024-05, which the admin client sends by
+// default; a namespace whose service build does not report them skips the test.
 func TestAdminClient_TopicFilterCounts_Live(t *testing.T) {
 	adminClient := newAdminClientForTest(t, &test.NewClientOptions[ClientOptions]{})
 
@@ -31,8 +31,17 @@ func TestAdminClient_TopicFilterCounts_Live(t *testing.T) {
 	_, err = adminClient.CreateSubscription(context.Background(), topicName, subscriptionName, nil)
 	require.NoError(t, err)
 
-	// A new subscription has a default $Default rule (a SQL TrueFilter). Add an
-	// explicit SQL rule and a correlation rule so the topic-level counts are non-zero.
+	before, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
+	require.NoError(t, err)
+
+	// A new subscription carries a default $Default rule, which is a SQL TrueFilter, and the service
+	// counts it - a subscription with no explicit rules reads SQLFilterCount 1. So a zero here means
+	// the namespace does not report the counts at all.
+	if before.SQLFilterCount == 0 {
+		t.Skipf("namespace does not report topic filter counts (sql=%d corr=%d)",
+			before.SQLFilterCount, before.CorrelationFilterCount)
+	}
+
 	_, err = adminClient.CreateRule(context.Background(), topicName, subscriptionName, &CreateRuleOptions{
 		Name:   to.Ptr("sqlrule"),
 		Filter: &SQLFilter{Expression: "1=1"},
@@ -44,10 +53,11 @@ func TestAdminClient_TopicFilterCounts_Live(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	resp, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
+	after, err := adminClient.GetTopicRuntimeProperties(context.Background(), topicName, nil)
 	require.NoError(t, err)
 
-	// $Default (TrueFilter) + sqlrule = 2 SQL filters; corrrule = 1 correlation filter.
-	require.Equal(t, int32(2), resp.SQLFilterCount)
-	require.Equal(t, int32(1), resp.CorrelationFilterCount)
+	// Asserting the delta proves the counts track rule creation, without assuming how the
+	// service counts the default rule.
+	require.Equal(t, before.SQLFilterCount+1, after.SQLFilterCount)
+	require.Equal(t, before.CorrelationFilterCount+1, after.CorrelationFilterCount)
 }

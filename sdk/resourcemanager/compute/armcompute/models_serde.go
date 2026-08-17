@@ -925,10 +925,10 @@ func (a AvailablePatchSummary) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "assessmentActivityId", a.AssessmentActivityID)
 	populate(objectMap, "criticalAndSecurityPatchCount", a.CriticalAndSecurityPatchCount)
 	populate(objectMap, "error", a.Error)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", a.LastModifiedTime)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", a.LastModifiedTime, true)
 	populate(objectMap, "otherPatchCount", a.OtherPatchCount)
 	populate(objectMap, "rebootPending", a.RebootPending)
-	populateTime[datetime.RFC3339](objectMap, "startTime", a.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", a.StartTime, true)
 	populate(objectMap, "status", a.Status)
 	return json.Marshal(objectMap)
 }
@@ -1447,10 +1447,10 @@ func (c CapacityReservationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "instanceView", c.InstanceView)
 	populate(objectMap, "platformFaultDomainCount", c.PlatformFaultDomainCount)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
-	populateTime[datetime.RFC3339](objectMap, "provisioningTime", c.ProvisioningTime)
+	populateTime[datetime.RFC3339](objectMap, "provisioningTime", c.ProvisioningTime, true)
 	populate(objectMap, "reservationId", c.ReservationID)
 	populate(objectMap, "scheduleProfile", c.ScheduleProfile)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", c.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", c.TimeCreated, true)
 	populate(objectMap, "virtualMachinesAssociated", c.VirtualMachinesAssociated)
 	return json.Marshal(objectMap)
 }
@@ -1748,7 +1748,7 @@ func (c CommunityGalleryImageProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "artifactTags", c.ArtifactTags)
 	populate(objectMap, "disallowed", c.Disallowed)
 	populate(objectMap, "disclaimer", c.Disclaimer)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", c.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", c.EndOfLifeDate, true)
 	populate(objectMap, "eula", c.Eula)
 	populate(objectMap, "features", c.Features)
 	populate(objectMap, "hyperVGeneration", c.HyperVGeneration)
@@ -1899,9 +1899,9 @@ func (c CommunityGalleryImageVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "artifactTags", c.ArtifactTags)
 	populate(objectMap, "disclaimer", c.Disclaimer)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", c.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", c.EndOfLifeDate, true)
 	populate(objectMap, "excludeFromLatest", c.ExcludeFromLatest)
-	populateTime[datetime.RFC3339](objectMap, "publishedDate", c.PublishedDate)
+	populateTime[datetime.RFC3339](objectMap, "publishedDate", c.PublishedDate, true)
 	populate(objectMap, "storageProfile", c.StorageProfile)
 	return json.Marshal(objectMap)
 }
@@ -2875,8 +2875,8 @@ func (d DedicatedHostProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "licenseType", d.LicenseType)
 	populate(objectMap, "platformFaultDomain", d.PlatformFaultDomain)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populateTime[datetime.RFC3339](objectMap, "provisioningTime", d.ProvisioningTime)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "provisioningTime", d.ProvisioningTime, true)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated, true)
 	populate(objectMap, "virtualMachines", d.VirtualMachines)
 	return json.Marshal(objectMap)
 }
@@ -3300,7 +3300,7 @@ func (d DiskAccessProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "privateEndpointConnections", d.PrivateEndpointConnections)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated, true)
 	return json.Marshal(objectMap)
 }
 
@@ -3654,7 +3654,7 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "availabilityPolicy", d.AvailabilityPolicy)
 	populate(objectMap, "burstingEnabled", d.BurstingEnabled)
-	populateTime[datetime.RFC3339](objectMap, "burstingEnabledTime", d.BurstingEnabledTime)
+	populateTime[datetime.RFC3339](objectMap, "burstingEnabledTime", d.BurstingEnabledTime, true)
 	populate(objectMap, "completionPercent", d.CompletionPercent)
 	populate(objectMap, "creationData", d.CreationData)
 	populate(objectMap, "dataAccessAuthMode", d.DataAccessAuthMode)
@@ -3669,7 +3669,7 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "encryption", d.Encryption)
 	populate(objectMap, "encryptionSettingsCollection", d.EncryptionSettingsCollection)
 	populate(objectMap, "hyperVGeneration", d.HyperVGeneration)
-	populateTime[datetime.RFC3339](objectMap, "LastOwnershipUpdateTime", d.LastOwnershipUpdateTime)
+	populateTime[datetime.RFC3339](objectMap, "LastOwnershipUpdateTime", d.LastOwnershipUpdateTime, true)
 	populate(objectMap, "maxShares", d.MaxShares)
 	populate(objectMap, "networkAccessPolicy", d.NetworkAccessPolicy)
 	populate(objectMap, "osType", d.OSType)
@@ -3683,7 +3683,7 @@ func (d DiskProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "supportedCapabilities", d.SupportedCapabilities)
 	populate(objectMap, "supportsHibernation", d.SupportsHibernation)
 	populate(objectMap, "tier", d.Tier)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated, true)
 	populate(objectMap, "uniqueId", d.UniqueID)
 	return json.Marshal(objectMap)
 }
@@ -4008,7 +4008,7 @@ func (d DiskRestorePointProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sourceUniqueId", d.SourceUniqueID)
 	populate(objectMap, "supportedCapabilities", d.SupportedCapabilities)
 	populate(objectMap, "supportsHibernation", d.SupportsHibernation)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", d.TimeCreated, true)
 	return json.Marshal(objectMap)
 }
 
@@ -4460,7 +4460,7 @@ func (e EncryptionSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "autoKeyRotationError", e.AutoKeyRotationError)
 	populate(objectMap, "encryptionType", e.EncryptionType)
 	populate(objectMap, "federatedClientId", e.FederatedClientID)
-	populateTime[datetime.RFC3339](objectMap, "lastKeyRotationTimestamp", e.LastKeyRotationTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "lastKeyRotationTimestamp", e.LastKeyRotationTimestamp, true)
 	populate(objectMap, "previousKeys", e.PreviousKeys)
 	populate(objectMap, "provisioningState", e.ProvisioningState)
 	populate(objectMap, "rotationToLatestKeyVersionEnabled", e.RotationToLatestKeyVersionEnabled)
@@ -4608,7 +4608,7 @@ func (e *EventGridAndResourceGraph) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExecutedValidation.
 func (e ExecutedValidation) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "executionTime", e.ExecutionTime)
+	populateTime[datetime.RFC3339](objectMap, "executionTime", e.ExecutionTime, true)
 	populate(objectMap, "status", e.Status)
 	populate(objectMap, "type", e.Type)
 	populate(objectMap, "version", e.Version)
@@ -4934,7 +4934,7 @@ func (g GalleryApplicationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "customActions", g.CustomActions)
 	populate(objectMap, "description", g.Description)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate, true)
 	populate(objectMap, "eula", g.Eula)
 	populate(objectMap, "privacyStatementUri", g.PrivacyStatementURI)
 	populate(objectMap, "releaseNoteUri", g.ReleaseNoteURI)
@@ -5150,10 +5150,10 @@ func (g GalleryApplicationVersionPublishingProfile) MarshalJSON() ([]byte, error
 	populate(objectMap, "advancedSettings", g.AdvancedSettings)
 	populate(objectMap, "customActions", g.CustomActions)
 	populate(objectMap, "enableHealthCheck", g.EnableHealthCheck)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate, true)
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
 	populate(objectMap, "manageActions", g.ManageActions)
-	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate)
+	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate, true)
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "settings", g.Settings)
@@ -5662,7 +5662,7 @@ func (g GalleryImageProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "architecture", g.Architecture)
 	populate(objectMap, "description", g.Description)
 	populate(objectMap, "disallowed", g.Disallowed)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate, true)
 	populate(objectMap, "eula", g.Eula)
 	populate(objectMap, "features", g.Features)
 	populate(objectMap, "hyperVGeneration", g.HyperVGeneration)
@@ -5925,9 +5925,9 @@ func (g *GalleryImageVersionProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GalleryImageVersionPublishingProfile.
 func (g GalleryImageVersionPublishingProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate, true)
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
-	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate)
+	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate, true)
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "storageAccountStrategy", g.StorageAccountStrategy)
@@ -6382,7 +6382,7 @@ func (g GalleryInVMAccessControlProfileVersionProperties) MarshalJSON() ([]byte,
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
 	populate(objectMap, "mode", g.Mode)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
-	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate)
+	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate, true)
 	populate(objectMap, "replicationStatus", g.ReplicationStatus)
 	populate(objectMap, "rules", g.Rules)
 	populate(objectMap, "targetLocations", g.TargetLocations)
@@ -6731,7 +6731,7 @@ func (g *GalleryScriptParameter) UnmarshalJSON(data []byte) error {
 func (g GalleryScriptProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", g.Description)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate, true)
 	populate(objectMap, "eula", g.Eula)
 	populate(objectMap, "privacyStatementUri", g.PrivacyStatementURI)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
@@ -6945,9 +6945,9 @@ func (g *GalleryScriptVersionProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type GalleryScriptVersionPublishingProfile.
 func (g GalleryScriptVersionPublishingProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", g.EndOfLifeDate, true)
 	populate(objectMap, "excludeFromLatest", g.ExcludeFromLatest)
-	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate)
+	populateTime[datetime.RFC3339](objectMap, "publishedDate", g.PublishedDate, true)
 	populate(objectMap, "replicaCount", g.ReplicaCount)
 	populate(objectMap, "replicationMode", g.ReplicationMode)
 	populate(objectMap, "source", g.Source)
@@ -7498,7 +7498,7 @@ func (i ImageDeprecationStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "alternativeOption", i.AlternativeOption)
 	populate(objectMap, "imageState", i.ImageState)
-	populateTime[datetime.RFC3339](objectMap, "scheduledDeprecationTime", i.ScheduledDeprecationTime)
+	populateTime[datetime.RFC3339](objectMap, "scheduledDeprecationTime", i.ScheduledDeprecationTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -7884,8 +7884,8 @@ func (i ImmutabilityPolicy) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "immutabilityDurationDays", i.ImmutabilityDurationDays)
 	populate(objectMap, "isPolicyExpired", i.IsPolicyExpired)
-	populateTime[datetime.RFC3339](objectMap, "policyExpirationTime", i.PolicyExpirationTime)
-	populateTime[datetime.RFC3339](objectMap, "policyStartTime", i.PolicyStartTime)
+	populateTime[datetime.RFC3339](objectMap, "policyExpirationTime", i.PolicyExpirationTime, true)
+	populateTime[datetime.RFC3339](objectMap, "policyStartTime", i.PolicyStartTime, true)
 	populate(objectMap, "type", i.Type)
 	return json.Marshal(objectMap)
 }
@@ -8022,7 +8022,7 @@ func (i InstanceViewStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayStatus", i.DisplayStatus)
 	populate(objectMap, "level", i.Level)
 	populate(objectMap, "message", i.Message)
-	populateTime[datetime.RFC3339](objectMap, "time", i.Time)
+	populateTime[datetime.RFC3339](objectMap, "time", i.Time, true)
 	return json.Marshal(objectMap)
 }
 
@@ -8217,8 +8217,8 @@ func (i InterconnectBlockProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "interconnectBlockId", i.InterconnectBlockID)
 	populate(objectMap, "interconnectGroup", i.InterconnectGroup)
 	populate(objectMap, "provisioningState", i.ProvisioningState)
-	populateTime[datetime.RFC3339](objectMap, "provisioningTime", i.ProvisioningTime)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", i.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "provisioningTime", i.ProvisioningTime, true)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", i.TimeCreated, true)
 	populate(objectMap, "virtualMachinesAssociated", i.VirtualMachinesAssociated)
 	return json.Marshal(objectMap)
 }
@@ -8513,11 +8513,11 @@ func (l LastPatchInstallationSummary) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "failedPatchCount", l.FailedPatchCount)
 	populate(objectMap, "installationActivityId", l.InstallationActivityID)
 	populate(objectMap, "installedPatchCount", l.InstalledPatchCount)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", l.LastModifiedTime)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", l.LastModifiedTime, true)
 	populate(objectMap, "maintenanceWindowExceeded", l.MaintenanceWindowExceeded)
 	populate(objectMap, "notSelectedPatchCount", l.NotSelectedPatchCount)
 	populate(objectMap, "pendingPatchCount", l.PendingPatchCount)
-	populateTime[datetime.RFC3339](objectMap, "startTime", l.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", l.StartTime, true)
 	populate(objectMap, "status", l.Status)
 	return json.Marshal(objectMap)
 }
@@ -8873,10 +8873,10 @@ func (m MaintenanceRedeployStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isCustomerInitiatedMaintenanceAllowed", m.IsCustomerInitiatedMaintenanceAllowed)
 	populate(objectMap, "lastOperationMessage", m.LastOperationMessage)
 	populate(objectMap, "lastOperationResultCode", m.LastOperationResultCode)
-	populateTime[datetime.RFC3339](objectMap, "maintenanceWindowEndTime", m.MaintenanceWindowEndTime)
-	populateTime[datetime.RFC3339](objectMap, "maintenanceWindowStartTime", m.MaintenanceWindowStartTime)
-	populateTime[datetime.RFC3339](objectMap, "preMaintenanceWindowEndTime", m.PreMaintenanceWindowEndTime)
-	populateTime[datetime.RFC3339](objectMap, "preMaintenanceWindowStartTime", m.PreMaintenanceWindowStartTime)
+	populateTime[datetime.RFC3339](objectMap, "maintenanceWindowEndTime", m.MaintenanceWindowEndTime, true)
+	populateTime[datetime.RFC3339](objectMap, "maintenanceWindowStartTime", m.MaintenanceWindowStartTime, true)
+	populateTime[datetime.RFC3339](objectMap, "preMaintenanceWindowEndTime", m.PreMaintenanceWindowEndTime, true)
+	populateTime[datetime.RFC3339](objectMap, "preMaintenanceWindowStartTime", m.PreMaintenanceWindowStartTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -9618,7 +9618,7 @@ func (o *OrchestrationServiceStateInput) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OrchestrationServiceSummary.
 func (o OrchestrationServiceSummary) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "lastStatusChangeTime", o.LastStatusChangeTime)
+	populateTime[datetime.RFC3339](objectMap, "lastStatusChangeTime", o.LastStatusChangeTime, true)
 	populate(objectMap, "latestOperationStatus", o.LatestOperationStatus)
 	populate(objectMap, "serviceName", o.ServiceName)
 	populate(objectMap, "serviceState", o.ServiceState)
@@ -10704,14 +10704,14 @@ func (r *ReplicationStatus) UnmarshalJSON(data []byte) error {
 func (r RequestRateByIntervalInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "blobContainerSasUri", r.BlobContainerSasURI)
-	populateTime[datetime.RFC3339](objectMap, "fromTime", r.FromTime)
+	populateTime[datetime.RFC3339](objectMap, "fromTime", r.FromTime, true)
 	populate(objectMap, "groupByClientApplicationId", r.GroupByClientApplicationID)
 	populate(objectMap, "groupByOperationName", r.GroupByOperationName)
 	populate(objectMap, "groupByResourceName", r.GroupByResourceName)
 	populate(objectMap, "groupByThrottlePolicy", r.GroupByThrottlePolicy)
 	populate(objectMap, "groupByUserAgent", r.GroupByUserAgent)
 	populate(objectMap, "intervalLength", r.IntervalLength)
-	populateTime[datetime.RFC3339](objectMap, "toTime", r.ToTime)
+	populateTime[datetime.RFC3339](objectMap, "toTime", r.ToTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -11656,7 +11656,7 @@ func (r RestorePointProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "sourceMetadata", r.SourceMetadata)
 	populate(objectMap, "sourceRestorePoint", r.SourceRestorePoint)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", r.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", r.TimeCreated, true)
 	return json.Marshal(objectMap)
 }
 
@@ -12070,8 +12070,8 @@ func (r RollingUpgradeRunningStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", r.Code)
 	populate(objectMap, "lastAction", r.LastAction)
-	populateTime[datetime.RFC3339](objectMap, "lastActionTime", r.LastActionTime)
-	populateTime[datetime.RFC3339](objectMap, "startTime", r.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "lastActionTime", r.LastActionTime, true)
+	populateTime[datetime.RFC3339](objectMap, "startTime", r.StartTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -13381,7 +13381,7 @@ func (s SharedGalleryImageProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "architecture", s.Architecture)
 	populate(objectMap, "artifactTags", s.ArtifactTags)
 	populate(objectMap, "disallowed", s.Disallowed)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", s.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", s.EndOfLifeDate, true)
 	populate(objectMap, "eula", s.Eula)
 	populate(objectMap, "features", s.Features)
 	populate(objectMap, "hyperVGeneration", s.HyperVGeneration)
@@ -13524,9 +13524,9 @@ func (s *SharedGalleryImageVersionList) UnmarshalJSON(data []byte) error {
 func (s SharedGalleryImageVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "artifactTags", s.ArtifactTags)
-	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", s.EndOfLifeDate)
+	populateTime[datetime.RFC3339](objectMap, "endOfLifeDate", s.EndOfLifeDate, true)
 	populate(objectMap, "excludeFromLatest", s.ExcludeFromLatest)
-	populateTime[datetime.RFC3339](objectMap, "publishedDate", s.PublishedDate)
+	populateTime[datetime.RFC3339](objectMap, "publishedDate", s.PublishedDate, true)
 	populate(objectMap, "storageProfile", s.StorageProfile)
 	return json.Marshal(objectMap)
 }
@@ -13931,7 +13931,7 @@ func (s SnapshotProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "snapshotAccessState", s.SnapshotAccessState)
 	populate(objectMap, "supportedCapabilities", s.SupportedCapabilities)
 	populate(objectMap, "supportsHibernation", s.SupportsHibernation)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", s.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", s.TimeCreated, true)
 	populate(objectMap, "uniqueId", s.UniqueID)
 	return json.Marshal(objectMap)
 }
@@ -14443,10 +14443,10 @@ func (s *SupportedCapabilities) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -14569,13 +14569,13 @@ func (t *TerminateNotificationProfile) UnmarshalJSON(data []byte) error {
 func (t ThrottledRequestsInput) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "blobContainerSasUri", t.BlobContainerSasURI)
-	populateTime[datetime.RFC3339](objectMap, "fromTime", t.FromTime)
+	populateTime[datetime.RFC3339](objectMap, "fromTime", t.FromTime, true)
 	populate(objectMap, "groupByClientApplicationId", t.GroupByClientApplicationID)
 	populate(objectMap, "groupByOperationName", t.GroupByOperationName)
 	populate(objectMap, "groupByResourceName", t.GroupByResourceName)
 	populate(objectMap, "groupByThrottlePolicy", t.GroupByThrottlePolicy)
 	populate(objectMap, "groupByUserAgent", t.GroupByUserAgent)
-	populateTime[datetime.RFC3339](objectMap, "toTime", t.ToTime)
+	populateTime[datetime.RFC3339](objectMap, "toTime", t.ToTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -14807,8 +14807,8 @@ func (u *UpgradeOperationHistoricalStatusInfoProperties) UnmarshalJSON(data []by
 func (u UpgradeOperationHistoryStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "code", u.Code)
-	populateTime[datetime.RFC3339](objectMap, "endTime", u.EndTime)
-	populateTime[datetime.RFC3339](objectMap, "startTime", u.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", u.EndTime, true)
+	populateTime[datetime.RFC3339](objectMap, "startTime", u.StartTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -15819,7 +15819,7 @@ func (v VirtualMachineAssessPatchesResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "error", v.Error)
 	populate(objectMap, "otherPatchCount", v.OtherPatchCount)
 	populate(objectMap, "rebootPending", v.RebootPending)
-	populateTime[datetime.RFC3339](objectMap, "startDateTime", v.StartDateTime)
+	populateTime[datetime.RFC3339](objectMap, "startDateTime", v.StartDateTime, true)
 	populate(objectMap, "status", v.Status)
 	return json.Marshal(objectMap)
 }
@@ -16691,7 +16691,7 @@ func (v VirtualMachineInstallPatchesResult) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "patches", v.Patches)
 	populate(objectMap, "pendingPatchCount", v.PendingPatchCount)
 	populate(objectMap, "rebootStatus", v.RebootStatus)
-	populateTime[datetime.RFC3339](objectMap, "startDateTime", v.StartDateTime)
+	populateTime[datetime.RFC3339](objectMap, "startDateTime", v.StartDateTime, true)
 	populate(objectMap, "status", v.Status)
 	return json.Marshal(objectMap)
 }
@@ -17153,7 +17153,7 @@ func (v VirtualMachineProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "scheduledEventsProfile", v.ScheduledEventsProfile)
 	populate(objectMap, "securityProfile", v.SecurityProfile)
 	populate(objectMap, "storageProfile", v.StorageProfile)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated, true)
 	populate(objectMap, "userData", v.UserData)
 	populate(objectMap, "vmId", v.VMID)
 	populate(objectMap, "virtualMachineScaleSet", v.VirtualMachineScaleSet)
@@ -17474,13 +17474,13 @@ func (v *VirtualMachineRunCommand) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineRunCommandInstanceView.
 func (v VirtualMachineRunCommandInstanceView) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endTime", v.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", v.EndTime, true)
 	populate(objectMap, "error", v.Error)
 	populate(objectMap, "executionMessage", v.ExecutionMessage)
 	populate(objectMap, "executionState", v.ExecutionState)
 	populate(objectMap, "exitCode", v.ExitCode)
 	populate(objectMap, "output", v.Output)
-	populateTime[datetime.RFC3339](objectMap, "startTime", v.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", v.StartTime, true)
 	populate(objectMap, "statuses", v.Statuses)
 	return json.Marshal(objectMap)
 }
@@ -18831,7 +18831,7 @@ func (v VirtualMachineScaleSetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "scheduledEventsPolicy", v.ScheduledEventsPolicy)
 	populate(objectMap, "singlePlacementGroup", v.SinglePlacementGroup)
 	populate(objectMap, "spotRestorePolicy", v.SpotRestorePolicy)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated, true)
 	populate(objectMap, "uniqueId", v.UniqueID)
 	populate(objectMap, "upgradePolicy", v.UpgradePolicy)
 	populate(objectMap, "virtualMachineProfile", v.VirtualMachineProfile)
@@ -20301,7 +20301,7 @@ func (v VirtualMachineScaleSetVMProfile) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "securityProfile", v.SecurityProfile)
 	populate(objectMap, "serviceArtifactReference", v.ServiceArtifactReference)
 	populate(objectMap, "storageProfile", v.StorageProfile)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated, true)
 	populate(objectMap, "userData", v.UserData)
 	return json.Marshal(objectMap)
 }
@@ -20400,7 +20400,7 @@ func (v VirtualMachineScaleSetVMProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resilientVMDeletionStatus", v.ResilientVMDeletionStatus)
 	populate(objectMap, "securityProfile", v.SecurityProfile)
 	populate(objectMap, "storageProfile", v.StorageProfile)
-	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated)
+	populateTime[datetime.RFC3339](objectMap, "timeCreated", v.TimeCreated, true)
 	populate(objectMap, "userData", v.UserData)
 	populate(objectMap, "vmId", v.VMID)
 	populate(objectMap, "virtualMachineResourceId", v.VirtualMachineResourceID)
@@ -20642,10 +20642,10 @@ func (v VirtualMachineSoftwarePatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "assessmentState", v.AssessmentState)
 	populate(objectMap, "classifications", v.Classifications)
 	populate(objectMap, "kbId", v.KbID)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedDateTime", v.LastModifiedDateTime)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedDateTime", v.LastModifiedDateTime, true)
 	populate(objectMap, "name", v.Name)
 	populate(objectMap, "patchId", v.PatchID)
-	populateTime[datetime.RFC3339](objectMap, "publishedDate", v.PublishedDate)
+	populateTime[datetime.RFC3339](objectMap, "publishedDate", v.PublishedDate, true)
 	populate(objectMap, "rebootBehavior", v.RebootBehavior)
 	populate(objectMap, "version", v.Version)
 	return json.Marshal(objectMap)
@@ -20888,7 +20888,7 @@ func (w WindowsParameters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "excludeKbsRequiringReboot", w.ExcludeKbsRequiringReboot)
 	populate(objectMap, "kbNumbersToExclude", w.KbNumbersToExclude)
 	populate(objectMap, "kbNumbersToInclude", w.KbNumbersToInclude)
-	populateTime[datetime.RFC3339](objectMap, "maxPatchPublishDate", w.MaxPatchPublishDate)
+	populateTime[datetime.RFC3339](objectMap, "maxPatchPublishDate", w.MaxPatchPublishDate, true)
 	populate(objectMap, "patchNameMasksToExclude", w.PatchNameMasksToExclude)
 	populate(objectMap, "patchNameMasksToInclude", w.PatchNameMasksToInclude)
 	return json.Marshal(objectMap)
@@ -21031,13 +21031,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -21057,7 +21061,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -21068,7 +21072,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

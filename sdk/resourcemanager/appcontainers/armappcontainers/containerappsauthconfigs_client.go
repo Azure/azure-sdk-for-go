@@ -65,12 +65,7 @@ func (client *ContainerAppsAuthConfigsClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return ContainerAppsAuthConfigsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsAuthConfigsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -108,8 +103,11 @@ func (client *ContainerAppsAuthConfigsClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ContainerAppsAuthConfigsClient) createOrUpdateHandleResponse(resp *http.Response) (ContainerAppsAuthConfigsClientCreateOrUpdateResponse, error) {
+func (client *ContainerAppsAuthConfigsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsAuthConfigsClientCreateOrUpdateResponse, error) {
 	result := ContainerAppsAuthConfigsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthConfig); err != nil {
 		return ContainerAppsAuthConfigsClientCreateOrUpdateResponse{}, err
 	}
@@ -140,8 +138,7 @@ func (client *ContainerAppsAuthConfigsClient) Delete(ctx context.Context, resour
 		return ContainerAppsAuthConfigsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsAuthConfigsClientDeleteResponse{}, err
+		return ContainerAppsAuthConfigsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ContainerAppsAuthConfigsClientDeleteResponse{}, nil
 }
@@ -198,12 +195,7 @@ func (client *ContainerAppsAuthConfigsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return ContainerAppsAuthConfigsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsAuthConfigsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -237,8 +229,11 @@ func (client *ContainerAppsAuthConfigsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContainerAppsAuthConfigsClient) getHandleResponse(resp *http.Response) (ContainerAppsAuthConfigsClientGetResponse, error) {
+func (client *ContainerAppsAuthConfigsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsAuthConfigsClientGetResponse, error) {
 	result := ContainerAppsAuthConfigsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthConfig); err != nil {
 		return ContainerAppsAuthConfigsClientGetResponse{}, err
 	}
@@ -263,47 +258,61 @@ func (client *ContainerAppsAuthConfigsClient) NewListByContainerAppPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByContainerAppCreateRequest(ctx, resourceGroupName, containerAppName, options)
-			}, nil)
+			req, err := client.listByContainerAppCreateRequest(ctx, resourceGroupName, containerAppName, nextLink, options)
 			if err != nil {
 				return ContainerAppsAuthConfigsClientListByContainerAppResponse{}, err
 			}
-			return client.listByContainerAppHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContainerAppsAuthConfigsClientListByContainerAppResponse{}, err
+			}
+			return client.listByContainerAppHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByContainerAppCreateRequest creates the ListByContainerApp request.
-func (client *ContainerAppsAuthConfigsClient) listByContainerAppCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsAuthConfigsClientListByContainerAppOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/authConfigs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ContainerAppsAuthConfigsClient) listByContainerAppCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, nextLink string, _ *ContainerAppsAuthConfigsClientListByContainerAppOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/authConfigs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if containerAppName == "" {
+			return nil, errors.New("parameter containerAppName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByContainerAppHandleResponse handles the ListByContainerApp response.
-func (client *ContainerAppsAuthConfigsClient) listByContainerAppHandleResponse(resp *http.Response) (ContainerAppsAuthConfigsClientListByContainerAppResponse, error) {
+func (client *ContainerAppsAuthConfigsClient) listByContainerAppHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsAuthConfigsClientListByContainerAppResponse, error) {
 	result := ContainerAppsAuthConfigsClientListByContainerAppResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthConfigCollection); err != nil {
 		return ContainerAppsAuthConfigsClientListByContainerAppResponse{}, err
 	}

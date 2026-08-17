@@ -32,9 +32,9 @@ func ExampleCloudHsmClusterRestoreStatusClient_Get() {
 	// res = armhardwaresecuritymodules.CloudHsmClusterRestoreStatusClientGetResponse{
 	// 	RestoreResult: armhardwaresecuritymodules.RestoreResult{
 	// 		Properties: &armhardwaresecuritymodules.BackupRestoreBaseResultProperties{
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			JobID: to.Ptr("572a45927fc240e1ac075de27371680b"),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T12:00:00.0000000Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2022, time.September, 12, 12, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armhardwaresecuritymodules.BackupRestoreOperationStatusInProgress),
 	// 			StatusDetails: to.Ptr("Restore operation is in progress"),
 	// 		},

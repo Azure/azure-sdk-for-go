@@ -66,12 +66,7 @@ func (client *DaprComponentResiliencyPoliciesClient) CreateOrUpdate(ctx context.
 	if err != nil {
 		return DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -113,8 +108,11 @@ func (client *DaprComponentResiliencyPoliciesClient) createOrUpdateCreateRequest
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DaprComponentResiliencyPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse, error) {
+func (client *DaprComponentResiliencyPoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse, error) {
 	result := DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponentResiliencyPolicy); err != nil {
 		return DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -146,8 +144,7 @@ func (client *DaprComponentResiliencyPoliciesClient) Delete(ctx context.Context,
 		return DaprComponentResiliencyPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprComponentResiliencyPoliciesClientDeleteResponse{}, err
+		return DaprComponentResiliencyPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DaprComponentResiliencyPoliciesClientDeleteResponse{}, nil
 }
@@ -209,12 +206,7 @@ func (client *DaprComponentResiliencyPoliciesClient) Get(ctx context.Context, re
 	if err != nil {
 		return DaprComponentResiliencyPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprComponentResiliencyPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -252,8 +244,11 @@ func (client *DaprComponentResiliencyPoliciesClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *DaprComponentResiliencyPoliciesClient) getHandleResponse(resp *http.Response) (DaprComponentResiliencyPoliciesClientGetResponse, error) {
+func (client *DaprComponentResiliencyPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentResiliencyPoliciesClientGetResponse, error) {
 	result := DaprComponentResiliencyPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponentResiliencyPolicy); err != nil {
 		return DaprComponentResiliencyPoliciesClientGetResponse{}, err
 	}
@@ -279,51 +274,65 @@ func (client *DaprComponentResiliencyPoliciesClient) NewListPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, environmentName, componentName, nextLink, options)
 			if err != nil {
 				return DaprComponentResiliencyPoliciesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DaprComponentResiliencyPoliciesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DaprComponentResiliencyPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, _ *DaprComponentResiliencyPoliciesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DaprComponentResiliencyPoliciesClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, nextLink string, _ *DaprComponentResiliencyPoliciesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/resiliencyPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if environmentName == "" {
+			return nil, errors.New("parameter environmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+		if componentName == "" {
+			return nil, errors.New("parameter componentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	if componentName == "" {
-		return nil, errors.New("parameter componentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DaprComponentResiliencyPoliciesClient) listHandleResponse(resp *http.Response) (DaprComponentResiliencyPoliciesClientListResponse, error) {
+func (client *DaprComponentResiliencyPoliciesClient) listHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentResiliencyPoliciesClientListResponse, error) {
 	result := DaprComponentResiliencyPoliciesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponentResiliencyPoliciesCollection); err != nil {
 		return DaprComponentResiliencyPoliciesClientListResponse{}, err
 	}

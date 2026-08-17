@@ -47,7 +47,7 @@ func ExampleElasticBackupsClient_BeginCreateOrUpdate() {
 	// 		Name: to.Ptr("account1/backupVault1/backup1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupVaults/elasticBackups"),
 	// 		Properties: &armnetapp.ElasticBackupProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 	// 			Size: to.Ptr[int64](10011),
 	// 			Label: to.Ptr("myLabel"),
@@ -105,9 +105,9 @@ func ExampleElasticBackupsClient_Get() {
 	// 		Name: to.Ptr("account1/backupVault1/backup1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupVaults/elasticBackups"),
 	// 		Properties: &armnetapp.ElasticBackupProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
-	// 			SnapshotCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
-	// 			CompletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
+	// 			SnapshotCreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
+	// 			CompletionDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 	// 			Size: to.Ptr[int64](10011),
 	// 			Label: to.Ptr("myLabel"),
@@ -152,9 +152,9 @@ func ExampleElasticBackupsClient_NewListByVaultPager() {
 		// 				Name: to.Ptr("account1/backupVault1/backup1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupVaults/elasticBackups"),
 		// 				Properties: &armnetapp.ElasticBackupProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
-		// 					SnapshotCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
-		// 					CompletionDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
+		// 					SnapshotCreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
+		// 					CompletionDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 		// 					Size: to.Ptr[int64](10011),
 		// 					Label: to.Ptr("myLabel"),
@@ -200,7 +200,7 @@ func ExampleElasticBackupsClient_BeginUpdate() {
 	// 		Name: to.Ptr("account1/backupVault1/backup1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupVaults/elasticBackups"),
 	// 		Properties: &armnetapp.ElasticBackupProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 	// 			Size: to.Ptr[int64](10011),
 	// 			Label: to.Ptr("myLabel"),

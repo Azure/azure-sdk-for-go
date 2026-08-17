@@ -64,12 +64,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) CreateOrUpdate(ctx 
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -107,8 +102,11 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) createOrUpdateCreat
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FirewallPolicyRuleCollectionGroupDraftsClient) createOrUpdateHandleResponse(resp *http.Response) (FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse, error) {
+func (client *FirewallPolicyRuleCollectionGroupDraftsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse, error) {
 	result := FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallPolicyRuleCollectionGroupDraft); err != nil {
 		return FirewallPolicyRuleCollectionGroupDraftsClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +136,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) Delete(ctx context.
 		return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, err
+		return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FirewallPolicyRuleCollectionGroupDraftsClientDeleteResponse{}, nil
 }
@@ -195,12 +192,7 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) Get(ctx context.Con
 	if err != nil {
 		return FirewallPolicyRuleCollectionGroupDraftsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyRuleCollectionGroupDraftsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -234,8 +226,11 @@ func (client *FirewallPolicyRuleCollectionGroupDraftsClient) getCreateRequest(ct
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallPolicyRuleCollectionGroupDraftsClient) getHandleResponse(resp *http.Response) (FirewallPolicyRuleCollectionGroupDraftsClientGetResponse, error) {
+func (client *FirewallPolicyRuleCollectionGroupDraftsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyRuleCollectionGroupDraftsClientGetResponse, error) {
 	result := FirewallPolicyRuleCollectionGroupDraftsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallPolicyRuleCollectionGroupDraft); err != nil {
 		return FirewallPolicyRuleCollectionGroupDraftsClientGetResponse{}, err
 	}

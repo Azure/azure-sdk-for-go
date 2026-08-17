@@ -63,12 +63,7 @@ func (client *DeploymentOperationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return DeploymentOperationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentOperationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -102,8 +97,11 @@ func (client *DeploymentOperationsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *DeploymentOperationsClient) getHandleResponse(resp *http.Response) (DeploymentOperationsClientGetResponse, error) {
+func (client *DeploymentOperationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientGetResponse, error) {
 	result := DeploymentOperationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
 		return DeploymentOperationsClientGetResponse{}, err
 	}
@@ -131,12 +129,7 @@ func (client *DeploymentOperationsClient) GetAtManagementGroupScope(ctx context.
 	if err != nil {
 		return DeploymentOperationsClientGetAtManagementGroupScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentOperationsClientGetAtManagementGroupScopeResponse{}, err
-	}
-	resp, err := client.getAtManagementGroupScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getAtManagementGroupScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtManagementGroupScopeCreateRequest creates the GetAtManagementGroupScope request.
@@ -166,8 +159,11 @@ func (client *DeploymentOperationsClient) getAtManagementGroupScopeCreateRequest
 }
 
 // getAtManagementGroupScopeHandleResponse handles the GetAtManagementGroupScope response.
-func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientGetAtManagementGroupScopeResponse, error) {
+func (client *DeploymentOperationsClient) getAtManagementGroupScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientGetAtManagementGroupScopeResponse, error) {
 	result := DeploymentOperationsClientGetAtManagementGroupScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
 		return DeploymentOperationsClientGetAtManagementGroupScopeResponse{}, err
 	}
@@ -195,12 +191,7 @@ func (client *DeploymentOperationsClient) GetAtScope(ctx context.Context, scope 
 	if err != nil {
 		return DeploymentOperationsClientGetAtScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentOperationsClientGetAtScopeResponse{}, err
-	}
-	resp, err := client.getAtScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getAtScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtScopeCreateRequest creates the GetAtScope request.
@@ -230,8 +221,11 @@ func (client *DeploymentOperationsClient) getAtScopeCreateRequest(ctx context.Co
 }
 
 // getAtScopeHandleResponse handles the GetAtScope response.
-func (client *DeploymentOperationsClient) getAtScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientGetAtScopeResponse, error) {
+func (client *DeploymentOperationsClient) getAtScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientGetAtScopeResponse, error) {
 	result := DeploymentOperationsClientGetAtScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
 		return DeploymentOperationsClientGetAtScopeResponse{}, err
 	}
@@ -258,12 +252,7 @@ func (client *DeploymentOperationsClient) GetAtSubscriptionScope(ctx context.Con
 	if err != nil {
 		return DeploymentOperationsClientGetAtSubscriptionScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentOperationsClientGetAtSubscriptionScopeResponse{}, err
-	}
-	resp, err := client.getAtSubscriptionScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getAtSubscriptionScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtSubscriptionScopeCreateRequest creates the GetAtSubscriptionScope request.
@@ -293,8 +282,11 @@ func (client *DeploymentOperationsClient) getAtSubscriptionScopeCreateRequest(ct
 }
 
 // getAtSubscriptionScopeHandleResponse handles the GetAtSubscriptionScope response.
-func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientGetAtSubscriptionScopeResponse, error) {
+func (client *DeploymentOperationsClient) getAtSubscriptionScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientGetAtSubscriptionScopeResponse, error) {
 	result := DeploymentOperationsClientGetAtSubscriptionScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
 		return DeploymentOperationsClientGetAtSubscriptionScopeResponse{}, err
 	}
@@ -321,12 +313,7 @@ func (client *DeploymentOperationsClient) GetAtTenantScope(ctx context.Context, 
 	if err != nil {
 		return DeploymentOperationsClientGetAtTenantScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentOperationsClientGetAtTenantScopeResponse{}, err
-	}
-	resp, err := client.getAtTenantScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getAtTenantScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtTenantScopeCreateRequest creates the GetAtTenantScope request.
@@ -352,8 +339,11 @@ func (client *DeploymentOperationsClient) getAtTenantScopeCreateRequest(ctx cont
 }
 
 // getAtTenantScopeHandleResponse handles the GetAtTenantScope response.
-func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientGetAtTenantScopeResponse, error) {
+func (client *DeploymentOperationsClient) getAtTenantScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientGetAtTenantScopeResponse, error) {
 	result := DeploymentOperationsClientGetAtTenantScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperation); err != nil {
 		return DeploymentOperationsClientGetAtTenantScopeResponse{}, err
 	}
@@ -376,50 +366,64 @@ func (client *DeploymentOperationsClient) NewListPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, deploymentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, deploymentName, nextLink, options)
 			if err != nil {
 				return DeploymentOperationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeploymentOperationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DeploymentOperationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, options *DeploymentOperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DeploymentOperationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, nextLink string, options *DeploymentOperationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/deployments/{deploymentName}/operations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if deploymentName == "" {
+			return nil, errors.New("parameter deploymentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if deploymentName == "" {
-		return nil, errors.New("parameter deploymentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DeploymentOperationsClient) listHandleResponse(resp *http.Response) (DeploymentOperationsClientListResponse, error) {
+func (client *DeploymentOperationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientListResponse, error) {
 	result := DeploymentOperationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
 		return DeploymentOperationsClientListResponse{}, err
 	}
@@ -442,46 +446,60 @@ func (client *DeploymentOperationsClient) NewListAtManagementGroupScopePager(gro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAtManagementGroupScopeCreateRequest(ctx, groupID, deploymentName, options)
-			}, nil)
+			req, err := client.listAtManagementGroupScopeCreateRequest(ctx, groupID, deploymentName, nextLink, options)
 			if err != nil {
 				return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, err
 			}
-			return client.listAtManagementGroupScopeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, err
+			}
+			return client.listAtManagementGroupScopeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAtManagementGroupScopeCreateRequest creates the ListAtManagementGroupScope request.
-func (client *DeploymentOperationsClient) listAtManagementGroupScopeCreateRequest(ctx context.Context, groupID string, deploymentName string, options *DeploymentOperationsClientListAtManagementGroupScopeOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-	if groupID == "" {
-		return nil, errors.New("parameter groupID cannot be empty")
+func (client *DeploymentOperationsClient) listAtManagementGroupScopeCreateRequest(ctx context.Context, groupID string, deploymentName string, nextLink string, options *DeploymentOperationsClientListAtManagementGroupScopeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
+		if groupID == "" {
+			return nil, errors.New("parameter groupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
+		if deploymentName == "" {
+			return nil, errors.New("parameter deploymentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupId}", url.PathEscape(groupID))
-	if deploymentName == "" {
-		return nil, errors.New("parameter deploymentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAtManagementGroupScopeHandleResponse handles the ListAtManagementGroupScope response.
-func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientListAtManagementGroupScopeResponse, error) {
+func (client *DeploymentOperationsClient) listAtManagementGroupScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientListAtManagementGroupScopeResponse, error) {
 	result := DeploymentOperationsClientListAtManagementGroupScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
 		return DeploymentOperationsClientListAtManagementGroupScopeResponse{}, err
 	}
@@ -504,46 +522,60 @@ func (client *DeploymentOperationsClient) NewListAtScopePager(scope string, depl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAtScopeCreateRequest(ctx, scope, deploymentName, options)
-			}, nil)
+			req, err := client.listAtScopeCreateRequest(ctx, scope, deploymentName, nextLink, options)
 			if err != nil {
 				return DeploymentOperationsClientListAtScopeResponse{}, err
 			}
-			return client.listAtScopeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeploymentOperationsClientListAtScopeResponse{}, err
+			}
+			return client.listAtScopeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAtScopeCreateRequest creates the ListAtScope request.
-func (client *DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, options *DeploymentOperationsClientListAtScopeOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *DeploymentOperationsClient) listAtScopeCreateRequest(ctx context.Context, scope string, deploymentName string, nextLink string, options *DeploymentOperationsClientListAtScopeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		if deploymentName == "" {
+			return nil, errors.New("parameter deploymentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	if deploymentName == "" {
-		return nil, errors.New("parameter deploymentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAtScopeHandleResponse handles the ListAtScope response.
-func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientListAtScopeResponse, error) {
+func (client *DeploymentOperationsClient) listAtScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientListAtScopeResponse, error) {
 	result := DeploymentOperationsClientListAtScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
 		return DeploymentOperationsClientListAtScopeResponse{}, err
 	}
@@ -565,46 +597,60 @@ func (client *DeploymentOperationsClient) NewListAtSubscriptionScopePager(deploy
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAtSubscriptionScopeCreateRequest(ctx, deploymentName, options)
-			}, nil)
+			req, err := client.listAtSubscriptionScopeCreateRequest(ctx, deploymentName, nextLink, options)
 			if err != nil {
 				return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, err
 			}
-			return client.listAtSubscriptionScopeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, err
+			}
+			return client.listAtSubscriptionScopeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAtSubscriptionScopeCreateRequest creates the ListAtSubscriptionScope request.
-func (client *DeploymentOperationsClient) listAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsClientListAtSubscriptionScopeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DeploymentOperationsClient) listAtSubscriptionScopeCreateRequest(ctx context.Context, deploymentName string, nextLink string, options *DeploymentOperationsClientListAtSubscriptionScopeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if deploymentName == "" {
+			return nil, errors.New("parameter deploymentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if deploymentName == "" {
-		return nil, errors.New("parameter deploymentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAtSubscriptionScopeHandleResponse handles the ListAtSubscriptionScope response.
-func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientListAtSubscriptionScopeResponse, error) {
+func (client *DeploymentOperationsClient) listAtSubscriptionScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientListAtSubscriptionScopeResponse, error) {
 	result := DeploymentOperationsClientListAtSubscriptionScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
 		return DeploymentOperationsClientListAtSubscriptionScopeResponse{}, err
 	}
@@ -626,42 +672,56 @@ func (client *DeploymentOperationsClient) NewListAtTenantScopePager(deploymentNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAtTenantScopeCreateRequest(ctx, deploymentName, options)
-			}, nil)
+			req, err := client.listAtTenantScopeCreateRequest(ctx, deploymentName, nextLink, options)
 			if err != nil {
 				return DeploymentOperationsClientListAtTenantScopeResponse{}, err
 			}
-			return client.listAtTenantScopeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeploymentOperationsClientListAtTenantScopeResponse{}, err
+			}
+			return client.listAtTenantScopeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
-func (client *DeploymentOperationsClient) listAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, options *DeploymentOperationsClientListAtTenantScopeOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
-	if deploymentName == "" {
-		return nil, errors.New("parameter deploymentName cannot be empty")
+func (client *DeploymentOperationsClient) listAtTenantScopeCreateRequest(ctx context.Context, deploymentName string, nextLink string, options *DeploymentOperationsClientListAtTenantScopeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Resources/deployments/{deploymentName}/operations"
+		if deploymentName == "" {
+			return nil, errors.New("parameter deploymentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
-func (client *DeploymentOperationsClient) listAtTenantScopeHandleResponse(resp *http.Response) (DeploymentOperationsClientListAtTenantScopeResponse, error) {
+func (client *DeploymentOperationsClient) listAtTenantScopeHandleResponse(resp *http.Response, successCodes ...int) (DeploymentOperationsClientListAtTenantScopeResponse, error) {
 	result := DeploymentOperationsClientListAtTenantScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentOperationsListResult); err != nil {
 		return DeploymentOperationsClientListAtTenantScopeResponse{}, err
 	}

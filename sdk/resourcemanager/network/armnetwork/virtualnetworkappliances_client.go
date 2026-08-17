@@ -82,8 +82,7 @@ func (client *VirtualNetworkAppliancesClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -158,8 +157,7 @@ func (client *VirtualNetworkAppliancesClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -209,12 +207,7 @@ func (client *VirtualNetworkAppliancesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return VirtualNetworkAppliancesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualNetworkAppliancesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -244,8 +237,11 @@ func (client *VirtualNetworkAppliancesClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualNetworkAppliancesClient) getHandleResponse(resp *http.Response) (VirtualNetworkAppliancesClientGetResponse, error) {
+func (client *VirtualNetworkAppliancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkAppliancesClientGetResponse, error) {
 	result := VirtualNetworkAppliancesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkAppliance); err != nil {
 		return VirtualNetworkAppliancesClientGetResponse{}, err
 	}
@@ -267,43 +263,57 @@ func (client *VirtualNetworkAppliancesClient) NewListPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return VirtualNetworkAppliancesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualNetworkAppliancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *VirtualNetworkAppliancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *VirtualNetworkAppliancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkAppliances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualNetworkAppliancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *VirtualNetworkAppliancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkAppliances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualNetworkAppliancesClient) listHandleResponse(resp *http.Response) (VirtualNetworkAppliancesClientListResponse, error) {
+func (client *VirtualNetworkAppliancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkAppliancesClientListResponse, error) {
 	result := VirtualNetworkAppliancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkApplianceListResult); err != nil {
 		return VirtualNetworkAppliancesClientListResponse{}, err
 	}
@@ -324,39 +334,53 @@ func (client *VirtualNetworkAppliancesClient) NewListAllPager(options *VirtualNe
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return VirtualNetworkAppliancesClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualNetworkAppliancesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *VirtualNetworkAppliancesClient) listAllCreateRequest(ctx context.Context, _ *VirtualNetworkAppliancesClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworkAppliances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualNetworkAppliancesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *VirtualNetworkAppliancesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualNetworkAppliances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *VirtualNetworkAppliancesClient) listAllHandleResponse(resp *http.Response) (VirtualNetworkAppliancesClientListAllResponse, error) {
+func (client *VirtualNetworkAppliancesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkAppliancesClientListAllResponse, error) {
 	result := VirtualNetworkAppliancesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkApplianceListResult); err != nil {
 		return VirtualNetworkAppliancesClientListAllResponse{}, err
 	}
@@ -384,12 +408,7 @@ func (client *VirtualNetworkAppliancesClient) UpdateTags(ctx context.Context, re
 	if err != nil {
 		return VirtualNetworkAppliancesClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualNetworkAppliancesClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -423,8 +442,11 @@ func (client *VirtualNetworkAppliancesClient) updateTagsCreateRequest(ctx contex
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *VirtualNetworkAppliancesClient) updateTagsHandleResponse(resp *http.Response) (VirtualNetworkAppliancesClientUpdateTagsResponse, error) {
+func (client *VirtualNetworkAppliancesClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkAppliancesClientUpdateTagsResponse, error) {
 	result := VirtualNetworkAppliancesClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkAppliance); err != nil {
 		return VirtualNetworkAppliancesClientUpdateTagsResponse{}, err
 	}

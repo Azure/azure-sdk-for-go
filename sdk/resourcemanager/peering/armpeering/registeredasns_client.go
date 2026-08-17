@@ -18,6 +18,8 @@ import (
 
 // RegisteredAsnsClient contains the methods for the RegisteredAsns group.
 // Don't use this type directly, use NewRegisteredAsnsClient() instead.
+//
+// Generated from API version 2025-05-01
 type RegisteredAsnsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewRegisteredAsnsClient(subscriptionID string, credential azcore.TokenCrede
 // CreateOrUpdate - Creates a new registered ASN with the specified name under the given subscription, resource group and
 // peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - registeredAsnName - The name of the registered ASN.
@@ -64,12 +64,7 @@ func (client *RegisteredAsnsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return RegisteredAsnsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RegisteredAsnsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -96,8 +91,8 @@ func (client *RegisteredAsnsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, registeredAsn); err != nil {
@@ -107,8 +102,11 @@ func (client *RegisteredAsnsClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RegisteredAsnsClient) createOrUpdateHandleResponse(resp *http.Response) (RegisteredAsnsClientCreateOrUpdateResponse, error) {
+func (client *RegisteredAsnsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RegisteredAsnsClientCreateOrUpdateResponse, error) {
 	result := RegisteredAsnsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredAsn); err != nil {
 		return RegisteredAsnsClientCreateOrUpdateResponse{}, err
 	}
@@ -117,8 +115,6 @@ func (client *RegisteredAsnsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes an existing registered ASN with the specified name under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - registeredAsnName - The name of the registered ASN.
@@ -138,8 +134,7 @@ func (client *RegisteredAsnsClient) Delete(ctx context.Context, resourceGroupNam
 		return RegisteredAsnsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RegisteredAsnsClientDeleteResponse{}, err
+		return RegisteredAsnsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RegisteredAsnsClientDeleteResponse{}, nil
 }
@@ -168,15 +163,13 @@ func (client *RegisteredAsnsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing registered ASN with the specified name under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - registeredAsnName - The name of the registered ASN.
@@ -195,12 +188,7 @@ func (client *RegisteredAsnsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return RegisteredAsnsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegisteredAsnsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -227,15 +215,18 @@ func (client *RegisteredAsnsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegisteredAsnsClient) getHandleResponse(resp *http.Response) (RegisteredAsnsClientGetResponse, error) {
+func (client *RegisteredAsnsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegisteredAsnsClientGetResponse, error) {
 	result := RegisteredAsnsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredAsn); err != nil {
 		return RegisteredAsnsClientGetResponse{}, err
 	}
@@ -243,8 +234,6 @@ func (client *RegisteredAsnsClient) getHandleResponse(resp *http.Response) (Regi
 }
 
 // NewListByPeeringPager - Lists all registered ASNs under the given subscription, resource group and peering.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - options - RegisteredAsnsClientListByPeeringOptions contains the optional parameters for the RegisteredAsnsClient.NewListByPeeringPager
@@ -260,47 +249,61 @@ func (client *RegisteredAsnsClient) NewListByPeeringPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
-			}, nil)
+			req, err := client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, nextLink, options)
 			if err != nil {
 				return RegisteredAsnsClientListByPeeringResponse{}, err
 			}
-			return client.listByPeeringHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegisteredAsnsClientListByPeeringResponse{}, err
+			}
+			return client.listByPeeringHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByPeeringCreateRequest creates the ListByPeering request.
-func (client *RegisteredAsnsClient) listByPeeringCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, _ *RegisteredAsnsClientListByPeeringOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredAsns"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegisteredAsnsClient) listByPeeringCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, nextLink string, _ *RegisteredAsnsClientListByPeeringOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredAsns"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if peeringName == "" {
+			return nil, errors.New("parameter peeringName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{peeringName}", url.PathEscape(peeringName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if peeringName == "" {
-		return nil, errors.New("parameter peeringName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{peeringName}", url.PathEscape(peeringName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByPeeringHandleResponse handles the ListByPeering response.
-func (client *RegisteredAsnsClient) listByPeeringHandleResponse(resp *http.Response) (RegisteredAsnsClientListByPeeringResponse, error) {
+func (client *RegisteredAsnsClient) listByPeeringHandleResponse(resp *http.Response, successCodes ...int) (RegisteredAsnsClientListByPeeringResponse, error) {
 	result := RegisteredAsnsClientListByPeeringResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredAsnListResult); err != nil {
 		return RegisteredAsnsClientListByPeeringResponse{}, err
 	}

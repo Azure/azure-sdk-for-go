@@ -65,12 +65,7 @@ func (client *AIModelsClient) CalculateCost(ctx context.Context, location string
 	if err != nil {
 		return AIModelsClientCalculateCostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AIModelsClientCalculateCostResponse{}, err
-	}
-	resp, err := client.calculateCostHandleResponse(httpResp)
-	return resp, err
+	return client.calculateCostHandleResponse(httpResp, http.StatusOK)
 }
 
 // calculateCostCreateRequest creates the CalculateCost request.
@@ -104,8 +99,11 @@ func (client *AIModelsClient) calculateCostCreateRequest(ctx context.Context, lo
 }
 
 // calculateCostHandleResponse handles the CalculateCost response.
-func (client *AIModelsClient) calculateCostHandleResponse(resp *http.Response) (AIModelsClientCalculateCostResponse, error) {
+func (client *AIModelsClient) calculateCostHandleResponse(resp *http.Response, successCodes ...int) (AIModelsClientCalculateCostResponse, error) {
 	result := AIModelsClientCalculateCostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CalculateCostResponse); err != nil {
 		return AIModelsClientCalculateCostResponse{}, err
 	}
@@ -134,12 +132,7 @@ func (client *AIModelsClient) Get(ctx context.Context, location string, aiModelN
 	if err != nil {
 		return AIModelsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AIModelsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -169,8 +162,11 @@ func (client *AIModelsClient) getCreateRequest(ctx context.Context, location str
 }
 
 // getHandleResponse handles the Get response.
-func (client *AIModelsClient) getHandleResponse(resp *http.Response) (AIModelsClientGetResponse, error) {
+func (client *AIModelsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AIModelsClientGetResponse, error) {
 	result := AIModelsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIModel); err != nil {
 		return AIModelsClientGetResponse{}, err
 	}
@@ -191,43 +187,57 @@ func (client *AIModelsClient) NewListPager(location string, options *AIModelsCli
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return AIModelsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AIModelsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AIModelsClient) listCreateRequest(ctx context.Context, location string, _ *AIModelsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AIModelsClient) listCreateRequest(ctx context.Context, location string, nextLink string, _ *AIModelsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/aiModels"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AIModelsClient) listHandleResponse(resp *http.Response) (AIModelsClientListResponse, error) {
+func (client *AIModelsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AIModelsClientListResponse, error) {
 	result := AIModelsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIModelListResult); err != nil {
 		return AIModelsClientListResponse{}, err
 	}

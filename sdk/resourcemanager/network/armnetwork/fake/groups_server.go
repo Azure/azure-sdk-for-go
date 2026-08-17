@@ -149,7 +149,7 @@ func (g *GroupsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }

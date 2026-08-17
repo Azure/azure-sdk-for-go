@@ -57,39 +57,53 @@ func (client *ResourceSKUsClient) NewListSKUsPager(options *ResourceSKUsClientLi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSKUsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listSKUsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ResourceSKUsClientListSKUsResponse{}, err
 			}
-			return client.listSKUsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceSKUsClientListSKUsResponse{}, err
+			}
+			return client.listSKUsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
-func (client *ResourceSKUsClient) listSKUsCreateRequest(ctx context.Context, _ *ResourceSKUsClientListSKUsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceSKUsClient) listSKUsCreateRequest(ctx context.Context, nextLink string, _ *ResourceSKUsClientListSKUsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *ResourceSKUsClient) listSKUsHandleResponse(resp *http.Response) (ResourceSKUsClientListSKUsResponse, error) {
+func (client *ResourceSKUsClient) listSKUsHandleResponse(resp *http.Response, successCodes ...int) (ResourceSKUsClientListSKUsResponse, error) {
 	result := ResourceSKUsClientListSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceSKUsResult); err != nil {
 		return ResourceSKUsClientListSKUsResponse{}, err
 	}

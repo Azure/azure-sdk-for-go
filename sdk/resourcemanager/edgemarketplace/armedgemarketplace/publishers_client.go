@@ -61,12 +61,7 @@ func (client *PublishersClient) Get(ctx context.Context, resourceURI string, pub
 	if err != nil {
 		return PublishersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PublishersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -92,8 +87,11 @@ func (client *PublishersClient) getCreateRequest(ctx context.Context, resourceUR
 }
 
 // getHandleResponse handles the Get response.
-func (client *PublishersClient) getHandleResponse(resp *http.Response) (PublishersClientGetResponse, error) {
+func (client *PublishersClient) getHandleResponse(resp *http.Response, successCodes ...int) (PublishersClientGetResponse, error) {
 	result := PublishersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Publisher); err != nil {
 		return PublishersClientGetResponse{}, err
 	}
@@ -114,54 +112,68 @@ func (client *PublishersClient) NewListPager(resourceURI string, options *Publis
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return PublishersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PublishersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PublishersClient) listCreateRequest(ctx context.Context, resourceURI string, options *PublishersClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.EdgeMarketplace/publishers"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *PublishersClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, options *PublishersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.EdgeMarketplace/publishers"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20251001Preview)
+		if options != nil && options.Maxpagesize != nil {
+			reqQP.Set("maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20251001Preview)
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PublishersClient) listHandleResponse(resp *http.Response) (PublishersClientListResponse, error) {
+func (client *PublishersClient) listHandleResponse(resp *http.Response, successCodes ...int) (PublishersClientListResponse, error) {
 	result := PublishersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublisherListResult); err != nil {
 		return PublishersClientListResponse{}, err
 	}
@@ -182,39 +194,53 @@ func (client *PublishersClient) NewListBySubscriptionPager(options *PublishersCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PublishersClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PublishersClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PublishersClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PublishersClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeMarketplace/publishers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PublishersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PublishersClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeMarketplace/publishers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PublishersClient) listBySubscriptionHandleResponse(resp *http.Response) (PublishersClientListBySubscriptionResponse, error) {
+func (client *PublishersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PublishersClientListBySubscriptionResponse, error) {
 	result := PublishersClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublisherListResult); err != nil {
 		return PublishersClientListBySubscriptionResponse{}, err
 	}

@@ -63,12 +63,7 @@ func (client *DatabasesClient) AddPrincipals(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatabasesClientAddPrincipalsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabasesClientAddPrincipalsResponse{}, err
-	}
-	resp, err := client.addPrincipalsHandleResponse(httpResp)
-	return resp, err
+	return client.addPrincipalsHandleResponse(httpResp, http.StatusOK)
 }
 
 // addPrincipalsCreateRequest creates the AddPrincipals request.
@@ -106,8 +101,11 @@ func (client *DatabasesClient) addPrincipalsCreateRequest(ctx context.Context, r
 }
 
 // addPrincipalsHandleResponse handles the AddPrincipals response.
-func (client *DatabasesClient) addPrincipalsHandleResponse(resp *http.Response) (DatabasesClientAddPrincipalsResponse, error) {
+func (client *DatabasesClient) addPrincipalsHandleResponse(resp *http.Response, successCodes ...int) (DatabasesClientAddPrincipalsResponse, error) {
 	result := DatabasesClientAddPrincipalsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalListResult); err != nil {
 		return DatabasesClientAddPrincipalsResponse{}, err
 	}
@@ -135,12 +133,7 @@ func (client *DatabasesClient) CheckNameAvailability(ctx context.Context, resour
 	if err != nil {
 		return DatabasesClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabasesClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -174,8 +167,11 @@ func (client *DatabasesClient) checkNameAvailabilityCreateRequest(ctx context.Co
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *DatabasesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (DatabasesClientCheckNameAvailabilityResponse, error) {
+func (client *DatabasesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (DatabasesClientCheckNameAvailabilityResponse, error) {
 	result := DatabasesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameResult); err != nil {
 		return DatabasesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -224,8 +220,7 @@ func (client *DatabasesClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -307,8 +302,7 @@ func (client *DatabasesClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -362,12 +356,7 @@ func (client *DatabasesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DatabasesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabasesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -401,8 +390,11 @@ func (client *DatabasesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabasesClient) getHandleResponse(resp *http.Response) (DatabasesClientGetResponse, error) {
+func (client *DatabasesClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabasesClientGetResponse, error) {
 	result := DatabasesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DatabasesClientGetResponse{}, err
 	}
@@ -425,53 +417,67 @@ func (client *DatabasesClient) NewListByClusterPager(resourceGroupName string, c
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
-			}, nil)
+			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
 				return DatabasesClientListByClusterResponse{}, err
 			}
-			return client.listByClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DatabasesClientListByClusterResponse{}, err
+			}
+			return client.listByClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *DatabasesClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *DatabasesClientListByClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DatabasesClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, options *DatabasesClientListByClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250214)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250214)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *DatabasesClient) listByClusterHandleResponse(resp *http.Response) (DatabasesClientListByClusterResponse, error) {
+func (client *DatabasesClient) listByClusterHandleResponse(resp *http.Response, successCodes ...int) (DatabasesClientListByClusterResponse, error) {
 	result := DatabasesClientListByClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseListResult); err != nil {
 		return DatabasesClientListByClusterResponse{}, err
 	}
@@ -495,51 +501,65 @@ func (client *DatabasesClient) NewListPrincipalsPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPrincipalsCreateRequest(ctx, resourceGroupName, clusterName, databaseName, options)
-			}, nil)
+			req, err := client.listPrincipalsCreateRequest(ctx, resourceGroupName, clusterName, databaseName, nextLink, options)
 			if err != nil {
 				return DatabasesClientListPrincipalsResponse{}, err
 			}
-			return client.listPrincipalsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DatabasesClientListPrincipalsResponse{}, err
+			}
+			return client.listPrincipalsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPrincipalsCreateRequest creates the ListPrincipals request.
-func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, _ *DatabasesClientListPrincipalsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/listPrincipals"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DatabasesClient) listPrincipalsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, nextLink string, _ *DatabasesClientListPrincipalsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/databases/{databaseName}/listPrincipals"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250214)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250214)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPrincipalsHandleResponse handles the ListPrincipals response.
-func (client *DatabasesClient) listPrincipalsHandleResponse(resp *http.Response) (DatabasesClientListPrincipalsResponse, error) {
+func (client *DatabasesClient) listPrincipalsHandleResponse(resp *http.Response, successCodes ...int) (DatabasesClientListPrincipalsResponse, error) {
 	result := DatabasesClientListPrincipalsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalListResult); err != nil {
 		return DatabasesClientListPrincipalsResponse{}, err
 	}
@@ -568,12 +588,7 @@ func (client *DatabasesClient) RemovePrincipals(ctx context.Context, resourceGro
 	if err != nil {
 		return DatabasesClientRemovePrincipalsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabasesClientRemovePrincipalsResponse{}, err
-	}
-	resp, err := client.removePrincipalsHandleResponse(httpResp)
-	return resp, err
+	return client.removePrincipalsHandleResponse(httpResp, http.StatusOK)
 }
 
 // removePrincipalsCreateRequest creates the RemovePrincipals request.
@@ -611,8 +626,11 @@ func (client *DatabasesClient) removePrincipalsCreateRequest(ctx context.Context
 }
 
 // removePrincipalsHandleResponse handles the RemovePrincipals response.
-func (client *DatabasesClient) removePrincipalsHandleResponse(resp *http.Response) (DatabasesClientRemovePrincipalsResponse, error) {
+func (client *DatabasesClient) removePrincipalsHandleResponse(resp *http.Response, successCodes ...int) (DatabasesClientRemovePrincipalsResponse, error) {
 	result := DatabasesClientRemovePrincipalsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabasePrincipalListResult); err != nil {
 		return DatabasesClientRemovePrincipalsResponse{}, err
 	}
@@ -660,8 +678,7 @@ func (client *DatabasesClient) update(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

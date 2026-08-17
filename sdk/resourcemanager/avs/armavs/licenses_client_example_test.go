@@ -40,7 +40,7 @@ func ExampleLicensesClient_BeginCreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.AVS/privateClouds/licenses"),
 	// 		Properties: &armavs.VmwareFirewallLicenseProperties{
 	// 			Kind: to.Ptr(armavs.LicenseKindVmwareFirewall),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 			Cores: to.Ptr[int32](16),
 	// 			BroadcomSiteID: to.Ptr("123456"),
 	// 			BroadcomContractNumber: to.Ptr("123456"),
@@ -97,7 +97,7 @@ func ExampleLicensesClient_Get() {
 	// 		Properties: &armavs.VmwareFirewallLicenseProperties{
 	// 			Kind: to.Ptr(armavs.LicenseKindVmwareFirewall),
 	// 			ProvisioningState: to.Ptr(armavs.LicenseProvisioningStateSucceeded),
-	// 			EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T00:00:00Z"); return t}()),
+	// 			EndDate: to.Ptr(time.Date(2025, time.June, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Cores: to.Ptr[int32](16),
 	// 			BroadcomSiteID: to.Ptr("123456"),
 	// 			BroadcomContractNumber: to.Ptr("123456"),
@@ -127,7 +127,7 @@ func ExampleLicensesClient_GetProperties() {
 	// res = armavs.LicensesClientGetPropertiesResponse{
 	// 	LicensePropertiesClassification: &armavs.VmwareFirewallLicenseProperties{
 	// 		LicenseKey: to.Ptr("12345-12345-12345-12345-12345"),
-	// 		EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 		EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 		Cores: to.Ptr[int32](16),
 	// 		BroadcomSiteID: to.Ptr("123456"),
 	// 		BroadcomContractNumber: to.Ptr("123456"),
@@ -169,7 +169,7 @@ func ExampleLicensesClient_NewListPager() {
 		// 				Properties: &armavs.VmwareFirewallLicenseProperties{
 		// 					Kind: to.Ptr(armavs.LicenseKindVmwareFirewall),
 		// 					ProvisioningState: to.Ptr(armavs.LicenseProvisioningStateSucceeded),
-		// 					EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00Z"); return t}()),
+		// 					EndDate: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					Cores: to.Ptr[int32](64),
 		// 					BroadcomSiteID: to.Ptr("123456"),
 		// 					BroadcomContractNumber: to.Ptr("123456"),

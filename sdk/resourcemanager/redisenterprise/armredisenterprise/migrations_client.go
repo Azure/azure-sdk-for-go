@@ -62,12 +62,7 @@ func (client *MigrationsClient) Validate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return MigrationsClientValidateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MigrationsClientValidateResponse{}, err
-	}
-	resp, err := client.validateHandleResponse(httpResp)
-	return resp, err
+	return client.validateHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateCreateRequest creates the Validate request.
@@ -101,8 +96,11 @@ func (client *MigrationsClient) validateCreateRequest(ctx context.Context, resou
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *MigrationsClient) validateHandleResponse(resp *http.Response) (MigrationsClientValidateResponse, error) {
+func (client *MigrationsClient) validateHandleResponse(resp *http.Response, successCodes ...int) (MigrationsClientValidateResponse, error) {
 	result := MigrationsClientValidateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationValidationResponse); err != nil {
 		return MigrationsClientValidateResponse{}, err
 	}

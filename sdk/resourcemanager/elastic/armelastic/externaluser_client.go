@@ -62,12 +62,7 @@ func (client *ExternalUserClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ExternalUserClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExternalUserClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -104,8 +99,11 @@ func (client *ExternalUserClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExternalUserClient) createOrUpdateHandleResponse(resp *http.Response) (ExternalUserClientCreateOrUpdateResponse, error) {
+func (client *ExternalUserClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ExternalUserClientCreateOrUpdateResponse, error) {
 	result := ExternalUserClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalUserCreationResponse); err != nil {
 		return ExternalUserClientCreateOrUpdateResponse{}, err
 	}

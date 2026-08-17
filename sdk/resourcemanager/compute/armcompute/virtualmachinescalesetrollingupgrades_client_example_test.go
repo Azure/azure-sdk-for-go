@@ -96,9 +96,9 @@ func ExampleVirtualMachineScaleSetRollingUpgradesClient_GetLatest_virtualMachine
 	// 			},
 	// 			RunningStatus: &armcompute.RollingUpgradeRunningStatus{
 	// 				Code: to.Ptr(armcompute.RollingUpgradeStatusCodeRollingForward),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:06:23.362Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2021, time.November, 30, 13, 6, 23, 362000000, time.UTC)),
 	// 				LastAction: to.Ptr(armcompute.RollingUpgradeActionTypeStart),
-	// 				LastActionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:06:23.362Z"); return t}()),
+	// 				LastActionTime: to.Ptr(time.Date(2021, time.November, 30, 13, 6, 23, 362000000, time.UTC)),
 	// 			},
 	// 			Progress: &armcompute.RollingUpgradeProgressInfo{
 	// 				SuccessfulInstanceCount: to.Ptr[int32](6),

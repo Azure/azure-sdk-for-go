@@ -61,12 +61,7 @@ func (client *SecurityPerimeterOperationStatusesClient) Get(ctx context.Context,
 	if err != nil {
 		return SecurityPerimeterOperationStatusesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPerimeterOperationStatusesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,8 +91,11 @@ func (client *SecurityPerimeterOperationStatusesClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPerimeterOperationStatusesClient) getHandleResponse(resp *http.Response) (SecurityPerimeterOperationStatusesClientGetResponse, error) {
+func (client *SecurityPerimeterOperationStatusesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterOperationStatusesClientGetResponse, error) {
 	result := SecurityPerimeterOperationStatusesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
 		return SecurityPerimeterOperationStatusesClientGetResponse{}, err
 	}

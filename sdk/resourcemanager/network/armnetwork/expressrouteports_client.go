@@ -82,8 +82,7 @@ func (client *ExpressRoutePortsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -159,8 +158,7 @@ func (client *ExpressRoutePortsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -211,12 +209,7 @@ func (client *ExpressRoutePortsClient) GenerateLOA(ctx context.Context, resource
 	if err != nil {
 		return ExpressRoutePortsClientGenerateLOAResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExpressRoutePortsClientGenerateLOAResponse{}, err
-	}
-	resp, err := client.generateLOAHandleResponse(httpResp)
-	return resp, err
+	return client.generateLOAHandleResponse(httpResp, http.StatusOK)
 }
 
 // generateLOACreateRequest creates the GenerateLOA request.
@@ -250,8 +243,11 @@ func (client *ExpressRoutePortsClient) generateLOACreateRequest(ctx context.Cont
 }
 
 // generateLOAHandleResponse handles the GenerateLOA response.
-func (client *ExpressRoutePortsClient) generateLOAHandleResponse(resp *http.Response) (ExpressRoutePortsClientGenerateLOAResponse, error) {
+func (client *ExpressRoutePortsClient) generateLOAHandleResponse(resp *http.Response, successCodes ...int) (ExpressRoutePortsClientGenerateLOAResponse, error) {
 	result := ExpressRoutePortsClientGenerateLOAResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateExpressRoutePortsLOAResult); err != nil {
 		return ExpressRoutePortsClientGenerateLOAResponse{}, err
 	}
@@ -277,12 +273,7 @@ func (client *ExpressRoutePortsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ExpressRoutePortsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExpressRoutePortsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -312,8 +303,11 @@ func (client *ExpressRoutePortsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExpressRoutePortsClient) getHandleResponse(resp *http.Response) (ExpressRoutePortsClientGetResponse, error) {
+func (client *ExpressRoutePortsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExpressRoutePortsClientGetResponse, error) {
 	result := ExpressRoutePortsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePort); err != nil {
 		return ExpressRoutePortsClientGetResponse{}, err
 	}
@@ -334,39 +328,53 @@ func (client *ExpressRoutePortsClient) NewListPager(options *ExpressRoutePortsCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ExpressRoutePortsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExpressRoutePortsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ExpressRoutePortsClient) listCreateRequest(ctx context.Context, _ *ExpressRoutePortsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePorts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ExpressRoutePortsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ExpressRoutePortsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePorts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ExpressRoutePortsClient) listHandleResponse(resp *http.Response) (ExpressRoutePortsClientListResponse, error) {
+func (client *ExpressRoutePortsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExpressRoutePortsClientListResponse, error) {
 	result := ExpressRoutePortsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePortListResult); err != nil {
 		return ExpressRoutePortsClientListResponse{}, err
 	}
@@ -388,43 +396,57 @@ func (client *ExpressRoutePortsClient) NewListByResourceGroupPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ExpressRoutePortsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExpressRoutePortsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ExpressRoutePortsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ExpressRoutePortsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ExpressRoutePortsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ExpressRoutePortsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ExpressRoutePortsClient) listByResourceGroupHandleResponse(resp *http.Response) (ExpressRoutePortsClientListByResourceGroupResponse, error) {
+func (client *ExpressRoutePortsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ExpressRoutePortsClientListByResourceGroupResponse, error) {
 	result := ExpressRoutePortsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePortListResult); err != nil {
 		return ExpressRoutePortsClientListByResourceGroupResponse{}, err
 	}
@@ -452,12 +474,7 @@ func (client *ExpressRoutePortsClient) UpdateTags(ctx context.Context, resourceG
 	if err != nil {
 		return ExpressRoutePortsClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExpressRoutePortsClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -491,8 +508,11 @@ func (client *ExpressRoutePortsClient) updateTagsCreateRequest(ctx context.Conte
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *ExpressRoutePortsClient) updateTagsHandleResponse(resp *http.Response) (ExpressRoutePortsClientUpdateTagsResponse, error) {
+func (client *ExpressRoutePortsClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (ExpressRoutePortsClientUpdateTagsResponse, error) {
 	result := ExpressRoutePortsClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRoutePort); err != nil {
 		return ExpressRoutePortsClientUpdateTagsResponse{}, err
 	}

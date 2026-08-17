@@ -80,8 +80,7 @@ func (client *VipSwapClient) create(ctx context.Context, groupName string, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -135,12 +134,7 @@ func (client *VipSwapClient) Get(ctx context.Context, groupName string, resource
 	if err != nil {
 		return VipSwapClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VipSwapClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -171,8 +165,11 @@ func (client *VipSwapClient) getCreateRequest(ctx context.Context, groupName str
 }
 
 // getHandleResponse handles the Get response.
-func (client *VipSwapClient) getHandleResponse(resp *http.Response) (VipSwapClientGetResponse, error) {
+func (client *VipSwapClient) getHandleResponse(resp *http.Response, successCodes ...int) (VipSwapClientGetResponse, error) {
 	result := VipSwapClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwapResource); err != nil {
 		return VipSwapClientGetResponse{}, err
 	}
@@ -198,12 +195,7 @@ func (client *VipSwapClient) List(ctx context.Context, groupName string, resourc
 	if err != nil {
 		return VipSwapClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VipSwapClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -233,8 +225,11 @@ func (client *VipSwapClient) listCreateRequest(ctx context.Context, groupName st
 }
 
 // listHandleResponse handles the List response.
-func (client *VipSwapClient) listHandleResponse(resp *http.Response) (VipSwapClientListResponse, error) {
+func (client *VipSwapClient) listHandleResponse(resp *http.Response, successCodes ...int) (VipSwapClientListResponse, error) {
 	result := VipSwapClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwapResourceListResult); err != nil {
 		return VipSwapClientListResponse{}, err
 	}

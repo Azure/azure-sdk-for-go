@@ -61,12 +61,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Get(ctx context.Conte
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,8 +91,11 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) getCreateRequest(ctx 
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) getHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientGetResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesOverridesClientGetResponse, error) {
 	result := FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverrides); err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, err
 	}
@@ -124,12 +122,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) List(ctx context.Cont
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -159,8 +152,11 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) listCreateRequest(ctx
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientListResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesOverridesClientListResponse, error) {
 	result := FirewallPolicyIdpsSignaturesOverridesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverridesList); err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, err
 	}
@@ -188,12 +184,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Patch(ctx context.Con
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, err
-	}
-	resp, err := client.patchHandleResponse(httpResp)
-	return resp, err
+	return client.patchHandleResponse(httpResp, http.StatusOK)
 }
 
 // patchCreateRequest creates the Patch request.
@@ -227,8 +218,11 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchCreateRequest(ct
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientPatchResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesOverridesClientPatchResponse, error) {
 	result := FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverrides); err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, err
 	}
@@ -256,12 +250,7 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Put(ctx context.Conte
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, err
-	}
-	resp, err := client.putHandleResponse(httpResp)
-	return resp, err
+	return client.putHandleResponse(httpResp, http.StatusOK)
 }
 
 // putCreateRequest creates the Put request.
@@ -295,8 +284,11 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) putCreateRequest(ctx 
 }
 
 // putHandleResponse handles the Put response.
-func (client *FirewallPolicyIdpsSignaturesOverridesClient) putHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesOverridesClientPutResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesOverridesClient) putHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesOverridesClientPutResponse, error) {
 	result := FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignaturesOverrides); err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, err
 	}

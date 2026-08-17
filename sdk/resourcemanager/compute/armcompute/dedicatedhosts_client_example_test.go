@@ -145,7 +145,7 @@ func ExampleDedicatedHostsClient_Get() {
 	// 			PlatformFaultDomain: to.Ptr[int32](1),
 	// 			AutoReplaceOnFailure: to.Ptr(true),
 	// 			HostID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2019, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachines: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/subId/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/vm1"),
@@ -175,7 +175,7 @@ func ExampleDedicatedHostsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2019, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -261,7 +261,7 @@ func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHost
 		// 						},
 		// 					},
 		// 					LicenseType: to.Ptr(armcompute.DedicatedHostLicenseTypesWindowsServerHybrid),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.526Z"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 					InstanceView: &armcompute.DedicatedHostInstanceView{
 		// 						AssetID: to.Ptr("aaaaaaaaaaaaaaaa"),
@@ -279,7 +279,7 @@ func ExampleDedicatedHostsClient_NewListByHostGroupPager_dedicatedHostListByHost
 		// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 								DisplayStatus: to.Ptr("aaaaaa"),
 		// 								Message: to.Ptr("a"),
-		// 								Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
+		// 								Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
 		// 							},
 		// 						},
 		// 					},
@@ -415,7 +415,7 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMaximumSetGen() 
 						Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
 						DisplayStatus: to.Ptr("aaaaaa"),
 						Message:       to.Ptr("a"),
-						Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
+						Time:          to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
 					},
 				},
 			},
@@ -449,7 +449,7 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMaximumSetGen() 
 	// 				},
 	// 			},
 	// 			LicenseType: to.Ptr(armcompute.DedicatedHostLicenseTypesWindowsServerHybrid),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.526Z"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 			InstanceView: &armcompute.DedicatedHostInstanceView{
 	// 				AssetID: to.Ptr("aaaaaaaaaaaaaaaa"),
@@ -467,7 +467,7 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateMaximumSetGen() 
 	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 						DisplayStatus: to.Ptr("aaaaaa"),
 	// 						Message: to.Ptr("a"),
-	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
+	// 						Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -556,7 +556,7 @@ func ExampleDedicatedHostsClient_BeginUpdate_dedicatedHostUpdateResize() {
 	// 				},
 	// 			},
 	// 			LicenseType: to.Ptr(armcompute.DedicatedHostLicenseTypesWindowsServerHybrid),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.526Z"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
 	// 		},
 	// 		SKU: &armcompute.SKU{

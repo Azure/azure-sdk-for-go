@@ -81,8 +81,7 @@ func (client *AvsVMsClient) deleteOperation(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -136,12 +135,7 @@ func (client *AvsVMsClient) Get(ctx context.Context, resourceGroupName string, s
 	if err != nil {
 		return AvsVMsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AvsVMsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -175,8 +169,11 @@ func (client *AvsVMsClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *AvsVMsClient) getHandleResponse(resp *http.Response) (AvsVMsClientGetResponse, error) {
+func (client *AvsVMsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AvsVMsClientGetResponse, error) {
 	result := AvsVMsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvsVM); err != nil {
 		return AvsVMsClientGetResponse{}, err
 	}
@@ -199,47 +196,61 @@ func (client *AvsVMsClient) NewListByStoragePoolPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStoragePoolCreateRequest(ctx, resourceGroupName, storagePoolName, options)
-			}, nil)
+			req, err := client.listByStoragePoolCreateRequest(ctx, resourceGroupName, storagePoolName, nextLink, options)
 			if err != nil {
 				return AvsVMsClientListByStoragePoolResponse{}, err
 			}
-			return client.listByStoragePoolHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AvsVMsClientListByStoragePoolResponse{}, err
+			}
+			return client.listByStoragePoolHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByStoragePoolCreateRequest creates the ListByStoragePool request.
-func (client *AvsVMsClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *AvsVMsClientListByStoragePoolOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsVms"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AvsVMsClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, nextLink string, _ *AvsVMsClientListByStoragePoolOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsVms"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if storagePoolName == "" {
+			return nil, errors.New("parameter storagePoolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByStoragePoolHandleResponse handles the ListByStoragePool response.
-func (client *AvsVMsClient) listByStoragePoolHandleResponse(resp *http.Response) (AvsVMsClientListByStoragePoolResponse, error) {
+func (client *AvsVMsClient) listByStoragePoolHandleResponse(resp *http.Response, successCodes ...int) (AvsVMsClientListByStoragePoolResponse, error) {
 	result := AvsVMsClientListByStoragePoolResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvsVMListResult); err != nil {
 		return AvsVMsClientListByStoragePoolResponse{}, err
 	}
@@ -287,8 +298,7 @@ func (client *AvsVMsClient) update(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

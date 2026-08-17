@@ -84,8 +84,7 @@ func (client *InboundSecurityRuleClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -145,12 +144,7 @@ func (client *InboundSecurityRuleClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return InboundSecurityRuleClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InboundSecurityRuleClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -184,8 +178,11 @@ func (client *InboundSecurityRuleClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *InboundSecurityRuleClient) getHandleResponse(resp *http.Response) (InboundSecurityRuleClientGetResponse, error) {
+func (client *InboundSecurityRuleClient) getHandleResponse(resp *http.Response, successCodes ...int) (InboundSecurityRuleClientGetResponse, error) {
 	result := InboundSecurityRuleClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InboundSecurityRule); err != nil {
 		return InboundSecurityRuleClientGetResponse{}, err
 	}

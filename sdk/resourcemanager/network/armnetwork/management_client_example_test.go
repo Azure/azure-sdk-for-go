@@ -361,7 +361,7 @@ func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	// 		SkipToken: to.Ptr("FakeSkipTokenCode"),
 	// 		Value: []*armnetwork.ActiveConnectivityConfiguration{
 	// 			{
-	// 				CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T18:03:22.2578238+05:30"); return t}()),
+	// 				CommitTime: to.Ptr(time.Date(2020, time.July, 10, 12, 33, 22, 257823800, time.UTC)),
 	// 				ConfigurationGroups: []*armnetwork.ConfigurationGroup{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1"),
@@ -428,7 +428,7 @@ func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	// 		SkipToken: to.Ptr("FakeSkipTokenCode"),
 	// 		Value: []armnetwork.ActiveBaseSecurityAdminRuleClassification{
 	// 			&armnetwork.ActiveDefaultSecurityAdminRule{
-	// 				CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T18:03:22.2578238+05:30"); return t}()),
+	// 				CommitTime: to.Ptr(time.Date(2020, time.July, 10, 12, 33, 22, 257823800, time.UTC)),
 	// 				ConfigurationDescription: to.Ptr("SampleDescription"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/securityAdminConfigurations/myTestSecurityConfig/ruleCollections/testRuleCollection/rules/SampleAdminRule"),
 	// 				Kind: to.Ptr(armnetwork.EffectiveAdminRuleKindDefault),

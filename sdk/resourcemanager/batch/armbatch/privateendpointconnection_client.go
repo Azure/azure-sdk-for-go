@@ -19,6 +19,8 @@ import (
 
 // PrivateEndpointConnectionClient contains the methods for the PrivateEndpointConnection group.
 // Don't use this type directly, use NewPrivateEndpointConnectionClient() instead.
+//
+// Generated from API version 2025-06-01
 type PrivateEndpointConnectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPrivateEndpointConnectionClient(subscriptionID string, credential azcore
 
 // BeginDelete - Deletes the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -71,8 +71,6 @@ func (client *PrivateEndpointConnectionClient) BeginDelete(ctx context.Context, 
 
 // Delete - Deletes the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionClient.BeginDelete"
@@ -88,8 +86,7 @@ func (client *PrivateEndpointConnectionClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -118,15 +115,13 @@ func (client *PrivateEndpointConnectionClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -148,12 +143,7 @@ func (client *PrivateEndpointConnectionClient) Get(ctx context.Context, resource
 	if err != nil {
 		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -180,15 +170,18 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetResponse, error) {
+func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientGetResponse, error) {
 	result := PrivateEndpointConnectionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
@@ -196,8 +189,6 @@ func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByBatchAccountPager - Lists all of the private endpoint connections in the specified account.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -215,50 +206,64 @@ func (client *PrivateEndpointConnectionClient) NewListByBatchAccountPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return PrivateEndpointConnectionClientListByBatchAccountResponse{}, err
 			}
-			return client.listByBatchAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionClientListByBatchAccountResponse{}, err
+			}
+			return client.listByBatchAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBatchAccountCreateRequest creates the ListByBatchAccount request.
-func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PrivateEndpointConnectionClientListByBatchAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateEndpointConnectionClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *PrivateEndpointConnectionClientListByBatchAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	if options != nil && options.Maxresults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		if options != nil && options.Maxresults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBatchAccountHandleResponse handles the ListByBatchAccount response.
-func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientListByBatchAccountResponse, error) {
+func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientListByBatchAccountResponse, error) {
 	result := PrivateEndpointConnectionClientListByBatchAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPrivateEndpointConnectionsResult); err != nil {
 		return PrivateEndpointConnectionClientListByBatchAccountResponse{}, err
 	}
@@ -267,8 +272,6 @@ func (client *PrivateEndpointConnectionClient) listByBatchAccountHandleResponse(
 
 // BeginUpdate - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -298,8 +301,6 @@ func (client *PrivateEndpointConnectionClient) BeginUpdate(ctx context.Context, 
 
 // Update - Updates the properties of an existing private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resourceGroupName string, accountName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionClient.BeginUpdate"
@@ -315,8 +316,7 @@ func (client *PrivateEndpointConnectionClient) update(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -345,8 +345,8 @@ func (client *PrivateEndpointConnectionClient) updateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

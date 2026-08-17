@@ -61,7 +61,7 @@ func ExampleVirtualMachineImagesClient_Get_virtualMachineImageGetMaximumSetGen()
 	// 			},
 	// 			ImageDeprecationStatus: &armcompute.ImageDeprecationStatus{
 	// 				ImageState: to.Ptr(armcompute.ImageStateScheduledForDeprecation),
-	// 				ScheduledDeprecationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T00:00:00+00:00"); return t}()),
+	// 				ScheduledDeprecationTime: to.Ptr(time.Date(2023, time.January, 13, 0, 0, 0, 0, time.UTC)),
 	// 				AlternativeOption: &armcompute.AlternativeOption{
 	// 					Type: to.Ptr(armcompute.AlternativeTypeOffer),
 	// 					Value: to.Ptr("aaaaaaa"),

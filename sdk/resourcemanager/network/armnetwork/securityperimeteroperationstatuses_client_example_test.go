@@ -32,9 +32,9 @@ func ExampleSecurityPerimeterOperationStatusesClient_Get() {
 	// res = armnetwork.SecurityPerimeterOperationStatusesClientGetResponse{
 	// 	OperationStatusResult: armnetwork.OperationStatusResult{
 	// 		Name: to.Ptr("operationId1"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T10:46:55.0948652Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2025, time.January, 9, 10, 46, 55, 94865200, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/location1/networkSecurityPerimeterOperationStatuses/operationId1"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-09T10:46:51.0988675Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.January, 9, 10, 46, 51, 98867500, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }

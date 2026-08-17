@@ -92,10 +92,10 @@ func ExampleArchiveVersionsClient_Get() {
 	// 		SystemData: &armcontainerregistry.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:13:46.836Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 13, 46, 836000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:13:46.836Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 13, 46, 836000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerregistry.ArchiveVersionProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateCreating),
@@ -137,10 +137,10 @@ func ExampleArchiveVersionsClient_NewListPager() {
 		// 				SystemData: &armcontainerregistry.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:22:47.311Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 22, 47, 311000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armcontainerregistry.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-24T00:22:47.311Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.February, 24, 0, 22, 47, 311000000, time.UTC)),
 		// 				},
 		// 				Properties: &armcontainerregistry.ArchiveVersionProperties{
 		// 					ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateCreating),

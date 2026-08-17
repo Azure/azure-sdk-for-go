@@ -60,8 +60,7 @@ func (client *AssessmentsClient) Delete(ctx context.Context, assessmentName stri
 		return AssessmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AssessmentsClientDeleteResponse{}, err
+		return AssessmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AssessmentsClientDeleteResponse{}, nil
 }
@@ -105,12 +104,7 @@ func (client *AssessmentsClient) Get(ctx context.Context, assessmentName string,
 	if err != nil {
 		return AssessmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AssessmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -136,8 +130,11 @@ func (client *AssessmentsClient) getCreateRequest(ctx context.Context, assessmen
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssessmentsClient) getHandleResponse(resp *http.Response) (AssessmentsClientGetResponse, error) {
+func (client *AssessmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsClientGetResponse, error) {
 	result := AssessmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResult); err != nil {
 		return AssessmentsClientGetResponse{}, err
 	}
@@ -157,45 +154,59 @@ func (client *AssessmentsClient) NewListPager(options *AssessmentsClientListOpti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AssessmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssessmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AssessmentsClient) listCreateRequest(ctx context.Context, options *AssessmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AssessmentsClient) listCreateRequest(ctx context.Context, nextLink string, options *AssessmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/assessments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", *options.Top)
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", *options.Top)
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AssessmentsClient) listHandleResponse(resp *http.Response) (AssessmentsClientListResponse, error) {
+func (client *AssessmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsClientListResponse, error) {
 	result := AssessmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentListResult); err != nil {
 		return AssessmentsClientListResponse{}, err
 	}
@@ -221,12 +232,7 @@ func (client *AssessmentsClient) Put(ctx context.Context, assessmentName string,
 	if err != nil {
 		return AssessmentsClientPutResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AssessmentsClientPutResponse{}, err
-	}
-	resp, err := client.putHandleResponse(httpResp)
-	return resp, err
+	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // putCreateRequest creates the Put request.
@@ -256,8 +262,11 @@ func (client *AssessmentsClient) putCreateRequest(ctx context.Context, assessmen
 }
 
 // putHandleResponse handles the Put response.
-func (client *AssessmentsClient) putHandleResponse(resp *http.Response) (AssessmentsClientPutResponse, error) {
+func (client *AssessmentsClient) putHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsClientPutResponse, error) {
 	result := AssessmentsClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentResult); err != nil {
 		return AssessmentsClientPutResponse{}, err
 	}

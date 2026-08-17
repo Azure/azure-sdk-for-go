@@ -72,9 +72,9 @@ func ExampleInterconnectBlocksClient_BeginCreateOrUpdate_createOrUpdateAnInterco
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -140,9 +140,9 @@ func ExampleInterconnectBlocksClient_BeginCreateOrUpdate_createOrUpdateAnInterco
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -213,7 +213,7 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlock() {
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -223,7 +223,7 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlock() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -269,7 +269,7 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlockWithInstanceView(
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -289,7 +289,7 @@ func ExampleInterconnectBlocksClient_Get_getAnInterconnectBlockWithInstanceView(
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -340,7 +340,7 @@ func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup1"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -350,7 +350,7 @@ func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -373,14 +373,14 @@ func ExampleInterconnectBlocksClient_NewListByResourceGroupPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup2"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM3"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -434,7 +434,7 @@ func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup1/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup1"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup1/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -444,7 +444,7 @@ func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -467,14 +467,14 @@ func ExampleInterconnectBlocksClient_NewListBySubscriptionPager() {
 		// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup2/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup2"),
 		// 					},
 		// 					InterconnectBlockID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup2/providers/Microsoft.Compute/virtualMachines/myVM3"),
 		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -534,9 +534,9 @@ func ExampleInterconnectBlocksClient_BeginUpdate() {
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
 	// 			},
 	// 			InterconnectBlockID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			ProvisioningTime: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Updating"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2026, time.March, 1, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }

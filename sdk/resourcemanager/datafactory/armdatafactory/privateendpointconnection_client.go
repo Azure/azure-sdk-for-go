@@ -62,12 +62,7 @@ func (client *PrivateEndpointConnectionClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return PrivateEndpointConnectionClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -108,8 +103,11 @@ func (client *PrivateEndpointConnectionClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PrivateEndpointConnectionClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientCreateOrUpdateResponse, error) {
+func (client *PrivateEndpointConnectionClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientCreateOrUpdateResponse, error) {
 	result := PrivateEndpointConnectionClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResource); err != nil {
 		return PrivateEndpointConnectionClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +136,7 @@ func (client *PrivateEndpointConnectionClient) Delete(ctx context.Context, resou
 		return PrivateEndpointConnectionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionClientDeleteResponse{}, err
+		return PrivateEndpointConnectionClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PrivateEndpointConnectionClientDeleteResponse{}, nil
 }
@@ -194,12 +191,7 @@ func (client *PrivateEndpointConnectionClient) Get(ctx context.Context, resource
 	if err != nil {
 		return PrivateEndpointConnectionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -236,8 +228,11 @@ func (client *PrivateEndpointConnectionClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionClientGetResponse, error) {
+func (client *PrivateEndpointConnectionClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionClientGetResponse, error) {
 	result := PrivateEndpointConnectionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResource); err != nil {
 		return PrivateEndpointConnectionClientGetResponse{}, err
 	}

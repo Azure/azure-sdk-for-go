@@ -18,6 +18,8 @@ import (
 
 // IPCommunitiesClient contains the methods for the IPCommunities group.
 // Don't use this type directly, use NewIPCommunitiesClient() instead.
+//
+// Generated from API version 2025-07-15
 type IPCommunitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewIPCommunitiesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCreate - Implements an IP Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *IPCommunitiesClient) BeginCreate(ctx context.Context, resourceGrou
 
 // Create - Implements an IP Community PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPCommunitiesClient) create(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunity, options *IPCommunitiesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPCommunitiesClient.BeginCreate"
@@ -84,8 +82,7 @@ func (client *IPCommunitiesClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *IPCommunitiesClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +119,6 @@ func (client *IPCommunitiesClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Implements IP Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - options - IPCommunitiesClientBeginDeleteOptions contains the optional parameters for the IPCommunitiesClient.BeginDelete
@@ -147,8 +142,6 @@ func (client *IPCommunitiesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Implements IP Community DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPCommunitiesClient) deleteOperation(ctx context.Context, resourceGroupName string, ipCommunityName string, options *IPCommunitiesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPCommunitiesClient.BeginDelete"
@@ -164,8 +157,7 @@ func (client *IPCommunitiesClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -190,15 +182,13 @@ func (client *IPCommunitiesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements an IP Community GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - options - IPCommunitiesClientGetOptions contains the optional parameters for the IPCommunitiesClient.Get method.
@@ -216,12 +206,7 @@ func (client *IPCommunitiesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return IPCommunitiesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IPCommunitiesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -244,15 +229,18 @@ func (client *IPCommunitiesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IPCommunitiesClient) getHandleResponse(resp *http.Response) (IPCommunitiesClientGetResponse, error) {
+func (client *IPCommunitiesClient) getHandleResponse(resp *http.Response, successCodes ...int) (IPCommunitiesClientGetResponse, error) {
 	result := IPCommunitiesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPCommunity); err != nil {
 		return IPCommunitiesClientGetResponse{}, err
 	}
@@ -260,8 +248,6 @@ func (client *IPCommunitiesClient) getHandleResponse(resp *http.Response) (IPCom
 }
 
 // NewListByResourceGroupPager - Implements IP Communities list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - IPCommunitiesClientListByResourceGroupOptions contains the optional parameters for the IPCommunitiesClient.NewListByResourceGroupPager
 //     method.
@@ -276,43 +262,57 @@ func (client *IPCommunitiesClient) NewListByResourceGroupPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return IPCommunitiesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IPCommunitiesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *IPCommunitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *IPCommunitiesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IPCommunitiesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *IPCommunitiesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/ipCommunities"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *IPCommunitiesClient) listByResourceGroupHandleResponse(resp *http.Response) (IPCommunitiesClientListByResourceGroupResponse, error) {
+func (client *IPCommunitiesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (IPCommunitiesClientListByResourceGroupResponse, error) {
 	result := IPCommunitiesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPCommunitiesListResult); err != nil {
 		return IPCommunitiesClientListByResourceGroupResponse{}, err
 	}
@@ -320,8 +320,6 @@ func (client *IPCommunitiesClient) listByResourceGroupHandleResponse(resp *http.
 }
 
 // NewListBySubscriptionPager - Implements IP Communities list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - IPCommunitiesClientListBySubscriptionOptions contains the optional parameters for the IPCommunitiesClient.NewListBySubscriptionPager
 //     method.
 func (client *IPCommunitiesClient) NewListBySubscriptionPager(options *IPCommunitiesClientListBySubscriptionOptions) *runtime.Pager[IPCommunitiesClientListBySubscriptionResponse] {
@@ -335,39 +333,53 @@ func (client *IPCommunitiesClient) NewListBySubscriptionPager(options *IPCommuni
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return IPCommunitiesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IPCommunitiesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *IPCommunitiesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *IPCommunitiesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/ipCommunities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IPCommunitiesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *IPCommunitiesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/ipCommunities"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *IPCommunitiesClient) listBySubscriptionHandleResponse(resp *http.Response) (IPCommunitiesClientListBySubscriptionResponse, error) {
+func (client *IPCommunitiesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (IPCommunitiesClientListBySubscriptionResponse, error) {
 	result := IPCommunitiesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IPCommunitiesListResult); err != nil {
 		return IPCommunitiesClientListBySubscriptionResponse{}, err
 	}
@@ -376,8 +388,6 @@ func (client *IPCommunitiesClient) listBySubscriptionHandleResponse(resp *http.R
 
 // BeginUpdate - API to update certain properties of the IP Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - ipCommunityName - Name of the IP Community.
 //   - body - IP Community properties to update.
@@ -402,8 +412,6 @@ func (client *IPCommunitiesClient) BeginUpdate(ctx context.Context, resourceGrou
 
 // Update - API to update certain properties of the IP Community resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *IPCommunitiesClient) update(ctx context.Context, resourceGroupName string, ipCommunityName string, body IPCommunityPatch, options *IPCommunitiesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPCommunitiesClient.BeginUpdate"
@@ -419,8 +427,7 @@ func (client *IPCommunitiesClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -445,8 +452,8 @@ func (client *IPCommunitiesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

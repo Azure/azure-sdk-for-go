@@ -84,8 +84,7 @@ func (client *MonitorsClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -163,8 +162,7 @@ func (client *MonitorsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -215,12 +213,7 @@ func (client *MonitorsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -250,8 +243,11 @@ func (client *MonitorsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *MonitorsClient) getHandleResponse(resp *http.Response) (MonitorsClientGetResponse, error) {
+func (client *MonitorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetResponse, error) {
 	result := MonitorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResource); err != nil {
 		return MonitorsClientGetResponse{}, err
 	}
@@ -280,12 +276,7 @@ func (client *MonitorsClient) GetDefaultApplicationKey(ctx context.Context, reso
 	if err != nil {
 		return MonitorsClientGetDefaultApplicationKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetDefaultApplicationKeyResponse{}, err
-	}
-	resp, err := client.getDefaultApplicationKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getDefaultApplicationKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDefaultApplicationKeyCreateRequest creates the GetDefaultApplicationKey request.
@@ -315,8 +306,11 @@ func (client *MonitorsClient) getDefaultApplicationKeyCreateRequest(ctx context.
 }
 
 // getDefaultApplicationKeyHandleResponse handles the GetDefaultApplicationKey response.
-func (client *MonitorsClient) getDefaultApplicationKeyHandleResponse(resp *http.Response) (MonitorsClientGetDefaultApplicationKeyResponse, error) {
+func (client *MonitorsClient) getDefaultApplicationKeyHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetDefaultApplicationKeyResponse, error) {
 	result := MonitorsClientGetDefaultApplicationKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationKey); err != nil {
 		return MonitorsClientGetDefaultApplicationKeyResponse{}, err
 	}
@@ -344,12 +338,7 @@ func (client *MonitorsClient) GetDefaultKey(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return MonitorsClientGetDefaultKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientGetDefaultKeyResponse{}, err
-	}
-	resp, err := client.getDefaultKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getDefaultKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDefaultKeyCreateRequest creates the GetDefaultKey request.
@@ -379,8 +368,11 @@ func (client *MonitorsClient) getDefaultKeyCreateRequest(ctx context.Context, re
 }
 
 // getDefaultKeyHandleResponse handles the GetDefaultKey response.
-func (client *MonitorsClient) getDefaultKeyHandleResponse(resp *http.Response) (MonitorsClientGetDefaultKeyResponse, error) {
+func (client *MonitorsClient) getDefaultKeyHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientGetDefaultKeyResponse, error) {
 	result := MonitorsClientGetDefaultKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKey); err != nil {
 		return MonitorsClientGetDefaultKeyResponse{}, err
 	}
@@ -402,39 +394,53 @@ func (client *MonitorsClient) NewListPager(options *MonitorsClientListOptions) *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return MonitorsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MonitorsClient) listCreateRequest(ctx context.Context, _ *MonitorsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listCreateRequest(ctx context.Context, nextLink string, _ *MonitorsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/monitors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251226Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MonitorsClient) listHandleResponse(resp *http.Response) (MonitorsClientListResponse, error) {
+func (client *MonitorsClient) listHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListResponse, error) {
 	result := MonitorsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResourceListResponse); err != nil {
 		return MonitorsClientListResponse{}, err
 	}
@@ -459,47 +465,61 @@ func (client *MonitorsClient) NewListAPIKeysPager(resourceGroupName string, moni
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAPIKeysCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listAPIKeysCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListAPIKeysResponse{}, err
 			}
-			return client.listAPIKeysHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListAPIKeysResponse{}, err
+			}
+			return client.listAPIKeysHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAPIKeysCreateRequest creates the ListAPIKeys request.
-func (client *MonitorsClient) listAPIKeysCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListAPIKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listApiKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listAPIKeysCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *MonitorsClientListAPIKeysOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listApiKeys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251226Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAPIKeysHandleResponse handles the ListAPIKeys response.
-func (client *MonitorsClient) listAPIKeysHandleResponse(resp *http.Response) (MonitorsClientListAPIKeysResponse, error) {
+func (client *MonitorsClient) listAPIKeysHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListAPIKeysResponse, error) {
 	result := MonitorsClientListAPIKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyListResponse); err != nil {
 		return MonitorsClientListAPIKeysResponse{}, err
 	}
@@ -523,43 +543,57 @@ func (client *MonitorsClient) NewListByResourceGroupPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *MonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *MonitorsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251226Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Response) (MonitorsClientListByResourceGroupResponse, error) {
+func (client *MonitorsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListByResourceGroupResponse, error) {
 	result := MonitorsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitorResourceListResponse); err != nil {
 		return MonitorsClientListByResourceGroupResponse{}, err
 	}
@@ -583,47 +617,61 @@ func (client *MonitorsClient) NewListHostsPager(resourceGroupName string, monito
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listHostsCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listHostsCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListHostsResponse{}, err
 			}
-			return client.listHostsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListHostsResponse{}, err
+			}
+			return client.listHostsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listHostsCreateRequest creates the ListHosts request.
-func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListHostsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listHosts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listHostsCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *MonitorsClientListHostsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listHosts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251226Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHostsHandleResponse handles the ListHosts response.
-func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response) (MonitorsClientListHostsResponse, error) {
+func (client *MonitorsClient) listHostsHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListHostsResponse, error) {
 	result := MonitorsClientListHostsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostListResponse); err != nil {
 		return MonitorsClientListHostsResponse{}, err
 	}
@@ -648,47 +696,61 @@ func (client *MonitorsClient) NewListLinkedResourcesPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listLinkedResourcesCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listLinkedResourcesCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListLinkedResourcesResponse{}, err
 			}
-			return client.listLinkedResourcesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListLinkedResourcesResponse{}, err
+			}
+			return client.listLinkedResourcesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listLinkedResourcesCreateRequest creates the ListLinkedResources request.
-func (client *MonitorsClient) listLinkedResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListLinkedResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listLinkedResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listLinkedResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *MonitorsClientListLinkedResourcesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listLinkedResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251226Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listLinkedResourcesHandleResponse handles the ListLinkedResources response.
-func (client *MonitorsClient) listLinkedResourcesHandleResponse(resp *http.Response) (MonitorsClientListLinkedResourcesResponse, error) {
+func (client *MonitorsClient) listLinkedResourcesHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListLinkedResourcesResponse, error) {
 	result := MonitorsClientListLinkedResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedResourceListResponse); err != nil {
 		return MonitorsClientListLinkedResourcesResponse{}, err
 	}
@@ -713,47 +775,61 @@ func (client *MonitorsClient) NewListMonitoredResourcesPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMonitoredResourcesCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listMonitoredResourcesCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitorsClientListMonitoredResourcesResponse{}, err
 			}
-			return client.listMonitoredResourcesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitorsClientListMonitoredResourcesResponse{}, err
+			}
+			return client.listMonitoredResourcesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMonitoredResourcesCreateRequest creates the ListMonitoredResources request.
-func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorsClientListMonitoredResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listMonitoredResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitorsClient) listMonitoredResourcesCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *MonitorsClientListMonitoredResourcesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/listMonitoredResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251226Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMonitoredResourcesHandleResponse handles the ListMonitoredResources response.
-func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Response) (MonitorsClientListMonitoredResourcesResponse, error) {
+func (client *MonitorsClient) listMonitoredResourcesHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientListMonitoredResourcesResponse, error) {
 	result := MonitorsClientListMonitoredResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoredResourceListResponse); err != nil {
 		return MonitorsClientListMonitoredResourcesResponse{}, err
 	}
@@ -781,12 +857,7 @@ func (client *MonitorsClient) ManageSreAgentConnectors(ctx context.Context, reso
 	if err != nil {
 		return MonitorsClientManageSreAgentConnectorsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientManageSreAgentConnectorsResponse{}, err
-	}
-	resp, err := client.manageSreAgentConnectorsHandleResponse(httpResp)
-	return resp, err
+	return client.manageSreAgentConnectorsHandleResponse(httpResp, http.StatusOK)
 }
 
 // manageSreAgentConnectorsCreateRequest creates the ManageSreAgentConnectors request.
@@ -820,8 +891,11 @@ func (client *MonitorsClient) manageSreAgentConnectorsCreateRequest(ctx context.
 }
 
 // manageSreAgentConnectorsHandleResponse handles the ManageSreAgentConnectors response.
-func (client *MonitorsClient) manageSreAgentConnectorsHandleResponse(resp *http.Response) (MonitorsClientManageSreAgentConnectorsResponse, error) {
+func (client *MonitorsClient) manageSreAgentConnectorsHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientManageSreAgentConnectorsResponse, error) {
 	result := MonitorsClientManageSreAgentConnectorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SreAgentConfigurationListResponse); err != nil {
 		return MonitorsClientManageSreAgentConnectorsResponse{}, err
 	}
@@ -850,12 +924,7 @@ func (client *MonitorsClient) RefreshSetPasswordLink(ctx context.Context, resour
 	if err != nil {
 		return MonitorsClientRefreshSetPasswordLinkResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientRefreshSetPasswordLinkResponse{}, err
-	}
-	resp, err := client.refreshSetPasswordLinkHandleResponse(httpResp)
-	return resp, err
+	return client.refreshSetPasswordLinkHandleResponse(httpResp, http.StatusOK)
 }
 
 // refreshSetPasswordLinkCreateRequest creates the RefreshSetPasswordLink request.
@@ -885,8 +954,11 @@ func (client *MonitorsClient) refreshSetPasswordLinkCreateRequest(ctx context.Co
 }
 
 // refreshSetPasswordLinkHandleResponse handles the RefreshSetPasswordLink response.
-func (client *MonitorsClient) refreshSetPasswordLinkHandleResponse(resp *http.Response) (MonitorsClientRefreshSetPasswordLinkResponse, error) {
+func (client *MonitorsClient) refreshSetPasswordLinkHandleResponse(resp *http.Response, successCodes ...int) (MonitorsClientRefreshSetPasswordLinkResponse, error) {
 	result := MonitorsClientRefreshSetPasswordLinkResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetPasswordLink); err != nil {
 		return MonitorsClientRefreshSetPasswordLinkResponse{}, err
 	}
@@ -915,8 +987,7 @@ func (client *MonitorsClient) SetDefaultKey(ctx context.Context, resourceGroupNa
 		return MonitorsClientSetDefaultKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorsClientSetDefaultKeyResponse{}, err
+		return MonitorsClientSetDefaultKeyResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return MonitorsClientSetDefaultKeyResponse{}, nil
 }
@@ -996,8 +1067,7 @@ func (client *MonitorsClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

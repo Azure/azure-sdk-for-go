@@ -63,12 +63,7 @@ func (client *AssignmentsClient) CreateOrUpdate(ctx context.Context, guestConfig
 	if err != nil {
 		return AssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AssignmentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *AssignmentsClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (AssignmentsClientCreateOrUpdateResponse, error) {
+func (client *AssignmentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientCreateOrUpdateResponse, error) {
 	result := AssignmentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -135,8 +133,7 @@ func (client *AssignmentsClient) Delete(ctx context.Context, resourceGroupName s
 		return AssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AssignmentsClientDeleteResponse{}, err
+		return AssignmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AssignmentsClientDeleteResponse{}, nil
 }
@@ -190,12 +187,7 @@ func (client *AssignmentsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return AssignmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AssignmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -229,8 +221,11 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssignmentsClient) getHandleResponse(resp *http.Response) (AssignmentsClientGetResponse, error) {
+func (client *AssignmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientGetResponse, error) {
 	result := AssignmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsClientGetResponse{}, err
 	}
@@ -252,47 +247,61 @@ func (client *AssignmentsClient) NewListPager(resourceGroupName string, vmName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, vmName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, vmName, nextLink, options)
 			if err != nil {
 				return AssignmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssignmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, _ *AssignmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmName string, nextLink string, _ *AssignmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vmName == "" {
+			return nil, errors.New("parameter vmName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vmName == "" {
-		return nil, errors.New("parameter vmName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240405)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240405)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AssignmentsClient) listHandleResponse(resp *http.Response) (AssignmentsClientListResponse, error) {
+func (client *AssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientListResponse, error) {
 	result := AssignmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentList); err != nil {
 		return AssignmentsClientListResponse{}, err
 	}
@@ -313,43 +322,57 @@ func (client *AssignmentsClient) NewRGListPager(resourceGroupName string, option
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.rGListCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.rGListCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AssignmentsClientRGListResponse{}, err
 			}
-			return client.rGListHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssignmentsClientRGListResponse{}, err
+			}
+			return client.rGListHandleResponse(resp, http.StatusOK, http.StatusNoContent)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // rGListCreateRequest creates the RGList request.
-func (client *AssignmentsClient) rGListCreateRequest(ctx context.Context, resourceGroupName string, _ *AssignmentsClientRGListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AssignmentsClient) rGListCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AssignmentsClientRGListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240405)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240405)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // rGListHandleResponse handles the RGList response.
-func (client *AssignmentsClient) rGListHandleResponse(resp *http.Response) (AssignmentsClientRGListResponse, error) {
+func (client *AssignmentsClient) rGListHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientRGListResponse, error) {
 	result := AssignmentsClientRGListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentList); err != nil {
 		return AssignmentsClientRGListResponse{}, err
 	}
@@ -370,39 +393,53 @@ func (client *AssignmentsClient) NewSubscriptionListPager(options *AssignmentsCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.subscriptionListCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.subscriptionListCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AssignmentsClientSubscriptionListResponse{}, err
 			}
-			return client.subscriptionListHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssignmentsClientSubscriptionListResponse{}, err
+			}
+			return client.subscriptionListHandleResponse(resp, http.StatusOK, http.StatusNoContent)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // subscriptionListCreateRequest creates the SubscriptionList request.
-func (client *AssignmentsClient) subscriptionListCreateRequest(ctx context.Context, _ *AssignmentsClientSubscriptionListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AssignmentsClient) subscriptionListCreateRequest(ctx context.Context, nextLink string, _ *AssignmentsClientSubscriptionListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240405)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240405)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // subscriptionListHandleResponse handles the SubscriptionList response.
-func (client *AssignmentsClient) subscriptionListHandleResponse(resp *http.Response) (AssignmentsClientSubscriptionListResponse, error) {
+func (client *AssignmentsClient) subscriptionListHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsClientSubscriptionListResponse, error) {
 	result := AssignmentsClientSubscriptionListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentList); err != nil {
 		return AssignmentsClientSubscriptionListResponse{}, err
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/autoExportJobs_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/autoExportJobs_CreateOrUpdate.json
 func ExampleAutoExportJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,8 +63,8 @@ func ExampleAutoExportJobsClient_BeginCreateOrUpdate() {
 	// 				CurrentIterationMiBDiscovered: to.Ptr[int64](4000),
 	// 				CurrentIterationMiBExported: to.Ptr[int64](500),
 	// 				ExportIterationCount: to.Ptr[int32](100),
-	// 				LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T17:25:43.511Z"); return t}()),
-	// 				LastSuccessfulIterationCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T19:28:43.511Z"); return t}()),
+	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
+	// 				LastSuccessfulIterationCompletionTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 19, 28, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.AutoExportStatusTypeInProgress),
 	// 				StatusMessage: to.Ptr("Auto Export is in progress"),
 	// 				TotalFilesExported: to.Ptr[int64](1000000),
@@ -79,7 +79,7 @@ func ExampleAutoExportJobsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_Delete.json
+// Generated from example definition: 2026-08-01/autoExportJobs_Delete.json
 func ExampleAutoExportJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleAutoExportJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_Get.json
+// Generated from example definition: 2026-08-01/autoExportJobs_Get.json
 func ExampleAutoExportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,8 +121,8 @@ func ExampleAutoExportJobsClient_Get() {
 	// res = armstoragecache.AutoExportJobsClientGetResponse{
 	// 	AutoExportJob: armstoragecache.AutoExportJob{
 	// 		Name: to.Ptr("job1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/autoExportJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/autoExportJob/job1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystems/autoExportJobs"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/autoExportJobs/job1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstoragecache.AutoExportJobProperties{
 	// 			AdminStatus: to.Ptr(armstoragecache.AutoExportJobAdminStatusEnable),
@@ -137,8 +137,8 @@ func ExampleAutoExportJobsClient_Get() {
 	// 				CurrentIterationMiBDiscovered: to.Ptr[int64](4000),
 	// 				CurrentIterationMiBExported: to.Ptr[int64](500),
 	// 				ExportIterationCount: to.Ptr[int32](100),
-	// 				LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T17:25:43.511Z"); return t}()),
-	// 				LastSuccessfulIterationCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T19:28:43.511Z"); return t}()),
+	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
+	// 				LastSuccessfulIterationCompletionTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 19, 28, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.AutoExportStatusTypeInProgress),
 	// 				StatusMessage: to.Ptr("Auto Export is in progress"),
 	// 				TotalFilesExported: to.Ptr[int64](1000000),
@@ -150,7 +150,7 @@ func ExampleAutoExportJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_ListByAmlFilesystem.json
+// Generated from example definition: 2026-08-01/autoExportJobs_ListByAmlFilesystem.json
 func ExampleAutoExportJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,8 +193,8 @@ func ExampleAutoExportJobsClient_NewListByAmlFilesystemPager() {
 		// 						CurrentIterationMiBDiscovered: to.Ptr[int64](4000),
 		// 						CurrentIterationMiBExported: to.Ptr[int64](500),
 		// 						ExportIterationCount: to.Ptr[int32](100),
-		// 						LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T17:25:43.511Z"); return t}()),
-		// 						LastSuccessfulIterationCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T19:28:43.511Z"); return t}()),
+		// 						LastStartedTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
+		// 						LastSuccessfulIterationCompletionTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 19, 28, 43, 511000000, time.UTC)),
 		// 						State: to.Ptr(armstoragecache.AutoExportStatusTypeInProgress),
 		// 						StatusMessage: to.Ptr("Auto Export is in progress"),
 		// 						TotalFilesExported: to.Ptr[int64](1000000),
@@ -221,9 +221,9 @@ func ExampleAutoExportJobsClient_NewListByAmlFilesystemPager() {
 		// 						CurrentIterationMiBDiscovered: to.Ptr[int64](4000),
 		// 						CurrentIterationMiBExported: to.Ptr[int64](500),
 		// 						ExportIterationCount: to.Ptr[int32](100),
-		// 						LastCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T20:25:43.511Z"); return t}()),
-		// 						LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T17:25:43.511Z"); return t}()),
-		// 						LastSuccessfulIterationCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T19:28:43.511Z"); return t}()),
+		// 						LastCompletionTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 20, 25, 43, 511000000, time.UTC)),
+		// 						LastStartedTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
+		// 						LastSuccessfulIterationCompletionTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 19, 28, 43, 511000000, time.UTC)),
 		// 						State: to.Ptr(armstoragecache.AutoExportStatusTypeDisabled),
 		// 						StatusMessage: to.Ptr("Auto Export job is disabled"),
 		// 						TotalFilesExported: to.Ptr[int64](1000000),
@@ -238,7 +238,7 @@ func ExampleAutoExportJobsClient_NewListByAmlFilesystemPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoExportJobs_Update.json
+// Generated from example definition: 2026-08-01/autoExportJobs_Update.json
 func ExampleAutoExportJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,8 +283,8 @@ func ExampleAutoExportJobsClient_BeginUpdate() {
 	// 				CurrentIterationMiBDiscovered: to.Ptr[int64](4000),
 	// 				CurrentIterationMiBExported: to.Ptr[int64](500),
 	// 				ExportIterationCount: to.Ptr[int32](100),
-	// 				LastStartedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T17:25:43.511Z"); return t}()),
-	// 				LastSuccessfulIterationCompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-21T19:28:43.511Z"); return t}()),
+	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
+	// 				LastSuccessfulIterationCompletionTimeUTC: to.Ptr(time.Date(2024, time.April, 21, 19, 28, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.AutoExportStatusTypeInProgress),
 	// 				StatusMessage: to.Ptr("Auto Export is in progress"),
 	// 				TotalFilesExported: to.Ptr[int64](1000000),

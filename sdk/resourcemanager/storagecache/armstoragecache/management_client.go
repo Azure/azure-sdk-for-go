@@ -19,7 +19,7 @@ import (
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-08-01
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -60,8 +60,7 @@ func (client *ManagementClient) CheckAmlFSSubnets(ctx context.Context, options *
 		return ManagementClientCheckAmlFSSubnetsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientCheckAmlFSSubnetsResponse{}, err
+		return ManagementClientCheckAmlFSSubnetsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagementClientCheckAmlFSSubnetsResponse{}, nil
 }
@@ -78,7 +77,7 @@ func (client *ManagementClient) checkAmlFSSubnetsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.AmlFilesystemSubnetInfo != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -108,12 +107,7 @@ func (client *ManagementClient) GetRequiredAmlFSSubnetsSize(ctx context.Context,
 	if err != nil {
 		return ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}, err
-	}
-	resp, err := client.getRequiredAmlFSSubnetsSizeHandleResponse(httpResp)
-	return resp, err
+	return client.getRequiredAmlFSSubnetsSizeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRequiredAmlFSSubnetsSizeCreateRequest creates the GetRequiredAmlFSSubnetsSize request.
@@ -128,7 +122,7 @@ func (client *ManagementClient) getRequiredAmlFSSubnetsSizeCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequiredAMLFilesystemSubnetsSizeInfo != nil {
@@ -142,8 +136,11 @@ func (client *ManagementClient) getRequiredAmlFSSubnetsSizeCreateRequest(ctx con
 }
 
 // getRequiredAmlFSSubnetsSizeHandleResponse handles the GetRequiredAmlFSSubnetsSize response.
-func (client *ManagementClient) getRequiredAmlFSSubnetsSizeHandleResponse(resp *http.Response) (ManagementClientGetRequiredAmlFSSubnetsSizeResponse, error) {
+func (client *ManagementClient) getRequiredAmlFSSubnetsSizeHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientGetRequiredAmlFSSubnetsSizeResponse, error) {
 	result := ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RequiredAmlFilesystemSubnetsSize); err != nil {
 		return ManagementClientGetRequiredAmlFSSubnetsSizeResponse{}, err
 	}

@@ -286,6 +286,32 @@ type OperationsClientListResponse struct {
 	APIOperationListResult
 }
 
+// RebalanceJobsClientDeleteResponse contains the response from method RebalanceJobsClient.BeginDelete.
+type RebalanceJobsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RebalanceJobsClientGetResponse contains the response from method RebalanceJobsClient.Get.
+type RebalanceJobsClientGetResponse struct {
+	// A rebalance job instance. Rebalances OST data across storage targets after a cluster expansion.
+	// Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	RebalanceJob
+}
+
+// RebalanceJobsClientListByAmlFilesystemResponse contains the response from method RebalanceJobsClient.NewListByAmlFilesystemPager.
+type RebalanceJobsClientListByAmlFilesystemResponse struct {
+	// Result of the request to list rebalance jobs. It contains a list of rebalance jobs and a URL link to get the next set of
+	// results.
+	RebalanceJobsListResult
+}
+
+// RebalanceJobsClientUpdateResponse contains the response from method RebalanceJobsClient.BeginUpdate.
+type RebalanceJobsClientUpdateResponse struct {
+	// A rebalance job instance. Rebalances OST data across storage targets after a cluster expansion.
+	// Follows Azure Resource Manager standards: https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md
+	RebalanceJob
+}
+
 // SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
 type SKUsClientListResponse struct {
 	// The response from the List Cache SKUs operation.

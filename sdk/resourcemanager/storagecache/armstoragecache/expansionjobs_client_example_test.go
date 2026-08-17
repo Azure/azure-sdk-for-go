@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/expansionJobs_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/expansionJobs_CreateOrUpdate.json
 func ExampleExpansionJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,9 +51,10 @@ func ExampleExpansionJobsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armstoragecache.ExpansionJobProperties{
 	// 			NewStorageCapacityTiB: to.Ptr[float32](16),
 	// 			ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateSucceeded),
+	// 			RunRebalanceJob: to.Ptr(true),
 	// 			Status: &armstoragecache.ExpansionJobPropertiesStatus{
 	// 				PercentComplete: to.Ptr[float32](85),
-	// 				StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				StartTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.ExpansionJobStatusTypeInProgress),
 	// 				StatusMessage: to.Ptr("Expansion is in progress"),
 	// 			},
@@ -65,7 +66,7 @@ func ExampleExpansionJobsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/expansionJobs_Delete.json
+// Generated from example definition: 2026-08-01/expansionJobs_Delete.json
 func ExampleExpansionJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +87,7 @@ func ExampleExpansionJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/expansionJobs_Get.json
+// Generated from example definition: 2026-08-01/expansionJobs_Get.json
 func ExampleExpansionJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,16 +108,18 @@ func ExampleExpansionJobsClient_Get() {
 	// res = armstoragecache.ExpansionJobsClientGetResponse{
 	// 	ExpansionJob: armstoragecache.ExpansionJob{
 	// 		Name: to.Ptr("expansionjob1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/expansionJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/expansionJobs/expansionjob1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystems/expansionJobs"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/expansionJobs/expansionjob1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstoragecache.ExpansionJobProperties{
 	// 			NewStorageCapacityTiB: to.Ptr[float32](16),
 	// 			ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateSucceeded),
+	// 			RunRebalanceJob: to.Ptr(true),
+	// 			RebalanceJobID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/rebalanceJobs/expansionjob1-rebalance"),
 	// 			Status: &armstoragecache.ExpansionJobPropertiesStatus{
-	// 				CompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T19:15:43.511Z"); return t}()),
+	// 				CompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 19, 15, 43, 511000000, time.UTC)),
 	// 				PercentComplete: to.Ptr[float32](100),
-	// 				StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				StartTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.ExpansionJobStatusTypeCompleted),
 	// 				StatusMessage: to.Ptr("Expansion completed successfully"),
 	// 			},
@@ -128,7 +131,7 @@ func ExampleExpansionJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/expansionJobs_ListByAmlFilesystem.json
+// Generated from example definition: 2026-08-01/expansionJobs_ListByAmlFilesystem.json
 func ExampleExpansionJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +155,7 @@ func ExampleExpansionJobsClient_NewListByAmlFilesystemPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armstoragecache.ExpansionJobsClientListByAmlFilesystemResponse{
 		// 	ExpansionJobsListResult: armstoragecache.ExpansionJobsListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/expansionJobs?api-version=2026-01-01&$skiptoken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/expansionJobs?api-version=2026-08-01&$skiptoken=abc123"),
 		// 		Value: []*armstoragecache.ExpansionJob{
 		// 			{
 		// 				Name: to.Ptr("expansionjob1"),
@@ -162,10 +165,11 @@ func ExampleExpansionJobsClient_NewListByAmlFilesystemPager() {
 		// 				Properties: &armstoragecache.ExpansionJobProperties{
 		// 					NewStorageCapacityTiB: to.Ptr[float32](16),
 		// 					ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateSucceeded),
+		// 					RunRebalanceJob: to.Ptr(true),
 		// 					Status: &armstoragecache.ExpansionJobPropertiesStatus{
-		// 						CompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T19:15:43.511Z"); return t}()),
+		// 						CompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 19, 15, 43, 511000000, time.UTC)),
 		// 						PercentComplete: to.Ptr[float32](100),
-		// 						StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+		// 						StartTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 						State: to.Ptr(armstoragecache.ExpansionJobStatusTypeCompleted),
 		// 						StatusMessage: to.Ptr("Expansion completed successfully"),
 		// 					},
@@ -182,9 +186,10 @@ func ExampleExpansionJobsClient_NewListByAmlFilesystemPager() {
 		// 				Properties: &armstoragecache.ExpansionJobProperties{
 		// 					NewStorageCapacityTiB: to.Ptr[float32](32),
 		// 					ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateSucceeded),
+		// 					RunRebalanceJob: to.Ptr(true),
 		// 					Status: &armstoragecache.ExpansionJobPropertiesStatus{
 		// 						PercentComplete: to.Ptr[float32](45),
-		// 						StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-22T10:30:15.120Z"); return t}()),
+		// 						StartTimeUTC: to.Ptr(time.Date(2024, time.March, 22, 10, 30, 15, 120000000, time.UTC)),
 		// 						State: to.Ptr(armstoragecache.ExpansionJobStatusTypeInProgress),
 		// 						StatusMessage: to.Ptr("Expansion is in progress"),
 		// 					},
@@ -201,10 +206,11 @@ func ExampleExpansionJobsClient_NewListByAmlFilesystemPager() {
 		// 				Properties: &armstoragecache.ExpansionJobProperties{
 		// 					NewStorageCapacityTiB: to.Ptr[float32](24),
 		// 					ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateFailed),
+		// 					RunRebalanceJob: to.Ptr(true),
 		// 					Status: &armstoragecache.ExpansionJobPropertiesStatus{
-		// 						CompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:50:22.334Z"); return t}()),
+		// 						CompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 8, 50, 22, 334000000, time.UTC)),
 		// 						PercentComplete: to.Ptr[float32](0),
-		// 						StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T08:45:22.334Z"); return t}()),
+		// 						StartTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 8, 45, 22, 334000000, time.UTC)),
 		// 						State: to.Ptr(armstoragecache.ExpansionJobStatusTypeFailed),
 		// 						StatusCode: to.Ptr("InsufficientCapacity"),
 		// 						StatusMessage: to.Ptr("Insufficient capacity available in the region for the requested expansion"),
@@ -220,7 +226,7 @@ func ExampleExpansionJobsClient_NewListByAmlFilesystemPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/expansionJobs_Update.json
+// Generated from example definition: 2026-08-01/expansionJobs_Update.json
 func ExampleExpansionJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -255,10 +261,11 @@ func ExampleExpansionJobsClient_BeginUpdate() {
 	// 		Properties: &armstoragecache.ExpansionJobProperties{
 	// 			NewStorageCapacityTiB: to.Ptr[float32](16),
 	// 			ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateSucceeded),
+	// 			RunRebalanceJob: to.Ptr(true),
 	// 			Status: &armstoragecache.ExpansionJobPropertiesStatus{
-	// 				CompletionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T19:15:43.511Z"); return t}()),
+	// 				CompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 19, 15, 43, 511000000, time.UTC)),
 	// 				PercentComplete: to.Ptr[float32](100),
-	// 				StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-21T17:25:43.511Z"); return t}()),
+	// 				StartTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.ExpansionJobStatusTypeCompleted),
 	// 				StatusMessage: to.Ptr("Expansion completed successfully"),
 	// 			},

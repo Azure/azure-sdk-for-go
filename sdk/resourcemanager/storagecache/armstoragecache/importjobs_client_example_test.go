@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/importJobs_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/importJobs_CreateOrUpdate.json
 func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,8 +63,8 @@ func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	// 			Status: &armstoragecache.ImportJobPropertiesStatus{
 	// 				BlobsImportedPerSecond: to.Ptr[int64](4000),
 	// 				BlobsWalkedPerSecond: to.Ptr[int64](10000),
-	// 				LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 				LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 				LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				State: to.Ptr(armstoragecache.ImportStatusTypeCompleted),
 	// 				StatusMessage: to.Ptr("Import job completed successfully"),
 	// 				TotalBlobsImported: to.Ptr[int64](1000000),
@@ -80,7 +80,7 @@ func ExampleImportJobsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/importJobs_Delete.json
+// Generated from example definition: 2026-08-01/importJobs_Delete.json
 func ExampleImportJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleImportJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/importJobs_Get.json
+// Generated from example definition: 2026-08-01/importJobs_Get.json
 func ExampleImportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,8 +122,8 @@ func ExampleImportJobsClient_Get() {
 	// res = armstoragecache.ImportJobsClientGetResponse{
 	// 	ImportJob: armstoragecache.ImportJob{
 	// 		Name: to.Ptr("job1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystems/importJobs"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/importJobs/job1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armstoragecache.ImportJobProperties{
 	// 			AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
@@ -139,8 +139,8 @@ func ExampleImportJobsClient_Get() {
 	// 				ImportedDirectories: to.Ptr[int64](500),
 	// 				ImportedFiles: to.Ptr[int64](1000),
 	// 				ImportedSymlinks: to.Ptr[int64](1000),
-	// 				LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 				LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 				LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				PreexistingDirectories: to.Ptr[int64](100),
 	// 				PreexistingFiles: to.Ptr[int64](500),
 	// 				PreexistingSymlinks: to.Ptr[int64](200),
@@ -156,7 +156,7 @@ func ExampleImportJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/importJobs_ListByAmlFilesystem.json
+// Generated from example definition: 2026-08-01/importJobs_ListByAmlFilesystem.json
 func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,8 +200,8 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 		// 						ImportedDirectories: to.Ptr[int64](500),
 		// 						ImportedFiles: to.Ptr[int64](1000),
 		// 						ImportedSymlinks: to.Ptr[int64](1000),
-		// 						LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 						LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 						LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 						PreexistingDirectories: to.Ptr[int64](100),
 		// 						PreexistingFiles: to.Ptr[int64](500),
 		// 						PreexistingSymlinks: to.Ptr[int64](200),
@@ -233,8 +233,8 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 		// 						ImportedDirectories: to.Ptr[int64](500),
 		// 						ImportedFiles: to.Ptr[int64](1000),
 		// 						ImportedSymlinks: to.Ptr[int64](1000),
-		// 						LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-		// 						LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+		// 						LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+		// 						LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 		// 						PreexistingDirectories: to.Ptr[int64](100),
 		// 						PreexistingFiles: to.Ptr[int64](500),
 		// 						PreexistingSymlinks: to.Ptr[int64](200),
@@ -253,7 +253,7 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/importJob_Update.json
+// Generated from example definition: 2026-08-01/importJob_Update.json
 func ExampleImportJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,8 +299,8 @@ func ExampleImportJobsClient_BeginUpdate() {
 	// 				ImportedDirectories: to.Ptr[int64](500),
 	// 				ImportedFiles: to.Ptr[int64](1000),
 	// 				ImportedSymlinks: to.Ptr[int64](1000),
-	// 				LastCompletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T18:25:43.511Z"); return t}()),
-	// 				LastStartedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-21T17:25:43.511Z"); return t}()),
+	// 				LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
 	// 				PreexistingDirectories: to.Ptr[int64](100),
 	// 				PreexistingFiles: to.Ptr[int64](500),
 	// 				PreexistingSymlinks: to.Ptr[int64](200),

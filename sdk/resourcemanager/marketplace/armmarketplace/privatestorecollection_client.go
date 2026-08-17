@@ -7,14 +7,15 @@ package armmarketplace
 import (
 	"context"
 	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"net/http"
-	"net/url"
-	"strings"
 )
 
 // PrivateStoreCollectionClient contains the methods for the PrivateStoreCollection group.
@@ -415,7 +416,7 @@ func (client *PrivateStoreCollectionClient) postCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", version20250101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.Payload != nil {
-		body := streaming.NopCloser(strings.NewReader(*options.Payload))
+		body := streaming.NopCloser(strings.NewReader(string(*options.Payload)))
 		req.Raw().Header["Content-Type"] = []string{"text/plain"}
 		if err := req.SetBody(body, "text/plain"); err != nil {
 			return nil, err
